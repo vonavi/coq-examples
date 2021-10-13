@@ -39,16 +39,17 @@ jobs:
                 pygments dominate beautifulsoup4 docutils
             endGroup
             startGroup 'Create the public directory'
-              sudo rsync -av static/ public
+              sudo rsync -av _site/ public
               sudo chown -R $(id -u):$(id -g) public
             endGroup
             startGroup 'Use Alectryon'
-              for item in src/*.v; do
-                ./alectryon/alectryon.py --frontend coqdoc \
-                  --backend webpage --output-directory public "${item}"
-              done
+              find examples -name *.v -exec ./alectryon/alectryon.py \
+                --frontend coqdoc --backend webpage \
+                --output-directory public/examples {} \;
+              cp examples/*.v public/examples
             endGroup
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          enable_jekyll: true
