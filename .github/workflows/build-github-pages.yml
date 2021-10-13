@@ -1,0 +1,54 @@
+name: Docker CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        coq_version: ['8.13']
+        ocaml_version: ['4.12-flambda']
+      fail-fast: false          # don't stop jobs if one fails
+    steps:
+      - uses: actions/checkout@v2
+      - name: Clone Alectryon
+        uses: actions/checkout@v2
+        with:
+          repository: cpitclaudel/alectryon
+          path: ./alectryon
+      - uses: coq-community/docker-coq-action@v1
+        with:
+          coq_version: ${{ matrix.coq_version }}
+          ocaml_version: ${{ matrix.ocaml_version }}
+          custom_script: |
+            startGroup 'Print opam config'
+              opam config list; opam repo list; opam list
+            endGroup
+            startGroup 'Install APT/PyPI dependencies'
+              sudo apt-get update -y -q
+              sudo DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y -q --no-install-recommends python3-pip
+              python3 -m pip install --user --upgrade \
+                pygments dominate beautifulsoup4 docutils
+            endGroup
+            startGroup 'Create the public directory'
+              sudo rsync -av static/ public
+              sudo chown -R $(id -u):$(id -g) public
+            endGroup
+            startGroup 'Use Alectryon'
+              for item in src/*.v; do
+                ./alectryon/alectryon.py --frontend coqdoc \
+                  --backend webpage --output-directory public "${item}"
+              done
+            endGroup
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
