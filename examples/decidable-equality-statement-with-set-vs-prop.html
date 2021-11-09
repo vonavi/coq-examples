@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Decidable equality statement with Set vs. Prop</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="decidable-equality-statement-with-set-vs-prop">
+<h1 class="title">Decidable equality statement with Set vs. Prop</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/69710435/decidable-equality-statement-with-set-vs-prop">https://stackoverflow.com/questions/69710435/decidable-equality-statement-with-set-vs-prop</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>When looking at results for types with decidable equality (especially
+in <code class="highlight coq"><span class="n">Eqdep_dec</span>
+<span class="o">&lt;</span><span class="n">https</span><span class="o">://</span><span class="n">coq</span><span class="o">.</span><span class="n">inria</span><span class="o">.</span><span class="n">fr</span><span class="o">/</span><span class="n">library</span><span class="o">/</span><span class="n">Coq</span><span class="o">.</span><span class="n">Logic</span><span class="o">.</span><span class="n">Eqdep_dec</span><span class="o">.</span><span class="n">html</span><span class="o">&gt;</span></code>) there are
+some of the results that (for a type <code class="highlight coq"><span class="n">A</span></code>) require</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">EqdepDec</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, x = y \/ x &lt;&gt; y.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">EqdepDec</span>.</span></span></pre><p>whereas some require</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">DecidableSet</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">A</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, {x = y} + {x &lt;&gt; y}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">DecidableSet</span>.</span></span></pre><p>It is my impression that it is the last one that is referred to as
+<em>decidable equality</em>, but I am very much uncertain what the difference
+is. I know that <code class="highlight coq"><span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">\/</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span></code> in <code class="highlight coq"><span class="kt">Prop</span></code> and <code class="highlight coq"><span class="o">{</span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">}</span> <span class="o">+</span> <span class="o">{</span><span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span><span class="o">}</span></code>
+is in <code class="highlight coq"><span class="kt">Set</span></code>, and I can prove the first one from the second one but not
+the other way around. As far as I understand it, it is because I am
+not allowed to construct values of type <code class="highlight coq"><span class="kt">Prop</span></code> from values of type
+<code class="highlight coq"><span class="kt">Set</span></code>.</p>
+<p>Can anyone tell what the difference between the two are? Are there
+some example of a type for which the first statement can be proved but
+not the second. Also, is it true that the version with <code class="highlight coq"><span class="o">{</span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">}</span> <span class="o">+</span> <span class="o">{</span><span class="n">x</span>
+<span class="o">&lt;&gt;</span> <span class="n">y</span><span class="o">}</span></code> is what is referred to as decidable equality?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>You are correct that the latter definition, the one which lives in
+<code class="highlight coq"><span class="kt">Set</span></code>, is referred to as <em>decidable equality</em>.</p>
+<p>Intuitively, we interpret objects in <code class="highlight coq"><span class="kt">Set</span></code> as programs, and objects in
+<code class="highlight coq"><span class="kt">Prop</span></code> as proofs. So the decidable equality type is the type of a
+function which takes any two elements of some type <code class="highlight coq"><span class="n">A</span></code> and decides
+whether they are equal or unequal.</p>
+<p>The other statement is slightly weaker. It describes the proposition
+that any two elements of <code class="highlight coq"><span class="n">A</span></code> are either equal of unequal. Notably, we
+would not be able to inspect <em>which</em> outcome is the case for specific
+values of <code class="highlight coq"><span class="n">x</span></code> and <code class="highlight coq"><span class="n">y</span></code>, at least outside of case analysis within a
+proof. This is the result of the <code class="highlight coq"><span class="kt">Prop</span></code> elimination restriction that
+you alluded to (although you got it backwards: one is not allowed to
+construct values of sort <code class="highlight coq"><span class="kt">Set</span></code>/<code class="highlight coq"><span class="kt">Type</span></code> by eliminating/matching on an
+element of sort <code class="highlight coq"><span class="kt">Prop</span></code>).</p>
+<p>Without adding axioms, the <code class="highlight coq"><span class="kt">Prop</span></code> universe is constructive, so I
+believe that there would not be any types <code class="highlight coq"><span class="n">A</span></code> such that equality is
+undecidable but the propositional variant is provable. However,
+consider the scenario in which we make the <code class="highlight coq"><span class="kt">Prop</span></code> universe classical
+by adding the following axiom:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">classic</span> : <span class="kr">forall</span> <span class="nv">P</span>, P \/ ~P.</span></span></pre><p>This would make the propositional variant trivially provable for any
+type <code class="highlight coq"><span class="n">A</span></code>, while the decidable equality may not be realizable.</p>
+<p>Note that our axiom is a proposition. Intuitively, it makes sense that
+either a proposition or its negation must hold. If we hadn't made this
+a <code class="highlight coq"><span class="kt">Prop</span></code> (for example, if we axiomatized <code class="highlight coq"><span class="kr">forall</span> <span class="nv">P</span><span class="o">,</span> <span class="o">{</span><span class="n">P</span><span class="o">}</span> <span class="o">+</span> <span class="o">{~</span><span class="n">P</span><span class="o">}</span></code>), then
+we would likely not accept the axiom, since it would instead be
+declaring the existence of a universal decision procedure.</p>
+<p>That was a bit of a digression, but hopefully it demonstrated some
+differences in our interpretation of <a href="#system-message-1"><span class="problematic" id="problematic-1">`</span></a>Prop`s and <a href="#system-message-2"><span class="problematic" id="problematic-2">`</span></a>Set`s.</p>
+<div class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">examples/decidable-equality-statement-with-set-vs-prop.v</tt>, line 85); <em><a href="#problematic-1">backlink</a></em></p>
+Inline interpreted text or phrase reference start-string without end-string.</div>
+<div class="system-message" id="system-message-2">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">examples/decidable-equality-statement-with-set-vs-prop.v</tt>, line 85); <em><a href="#problematic-2">backlink</a></em></p>
+Inline interpreted text or phrase reference start-string without end-string.</div>
+</div>
+</div>
+</div></body>
+</html>
