@@ -21,6 +21,7 @@ with some extra elements in between. For example,
   transitive -- that is, if `l1` is a subsequence of `l2` and `l2` is
   a subsequence of `l3`, then `l1` is a subsequence of `l3`. Hint:
   choose your induction carefully!
+
 |*)
 
 Require Import List.
