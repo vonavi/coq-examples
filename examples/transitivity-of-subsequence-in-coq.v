@@ -17,11 +17,10 @@ A list is a *subsequence* of another list if all of the elements in
 the first list occur in the same order in the second list, possibly
 with some extra elements in between. For example,
 
-- (Optional, harder) Prove `subseq_trans` that subsequence is
-  transitive -- that is, if `l1` is a subsequence of `l2` and `l2` is
-  a subsequence of `l3`, then `l1` is a subsequence of `l3`. Hint:
-  choose your induction carefully!
-
+(Optional, harder) Prove `subseq_trans` that subsequence is transitive
+-- that is, if `l1` is a subsequence of `l2` and `l2` is a subsequence
+of `l3`, then `l1` is a subsequence of `l3`. Hint: choose your
+induction carefully!
 |*)
 
 Require Import List.
