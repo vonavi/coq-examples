@@ -10,9 +10,8 @@ Question
 --------
 
 When looking at results for types with decidable equality (especially
-in `Eqdep_dec
-<https://coq.inria.fr/library/Coq.Logic.Eqdep_dec.html>`) there are
-some of the results that (for a type `A`) require
+in `Eqdep_dec <https://coq.inria.fr/library/Coq.Logic.Eqdep_dec.html>`)
+there are some of the results that (for a type `A`) require
 |*)
 
 Section EqdepDec.
@@ -83,5 +82,5 @@ we would likely not accept the axiom, since it would instead be
 declaring the existence of a universal decision procedure.
 
 That was a bit of a digression, but hopefully it demonstrated some
-differences in our interpretation of `Prop`s and `Set`s.
+differences in our interpretation of `Prop` and `Set`.
 |*)
