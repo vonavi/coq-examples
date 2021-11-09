@@ -63,6 +63,7 @@ one possibility:
 Require Import Coq.Lists.List Coq.Strings.String.
 Import ListNotations.
 
+Reset sexp.
 Unset Elimination Schemes.
 Inductive sexp : Type :=
 | K : string -> list sexp -> sexp.
