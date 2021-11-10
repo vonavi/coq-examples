@@ -10,10 +10,14 @@ Question
 --------
 
 I defined a type of s-expressions and it's printing functions.
+
+.. coq:: none
 |*)
 
 Require Import Lists.List Strings.String.
 Import ListNotations.
+
+(*||*)
 
 Inductive sexp : Set :=
   K : string -> list sexp -> sexp.
@@ -58,12 +62,17 @@ types are hard to work with in Coq, because the induction principles
 that it generates by default are not useful. However, you can fix this
 issue by writing down your own induction principle by hand. Here is
 one possibility:
+
+.. coq:: none
 |*)
 
 Require Import Coq.Lists.List Coq.Strings.String.
 Import ListNotations.
 
 Reset sexp.
+
+(*||*)
+
 Unset Elimination Schemes.
 Inductive sexp : Type :=
 | K : string -> list sexp -> sexp.
