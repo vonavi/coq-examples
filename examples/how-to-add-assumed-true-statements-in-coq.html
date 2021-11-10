@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>How to add &quot;assumed true&quot; statements in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-to-add-assumed-true-statements-in-coq">
+<h1 class="title">How to add &quot;assumed true&quot; statements in Coq</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/68060895/how-to-add-assumed-true-statements-in-coq">https://stackoverflow.com/questions/68060895/how-to-add-assumed-true-statements-in-coq</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I tried to add a definition of a natural number in CoqIDE.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">nat</span> : <span class="kt">Set</span> :=
+| O: nat
+| S: nat -&gt; nat.</span></span></pre><p>But I couldn't add this as &quot;assumed true&quot;:</p>
+<p><code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">n</span> <span class="nv">m</span><span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">S</span> <span class="n">n</span> <span class="o">=</span> <span class="n">S</span> <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="n">m</span><span class="o">).</span></code></p>
+<p>How do I add this?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>I'm not completely clear on what you want to do, but your formula is
+not syntactically correct. I believe you meant <code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">n</span> <span class="nv">m</span><span class="o">:</span> <span class="n">nat</span><span class="o">),</span> <span class="n">S</span> <span class="n">n</span>
+<span class="o">=</span> <span class="n">S</span> <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="n">m</span></code> (note the parenthesis' placement).</p>
+<p>Your statement is actually provable, no need to assume it:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-add-assumed-true-statements-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-assumed-true-statements-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">S_inj</span> : <span class="kr">forall</span> (<span class="nv">n</span> <span class="nv">m</span>: nat), S n = S m -&gt; n = m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, S n = S m -&gt; n = m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-add-assumed-true-statements-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-assumed-true-statements-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, S n = S m -&gt; n = m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-add-assumed-true-statements-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-assumed-true-statements-in-coq-v-chk2"><span class="nb">intros</span> n m [=].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n = m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The <code class="highlight coq"><span class="o">[=]</span></code> <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#intropattern-inj-discr-ex">intro pattern</a>
+expresses the built-in injectivity of the <code class="highlight coq"><span class="n">S</span></code> constructor.</p>
+</div>
+</div>
+</div></body>
+</html>

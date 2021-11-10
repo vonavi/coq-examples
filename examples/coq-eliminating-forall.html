@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Coq: eliminating `forall`?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-eliminating-forall">
+<h1 class="title">Coq: eliminating `forall`?</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/68744549/coq-eliminating-forall">https://stackoverflow.com/questions/68744549/coq-eliminating-forall</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am struggling to prove the following theorem (non-empty domain is
+assumed):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk0"><span class="kn">Theorem</span> <span class="nf">t</span> (<span class="nv">A</span>: <span class="kt">Set</span>) (<span class="nv">P</span>: A -&gt; <span class="kt">Prop</span>): (<span class="kr">forall</span> <span class="nv">a</span>: A, P a) -&gt; (<span class="kr">exists</span> <span class="nv">a</span>: A, P a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt; <span class="kr">exists</span> <span class="nv">a</span> : A, P a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt; <span class="kr">exists</span> <span class="nv">a</span> : A, P a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk2"><span class="nb">intros</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">a</span> : A, P a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Normally, having <code class="highlight coq"><span class="kr">forall</span> <span class="nv">a</span><span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">P</span> <span class="n">a</span></code> I would deduce <code class="highlight coq"><span class="n">P</span> <span class="n">c</span></code>, where <code class="highlight coq"><span class="n">c</span></code> is
+a constant. I.e. <code class="highlight coq"><span class="kr">forall</span></code> quantifier would be eliminated. Once that
+done I would again deduce <code class="highlight coq"><span class="kr">exists</span> <span class="nv">a</span></code> and my simple proof will be
+<code class="highlight coq"><span class="kn">Qed</span></code>'ed.</p>
+<p>However, I can't find right way to eliminate on <code class="highlight coq"><span class="kr">forall</span></code> in Coq.</p>
+<p>I am new to it and I'd like to know how to eliminate <code class="highlight coq"><span class="kr">forall</span></code> in Coq
+or what's the better way to prove the above-mentioned theorem?</p>
+<p>P.S. I have seen <a class="reference external" href="https://stackoverflow.com/questions/35994491/coq-elimination-of-forall-quantifier">this</a>
+answer but it seems to be unrelated to my question.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Unlike other logical formalisms (e.g. Isabelle/HOL), in Coq it is
+perfectly possible to have an empty domain. If you want to prove your
+statement, you have to assume explicitly that <code class="highlight coq"><span class="n">A</span></code> is not empty. Here
+is one possibility.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">non_empty</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Prop</span> :=
+  <span class="kr">exists</span> <span class="nv">x</span> : A, <span class="kt">True</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk3"><span class="kn">Theorem</span> <span class="nf">t</span> (<span class="nv">A</span> : <span class="kt">Set</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) :
+  non_empty A -&gt;
+  (<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt;
+  (<span class="kr">exists</span> <span class="nv">a</span> : A, P a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">non_empty A -&gt;
+(<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt; <span class="kr">exists</span> <span class="nv">a</span> : A, P a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">non_empty A -&gt;
+(<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt; <span class="kr">exists</span> <span class="nv">a</span> : A, P a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk5"><span class="nb">intros</span> [c _] H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">a</span> : A, P a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-eliminating-forall-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-eliminating-forall-v-chk6"><span class="kr">exists</span> <span class="nv">c</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P c</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><strong>Q:</strong> Thanks, is that precisely why <code class="highlight coq"><span class="kt">False</span></code> is defined as an empty
+type which can not be constructed in any way?</p>
+<p><strong>A:</strong> Yes, it is related to that.</p>
+</div>
+</div>
+</div></body>
+</html>
