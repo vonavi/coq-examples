@@ -15,17 +15,17 @@ in `Eqdep_dec
 some of the results that (for a type `A`) require
 |*)
 
-Section EqdepDec.
-  Variable A : Type.
-  Variable eq_dec : forall x y : A, x = y \/ x <> y.
-End EqdepDec.
+Section EqdepDec. (* .none *)
+Variable A : Type. (* .none *)
+Variable eq_dec : forall x y : A, x = y \/ x <> y.
+End EqdepDec. (* .none *)
 
 (*| whereas some require |*)
 
-Module Type DecidableSet.
-  Parameter A : Set.
-  Axiom eq_dec : forall x y : A, {x = y} + {x <> y}.
-End DecidableSet.
+Module Type DecidableSet. (* .none *)
+Parameter A : Set. (* .none *)
+Axiom eq_dec : forall x y : A, {x = y} + {x <> y}.
+End DecidableSet. (* .none *)
 
 (*|
 It is my impression that it is the last one that is referred to as
