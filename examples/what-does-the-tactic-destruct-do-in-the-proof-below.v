@@ -56,7 +56,6 @@ Here is a long form proof of what is going on:
 |*)
 
 Reset not_exists_dist. (* .none *)
-
 Theorem not_exists_dist :
   excluded_middle ->
   forall (X:Type) (P : X -> Prop),

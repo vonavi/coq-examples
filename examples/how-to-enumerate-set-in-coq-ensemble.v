@@ -61,7 +61,6 @@ check. Sorry for weird phrasing in proofs.)
 |*)
 
 Reset emptyOnly. (* .none *)
-
 Require Import Coq.Sets.Ensembles.
 
 (* Classical reasoning without extra axioms. *)
