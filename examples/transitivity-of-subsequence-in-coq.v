@@ -23,10 +23,14 @@ with some extra elements in between. For example,
 -- that is, if `l1` is a subsequence of `l2` and `l2` is a subsequence
 of `l3`, then `l1` is a subsequence of `l3`. Hint: choose your
 induction carefully!
+
+.. coq:: none
 |*)
 
 Require Import List.
 Import ListNotations.
+
+(*||*)
 
 Inductive subseq : list nat -> list nat -> Prop :=
 | sseq_e (l2 : list nat) : subseq [] l2
@@ -42,7 +46,7 @@ Proof.
     + inversion H0.
     + inversion H0.
       * apply sseq_m.
-Abort.
+Abort. (* .none *)
 
 (*|
 I am having trouble getting the right induction hypothesis after
