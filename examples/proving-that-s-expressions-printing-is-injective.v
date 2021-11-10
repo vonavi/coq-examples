@@ -66,10 +66,10 @@ one possibility:
 .. coq:: none
 |*)
 
+Reset sexp.
+
 Require Import Coq.Lists.List Coq.Strings.String.
 Import ListNotations.
-
-Reset sexp.
 
 (*||*)
 
