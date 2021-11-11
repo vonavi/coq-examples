@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Coq: Recursive definition of fibonacci is ill-formed</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-recursive-definition-of-fibonacci-is-ill-formed">
+<h1 class="title">Coq: Recursive definition of fibonacci is ill-formed</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/67758117/coq-recursive-definition-of-fibonacci-is-ill-formed">https://stackoverflow.com/questions/67758117/coq-recursive-definition-of-fibonacci-is-ill-formed</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to define Fibonacci numbers using coq. This is my code:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-recursive-definition-of-fibonacci-is-ill-formed-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-definition-of-fibonacci-is-ill-formed-v-chk0"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">fibonacci</span> (<span class="nv">n</span>:nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | O =&gt; <span class="mi">1</span>
+  | S O =&gt; <span class="mi">1</span>
+  | S (S n&#39;) =&gt; fibonacci (S n&#39;) + fibonacci n
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Recursive definition of fibonacci <span class="kr">is</span> ill-formed.
+In environment
+fibonacci : nat -&gt; nat
+n : nat
+n0 : nat
+n&#39; : nat
+Recursive call to fibonacci has principal argument
+equal to <span class="s2">&quot;S n&#39;&quot;</span> instead of
+one of the following variables: <span class="s2">&quot;n0&quot;</span>
+<span class="s2">&quot;n&#39;&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun n : nat =&gt;</span>
+<span class="s2"> match n with</span>
+<span class="s2"> | S (S n&#39;) =&gt; fibonacci (S n&#39;) + fibonacci n</span>
+<span class="s2"> | _ =&gt; 1</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre><p>I am wondering why this is wrong. Parenthetically, in the third clause
+of the match, I did not define the property of <code class="highlight coq"><span class="n">n'</span></code> (e.g. <code class="highlight coq"><span class="n">n'</span><span class="o">:</span> <span class="n">nat</span></code>),
+what would be the default of the property of <code class="highlight coq"><span class="n">n'</span></code>?</p>
+<p>Thanks in advance!</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>All arguments of a recursive call must be structurally decreasing,
+that is you must strip away one constructor symbol in the match. In
+your case the <code class="highlight coq"><span class="o">(</span><span class="n">S</span> <span class="n">n'</span><span class="o">)</span></code> argument is in fact structurally decreasing,
+but Coq doesn't detect that (which is a bit silly) because you add
+another constructor <code class="highlight coq"><span class="n">S</span></code>, which is not allowed. The second argument is
+wrong and should probably be <code class="highlight coq"><span class="n">n'</span></code>. Besides one usually defines this
+such that <code class="highlight coq"><span class="n">fibonacci</span> <span class="mi">0</span> <span class="o">=</span> <span class="mi">0</span></code>.</p>
+<p>To get around the issue of <code class="highlight coq"><span class="o">(</span><span class="n">S</span> <span class="n">n'</span><span class="o">)</span></code> one gives it a separate name with
+<code class="highlight coq"><span class="kr">as</span></code> as in:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">fibonacci</span> (<span class="nv">n</span>:nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | O =&gt; <span class="mi">0</span>
+  | S O =&gt; <span class="mi">1</span>
+  | S (S O) =&gt; <span class="mi">1</span>
+  | S ((S n&#39;&#39;) <span class="kr">as</span> n&#39;) =&gt; fibonacci n&#39; + fibonacci n&#39;&#39;
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-recursive-definition-of-fibonacci-is-ill-formed-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-definition-of-fibonacci-is-ill-formed-v-chk1"><span class="kn">Eval</span> <span class="nb">cbv</span> <span class="kr">in</span> map fibonacci (seq <span class="mi">0</span> <span class="mi">10</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">0</span>
+  :: <span class="mi">1</span>
+     :: <span class="mi">1</span>
+        :: <span class="mi">2</span>
+           :: <span class="mi">3</span>
+              :: <span class="mi">5</span> :: <span class="mi">8</span> :: <span class="mi">13</span> :: <span class="mi">21</span> :: <span class="mi">34</span> :: nil
+: list nat</blockquote></div></div></small></span></pre></div>
+</div>
+</div></body>
+</html>

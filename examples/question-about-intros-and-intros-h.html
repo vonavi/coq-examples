@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>question about intros [=] and intros [= &lt;- H]</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="question-about-intros-and-intros-h">
+<h1 class="title">question about intros [=] and intros [= &lt;- H]</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h">https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am a beginner at coq.</p>
+<p>I do not know the meaning of <code class="highlight coq"><span class="nb">intros</span> <span class="o">[=]</span></code> and <code class="highlight coq"><span class="nb">intros</span> <span class="o">[=</span> <span class="o">&lt;-</span> <span class="n">H</span><span class="o">]</span></code>. and I
+could not find an easy explanation. Would someone explain these two to
+me please?</p>
+<p>Regards</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The documentation for this is <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#intro-patterns">here</a>.
+I will add a little explanation note.</p>
+<p>The first historical use of intro patterns is to decompose data that
+is packed in inductive objects on the fly. Here is a first easy
+example (tested with coq 8.13.2).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span>, A /\ B -&gt; B /\ A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, A /\ B -&gt; B /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, A /\ B -&gt; B /\ A</div></blockquote></div></div></small></span></pre><p>If you run the tactic <code class="highlight coq"><span class="nb">intros</span> <span class="n">A</span> <span class="n">B</span> <span class="n">H</span></code> then the hypothesis <code class="highlight coq"><span class="n">H</span></code> will be a
+proof of <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code>. Morally, this contains knowledge that <code class="highlight coq"><span class="n">A</span></code> holds,
+but it cannot be used as such, because it is a proof of a stronger
+fact. It is often the case that users want directly to decompose this
+hypothesis, this would normally be done by typing <code class="highlight coq"><span class="nb">destruct</span> <span class="n">H</span> <span class="kr">as</span> <span class="o">[</span><span class="n">Ha</span>
+<span class="n">Hb</span><span class="o">]</span></code>. But if you know right away that you will not keep hypothesis
+<code class="highlight coq"><span class="n">H</span></code>, why not find a shorter expression. This is what the intro pattern
+is used for.</p>
+<p>So you type the following command and have the resulting goal:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk2"><span class="nb">intros</span> A B [Ha Hb].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>Ha</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>Hb</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>I will not finish this proof. But you get the idea of what intro
+patterns are for: decompose information on the fly when inductive
+types (like conjunction here) pack several pieces of information
+together.</p>
+<p>Now, equality information also can pack several pieces of information
+together. Assume now that we are working with lists of natural numbers
+and we have the following equality.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk3"><span class="kn">Lemma</span> <span class="nf">intro_pattern_example2</span> <span class="nv">n</span> <span class="nv">m</span> <span class="nv">p</span> <span class="nv">q</span> <span class="nv">l1</span> <span class="nv">l2</span> :
+  (n :: S m :: l1) = (p :: S q :: l2) -&gt; q :: p :: l2 = m :: n :: l1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n :: S m :: l1 = p :: S q :: l2 -&gt;
+q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small></span></pre><p>The equality in the left-hand side of the implication is an equality between two lists, but it actually packs several more elementary pieces of information: <code class="highlight coq"><span class="n">n</span> <span class="o">=</span> <span class="n">p</span></code>, <code class="highlight coq"><span class="n">m</span> <span class="o">=</span> <span class="n">q</span></code>, and <code class="highlight coq"><span class="n">l1</span> <span class="o">=</span> <span class="n">l2</span></code>. If you just type <code class="highlight coq"><span class="nb">intros</span> <span class="n">H</span></code>, you obtain the equality between two lists of length 3, but if you type <code class="highlight coq"><span class="nb">intros</span> <span class="o">[=]</span></code>, you ask the proof system to explore the structure of each equality member and check when constructors appear so that the smaller pieces of information can be placed in separate hypothesis instead of the big one. This is a short hand for the use of the <code class="highlight coq"><span class="nb">injection</span></code> tactic. Here is the example.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk4"><span class="nb">intros</span> [= Hn Hm Hl1].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>Hn</var><span class="hyp-type"><b>: </b><span>n = p</span></span></span><br><span><var>Hm</var><span class="hyp-type"><b>: </b><span>m = q</span></span></span><br><span><var>Hl1</var><span class="hyp-type"><b>: </b><span>l1 = l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small></span></pre><p>So you see, this <em>intro pattern</em> unpacks information that would
+otherwise be stuck in a more complex hypothesis.</p>
+<p>Now, when an hypothesis is an equality, there is another action you
+might want to perform right away. You might want to rewrite with it.
+In intro patterns, this is done by replacing the name you would give
+to that equality with an arrow. Let's test this on the previous goal.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk5"><span class="kn">Undo</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n :: S m :: l1 = p :: S q :: l2 -&gt;
+q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk6"><span class="nb">intros</span> [= -&gt; -&gt; -&gt;].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">q :: p :: l2 = q :: p :: l2</div></blockquote></div></div></small></span></pre><p>Now this goal can be solved quickly with <code class="highlight coq"><span class="bp">reflexivity</span></code>, <code class="highlight coq"><span class="nb">trivial</span></code>, or
+<code class="highlight coq"><span class="nb">auto</span></code>. Please note that the hypotheses were used to rewrite, but they
+were not kept in the goal context, so this possibility to rewrite
+directly from the intro pattern has to be used with caution, because
+you are actually losing some information.</p>
+<p>The <code class="highlight coq"><span class="o">[=]</span></code> intro pattern is used especially for equalities and when
+both members are datatype constructors. It exploits the natural
+injectivity property of these constructors. there is another property
+that is respected by datatype constructors. It is the fact that two
+pieces of data with different head constructors can never be equal.
+This is exploited in Coq by the <code class="highlight coq"><span class="bp">discriminate</span></code> tactic. The <code class="highlight coq"><span class="o">[=]</span></code> intro
+pattern is shorthand for both the <code class="highlight coq"><span class="nb">injection</span></code> and <code class="highlight coq"><span class="bp">discriminate</span></code>
+tactics.</p>
+<p><strong>A:</strong> Would an explanation like this make it clearer?
+<a class="reference external" href="https://github.com/tchajed/coq-tricks/blob/master/src/IntroPatterns.v">https://github.com/tchajed/coq-tricks/blob/master/src/IntroPatterns.v</a></p>
+</div>
+</div>
+</div></body>
+</html>
