@@ -17,7 +17,7 @@ I would like to prove the following Lemma:
 
 Require Import Arith.
 Lemma example: forall a b,
-    if a<=?b then a<=b else a > b.
+    if a <=? b then a <= b else a > b.
 Proof.
   intros. (* .unfold *)
 
@@ -26,11 +26,11 @@ It seems trivial that either `a` is smaller than or equal to `b`, in
 which case I could prove `a<=b`. In the other case that `b` is larger
 than `a` I could prove that `a>b`.
 
-I've tried to prove this with `induction (a<=?b)` or `case (a<=?b)`
-but both give me the following result.
+I've tried to prove this with `induction (a <=? b)` or `case (a <=?
+b)` but both give me the following result.
 |*)
 
-induction (a<=?b). (* .none .unfold *)
+induction (a <=? b). (* .unfold *)
 Abort. (* .none *)
 
 (*|
@@ -46,7 +46,7 @@ Edit: The whole lemma can be proven as follows:
 
 Require Import Arith.
 Lemma example: forall a b,
-    if a<=?b then a<=b else a > b.
+    if a <=? b then a <= b else a > b.
 Proof.
   intros.
   case (Nat.leb_spec a b); intuition.
@@ -59,7 +59,7 @@ Answer
 To do the case distinction that you are looking for you can use
 |*)
 
-Lemma leb_spec x y : BoolSpec (x<=y) (y<x) (x<=?y).
+Lemma leb_spec x y : BoolSpec (x <= y) (y < x) (x <=? y).
 
 (*|
 The type `BoolSpec` embodies exactly what you are trying to do: if `(x
