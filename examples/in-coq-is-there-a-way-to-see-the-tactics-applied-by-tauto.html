@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>In Coq, is there a way to see the tactics applied by tauto?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto">
+<h1 class="title">In Coq, is there a way to see the tactics applied by tauto?</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/66812480/in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto">https://stackoverflow.com/questions/66812480/in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Is there a way to see the tactics applied by tauto? I.e., run tauto
+and get a list of tactics to apply (not including tauto)?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>tauto is a tactic directly written in OCaml, so it does not apply
+other tactics - it constructs a proof term. But you can have a look at
+the proof term it constructs.</p>
+<p>E.g.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ Q -&gt; P.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ Q -&gt; P</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">tauto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk1"><span class="kn">Show Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">(<span class="kr">fun</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : P /\ Q) =&gt;
+ and_ind (<span class="kr">fun</span> (<span class="nv">H0</span> : P) (<span class="nv">_</span> : Q) =&gt; H0) H)</blockquote></div></div></small></span></pre><p>The <code class="highlight coq"><span class="kr">fun</span> <span class="o">(</span><span class="nv">P</span> <span class="nv">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">(</span><span class="nv">H</span> <span class="o">:</span> <span class="n">P</span> <span class="o">/\</span> <span class="n">Q</span><span class="o">)</span></code> corresponds to <code class="highlight coq"><span class="nb">intros</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">H</span></code>.
+Then it uses <code class="highlight coq"><span class="n">and_ind</span></code> with a function as argument. This corresponds
+to <code class="highlight coq"><span class="bp">exact</span> <span class="o">(</span><span class="n">and_ind</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">P'</span> <span class="nv">Q'</span> <span class="o">=&gt;</span> <span class="n">P'</span><span class="o">)</span> <span class="n">H</span><span class="o">)</span></code>. As you can see the trick is
+in the construction of the function argument of <code class="highlight coq"><span class="n">and_ind</span></code>.</p>
+<p>It is instructive to look at these proof terms, but if you would do
+the proof manually, you would usually do it in a different way than
+tauto does.</p>
+<p>And if you look at proof terms of tauto, isolate the goal you proof
+with tauto - otherwise the proof term will be hard to digest.</p>
+</div>
+</div>
+</div></body>
+</html>
