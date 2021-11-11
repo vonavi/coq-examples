@@ -1,6 +1,6 @@
 (*|
-Coq: eliminating \`forall\`?
-============================
+Coq: eliminating `forall`?
+==========================
 
 https://stackoverflow.com/questions/68744549/coq-eliminating-forall
 |*)
