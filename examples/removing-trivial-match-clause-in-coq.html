@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Removing trivial match clause in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="removing-trivial-match-clause-in-coq">
+<h1 class="title">Removing trivial match clause in Coq</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/66179133/removing-trivial-match-clause-in-coq">https://stackoverflow.com/questions/66179133/removing-trivial-match-clause-in-coq</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Consider the following example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">cast</span> {<span class="nv">A</span> : <span class="kt">Set</span>} (<span class="nv">B</span> : <span class="kt">Set</span>) (<span class="nv">prf</span> : A = B) (<span class="nv">x</span> : A)   : B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>A = B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk1"><span class="nb">rewrite</span> prf <span class="kr">in</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>A = B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> x.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk2"><span class="kn">Lemma</span> <span class="nf">castLemma0</span> {<span class="nv">A</span> : <span class="kt">Set</span>} : <span class="kr">forall</span> (<span class="nv">x</span> : A) <span class="nv">prf</span>, cast A prf x = x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : A) (<span class="nv">prf</span> : A = A), cast A prf x = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : A) (<span class="nv">prf</span> : A = A), cast A prf x = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk4"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>A = A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">cast A prf x = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk5"><span class="nb">compute</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>A = A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">match</span> prf <span class="kr">in</span> (_ = y) <span class="kr">return</span> y <span class="kr">with</span>
+| eq_refl =&gt; x
+<span class="kr">end</span> = x</div></blockquote></div></div></small></span></pre><p>Clearly the left hand side and right hand side are equal. But I am not
+sure how to get rid of the annoying <code class="highlight coq"><span class="kr">match</span></code> clause on the left hand
+side. In particular, trying to <code class="highlight coq"><span class="nb">destruct</span> <span class="n">prf</span></code> yields the following
+error</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Abstracting <span class="nb">over</span> the terms <span class="s2">&quot;A&quot;</span> <span class="kn">and</span> <span class="s2">&quot;prf&quot;</span>
+leads to a term
+<span class="kr">fun</span> (<span class="nv">A0</span> : <span class="kt">Set</span>) (<span class="nv">prf0</span> : A0 = A0) =&gt;
+<span class="kr">match</span> prf0 <span class="kr">in</span> (_ = y) <span class="kr">return</span> y <span class="kr">with</span>
+| eq_refl =&gt; x
+<span class="kr">end</span> = x which <span class="kr">is</span> ill-typed.
+Reason <span class="kr">is</span>: In <span class="nb">pattern</span>-matching on term <span class="s2">&quot;prf0&quot;</span> the
+branch <span class="kr">for</span> <span class="nb">constructor</span> <span class="s2">&quot;eq_refl&quot;</span> has type <span class="s2">&quot;A&quot;</span>
+which should be <span class="s2">&quot;A0&quot;</span>.</blockquote></div></div></small></span></pre><p>Is there a way to get rid of this match clause?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This is not provable in Coq without assuming an extra axiom, usually
+<code class="highlight coq"><span class="n">eq_rect_eq</span></code> or something equivalent (Uniqueness of Identity Proofs
+(UIP) or Axiom K).</p>
+<p>If you restrict <code class="highlight coq"><span class="n">castLemma0</span></code> to the <code class="highlight coq"><span class="n">eq_refl</span></code> case, that is <code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">x</span>
+<span class="o">:</span> <span class="n">A</span><span class="o">),</span> <span class="n">cast</span> <span class="n">A</span> <span class="n">eq_refl</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span></code>, this is provable by reflexivity.</p>
+<p>One way to understand why this is not provable, is to accept that it
+is consistant to assume an axiom <code class="highlight coq"><span class="n">bool_eq_not</span> <span class="o">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="n">bool</span></code> such that
+<code class="highlight coq"><span class="n">cast</span> <span class="n">bool</span> <span class="n">bool_eq_not</span> <span class="n">x</span> <span class="o">=</span> <span class="n">not</span> <span class="n">x</span></code>. Plugging in <code class="highlight coq"><span class="n">bool_eq_not</span></code> for <code class="highlight coq"><span class="n">prf</span></code>
+in <code class="highlight coq"><span class="n">castLemma0</span></code> would imply that <code class="highlight coq"><span class="n">not</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span></code>, which is certainly
+wrong.</p>
+<p>Proving that this is possible requires demonstrating a model of type
+theory where <code class="highlight coq"><span class="n">bool_eq_nat</span></code> is constructible. This was first done in
+the paper &quot;The groupoid interpretation of type theory&quot;, by Martin
+Hofmann and Thomas Streicher. There have since been several other
+models, including a model in simplicial sets by Voevodsky, and several
+constructive models in cubical sets. These investigations are one
+aspect of the field of Homotopy Type Theory (HoTT).</p>
+<hr class="docutils" />
+<p>As a side note, there is a somewhat recently added (and still
+experimental) feature <a class="reference external" href="https://coq.inria.fr/refman/addendum/sprop.html">SProp (documentation)</a> that if you also
+<code class="highlight coq"><span class="kt">Set</span> <span class="n">Definitional</span> <span class="n">UIP</span></code> lets you prove this.</p>
+</div>
+</div>
+</div></body>
+</html>
