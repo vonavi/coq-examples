@@ -95,6 +95,8 @@ The motivation is that the invariant discussed above is then enforced
 defined by structural induction (on the structure of the list), and
 have termination for free.
 
+----
+
 A related paper is: `Sylvain Conchon and Jean-Christophe Filliâtre. A
 Persistent Union-Find Data Structure. In ACM SIGPLAN Workshop on ML
 <https://www.lri.fr/~filliatr/ftp/publis/puf-wml07.pdf>`_.
