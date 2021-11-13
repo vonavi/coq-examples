@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Why do Calculus of Construction based languages use Setoids so much?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running . Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="why-do-calculus-of-construction-based-languages-use-setoids-so-much">
+<h1 class="title">Why do Calculus of Construction based languages use Setoids so much?</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/65493694/why-do-calculus-of-construction-based-languages-use-setoids-so-much">https://stackoverflow.com/questions/65493694/why-do-calculus-of-construction-based-languages-use-setoids-so-much</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>One finds that Setoids are widely used in languages such as Agda, Coq,
+... Indeed languages such as Lean have argued that they could help
+avoid &quot;Setoid Hell&quot;. What is the reason for using Setoids in the first
+place? Does the move to extensional type theories based on HoTT (such
+as cubical Agda) reduce the need for Setoids?</p>
+</div>
+<div class="section" id="answer-li-yao-xia">
+<h1>Answer (Li-yao Xia)</h1>
+<p>Ideally one would certainly like to be able to treat arbitrary
+equivalence relations as Leibniz equality (<code class="highlight coq"><span class="n">eq</span></code>), enabling rewriting
+in arbitrary contexts. That means to define the <strong>quotient</strong> of a type
+by an equivalence relation.</p>
+<p>I'm not an expert on the topic, but I've been wondering the same for a
+while, and I think the reliance on setoids stems from the fact that
+quotients are still a poorly understood concept in type theory.</p>
+<ol class="arabic simple">
+<li>Setoid Hell is where we're stuck when we don't have/want quotient
+types.</li>
+<li>We can axiomatize quotient types, I believe (I could be mistaken)
+that's what Lean does.</li>
+<li>We can develop a type theory which can naturally express quotients,
+that's what HoTT/Cubical TT do with higher inductive types.</li>
+</ol>
+<p>Furthermore, quotient types (or my naive imagination of them) force us
+to package programs and proofs together in a perhaps less-than-ideal
+way: a function between two quotient types is a plain function
+together with a proof that it respects the underlying equivalence
+relation. While one can technically do that, this interleaving of
+programming and proving is arguably indesirable because it makes
+programs unreadable: one often seeks to either keep programs and
+proofs in two completely separate worlds (so that mandates setoids,
+keeping types separate from their equivalence relations), or to change
+some representations so the program and the proof are one and the same
+entity (so we might not even need to explicitly reason about
+equivalences in the first place).</p>
+</div>
+<div class="section" id="answer-floris-van-doorn">
+<h1>Answer (Floris van Doorn)</h1>
+<p>As Li-yao Xia's answer describes, setoids are used when we don't have
+or don't want to use quotients.</p>
+<p>In the HoTT book and in Lean quotients are (basically) axiomatized.
+One difference between Lean and the HoTT book is that the latter has
+many more higher inductive types, and Lean only has quotients and
+(regular) inductive types. If we just restrict our attention to
+quotients (set quotients in the HoTT book), it works the same in Lean
+and in Book HoTT. In this case you just postulate that given a type
+<code class="highlight coq"><span class="n">A</span></code> and an equivalence <code class="highlight coq"><span class="n">R</span></code> on <code class="highlight coq"><span class="n">A</span></code> you have a quotient <code class="highlight coq"><span class="n">Q</span></code>, and a
+function <code class="highlight coq"><span class="o">[-]</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">Q</span></code> with the property <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">R</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span>
+<span class="o">[</span><span class="n">x</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">y</span><span class="o">]</span></code>. It comes with the following elimination principle: to
+construct a function <code class="highlight coq"><span class="n">g</span> <span class="o">:</span> <span class="n">Q</span> <span class="o">-&gt;</span> <span class="n">X</span></code> for some type <code class="highlight coq"><span class="n">X</span></code> (or hSet <code class="highlight coq"><span class="n">X</span></code> in
+HoTT) we need a function <code class="highlight coq"><span class="n">f</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">X</span></code> such that we can prove <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span>
+<span class="nv">y</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">R</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="n">y</span></code>. This comes with the computation rule, that
+states <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">g</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span> <span class="o">===</span> <span class="n">f</span> <span class="n">x</span></code> (this is a definitional equality
+in both Lean and Book HoTT).</p>
+<p>The main disadvantage of this quotient is that it breaks canonicity.
+Canonicity states that every closed term (that is, a term without free
+variables) in (say) the natural numbers normalizes to either zero or
+the successor of some natural number. The reason that this quotient
+breaks canonicity is that we can apply the elimination principle for
+<code class="highlight coq"><span class="o">=</span></code> to the new equalities in a quotient, and a term like that will not
+reduce. In Lean the opinion is that this doesn't matter, since in all
+cases we care about we can still prove an equality, even though it
+might not be a definitional equality.</p>
+<p>Cubical type theory has a fancy way to work with quotients while
+retaining canonicity. In CTT equality works differently, and this
+means that higher inductive types can be introduced while keeping
+canonicity. Potential disadvantages of CTT are that the type theory is
+a lot more complicated, and that you have to embrace HoTT (and in
+particular give up on proof irrelevance).</p>
+</div>
+<div class="section" id="answer-jacques-carette">
+<h1>Answer (Jacques Carette)</h1>
+<p>[The answers by Lia-yao Xia and Floris van Doorn are both excellent,
+so I will try to augment them with additional information.]</p>
+<p>Another view is that quotients, while used a lot in classical
+mathematics, are perhaps not so great after all. Not taking quotients
+but sticking to Groupoids is <strong>exactly</strong> where <em>non-commutative
+geometry</em> starts from! It teaches us that some quotients are
+incredibly badly behaved, and the last thing we want to do (in those
+cases!) is to actually quotient. But that the thing itself is not so
+bad, even quite good, if you treat it using the 'right' tools.</p>
+<p>It is arguably also deeply embedded in all of category theory, where
+one doesn't quotient out equivalent objects. Taking of 'skeletons' in
+category theory is regarded to be in bad taste. The same is true of
+strictness, and a host of other things, all of which boil down to
+trying to squish things down that are better left as they are, as they
+do no harm at all. We're just used to wanting 'uniqueness' to be
+reflected in our representations - something we should just get over.</p>
+<p>Setoid hell arises not because some coherences must be proven (you
+need to prove them to show you have a proper equivalence, and again
+whenever you define functions on raw representations instead of on the
+quotiented version). It arises when you're forced to prove these
+coherences again and again when defining functions that can't possibly
+&quot;go wrong&quot;. So Setoid hell is actually caused by a failure to provide
+proper abstraction mechanisms.</p>
+<p>In other words, if you're doing sufficient simple mathematics, where
+quotients are well-behaved, then there should be some automation that
+lets you work with that smoothly. Currently, in type theory, working
+out exactly what that could look like, is ongoing research. Floris'
+answer outlines well what one pitfall is: at some point, you give up
+that <code class="highlight coq"><span class="n">computations</span></code> will be well-behaved, and from then on, are forced
+to do everything via proofs.</p>
+</div>
+</div>
+</div></body>
+</html>

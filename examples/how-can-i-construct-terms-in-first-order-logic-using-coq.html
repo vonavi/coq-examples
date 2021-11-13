@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>How can I construct terms in first-order logic using Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-can-i-construct-terms-in-first-order-logic-using-coq">
+<h1 class="title">How can I construct terms in first-order logic using Coq?</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/64841759/how-can-i-construct-terms-in-first-order-logic-using-coq">https://stackoverflow.com/questions/64841759/how-can-i-construct-terms-in-first-order-logic-using-coq</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm trying to define first-order logic in Coq and beginning at terms.
+Supposing that <code class="highlight coq"><span class="n">c1</span></code> and <code class="highlight coq"><span class="n">c2</span></code> are two constant symbols, variables are
+<code class="highlight coq"><span class="n">nat</span></code> and <code class="highlight coq"><span class="n">f1</span></code> and <code class="highlight coq"><span class="n">f2</span></code> are two function symbols whose arities are 1
+and 2 respectively, I wrote the following code.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">var</span> := nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">const</span> : <span class="kt">Type</span> :=
+| c1
+| c2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> : <span class="kt">Type</span> :=
+| Con : const -&gt; term
+| Var : var -&gt; term
+| F1 : term -&gt; term
+| F2 : term -&gt; term -&gt; term.</span></span></pre><p>Then, I got a desired induction.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk0"><span class="kn">Check</span> term_ind.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">term_ind
+     : <span class="kr">forall</span> <span class="nv">P</span> : term -&gt; <span class="kt">Prop</span>,
+       (<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (F1 t)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">t</span> : term,
+        P t -&gt; <span class="kr">forall</span> <span class="nv">t0</span> : term, P t0 -&gt; P (F2 t t0)) -&gt;
+       <span class="kr">forall</span> <span class="nv">t</span> : term, P t</blockquote></div></div></small></span></pre><p>Then I wanted to separate functions from the definition of <code class="highlight coq"><span class="n">term</span></code>, so
+I rewrote the above.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(*Idea A*)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">funct</span> {<span class="nv">X</span> : <span class="kt">Type</span>} : <span class="kt">Type</span> :=
+| f1 : X -&gt; funct
+| f2 : X -&gt; X -&gt; funct.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> : <span class="kt">Type</span> :=
+| Con : const -&gt; term
+| Var : var -&gt; term
+| Fun : @funct term -&gt; term.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk1"><span class="kn">Check</span> term_ind.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">term_ind
+     : <span class="kr">forall</span> <span class="nv">P</span> : term -&gt; <span class="kt">Prop</span>,
+       (<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">f1</span> : funct, P (Fun f1)) -&gt;
+       <span class="kr">forall</span> <span class="nv">t</span> : term, P t</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk2"><span class="kn">Check</span> funct_ind term.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">funct_ind term
+     : <span class="kr">forall</span> <span class="nv">P</span> : funct -&gt; <span class="kt">Prop</span>,
+       (<span class="kr">forall</span> <span class="nv">x</span> : term, P (f1 x)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">x</span> <span class="nv">x0</span> : term, P (f2 x x0)) -&gt;
+       <span class="kr">forall</span> <span class="nv">f1</span> : funct, P f1</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp"><span class="c">(*Idea B*)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> : <span class="kt">Type</span> :=
+| Con : const -&gt; term
+| Var : var -&gt; term
+| Fun : funct -&gt; term
+<span class="kr">with</span> funct : <span class="kt">Type</span> :=
+| f1 : term -&gt; funct
+| f2 : term -&gt; term -&gt; funct.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk3"><span class="kn">Check</span> term_ind.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">term_ind
+     : <span class="kr">forall</span> <span class="nv">P</span> : term -&gt; <span class="kt">Prop</span>,
+       (<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">f1</span> : funct, P (Fun f1)) -&gt;
+       <span class="kr">forall</span> <span class="nv">t</span> : term, P t</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk4"><span class="kn">Check</span> funct_ind.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">funct_ind
+     : <span class="kr">forall</span> <span class="nv">P</span> : funct -&gt; <span class="kt">Prop</span>,
+       (<span class="kr">forall</span> <span class="nv">t</span> : term, P (f1 t)) -&gt;
+       (<span class="kr">forall</span> <span class="nv">t</span> <span class="nv">t0</span> : term, P (f2 t t0)) -&gt;
+       <span class="kr">forall</span> <span class="nv">f1</span> : funct, P f1</blockquote></div></div></small></span></pre><p>However, both ways seem not to generate the desired induction because
+they don't have induction hypotheses.</p>
+<p>How can I construct <code class="highlight coq"><span class="n">term</span></code> with functions separated from the
+definition of <code class="highlight coq"><span class="n">term</span></code> without loss of proper induction?</p>
+<p>Thanks.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This is a common issue with Coq: the induction principles generated
+for mutually inductive types and for types with complex recursive
+occurrences are too weak. Fortunately, this can be fixed by defining
+the induction principles by hand. In your case, the simplest approach
+is to use the mutually inductive definition, since Coq can lend us a
+hand for proving the principle.</p>
+<p>First, let ask Coq not to generate its weak default induction
+principle:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Unset Elimination Schemes</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> : <span class="kt">Type</span> :=
+| Con : const -&gt; term
+| Var : var -&gt; term
+| Fun : funct -&gt; term
+<span class="kr">with</span> funct : <span class="kt">Type</span> :=
+| f1 : term -&gt; funct
+| f2 : term -&gt; term -&gt; funct.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Elimination Schemes</span>.</span></span></pre><p>(This is not strictly necessary, but it helps keeping the global
+namespace clean.)</p>
+<p>Now, let us use the <code class="highlight coq"><span class="kn">Scheme</span></code> command to generate a mutual induction
+principle for these types:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Scheme</span> <span class="nf">term_ind&#39;</span> := <span class="kn">Induction for</span> term <span class="kn">Sort</span> <span class="kt">Prop</span>
+  <span class="kr">with</span> funct_ind&#39; := <span class="kn">Induction for</span> funct <span class="kn">Sort</span> <span class="kt">Prop</span>.</span></span></pre><p>This principle is already powerful enough for us to prove properties
+of <code class="highlight coq"><span class="n">term</span></code>, but it is a bit awkward to use, since it requires us to
+specify a property that we want to prove about the <code class="highlight coq"><span class="n">funct</span></code> type as
+well (the <code class="highlight coq"><span class="n">P0</span></code> predicate). We can simplify it a bit to avoid
+mentioning this auxiliary predicate: all we need to know is that the
+terms inside the function calls satisfy the predicate that we want to
+prove.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">lift_pred</span> (<span class="nv">P</span> : term -&gt; <span class="kt">Prop</span>) (<span class="nv">f</span> : funct) : <span class="kt">Prop</span> :=
+  <span class="kr">match</span> f <span class="kr">with</span>
+  | f1 t =&gt; P t
+  | f2 t1 t2 =&gt; P t1 /\ P t2
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk5"><span class="kn">Lemma</span> <span class="nf">term_ind</span> (<span class="nv">P</span> : term -&gt; <span class="kt">Prop</span>) :
+  (<span class="kr">forall</span> <span class="nv">c</span>, P (Con c)) -&gt;
+  (<span class="kr">forall</span> <span class="nv">v</span>, P (Var v)) -&gt;
+  (<span class="kr">forall</span> <span class="nv">f</span>, lift_pred P f -&gt; P (Fun f)) -&gt;
+  <span class="kr">forall</span> <span class="nv">t</span>, P t.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+(<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+(<span class="kr">forall</span> <span class="nv">f</span> : funct, lift_pred P f -&gt; P (Fun f)) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : term, P t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+(<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+(<span class="kr">forall</span> <span class="nv">f</span> : funct, lift_pred P f -&gt; P (Fun f)) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : term, P t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk7"><span class="nb">intros</span> HCon HVar HFun.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">f</span> : funct, lift_pred P f -&gt; P (Fun f)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">t</span> : term, P t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk8"><span class="nb">apply</span> (term_ind&#39; P (lift_pred P)); <span class="nb">trivial</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">f</span> : funct, lift_pred P f -&gt; P (Fun f)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">t</span> : term,
+P t -&gt; <span class="kr">forall</span> <span class="nv">t0</span> : term, P t0 -&gt; lift_pred P (f2 t t0)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> t1 IH1 t2 IH2; <span class="nb">split</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>If you prefer, you can also rewrite this to look more like the
+original induction principle:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reset</span> <span class="nf">term_ind</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chk9"><span class="kn">Lemma</span> <span class="nf">term_ind</span> (<span class="nv">P</span> : term -&gt; <span class="kt">Prop</span>) :
+  (<span class="kr">forall</span> <span class="nv">c</span>, P (Con c)) -&gt;
+  (<span class="kr">forall</span> <span class="nv">v</span>, P (Var v)) -&gt;
+  (<span class="kr">forall</span> <span class="nv">t</span>, P t -&gt; P (Fun (f1 t))) -&gt;
+  (<span class="kr">forall</span> <span class="nv">t1</span>, P t1 -&gt; <span class="kr">forall</span> <span class="nv">t2</span>, P t2 -&gt; P (Fun (f2 t1 t2))) -&gt;
+  <span class="kr">forall</span> <span class="nv">t</span>, P t.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+(<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+(<span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))) -&gt;
+(<span class="kr">forall</span> <span class="nv">t1</span> : term,
+ P t1 -&gt; <span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : term, P t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)) -&gt;
+(<span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)) -&gt;
+(<span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))) -&gt;
+(<span class="kr">forall</span> <span class="nv">t1</span> : term,
+ P t1 -&gt; <span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : term, P t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkb"><span class="nb">intros</span> HCon HVar HFun_f1 HFun_f2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun_f1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))</span></span></span><br><span><var>HFun_f2</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t1</span> : term,
+P t1 -&gt;
+<span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">t</span> : term, P t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkc"><span class="nb">apply</span> (term_ind&#39; P (lift_pred P)); <span class="nb">trivial</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun_f1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))</span></span></span><br><span><var>HFun_f2</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t1</span> : term,
+P t1 -&gt;
+<span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">f</span> : funct, lift_pred P f -&gt; P (Fun f)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkd" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun_f1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))</span></span></span><br><span><var>HFun_f2</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t1</span> : term,
+P t1 -&gt;
+<span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))</span></span></span><br></div><label class="goal-separator" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkd"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">t</span> : term,
+P t -&gt; <span class="kr">forall</span> <span class="nv">t0</span> : term, P t0 -&gt; lift_pred P (f2 t t0)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chke">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun_f1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))</span></span></span><br><span><var>HFun_f2</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t1</span> : term,
+P t1 -&gt;
+<span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">f</span> : funct, lift_pred P f -&gt; P (Fun f)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> [t | t1 t2]; <span class="nb">simpl</span>; <span class="nb">intuition</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-construct-terms-in-first-order-logic-using-coq-v-chkf">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>term -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>HCon</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">c</span> : const, P (Con c)</span></span></span><br><span><var>HVar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">v</span> : var, P (Var v)</span></span></span><br><span><var>HFun_f1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (Fun (f1 t))</span></span></span><br><span><var>HFun_f2</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t1</span> : term,
+P t1 -&gt;
+<span class="kr">forall</span> <span class="nv">t2</span> : term, P t2 -&gt; P (Fun (f2 t1 t2))</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">t</span> : term,
+P t -&gt; <span class="kr">forall</span> <span class="nv">t0</span> : term, P t0 -&gt; lift_pred P (f2 t t0)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">simpl</span>; <span class="nb">intuition</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><strong>Edit</strong></p>
+<p>To get an induction principle for your other approach, you have to
+write a proof term by hand:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">var</span> := nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">const</span> : <span class="kt">Type</span> :=
+| c1
+| c2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">funct</span> (<span class="nv">X</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| f1 : X -&gt; funct X
+| f2 : X -&gt; X -&gt; funct X.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> f1 {X} _.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> f2 {X} _ _.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Unset Elimination Schemes</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> : <span class="kt">Type</span> :=
+| Con : const -&gt; term
+| Var : var -&gt; term
+| Fun : funct term -&gt; term.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Elimination Schemes</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">term_ind</span> (<span class="nv">P</span> : term -&gt; <span class="kt">Type</span>)
+           (<span class="nv">HCon</span> : <span class="kr">forall</span> <span class="nv">c</span>, P (Con c))
+           (<span class="nv">HVar</span> : <span class="kr">forall</span> <span class="nv">v</span>, P (Var v))
+           (<span class="nv">HF1</span>  : <span class="kr">forall</span> <span class="nv">t</span>, P t -&gt; P (Fun (f1 t)))
+           (<span class="nv">HF2</span>  : <span class="kr">forall</span> <span class="nv">t1</span>, P t1 -&gt; <span class="kr">forall</span> <span class="nv">t2</span>, P t2 -&gt; P (Fun (f2 t1 t2))) :
+  <span class="kr">forall</span> <span class="nv">t</span>, P t :=
+  <span class="kr">fix</span> loop (t : term) : P t :=
+    <span class="kr">match</span> t <span class="kr">with</span>
+    | Con c =&gt; HCon c
+    | Var v =&gt; HVar v
+    | Fun (f1 t) =&gt; HF1 t (loop t)
+    | Fun (f2 t1 t2) =&gt; HF2 t1 (loop t1) t2 (loop t2)
+    <span class="kr">end</span>.</span></span></pre></div>
+</div>
+</div></body>
+</html>
