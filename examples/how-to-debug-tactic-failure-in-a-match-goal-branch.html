@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>How to debug tactic failure in a match goal branch?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-to-debug-tactic-failure-in-a-match-goal-branch">
+<h1 class="title">How to debug tactic failure in a match goal branch?</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/65501576/how-to-debug-tactic-failure-in-a-match-goal-branch">https://stackoverflow.com/questions/65501576/how-to-debug-tactic-failure-in-a-match-goal-branch</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Let's say I have some complex tactics in the body of a <code class="highlight coq"><span class="kr">match</span> <span class="n">goal</span></code>
+branch that can easily go wrong in a way I might need to debug. Is
+there a way to get the &quot;real&quot; error message from the branch if some
+tactic fails, rather than simply getting &quot;Error: No matching clauses
+for match goal&quot;?</p>
+<p>Take as an example this fake tactic where <code class="highlight coq"><span class="nb">apply</span> <span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">,</span> <span class="n">C</span></code> has several
+chances for something to go wrong. I've been fighting with a real
+tactic somewhat similar to this today.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">three_applications</span> :=
+  <span class="kr">match goal with</span>
+  | [
+      A : _ <span class="c">(* something reasonable *)</span>,
+      B : _ <span class="c">(* something reasonable *)</span>,
+      C : _ <span class="c">(* something reasonable *)</span>
+    |- _ ]  =&gt;
+    <span class="kp">idtac</span> A B C;
+    <span class="nb">assert</span> (F: _ <span class="c">(* something reasonable *)</span>)
+      <span class="bp">by</span> <span class="nb">apply</span> A, B, C;
+    <span class="kp">solve</span> [<span class="bp">discriminate</span> F]
+  <span class="kr">end</span>.</span></span></pre><p>Thank you in advance!</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The easiest is to use <code class="highlight coq"><span class="kr">lazymatch</span> <span class="n">goal</span></code> instead but it has different
+semantics, but as I see you match only on one shape, it might be ok
+for you.</p>
+<p>The idea is that <code class="highlight coq"><span class="kr">match</span> <span class="n">goal</span></code> might backtrack: if you have</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">three_applications</span> :=
+  <span class="kr">match goal with</span>
+  | n : nat |- _ =&gt; <span class="nb">destruct</span> n; <span class="bp">reflexivity</span>
+  | |- nat =&gt; <span class="bp">exact</span> <span class="mi">0</span>
+  <span class="kr">end</span>.</span></span></pre><p>it will first try to find some <code class="highlight coq"><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span></code> in your hypotheses, starting
+from the most recent, and then try the tactic <code class="highlight coq"><span class="nb">destruct</span> <span class="n">n</span><span class="o">;</span>
+<span class="bp">reflexivity</span></code>. If it fails, it will try to find another natural number.
+If all of them fail, then it will look if the goal matches the second
+clause instead, and if so execute <code class="highlight coq"><span class="bp">exact</span> <span class="mi">0</span></code>. If that fails again, it
+will backtrack once again and conclude that <code class="highlight coq"><span class="n">No</span> <span class="n">matching</span> <span class="n">clauses</span> <span class="kr">for</span>
+<span class="kr">match</span> <span class="n">goal</span></code>.</p>
+<p>On the other hand,</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">three_applications</span> :=
+  <span class="kr">lazymatch goal with</span>
+  | n : nat |- _ =&gt; <span class="nb">destruct</span> n; <span class="bp">reflexivity</span>
+  | |- nat =&gt; <span class="bp">exact</span> <span class="mi">0</span>
+  <span class="kr">end</span>.</span></span></pre><p>will find the first branch that matches, and then apply the tactic, if
+it fails, no backtracking in the <code class="highlight coq"><span class="kr">lazymatch</span></code>, and it will give you the
+error of the tactic in the corresponding branch.</p>
+<p>Note that I would always use <code class="highlight coq"><span class="kr">lazymatch</span></code>, not just for debugging
+purposes, when I don't find a use case for backtracking.</p>
+<hr class="docutils" />
+<p>In case, <code class="highlight coq"><span class="kr">lazymatch</span></code> is not semantically equivalent to your match and
+backtracking needs to be involved then it will be harder, but indeed,
+using <code class="highlight coq"><span class="kp">idtac</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span></code> can help you see which branch it selected before
+launching the error. Sometimes, writing</p>
+<p><code class="highlight coq"><span class="kn">Fail</span> <span class="n">three_applications</span><span class="o">.</span></code></p>
+<p>instead of just</p>
+<p><code class="highlight coq"><span class="n">three_applications</span><span class="o">.</span></code></p>
+<p>will help because <code class="highlight coq"><span class="kn">Fail</span></code> will usually keep the printing that you made
+in the command, even if it failed in the end.</p>
+<p>Once you know the branch, just apply your tactic manually.</p>
+</div>
+</div>
+</div></body>
+</html>
