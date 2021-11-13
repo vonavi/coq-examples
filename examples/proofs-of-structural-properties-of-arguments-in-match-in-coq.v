@@ -98,8 +98,8 @@ For instance, in the case of `zip`, suppose that you have some code
 that uses a lot of different lists of the same length n. You might
 want to argue that `zip` has an inverse:
 
-`let xys := zip xs ys in
-(map fst xys, map snd xys) = (xs, ys).`
+| `let xys := zip xs ys in`
+| `(map fst xys, map snd xys) = (xs, ys).`
 
 It is not possible to prove this result unless we know that `xs` and
 `ys` have the same length. We can add an additional hypothesis to our
