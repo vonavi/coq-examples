@@ -46,8 +46,7 @@ for you.
 The idea is that `match goal` might backtrack: if you have
 |*)
 
-Reset three_applications. (* .none *)
-Ltac three_applications :=
+Ltac tac :=
   match goal with
   | n : nat |- _ => destruct n; reflexivity
   | |- nat => exact 0
@@ -65,8 +64,8 @@ match goal`.
 On the other hand,
 |*)
 
-Reset three_applications. (* .none *)
-Ltac three_applications :=
+Reset tac. (* .none *)
+Ltac tac :=
   lazymatch goal with
   | n : nat |- _ => destruct n; reflexivity
   | |- nat => exact 0
