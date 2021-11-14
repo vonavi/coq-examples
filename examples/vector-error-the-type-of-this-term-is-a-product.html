@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Vector error : The type of this term is a product</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="vector-error-the-type-of-this-term-is-a-product">
+<h1 class="title">Vector error : The type of this term is a product</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/63955903/vector-error-the-type-of-this-term-is-a-product">https://stackoverflow.com/questions/63955903/vector-error-the-type-of-this-term-is-a-product</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want last k elements of vector. I wrote this code with reference to
+<a class="reference external" href="https://coq.inria.fr/library/Coq.Vectors.VectorDef.html">Coq.Vectors.VectorDef</a>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Reals.Reals.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+ <span class="c">(* vector of R *)</span>
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Euc</span>: nat -&gt; <span class="kt">Type</span>:=
+ | RO : Euc <span class="mi">0</span>
+ | Rn : <span class="kr">forall</span> {<span class="nv">n</span>: nat}, R -&gt; Euc n -&gt; Euc (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ ]&quot;</span> := RO.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ r1 , .. , r2 ]&quot;</span> := (Rn r1 .. ( Rn r2 RO ) .. ).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Infix</span> <span class="s2">&quot;:::&quot;</span> := Rn (<span class="kn">at level</span> <span class="mi">60</span>, <span class="kn">right associativity</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+ <span class="c">(* return length of vector *)</span>
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">EucLength</span> {<span class="nv">n</span>} (<span class="nv">e</span>: Euc n): nat:= n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">rectEuc</span> (<span class="nv">P</span>: <span class="kr">forall</span> {<span class="nv">n</span>}, Euc (S n) -&gt; <span class="kt">Type</span>)
+            (<span class="nv">bas</span>: <span class="kr">forall</span> <span class="nv">a</span>: R, P [a])
+            (<span class="nv">rect</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">a</span> (<span class="nv">v</span>: Euc (S n)), P v -&gt; P (a ::: v)) :=
+   <span class="kr">fix</span> rectEuc_fix {n} (v: Euc (S n)) : P v :=
+     <span class="kr">match</span> v <span class="kr">with</span>
+       | @Rn <span class="mi">0</span> a v&#39; =&gt;
+         <span class="kr">match</span> v&#39; <span class="kr">with</span>
+         | RO =&gt; bas a
+         | _ =&gt; <span class="kr">fun</span> <span class="nv">devil</span> =&gt; False_ind (@IDProp) devil
+         <span class="kr">end</span>
+       | @Rn (S nn&#39;) a v&#39; =&gt; rect a v&#39; (rectEuc_fix v&#39;)
+       | _ =&gt; <span class="kr">fun</span> <span class="nv">devil</span> =&gt; False_ind (@IDProp) devil
+ <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+ <span class="c">(* eliminate last element from vector *)</span>
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">EucElimLast</span> :=
+   @rectEuc (<span class="kr">fun</span> <span class="nv">n</span> <span class="nv">_</span> =&gt; Euc n) (<span class="kr">fun</span> <span class="nv">a</span> =&gt; []) (<span class="kr">fun</span> <span class="nv">_</span> <span class="nv">a</span> <span class="nv">_</span> <span class="nv">H</span> =&gt; a ::: H).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+ <span class="c">(* this function has an error *)</span>
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="vector-error-the-type-of-this-term-is-a-product-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="vector-error-the-type-of-this-term-is-a-product-v-chk0"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">rectEucLastN</span> (<span class="nv">P</span>: <span class="kr">forall</span> {<span class="nv">n</span>}, nat -&gt; Euc n -&gt; <span class="kt">Type</span>)
+                 (<span class="nv">bas</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">k</span> (<span class="nv">e</span>: Euc n), P k e)
+                 (<span class="nv">rect</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">k</span> <span class="nv">a</span> (<span class="nv">e</span>: Euc (S n)), P k e -&gt; P (S k) (a ::: e)) :=
+   <span class="kr">fix</span> rectEuc_fix {n} (k: nat) (e: Euc n): P k e :=
+     <span class="kr">match</span> k,e <span class="kr">with</span>
+     | S k&#39;, e&#39; ::: es =&gt;
+       rect k&#39; e&#39; (rectEuc_fix k&#39; (EucElimLast ((EucLength e) - <span class="mi">1</span>) e))
+     | <span class="mi">0</span>%nat, e&#39; ::: es =&gt; bas k e
+     | _, _ =&gt; <span class="kr">fun</span> <span class="nv">devil</span> =&gt; False_ind (@IDProp) devil
+     <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+The <span class="kp">type of</span> this term <span class="kr">is</span> a product
+while it <span class="kr">is</span> expected to be
+ (P <span class="nl">?n</span>@{n1:=<span class="mi">0</span>} <span class="nl">?n0</span>@{k1:=<span class="mi">0</span>} <span class="nl">?e</span>@{n1:=<span class="mi">0</span>; e1:=[ ]}).</blockquote></div></div></small></span></pre><p>The problem is the second line from the bottom of the code.</p>
+<p>Why does last pattern have an error?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The function term that you see on the branch of <code class="highlight coq"><span class="n">rectEuc</span></code> is how you
+tell Coq that a pattern-match branch is contradictory. In your first
+recursive function, for instance, you use it to say that the first
+<code class="highlight coq"><span class="n">v'</span></code> cannot be a cons because its length is zero. The reason you are
+getting the error in the last branch is because that case is not
+contradictory: nothing in the type of your function prevents the case
+<code class="highlight coq"><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span></code> and <code class="highlight coq"><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span></code>.</p>
+<p>To write dependently typed programs over indexed families, you often
+need to use the <em>convoy pattern</em>: to refine the type of an argument
+<code class="highlight coq"><span class="n">x</span></code> after branching on some expression, your <code class="highlight coq"><span class="kr">match</span></code> needs to return a
+function that abstracts over <code class="highlight coq"><span class="n">x</span></code>. For instance, this function computes
+the last element of a vector by recursion over its length. In the <code class="highlight coq"><span class="n">S</span></code>
+branch, we need to know that the length of <code class="highlight coq"><span class="n">v</span></code> is connected to <code class="highlight coq"><span class="n">n</span></code>
+somehow.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">head</span> <span class="nv">n</span> (<span class="nv">v</span> : Euc (S n)) : R :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | x ::: _ =&gt; x
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">tail</span> <span class="nv">n</span> (<span class="nv">v</span> : Euc (S n)) : Euc n :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | _ ::: v =&gt; v
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">last</span> <span class="nv">n</span> : Euc (S n) -&gt; R :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; head <span class="mi">0</span> v
+  | S n =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; <span class="nb">last</span> n (tail _ v)
+  <span class="kr">end</span>.</span></span></pre><p>Here is the code for extracting the last <code class="highlight coq"><span class="n">k</span></code> elements. Note that its
+type uses the <code class="highlight coq"><span class="n">Nat</span><span class="o">.</span><span class="n">min</span></code> function to specify the length of the result:
+the result cannot be larger than the original vector!</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">but_last</span> <span class="nv">n</span> : Euc (S n) -&gt; Euc n :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; []
+  | S n =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; head _ v ::: but_last n (tail _ v)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">snoc</span> <span class="nv">n</span> (<span class="nv">v</span> : Euc n) (<span class="nv">x</span> : R) : Euc (S n) :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | [] =&gt; [x]
+  | y ::: v =&gt; y ::: snoc _ v x
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">lastk</span> <span class="nv">k</span> : <span class="kr">forall</span> <span class="nv">n</span>, Euc n -&gt; Euc (Nat.min k n) :=
+  <span class="kr">match</span> k <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">_</span> =&gt; []
+  | S k =&gt; <span class="kr">fun</span> <span class="nv">n</span> =&gt;
+    <span class="kr">match</span> n <span class="kr">return</span> Euc n -&gt; Euc (Nat.min (S k) n) <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; []
+    | S n =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; snoc _ (lastk k _ (but_last _ v)) (<span class="nb">last</span> _ v)
+    <span class="kr">end</span>
+  <span class="kr">end</span>.</span></span></pre><p>Personally, I would advise you against programming in this style in
+Coq, since it makes it difficult to write programs and understand them
+later. It is usually better to write a program without dependent types
+and prove after the fact that it has some property that you care
+about. (E.g. try to show that reversing a list twice yields the same
+list using vectors!) Of course, there are cases where dependent types
+are useful, but most of the time they are not needed.</p>
+</div>
+</div>
+</div></body>
+</html>
