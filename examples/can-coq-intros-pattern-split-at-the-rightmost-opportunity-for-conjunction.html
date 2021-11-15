@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>can coq intros pattern split at the rightmost opportunity for conjunction?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction">
+<h1 class="title">can coq intros pattern split at the rightmost opportunity for conjunction?</h1>
+
+<p><a class="reference external" href="https://stackoverflow.com/questions/63381511/can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction">https://stackoverflow.com/questions/63381511/can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction</a></p>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am wondering if there is some intro pattern which can introduce <code class="highlight coq"><span class="n">A</span>
+<span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span></code> as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A /\ B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>I'm aware that <code class="highlight coq"><span class="nb">intros</span> <span class="o">[</span><span class="n">H1</span> <span class="n">H2</span><span class="o">]</span></code> will produce</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>B /\ C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>but cannot figure out how to configure the brackets for the other
+direction. This is a trivial example; but I have a more complicated
+combination of conjunctions and disjunctions that I would much prefer
+to destruct from right to left.</p>
+<p>Thanks,</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The <code class="highlight coq"><span class="n">_</span> <span class="o">/\</span> <span class="n">_</span></code> notation in Coq is a right-associative <em>binary</em> operator,
+so <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span></code> really stands for <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="o">(</span><span class="n">B</span> <span class="o">/\</span> <span class="n">C</span><span class="o">)</span></code>. If you want to
+build some <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code> you should first fully decompose the <code class="highlight coq"><span class="o">/\</span> </code>
+(<code class="highlight coq"><span class="nb">intros</span> <span class="o">[</span><span class="n">HA</span> <span class="o">[</span><span class="n">HB</span> <span class="n">HC</span><span class="o">]].</span></code>, you can nest the patterns arbitrarily) and
+then build the <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code> hypothesis (for instance using <code class="highlight coq"><span class="nb">assert</span> <span class="o">(</span><span class="n">A</span> <span class="o">/\</span>
+<span class="n">B</span><span class="o">)</span> <span class="kr">as</span> <span class="n">HAB</span> <span class="bp">by</span> <span class="o">(</span><span class="nb">split</span><span class="o">;</span> <span class="o">[</span><span class="bp">exact</span> <span class="n">HA</span><span class="o">|</span> <span class="bp">exact</span> <span class="n">HB</span><span class="o">]).</span></code> or any other way you
+prefer to add an hypothesis).</p>
+<p>In a more complex setting, you might want to write a lemma <code class="highlight coq"><span class="n">and_assoc</span>
+<span class="o">:</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span><span class="o">,</span> <span class="n">A</span> <span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span><span class="o">)</span> <span class="o">/\</span> <span class="n">C</span></code> and use a
+<em>view</em>-pattern. Starting from a goal <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span> <span class="o">-&gt;</span> <span class="n">P</span></code> you can use
+<code class="highlight coq"><span class="nb">intros</span> <span class="o">[</span><span class="n">HAB</span> <span class="n">HC</span><span class="o">]%</span><span class="n">and_assoc</span><span class="o">.</span></code> to obtain <code class="highlight coq"><span class="n">HAB</span> <span class="o">:</span> <span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code> and <code class="highlight coq"><span class="n">HC</span> <span class="o">:</span> <span class="n">C</span></code> :
+the <code class="highlight coq"><span class="n">pat</span><span class="o">%</span><span class="n">and_assoc</span></code> part says that <code class="highlight coq"><span class="n">and_assoc</span></code> should be applied first
+to the top assumption and then further destructed with <code class="highlight coq"><span class="n">pat</span></code>.</p>
+</div>
+</div>
+</div></body>
+</html>
