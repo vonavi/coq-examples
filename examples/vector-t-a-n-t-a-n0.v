@@ -2,7 +2,7 @@
 Vector : t A n = t A (n+0)?
 ===========================
 
-https://stackoverflow.com/questions/64225642/vector-t-a-n-t-a-n0
+:Link: https://stackoverflow.com/questions/64225642/vector-t-a-n-t-a-n0
 |*)
 
 (*|

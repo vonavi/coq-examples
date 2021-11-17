@@ -2,7 +2,7 @@
 What does Proof. simpl. reflexivity. Qed. mean in Coq?
 ======================================================
 
-https://stackoverflow.com/questions/64246592/what-does-proof-simpl-reflexivity-qed-mean-in-coq
+:Link: https://stackoverflow.com/questions/64246592/what-does-proof-simpl-reflexivity-qed-mean-in-coq
 |*)
 
 (*|

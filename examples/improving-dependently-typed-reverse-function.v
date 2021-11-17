@@ -2,7 +2,7 @@
 Improving dependently typed reverse function
 ============================================
 
-https://stackoverflow.com/questions/63051692/improving-dependently-typed-reverse-function
+:Link: https://stackoverflow.com/questions/63051692/improving-dependently-typed-reverse-function
 |*)
 
 (*|

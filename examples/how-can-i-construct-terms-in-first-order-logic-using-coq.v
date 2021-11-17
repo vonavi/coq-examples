@@ -2,7 +2,7 @@
 How can I construct terms in first-order logic using Coq?
 =========================================================
 
-https://stackoverflow.com/questions/64841759/how-can-i-construct-terms-in-first-order-logic-using-coq
+:Link: https://stackoverflow.com/questions/64841759/how-can-i-construct-terms-in-first-order-logic-using-coq
 |*)
 
 (*|

@@ -2,7 +2,7 @@
 Why do Calculus of Construction based languages use Setoids so much?
 ====================================================================
 
-https://stackoverflow.com/questions/65493694/why-do-calculus-of-construction-based-languages-use-setoids-so-much
+:Link: https://stackoverflow.com/questions/65493694/why-do-calculus-of-construction-based-languages-use-setoids-so-much
 |*)
 
 (*|

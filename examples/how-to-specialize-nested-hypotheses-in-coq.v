@@ -2,7 +2,7 @@
 How to specialize nested hypotheses in Coq?
 ===========================================
 
-https://stackoverflow.com/questions/65747150/how-to-specialize-nested-hypotheses-in-coq
+:Link: https://stackoverflow.com/questions/65747150/how-to-specialize-nested-hypotheses-in-coq
 |*)
 
 (*|
