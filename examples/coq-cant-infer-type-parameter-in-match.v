@@ -2,7 +2,7 @@
 Coq can't infer type parameter in `match`
 =========================================
 
-https://stackoverflow.com/questions/66881274/coq-cant-infer-type-parameter-in-match
+:Link: https://stackoverflow.com/questions/66881274/coq-cant-infer-type-parameter-in-match
 |*)
 
 (*|

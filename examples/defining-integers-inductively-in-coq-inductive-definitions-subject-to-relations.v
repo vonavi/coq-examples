@@ -2,7 +2,7 @@
 Defining integers inductively in Coq (inductive definitions subject to relations)
 =================================================================================
 
-https://stackoverflow.com/questions/66222181/defining-integers-inductively-in-coq-inductive-definitions-subject-to-relations
+:Link: https://stackoverflow.com/questions/66222181/defining-integers-inductively-in-coq-inductive-definitions-subject-to-relations
 |*)
 
 (*|

@@ -2,7 +2,7 @@
 What does the tactic destruct do in the proof below?
 ====================================================
 
-https://stackoverflow.com/questions/69433292/what-does-the-tactic-destruct-do-in-the-proof-below
+:Link: https://stackoverflow.com/questions/69433292/what-does-the-tactic-destruct-do-in-the-proof-below
 |*)
 
 (*|

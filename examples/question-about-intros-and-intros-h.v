@@ -2,7 +2,7 @@
 question about intros [=] and intros [= <- H]
 =============================================
 
-https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h
+:Link: https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h
 |*)
 
 (*|

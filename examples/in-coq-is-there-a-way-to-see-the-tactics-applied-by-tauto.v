@@ -2,7 +2,7 @@
 In Coq, is there a way to see the tactics applied by tauto?
 ===========================================================
 
-https://stackoverflow.com/questions/66812480/in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto
+:Link: https://stackoverflow.com/questions/66812480/in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto
 |*)
 
 (*|

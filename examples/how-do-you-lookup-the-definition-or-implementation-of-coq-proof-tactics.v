@@ -2,7 +2,7 @@
 How do you lookup the definition or implementation of Coq proof tactics?
 ========================================================================
 
-https://stackoverflow.com/questions/63823528/how-do-you-lookup-the-definition-or-implementation-of-coq-proof-tactics
+:Link: https://stackoverflow.com/questions/63823528/how-do-you-lookup-the-definition-or-implementation-of-coq-proof-tactics
 |*)
 
 (*|

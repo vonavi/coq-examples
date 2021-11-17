@@ -2,7 +2,7 @@
 Coq proving addition inequality
 ===============================
 
-https://stackoverflow.com/questions/67177067/coq-proving-addition-inequality
+:Link: https://stackoverflow.com/questions/67177067/coq-proving-addition-inequality
 |*)
 
 (*|

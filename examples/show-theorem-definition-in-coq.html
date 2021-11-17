@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Show theorem definition in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="show-theorem-definition-in-coq">
+<h1 class="title">Show theorem definition in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/62939436/show-theorem-definition-in-coq">https://stackoverflow.com/questions/62939436/show-theorem-definition-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'd like to view the definition of a Standard Library theorem which I
+found through <code class="highlight coq"><span class="kn">Search</span></code>. I think seeing the definition will help me
+complete a similar theorem.</p>
+<p>Doing <code class="highlight coq"><span class="kn">Print</span> <span class="n">Rdiv_lt_0_compat</span><span class="o">.</span></code> yields:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="show-theorem-definition-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Rdiv_lt_0_compat = 
+<span class="kr">fun</span> (<span class="nv">a</span> <span class="nv">b</span> : R) (<span class="nv">H</span> : (<span class="mi">0</span> &lt; a)%R) (<span class="nv">H0</span> : (<span class="mi">0</span> &lt; b)%R) =&gt;
+Rmult_lt_0_compat a (/ b) H (Rinv_0_lt_compat b H0)
+     : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : R,
+       (<span class="mi">0</span> &lt; a)%R -&gt; (<span class="mi">0</span> &lt; b)%R -&gt; (<span class="mi">0</span> &lt; a / b)%R
+
+<span class="kn">Arguments</span> Rdiv_lt_0_compat (_ _)%R_scope _ _</blockquote></div></div></small></span></pre><p>Setting <code class="highlight coq"><span class="kn">Set Printing All</span><span class="o">.</span></code> doesn't help. There's nothing extra
+available in <a class="reference external" href="https://coq.inria.fr/library/Coq.Reals.RIneq.html#Rdiv_lt_0_compat">the docs page</a>.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The whole Coq system is based on the idea <em>Proofs are programs,
+logical formulas are types</em>. When you consider a theorem, it is a
+proof (a program) and its statement is a logical formula (the type of
+a program). In the very first years of Coq, there was no tactic
+language, every proof was defined using the same keywords as when
+defining a program.</p>
+<p>After a few years, it was recognized that writing the programs
+entirely by hand was long and tiresome, so a tactic language was
+invented to explain how to construct the <em>proof-programs</em> in a shorter
+and less difficult way. But what is recorded and eventually checked
+are still the programs that you see using <code class="highlight coq"><span class="kn">Print</span></code>.</p>
+<p>When building a proof-program, the tactic <code class="highlight coq"><span class="nb">intros</span></code> constructs
+anonymous function expressions (also known as lambdas, usually written
+with the keyword <code class="highlight coq"><span class="kr">fun</span></code>, and <code class="highlight coq"><span class="nb">apply</span></code> constructs an application of a
+function to a certain number arguments, which <code class="highlight coq"><span class="nb">apply</span></code> infers or leaves
+to the user as goals. The tactics <code class="highlight coq"><span class="nb">induction</span></code> and <code class="highlight coq"><span class="nb">rewrite</span></code> are
+similar, but they apply theorems that are not given by the user. The
+tactic <code class="highlight coq"><span class="nb">destruct</span></code> essentially produces a piece of programs that is a
+pattern-matching construct.</p>
+<p>With <code class="highlight coq"><span class="n">Rdiv_lt_0_compat</span></code>, you are lucky that the proof built by the
+tactic is quite short. Often, proofs written using tactics produce
+programs that are much longer.</p>
+<p>If instead of the program, you want to see the sequence of tactics
+that generated it, you need to find it in the sources of the system,
+because this is not kept in the memory of the proof assistant. Here
+are the clues.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Reals.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="show-theorem-definition-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="show-theorem-definition-in-coq-v-chk1"><span class="kn">Locate</span> Rdiv_lt_0_compat.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Constant Coq.Reals.RIneq.Rdiv_lt_0_compat</blockquote></div></div></small></span></pre><p>This sequence of names indicates the hierarchy of modules in which the
+theorem is kept. The first name <code class="highlight coq"><span class="n">Coq</span></code> expresses that this theorem is
+in the Coq sources, essentially in directory <code class="highlight coq"><span class="o">...</span><span class="n">theories</span><span class="o">/</span></code>, the
+second name <code class="highlight coq"><span class="n">Reals</span></code>, indicates that you should look in tge sub
+directory <code class="highlight coq"><span class="o">...</span><span class="n">theories</span><span class="o">/</span><span class="n">Reals</span></code>. The fourth name should not be used as a
+directory name, but as file name. So you should look in the file
+<code class="highlight coq"><span class="n">RIneq</span><span class="o">.</span><span class="n">v</span></code></p>
+<p>So go an look in
+<a class="reference external" href="https://github.com/coq/coq/tree/v8.12/theories/Reals/RIneq.v">https://github.com/coq/coq/tree/v8.12/theories/Reals/RIneq.v</a> and you
+will probably find the script fragment that was used to generate your
+theorem (for the 8.12 version of Coq). I just checked, the theorem
+appears at line
+<a class="reference external" href="https://github.com/coq/coq/blob/c95bd4cf015a3084a8bddf6d3640458c9c25b455/theories/Reals/RIneq.v#L2106">https://github.com/coq/coq/blob/c95bd4cf015a3084a8bddf6d3640458c9c25b455/theories/Reals/RIneq.v#L2106</a></p>
+<p>The sequence of names provided by <code class="highlight coq"><span class="kn">Locate</span></code> is not a sure way to find
+the file where the script for a theorem is stored. The correspondence
+between the long name and the file path is broken when the theorem is
+defined using modules and functor instantiation. In that case, you
+have to rely on stronger knowledge of how the Coq system works.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

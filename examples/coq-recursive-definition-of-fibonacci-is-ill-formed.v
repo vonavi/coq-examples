@@ -2,7 +2,7 @@
 Coq: Recursive definition of fibonacci is ill-formed
 ====================================================
 
-https://stackoverflow.com/questions/67758117/coq-recursive-definition-of-fibonacci-is-ill-formed
+:Link: https://stackoverflow.com/questions/67758117/coq-recursive-definition-of-fibonacci-is-ill-formed
 |*)
 
 (*|

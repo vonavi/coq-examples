@@ -2,7 +2,7 @@
 Removing trivial match clause in Coq
 ====================================
 
-https://stackoverflow.com/questions/66179133/removing-trivial-match-clause-in-coq
+:Link: https://stackoverflow.com/questions/66179133/removing-trivial-match-clause-in-coq
 |*)
 
 (*|
