@@ -101,6 +101,8 @@ This is exploited in Coq by the `discriminate` tactic. The `[=]` intro
 pattern is shorthand for both the `injection` and `discriminate`
 tactics.
 
-**A:** Would an explanation like this make it clearer?
+----
+
+**Q:** Would an explanation like this make it clearer?
 https://github.com/tchajed/coq-tricks/blob/master/src/IntroPatterns.v
 |*)

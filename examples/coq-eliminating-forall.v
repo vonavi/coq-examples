@@ -56,6 +56,8 @@ Proof.
 Qed.
 
 (*|
+----
+
 **Q:** Thanks, is that precisely why `False` is defined as an empty
 type which can not be constructed in any way?
 
