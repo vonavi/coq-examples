@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Classical axioms implies every proposition is decidable?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="classical-axioms-implies-every-proposition-is-decidable">
+<h1 class="title">Classical axioms implies every proposition is decidable?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/61316612/classical-axioms-implies-every-proposition-is-decidable">https://stackoverflow.com/questions/61316612/classical-axioms-implies-every-proposition-is-decidable</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In the Lean manual 'Theorem proving in Lean' I read: &quot;With the
+classical axioms, we can prove that every proposition is decidable&quot;.</p>
+<p>I would like to seek clarification about this statement and I am
+asking a Coq forum, as the question applies as much to Coq as it does
+to Lean (but feeling I am more likely to get an answer here).</p>
+<p>When reading &quot;With the classical axioms&quot;, I understand that we have
+something equivalent to the law of excluded middle:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">LEM</span> : <span class="kr">forall</span> (<span class="nv">p</span> : <span class="kt">Prop</span>), p \/ ~p.</span></span></pre><p>When reading &quot;every proposition is decidable&quot;, I understand that we
+can define a function (or at least we can prove the existence of such
+a function):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Dec</span> (<span class="nv">p</span> : <span class="kt">Prop</span>) : <span class="kt">Type</span> :=
+| isFalse : ~p -&gt; Dec p
+| isTrue  :  p -&gt; Dec p.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="classical-axioms-implies-every-proposition-is-decidable-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="classical-axioms-implies-every-proposition-is-decidable-v-chk0"><span class="kn">Definition</span> <span class="nf">decide</span> (<span class="nv">p</span> : <span class="kt">Prop</span>) : Dec p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Dec p</div></blockquote></div></div></small></span></pre><p>Yet, with what I know of Coq, I cannot implement <code class="highlight coq"><span class="n">decide</span></code> as I cannot
+destruct <code class="highlight coq"><span class="o">(</span><span class="n">LEM</span> <span class="n">p</span><span class="o">)</span></code> (of sort <code class="highlight coq"><span class="kt">Prop</span></code>) to return something other than a
+<code class="highlight coq"><span class="kt">Prop</span></code>.</p>
+<p>So my question is: assuming there is no mistake and the statement
+&quot;With the classical axioms, we can prove that every proposition is
+decidable&quot; is justified, I would like to know how I should understand
+it so I get out of the paradox I have highlighted. Is it maybe that we
+can prove the existence of the function <code class="highlight coq"><span class="n">decide</span></code> (using <code class="highlight coq"><span class="n">LEM</span></code>) but
+cannot actually provide a witness of this existence?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>In the calculus of constructions without any axioms, there is
+<em>meta-theoretical</em> property that every proof of <code class="highlight coq"><span class="n">A</span> <span class="o">\/</span> <span class="n">B</span></code> is
+necessarily a proof that <code class="highlight coq"><span class="n">A</span></code> holds (packaged using the constructor
+<code class="highlight coq"><span class="n">or_introl</span></code>) or a proof that <code class="highlight coq"><span class="n">B</span></code> holds (using the other constructor).
+So a proof of <code class="highlight coq"><span class="n">A</span> <span class="o">\/</span> <span class="o">~</span> <span class="n">A</span></code> is either a proof that <code class="highlight coq"><span class="n">A</span></code> holds or a proof
+that <code class="highlight coq"><span class="o">~</span> <span class="n">A</span></code> holds.</p>
+<p>Following this meta-theoretical property, in <strong>Coq without any
+axioms</strong>, all proofs of propositions of the form <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">P</span> <span class="n">x</span> <span class="o">\/</span> <span class="o">~</span><span class="n">P</span>
+<span class="n">x</span></code> actually are proofs that <code class="highlight coq"><span class="n">P</span></code> is decidable. In this paragraph, the
+meaning of <code class="highlight coq"><span class="n">decidable</span></code> is the commonly accepted meaning, as used by
+computability books.</p>
+<p>Some users started using the word <code class="highlight coq"><span class="n">decidable</span></code> for any predicate <code class="highlight coq"><span class="n">P</span></code> so
+that there exists a proof of <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">P</span> <span class="n">x</span> <span class="o">\/</span> <span class="o">~</span> <span class="n">P</span> <span class="n">x</span></code>. But they are
+actually talking about a different thing. To make it clearer, I will
+call this notion <code class="highlight coq"><span class="n">abuse</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">terminology</span><span class="o">-</span><span class="n">decidable</span></code>.</p>
+<p>Now, if you add an axiom like LEM in Coq, you basically state that
+every predicate <code class="highlight coq"><span class="n">P</span></code> becomes <code class="highlight coq"><span class="n">abuse</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">terminology</span><span class="o">-</span><span class="n">decidable</span></code>. Of
+course, you cannot change the meaning of <code class="highlight coq"><span class="n">conventionally</span><span class="o">-</span><span class="n">decidable</span></code> by
+just adding an axiom in you Coq development, so there is no inclusion
+anymore.</p>
+<p>I have been fighting against this abuse of terminology for years, but
+without success.</p>
+<p>To be more precise, in Coq terminology, the term decidable is not used
+for propositions or predicates that enjoy LEM, but for propositions or
+predicates that enjoy the stronger following statement:</p>
+<p><code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="o">{</span><span class="n">P</span> <span class="n">x</span><span class="o">}</span> <span class="o">+</span> <span class="o">{~</span><span class="n">P</span> <span class="n">x</span><span class="o">}</span></code></p>
+<p>Proofs of such propositions are often named with <code class="highlight coq"><span class="n">_dec</span></code> suffix, where
+<code class="highlight coq"><span class="n">_dec</span></code> directly refers to <em>decidable</em>. This abuse is less strong, but
+it is still an abuse of terminology.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> Do you mean external vs internal decidability in the
+terminology of nLab? ncatlab.org/nlab/show/decidable+proposition
+(sect. 1)</p>
+<p><strong>A:</strong> Thanks for the pointer &#64;AntonTrunov. No, I think there is an
+extra difference between &quot;externally decidable&quot; and &quot;decidable in the
+common sense&quot;. In the article you point to, &quot;externally decidable&quot; is
+a notion that is relative to a given theory. But when we say that the
+halting problem is undecidable, we use the word &quot;undecidable&quot; in a
+sense that is stronger and refers to the existence of an algorithm
+taking inputs (programs in the case of the halting problem),
+terminating for all inputs, deciding for each input whether the
+property (the program halts) holds or not.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

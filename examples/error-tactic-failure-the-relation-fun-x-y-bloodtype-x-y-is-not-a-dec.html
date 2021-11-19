@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Error &quot;Tactic failure: The relation (fun x y : BloodType =&gt; x &lt;&gt; y) is not a declared reflexive relation.&quot; when proving a theorem about function</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-declared-reflexive-relation-when-proving-a-theorem-about-function">
+<h1 class="title">Error &quot;Tactic failure: The relation (<code class="highlight coq"><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">BloodType</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span></code>) is not a declared reflexive relation.&quot; when proving a theorem about function</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/61134408/error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec">https://stackoverflow.com/questions/61134408/error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm self studying Coq and playing with it. I wanted to try and write a
+function that computes blood type based on two alleles. However, I'm
+getting an error &quot;Tactic failure: The relation (<code class="highlight coq"><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">BloodType</span>
+<span class="o">=&gt;</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span></code>) is not a declared reflexive relation.&quot; when trying to
+prove that any other pair of alleles but <code class="highlight coq"><span class="n">TypeO</span></code> will not result type
+<code class="highlight coq"><span class="n">TypeO</span></code> blood.</p>
+<p>There's three alleles:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BloodTypeAllele</span> : <span class="kt">Type</span> :=
+| BloodTypeA
+| BloodTypeB
+| BloodTypeO.</span></span></pre><p>And four blood types:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BloodType</span> : <span class="kt">Type</span> :=
+| TypeA
+| TypeB
+| TypeAB
+| TypeO.</span></span></pre><p>Mapping between them is as follows:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">bloodType</span> (<span class="nv">a</span> <span class="nv">b</span> : BloodTypeAllele) : BloodType :=
+  <span class="kr">match</span> a, b <span class="kr">with</span>
+  | BloodTypeA, BloodTypeA =&gt; TypeA
+  | BloodTypeA, BloodTypeO =&gt; TypeA
+  | BloodTypeA, BloodTypeB =&gt; TypeAB
+  | BloodTypeB, BloodTypeB =&gt; TypeB
+  | BloodTypeB, BloodTypeA =&gt; TypeAB
+  | BloodTypeB, BloodTypeO =&gt; TypeB
+  | BloodTypeO, BloodTypeA =&gt; TypeA
+  | BloodTypeO, BloodTypeB =&gt; TypeB
+  | BloodTypeO, BloodTypeO =&gt; TypeO
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Not a truly recursive fixpoint.
+[non-recursive,fixpoints]</blockquote></div></div></small></span></pre><p>I can prove that <code class="highlight coq"><span class="n">BloodTypeO</span></code> and <code class="highlight coq"><span class="n">BloodTypeO</span></code> results <code class="highlight coq"><span class="n">TypeO</span></code> blood.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk1"><span class="kn">Theorem</span> <span class="nf">double_O_results_O_type</span> :
+  bloodType BloodTypeO BloodTypeO = TypeO.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeO BloodTypeO = TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeO BloodTypeO = TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>But I can't prove that any other combination will not result to
+<code class="highlight coq"><span class="n">TypeO</span></code> blood. Because I'm getting following error:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk3"><span class="kn">Theorem</span> <span class="nf">not_double_O_does_not_result_O_type</span> :
+  <span class="kr">forall</span> (<span class="nv">b1</span> <span class="nv">b2</span> : BloodTypeAllele),
+    b1 &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO -&gt;
+    bloodType b1 b2 &lt;&gt; TypeO.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b1</span> <span class="nv">b2</span> : BloodTypeAllele,
+b1 &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO -&gt;
+bloodType b1 b2 &lt;&gt; TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b1</span> <span class="nv">b2</span> : BloodTypeAllele,
+b1 &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO -&gt;
+bloodType b1 b2 &lt;&gt; TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk5"><span class="nb">intros</span> b1 b2 H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b1, b2</var><span class="hyp-type"><b>: </b><span>BloodTypeAllele</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>b1 &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType b1 b2 &lt;&gt; TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk6"><span class="nb">destruct</span> b1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b2</var><span class="hyp-type"><b>: </b><span>BloodTypeAllele</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeA b2 &lt;&gt; TypeO</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk7" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b2</var><span class="hyp-type"><b>: </b><span>BloodTypeAllele</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeB &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO</span></span></span><br></div><label class="goal-separator" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk7"><hr></label><div class="goal-conclusion">bloodType BloodTypeB b2 &lt;&gt; TypeO</div></blockquote><input class="alectryon-extra-goal-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b2</var><span class="hyp-type"><b>: </b><span>BloodTypeAllele</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeO &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO</span></span></span><br></div><label class="goal-separator" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk8"><hr></label><div class="goal-conclusion">bloodType BloodTypeO b2 &lt;&gt; TypeO</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk9">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b2</var><span class="hyp-type"><b>: </b><span>BloodTypeAllele</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeA b2 &lt;&gt; TypeO</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chka"><span class="nb">destruct</span> b2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/
+BloodTypeA &lt;&gt; BloodTypeO</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeA BloodTypeA &lt;&gt; TypeO</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkb" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/
+BloodTypeB &lt;&gt; BloodTypeO</span></span></span><br></div><label class="goal-separator" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkb"><hr></label><div class="goal-conclusion">bloodType BloodTypeA BloodTypeB &lt;&gt; TypeO</div></blockquote><input class="alectryon-extra-goal-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/
+BloodTypeO &lt;&gt; BloodTypeO</span></span></span><br></div><label class="goal-separator" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkc"><hr></label><div class="goal-conclusion">bloodType BloodTypeA BloodTypeO &lt;&gt; TypeO</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkd">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/
+BloodTypeA &lt;&gt; BloodTypeO</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeA BloodTypeA &lt;&gt; TypeO</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chke"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>BloodTypeA &lt;&gt; BloodTypeO \/
+BloodTypeA &lt;&gt; BloodTypeO</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">TypeA &lt;&gt; TypeO</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chkf" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Tactic failure:  The relation (<span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> : BloodType =&gt;
+                               x &lt;&gt; y) <span class="kr">is</span> not a declared reflexive relation. Maybe you need to require the Coq.Classes.RelationClasses library.</blockquote></div></div></small></span></pre><p>I tried importing the library, but the error remained the same. I'm
+very new to Coq, so I'm probably looking over something very obvious.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>One part of the problem is that you don't reason with a negated
+predicate in the same way as you reason on the direct predicate. You
+have to think again in terms of logic, before expecting Coq to work
+for you.</p>
+<p>Let's go back to a very basic logical inference &quot;All humans are
+mortal, Socrates is human, therefore he is mortal&quot;. If my cat is
+mortal, does it mean my cat is human? No! When you work with negation,
+the problem is very close to this.</p>
+<p>Now, let's concentrate on your problem. There is a specific tactic to
+help prove basic instances of equality <code class="highlight coq"><span class="bp">reflexivity</span></code>. There is also a
+specific tactic to help prove basic instances of &quot;non-equality&quot;. This
+tactic is called <code class="highlight coq"><span class="bp">discriminate</span></code> and it will work in your case.</p>
+<p>Negation of equality appears in two different fashion in your
+exercise. Sometimes you need to prove a negated equality that is
+obvious to your naked eye and in this case, <code class="highlight coq"><span class="bp">discriminate</span></code> may do the
+job. Sometimes, you need to prove a negated equality that is obviously
+not provable (it will happen later in you exercise, I tried). In that
+case, the way to progress is to discover that there is an assumption
+in you goal that actually contains an inherent contradiction, or that
+two hypotheses are contradictory to each other. In that case, the
+solution is to try <code class="highlight coq"><span class="nb">destruct</span> <span class="n">H</span></code> where <code class="highlight coq"><span class="n">H</span></code> is the hypothesis that is
+obviously wrong.</p>
+<p>In the case of your exercise, you will also need to understand how to
+cope with an <code class="highlight coq"><span class="n">or</span></code> in an hypothesis, <code class="highlight coq"><span class="nb">destruct</span></code> will still be relevant
+for that case.</p>
+<p>I suggest you read the free document <a class="reference external" href="https://cel.archives-ouvertes.fr/inria-00001173v6/document">coq in a hurry</a> as a
+tutorial for this. In particular, it explains that for every logical
+construct, the way to handle this construct is different, whether the
+construct appears as the conclusion of a goal or as an hypothesis.
+There is a short table to be used as a first hint list for most basic
+reasoning steps.</p>
+<p>Another piece of advice: don't use the <code class="highlight coq"><span class="kn">Fixpoint</span></code> command when the
+function you wish to define is not recursive. In you case the function
+<code class="highlight coq"><span class="n">bloodType</span></code> should have defined using the <code class="highlight coq"><span class="kn">Definition</span></code> keyword. Using
+<code class="highlight coq"><span class="kn">Fixpoint</span></code> makes the definition uselessly complicated and this may
+bite you later in your experiments.</p>
+<p>I am excited to see you learn on your own, have fun, and ask
+questions!</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
