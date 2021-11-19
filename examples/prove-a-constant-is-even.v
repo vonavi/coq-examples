@@ -24,7 +24,7 @@ proof. This has the disadvantage of producing a large proof term
 it is better to reformulate the goal using a boolean decision
 procedure:
 
-.. coq: none
+.. coq:: none
 |*)
 
 Inductive even : nat -> Prop :=
