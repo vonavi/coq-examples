@@ -17,40 +17,6 @@ as cubical Agda) reduce the need for Setoids?
 |*)
 
 (*|
-Answer (Li-yao Xia)
--------------------
-
-Ideally one would certainly like to be able to treat arbitrary
-equivalence relations as Leibniz equality (`eq`), enabling rewriting
-in arbitrary contexts. That means to define the **quotient** of a type
-by an equivalence relation.
-
-I'm not an expert on the topic, but I've been wondering the same for a
-while, and I think the reliance on setoids stems from the fact that
-quotients are still a poorly understood concept in type theory.
-
-1. Setoid Hell is where we're stuck when we don't have/want quotient
-   types.
-2. We can axiomatize quotient types, I believe (I could be mistaken)
-   that's what Lean does.
-3. We can develop a type theory which can naturally express quotients,
-   that's what HoTT/Cubical TT do with higher inductive types.
-
-Furthermore, quotient types (or my naive imagination of them) force us
-to package programs and proofs together in a perhaps less-than-ideal
-way: a function between two quotient types is a plain function
-together with a proof that it respects the underlying equivalence
-relation. While one can technically do that, this interleaving of
-programming and proving is arguably indesirable because it makes
-programs unreadable: one often seeks to either keep programs and
-proofs in two completely separate worlds (so that mandates setoids,
-keeping types separate from their equivalence relations), or to change
-some representations so the program and the proof are one and the same
-entity (so we might not even need to explicitly reason about
-equivalences in the first place).
-|*)
-
-(*|
 Answer (Floris van Doorn)
 -------------------------
 
@@ -128,4 +94,38 @@ out exactly what that could look like, is ongoing research. Floris'
 answer outlines well what one pitfall is: at some point, you give up
 that `computations` will be well-behaved, and from then on, are forced
 to do everything via proofs.
+|*)
+
+(*|
+Answer (Li-yao Xia)
+-------------------
+
+Ideally one would certainly like to be able to treat arbitrary
+equivalence relations as Leibniz equality (`eq`), enabling rewriting
+in arbitrary contexts. That means to define the **quotient** of a type
+by an equivalence relation.
+
+I'm not an expert on the topic, but I've been wondering the same for a
+while, and I think the reliance on setoids stems from the fact that
+quotients are still a poorly understood concept in type theory.
+
+1. Setoid Hell is where we're stuck when we don't have/want quotient
+   types.
+2. We can axiomatize quotient types, I believe (I could be mistaken)
+   that's what Lean does.
+3. We can develop a type theory which can naturally express quotients,
+   that's what HoTT/Cubical TT do with higher inductive types.
+
+Furthermore, quotient types (or my naive imagination of them) force us
+to package programs and proofs together in a perhaps less-than-ideal
+way: a function between two quotient types is a plain function
+together with a proof that it respects the underlying equivalence
+relation. While one can technically do that, this interleaving of
+programming and proving is arguably indesirable because it makes
+programs unreadable: one often seeks to either keep programs and
+proofs in two completely separate worlds (so that mandates setoids,
+keeping types separate from their equivalence relations), or to change
+some representations so the program and the proof are one and the same
+entity (so we might not even need to explicitly reason about
+equivalences in the first place).
 |*)

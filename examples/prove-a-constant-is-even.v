@@ -15,22 +15,6 @@ zero is certainly not the right approach.
 |*)
 
 (*|
-Answer (HTNW)
--------------
-
-Repeating `apply even_S` is not the way. `repeat apply even_S` is. If
-`even_S` is a constructor, there's also `repeat constructor`.
-|*)
-
-Inductive even : nat -> Prop :=
-| even_O : even O
-| even_S : forall n, even n -> even (S (S n)).
-
-Goal (even 1024). repeat apply even_S. exact even_O. Qed.
-Goal (even 1024). repeat constructor. Qed.
-(* also finds even_O, would leave as goal otherwise *)
-
-(*|
 Answer (Arthur Azevedo De Amorim)
 ---------------------------------
 
@@ -39,7 +23,15 @@ proof. This has the disadvantage of producing a large proof term
 `even_S (even_S ... even_O)`, thus slowing down proofs. In this case,
 it is better to reformulate the goal using a boolean decision
 procedure:
+
+.. coq:: none
 |*)
+
+Inductive even : nat -> Prop :=
+| even_O : even O
+| even_S : forall n, even n -> even (S (S n)).
+
+(*||*)
 
 Fixpoint evenb (n : nat) : bool :=
   match n with
@@ -58,3 +50,20 @@ left-hand side:
 |*)
 
 Goal (even 1024). apply evenb_correct. reflexivity. Qed.
+
+(*|
+Answer (HTNW)
+-------------
+
+Repeating `apply even_S` is not the way. `repeat apply even_S` is. If
+`even_S` is a constructor, there's also `repeat constructor`.
+|*)
+
+Reset even. (* .none *)
+Inductive even : nat -> Prop :=
+| even_O : even O
+| even_S : forall n, even n -> even (S (S n)).
+
+Goal (even 1024). repeat apply even_S. exact even_O. Qed.
+Goal (even 1024). repeat constructor. Qed.
+(* also finds even_O, would leave as goal otherwise *)
