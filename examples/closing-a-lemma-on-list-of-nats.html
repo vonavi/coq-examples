@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Closing a lemma on list of nats</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="closing-a-lemma-on-list-of-nats">
+<h1 class="title">Closing a lemma on list of nats</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/59747670/closing-a-lemma-on-list-of-nats">https://stackoverflow.com/questions/59747670/closing-a-lemma-on-list-of-nats</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am stuck to prove the following admitted lemma. Kindly help me how
+to proceed.</p>
+<p>The function <code class="highlight coq"><span class="n">sumoneseq</span></code> adds to and returns list of repetitions of
+<code class="highlight coq"><span class="n">true</span></code>, in reverse order. Given [<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;<strong>true</strong>], it returns [3;2;1].
+The function <code class="highlight coq"><span class="n">sumones</span></code> adds values in the nat list. Given [3;2;1], it
+returns 6.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;x :: l&quot;</span> := (cons x l) (<span class="kn">at level</span> <span class="mi">60</span>, <span class="kn">right associativity</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ ]&quot;</span> := nil.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ x ; .. ; y ]&quot;</span> := (cons x .. (cons y nil) ..).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">sumoneseq</span> (<span class="nv">lb</span>: list bool) (<span class="nv">ln</span>: list nat) : list nat :=
+  <span class="kr">match</span> lb, ln <span class="kr">with</span>
+  | nil, <span class="mi">0</span>::tl&#39;&#39; =&gt; tl&#39;&#39;
+  | nil, _ =&gt; ln
+  | true::tl&#39;, nil =&gt; sumoneseq tl&#39; (<span class="mi">1</span>::nil)
+  | true::tl&#39;, h::tl&#39;&#39; =&gt; sumoneseq tl&#39; (S h::tl&#39;&#39;)
+  | false::tl&#39;, <span class="mi">0</span>::tl&#39;&#39; =&gt; sumoneseq tl&#39; ln
+  | false::tl&#39;, _ =&gt; sumoneseq tl&#39; (<span class="mi">0</span>::ln)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">sumones</span> (<span class="nv">ln</span>: list nat) : nat :=
+  <span class="kr">match</span> ln <span class="kr">with</span>
+  | nil =&gt; <span class="mi">0</span>
+  | r::tl =&gt; r + (sumones tl)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk0"><span class="kn">Lemma</span> <span class="nf">sumones_l</span>: <span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span>,
+    sumones (sumoneseq lb ln) = sumones ln + sumones (sumoneseq lb []).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lb</span> : list bool) (<span class="nv">ln</span> : list nat),
+sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lb</span> : list bool) (<span class="nv">ln</span> : list nat),
+sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk2"><span class="nb">induction</span> ln.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb [ ]) =
+sumones [ ] + sumones (sumoneseq lb [ ])</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHln</var><span class="hyp-type"><b>: </b><span>sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [ ])</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk3"><hr></label><div class="goal-conclusion">sumones (sumoneseq lb (a :: ln)) =
+sumones (a :: ln) + sumones (sumoneseq lb [ ])</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk4">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb [ ]) =
+sumones [ ] + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk5"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb [ ]) =
+sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk6">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHln</var><span class="hyp-type"><b>: </b><span>sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [ ])</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (a :: ln)) =
+sumones (a :: ln) + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk7"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHln</var><span class="hyp-type"><b>: </b><span>sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [ ])</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (a :: ln)) =
+a + sumones ln + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Two things:</p>
+<ol class="arabic simple">
+<li>When proving a property of some function <code class="highlight coq"><span class="n">f</span></code> using a direct
+induction, choose the parameter on which <code class="highlight coq"><span class="n">f</span></code> is structurally
+recursive on. So in your example involving <code class="highlight coq"><span class="n">sumoneseq</span></code>, induct on
+<code class="highlight coq"><span class="n">lb</span></code> instead of <code class="highlight coq"><span class="n">ln</span></code> since <code class="highlight coq"><span class="n">sumoneseq</span></code> is structurally recursive on
+<code class="highlight coq"><span class="n">lb</span></code>.</li>
+<li>Proving a property of some function <code class="highlight coq"><span class="n">f</span></code> where one or more of its
+arguments are fixed to specific values (e.g. <code class="highlight coq"><span class="n">sumoneseq</span></code> with its
+second argument being <code class="highlight coq"><span class="o">[]</span></code>) by direct induction is almost
+guaranteed to fail, since the value of that argument varies between
+recursive calls of <code class="highlight coq"><span class="n">f</span></code>, meaning that you would not be able to apply
+the induction hypothesis in your inductive case. In that case, you
+need to manually generalize the induction hypothesis by finding a
+more general property on which <code class="highlight coq"><span class="n">f</span></code> holds, with each of its
+arguments being sufficiently general. For example, instead of
+proving <code class="highlight coq"><span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span><span class="o">,</span> <span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="n">ln</span><span class="o">)</span> <span class="o">=</span> <span class="n">sumones</span> <span class="n">ln</span> <span class="o">+</span>
+<span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="o">[])</span></code> directly by induction, try generalizing
+it to something like <code class="highlight coq"><span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span> <span class="nv">ln'</span><span class="o">,</span> <span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="o">(</span><span class="n">ln</span>
+<span class="o">++</span> <span class="n">ln'</span><span class="o">))</span> <span class="o">=</span> <span class="n">sumones</span> <span class="n">ln</span> <span class="o">+</span> <span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="n">ln'</span><span class="o">)</span></code> instead and
+prove <em>that</em> by direct induction. Your desired result then follows
+as a corollary of that more general result.</li>
+</ol>
+<p>You can learn more about generalizing the induction hypothesis in
+<a class="reference external" href="https://jamesrwilcox.com/InductionExercises.html">James Wilcox's blog post</a> which generously
+includes 8 exercises of increasing difficulty on doing just that.</p>
+<p>Now try to prove your lemma with these two points in mind. <em>Hint: when
+proving your more general statement about</em> <code class="highlight coq"><span class="n">sumoneseq</span></code> <em>by direct
+induction, you may also find it helpful to extract out a suitable
+lemma on a certain property of</em> <code class="highlight coq"><span class="n">sumones</span></code>.</p>
+<p>If you've tried again to no avail then the full solution is provided
+below the horizontal rule (<strong>spoiler alert!</strong>).</p>
+<hr class="docutils" />
+<p>Here goes the full solution. As you can probably see, a lot of case
+analysis is required on top of the main induction (likely due to your
+optimization in <code class="highlight coq"><span class="n">sumoneseq</span></code> of discarding <code class="highlight coq"><span class="mi">0</span></code>'s from <code class="highlight coq"><span class="n">ln</span></code>) and the
+reasoning for many of these cases are actually very similar and
+repetitive. I could've probably further shortened the proof script
+with a bit of <code class="highlight coq"><span class="kn">Ltac</span></code> programming looking for similar patterns in the
+various cases but I haven't bothered doing so since I just hacked it
+up straight away.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List Lia.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">sumoneseq</span> (<span class="nv">lb</span>: list bool) (<span class="nv">ln</span>: list nat) : list nat :=
+  <span class="kr">match</span> lb, ln <span class="kr">with</span>
+  | nil, <span class="mi">0</span>::tl&#39;&#39; =&gt; tl&#39;&#39;
+  | nil, _ =&gt; ln
+  | true::tl&#39;, nil =&gt; sumoneseq tl&#39; (<span class="mi">1</span>::nil)
+  | true::tl&#39;, h::tl&#39;&#39; =&gt; sumoneseq tl&#39; (S h::tl&#39;&#39;)
+  | false::tl&#39;, <span class="mi">0</span>::tl&#39;&#39; =&gt; sumoneseq tl&#39; ln
+  | false::tl&#39;, _ =&gt; sumoneseq tl&#39; (<span class="mi">0</span>::ln)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">sumones</span> (<span class="nv">ln</span>: list nat) : nat :=
+  <span class="kr">match</span> ln <span class="kr">with</span>
+  | nil =&gt; <span class="mi">0</span>
+  | r::tl =&gt; r + (sumones tl)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk8"><span class="kn">Lemma</span> <span class="nf">sumones_app_plus_distr</span> : <span class="kr">forall</span> <span class="nv">l</span> <span class="nv">l&#39;</span>,
+    sumones (l ++ l&#39;) = sumones l + sumones l&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> <span class="nv">l&#39;</span> : list nat,
+sumones (l ++ l&#39;) = sumones l + sumones l&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk9"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> <span class="nv">l&#39;</span> : list nat,
+sumones (l ++ l&#39;) = sumones l + sumones l&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chka"><span class="nb">induction</span> l; <span class="nb">simpl</span>; <span class="nb">intros</span>; <span class="nb">auto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l&#39;</span> : list nat, sumones (l ++ l&#39;) = sumones l + sumones l&#39;</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a + sumones (l ++ l&#39;) = a + sumones l + sumones l&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> IHl; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chkb"><span class="kn">Lemma</span> <span class="nf">sumones_l&#39;</span> : <span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span>,
+    sumones (sumoneseq lb (ln ++ ln&#39;)) =
+    sumones ln + sumones (sumoneseq lb ln&#39;).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lb</span> : list bool) (<span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat),
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chkc"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lb</span> : list bool) (<span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat),
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chkd"><span class="nb">induction</span> lb; <span class="nb">simpl</span>; <span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> ln ++ ln&#39; <span class="kr">with</span>
+  | <span class="mi">0</span> :: tl&#39;&#39; =&gt; tl&#39;&#39;
+  | _ =&gt; ln ++ ln&#39;
+  <span class="kr">end</span> =
+sumones ln +
+sumones
+  <span class="kr">match</span> ln&#39; <span class="kr">with</span>
+  | <span class="mi">0</span> :: tl&#39;&#39; =&gt; tl&#39;&#39;
+  | _ =&gt; ln&#39;
+  <span class="kr">end</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chke" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>bool</span></span></span><br><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chke"><hr></label><div class="goal-conclusion">sumones
+  (<span class="kr">if</span> a
+   <span class="kr">then</span>
+    <span class="kr">match</span> ln ++ ln&#39; <span class="kr">with</span>
+    | [] =&gt; sumoneseq lb [<span class="mi">1</span>]
+    | h :: tl&#39;&#39; =&gt; sumoneseq lb (S h :: tl&#39;&#39;)
+    <span class="kr">end</span>
+   <span class="kr">else</span>
+    <span class="kr">match</span> ln ++ ln&#39; <span class="kr">with</span>
+    | <span class="mi">0</span> :: _ =&gt; sumoneseq lb (ln ++ ln&#39;)
+    | _ =&gt; sumoneseq lb (<span class="mi">0</span> :: ln ++ ln&#39;)
+    <span class="kr">end</span>) =
+sumones ln +
+sumones
+  (<span class="kr">if</span> a
+   <span class="kr">then</span>
+    <span class="kr">match</span> ln&#39; <span class="kr">with</span>
+    | [] =&gt; sumoneseq lb [<span class="mi">1</span>]
+    | h :: tl&#39;&#39; =&gt; sumoneseq lb (S h :: tl&#39;&#39;)
+    <span class="kr">end</span>
+   <span class="kr">else</span>
+    <span class="kr">match</span> ln&#39; <span class="kr">with</span>
+    | <span class="mi">0</span> :: _ =&gt; sumoneseq lb ln&#39;
+    | _ =&gt; sumoneseq lb (<span class="mi">0</span> :: ln&#39;)
+    <span class="kr">end</span>)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chkf">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> ln ++ ln&#39; <span class="kr">with</span>
+  | <span class="mi">0</span> :: tl&#39;&#39; =&gt; tl&#39;&#39;
+  | _ =&gt; ln ++ ln&#39;
+  <span class="kr">end</span> =
+sumones ln +
+sumones
+  <span class="kr">match</span> ln&#39; <span class="kr">with</span>
+  | <span class="mi">0</span> :: tl&#39;&#39; =&gt; tl&#39;&#39;
+  | _ =&gt; ln&#39;
+  <span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk10"><span class="nb">destruct</span> ln, ln&#39;; <span class="nb">simpl</span>; <span class="nb">auto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; ln ++ []
+  | S _ =&gt; n :: ln ++ []
+  <span class="kr">end</span> = n + sumones ln + <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk11" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk11"><hr></label><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; ln ++ n0 :: ln&#39;
+  | S _ =&gt; n :: ln ++ n0 :: ln&#39;
+  <span class="kr">end</span> =
+n + sumones ln +
+sumones
+  <span class="kr">match</span> n0 <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; ln&#39;
+  | S _ =&gt; n0 :: ln&#39;
+  <span class="kr">end</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk12">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; ln ++ []
+  | S _ =&gt; n :: ln ++ []
+  <span class="kr">end</span> = n + sumones ln + <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> n; <span class="nb">rewrite</span> app_nil_r; <span class="nb">simpl</span>; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk13">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; ln ++ n0 :: ln&#39;
+  | S _ =&gt; n :: ln ++ n0 :: ln&#39;
+  <span class="kr">end</span> =
+n + sumones ln +
+sumones
+  <span class="kr">match</span> n0 <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; ln&#39;
+  | S _ =&gt; n0 :: ln&#39;
+  <span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> n, n0; <span class="nb">simpl</span>; <span class="nb">rewrite</span> sumones_app_plus_distr;
+        <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk14">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>bool</span></span></span><br><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  (<span class="kr">if</span> a
+   <span class="kr">then</span>
+    <span class="kr">match</span> ln ++ ln&#39; <span class="kr">with</span>
+    | [] =&gt; sumoneseq lb [<span class="mi">1</span>]
+    | h :: tl&#39;&#39; =&gt; sumoneseq lb (S h :: tl&#39;&#39;)
+    <span class="kr">end</span>
+   <span class="kr">else</span>
+    <span class="kr">match</span> ln ++ ln&#39; <span class="kr">with</span>
+    | <span class="mi">0</span> :: _ =&gt; sumoneseq lb (ln ++ ln&#39;)
+    | _ =&gt; sumoneseq lb (<span class="mi">0</span> :: ln ++ ln&#39;)
+    <span class="kr">end</span>) =
+sumones ln +
+sumones
+  (<span class="kr">if</span> a
+   <span class="kr">then</span>
+    <span class="kr">match</span> ln&#39; <span class="kr">with</span>
+    | [] =&gt; sumoneseq lb [<span class="mi">1</span>]
+    | h :: tl&#39;&#39; =&gt; sumoneseq lb (S h :: tl&#39;&#39;)
+    <span class="kr">end</span>
+   <span class="kr">else</span>
+    <span class="kr">match</span> ln&#39; <span class="kr">with</span>
+    | <span class="mi">0</span> :: _ =&gt; sumoneseq lb ln&#39;
+    | _ =&gt; sumoneseq lb (<span class="mi">0</span> :: ln&#39;)
+    <span class="kr">end</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk15"><span class="nb">destruct</span> a, ln, ln&#39;; <span class="nb">simpl</span>; <span class="nb">auto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (S n :: ln ++ [])) =
+n + sumones ln + sumones (sumoneseq lb [<span class="mi">1</span>])</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk16" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk16"><hr></label><div class="goal-conclusion">sumones (sumoneseq lb (S n :: ln ++ n0 :: ln&#39;)) =
+n + sumones ln + sumones (sumoneseq lb (S n0 :: ln&#39;))</div></blockquote><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk17" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk17"><hr></label><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; sumoneseq lb (n :: ln ++ [])
+  | S _ =&gt; sumoneseq lb (<span class="mi">0</span> :: n :: ln ++ [])
+  <span class="kr">end</span> = n + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk18" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk18"><hr></label><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; sumoneseq lb (n :: ln ++ n0 :: ln&#39;)
+  | S _ =&gt; sumoneseq lb (<span class="mi">0</span> :: n :: ln ++ n0 :: ln&#39;)
+  <span class="kr">end</span> =
+n + sumones ln +
+sumones
+  <span class="kr">match</span> n0 <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; sumoneseq lb (n0 :: ln&#39;)
+  | S _ =&gt; sumoneseq lb (<span class="mi">0</span> :: n0 :: ln&#39;)
+  <span class="kr">end</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk19">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (S n :: ln ++ [])) =
+n + sumones ln + sumones (sumoneseq lb [<span class="mi">1</span>])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1a"><span class="nb">replace</span> (S n :: ln ++ []) <span class="kr">with</span> ((S n :: ln) ++ [])
+        <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((S n :: ln) ++ [])) =
+n + sumones ln + sumones (sumoneseq lb [<span class="mi">1</span>])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1b"><span class="nb">replace</span> [<span class="mi">1</span>] <span class="kr">with</span> ([<span class="mi">1</span>] ++ []) <span class="bp">by</span> <span class="bp">now</span> <span class="nb">rewrite</span> app_nil_r.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((S n :: ln) ++ [])) =
+n + sumones ln + sumones (sumoneseq lb ([<span class="mi">1</span>] ++ []))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb; <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1c">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (S n :: ln ++ n0 :: ln&#39;)) =
+n + sumones ln + sumones (sumoneseq lb (S n0 :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1d"><span class="nb">replace</span> (S n :: ln ++ n0 :: ln&#39;)
+        <span class="kr">with</span> ((S n :: ln ++ [n0]) ++ ln&#39;)
+        <span class="bp">by</span> (<span class="nb">simpl</span>; <span class="bp">now</span> <span class="nb">rewrite</span> &lt;- app_assoc).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((S n :: ln ++ [n0]) ++ ln&#39;)) =
+n + sumones ln + sumones (sumoneseq lb (S n0 :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1e"><span class="nb">replace</span> (S n0 :: ln&#39;) <span class="kr">with</span> ([S n0] ++ ln&#39;)
+        <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((S n :: ln ++ [n0]) ++ ln&#39;)) =
+n + sumones ln +
+sumones (sumoneseq lb ([S n0] ++ ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk1f"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (S n :: ln ++ [n0]) +
+sumones (sumoneseq lb ln&#39;) =
+n + sumones ln +
+(sumones [S n0] + sumones (sumoneseq lb ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk20"><span class="nb">replace</span> (S n :: ln ++ [n0])
+        <span class="kr">with</span> ((S n :: ln) ++ [n0])
+        <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones ((S n :: ln) ++ [n0]) +
+sumones (sumoneseq lb ln&#39;) =
+n + sumones ln +
+(sumones [S n0] + sumones (sumoneseq lb ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="nb">rewrite</span> sumones_app_plus_distr; <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk21">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; sumoneseq lb (n :: ln ++ [])
+  | S _ =&gt; sumoneseq lb (<span class="mi">0</span> :: n :: ln ++ [])
+  <span class="kr">end</span> = n + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk22" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk22"><span class="nb">destruct</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: ln ++ [])) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk23" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk23"><hr></label><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: S n :: ln ++ [])) =
+S n + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk24" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk24">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: ln ++ [])) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk25" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk25"><span class="nb">replace</span> (<span class="mi">0</span> :: ln ++ []) <span class="kr">with</span> ((<span class="mi">0</span> :: ln) ++ [])
+          <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: ln) ++ [])) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk26" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk26"><span class="nb">replace</span> [<span class="mi">0</span>] <span class="kr">with</span> ([<span class="mi">0</span>] ++ [])
+          <span class="bp">by</span> <span class="bp">now</span> <span class="nb">rewrite</span> app_nil_r.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: ln) ++ [])) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb ([<span class="mi">0</span>] ++ []))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb; <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk27" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk27">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: S n :: ln ++ [])) =
+S n + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk28" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk28"><span class="nb">replace</span> (<span class="mi">0</span> :: S n :: ln ++ [])
+          <span class="kr">with</span> ((<span class="mi">0</span> :: S n :: ln) ++ []) <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: S n :: ln) ++ [])) =
+S n + sumones ln + sumones (sumoneseq lb [<span class="mi">0</span>])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk29" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk29"><span class="nb">replace</span> [<span class="mi">0</span>] <span class="kr">with</span> ([<span class="mi">0</span>] ++ [])
+          <span class="bp">by</span> <span class="bp">now</span> <span class="nb">rewrite</span> app_nil_r.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: S n :: ln) ++ [])) =
+S n + sumones ln + sumones (sumoneseq lb ([<span class="mi">0</span>] ++ []))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb; <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2a" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk2a">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; sumoneseq lb (n :: ln ++ n0 :: ln&#39;)
+  | S _ =&gt; sumoneseq lb (<span class="mi">0</span> :: n :: ln ++ n0 :: ln&#39;)
+  <span class="kr">end</span> =
+n + sumones ln +
+sumones
+  <span class="kr">match</span> n0 <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; sumoneseq lb (n0 :: ln&#39;)
+  | S _ =&gt; sumoneseq lb (<span class="mi">0</span> :: n0 :: ln&#39;)
+  <span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2b" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk2b"><span class="nb">destruct</span> n, n0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: ln ++ <span class="mi">0</span> :: ln&#39;)) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb (<span class="mi">0</span> :: ln&#39;))</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2c" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk2c"><hr></label><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: ln ++ S n0 :: ln&#39;)) =
+<span class="mi">0</span> + sumones ln +
+sumones (sumoneseq lb (<span class="mi">0</span> :: S n0 :: ln&#39;))</div></blockquote><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2d" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk2d"><hr></label><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: S n :: ln ++ <span class="mi">0</span> :: ln&#39;)) =
+S n + sumones ln + sumones (sumoneseq lb (<span class="mi">0</span> :: ln&#39;))</div></blockquote><input class="alectryon-extra-goal-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2e" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="closing-a-lemma-on-list-of-nats-v-chk2e"><hr></label><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: S n :: ln ++ S n0 :: ln&#39;)) =
+S n + sumones ln +
+sumones (sumoneseq lb (<span class="mi">0</span> :: S n0 :: ln&#39;))</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk2f" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk2f">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: ln ++ <span class="mi">0</span> :: ln&#39;)) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb (<span class="mi">0</span> :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk30" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk30"><span class="nb">replace</span> (<span class="mi">0</span> :: ln ++ <span class="mi">0</span> :: ln&#39;)
+          <span class="kr">with</span> ((<span class="mi">0</span> :: ln ++ [<span class="mi">0</span>]) ++ ln&#39;)
+          <span class="bp">by</span> (<span class="nb">simpl</span>; <span class="bp">now</span> <span class="nb">rewrite</span> &lt;- app_assoc).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: ln ++ [<span class="mi">0</span>]) ++ ln&#39;)) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb (<span class="mi">0</span> :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk31" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk31"><span class="nb">replace</span> (<span class="mi">0</span> :: ln&#39;) <span class="kr">with</span> ([<span class="mi">0</span>] ++ ln&#39;) <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: ln ++ [<span class="mi">0</span>]) ++ ln&#39;)) =
+<span class="mi">0</span> + sumones ln + sumones (sumoneseq lb ([<span class="mi">0</span>] ++ ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk32" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk32"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (<span class="mi">0</span> :: ln ++ [<span class="mi">0</span>]) + sumones (sumoneseq lb ln&#39;) =
+<span class="mi">0</span> + sumones ln +
+(sumones [<span class="mi">0</span>] + sumones (sumoneseq lb ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> (<span class="kp">repeat</span> <span class="nb">rewrite</span> sumones_app_plus_distr;
+                <span class="nb">simpl</span>); <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk33" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk33">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: ln ++ S n0 :: ln&#39;)) =
+<span class="mi">0</span> + sumones ln +
+sumones (sumoneseq lb (<span class="mi">0</span> :: S n0 :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk34" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk34"><span class="nb">replace</span> (<span class="mi">0</span> :: ln ++ S n0 :: ln&#39;)
+          <span class="kr">with</span> ((<span class="mi">0</span> :: ln ++ [S n0]) ++ ln&#39;)
+          <span class="bp">by</span> (<span class="nb">simpl</span>; <span class="bp">now</span> <span class="nb">rewrite</span> &lt;- app_assoc).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: ln ++ [S n0]) ++ ln&#39;)) =
+<span class="mi">0</span> + sumones ln +
+sumones (sumoneseq lb (<span class="mi">0</span> :: S n0 :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk35" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk35"><span class="nb">replace</span> (<span class="mi">0</span> :: S n0 :: ln&#39;) <span class="kr">with</span> ([<span class="mi">0</span>; S n0] ++ ln&#39;)
+          <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb ((<span class="mi">0</span> :: ln ++ [S n0]) ++ ln&#39;)) =
+<span class="mi">0</span> + sumones ln +
+sumones (sumoneseq lb ([<span class="mi">0</span>; S n0] ++ ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk36" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk36"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (<span class="mi">0</span> :: ln ++ [S n0]) +
+sumones (sumoneseq lb ln&#39;) =
+<span class="mi">0</span> + sumones ln +
+(sumones [<span class="mi">0</span>; S n0] + sumones (sumoneseq lb ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> (<span class="kp">repeat</span> <span class="nb">rewrite</span> sumones_app_plus_distr;
+                <span class="nb">simpl</span>); <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk37" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk37">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: S n :: ln ++ <span class="mi">0</span> :: ln&#39;)) =
+S n + sumones ln + sumones (sumoneseq lb (<span class="mi">0</span> :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk38" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk38"><span class="nb">replace</span> (<span class="mi">0</span> :: S n :: ln ++ <span class="mi">0</span> :: ln&#39;)
+          <span class="kr">with</span> ((<span class="mi">0</span> :: S n :: ln ++ [<span class="mi">0</span>]) ++ ln&#39;)
+          <span class="bp">by</span> (<span class="nb">simpl</span>; <span class="bp">now</span> <span class="nb">rewrite</span> &lt;- app_assoc).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  (sumoneseq lb ((<span class="mi">0</span> :: S n :: ln ++ [<span class="mi">0</span>]) ++ ln&#39;)) =
+S n + sumones ln + sumones (sumoneseq lb (<span class="mi">0</span> :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk39" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk39"><span class="nb">replace</span> (<span class="mi">0</span> :: ln&#39;) <span class="kr">with</span> ([<span class="mi">0</span>] ++ ln&#39;)
+          <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  (sumoneseq lb ((<span class="mi">0</span> :: S n :: ln ++ [<span class="mi">0</span>]) ++ ln&#39;)) =
+S n + sumones ln + sumones (sumoneseq lb ([<span class="mi">0</span>] ++ ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3a" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk3a"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln, ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (<span class="mi">0</span> :: S n :: ln ++ [<span class="mi">0</span>]) +
+sumones (sumoneseq lb ln&#39;) =
+S n + sumones ln +
+(sumones [<span class="mi">0</span>] + sumones (sumoneseq lb ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> (<span class="kp">repeat</span> <span class="nb">rewrite</span> sumones_app_plus_distr;
+                <span class="nb">simpl</span>); <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3b" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk3b">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (<span class="mi">0</span> :: S n :: ln ++ S n0 :: ln&#39;)) =
+S n + sumones ln +
+sumones (sumoneseq lb (<span class="mi">0</span> :: S n0 :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3c" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk3c"><span class="nb">replace</span> (<span class="mi">0</span> :: S n :: ln ++ S n0 :: ln&#39;)
+          <span class="kr">with</span> ((<span class="mi">0</span> :: S n :: ln ++ [S n0]) ++ ln&#39;)
+          <span class="bp">by</span> (<span class="nb">simpl</span>; <span class="bp">now</span> <span class="nb">rewrite</span> &lt;- app_assoc).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  (sumoneseq lb ((<span class="mi">0</span> :: S n :: ln ++ [S n0]) ++ ln&#39;)) =
+S n + sumones ln +
+sumones (sumoneseq lb (<span class="mi">0</span> :: S n0 :: ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3d" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk3d"><span class="nb">replace</span> (<span class="mi">0</span> :: S n0 :: ln&#39;) <span class="kr">with</span> ([<span class="mi">0</span>; S n0] ++ ln&#39;)
+          <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones
+  (sumoneseq lb ((<span class="mi">0</span> :: S n :: ln ++ [S n0]) ++ ln&#39;)) =
+S n + sumones ln +
+sumones (sumoneseq lb ([<span class="mi">0</span>; S n0] ++ ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3e" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk3e"><span class="kp">repeat</span> <span class="nb">rewrite</span> IHlb.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>IHlb</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ln</span> <span class="nv">ln&#39;</span> : list nat,
+sumones (sumoneseq lb (ln ++ ln&#39;)) =
+sumones ln + sumones (sumoneseq lb ln&#39;)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (<span class="mi">0</span> :: S n :: ln ++ [S n0]) +
+sumones (sumoneseq lb ln&#39;) =
+S n + sumones ln +
+(sumones [<span class="mi">0</span>; S n0] + sumones (sumoneseq lb ln&#39;))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> (<span class="kp">repeat</span> <span class="nb">rewrite</span> sumones_app_plus_distr;
+                <span class="nb">simpl</span>); <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk3f" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk3f"><span class="kn">Lemma</span> <span class="nf">sumones_l</span>: <span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span>,
+    sumones (sumoneseq lb ln) =
+    sumones ln + sumones (sumoneseq lb []).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lb</span> : list bool) (<span class="nv">ln</span> : list nat),
+sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk40" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk40"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lb</span> : list bool) (<span class="nv">ln</span> : list nat),
+sumones (sumoneseq lb ln) =
+sumones ln + sumones (sumoneseq lb [])</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span>; <span class="nb">replace</span> (sumoneseq lb ln)
+            <span class="kr">with</span> (sumoneseq lb (ln ++ []))
+    <span class="bp">by</span> (<span class="bp">now</span> <span class="nb">rewrite</span> app_nil_r); <span class="nb">apply</span> sumones_l&#39;.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
