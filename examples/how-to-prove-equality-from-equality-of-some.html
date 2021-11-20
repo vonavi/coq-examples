@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>How to prove equality from equality of Some</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-to-prove-equality-from-equality-of-some">
+<h1 class="title">How to prove equality from equality of Some</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/60304522/how-to-prove-equality-from-equality-of-some">https://stackoverflow.com/questions/60304522/how-to-prove-equality-from-equality-of-some</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to prove equality of two nat numbers in Coq:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> (<span class="nv">a</span> <span class="nv">b</span> : nat), Some a = Some b -&gt; a = b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, Some a = Some b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, Some a = Some b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Some a = Some b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre></div>
+<div class="section" id="answer-theo-winterhalter">
+<h1>Answer (Théo Winterhalter)</h1>
+<p>When you have an equality such as this, usually, the quickest way to
+go is by using the <code class="highlight coq"><span class="nb">inversion</span></code> tactic which will more or less exploit
+injectivity of constructors.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk3"><span class="kn">Lemma</span> <span class="nf">foo</span> : <span class="kr">forall</span> (<span class="nv">a</span> <span class="nv">b</span> : nat), Some a = Some b -&gt; a = b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, Some a = Some b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, Some a = Some b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk5"><span class="nb">intros</span> a b e.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>Some a = Some b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk6"><span class="nb">inversion</span> e.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>Some a = Some b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>a = b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b = b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The case of <code class="highlight coq"><span class="n">Some</span></code> however is special enough that you might want to
+write it differently (especially if you ant to be able to read the
+proof that's generated). You can write some <em>get</em> function for
+<code class="highlight coq"><span class="n">option</span></code> using a default value:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">get_opt_default</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">x</span> : A) (<span class="nv">o</span> : option A) :=
+  <span class="kr">match</span> o <span class="kr">with</span>
+  | Some a =&gt; a
+  | None =&gt; x
+  <span class="kr">end</span>.</span></span></pre><p>So that <code class="highlight coq"><span class="n">get_opt_default</span> <span class="n">x</span> <span class="o">(</span><span class="n">Some</span> <span class="n">a</span><span class="o">)</span> <span class="o">=</span> <span class="n">a</span></code>. Now using <code class="highlight coq"><span class="nb">f_equal</span>
+<span class="o">(</span><span class="n">get_opt_default</span> <span class="n">a</span><span class="o">)</span></code> on equality <code class="highlight coq"><span class="n">Some</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">b</span></code> you get</p>
+<p><code class="highlight coq"><span class="n">get_opt_default</span> <span class="n">a</span> <span class="o">(</span><span class="n">Some</span> <span class="n">a</span><span class="o">)</span> <span class="o">=</span> <span class="n">get_opt_default</span> <span class="n">a</span> <span class="o">(</span><span class="n">Some</span> <span class="n">b</span><span class="o">)</span></code></p>
+<p>which simplifies to</p>
+<p><code class="highlight coq"><span class="n">a</span> <span class="o">=</span> <span class="n">b</span></code></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk7"><span class="kn">Lemma</span> <span class="nf">Some_inj</span> : <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">a</span> <span class="nv">b</span> : A), Some a = Some b -&gt; a = b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">a</span> <span class="nv">b</span> : A), Some a = Some b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">a</span> <span class="nv">b</span> : A), Some a = Some b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chk9"><span class="nb">intros</span> A a b e.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>Some a = Some b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chka"><span class="nb">apply</span> (<span class="nb">f_equal</span> (get_opt_default a)) <span class="kr">in</span> e.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>get_opt_default a (Some a) =
+get_opt_default a (Some b)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chkb"><span class="nb">cbn</span> <span class="kr">in</span> e.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>a = b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> e.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>This is something that can be done in general. Basically you write an
+extractor for your value as a function and you apply it to both sides
+of the equality. By computation it will yield the expected result.</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>The <code class="highlight coq"><span class="bp">congruence</span></code> tactic is powerful enough to solve this goal by
+itself. More generally, there are situations where you would like to
+derive <code class="highlight coq"><span class="n">a</span> <span class="o">=</span> <span class="n">b</span></code> as an additional hypothesis starting from an equality
+<code class="highlight coq"><span class="n">H</span> <span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span></code> of terms that begin with the same constructor. In this
+case, you can call</p>
+<p><code class="highlight coq"><span class="nb">injection</span> <span class="n">H</span><span class="o">.</span></code></p>
+<p>to extract the equalities implied by this hypothesis.</p>
+</div>
+<div class="section" id="answer-ejgallego">
+<h1>Answer (ejgallego)</h1>
+<p>I think it is instructive to write the basic lemma down:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">some_inj</span> <span class="nv">A</span> (<span class="nv">x</span> <span class="nv">y</span> : A) (<span class="nv">h_eq</span> : Some x = Some y) : x = y :=
+  <span class="kr">match</span> h_eq <span class="kr">with</span>
+  | eq_refl _ =&gt; eq_refl
+  <span class="kr">end</span>.</span></span></pre><p>Actually, that seems surprising; indeed Coq is elaborating the match
+to help the user, and the reality is a bit more ugly, as witnessed by
+the term:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-prove-equality-from-equality-of-some-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-equality-from-equality-of-some-v-chkc"><span class="kn">Print</span> some_inj.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">some_inj = 
+<span class="kr">fun</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> <span class="nv">y</span> : A) (<span class="nv">h_eq</span> : Some x = Some y) =&gt;
+<span class="kr">match</span>
+  h_eq <span class="kr">in</span> (_ = o)
+  <span class="kr">return</span>
+    <span class="kr">match</span> o <span class="kr">with</span>
+    | Some y0 =&gt; x = y0
+    | None =&gt; IDProp
+    <span class="kr">end</span>
+<span class="kr">with</span>
+| eq_refl =&gt; eq_refl
+<span class="kr">end</span>
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> <span class="nv">y</span> : A),
+       Some x = Some y -&gt; x = y
+
+<span class="kn">Arguments</span> some_inj _%type_scope _ _ _</blockquote></div></div></small></span></pre><p>So indeed the return type of the match is doing quite a bit of work to
+tell Coq that the constructor is injective.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
