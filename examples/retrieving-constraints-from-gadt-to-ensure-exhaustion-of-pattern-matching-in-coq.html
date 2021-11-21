@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq">
+<h1 class="title">Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/56525092/retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq">https://stackoverflow.com/questions/56525092/retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Let's define two helper types:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">AB</span> : <span class="kt">Set</span> := A | B.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">XY</span> : <span class="kt">Set</span> := X | Y.</span></span></pre><p>Then two other types that depend on <code class="highlight coq"><span class="n">XY</span></code> and <code class="highlight coq"><span class="n">AB</span></code></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapped</span> : AB -&gt; XY -&gt; <span class="kt">Set</span> :=
+| W : <span class="kr">forall</span> (<span class="nv">ab</span> : AB) (<span class="nv">xy</span> : XY), Wrapped ab xy
+| WW : <span class="kr">forall</span> (<span class="nv">ab</span> : AB), Wrapped ab (<span class="kr">match</span> ab <span class="kr">with</span> A =&gt; X | B =&gt; Y <span class="kr">end</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapper</span> : XY -&gt; <span class="kt">Set</span> :=
+  WrapW : <span class="kr">forall</span> (<span class="nv">xy</span> : XY), Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>Note the <code class="highlight coq"><span class="n">WW</span></code> constructor – it can only be value of types <code class="highlight coq"><span class="n">Wrapped</span> <span class="n">A</span>
+<span class="n">X</span></code> and <code class="highlight coq"><span class="n">Wrapped</span> <span class="n">B</span> <span class="n">Y</span></code>.</p>
+<p>Now I would like to pattern match on <code class="highlight coq"><span class="n">Wrapper</span> <span class="n">Y</span></code>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y) : nat :=
+  <span class="kr">match</span> wr <span class="kr">with</span>
+  | WrapW Y w =&gt;
+    <span class="kr">match</span> w <span class="kr">with</span>
+    | W A Y =&gt; <span class="mi">27</span>
+    <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
+WW _</blockquote></div></div></small></span></pre><p>Why does it happen? <code class="highlight coq"><span class="n">Wrapper</span></code> forces contained <code class="highlight coq"><span class="n">Wrapped</span></code> to be <code class="highlight coq"><span class="n">A</span></code>
+version, the type signature forces <code class="highlight coq"><span class="n">Y</span></code> and <code class="highlight coq"><span class="n">WW</span></code> constructor forbids
+being <code class="highlight coq"><span class="n">A</span></code> and <code class="highlight coq"><span class="n">Y</span></code> simultaneously. I don't understand why this case is
+being even considered, while I am forced to check it which seems to be
+impossible.</p>
+<p>How to workaround this situation?</p>
+</div>
+<div class="section" id="answer-htnw">
+<h1>Answer (HTNW)</h1>
+<p>Let's simplify:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">MyTy</span> : <span class="kt">Set</span> -&gt; <span class="kt">Type</span> :=
+  MkMyTy : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Set</span>), A -&gt; MyTy A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk1"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">extract</span> (<span class="nv">m</span> : MyTy nat) : nat :=
+  <span class="kr">match</span> m <span class="kr">with</span> MkMyTy _ x =&gt; S x <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+m : MyTy nat
+S : <span class="kt">Set</span>
+x : S
+The term <span class="s2">&quot;x&quot;</span> has type <span class="s2">&quot;S&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This is because I said</p>
+<p><code class="highlight coq"><span class="kn">Inductive</span> <span class="nf">MyTy</span> <span class="o">:</span> <span class="kt">Set</span> <span class="o">-&gt;</span> <span class="kt">Type</span></code></p>
+<p>This made the first argument to <code class="highlight coq"><span class="n">MyTy</span></code> an index of <code class="highlight coq"><span class="n">MyTy</span></code>, as opposed
+to a parameter. An inductive type with a parameter may look like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">list</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| nil : list A
+| cons : A -&gt; list A -&gt; list A.</span></span></pre><p>Parameters are named on the left of the <code class="highlight coq"><span class="o">:</span></code>, and are not <code class="highlight coq"><span class="kr">forall</span></code>-d in
+the definition of each constructor. (They are still present in the
+constructors' types outside of the definition: <code class="highlight coq"><span class="n">cons</span> <span class="o">:</span> <span class="kr">forall</span> <span class="o">(</span><span class="nv">A</span> <span class="o">:</span>
+<span class="kt">Type</span><span class="o">),</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">A</span></code>.) If I make the <code class="highlight coq"><span class="kt">Set</span></code> a parameter of
+<code class="highlight coq"><span class="n">MyTy</span></code>, then <code class="highlight coq"><span class="n">extract</span></code> can be defined:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">MyTy</span> (<span class="nv">A</span> : <span class="kt">Set</span>) : <span class="kt">Type</span> :=
+  MkMyTy : A -&gt; MyTy A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">extract</span> (<span class="nv">m</span> : MyTy nat) : nat :=
+  <span class="kr">match</span> m <span class="kr">with</span> MkMyTy _ x =&gt; S x <span class="kr">end</span>.</span></span></pre><p>The reason for this is that, on the inside, a <code class="highlight coq"><span class="kr">match</span></code> <em>ignores</em>
+anything you know about the indices of the scrutinee from the outside.
+(Or, rather, the underlying <code class="highlight coq"><span class="kr">match</span></code> expression in Gallina ignores the
+indices. When you write a <code class="highlight coq"><span class="kr">match</span></code> in the source code, Coq tries to
+convert it into the primitive form while incorporating information
+from the indices, but it often fails.) The fact that <code class="highlight coq"><span class="n">m</span> <span class="o">:</span> <span class="n">MyTy</span> <span class="n">nat</span></code> in
+the first version of <code class="highlight coq"><span class="n">extract</span></code> simply did not matter. Instead, the
+match gave me <code class="highlight coq"><span class="n">S</span> <span class="o">:</span> <span class="kt">Set</span></code> (the name was automatically chosen by Coq) and
+<code class="highlight coq"><span class="n">x</span> <span class="o">:</span> <span class="n">S</span></code>, as per the constructor <code class="highlight coq"><span class="n">MkMyTy</span></code>, with no mention of <code class="highlight coq"><span class="n">nat</span></code>.
+Meanwhile, because <code class="highlight coq"><span class="n">MyTy</span></code> has a parameter in the second version, I
+actually get <code class="highlight coq"><span class="n">x</span> <span class="o">:</span> <span class="n">nat</span></code>. The <code class="highlight coq"><span class="n">_</span></code> is really a placeholder this time; it
+is mandatory to write it as _, because there's nothing to match, and
+you can <code class="highlight coq"><span class="kn">Set Asymmetric Patterns</span></code> to make it disappear.</p>
+<p>The reason we distinguish between parameters and indices is because
+parameters have a lot of restrictions—most notably, if <code class="highlight coq"><span class="n">I</span></code> is an
+inductive type with parameters, then the parameters must appear as
+variables in the return type of each constructor:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2"><span class="kn">Fail</span> <span class="kn">Inductive</span> <span class="nf">F</span> (<span class="nv">A</span> : <span class="kt">Set</span>) : <span class="kt">Set</span> := MkF : list A -&gt; F (list A).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+F : <span class="kt">Set</span> -&gt; <span class="kt">Set</span>
+A : <span class="kt">Set</span>
+l : list A
+Unable to <span class="nb">unify</span> <span class="s2">&quot;F (list A)&quot;</span> <span class="kr">with</span> <span class="s2">&quot;F A&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">                                                 <span class="c">(* ^--------^</span>
+<span class="c">                                                    BAD: must appear as F A *)</span></span></pre><p>In your problem, we should make parameters where we can. E.g. the
+<code class="highlight coq"><span class="kr">match</span> <span class="n">wr</span> <span class="kr">with</span> <span class="n">Wrap</span> <span class="n">Y</span> <span class="n">w</span> <span class="o">=&gt;</span> <span class="n">_</span> <span class="kr">end</span></code> bit is wrong, because the <code class="highlight coq"><span class="n">XY</span></code>
+argument to <code class="highlight coq"><span class="n">Wrapper</span></code> is an index, so the fact that <code class="highlight coq"><span class="n">wr</span> <span class="o">:</span> <span class="n">Wrapper</span> <span class="n">Y</span></code>
+is ignored; you would need to handle the <code class="highlight coq"><span class="n">Wrap</span> <span class="n">X</span> <span class="n">w</span></code> case too. Coq
+hasn't gotten around to telling you that.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapped</span> (<span class="nv">ab</span> : AB) : XY -&gt; <span class="kt">Set</span> :=
+| W : <span class="kr">forall</span> (<span class="nv">xy</span> : XY), Wrapped ab xy
+| WW : Wrapped ab (<span class="kr">match</span> ab <span class="kr">with</span> A =&gt; X | B =&gt; Y <span class="kr">end</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapper</span> (<span class="nv">xy</span> : XY) : <span class="kt">Set</span> := WrapW : Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>And now your <code class="highlight coq"><span class="n">test</span></code> compiles (almost):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y) : nat :=
+  <span class="kr">match</span> wr <span class="kr">with</span>
+  | WrapW _ w =&gt; <span class="c">(* mandatory _ *)</span>
+    <span class="kr">match</span> w <span class="kr">with</span>
+    | W _ Y =&gt; <span class="mi">27</span> <span class="c">(* mandatory _ *)</span>
+    <span class="kr">end</span>
+  <span class="kr">end</span>.</span></span></pre><p>because having the parameters gives Coq enough information for its
+<code class="highlight coq"><span class="kr">match</span></code>-elaboration to use information from <code class="highlight coq"><span class="n">Wrapped</span></code>'s index. If you
+issue <code class="highlight coq"><span class="kn">Print</span> <span class="n">test</span><span class="o">.</span></code>, you can see that there's a bit of hoop-jumping to
+pass information about the index <code class="highlight coq"><span class="n">Y</span></code> through the primitive <code class="highlight coq"><span class="kr">match</span></code>'s
+which would otherwise ignore it. <a class="reference external" href="https://coq.inria.fr/refman/addendum/extended-pattern-matching.html">See the reference manual for more
+information.</a></p>
+</div>
+<div class="section" id="answer-radrow">
+<h1>Answer (radrow)</h1>
+<p>The solution turned out to be simple but tricky:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk3"><span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y): nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wr</var><span class="hyp-type"><b>: </b><span>Wrapper Y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (<span class="kr">match</span> wr <span class="kr">with</span>
+          | WrapW Y w =&gt;
+            <span class="kr">match</span> w <span class="kr">in</span> Wrapped ab xy <span class="kr">return</span> ab = A -&gt; xy = Y -&gt; nat <span class="kr">with</span>
+            | W A Y =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">_</span> =&gt; <span class="mi">27</span>
+            | _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">_</span> =&gt; _
+            <span class="kr">end</span> eq_refl eq_refl
+          <span class="kr">end</span>);
+    [ | | <span class="nb">destruct</span> a]; <span class="bp">congruence</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>The issue was that Coq didn't infer some necessary invariants to
+realize that <code class="highlight coq"><span class="n">WW</span></code> case is ridiculous. I had to explicitly give it a
+proof for it.</p>
+<p>In this solution I changed <code class="highlight coq"><span class="kr">match</span></code> to return a function that takes two
+proofs and brings them to the context of our actual result:</p>
+<ul class="simple">
+<li><code class="highlight coq"><span class="n">ab</span></code> is apparently <code class="highlight coq"><span class="n">A</span></code></li>
+<li><code class="highlight coq"><span class="n">xy</span></code> is apparently <code class="highlight coq"><span class="n">Y</span></code></li>
+</ul>
+<p>I have covered real cases ignoring these assumptions, and I deferred
+&quot;bad&quot; cases to be proven false later which turned to be trivial. I was
+forced to pass the <code class="highlight coq"><span class="n">eq_refl</span></code>'s manually, but it worked and does not
+look that bad.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
