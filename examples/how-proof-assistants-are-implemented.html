@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>How proof assistants are implemented?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running . Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-proof-assistants-are-implemented">
+<h1 class="title">How proof assistants are implemented?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/58725547/how-proof-assistants-are-implemented">https://stackoverflow.com/questions/58725547/how-proof-assistants-are-implemented</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>What are the main blocks of a proof assistant?</p>
+<p>I am just interested in knowing the internal logic of proof checking.
+For example, topics about graphical user interfaces of such assistants
+do not interest me.</p>
+<p>A similar question to mine has been asked for compilers:
+<a class="reference external" href="https://softwareengineering.stackexchange.com/questions/165543/how-to-write-a-very-basic-compiler">https://softwareengineering.stackexchange.com/questions/165543/how-to-write-a-very-basic-compiler</a></p>
+<p>My concern is the same but for proof checking systems.</p>
+</div>
+<div class="section" id="answer-manuel-eberl">
+<h1>Answer (Manuel Eberl)</h1>
+<p>I'm hardly an expert on the matter (I'm only a user of these systems;
+I don't worry too <em>much</em> about their internals) and this will probably
+only be a vague partial answer, but the two main approaches that I
+know of are:</p>
+<ul class="simple">
+<li>Dependently-typed systems (e.g. Coq, Lean, Agda) that use the
+Curry–Howard isomorphism. Statements are just types, and proofs are
+terms that have that type, so checking the validity of a proof is
+essentially just a special case of type checking a term. I don't
+want to say too much about this approach because I don't know too
+much about it and am afraid I'll get something wrong. Théo
+Winterhalter linked something in the comments above that may provide
+more context on this approach.</li>
+<li>LCF-style theorems provers (e.g. Isabelle, HOL Light, HOL 4). Here a
+theorem is (roughly speaking) an opaque value of type <code class="highlight coq"><span class="n">thm</span></code> in the
+implementation language. Only the comparatively small 'proof kernel'
+can create these <code class="highlight coq"><span class="n">thm</span></code> values and all other parts of the system
+interact with this proof kernel. The kernel offers an interface
+consisting of various small functions that implement small inference
+steps such as <em>modus ponens</em> (if you have a theorem <code class="highlight coq"><span class="n">A</span> <span class="o">⟹</span> <span class="n">B</span></code> and a
+theorem <code class="highlight coq"><span class="n">A</span></code>, you can get the theorem <code class="highlight coq"><span class="n">B</span></code>) or ∀-introduction (if you
+have the theorem <code class="highlight coq"><span class="n">P</span> <span class="n">x</span></code> for a fixed variable <code class="highlight coq"><span class="n">x</span></code>, you can get the
+theorem <code class="highlight coq"><span class="kr">∀</span><span class="nv">x</span><span class="o">.</span> <span class="n">P</span> <span class="n">x</span></code>) etc. The kernel also offers an interface for
+defining new constants. In principle, as long as you can trust that
+these functions faithfully implement the basic inference steps of
+the underlying logic, you can trust that any <code class="highlight coq"><span class="n">thm</span></code> value you can
+produce really corresponds to a theorem in your logic. For LCF-style
+provers, the answer of what the actual proof is is a bit more
+difficult to answer because they usually don't build proof terms
+(e.g. Isabelle has them, but they are disabled by default and not
+widely used). I think one could say that the history of how the
+kernel primitives are called constitute the proof, and if one were
+to record it, it could – <em>in principle</em> – be replayed and checked in
+another system.</li>
+</ul>
+<p>In both cases the idea is that you have a kernel (the type checker in
+the former case and the inference kernel in the latter) that you have
+to trust, and then you have a large ecosystem of additional procedures
+around this to provide more convenience layers. Since they have to
+interact with the kernel in order to actually produce theorems,
+however, you do not have to trust that code.</p>
+<p>All these different systems have various trade-offs about what parts
+of the system are in the kernel and what parts are not. In general, I
+think it is fair to say that the dependently-typed systems tend to
+have considerably larger kernels than the LCF-based ones (e.g. HOL
+Light has a particularly small and simple kernel).</p>
+<p>There are also other systems that I believe do not fit into these two
+categories (e.g. Mizar, ACL2, PVS, Metamath, NuPRL) but I don't know
+anything about how these are implemented.</p>
+</div>
+<div class="section" id="answer-lawrence-paulson">
+<h1>Answer (Lawrence Paulson)</h1>
+<p>In the case of LCF, HOL and Isabelle, you'll find an extensive answer
+to your question in the journal article &quot;<a class="reference external" href="https://link.springer.com/article/10.1007%2Fs00165-019-00492-1">From LCF to Isabelle/HOL</a>&quot;.
+(It's open access.)</p>
+<p>Most dependently typed systems, such as Coq, are also LCF-style
+theorem provers, as described in the article and in Eberl's answer.
+One significant difference is that such calculi incorporate full proof
+objects, so that one of the objectives of the LCF approach — to save
+space by not storing proofs — is abandoned. However, the objective of
+soundness is still met.</p>
+</div>
+</div>
+</div></body>
+</html>
