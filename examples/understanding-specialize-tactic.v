@@ -1,5 +1,6 @@
 (*|
 Understanding specialize tactic
+===============================
 
 :Link: https://stackoverflow.com/questions/56828692/understanding-specialize-tactic
 |*)
