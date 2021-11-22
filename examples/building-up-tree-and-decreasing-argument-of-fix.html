@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<title>Building up tree and decreasing argument of fix</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="building-up-tree-and-decreasing-argument-of-fix">
+<h1 class="title">Building up tree and decreasing argument of fix</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/56132183/building-up-tree-and-decreasing-argument-of-fix">https://stackoverflow.com/questions/56132183/building-up-tree-and-decreasing-argument-of-fix</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm attempting to implement a function to build up a Braun tree with n
+elements using the following function in Coq, but Coq gives me the
+error that it cannot guess decreasing argument of fix:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Init.Nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">V</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BraunTree</span> : <span class="kt">Type</span> :=
+| E : BraunTree
+| T : V -&gt; BraunTree -&gt; BraunTree -&gt; BraunTree.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="building-up-tree-and-decreasing-argument-of-fix-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="building-up-tree-and-decreasing-argument-of-fix-v-chk0"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
+  <span class="kr">let</span>
+    <span class="nv">fix</span> <span class="nv">copy2</span> (<span class="nv">a</span> : V) (<span class="nv">i</span> : nat) : (BraunTree * BraunTree) :=
+    <span class="kr">match</span> i <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; (T a E E, E)
+    | _ =&gt; <span class="kr">match</span> Nat.odd i <span class="kr">with</span>
+           | true =&gt; <span class="kr">let</span> <span class="nv">m</span> := (i - <span class="mi">1</span>) / <span class="mi">2</span> <span class="kr">in</span>
+                     <span class="kr">let</span> (<span class="nv">s</span>,t) := copy2 a m <span class="kr">in</span>
+                     (T a s t, T a t t)
+           | false =&gt; <span class="kr">let</span> <span class="nv">m</span> := (i - <span class="mi">2</span>) / <span class="mi">2</span> <span class="kr">in</span>
+                      <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a m <span class="kr">in</span>
+                      (T a s s, T a s t)
+           <span class="kr">end</span>
+    <span class="kr">end</span>
+  <span class="kr">in</span>
+  <span class="kr">match</span> copy2 x n <span class="kr">with</span>
+  | (_, snd) =&gt; snd
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>I know that it is not the separate even and odd cases that is the
+problem because it gave the same error when I removed the even/odd
+cases:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="building-up-tree-and-decreasing-argument-of-fix-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="building-up-tree-and-decreasing-argument-of-fix-v-chk1"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
+  <span class="kr">let</span>
+    <span class="nv">fix</span> <span class="nv">copy2</span> (<span class="nv">a</span> : V) (<span class="nv">i</span> : nat) : (BraunTree * BraunTree) :=
+    <span class="kr">match</span> i <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; (T a E E, E)
+    | _ =&gt; <span class="kr">let</span> <span class="nv">m</span> := (i - <span class="mi">1</span>) / <span class="mi">2</span> <span class="kr">in</span>
+           <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a m <span class="kr">in</span>
+           (T a s t, T a t t)
+    <span class="kr">end</span>
+  <span class="kr">in</span>
+  <span class="kr">match</span> copy2 x n <span class="kr">with</span>
+  | (_, snd) =&gt; snd
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>How can I convince Coq that i is in fact a decreasing argument?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><code class="highlight coq"><span class="kn">Fixpoint</span></code>/<code class="highlight coq"><span class="kr">fix</span></code> only allows recursive calls on a <em>syntactically</em>
+smaller argument.</p>
+<div class="line-block">
+<div class="line"><code class="highlight coq"><span class="kn">Fixpoint</span> <span class="nf">example</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:=</span></code></div>
+<div class="line-block">
+<div class="line"><code class="highlight coq"><span class="o">...</span> <span class="c">(* There must be a match on [n] somewhere *)</span></code></div>
+<div class="line-block">
+<div class="line"><code class="highlight coq"><span class="o">...</span> <span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span></code></div>
+<div class="line-block">
+<div class="line"><code class="highlight coq"><span class="o">|</span> <span class="n">O</span> <span class="o">=&gt;</span> <span class="n">base_case</span> <span class="c">(* no recursive call allowed *)</span></code></div>
+<div class="line"><code class="highlight coq"><span class="o">|</span> <span class="n">S</span> <span class="n">m</span> <span class="o">=&gt;</span></code></div>
+<div class="line-block">
+<div class="line"><code class="highlight coq"><span class="o">...</span> <span class="o">(</span><span class="n">example</span> <span class="n">m</span><span class="o">)</span></code></div>
+<div class="line"><code class="highlight coq"><span class="c">(* We can only call [example] on [m], or some even *)</span></code></div>
+<div class="line"><code class="highlight coq"><span class="c">(* smaller value obtained by matching on [m] *)</span></code></div>
+</div>
+<div class="line"><code class="highlight coq"><span class="kr">end</span> <span class="o">...</span></code></div>
+</div>
+</div>
+</div>
+</div>
+<p>In particular, it's not allowed to make a recursive call on a value
+obtained via some arbitrary function (in this case, <code class="highlight coq"><span class="n">div</span></code> and <code class="highlight coq"><span class="n">sub</span></code> in
+<code class="highlight coq"><span class="n">copy2</span> <span class="n">a</span> <span class="o">((</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">)</span></code>).</p>
+<p>Here are three options:</p>
+<ol class="arabic simple">
+<li>Pick another representation of natural numbers so that
+pattern-matching on it naturally decomposes into the different
+branches of the desired definition (base case (zero), even, odd).</li>
+<li>Use the fact that the recursion depth is actually bounded by <code class="highlight coq"><span class="n">n</span></code>,
+so we can use <code class="highlight coq"><span class="n">n</span></code> as &quot;fuel&quot;, which we know will not actually
+deplete before we are done.</li>
+<li>Cunningly extract a subterm of the decreasing argument to make the
+recursive call. This solution is less general and robust than the
+previous ones; it's a much harder fight against the termination
+checker.</li>
+</ol>
+<hr class="docutils" />
+<div class="section" id="alternative-representation">
+<h2>Alternative representation</h2>
+<p>We have three cases: zero, even, and odd. Luckily the standard library
+has a type with almost the same structure, <code class="highlight coq"><span class="n">positive</span></code>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">positive</span> :=    <span class="c">(* p &gt; 0 *)</span>
+| xH                     <span class="c">(* 1 *)</span>
+| xI (p : positive)      <span class="c">(* 2p + 1 *)</span>
+| xO (p : positive).     <span class="c">(* 2p     *)</span></span></span></pre><p>Pointing the type <code class="highlight coq"><span class="n">positive</span></code> with an additional zero, we get <code class="highlight coq"><span class="n">N</span></code>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">N</span> :=
+| N0                      <span class="c">(* 0 *)</span>
+| Npos (p : positive).    <span class="c">(* p &gt; 0 *)</span></span></span></pre><p>There is also a conversion function <code class="highlight coq"><span class="n">N</span><span class="o">.</span><span class="n">of_nat</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">N</span></code>, although it
+might also be a good idea to use <code class="highlight coq"><span class="n">N</span></code> everywhere instead of <code class="highlight coq"><span class="n">nat</span></code>, if
+the conversions become too annoying.</p>
+<p>The final definition starts by case analysis on <code class="highlight coq"><span class="n">N</span></code>, and the case
+revealing a <code class="highlight coq"><span class="n">positive</span></code> number is handled with a <code class="highlight coq"><span class="kr">fix</span></code>-point, where the
+base case is <code class="highlight coq"><span class="mi">1</span></code> instead of <code class="highlight coq"><span class="mi">0</span></code>. We have to shift some details,
+because the even case is <code class="highlight coq"><span class="mi">2</span><span class="n">p</span></code> instead of <code class="highlight coq"><span class="mi">2</span><span class="n">p</span> <span class="o">+</span> <span class="mi">2</span></code>, so instead of a
+pair of trees of size <code class="highlight coq"><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span></code> we have to do <code class="highlight coq"><span class="o">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span></code>. But overall
+the recursive cases still naturally match an informal specification:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> NArith PArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">V</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BraunTree</span> : <span class="kt">Type</span> :=
+| E : BraunTree
+| T : V -&gt; BraunTree -&gt; BraunTree -&gt; BraunTree.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : N) : BraunTree :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | N0 =&gt; E
+  | Npos p =&gt;
+    <span class="kr">let</span>
+      (* copy2 a i : a tree of (i-<span class="mi">1</span>) copies of a, and another of i
+         copies of a *)
+      <span class="nv">fix</span> <span class="nv">copy2</span> (<span class="nv">a</span> : V) (<span class="nv">i</span> : positive) : (BraunTree * BraunTree) :=
+      <span class="kr">match</span> i <span class="kr">with</span>
+      | xH =&gt; <span class="c">(* i = 1 *)</span>
+        (E, T a E E)
+      | xI p =&gt; <span class="c">(* i = 2p + 1 *)</span>
+        <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a p <span class="kr">in</span>
+        (T a t s, T a t t)
+      | xO p =&gt; <span class="c">(* i = 2p *)</span>
+        <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a p <span class="kr">in</span>
+          (T a s s, T a t s)
+      <span class="kr">end</span>
+    <span class="kr">in</span>
+    <span class="kr">match</span> copy2 x p <span class="kr">with</span>
+    | (_, snd) =&gt; snd
+    <span class="kr">end</span>
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span></pre></div>
+<hr class="docutils" />
+<div class="section" id="just-enough-fuel">
+<h2>Just enough fuel</h2>
+<p>We add fuel to the <code class="highlight coq"><span class="kr">fix</span></code> as the decreasing argument. We can only run
+out if <code class="highlight coq"><span class="n">n</span> <span class="o">=</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span></code>, so we know what the result should be then.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* note: This doesn&#39;t need to be a Fixpoint *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
+  <span class="kr">let</span>
+    <span class="nv">fix</span> <span class="nv">copy2</span> (<span class="nv">a</span> : V) (<span class="nv">n</span> : nat) (<span class="nv">i</span> : nat) : (BraunTree * BraunTree) :=
+    <span class="kr">match</span> n <span class="kr">with</span>
+    | O =&gt; (T a E E, E)
+    | S n&#39; =&gt;
+      <span class="kr">match</span> i <span class="kr">with</span>
+      | O =&gt; (T a E E, E)
+      | _ =&gt;
+        <span class="kr">if</span> Nat.odd i <span class="kr">then</span>
+          <span class="kr">let</span> <span class="nv">m</span> := div2 ((i - <span class="mi">1</span>) / <span class="mi">2</span>) <span class="kr">in</span>
+          <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a n&#39; m <span class="kr">in</span>
+          (T a s t, T a t t)
+        <span class="kr">else</span>
+          <span class="kr">let</span> <span class="nv">m</span> := div2 ((i - <span class="mi">2</span>) / <span class="mi">2</span>) <span class="kr">in</span>
+          <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a n&#39; m <span class="kr">in</span>
+          (T a s s, T a s t)
+      <span class="kr">end</span>
+    <span class="kr">end</span>
+  <span class="kr">in</span>
+  <span class="kr">match</span> copy2 x n n <span class="kr">with</span>
+  | (_, snd) =&gt; snd
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span></pre><p>This works nicely when:
+- we can compute the amount of fuel needed;
+- and there is a predictable answer to give when we run out of fuel.</p>
+<p>If either of those assumption does <em>not</em> hold, we need to litter our
+code with <code class="highlight coq"><span class="n">option</span></code>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="nested-recursion">
+<h2>Nested recursion</h2>
+<p>As mentioned earlier, Coq has strict rules about decreasing arguments.
+The usual explanation is that we can only make a recursive call on a
+subterm obtained through pattern-matching on the decreasing argument
+(or transitively, one of its subterms).</p>
+<p>One apparent restriction is that, because the condition is syntactic
+(i.e., Coq looks at the definition to track the provenance of the
+decreasing argument), the argument <code class="highlight coq"><span class="n">n</span></code> can only decrease by a constant
+at most (constant with respect to <code class="highlight coq"><span class="n">n</span></code>), since there are only finitely
+many <code class="highlight coq"><span class="kr">match</span></code> in a definition. In particular, there is no way to make a
+recursive call on the result of a division by two, as that represents
+a decrease by <code class="highlight coq"><span class="n">n</span><span class="o">/</span><span class="mi">2</span></code>, a value linear in <code class="highlight coq"><span class="n">n</span></code>.</p>
+<p>For better or for worse, Coq's termination criterion is actually a bit
+smarter than that: one can pass the decreasing argument to a nested
+fixpoint, and the &quot;subterm&quot; relation will be tracked through it.</p>
+<div class="section" id="cons-free-division">
+<h3>Cons-free division</h3>
+<p>And indeed, the division of a Peano <code class="highlight coq"><span class="n">nat</span></code> can be defined in such a way
+that Coq can tell that the result is a subterm of the dividend:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">div2</span> (<span class="nv">n</span> : nat) :=
+  <span class="kr">let fix</span> <span class="nv">d2</span> (<span class="nv">n1</span> : nat) (<span class="nv">n2</span> : nat) {<span class="nv">struct</span> <span class="nv">n1</span>} :=
+      <span class="kr">match</span> n2 <span class="kr">with</span>
+      | S (S n2&#39;) =&gt;
+        <span class="kr">match</span> n1 <span class="kr">with</span>
+        | O =&gt; n1
+        | S n1&#39; =&gt; d2 n1&#39; n2&#39;
+        <span class="kr">end</span>
+      | _ =&gt; n1
+      <span class="kr">end</span>
+  <span class="kr">in</span> d2 n n.</span></span></pre><p>The idea is to write a <code class="highlight coq"><span class="kr">fix</span></code>-point of two arguments (somewhat like the
+fuel solution), which start out equal (<code class="highlight coq"><span class="n">d2</span> <span class="n">n</span> <span class="n">n</span></code>), and we remove
+<strong>two</strong> <code class="highlight coq"><span class="n">S</span></code> constructors from one (<code class="highlight coq"><span class="n">n2</span></code>) of them for every <strong>one</strong> <code class="highlight coq"><span class="n">S</span></code>
+we remove from the other (<code class="highlight coq"><span class="n">n1</span></code>). Important details:</p>
+<ul class="simple">
+<li>In all the non-recursing cases, we return <code class="highlight coq"><span class="n">n1</span></code> (and <em>not</em> <code class="highlight coq"><span class="mi">0</span></code> in any
+case), which is then guaranteed to be a subterm of the topmost <code class="highlight coq"><span class="n">n</span></code>.</li>
+<li>And the function must be decreasing in <code class="highlight coq"><span class="n">n1</span></code> (the term we return),
+rather than <code class="highlight coq"><span class="n">n2</span></code> (Coq only keeps track of subterms of decreasing
+arguments).</li>
+</ul>
+<p>All that ensures that <code class="highlight coq"><span class="n">div2</span> <span class="n">n</span></code> is a subterm of <code class="highlight coq"><span class="n">n</span></code> (not a <em>strict
+subterm</em> (or <em>proper subterm</em>), because <code class="highlight coq"><span class="n">n</span></code> could be <code class="highlight coq"><span class="n">O</span></code>).</p>
+<p>This has similarities to the previous fuel-based solution, but here
+the decreasing argument is a lot more relevant than just a device to
+trick the type checker.</p>
+<p>This technique is a variant of <em>cons-free programming</em>. (Note though
+that the constraints are not quite the same as what is discussed in
+the literature, for example when the focus is on avoiding <em>memory
+allocations</em> rather than ensuring <em>termination</em> by structural
+well-foundedness.)</p>
+</div>
+<div class="section" id="conclusion-definition-of-copy">
+<h3>Conclusion: definition of <code class="highlight coq"><span class="n">copy</span></code></h3>
+<p>Once we have <code class="highlight coq"><span class="n">div2</span></code>, we can define <code class="highlight coq"><span class="n">copy</span></code> with a few tweaks to obtain
+<code class="highlight coq"><span class="n">i</span><span class="o">-</span><span class="mi">1</span></code> and <code class="highlight coq"><span class="n">i</span><span class="o">-</span><span class="mi">2</span></code> as <em>proper subterms</em> of <code class="highlight coq"><span class="n">i</span></code>, again by
+pattern-matching. Below, <code class="highlight coq"><span class="n">i'</span></code> and <code class="highlight coq"><span class="n">i''</span></code> are proper subterms of <code class="highlight coq"><span class="n">i</span></code> (by
+visual inspection), and <code class="highlight coq"><span class="n">div2</span> <span class="n">i'</span></code> and <code class="highlight coq"><span class="n">div2</span> <span class="n">i''</span></code> are subterms of <code class="highlight coq"><span class="n">i'</span></code>
+and <code class="highlight coq"><span class="n">i''</span></code> (by the definition of <code class="highlight coq"><span class="n">div2</span></code>). By transitivity they are
+proper subterms of <code class="highlight coq"><span class="n">i</span></code>, so the termination checker accepts.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
+  <span class="kr">let</span>
+    <span class="nv">fix</span> <span class="nv">copy2</span> (<span class="nv">a</span> : V) (<span class="nv">i</span> : nat) : (BraunTree * BraunTree) :=
+    <span class="kr">match</span> i <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; (T a E E, E)
+    | S i&#39; =&gt; <span class="c">(* i&#39; = i-1 *)</span>
+      <span class="kr">if</span> Nat.odd i <span class="kr">then</span>
+        <span class="kr">let</span> <span class="nv">m</span> := div2 i&#39; <span class="kr">in</span>
+        <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a m <span class="kr">in</span>
+        (T a s t, T a t t)
+      <span class="kr">else</span>
+        <span class="kr">match</span> i&#39; <span class="kr">with</span>
+        | O =&gt; <span class="c">(* Unreachable *)</span> (E, E)
+        | S i&#39;&#39; =&gt; <span class="c">(* i&#39;&#39; = i-2 *)</span>
+          <span class="kr">let</span> <span class="nv">m</span> := div2 i&#39;&#39; <span class="kr">in</span>
+          <span class="kr">let</span> (<span class="nv">s</span>, t) := copy2 a m <span class="kr">in</span>
+          (T a s s, T a s t)
+        <span class="kr">end</span>
+    <span class="kr">end</span>
+  <span class="kr">in</span>
+  <span class="kr">match</span> copy2 x n <span class="kr">with</span>
+  | (_, snd) =&gt; snd
+  <span class="kr">end</span>.</span></span></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>
