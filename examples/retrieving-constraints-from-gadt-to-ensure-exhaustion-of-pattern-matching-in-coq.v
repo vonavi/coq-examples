@@ -29,6 +29,8 @@ Note the ``WW`` constructor – it can only be value of types ``Wrapped
 A X`` and ``Wrapped B Y``.
 
 Now I would like to pattern match on ``Wrapper Y``:
+
+.. coq:: unfold fails
 |*)
 
 Fail Definition test (wr : Wrapper Y) : nat :=
@@ -37,7 +39,7 @@ Fail Definition test (wr : Wrapper Y) : nat :=
     match w with
     | W A Y => 27
     end
-  end. (* .unfold *)
+  end.
 
 (*|
 Why does it happen? ``Wrapper`` forces contained ``Wrapped`` to be
@@ -60,7 +62,7 @@ Inductive MyTy : Set -> Type :=
   MkMyTy : forall (A : Set), A -> MyTy A.
 
 Fail Definition extract (m : MyTy nat) : nat :=
-  match m with MkMyTy _ x => S x end. (* .unfold *)
+  match m with MkMyTy _ x => S x end. (* .unfold .fails *)
 
 (*|
 This is because I said
@@ -113,6 +115,8 @@ The reason we distinguish between parameters and indices is because
 parameters have a lot of restrictions—most notably, if ``I`` is an
 inductive type with parameters, then the parameters must appear as
 variables in the return type of each constructor:
+
+.. coq:: fails
 |*)
 
 Fail Inductive F (A : Set) : Set := MkF : list A -> F (list A).

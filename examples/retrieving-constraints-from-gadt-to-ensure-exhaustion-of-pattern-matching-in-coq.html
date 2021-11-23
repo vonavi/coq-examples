@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -38,14 +38,13 @@
   WrapW : <span class="kr">forall</span> (<span class="nv">xy</span> : XY), Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>Note the <tt class="docutils literal">WW</tt> constructor – it can only be value of types <tt class="docutils literal">Wrapped
 A X</tt> and <tt class="docutils literal">Wrapped B Y</tt>.</p>
 <p>Now I would like to pattern match on <tt class="docutils literal">Wrapper Y</tt>:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y) : nat :=
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y) : nat :=
   <span class="kr">match</span> wr <span class="kr">with</span>
   | WrapW Y w =&gt;
     <span class="kr">match</span> w <span class="kr">with</span>
     | W A Y =&gt; <span class="mi">27</span>
     <span class="kr">end</span>
-  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
 WW _</blockquote></div></div></small></span></pre><p>Why does it happen? <tt class="docutils literal">Wrapper</tt> forces contained <tt class="docutils literal">Wrapped</tt> to be
 <tt class="docutils literal">A</tt> version, the type signature forces <tt class="docutils literal">Y</tt> and <tt class="docutils literal">WW</tt> constructor
 forbids being <tt class="docutils literal">A</tt> and <tt class="docutils literal">Y</tt> simultaneously. I don't understand why
@@ -59,9 +58,8 @@ which seems to be impossible.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">MyTy</span> : <span class="kt">Set</span> -&gt; <span class="kt">Type</span> :=
   MkMyTy : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Set</span>), A -&gt; MyTy A.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk1"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">extract</span> (<span class="nv">m</span> : MyTy nat) : nat :=
-  <span class="kr">match</span> m <span class="kr">with</span> MkMyTy _ x =&gt; S x <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-In environment
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk1"><span class="kn">Definition</span> <span class="nf">extract</span> (<span class="nv">m</span> : MyTy nat) : nat :=
+  <span class="kr">match</span> m <span class="kr">with</span> MkMyTy _ x =&gt; S x <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
 m : MyTy nat
 S : <span class="kt">Set</span>
 x : S
@@ -102,8 +100,7 @@ disappear.</p>
 parameters have a lot of restrictions—most notably, if <tt class="docutils literal">I</tt> is an
 inductive type with parameters, then the parameters must appear as
 variables in the return type of each constructor:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2"><span class="kn">Fail</span> <span class="kn">Inductive</span> <span class="nf">F</span> (<span class="nv">A</span> : <span class="kt">Set</span>) : <span class="kt">Set</span> := MkF : list A -&gt; F (list A).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-In environment
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2"><span class="kn">Inductive</span> <span class="nf">F</span> (<span class="nv">A</span> : <span class="kt">Set</span>) : <span class="kt">Set</span> := MkF : list A -&gt; F (list A).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
 F : <span class="kt">Set</span> -&gt; <span class="kt">Set</span>
 A : <span class="kt">Set</span>
 l : list A

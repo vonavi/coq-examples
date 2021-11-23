@@ -20,9 +20,13 @@ Record Version :=
       hotfix : {h : nat | h > 0 /\ h < 8}
     }.
 
-(*| I'm trying to make an example: |*)
+(*|
+I'm trying to make an example:
 
-Fail Example ex1 := mkVersion 3 2 (exist _ 5) (exist _ 5). (* .unfold *)
+.. coq:: unfold fails
+|*)
+
+Fail Example ex1 := mkVersion 3 2 (exist _ 5) (exist _ 5).
 
 (*| And it failed. What am I missing? |*)
 

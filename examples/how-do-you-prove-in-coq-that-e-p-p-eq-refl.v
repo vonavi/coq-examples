@@ -32,11 +32,10 @@ Proof fun (U: Type) (x: unit) =>
 (*| But when you try the same strategy on my problem, it fails. |*)
 
 Lemma eq_eq: forall (U: Type) (p: U) (eqv: p = p), eq_refl = eqv.
-Fail Proof
-     fun (U: Type) (p: U) (eqv: p = p) =>
-       match eqv as e in _ = p' return eq_refl = e with
-         eq_refl => eq_refl
-       end. (* .unfold .messages *)
+  Fail Proof fun (U: Type) (p: U) (eqv: p = p) =>
+               match eqv as e in _ = p' return eq_refl = e with
+                 eq_refl => eq_refl
+               end. (* .unfold .fails *)
 
 (*|
 The problem is that the ``return`` clause here translates internally

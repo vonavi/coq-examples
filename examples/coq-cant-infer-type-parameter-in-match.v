@@ -16,7 +16,7 @@ Inductive foo : nat -> Type :=
 | nil : foo 0
 | succ {n:nat} : foo n -> foo n.
 
-(*| .. coq:: unfold |*)
+(*| .. coq:: unfold fails |*)
 
 Fail Fixpoint bar {n:nat} (A:foo n) (B:foo n) : Prop :=
   match B with

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Coq can't infer type parameter in match</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -30,12 +30,11 @@
 <p>Consider the following Coq program:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">foo</span> : nat -&gt; <span class="kt">Type</span> :=
 | nil : foo <span class="mi">0</span>
-| succ {n:nat} : foo n -&gt; foo n.</span></span></pre><pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-cant-infer-type-parameter-in-match-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-infer-type-parameter-in-match-v-chk0"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">bar</span> {<span class="nv">n</span>:nat} (<span class="nv">A</span>:foo n) (<span class="nv">B</span>:foo n) : <span class="kt">Prop</span> :=
+| succ {n:nat} : foo n -&gt; foo n.</span></span></pre><pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-cant-infer-type-parameter-in-match-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-cant-infer-type-parameter-in-match-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">bar</span> {<span class="nv">n</span>:nat} (<span class="nv">A</span>:foo n) (<span class="nv">B</span>:foo n) : <span class="kt">Prop</span> :=
   <span class="kr">match</span> B <span class="kr">with</span>
   | nil =&gt; <span class="kt">False</span>
   | succ C =&gt; bar A C
-  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-In environment
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
 bar : <span class="kr">forall</span> <span class="nv">n</span> : nat, foo n -&gt; foo n -&gt; <span class="kt">Prop</span>
 n : nat
 A : foo n

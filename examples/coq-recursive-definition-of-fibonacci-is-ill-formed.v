@@ -11,7 +11,7 @@ Question
 
 I am trying to define Fibonacci numbers using coq. This is my code:
 
-.. coq:: unfold
+.. coq:: unfold fails
 |*)
 
 Fail Fixpoint fibonacci (n:nat) : nat :=

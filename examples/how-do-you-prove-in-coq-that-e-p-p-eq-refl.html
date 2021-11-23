@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>How do you prove in Coq that (e: p = p) = eq_refl?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -40,8 +40,10 @@ constructor.</p>
           tt =&gt; eq_refl
         <span class="kr">end</span>.</span></span></pre><p>But when you try the same strategy on my problem, it fails.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk2"><span class="kn">Lemma</span> <span class="nf">eq_eq</span>: <span class="kr">forall</span> (<span class="nv">U</span>: <span class="kt">Type</span>) (<span class="nv">p</span>: U) (<span class="nv">eqv</span>: p = p), eq_refl = eqv.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">eqv</span> : p = p), eq_refl = eqv</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-In environment
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk3"><span class="kn">Proof</span> <span class="kr">fun</span> (<span class="nv">U</span>: <span class="kt">Type</span>) (<span class="nv">p</span>: U) (<span class="nv">eqv</span>: p = p) =&gt;
+               <span class="kr">match</span> eqv <span class="kr">as</span> e <span class="kr">in</span> _ = p&#39; <span class="kr">return</span> eq_refl = e <span class="kr">with</span>
+                 eq_refl =&gt; eq_refl
+               <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
 U : <span class="kt">Type</span>
 p : U
 eqv : p = p
@@ -49,7 +51,7 @@ p&#39; : U
 e : p = p&#39;
 The term <span class="s2">&quot;e&quot;</span> has type <span class="s2">&quot;p = p&#39;&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;p = p&quot;</span>
-(cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div></div></small></span></pre><p>The problem is that the <tt class="docutils literal">return</tt> clause here translates internally
+(cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">eqv</span> : p = p), eq_refl = eqv</div></blockquote></div></div></small></span></pre><p>The problem is that the <tt class="docutils literal">return</tt> clause here translates internally
 to a predicate function something like this:</p>
 <pre class="code coq literal-block">
 <span class="kr">fun</span> <span class="o">(</span><span class="nv">p'</span><span class="o">:</span> <span class="n">U</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p'</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="o">=</span> <span class="n">e</span>

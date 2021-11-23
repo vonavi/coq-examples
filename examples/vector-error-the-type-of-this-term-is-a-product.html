@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Vector error : The type of this term is a product</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -62,17 +62,16 @@
    @rectEuc (<span class="kr">fun</span> <span class="nv">n</span> <span class="nv">_</span> =&gt; Euc n) (<span class="kr">fun</span> <span class="nv">a</span> =&gt; []) (<span class="kr">fun</span> <span class="nv">_</span> <span class="nv">a</span> <span class="nv">_</span> <span class="nv">H</span> =&gt; a ::: H).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
  <span class="c">(* this function has an error *)</span>
-</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="vector-error-the-type-of-this-term-is-a-product-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="vector-error-the-type-of-this-term-is-a-product-v-chk0"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">rectEucLastN</span> (<span class="nv">P</span>: <span class="kr">forall</span> {<span class="nv">n</span>}, nat -&gt; Euc n -&gt; <span class="kt">Type</span>)
-                 (<span class="nv">bas</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">k</span> (<span class="nv">e</span>: Euc n), P k e)
-                 (<span class="nv">rect</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">k</span> <span class="nv">a</span> (<span class="nv">e</span>: Euc (S n)), P k e -&gt; P (S k) (a ::: e)) :=
+</span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="vector-error-the-type-of-this-term-is-a-product-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="vector-error-the-type-of-this-term-is-a-product-v-chk0"><span class="kn">Definition</span> <span class="nf">rectEucLastN</span> (<span class="nv">P</span>: <span class="kr">forall</span> {<span class="nv">n</span>}, nat -&gt; Euc n -&gt; <span class="kt">Type</span>)
+      (<span class="nv">bas</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">k</span> (<span class="nv">e</span>: Euc n), P k e)
+      (<span class="nv">rect</span>: <span class="kr">forall</span> {<span class="nv">n</span>} <span class="nv">k</span> <span class="nv">a</span> (<span class="nv">e</span>: Euc (S n)), P k e -&gt; P (S k) (a ::: e)) :=
    <span class="kr">fix</span> rectEuc_fix {n} (k: nat) (e: Euc n): P k e :=
      <span class="kr">match</span> k,e <span class="kr">with</span>
      | S k&#39;, e&#39; ::: es =&gt;
        rect k&#39; e&#39; (rectEuc_fix k&#39; (EucElimLast ((EucLength e) - <span class="mi">1</span>) e))
      | <span class="mi">0</span>%nat, e&#39; ::: es =&gt; bas k e
      | _, _ =&gt; <span class="kr">fun</span> <span class="nv">devil</span> =&gt; False_ind (@IDProp) devil
-     <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-The <span class="kp">type of</span> this term <span class="kr">is</span> a product
+     <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The <span class="kp">type of</span> this term <span class="kr">is</span> a product
 while it <span class="kr">is</span> expected to be
  (P <span class="nl">?n</span>@{n1:=<span class="mi">0</span>} <span class="nl">?n0</span>@{k1:=<span class="mi">0</span>} <span class="nl">?e</span>@{n1:=<span class="mi">0</span>; e1:=[ ]}).</blockquote></div></div></small></span></pre><p>The problem is the second line from the bottom of the code.</p>
 <p>Why does last pattern have an error?</p>

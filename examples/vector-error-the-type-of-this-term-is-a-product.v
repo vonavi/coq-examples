@@ -48,15 +48,15 @@ I want last k elements of vector. I wrote this code with reference to
 
  (* this function has an error *)
  Fail Definition rectEucLastN (P: forall {n}, nat -> Euc n -> Type)
-                 (bas: forall {n} k (e: Euc n), P k e)
-                 (rect: forall {n} k a (e: Euc (S n)), P k e -> P (S k) (a ::: e)) :=
+      (bas: forall {n} k (e: Euc n), P k e)
+      (rect: forall {n} k a (e: Euc (S n)), P k e -> P (S k) (a ::: e)) :=
    fix rectEuc_fix {n} (k: nat) (e: Euc n): P k e :=
      match k,e with
      | S k', e' ::: es =>
        rect k' e' (rectEuc_fix k' (EucElimLast ((EucLength e) - 1) e))
      | 0%nat, e' ::: es => bas k e
      | _, _ => fun devil => False_ind (@IDProp) devil
-     end. (* .unfold *)
+     end. (* .unfold .fails *)
 
 (*|
 The problem is the second line from the bottom of the code.

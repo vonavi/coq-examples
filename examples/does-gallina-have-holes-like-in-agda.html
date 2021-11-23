@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Does Gallina have holes like in Agda?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -38,12 +38,11 @@ finish the proof.</p>
 <p>But when writing Gallina, do we have to solve the whole thing in one
 bang, or make lots of little helper functions? I'd love to be able to
 put use a question mark to ask Coq what it's looking for:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk4"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">ModusPonens&#39;</span> :=
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="does-gallina-have-holes-like-in-agda-v-chk4"><span class="kn">Definition</span> <span class="nf">ModusPonens&#39;</span> :=
   <span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : (A -&gt; B) /\ A) =&gt;
     <span class="kr">match</span> H <span class="kr">with</span>
     | conj H1 H2 =&gt; H1 _ <span class="c">(* hole of type B *)</span>
-    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-The following term contains unresolved implicit arguments:
+    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The following term contains unresolved implicit arguments:
   (<span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : (A -&gt; B) /\ A) =&gt;
    <span class="kr">match</span> H <span class="kr">with</span>
    | conj H1 H2 =&gt; H1 <span class="nl">?a</span>
@@ -77,12 +76,11 @@ turn into obligations for you to solve later.</p>
 <div class="section" id="answer-li-yao-xia">
 <h1>Answer (Li-yao Xia)</h1>
 <p>Use an underscore</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk7"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">ModusPonens&#39;</span> :=
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="does-gallina-have-holes-like-in-agda-v-chk7"><span class="kn">Definition</span> <span class="nf">ModusPonens&#39;</span> :=
   <span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : (A -&gt; B) /\ A) =&gt;
     <span class="kr">match</span> H <span class="kr">with</span>
     | conj H1 H2 =&gt; H1 _ <span class="c">(* hole of type A *)</span>
-    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-The following term contains unresolved implicit arguments:
+    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The following term contains unresolved implicit arguments:
   (<span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : (A -&gt; B) /\ A) =&gt;
    <span class="kr">match</span> H <span class="kr">with</span>
    | conj H1 H2 =&gt; H1 <span class="nl">?a</span>

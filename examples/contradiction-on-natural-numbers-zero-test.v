@@ -16,7 +16,7 @@ that if it is equal to zero then it give false.
 Require Import PeanoNat. (* .none *)
 Lemma notzero : forall n, n <> 0 -> (n =? 0) = false.
 Proof.
-  intros n H. Fail inversion H.
+  intros n H. Fail inversion H. (* .fails *)
 
 (*|
 Answer (larsr)
