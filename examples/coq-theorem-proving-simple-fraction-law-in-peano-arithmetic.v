@@ -1,13 +1,14 @@
 (*|
+############################################################
 Coq theorem proving: Simple fraction law in peano arithmetic
-============================================================
+############################################################
 
 :Link: https://stackoverflow.com/questions/59120093/coq-theorem-proving-simple-fraction-law-in-peano-arithmetic
 |*)
 
 (*|
 Question
---------
+********
 
 I am learning coq and am trying to prove equalities in peano
 arithmetic.
@@ -48,7 +49,7 @@ find an answer.
 
 (*|
 Answer (Anton Trunov)
----------------------
+*********************
 
 You need to strengthen your induction hypothesis in cases like this.
 One way of doing this is by proving an induction principle like this
@@ -74,7 +75,7 @@ Admitted.
 
 (*|
 Answer (larsr)
---------------
+**************
 
 You can also prove your theorem without induction if you are ok with
 using the standard library.

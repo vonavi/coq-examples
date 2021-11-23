@@ -1,13 +1,14 @@
 (*|
+########################
 Prove a constant is even
-========================
+########################
 
 :Link: https://stackoverflow.com/questions/62326896/prove-a-constant-is-even
 |*)
 
 (*|
 Question
---------
+********
 
 Given the inductive definition of evenness, how is it best proved
 that, say, 1024 is an even number? Repeating ``apply even_S`` down to
@@ -16,7 +17,7 @@ zero is certainly not the right approach.
 
 (*|
 Answer (Arthur Azevedo De Amorim)
----------------------------------
+*********************************
 
 As HTNW pointed out, you can use Ltac automation to produce such a
 proof. This has the disadvantage of producing a large proof term
@@ -53,7 +54,7 @@ Goal (even 1024). apply evenb_correct. reflexivity. Qed.
 
 (*|
 Answer (HTNW)
--------------
+*************
 
 Repeating ``apply even_S`` is not the way. ``repeat apply even_S`` is.
 If ``even_S`` is a constructor, there's also ``repeat constructor``.

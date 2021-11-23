@@ -1,13 +1,14 @@
 (*|
+###############################################
 How could I make example for sigma type in Coq?
-===============================================
+###############################################
 
 :Link: https://stackoverflow.com/questions/56365504/how-could-i-make-example-for-sigma-type-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 For that type:
 |*)
@@ -32,7 +33,7 @@ Fail Example ex1 := mkVersion 3 2 (exist _ 5) (exist _ 5).
 
 (*|
 Answer
-------
+******
 
 The reason it fails is that you need not only provide a witness (``b``
 and ``h`` in this case) but also a proof that the corresponding

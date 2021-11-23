@@ -1,13 +1,14 @@
 (*|
+########################################################
 What is the difference between Axiom and Variable in Coq
-========================================================
+########################################################
 
 :Link: https://stackoverflow.com/questions/61344787/what-is-the-difference-between-axiom-and-variable-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 In Coq I can write
 |*)
@@ -33,7 +34,7 @@ another?
 
 (*|
 Answer
-------
+******
 
 It is advised to use the commands Axiom, Conjecture and Hypothesis
 (and their plural forms) for logical postulates (i.e. when the

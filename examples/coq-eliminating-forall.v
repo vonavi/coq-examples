@@ -1,13 +1,14 @@
 (*|
+############################
 Coq: eliminating ``forall``?
-============================
+############################
 
 :Link: https://stackoverflow.com/questions/68744549/coq-eliminating-forall
 |*)
 
 (*|
 Question
---------
+********
 
 I am struggling to prove the following theorem (non-empty domain is
 assumed):
@@ -36,7 +37,7 @@ answer but it seems to be unrelated to my question.
 
 (*|
 Answer
-------
+******
 
 Unlike other logical formalisms (e.g. Isabelle/HOL), in Coq it is
 perfectly possible to have an empty domain. If you want to prove your

@@ -1,13 +1,14 @@
 (*|
+################################################################################
 Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq
-================================================================================
+################################################################################
 
 :Link: https://stackoverflow.com/questions/56525092/retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 Let's define two helper types:
 |*)
@@ -53,7 +54,7 @@ How to workaround this situation?
 
 (*|
 Answer (HTNW)
--------------
+*************
 
 Let's simplify:
 |*)
@@ -160,7 +161,7 @@ reference manual for more information.
 
 (*|
 Answer (radrow)
----------------
+***************
 
 The solution turned out to be simple but tricky:
 

@@ -1,13 +1,14 @@
 (*|
+####################################################################
 How to step through semicolons separated tactics sequence in coqide?
-====================================================================
+####################################################################
 
 :Link: https://stackoverflow.com/questions/58021053/how-to-step-through-semicolons-separated-tactics-sequence-in-coqide
 |*)
 
 (*|
 Question
---------
+********
 
 when constructing proof in coqide, I didn't find a way to step though
 
@@ -26,7 +27,7 @@ Forward one Command or go to cursor aren't work.
 
 (*|
 Answer
-------
+******
 
 ``t1; t2`` is not the same as doing first ``t1`` then ``t2``. If you
 want to do this you can do ``t1. t2.`` and this is the way to step

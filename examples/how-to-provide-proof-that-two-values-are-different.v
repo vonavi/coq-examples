@@ -1,13 +1,14 @@
 (*|
+###################################################
 How to provide proof that two values are different?
-===================================================
+###################################################
 
 :Link: https://stackoverflow.com/questions/62779463/how-to-provide-proof-that-two-values-are-different
 |*)
 
 (*|
 Question
---------
+********
 
 I am looking for an example in Coq for difference between two
 statements. True is equal to false and true is not equal to true. I do
@@ -17,7 +18,7 @@ true``.
 
 (*|
 Answer
-------
+******
 
 Let's check a casual example when you have:
 |*)

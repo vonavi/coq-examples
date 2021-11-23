@@ -1,13 +1,14 @@
 (*|
+##################################################################
 less or equal relation with largest element of natural number list
-==================================================================
+##################################################################
 
 :Link: https://stackoverflow.com/questions/67379273/less-or-equal-relation-with-largest-element-of-natural-number-list
 |*)
 
 (*|
 Question
---------
+********
 
 I want to use definition of ``list_max_le``. After applying ``Search
 list_max_le.`` I get nothing. How I can define ``list_max_le`` in Coq?
@@ -15,7 +16,7 @@ list_max_le.`` I get nothing. How I can define ``list_max_le`` in Coq?
 
 (*|
 Answer
-------
+******
 |*)
 
 Require Import List.

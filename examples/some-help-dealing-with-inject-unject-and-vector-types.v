@@ -1,13 +1,14 @@
 (*|
+#####################################################
 Some help dealing with inject/unject and vector types
-=====================================================
+#####################################################
 
 :Link: https://stackoverflow.com/questions/63017478/some-help-dealing-with-inject-unject-and-vector-types
 |*)
 
 (*|
 Question
---------
+********
 
 I'm reading through CPDT while doing the readings and exercises from
 Pierce's course here:
@@ -116,7 +117,7 @@ something conceptual here.
 
 (*|
 Answer
-------
+******
 
 Although functions may depend on proof objects, one approach (I'm
 going to show below) is to define the functions so that they don't use

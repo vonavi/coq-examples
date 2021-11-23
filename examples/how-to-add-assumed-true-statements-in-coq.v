@@ -1,13 +1,14 @@
 (*|
+###########################################
 How to add "assumed true" statements in Coq
-===========================================
+###########################################
 
 :Link: https://stackoverflow.com/questions/68060895/how-to-add-assumed-true-statements-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I tried to add a definition of a natural number in CoqIDE.
 |*)
@@ -28,7 +29,7 @@ How do I add this?
 
 (*|
 Answer
-------
+******
 
 I'm not completely clear on what you want to do, but your formula is
 not syntactically correct. I believe you meant ``forall (n m: nat), S

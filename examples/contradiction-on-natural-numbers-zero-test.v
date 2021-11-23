@@ -1,13 +1,14 @@
 (*|
+###########################################
 Contradiction on natural number's zero test
-===========================================
+###########################################
 
 :Link: https://stackoverflow.com/questions/58245731/contradiction-on-natural-numbers-zero-test
 |*)
 
 (*|
 Question
---------
+********
 
 I have a natural number that is not equal to zero. I want to prove
 that if it is equal to zero then it give false.
@@ -20,7 +21,7 @@ Proof.
 
 (*|
 Answer (larsr)
---------------
+**************
 
 Instead of using inversion in every proof, I find that the proofs are
 more maintainable in the long run if you use boolean reflection. The
@@ -62,7 +63,7 @@ Qed. (* .none *)
 
 (*|
 Answer (Théo Winterhalter)
---------------------------
+**************************
 
 Generally, you can use the fact that ``=?`` reflects equality on
 natural numbers (``Nat.eqb_spec``). Are you using the two notions of

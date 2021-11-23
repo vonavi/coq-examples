@@ -1,13 +1,14 @@
 (*|
+#############################################
 question about intros [=] and intros [= <- H]
-=============================================
+#############################################
 
 :Link: https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h
 |*)
 
 (*|
 Question
---------
+********
 
 I am a beginner at coq.
 
@@ -20,7 +21,7 @@ Regards
 
 (*|
 Answer
-------
+******
 
 The documentation for this is `here
 <https://coq.inria.fr/refman/proof-engine/tactics.html#intro-patterns>`_.

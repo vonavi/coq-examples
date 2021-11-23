@@ -1,13 +1,14 @@
 (*|
+####################################################################
 Why do Calculus of Construction based languages use Setoids so much?
-====================================================================
+####################################################################
 
 :Link: https://stackoverflow.com/questions/65493694/why-do-calculus-of-construction-based-languages-use-setoids-so-much
 |*)
 
 (*|
 Question
---------
+********
 
 One finds that Setoids are widely used in languages such as Agda, Coq,
 ... Indeed languages such as Lean have argued that they could help
@@ -18,7 +19,7 @@ as cubical Agda) reduce the need for Setoids?
 
 (*|
 Answer (Floris van Doorn)
--------------------------
+*************************
 
 As Li-yao Xia's answer describes, setoids are used when we don't have
 or don't want to use quotients.
@@ -58,7 +59,7 @@ particular give up on proof irrelevance).
 
 (*|
 Answer (Jacques Carette)
-------------------------
+************************
 
 [The answers by Lia-yao Xia and Floris van Doorn are both excellent,
 so I will try to augment them with additional information.]
@@ -98,7 +99,7 @@ forced to do everything via proofs.
 
 (*|
 Answer (Li-yao Xia)
--------------------
+*******************
 
 Ideally one would certainly like to be able to treat arbitrary
 equivalence relations as Leibniz equality (``eq``), enabling rewriting

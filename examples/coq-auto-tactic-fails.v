@@ -1,13 +1,14 @@
 (*|
+#####################
 Coq auto tactic fails
-=====================
+#####################
 
 :Link: https://stackoverflow.com/questions/61677391/coq-auto-tacitc-fails
 |*)
 
 (*|
 Question
---------
+********
 
 I have the following Coq program that tries to prove ``n <= 2^n`` with
 ``auto``:
@@ -82,7 +83,7 @@ Qed.
 
 (*|
 Answer (Yves)
--------------
+*************
 
 The manual proof that you performed explains why ``auto`` can't do it.
 You did a proof by induction and then a few rewrites. The ``auto``
@@ -162,7 +163,7 @@ scope of the tactic.
 
 (*|
 Answer (Elazar)
----------------
+***************
 
 From the `documentation
 <https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.auto>`_:

@@ -1,13 +1,14 @@
 (*|
+###########################################
 How to specialize nested hypotheses in Coq?
-===========================================
+###########################################
 
 :Link: https://stackoverflow.com/questions/65747150/how-to-specialize-nested-hypotheses-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I've already got the idea of ``specialize`` in Coq.
 
@@ -38,7 +39,7 @@ Notice the ``forall y`` appears in the second premise.
 
 (*|
 Answer
-------
+******
 
 I am not sure I understand your problem. ``specialize`` will apply
 your hypothesis to the arguments you give it. It is not limited to

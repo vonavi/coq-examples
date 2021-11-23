@@ -1,13 +1,14 @@
 (*|
+###############################
 Closing a lemma on list of nats
-===============================
+###############################
 
 :Link: https://stackoverflow.com/questions/59747670/closing-a-lemma-on-list-of-nats
 |*)
 
 (*|
 Question
---------
+********
 
 I am stuck to prove the following admitted lemma. Kindly help me how
 to proceed.
@@ -49,7 +50,7 @@ Admitted.
 
 (*|
 Answer
-------
+******
 
 Two things:
 

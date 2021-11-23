@@ -1,13 +1,14 @@
 (*|
+####################################################
 What does the tactic destruct do in the proof below?
-====================================================
+####################################################
 
 :Link: https://stackoverflow.com/questions/69433292/what-does-the-tactic-destruct-do-in-the-proof-below
 |*)
 
 (*|
 Question
---------
+********
 
 I was reading the series Software Foundations by Benjamin Pierce. And
 in the Chapter Logic in the first book I came across a problem. In the
@@ -45,7 +46,7 @@ into ``exists x : X, ~ P x``.
 
 (*|
 Answer
-------
+******
 
 When you destruct a term of the form ``A -> B`` you get a goal for
 ``A`` and the goals for what ``destruct B`` would result in. ``not A``

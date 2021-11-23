@@ -1,13 +1,14 @@
 (*|
+#######################################################
 What is the difference between Lemma and Theorem in Coq
-=======================================================
+#######################################################
 
 :Link: https://stackoverflow.com/questions/56517779/what-is-the-difference-between-lemma-and-theorem-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I can't tell in which situations I should use ``Theorem`` over
 ``Lemma`` or the opposite. Is there any difference (despite
@@ -29,7 +30,7 @@ Qed.
 
 (*|
 Answer
-------
+******
 
 There is no difference between ``Theorem`` and ``Lemma`` as far as the
 language is concerned. The reasons to choose one over another are

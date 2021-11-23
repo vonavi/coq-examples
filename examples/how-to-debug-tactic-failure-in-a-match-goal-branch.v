@@ -1,13 +1,14 @@
 (*|
+###################################################
 How to debug tactic failure in a match goal branch?
-===================================================
+###################################################
 
 :Link: https://stackoverflow.com/questions/65501576/how-to-debug-tactic-failure-in-a-match-goal-branch
 |*)
 
 (*|
 Question
---------
+********
 
 Let's say I have some complex tactics in the body of a ``match goal``
 branch that can easily go wrong in a way I might need to debug. Is
@@ -37,7 +38,7 @@ Ltac three_applications :=
 
 (*|
 Answer
-------
+******
 
 The easiest is to use ``lazymatch goal`` instead but it has different
 semantics, but as I see you match only on one shape, it might be ok

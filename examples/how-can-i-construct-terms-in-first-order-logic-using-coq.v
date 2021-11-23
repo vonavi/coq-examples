@@ -1,13 +1,14 @@
 (*|
+#########################################################
 How can I construct terms in first-order logic using Coq?
-=========================================================
+#########################################################
 
 :Link: https://stackoverflow.com/questions/64841759/how-can-i-construct-terms-in-first-order-logic-using-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I'm trying to define first-order logic in Coq and beginning at terms.
 Supposing that ``c1`` and ``c2`` are two constant symbols, variables
@@ -75,7 +76,7 @@ Thanks.
 
 (*|
 Answer
-------
+******
 
 This is a common issue with Coq: the induction principles generated
 for mutually inductive types and for types with complex recursive

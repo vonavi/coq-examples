@@ -1,13 +1,14 @@
 (*|
+####################################################################################################################################################
 Error "Tactic failure: The relation (``fun x y : BloodType => x <> y``) is not a declared reflexive relation." when proving a theorem about function
-====================================================================================================================================================
+####################################################################################################################################################
 
 :Link: https://stackoverflow.com/questions/61134408/error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec
 |*)
 
 (*|
 Question
---------
+********
 
 I'm self studying Coq and playing with it. I wanted to try and write a
 function that computes blood type based on two alleles. However, I'm
@@ -81,7 +82,7 @@ very new to Coq, so I'm probably looking over something very obvious.
 
 (*|
 Answer
-------
+******
 
 One part of the problem is that you don't reason with a negated
 predicate in the same way as you reason on the direct predicate. You

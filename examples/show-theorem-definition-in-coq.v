@@ -1,13 +1,14 @@
 (*|
+##############################
 Show theorem definition in Coq
-==============================
+##############################
 
 :Link: https://stackoverflow.com/questions/62939436/show-theorem-definition-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I'd like to view the definition of a Standard Library theorem which I
 found through ``Search``. I think seeing the definition will help me
@@ -27,7 +28,7 @@ available in `the docs page
 
 (*|
 Answer
-------
+******
 
 The whole Coq system is based on the idea *Proofs are programs,
 logical formulas are types*. When you consider a theorem, it is a

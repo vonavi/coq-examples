@@ -1,13 +1,14 @@
 (*|
+##################################################################################################
 Typeclasses with multiple fields vs. single field in Coq / Unexpected behaviour of Compute command
-==================================================================================================
+##################################################################################################
 
 :Link: https://stackoverflow.com/questions/56201202/typeclasses-with-multiple-fields-vs-single-field-in-coq-unexpected-behaviour
 |*)
 
 (*|
 Question
---------
+********
 
 I'm studying typeclasses in Coq with the book Software Foundations.
 
@@ -74,7 +75,7 @@ Thanks a lot!
 
 (*|
 Answer
-------
+******
 
 The ``Qed`` command creates opaque definitions, which are never
 unfolded by commands like ``Compute``. You can tell Coq to make only

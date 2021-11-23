@@ -1,13 +1,14 @@
 (*|
+#################################################
 Vector error : The type of this term is a product
-=================================================
+#################################################
 
 :Link: https://stackoverflow.com/questions/63955903/vector-error-the-type-of-this-term-is-a-product
 |*)
 
 (*|
 Question
---------
+********
 
 I want last k elements of vector. I wrote this code with reference to
 `Coq.Vectors.VectorDef
@@ -66,7 +67,7 @@ Why does last pattern have an error?
 
 (*|
 Answer
-------
+******
 
 The function term that you see on the branch of ``rectEuc`` is how you
 tell Coq that a pattern-match branch is contradictory. In your first

@@ -1,13 +1,14 @@
 (*|
+##############################
 Lemma about list and rev(list)
-==============================
+##############################
 
 :Link: https://stackoverflow.com/questions/56860962/lemma-about-list-and-revlist
 |*)
 
 (*|
 Question
---------
+********
 
 Trying to prove the following lemma I got stuck. Usully theorems about
 lists are proven using induction, but I don't know where to move next.
@@ -25,10 +26,10 @@ Admitted. (* .none *)
 
 (*|
 Answer
-------
+******
 
 Main answer
-~~~~~~~~~~~
+===========
 
 Before you start proving your theorem, you should try to *thoroughly*
 understand what your theorem says. Your theorem is simply wrong.
@@ -51,7 +52,7 @@ Qed.
 
 (*|
 Minor issues
-~~~~~~~~~~~~
+============
 
     Usually theorems about lists are proven using induction
 

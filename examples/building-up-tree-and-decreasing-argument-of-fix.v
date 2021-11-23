@@ -1,13 +1,14 @@
 (*|
+###############################################
 Building up tree and decreasing argument of fix
-===============================================
+###############################################
 
 :Link: https://stackoverflow.com/questions/56132183/building-up-tree-and-decreasing-argument-of-fix
 |*)
 
 (*|
 Question
---------
+********
 
 I'm attempting to implement a function to build up a Braun tree with n
 elements using the following function in Coq, but Coq gives me the
@@ -65,7 +66,7 @@ Fail Fixpoint copy (x : V) (n : nat) : BraunTree :=
 
 (*|
 Answer
-------
+******
 
 ``Fixpoint``/``fix`` only allows recursive calls on a *syntactically*
 smaller argument.
@@ -102,7 +103,7 @@ Here are three options:
 ----
 
 Alternative representation
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+==========================
 
 We have three cases: zero, even, and odd. Luckily the standard library
 has a type with almost the same structure, ``positive``:
@@ -173,7 +174,7 @@ Reset copy. (* .none *)
 ----
 
 Just enough fuel
-~~~~~~~~~~~~~~~~
+================
 
 We add fuel to the ``fix`` as the decreasing argument. We can only run
 out if ``n = i = 0``, so we know what the result should be then.
@@ -217,7 +218,7 @@ code with ``option``.
 ----
 
 Nested recursion
-~~~~~~~~~~~~~~~~
+================
 
 As mentioned earlier, Coq has strict rules about decreasing arguments.
 The usual explanation is that we can only make a recursive call on a
@@ -237,7 +238,7 @@ smarter than that: one can pass the decreasing argument to a nested
 fixpoint, and the "subterm" relation will be tracked through it.
 
 Cons-free division
-<<<<<<<<<<<<<<<<<<
+------------------
 
 And indeed, the division of a Peano ``nat`` can be defined in such a
 way that Coq can tell that the result is a subterm of the dividend:
@@ -282,7 +283,7 @@ allocations* rather than ensuring *termination* by structural
 well-foundedness.)
 
 Conclusion: definition of ``copy``
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+----------------------------------
 
 Once we have ``div2``, we can define ``copy`` with a few tweaks to
 obtain ``i-1`` and ``i-2`` as *proper subterms* of ``i``, again by

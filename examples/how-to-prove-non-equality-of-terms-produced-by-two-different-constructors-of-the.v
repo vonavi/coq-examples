@@ -1,13 +1,14 @@
 (*|
+#######################################################################################################
 How to prove non-equality of terms produced by two different constructors of the same inductive in coq?
-=======================================================================================================
+#######################################################################################################
 
 :Link: https://stackoverflow.com/questions/60616748/how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the
 |*)
 
 (*|
 Question
---------
+********
 
 Consider I have an inductive:
 |*)
@@ -24,7 +25,7 @@ Goal forall L R: Type, forall l: L, forall r: R, Left L <> Right R.
 
 (*|
 Answer
-------
+******
 
 The ``easy`` tactic is powerful enough to solve this:
 |*)

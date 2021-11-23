@@ -1,13 +1,14 @@
 (*|
+######################################################
 How do you prove in Coq that ``(e: p = p) = eq_refl``?
-======================================================
+######################################################
 
 :Link: https://stackoverflow.com/questions/60665385/how-do-you-prove-in-coq-that-e-p-p-eq-refl
 |*)
 
 (*|
 Question
---------
+********
 
 I am trying to prove this:
 |*)
@@ -54,7 +55,7 @@ Is there any way around this problem? Am I missing something?
 
 (*|
 Answer
-------
+******
 
 Your proposed lemma is precisely the statement of `uniqueness of
 identity proofs (UIP) <https://ncatlab.org/nlab/show/axiom+UIP>`_. It

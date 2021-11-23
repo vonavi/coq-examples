@@ -1,13 +1,14 @@
 (*|
+###########################################
 How to prove equality from equality of Some
-===========================================
+###########################################
 
 :Link: https://stackoverflow.com/questions/60304522/how-to-prove-equality-from-equality-of-some
 |*)
 
 (*|
 Question
---------
+********
 
 I want to prove equality of two nat numbers in Coq:
 |*)
@@ -18,7 +19,7 @@ Abort. (* .none *)
 
 (*|
 Answer (Théo Winterhalter)
---------------------------
+**************************
 
 When you have an equality such as this, usually, the quickest way to
 go is by using the ``inversion`` tactic which will more or less
@@ -74,7 +75,7 @@ of the equality. By computation it will yield the expected result.
 
 (*|
 Answer (Arthur Azevedo De Amorim)
----------------------------------
+*********************************
 
 The ``congruence`` tactic is powerful enough to solve this goal by
 itself. More generally, there are situations where you would like to
@@ -92,7 +93,7 @@ to extract the equalities implied by this hypothesis.
 
 (*|
 Answer (ejgallego)
-------------------
+******************
 
 I think it is instructive to write the basic lemma down:
 |*)

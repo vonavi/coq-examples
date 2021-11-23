@@ -1,13 +1,14 @@
 (*|
+###########################################################
 In Coq, is there a way to see the tactics applied by tauto?
-===========================================================
+###########################################################
 
 :Link: https://stackoverflow.com/questions/66812480/in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto
 |*)
 
 (*|
 Question
---------
+********
 
 Is there a way to see the tactics applied by tauto? I.e., run tauto
 and get a list of tactics to apply (not including tauto)?
@@ -15,7 +16,7 @@ and get a list of tactics to apply (not including tauto)?
 
 (*|
 Answer
-------
+******
 
 tauto is a tactic directly written in OCaml, so it does not apply
 other tactics - it constructs a proof term. But you can have a look at

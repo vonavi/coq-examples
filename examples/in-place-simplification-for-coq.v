@@ -1,13 +1,14 @@
 (*|
+###############################
 In-place simplification for Coq
-===============================
+###############################
 
 :Link: https://stackoverflow.com/questions/61077944/in-place-simplification-for-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I want this goal:
 |*)
@@ -28,7 +29,7 @@ rewrite a term in-place, as Isabelle has?
 
 (*|
 Answer
-------
+******
 
 I'm not sure exactly what you want. Perhaps the ``replace`` tactic can
 be of help to you.

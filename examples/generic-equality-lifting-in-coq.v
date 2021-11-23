@@ -1,13 +1,14 @@
 (*|
+###############################
 Generic equality lifting in coq
-===============================
+###############################
 
 :Link: https://stackoverflow.com/questions/60616818/generic-equality-lifting-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 Is there any tactic or fact or something else to lift equality into a
 constructor of inductive and reverse, unlift equality of inductive
@@ -21,7 +22,7 @@ constructors to equality of constructor arguments, i.e.:
 
 (*|
 Answer
-------
+******
 
 The first principle is usually known as the injectivity of
 constructors, and there are multiple tactic that can use it. One

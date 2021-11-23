@@ -1,13 +1,14 @@
 (*|
+#################################
 How to solve contradiction in Coq
-=================================
+#################################
 
 :Link: https://stackoverflow.com/questions/63028399/how-to-solve-contradiction-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I have statement ``true <> false``, in hypothesis. I want to prove
 ``true = false``. Can I solve it? The problem is that, it can not be
@@ -16,7 +17,7 @@ solved by contradiction.
 
 (*|
 Answer
-------
+******
 
 I agree that you should provide a better example. That said! You need
 to be clear...is ``true <> false`` above the line (eg a hypothesis) or

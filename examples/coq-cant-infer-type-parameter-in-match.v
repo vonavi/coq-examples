@@ -1,13 +1,14 @@
 (*|
+###########################################
 Coq can't infer type parameter in ``match``
-===========================================
+###########################################
 
 :Link: https://stackoverflow.com/questions/66881274/coq-cant-infer-type-parameter-in-match
 |*)
 
 (*|
 Question
---------
+********
 
 Consider the following Coq program:
 |*)
@@ -34,7 +35,7 @@ n``. Why can't Coq infer this, and how can I fix the definition of
 
 (*|
 Answer
-------
+******
 
 When you match on ``B``, the type system "forgets" that the new ``n'``
 inside ``B``'s type is the same as ``n``. There is a trick to add that

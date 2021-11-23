@@ -1,13 +1,14 @@
 (*|
+################################################
 Proving that s-expressions printing is injective
-================================================
+################################################
 
 :Link: https://stackoverflow.com/questions/69617959/proving-that-s-expressions-printing-is-injective
 |*)
 
 (*|
 Question
---------
+********
 
 I defined a type of s-expressions and it's printing functions.
 
@@ -54,7 +55,7 @@ kind of inductive principle, could you formulate its statement?)
 
 (*|
 Answer
-------
+******
 
 The type ``sexp`` is an example of a *nested inductive type*, where
 one of the recursive occurrences appears inside of another induction.

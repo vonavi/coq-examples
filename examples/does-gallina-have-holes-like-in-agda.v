@@ -1,13 +1,14 @@
 (*|
+#####################################
 Does Gallina have holes like in Agda?
-=====================================
+#####################################
 
 :Link: https://stackoverflow.com/questions/60662078/does-gallina-have-holes-like-in-agda
 |*)
 
 (*|
 Question
---------
+********
 
 When proving in Coq, it's nice to be able to prove one little piece at
 a time, and have Coq help keep track of the obligations.
@@ -57,7 +58,7 @@ So how do I do this? Does Coq have this kind of feature?
 
 (*|
 Answer (larsr)
---------------
+**************
 
 You can use ``refine`` for this. You can write underscores which will
 turn into obligations for you to solve later.
@@ -78,7 +79,7 @@ Now your goal is to provide an ``A``. This can be discharged with
 
 (*|
 Answer (Li-yao Xia)
--------------------
+*******************
 
 Use an underscore
 
