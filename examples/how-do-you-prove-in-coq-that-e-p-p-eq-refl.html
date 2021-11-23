@@ -51,7 +51,9 @@ The term <span class="s2">&quot;e&quot;</span> has type <span class="s2">&quot;p
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;p = p&quot;</span>
 (cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div></div></small></span></pre><p>The problem is that the <tt class="docutils literal">return</tt> clause here translates internally
 to a predicate function something like this:</p>
-<p><code class="highlight coq"><span class="kr">fun</span> <span class="o">(</span><span class="nv">p'</span><span class="o">:</span> <span class="n">U</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p'</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="o">=</span> <span class="n">e</span></code></p>
+<pre class="code coq literal-block">
+<span class="kr">fun</span> <span class="o">(</span><span class="nv">p'</span><span class="o">:</span> <span class="n">U</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p'</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="o">=</span> <span class="n">e</span>
+</pre>
 <p>which fails to typecheck because we have now lost the constraint
 between the 2 terms in <tt class="docutils literal">e</tt>'s equality and <tt class="docutils literal">eq_refl</tt> requires that
 constraint.</p>

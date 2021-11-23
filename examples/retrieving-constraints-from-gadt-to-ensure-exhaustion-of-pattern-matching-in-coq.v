@@ -65,7 +65,9 @@ Fail Definition extract (m : MyTy nat) : nat :=
 (*|
 This is because I said
 
-`Inductive MyTy : Set -> Type`
+.. code-block:: coq
+
+    Inductive MyTy : Set -> Type
 
 This made the first argument to ``MyTy`` an index of ``MyTy``, as
 opposed to a parameter. An inductive type with a parameter may look

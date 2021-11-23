@@ -30,7 +30,7 @@
 <p>I am very new to Coq. I am trying to experiment with Coq's dependent
 types. What I want to do, is to simply feed an even number to a
 function. For example, in pseudo-code:</p>
-<pre class="literal-block">
+<pre class="code literal-block">
 def next_even(n: {n: Integer | n is even}) :=
 {
   add n 2
@@ -38,15 +38,15 @@ def next_even(n: {n: Integer | n is even}) :=
 </pre>
 <p>Then I want to utilize the function with different arguments, such as
 (in pseudo-code):</p>
-<pre class="literal-block">
-next_even(1)    // Coq should show an error
-next_even(4)    // Coq should compute 6
+<pre class="code C literal-block">
+<span class="n">next_even</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w">    </span><span class="c1">// Coq should show an error
+</span><span class="n">next_even</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w">    </span><span class="c1">// Coq should compute 6</span>
 </pre>
 <p>So, in Coq, I want to do the following:</p>
-<div class="line-block">
-<div class="line"><code class="highlight coq"><span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">1</span><span class="o">).</span></code></div>
-<div class="line"><code class="highlight coq"><span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">4</span><span class="o">).</span></code></div>
-</div>
+<pre class="code coq literal-block">
+<span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">1</span><span class="o">).</span>
+<span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">4</span><span class="o">).</span>
+</pre>
 <p>How can I construct it?</p>
 </div>
 <div class="section" id="answer">
@@ -112,26 +112,20 @@ instead, indicating that the function can fail to return a value. This
 change makes properties of the accessor function harder to state. For
 example, consider the <tt class="docutils literal">eq_from_tnth</tt> lemma, which says that two
 lists are equal if all their elements are equal:</p>
-<div class="line-block">
-<div class="line"><code class="highlight coq"><span class="n">eq_from_tnth</span><span class="o">:</span></code></div>
-<div class="line-block">
-<div class="line"><code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">(</span><span class="nv">T</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">t1</span> <span class="nv">t2</span> <span class="o">:</span> <span class="n">n</span><span class="o">.-</span><span class="n">tuple</span> <span class="n">T</span><span class="o">),</span></code></div>
-<div class="line-block">
-<div class="line"><code class="highlight coq"><span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="o">'</span><span class="n">I_n</span><span class="o">,</span> <span class="n">tnth</span> <span class="n">t1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">tnth</span> <span class="n">t2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span></code></div>
-</div>
-</div>
-</div>
+<pre class="code coq literal-block">
+<span class="n">eq_from_tnth</span><span class="o">:</span>
+  <span class="kr">forall</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">(</span><span class="nv">T</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">t1</span> <span class="nv">t2</span> <span class="o">:</span> <span class="n">n</span><span class="o">.-</span><span class="n">tuple</span> <span class="n">T</span><span class="o">),</span>
+    <span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="o">'</span><span class="n">I_n</span><span class="o">,</span> <span class="n">tnth</span> <span class="n">t1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">tnth</span> <span class="n">t2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span>
+</pre>
 <p>The statement of this lemma for arbitrary lists becomes more
 complicated, because we need an extra assumption saying that the two
 lists are of the same size. (Here, <tt class="docutils literal">x0</tt> is the default value.)</p>
-<div class="line-block">
-<div class="line"><code class="highlight coq"><span class="n">eq_from_nth</span><span class="o">:</span></code></div>
-<div class="line-block">
-<div class="line"><code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">T</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">x0</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="nv">s1</span> <span class="nv">s2</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">),</span></code></div>
-<div class="line"><code class="highlight coq"><span class="n">size</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">size</span> <span class="n">s2</span> <span class="o">-&gt;</span></code></div>
-<div class="line"><code class="highlight coq"><span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="n">s1</span> <span class="o">-&gt;</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">s2</span></code></div>
-</div>
-</div>
+<pre class="code coq literal-block">
+<span class="n">eq_from_nth</span><span class="o">:</span>
+  <span class="kr">forall</span> <span class="o">(</span><span class="nv">T</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">x0</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="nv">s1</span> <span class="nv">s2</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">),</span>
+  <span class="n">size</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">size</span> <span class="n">s2</span> <span class="o">-&gt;</span>
+  <span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="n">s1</span> <span class="o">-&gt;</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">s2</span>
+</pre>
 </div>
 </div>
 </div>

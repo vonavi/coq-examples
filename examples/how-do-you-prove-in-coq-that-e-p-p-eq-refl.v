@@ -42,7 +42,9 @@ Fail Proof
 The problem is that the ``return`` clause here translates internally
 to a predicate function something like this:
 
-`fun (p': U) (e: p = p') => eq_refl = e`
+.. code-block:: coq
+
+    fun (p': U) (e: p = p') => eq_refl = e
 
 which fails to typecheck because we have now lost the constraint
 between the 2 terms in ``e``'s equality and ``eq_refl`` requires that

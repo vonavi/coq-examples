@@ -29,13 +29,19 @@
 <h1>Question</h1>
 <p>I've already got the idea of <tt class="docutils literal">specialize</tt> in Coq.</p>
 <p>It works okay with <tt class="docutils literal">specialize (H1 trm_int)</tt>.</p>
-<p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">term</span> <span class="n">x</span><span class="o">.</span></code></p>
+<pre class="code coq literal-block">
+<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">term</span> <span class="n">x</span><span class="o">.</span>
+</pre>
 <p>But what about this case</p>
-<p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></p>
+<pre class="code coq literal-block">
+<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span>
+</pre>
 <p>It doesn't work with <tt class="docutils literal">specialize (H1 trm_int _trm_int)</tt>.</p>
 <p>Edit:</p>
 <p><tt class="docutils literal">specialize (H1 trm_int _trm_int)</tt> works fine with</p>
-<p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></p>
+<pre class="code coq literal-block">
+<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span>
+</pre>
 <p>Notice the <tt class="docutils literal">forall y</tt> appears in the second premise.</p>
 </div>
 <div class="section" id="answer">
@@ -44,11 +50,17 @@
 your hypothesis to the arguments you give it. It is not limited to
 <tt class="docutils literal">forall</tt> quantifiers.</p>
 <p>Say you have</p>
-<p><code class="highlight coq"><span class="n">h</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span></code></p>
+<pre class="code coq literal-block">
+<span class="n">h</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+</pre>
 <p>you can also use <tt class="docutils literal">specialize (h 0)</tt> and you will get</p>
-<p><code class="highlight coq"><span class="n">h</span> <span class="o">:</span> <span class="n">bool</span></code></p>
+<pre class="code coq literal-block">
+<span class="n">h</span> <span class="o">:</span> <span class="n">bool</span>
+</pre>
 <p>So when you have</p>
-<p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></p>
+<pre class="code coq literal-block">
+<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span>
+</pre>
 <p>and you specialise, you have to use <tt class="docutils literal">specialize (H1 some_x
 some_value_x some_y)</tt> where <tt class="docutils literal">some_x</tt> is an instance for <tt class="docutils literal">x</tt>,
 <tt class="docutils literal">some_value_x</tt> is a proof of <tt class="docutils literal">value some_x</tt> and <tt class="docutils literal">some_y</tt> is an

@@ -63,7 +63,9 @@ there is too broad. As far as I understand it sees that ``1 = 1``
 expression in ``H2`` satisfies ``eq_refl`` constructor and therefore
 ``eq`` proposition is ``True``. Then it simplifies the expression:
 
-`True -> False => False`
+.. code-block:: coq
+
+    True -> False => False
 
 And we get
 |*)

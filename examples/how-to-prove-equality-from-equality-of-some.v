@@ -47,11 +47,17 @@ Definition get_opt_default {A : Type} (x : A) (o : option A) :=
 So that ``get_opt_default x (Some a) = a``. Now using ``f_equal
 (get_opt_default a)`` on equality ``Some a = Some b`` you get
 
-`get_opt_default a (Some a) = get_opt_default a (Some b)`
+.. code-block:: coq
+
+    get_opt_default a (Some a) = get_opt_default a (Some b)
 
 which simplifies to
 
-`a = b`
+.. code-block:: coq
+
+    a = b
+
+.. coq::
 |*)
 
 Lemma Some_inj : forall A (a b : A), Some a = Some b -> a = b.
@@ -76,7 +82,9 @@ derive ``a = b`` as an additional hypothesis starting from an equality
 ``H : x = y`` of terms that begin with the same constructor. In this
 case, you can call
 
-`injection H.`
+.. code-block:: coq
+
+    injection H.
 
 to extract the equalities implied by this hypothesis.
 |*)

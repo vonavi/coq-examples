@@ -34,7 +34,9 @@ As far I could prove it in words:
 ``(n' + 1)`` is not even according to ``H``. Therefore according to
 ``IHn``, it is not true that ``n'`` is not even (double negation):
 
-`IHn : ~ ~ even n'`
+.. code-block:: coq
+
+    IHn : ~ ~ even n'
 
 Unfolding double negation, we conclude that ``n'`` is even.
 

@@ -30,7 +30,9 @@ x y`` are often basically identical, with the only difference between
 that the roles of ``x`` and ``x'`` are swapped between them. Can I ask
 Coq to transform the goal into
 
-`forall x x', P x y -> P x' y`
+.. code-block:: coq
+
+    forall x x', P x y -> P x' y
 
 which then generalises to the iff case, so that I don't need to repeat
 myself in the proof?

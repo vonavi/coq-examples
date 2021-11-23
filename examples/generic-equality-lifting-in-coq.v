@@ -13,8 +13,10 @@ Is there any tactic or fact or something else to lift equality into a
 constructor of inductive and reverse, unlift equality of inductive
 constructors to equality of constructor arguments, i.e.:
 
-| `forall T: Type, forall t1 t2: T, Some t1 = Some t2 -> t1 = t2`
-| `forall T: Type, forall t1 t2: T, t1 = t2 -> Some t1 = Some t2`
+.. code-block:: coq
+
+    forall T: Type, forall t1 t2: T, Some t1 = Some t2 -> t1 = t2
+    forall T: Type, forall t1 t2: T, t1 = t2 -> Some t1 = Some t2
 |*)
 
 (*|

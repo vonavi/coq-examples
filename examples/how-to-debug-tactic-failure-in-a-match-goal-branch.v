@@ -86,11 +86,15 @@ and backtracking needs to be involved then it will be harder, but
 indeed, using ``idtac A B C`` can help you see which branch it
 selected before launching the error. Sometimes, writing
 
-`Fail three_applications.`
+.. code-block:: coq
+
+    Fail three_applications.
 
 instead of just
 
-`three_applications.`
+.. code-block:: coq
+
+    three_applications.
 
 will help because ``Fail`` will usually keep the printing that you
 made in the command, even if it failed in the end.

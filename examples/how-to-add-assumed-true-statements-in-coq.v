@@ -19,7 +19,9 @@ Inductive nat : Set :=
 (*|
 But I couldn't add this as "assumed true":
 
-`forall (n m: nat, S n = S m -> n = m).`
+.. code-block:: coq
+
+    forall (n m: nat, S n = S m -> n = m).
 
 How do I add this?
 |*)
