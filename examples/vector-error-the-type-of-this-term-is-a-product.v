@@ -68,21 +68,21 @@ Why does last pattern have an error?
 Answer
 ------
 
-The function term that you see on the branch of `rectEuc` is how you
+The function term that you see on the branch of ``rectEuc`` is how you
 tell Coq that a pattern-match branch is contradictory. In your first
 recursive function, for instance, you use it to say that the first
-`v'` cannot be a cons because its length is zero. The reason you are
+``v'`` cannot be a cons because its length is zero. The reason you are
 getting the error in the last branch is because that case is not
 contradictory: nothing in the type of your function prevents the case
-`k = 0` and `n = 0`.
+``k = 0`` and ``n = 0``.
 
 To write dependently typed programs over indexed families, you often
 need to use the *convoy pattern*: to refine the type of an argument
-`x` after branching on some expression, your `match` needs to return a
-function that abstracts over `x`. For instance, this function computes
-the last element of a vector by recursion over its length. In the `S`
-branch, we need to know that the length of `v` is connected to `n`
-somehow.
+``x`` after branching on some expression, your ``match`` needs to
+return a function that abstracts over ``x``. For instance, this
+function computes the last element of a vector by recursion over its
+length. In the ``S`` branch, we need to know that the length of ``v``
+is connected to ``n`` somehow.
 |*)
 
 Definition head n (v : Euc (S n)) : R :=
@@ -102,9 +102,9 @@ Fixpoint last n : Euc (S n) -> R :=
   end.
 
 (*|
-Here is the code for extracting the last `k` elements. Note that its
-type uses the `Nat.min` function to specify the length of the result:
-the result cannot be larger than the original vector!
+Here is the code for extracting the last ``k`` elements. Note that its
+type uses the ``Nat.min`` function to specify the length of the
+result: the result cannot be larger than the original vector!
 |*)
 
 Fixpoint but_last n : Euc (S n) -> Euc n :=

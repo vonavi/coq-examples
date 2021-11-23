@@ -30,7 +30,7 @@ Definition tr_rev {X} (l : list X) : list X :=
   rev_append l [].
 
 (*|
-We're, then, asked to prove the equivalence of `tr_rev` and `rev`
+We're, then, asked to prove the equivalence of ``tr_rev`` and ``rev``
 which, well, is pretty obvious that they are the same. I'm having a
 hard time completing the induction, though. Would appreciate if the
 community would provide any hints as to how to approach this case.
@@ -52,11 +52,11 @@ Proof.
 Abort. (* .none *)
 
 (*|
-Now, `[] ++ [x]` is obviously the same as `[x]` but `simpl` can't
-simplify it and I couldn't come up with a `Lemma` that would help me
-here. I *did* prove `app_nil_l` (i.e. `forall (X : Type) (x : X) (l :
-list X), [] ++ [x] = [x]`) but when I try to rewrite with `app_nil_l`
-it'll rewrite both sides of the equation.
+Now, ``[] ++ [x]`` is obviously the same as ``[x]`` but ``simpl``
+can't simplify it and I couldn't come up with a ``Lemma`` that would
+help me here. I *did* prove ``app_nil_l`` (i.e. ``forall (X : Type) (x
+: X) (l : list X), [] ++ [x] = [x]``) but when I try to rewrite with
+``app_nil_l`` it'll rewrite both sides of the equation.
 
 I could just define that to be an axiom, but I feel like that's
 cheating :-p
@@ -69,16 +69,17 @@ Answer
 ------
 
 Proving things about definitions with accumulators has a specific
-trick to it. The thing is, facts about `tr_rev` must necessarily be
-facts about `rev_append`, but `rev_append` is defined on two lists,
-while `tr_rev` is defined on only one. The computation of `rev_append`
-depends on these two lists, and thus the induction hypothesis needs to
-be general enough to include both of these lists. However, if you fix
-the second input of `rev_append` to always be the empty list (which
-you implicitly do by stating your result only for `tr_rev`), then the
-induction hypothesis will always be too weak.
+trick to it. The thing is, facts about ``tr_rev`` must necessarily be
+facts about ``rev_append``, but ``rev_append`` is defined on two
+lists, while ``tr_rev`` is defined on only one. The computation of
+``rev_append`` depends on these two lists, and thus the induction
+hypothesis needs to be general enough to include both of these lists.
+However, if you fix the second input of ``rev_append`` to always be
+the empty list (which you implicitly do by stating your result only
+for ``tr_rev``), then the induction hypothesis will always be too
+weak.
 
 The way around this is to first prove a general result for
-`rev_append` by induction on `l1` (and generalizing on `l2`), and then
-specializing this result for the case of `tr_rev`.
+``rev_append`` by induction on ``l1`` (and generalizing on ``l2``),
+and then specializing this result for the case of ``tr_rev``.
 |*)

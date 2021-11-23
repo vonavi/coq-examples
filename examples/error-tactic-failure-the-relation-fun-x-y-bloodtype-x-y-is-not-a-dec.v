@@ -1,6 +1,6 @@
 (*|
-Error "Tactic failure: The relation (`fun x y : BloodType => x <> y`) is not a declared reflexive relation." when proving a theorem about function
-==================================================================================================================================================
+Error "Tactic failure: The relation (``fun x y : BloodType => x <> y``) is not a declared reflexive relation." when proving a theorem about function
+====================================================================================================================================================
 
 :Link: https://stackoverflow.com/questions/61134408/error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec
 |*)
@@ -11,10 +11,10 @@ Question
 
 I'm self studying Coq and playing with it. I wanted to try and write a
 function that computes blood type based on two alleles. However, I'm
-getting an error "Tactic failure: The relation (`fun x y : BloodType
-=> x <> y`) is not a declared reflexive relation." when trying to
-prove that any other pair of alleles but `TypeO` will not result type
-`TypeO` blood.
+getting an error "Tactic failure: The relation (``fun x y : BloodType
+=> x <> y``) is not a declared reflexive relation." when trying to
+prove that any other pair of alleles but ``TypeO`` will not result
+type ``TypeO`` blood.
 
 There's three alleles:
 |*)
@@ -48,7 +48,8 @@ Fixpoint bloodType (a b : BloodTypeAllele) : BloodType :=
   end.
 
 (*|
-I can prove that `BloodTypeO` and `BloodTypeO` results `TypeO` blood.
+I can prove that ``BloodTypeO`` and ``BloodTypeO`` results ``TypeO``
+blood.
 |*)
 
 Theorem double_O_results_O_type :
@@ -59,7 +60,7 @@ Qed.
 
 (*|
 But I can't prove that any other combination will not result to
-`TypeO` blood. Because I'm getting following error:
+``TypeO`` blood. Because I'm getting following error:
 |*)
 
 Theorem not_double_O_does_not_result_O_type :
@@ -93,24 +94,24 @@ mortal, does it mean my cat is human? No! When you work with negation,
 the problem is very close to this.
 
 Now, let's concentrate on your problem. There is a specific tactic to
-help prove basic instances of equality `reflexivity`. There is also a
-specific tactic to help prove basic instances of "non-equality". This
-tactic is called `discriminate` and it will work in your case.
+help prove basic instances of equality ``reflexivity``. There is also
+a specific tactic to help prove basic instances of "non-equality".
+This tactic is called ``discriminate`` and it will work in your case.
 
 Negation of equality appears in two different fashion in your
 exercise. Sometimes you need to prove a negated equality that is
-obvious to your naked eye and in this case, `discriminate` may do the
-job. Sometimes, you need to prove a negated equality that is obviously
-not provable (it will happen later in you exercise, I tried). In that
-case, the way to progress is to discover that there is an assumption
-in you goal that actually contains an inherent contradiction, or that
-two hypotheses are contradictory to each other. In that case, the
-solution is to try `destruct H` where `H` is the hypothesis that is
-obviously wrong.
+obvious to your naked eye and in this case, ``discriminate`` may do
+the job. Sometimes, you need to prove a negated equality that is
+obviously not provable (it will happen later in you exercise, I
+tried). In that case, the way to progress is to discover that there is
+an assumption in you goal that actually contains an inherent
+contradiction, or that two hypotheses are contradictory to each other.
+In that case, the solution is to try ``destruct H`` where ``H`` is the
+hypothesis that is obviously wrong.
 
 In the case of your exercise, you will also need to understand how to
-cope with an `or` in an hypothesis, `destruct` will still be relevant
-for that case.
+cope with an ``or`` in an hypothesis, ``destruct`` will still be
+relevant for that case.
 
 I suggest you read the free document `coq in a hurry
 <https://cel.archives-ouvertes.fr/inria-00001173v6/document>`_ as a
@@ -120,11 +121,11 @@ construct appears as the conclusion of a goal or as an hypothesis.
 There is a short table to be used as a first hint list for most basic
 reasoning steps.
 
-Another piece of advice: don't use the `Fixpoint` command when the
+Another piece of advice: don't use the ``Fixpoint`` command when the
 function you wish to define is not recursive. In you case the function
-`bloodType` should have defined using the `Definition` keyword. Using
-`Fixpoint` makes the definition uselessly complicated and this may
-bite you later in your experiments.
+``bloodType`` should have defined using the ``Definition`` keyword.
+Using ``Fixpoint`` makes the definition uselessly complicated and this
+may bite you later in your experiments.
 
 I am excited to see you learn on your own, have fun, and ask
 questions!

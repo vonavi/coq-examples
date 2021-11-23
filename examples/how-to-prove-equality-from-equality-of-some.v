@@ -21,8 +21,8 @@ Answer (Théo Winterhalter)
 --------------------------
 
 When you have an equality such as this, usually, the quickest way to
-go is by using the `inversion` tactic which will more or less exploit
-injectivity of constructors.
+go is by using the ``inversion`` tactic which will more or less
+exploit injectivity of constructors.
 |*)
 
 Lemma foo : forall (a b : nat), Some a = Some b -> a = b.
@@ -31,10 +31,10 @@ Proof.
 Qed.
 
 (*|
-The case of `Some` however is special enough that you might want to
+The case of ``Some`` however is special enough that you might want to
 write it differently (especially if you ant to be able to read the
 proof that's generated). You can write some *get* function for
-`option` using a default value:
+``option`` using a default value:
 |*)
 
 Definition get_opt_default {A : Type} (x : A) (o : option A) :=
@@ -44,8 +44,8 @@ Definition get_opt_default {A : Type} (x : A) (o : option A) :=
   end.
 
 (*|
-So that `get_opt_default x (Some a) = a`. Now using `f_equal
-(get_opt_default a)` on equality `Some a = Some b` you get
+So that ``get_opt_default x (Some a) = a``. Now using ``f_equal
+(get_opt_default a)`` on equality ``Some a = Some b`` you get
 
 `get_opt_default a (Some a) = get_opt_default a (Some b)`
 
@@ -70,10 +70,10 @@ of the equality. By computation it will yield the expected result.
 Answer (Arthur Azevedo De Amorim)
 ---------------------------------
 
-The `congruence` tactic is powerful enough to solve this goal by
+The ``congruence`` tactic is powerful enough to solve this goal by
 itself. More generally, there are situations where you would like to
-derive `a = b` as an additional hypothesis starting from an equality
-`H : x = y` of terms that begin with the same constructor. In this
+derive ``a = b`` as an additional hypothesis starting from an equality
+``H : x = y`` of terms that begin with the same constructor. In this
 case, you can call
 
 `injection H.`

@@ -19,10 +19,10 @@ A list is a *subsequence* of another list if all of the elements in
 the first list occur in the same order in the second list, possibly
 with some extra elements in between. For example,
 
-(Optional, harder) Prove `subseq_trans` that subsequence is transitive
--- that is, if `l1` is a subsequence of `l2` and `l2` is a subsequence
-of `l3`, then `l1` is a subsequence of `l3`. Hint: choose your
-induction carefully!
+(Optional, harder) Prove ``subseq_trans`` that subsequence is
+transitive -- that is, if ``l1`` is a subsequence of ``l2`` and ``l2``
+is a subsequence of ``l3``, then ``l1`` is a subsequence of ``l3``.
+Hint: choose your induction carefully!
 
 .. coq:: none
 |*)
@@ -52,16 +52,17 @@ Abort. (* .none *)
 I am having trouble getting the right induction hypothesis after
 having tried a couple of different approaches. I have tried a number
 of approaches and end up with a situation where, in my assumptions, I
-have something like `subseq l2 (x::l3)` but then I need to prove
-`subseq l2 l3` which seems like a dead end. Any pointers in the right
-direction would be much appreciated.
+have something like ``subseq l2 (x::l3)`` but then I need to prove
+``subseq l2 l3`` which seems like a dead end. Any pointers in the
+right direction would be much appreciated.
 |*)
 
 (*|
 Answer
 ------
 
-That experience suggests generalizing the induction hypothesis over `l3`.
+That experience suggests generalizing the induction hypothesis over
+``l3``.
 |*)
 
 Theorem subseq_trans : forall l1 l2 l3 : list nat,

@@ -78,18 +78,18 @@ what I have so far.
   Admitted. (* .none *)
 
 (*|
-I have a target like `Nil = ilists_sizechange Nil (ilists_size_equal
-Nil)` and I'm not really sure what I can do here.
+I have a target like ``Nil = ilists_sizechange Nil (ilists_size_equal
+Nil)`` and I'm not really sure what I can do here.
 
-I tried writing `ilists_sizechange` as a more direct function, but
+I tried writing ``ilists_sizechange`` as a more direct function, but
 failed to do so. Not sure how to massage the type checking.
 
 I guess I'm curious first if this approach is fruitful, or if I'm
 making some fundamental mistake. I'm also curious what the most
-concise way of expressing `inject (unject ls) = ilists_sizechange ls
-(ilists_size_equal ls).` is...here there are two custom functions (the
-sizechange and the proof of equality), and one imagines it should be
-possible with just one.
+concise way of expressing ``inject (unject ls) = ilists_sizechange ls
+(ilists_size_equal ls).`` is...here there are two custom functions
+(the sizechange and the proof of equality), and one imagines it should
+be possible with just one.
 
 Coq is great but the syntax around dependently types stuff can be
 tricky. I appreciate any help!
@@ -124,19 +124,19 @@ computation. Another approach is to fully embrace dependently typed
 programming and the unification of "proofs as programs", but that's a
 much bigger paradigm shift to explain, so I'm not going to do that.
 
-Starting with `ilists_sizechange`, we now care about the shape of the
-term constructed by tactics, so not all tactics are allowed. Not
-wanting to use the equality proof rules out the tactic `subst`.
-Instead we can recurse (`induction`) on the list `l1` and
-pattern-match (`destruct`) on the natural number `n2`; there are four
-cases:
+Starting with ``ilists_sizechange``, we now care about the shape of
+the term constructed by tactics, so not all tactics are allowed. Not
+wanting to use the equality proof rules out the tactic ``subst``.
+Instead we can recurse (``induction``) on the list ``l1`` and
+pattern-match (``destruct``) on the natural number ``n2``; there are
+four cases:
 
 - two absurd ones, which can be eliminated by using the equality
-  (`discriminate`)
-- the `0 = 0` case, where you can just construct the empty list
-- the `S m1 = S m2` case, where you can construct `Cons`, use the
+  (``discriminate``)
+- the ``0 = 0`` case, where you can just construct the empty list
+- the ``S m1 = S m2`` case, where you can construct ``Cons``, use the
   induction hypothesis (i.e., recursive call), and then you are asked
-  for a proof of `m1 = m2`, which is where you can fall back to
+  for a proof of ``m1 = m2``, which is where you can fall back to
   regular reasoning without caring what the proof term looks like.
 
 .. coq::
@@ -152,22 +152,22 @@ cases:
 (*|
 While the rest of the proof below would technically work with that
 definition, it is still not ideal because any computation would unfold
-`ilist_sizechange` into an ugly function. While we've been careful to
-give that function the "right" computational behavior, tactic-based
+``ilist_sizechange`` into an ugly function. While we've been careful
+to give that function the "right" computational behavior, tactic-based
 programming tends to be sloppy about some finer details of the syntax
 of those functions, which makes later proofs where they appear hard to
 read.
 
-To have it look nicer in proofs, one way is to define a `Fixpoint`
-with the `refine` tactic. You write down the body of the function in
+To have it look nicer in proofs, one way is to define a ``Fixpoint``
+with the ``refine`` tactic. You write down the body of the function in
 Gallina, and put underscores for the proof terms, which become
-obligations that you have to prove separately. `refine` is not the
-only way to perform this technique, there's also the `Program
-Fixpoint` command and the Equations plugin. I would recommend looking
-into Equations. I stick with `refine` out of familiarity.
+obligations that you have to prove separately. ``refine`` is not the
+only way to perform this technique, there's also the ``Program
+Fixpoint`` command and the Equations plugin. I would recommend looking
+into Equations. I stick with ``refine`` out of familiarity.
 
 As you can see, intuitively all this function does is deconstruct the
-list `l1`, indexed by `n1`, and reconstruct it with index `n2`.
+list ``l1``, indexed by ``n1``, and reconstruct it with index ``n2``.
 |*)
 
   Reset ilists_sizechange. (* .none *)
@@ -184,7 +184,7 @@ list `l1`, indexed by `n1`, and reconstruct it with index `n2`.
     auto.
   Defined.
 
-(*| The proof of `ilists_size_equal` needs no modification. |*)
+(*| The proof of ``ilists_size_equal`` needs no modification. |*)
 
   Lemma ilists_size_equal : forall n (ls : ilist n), n = length (unject ls).
   Proof.
@@ -193,10 +193,10 @@ list `l1`, indexed by `n1`, and reconstruct it with index `n2`.
 
 (*|
 For the final proof, there is one more step: first generalize the
-equality proof. The idea is that `ilists_sizechange` doesn't actually
-look at it, but when it makes a recursive call it will need to
-construct some other proof, and this generalization allows you to use
-the induction hypothesis independently of that particular proof.
+equality proof. The idea is that ``ilists_sizechange`` doesn't
+actually look at it, but when it makes a recursive call it will need
+to construct some other proof, and this generalization allows you to
+use the induction hypothesis independently of that particular proof.
 |*)
 
   Theorem unject_inject_ : forall n (ls : ilist n) (EQ : n = length (unject ls)),

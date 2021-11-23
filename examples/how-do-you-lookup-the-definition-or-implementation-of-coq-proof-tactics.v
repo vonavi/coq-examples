@@ -64,7 +64,7 @@ Qed.
 End NAddProp.
 
 (*|
-How do I find what the thing like `intros` or `destruct` mean
+How do I find what the thing like ``intros`` or ``destruct`` mean
 *exactly*, like looking up an implementation (or if not possible, a
 definition)? What is the way to do this efficiently?
 |*)
@@ -75,15 +75,15 @@ Answer (Blaisorblade)
 
 The answer differs for primitive and user-defined tactics. However,
 the proof script you show uses almost no user-defined tactics, except
-`now`, which is a notation for the `easy` tactic.
+``now``, which is a notation for the ``easy`` tactic.
 
 For user-defined tactics.
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For tactics defined as `Ltac foo args := body.` you can use `Print
-Ltac foo` (e.g. `Print Ltac easy.`). AFAIK, that does not work for
-tactics defined by `Tactic Notation`. In both cases, I prefer to look
-at the sources (which I find via `grep`).
+For tactics defined as ``Ltac foo args := body.`` you can use ``Print
+Ltac foo`` (e.g. ``Print Ltac easy.``). AFAIK, that does not work for
+tactics defined by ``Tactic Notation``. In both cases, I prefer to
+look at the sources (which I find via ``grep``).
 
 For primitive tactics
 ~~~~~~~~~~~~~~~~~~~~~
@@ -108,17 +108,17 @@ manual to find out how to use them. However, at a conceptual level,
 tactics are not that complicated. Via the `Curry-Howard correspondence
 <https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence>`_,
 Coq proofs are represented using the same functional language you use
-to write regular programs. Tactics like `intros` or `destruct` are
+to write regular programs. Tactics like ``intros`` or ``destruct`` are
 just metaprograms that write programs in this language.
 
-For instance, suppose that you need to prove `A -> B`. This means that
-you need to write a program with a function type `A -> B`. When you
-write `intros H.`, Coq builds a partial proof `fun (H : A) => ?`,
-where the `?` denotes a hole that should have type `B`. Similarly,
-`destruct` adds a `match` expression to your proof to do case
-analysis, and asks you to produce proofs for each `match` branch. As
-you add more tactics, you keep filling in these holes until you have a
-complete proof.
+For instance, suppose that you need to prove ``A -> B``. This means
+that you need to write a program with a function type ``A -> B``. When
+you write ``intros H.``, Coq builds a partial proof ``fun (H : A) =>
+?``, where the ``?`` denotes a hole that should have type ``B``.
+Similarly, ``destruct`` adds a ``match`` expression to your proof to
+do case analysis, and asks you to produce proofs for each ``match``
+branch. As you add more tactics, you keep filling in these holes until
+you have a complete proof.
 
 The language of Coq is quite minimal, so there is only so much that
 tactics can do to build a proof: function application and abstraction,

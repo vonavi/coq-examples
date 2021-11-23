@@ -23,8 +23,8 @@ Fail Fixpoint fibonacci (n:nat) : nat :=
 
 (*|
 I am wondering why this is wrong. Parenthetically, in the third clause
-of the match, I did not define the property of `n'` (e.g. `n': nat`),
-what would be the default of the property of `n'`?
+of the match, I did not define the property of ``n'`` (e.g. ``n':
+nat``), what would be the default of the property of ``n'``?
 
 Thanks in advance!
 |*)
@@ -35,14 +35,14 @@ Answer
 
 All arguments of a recursive call must be structurally decreasing,
 that is you must strip away one constructor symbol in the match. In
-your case the `(S n')` argument is in fact structurally decreasing,
+your case the ``(S n')`` argument is in fact structurally decreasing,
 but Coq doesn't detect that (which is a bit silly) because you add
-another constructor `S`, which is not allowed. The second argument is
-wrong and should probably be `n'`. Besides one usually defines this
-such that `fibonacci 0 = 0`.
+another constructor ``S``, which is not allowed. The second argument
+is wrong and should probably be ``n'``. Besides one usually defines
+this such that ``fibonacci 0 = 0``.
 
-To get around the issue of `(S n')` one gives it a separate name with
-`as` as in:
+To get around the issue of ``(S n')`` one gives it a separate name
+with ``as`` as in:
 |*)
 
 Require Import List.

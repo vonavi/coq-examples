@@ -11,8 +11,8 @@ Question
 
 I am looking for an example in Coq for difference between two
 statements. True is equal to false and true is not equal to true. I do
-not find how to finish the proof, if have this expression `true <>
-true`.
+not find how to finish the proof, if have this expression ``true <>
+true``.
 |*)
 
 (*|
@@ -25,17 +25,19 @@ Let's check a casual example when you have:
 Theorem easily : true <> false. (* .unfold *)
 Abort. (* .none *)
 
-(*| you can just desugar the `<>` negation to some `Prop -> False`, |*)
+(*|
+you can just desugar the ``<>`` negation to some ``Prop -> False``,
+|*)
 
 Theorem easily : true <> false.
   intro H. (* .unfold *)
 Abort. (* .none *)
 
 (*|
-As `H` is a contradiction, you can just use `inversion H` and finish
-the proof, dependently typed talking you just have to provide
+As ``H`` is a contradiction, you can just use ``inversion H`` and
+finish the proof, dependently typed talking you just have to provide
 anti-congruence absurd between the values, in Coq it can be done with
-`eq_rect`.
+``eq_rect``.
 |*)
 
 Theorem easily : true <> false.
@@ -49,7 +51,9 @@ Theorem easily : true <> false.
   exact (c I).
 Qed.
 
-(*| In your example, you just have to provide proof that `true = true`. |*)
+(*|
+In your example, you just have to provide proof that ``true = true``.
+|*)
 
 Reset easily. (* .none *)
 Theorem easily : true <> true -> False.
@@ -59,6 +63,6 @@ Theorem easily : true <> true -> False.
 Qed.
 
 (*|
-Remember with easily you can finish any goal that has `true <> true`
+Remember with easily you can finish any goal that has ``true <> true``
 as a premise.
 |*)

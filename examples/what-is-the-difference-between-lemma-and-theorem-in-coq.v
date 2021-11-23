@@ -9,9 +9,9 @@ What is the difference between Lemma and Theorem in Coq
 Question
 --------
 
-I can't tell in which situations I should use `Theorem` over `Lemma`
-or the opposite. Is there any difference (despite syntactical) between
-this
+I can't tell in which situations I should use ``Theorem`` over
+``Lemma`` or the opposite. Is there any difference (despite
+syntactical) between this
 |*)
 
 Theorem l : 2 = 2.
@@ -31,11 +31,11 @@ Qed.
 Answer
 ------
 
-There is no difference between `Theorem` and `Lemma` as far as the
+There is no difference between ``Theorem`` and ``Lemma`` as far as the
 language is concerned. The reasons to choose one over another are
-purely psychological. You can also use `Remark`, `Fact`, `Corollary`,
-`Proposition` according to the importance you attribute to the result.
-Here is the `relevant link
+purely psychological. You can also use ``Remark``, ``Fact``,
+``Corollary``, ``Proposition`` according to the importance you
+attribute to the result. Here is the `relevant link
 <https://coq.inria.fr/refman/language/gallina-specification-language.html#coq:cmd.theorem>`_
 in the Coq reference manual.
 

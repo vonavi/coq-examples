@@ -29,8 +29,8 @@ Answer
 ------
 
 I'm not completely clear on what you want to do, but your formula is
-not syntactically correct. I believe you meant `forall (n m: nat), S n
-= S m -> n = m` (note the parenthesis' placement).
+not syntactically correct. I believe you meant ``forall (n m: nat), S
+n = S m -> n = m`` (note the parenthesis' placement).
 
 Your statement is actually provable, no need to assume it:
 |*)
@@ -39,7 +39,7 @@ Lemma S_inj : forall (n m: nat), S n = S m -> n = m.
 Proof. intros n m [=]. assumption. Qed.
 
 (*|
-The `[=]` `intro pattern
+The ``[=]`` `intro pattern
 <https://coq.inria.fr/refman/proof-engine/tactics.html#intropattern-inj-discr-ex>`_
-expresses the built-in injectivity of the `S` constructor.
+expresses the built-in injectivity of the ``S`` constructor.
 |*)

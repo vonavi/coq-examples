@@ -1,6 +1,6 @@
 (*|
-`even_Sn_not_even_n` - apply 1 hypothesis in another
-====================================================
+``even_Sn_not_even_n`` - apply 1 hypothesis in another
+======================================================
 
 :Link: https://stackoverflow.com/questions/56354064/even-sn-not-even-n-apply-1-hypothesis-in-another
 |*)
@@ -31,12 +31,12 @@ Abort. (* .none *)
 (*|
 As far I could prove it in words:
 
-`(n' + 1)` is not even according to `H`. Therefore according to `IHn`,
-it is not true that `n'` is not even (double negation):
+``(n' + 1)`` is not even according to ``H``. Therefore according to
+``IHn``, it is not true that ``n'`` is not even (double negation):
 
 `IHn : ~ ~ even n'`
 
-Unfolding double negation, we conclude that `n'` is even.
+Unfolding double negation, we conclude that ``n'`` is even.
 
 But how to write it in coq?
 |*)
@@ -46,14 +46,14 @@ Answer
 ------
 
 The usual way to strip double negation is to introduce the "excluded
-middle" axiom, which is defined under the name `classic` in
+middle" axiom, which is defined under the name ``classic`` in
 `Coq.Logic.Classical_Prop
 <https://coq.inria.fr/distrib/current/stdlib/Coq.Logic.Classical_Prop.html>`_,
-and apply the lemma `NNPP`.
+and apply the lemma ``NNPP``.
 
 However, in this particular case, you can use the technique called
 **reflection** by showing that the Prop is consistent with a boolean
-function (you might remember the `evenb` function introduced earlier
+function (you might remember the ``evenb`` function introduced earlier
 in the book).
 
 .. coq:: none
@@ -82,9 +82,9 @@ Abort. (* .none *)
 
 (*|
 and then use it to move between a Prop and a boolean (which contain
-the same information i.e. the (non-)evenness of `n`) at the same time.
-This also means that you can do classical reasoning on that particular
-property without using the `classic` axiom.
+the same information i.e. the (non-)evenness of ``n``) at the same
+time. This also means that you can do classical reasoning on that
+particular property without using the ``classic`` axiom.
 
 I suggest to complete the exercises under Reflection section in
 IndProp, and then try the following exercises. (\ **Edit:** I uploaded
@@ -92,7 +92,7 @@ the full answer `here
 <https://github.com/Bubbler-4/coq-misc-works/blob/gitpod-vnc/StackOverflow/even_reflect.v>`_.)
 |*)
 
-(* Since `evenb` has a nontrivial recursion structure, you need the
+(* Since ``evenb`` has a nontrivial recursion structure, you need the
    following lemma: *)
 Lemma nat_ind2 :
   forall P : nat -> Prop,
@@ -127,7 +127,7 @@ Lemma even_reflect : forall n : nat, reflect (even n) (evenb n).
 Proof. (* Fill in here. Hint: You don't need induction. *) Admitted.
 
 Lemma even_iff_evenb : forall n, even n <-> evenb n = true.
-Proof. (* Fill in here. Hint: use `reflect_iff` from IndProp. *) Admitted.
+Proof. (* Fill in here. Hint: use ``reflect_iff`` from IndProp. *) Admitted.
 
 Theorem reflect_iff_false : forall P b, reflect P b -> (~ P <-> b = false).
 Proof. (* Fill in here. *) Admitted.

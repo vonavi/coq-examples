@@ -29,23 +29,23 @@ many more higher inductive types, and Lean only has quotients and
 (regular) inductive types. If we just restrict our attention to
 quotients (set quotients in the HoTT book), it works the same in Lean
 and in Book HoTT. In this case you just postulate that given a type
-`A` and an equivalence `R` on `A` you have a quotient `Q`, and a
-function `[-] : A -> Q` with the property `forall x y : A, R x y ->
-[x] = [y]`. It comes with the following elimination principle: to
-construct a function `g : Q -> X` for some type `X` (or hSet `X` in
-HoTT) we need a function `f : A -> X` such that we can prove `forall x
-y : A, R x y -> f x = f y`. This comes with the computation rule, that
-states `forall x : A, g [x] === f x` (this is a definitional equality
-in both Lean and Book HoTT).
+``A`` and an equivalence ``R`` on ``A`` you have a quotient ``Q``, and
+a function ``[-] : A -> Q`` with the property ``forall x y : A, R x y
+-> [x] = [y]``. It comes with the following elimination principle: to
+construct a function ``g : Q -> X`` for some type ``X`` (or hSet ``X``
+in HoTT) we need a function ``f : A -> X`` such that we can prove
+``forall x y : A, R x y -> f x = f y``. This comes with the
+computation rule, that states ``forall x : A, g [x] === f x`` (this is
+a definitional equality in both Lean and Book HoTT).
 
 The main disadvantage of this quotient is that it breaks canonicity.
 Canonicity states that every closed term (that is, a term without free
 variables) in (say) the natural numbers normalizes to either zero or
 the successor of some natural number. The reason that this quotient
 breaks canonicity is that we can apply the elimination principle for
-`=` to the new equalities in a quotient, and a term like that will not
-reduce. In Lean the opinion is that this doesn't matter, since in all
-cases we care about we can still prove an equality, even though it
+``=`` to the new equalities in a quotient, and a term like that will
+not reduce. In Lean the opinion is that this doesn't matter, since in
+all cases we care about we can still prove an equality, even though it
 might not be a definitional equality.
 
 Cubical type theory has a fancy way to work with quotients while
@@ -92,8 +92,8 @@ quotients are well-behaved, then there should be some automation that
 lets you work with that smoothly. Currently, in type theory, working
 out exactly what that could look like, is ongoing research. Floris'
 answer outlines well what one pitfall is: at some point, you give up
-that `computations` will be well-behaved, and from then on, are forced
-to do everything via proofs.
+that ``computations`` will be well-behaved, and from then on, are
+forced to do everything via proofs.
 |*)
 
 (*|
@@ -101,7 +101,7 @@ Answer (Li-yao Xia)
 -------------------
 
 Ideally one would certainly like to be able to treat arbitrary
-equivalence relations as Leibniz equality (`eq`), enabling rewriting
+equivalence relations as Leibniz equality (``eq``), enabling rewriting
 in arbitrary contexts. That means to define the **quotient** of a type
 by an equivalence relation.
 

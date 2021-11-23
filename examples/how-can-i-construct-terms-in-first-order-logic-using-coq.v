@@ -10,9 +10,9 @@ Question
 --------
 
 I'm trying to define first-order logic in Coq and beginning at terms.
-Supposing that `c1` and `c2` are two constant symbols, variables are
-`nat` and `f1` and `f2` are two function symbols whose arities are 1
-and 2 respectively, I wrote the following code.
+Supposing that ``c1`` and ``c2`` are two constant symbols, variables
+are ``nat`` and ``f1`` and ``f2`` are two function symbols whose
+arities are 1 and 2 respectively, I wrote the following code.
 |*)
 
 Definition var := nat.
@@ -32,8 +32,8 @@ Inductive term : Type :=
 Check term_ind. (* .unfold *)
 
 (*|
-Then I wanted to separate functions from the definition of `term`, so
-I rewrote the above.
+Then I wanted to separate functions from the definition of ``term``,
+so I rewrote the above.
 |*)
 
 Reset term. (* .none *)
@@ -67,8 +67,8 @@ Check funct_ind. (* .unfold *)
 However, both ways seem not to generate the desired induction because
 they don't have induction hypotheses.
 
-How can I construct `term` with functions separated from the
-definition of `term` without loss of proper induction?
+How can I construct ``term`` with functions separated from the
+definition of ``term`` without loss of proper induction?
 
 Thanks.
 |*)
@@ -103,7 +103,7 @@ Set Elimination Schemes.
 (This is not strictly necessary, but it helps keeping the global
 namespace clean.)
 
-Now, let us use the `Scheme` command to generate a mutual induction
+Now, let us use the ``Scheme`` command to generate a mutual induction
 principle for these types:
 |*)
 
@@ -112,9 +112,9 @@ Scheme term_ind' := Induction for term Sort Prop
 
 (*|
 This principle is already powerful enough for us to prove properties
-of `term`, but it is a bit awkward to use, since it requires us to
-specify a property that we want to prove about the `funct` type as
-well (the `P0` predicate). We can simplify it a bit to avoid
+of ``term``, but it is a bit awkward to use, since it requires us to
+specify a property that we want to prove about the ``funct`` type as
+well (the ``P0`` predicate). We can simplify it a bit to avoid
 mentioning this auxiliary predicate: all we need to know is that the
 terms inside the function calls satisfy the predicate that we want to
 prove.

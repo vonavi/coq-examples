@@ -52,27 +52,28 @@ there are a couple less than desirable aspects that I'd like to try
 and refine.
 
 First, having a bunch of proofs hanging out to munge equivalent types
-seems...annoying. Basically, `same_length`, `same_length'`,
-`same_length''`. Perhaps this is an issue with how I defined
-`irev_aux`, but I tried some definitions and others required a type
+seems...annoying. Basically, ``same_length``, ``same_length'``,
+``same_length''``. Perhaps this is an issue with how I defined
+``irev_aux``, but I tried some definitions and others required a type
 level match which seemed about as annoying.
 
-I tried using `refine`, but got a type error...is there a way to
-invoke `refine`, where you then have to prove that the types are in
+I tried using ``refine``, but got a type error...is there a way to
+invoke ``refine``, where you then have to prove that the types are in
 fact equivalent? In a sense that's what I did, but who wants those
 lemmas hanging out.
 
 Beyond that, I realize there are probably ways to get rid of the
-equality lemmas, but I'm curious how I can make use of `same_length`.
-I've seen cases of matching on equality proofs before to get the typer
-to unify types...I tried that here but it didn't seem to work.
+equality lemmas, but I'm curious how I can make use of
+``same_length``. I've seen cases of matching on equality proofs before
+to get the typer to unify types...I tried that here but it didn't seem
+to work.
 |*)
 
 (*|
 Answer
 ------
 
-There is no way of programming `irev` without a cast. This is one of
+There is no way of programming ``irev`` without a cast. This is one of
 the many reasons why Coq users generally avoid indexed data types like
 this :)
 
@@ -120,8 +121,8 @@ Section ilist.
 End ilist.
 
 (*|
-If you want to prove anything about `irev`, the easiest is probably to
-convert the indexed lists to normal lists and reasoning about reversal
-of normal lists. Fun exercise: try showing that `irev` is its own
-inverse.
+If you want to prove anything about ``irev``, the easiest is probably
+to convert the indexed lists to normal lists and reasoning about
+reversal of normal lists. Fun exercise: try showing that ``irev`` is
+its own inverse.
 |*)

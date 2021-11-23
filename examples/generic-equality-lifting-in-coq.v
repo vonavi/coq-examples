@@ -23,7 +23,7 @@ Answer
 
 The first principle is usually known as the injectivity of
 constructors, and there are multiple tactic that can use it. One
-option is the `injection` tactic:
+option is the ``injection`` tactic:
 |*)
 
 Goal forall T: Type, forall t1 t2: T, Some t1 = Some t2 -> t1 = t2.
@@ -32,7 +32,7 @@ Qed.
 
 (*|
 The other principle is valid for any function, not just constructors.
-You can use the `f_equal` tactic:
+You can use the ``f_equal`` tactic:
 |*)
 
 Goal forall T: Type, forall t1 t2: T, t1 = t2 -> Some t1 = Some t2.

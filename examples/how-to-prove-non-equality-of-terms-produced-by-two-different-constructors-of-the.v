@@ -26,7 +26,7 @@ Goal forall L R: Type, forall l: L, forall r: R, Left L <> Right R.
 Answer
 ------
 
-The `easy` tactic is powerful enough to solve this:
+The ``easy`` tactic is powerful enough to solve this:
 |*)
 
 Reset DirectSum. (* .none *)
@@ -43,7 +43,7 @@ Qed.
 
 (*|
 The reason this works, internally, is pattern matching. We can write a
-function that returns `True` on `Left` and `False` on `Right`. If the
-terms were equal, we would get `True = False`, which entails a
-contradiction.
+function that returns ``True`` on ``Left`` and ``False`` on ``Right``.
+If the terms were equal, we would get ``True = False``, which entails
+a contradiction.
 |*)
