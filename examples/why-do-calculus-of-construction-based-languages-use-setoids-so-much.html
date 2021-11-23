@@ -42,22 +42,22 @@ many more higher inductive types, and Lean only has quotients and
 (regular) inductive types. If we just restrict our attention to
 quotients (set quotients in the HoTT book), it works the same in Lean
 and in Book HoTT. In this case you just postulate that given a type
-<code class="highlight coq"><span class="n">A</span></code> and an equivalence <code class="highlight coq"><span class="n">R</span></code> on <code class="highlight coq"><span class="n">A</span></code> you have a quotient <code class="highlight coq"><span class="n">Q</span></code>, and a
-function <code class="highlight coq"><span class="o">[-]</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">Q</span></code> with the property <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">R</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span>
-<span class="o">[</span><span class="n">x</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">y</span><span class="o">]</span></code>. It comes with the following elimination principle: to
-construct a function <code class="highlight coq"><span class="n">g</span> <span class="o">:</span> <span class="n">Q</span> <span class="o">-&gt;</span> <span class="n">X</span></code> for some type <code class="highlight coq"><span class="n">X</span></code> (or hSet <code class="highlight coq"><span class="n">X</span></code> in
-HoTT) we need a function <code class="highlight coq"><span class="n">f</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">X</span></code> such that we can prove <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span>
-<span class="nv">y</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">R</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="n">y</span></code>. This comes with the computation rule, that
-states <code class="highlight coq"><span class="kr">forall</span> <span class="nv">x</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">g</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span> <span class="o">===</span> <span class="n">f</span> <span class="n">x</span></code> (this is a definitional equality
-in both Lean and Book HoTT).</p>
+<tt class="docutils literal">A</tt> and an equivalence <tt class="docutils literal">R</tt> on <tt class="docutils literal">A</tt> you have a quotient <tt class="docutils literal">Q</tt>, and
+a function <tt class="docutils literal"><span class="pre">[-]</span> : A <span class="pre">-&gt;</span> Q</tt> with the property <tt class="docutils literal">forall x y : A, R x y
+<span class="pre">-&gt;</span> [x] = [y]</tt>. It comes with the following elimination principle: to
+construct a function <tt class="docutils literal">g : Q <span class="pre">-&gt;</span> X</tt> for some type <tt class="docutils literal">X</tt> (or hSet <tt class="docutils literal">X</tt>
+in HoTT) we need a function <tt class="docutils literal">f : A <span class="pre">-&gt;</span> X</tt> such that we can prove
+<tt class="docutils literal">forall x y : A, R x y <span class="pre">-&gt;</span> f x = f y</tt>. This comes with the
+computation rule, that states <tt class="docutils literal">forall x : A, g [x] === f x</tt> (this is
+a definitional equality in both Lean and Book HoTT).</p>
 <p>The main disadvantage of this quotient is that it breaks canonicity.
 Canonicity states that every closed term (that is, a term without free
 variables) in (say) the natural numbers normalizes to either zero or
 the successor of some natural number. The reason that this quotient
 breaks canonicity is that we can apply the elimination principle for
-<code class="highlight coq"><span class="o">=</span></code> to the new equalities in a quotient, and a term like that will not
-reduce. In Lean the opinion is that this doesn't matter, since in all
-cases we care about we can still prove an equality, even though it
+<tt class="docutils literal">=</tt> to the new equalities in a quotient, and a term like that will
+not reduce. In Lean the opinion is that this doesn't matter, since in
+all cases we care about we can still prove an equality, even though it
 might not be a definitional equality.</p>
 <p>Cubical type theory has a fancy way to work with quotients while
 retaining canonicity. In CTT equality works differently, and this
@@ -96,13 +96,13 @@ quotients are well-behaved, then there should be some automation that
 lets you work with that smoothly. Currently, in type theory, working
 out exactly what that could look like, is ongoing research. Floris'
 answer outlines well what one pitfall is: at some point, you give up
-that <code class="highlight coq"><span class="n">computations</span></code> will be well-behaved, and from then on, are forced
-to do everything via proofs.</p>
+that <tt class="docutils literal">computations</tt> will be well-behaved, and from then on, are
+forced to do everything via proofs.</p>
 </div>
 <div class="section" id="answer-li-yao-xia">
 <h1>Answer (Li-yao Xia)</h1>
 <p>Ideally one would certainly like to be able to treat arbitrary
-equivalence relations as Leibniz equality (<code class="highlight coq"><span class="n">eq</span></code>), enabling rewriting
+equivalence relations as Leibniz equality (<tt class="docutils literal">eq</tt>), enabling rewriting
 in arbitrary contexts. That means to define the <strong>quotient</strong> of a type
 by an equivalence relation.</p>
 <p>I'm not an expert on the topic, but I've been wondering the same for a

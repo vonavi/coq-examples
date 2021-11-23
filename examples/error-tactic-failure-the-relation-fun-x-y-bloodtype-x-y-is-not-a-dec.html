@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-declared-reflexive-relation-when-proving-a-theorem-about-function">
-<h1 class="title">Error &quot;Tactic failure: The relation (<code class="highlight coq"><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">BloodType</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span></code>) is not a declared reflexive relation.&quot; when proving a theorem about function</h1>
+<h1 class="title">Error &quot;Tactic failure: The relation (<tt class="docutils literal">fun x y : BloodType =&gt; x &lt;&gt; y</tt>) is not a declared reflexive relation.&quot; when proving a theorem about function</h1>
 <table class="docinfo" frame="void" rules="none">
 <col class="docinfo-name" />
 <col class="docinfo-content" />
@@ -29,10 +29,10 @@
 <h1>Question</h1>
 <p>I'm self studying Coq and playing with it. I wanted to try and write a
 function that computes blood type based on two alleles. However, I'm
-getting an error &quot;Tactic failure: The relation (<code class="highlight coq"><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">BloodType</span>
-<span class="o">=&gt;</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span></code>) is not a declared reflexive relation.&quot; when trying to
-prove that any other pair of alleles but <code class="highlight coq"><span class="n">TypeO</span></code> will not result type
-<code class="highlight coq"><span class="n">TypeO</span></code> blood.</p>
+getting an error &quot;Tactic failure: The relation (<tt class="docutils literal">fun x y : BloodType
+=&gt; x &lt;&gt; y</tt>) is not a declared reflexive relation.&quot; when trying to
+prove that any other pair of alleles but <tt class="docutils literal">TypeO</tt> will not result
+type <tt class="docutils literal">TypeO</tt> blood.</p>
 <p>There's three alleles:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BloodTypeAllele</span> : <span class="kt">Type</span> :=
 | BloodTypeA
@@ -55,13 +55,14 @@ prove that any other pair of alleles but <code class="highlight coq"><span class
   | BloodTypeO, BloodTypeB =&gt; TypeB
   | BloodTypeO, BloodTypeO =&gt; TypeO
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Not a truly recursive fixpoint.
-[non-recursive,fixpoints]</blockquote></div></div></small></span></pre><p>I can prove that <code class="highlight coq"><span class="n">BloodTypeO</span></code> and <code class="highlight coq"><span class="n">BloodTypeO</span></code> results <code class="highlight coq"><span class="n">TypeO</span></code> blood.</p>
+[non-recursive,fixpoints]</blockquote></div></div></small></span></pre><p>I can prove that <tt class="docutils literal">BloodTypeO</tt> and <tt class="docutils literal">BloodTypeO</tt> results <tt class="docutils literal">TypeO</tt>
+blood.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk1"><span class="kn">Theorem</span> <span class="nf">double_O_results_O_type</span> :
   bloodType BloodTypeO BloodTypeO = TypeO.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeO BloodTypeO = TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">bloodType BloodTypeO BloodTypeO = TypeO</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>But I can't prove that any other combination will not result to
-<code class="highlight coq"><span class="n">TypeO</span></code> blood. Because I'm getting following error:</p>
+<tt class="docutils literal">TypeO</tt> blood. Because I'm getting following error:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec-v-chk3"><span class="kn">Theorem</span> <span class="nf">not_double_O_does_not_result_O_type</span> :
   <span class="kr">forall</span> (<span class="nv">b1</span> <span class="nv">b2</span> : BloodTypeAllele),
     b1 &lt;&gt; BloodTypeO \/ b2 &lt;&gt; BloodTypeO -&gt;
@@ -95,33 +96,33 @@ mortal, Socrates is human, therefore he is mortal&quot;. If my cat is
 mortal, does it mean my cat is human? No! When you work with negation,
 the problem is very close to this.</p>
 <p>Now, let's concentrate on your problem. There is a specific tactic to
-help prove basic instances of equality <code class="highlight coq"><span class="bp">reflexivity</span></code>. There is also a
-specific tactic to help prove basic instances of &quot;non-equality&quot;. This
-tactic is called <code class="highlight coq"><span class="bp">discriminate</span></code> and it will work in your case.</p>
+help prove basic instances of equality <tt class="docutils literal">reflexivity</tt>. There is also
+a specific tactic to help prove basic instances of &quot;non-equality&quot;.
+This tactic is called <tt class="docutils literal">discriminate</tt> and it will work in your case.</p>
 <p>Negation of equality appears in two different fashion in your
 exercise. Sometimes you need to prove a negated equality that is
-obvious to your naked eye and in this case, <code class="highlight coq"><span class="bp">discriminate</span></code> may do the
-job. Sometimes, you need to prove a negated equality that is obviously
-not provable (it will happen later in you exercise, I tried). In that
-case, the way to progress is to discover that there is an assumption
-in you goal that actually contains an inherent contradiction, or that
-two hypotheses are contradictory to each other. In that case, the
-solution is to try <code class="highlight coq"><span class="nb">destruct</span> <span class="n">H</span></code> where <code class="highlight coq"><span class="n">H</span></code> is the hypothesis that is
-obviously wrong.</p>
+obvious to your naked eye and in this case, <tt class="docutils literal">discriminate</tt> may do
+the job. Sometimes, you need to prove a negated equality that is
+obviously not provable (it will happen later in you exercise, I
+tried). In that case, the way to progress is to discover that there is
+an assumption in you goal that actually contains an inherent
+contradiction, or that two hypotheses are contradictory to each other.
+In that case, the solution is to try <tt class="docutils literal">destruct H</tt> where <tt class="docutils literal">H</tt> is the
+hypothesis that is obviously wrong.</p>
 <p>In the case of your exercise, you will also need to understand how to
-cope with an <code class="highlight coq"><span class="n">or</span></code> in an hypothesis, <code class="highlight coq"><span class="nb">destruct</span></code> will still be relevant
-for that case.</p>
+cope with an <tt class="docutils literal">or</tt> in an hypothesis, <tt class="docutils literal">destruct</tt> will still be
+relevant for that case.</p>
 <p>I suggest you read the free document <a class="reference external" href="https://cel.archives-ouvertes.fr/inria-00001173v6/document">coq in a hurry</a> as a
 tutorial for this. In particular, it explains that for every logical
 construct, the way to handle this construct is different, whether the
 construct appears as the conclusion of a goal or as an hypothesis.
 There is a short table to be used as a first hint list for most basic
 reasoning steps.</p>
-<p>Another piece of advice: don't use the <code class="highlight coq"><span class="kn">Fixpoint</span></code> command when the
+<p>Another piece of advice: don't use the <tt class="docutils literal">Fixpoint</tt> command when the
 function you wish to define is not recursive. In you case the function
-<code class="highlight coq"><span class="n">bloodType</span></code> should have defined using the <code class="highlight coq"><span class="kn">Definition</span></code> keyword. Using
-<code class="highlight coq"><span class="kn">Fixpoint</span></code> makes the definition uselessly complicated and this may
-bite you later in your experiments.</p>
+<tt class="docutils literal">bloodType</tt> should have defined using the <tt class="docutils literal">Definition</tt> keyword.
+Using <tt class="docutils literal">Fixpoint</tt> makes the definition uselessly complicated and this
+may bite you later in your experiments.</p>
 <p>I am excited to see you learn on your own, have fun, and ask
 questions!</p>
 </div>

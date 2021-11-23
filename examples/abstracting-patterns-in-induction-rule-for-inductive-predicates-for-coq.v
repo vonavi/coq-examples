@@ -41,7 +41,7 @@ Qed.
 (*|
 I worked in Isabelle before Coq. There originally, the induction
 tactic could not solve directly this goal and the trick was to come up
-with a lemma like `subseq_remove_rewritten` and then prove the
+with a lemma like ``subseq_remove_rewritten`` and then prove the
 original goal. This is the situation in the manual Isabelle/HOL: A
 Proof Assistant for Higher-Order Logic. Later, the tactic became
 smarter and one can write patterns in which to abstract on. So the
@@ -59,14 +59,15 @@ proof is written like this:
       by (intro subseq.intros(3))
 
 I was wondering if Coq has a similar way to avoid proving a lemma like
-`subseq_remove_rewritten` and go directly to prove `subseq_remove`.
+``subseq_remove_rewritten`` and go directly to prove
+``subseq_remove``.
 |*)
 
 (*|
 Answer
 ------
 
-You can use the `dependent induction` tactic (documented `here
+You can use the ``dependent induction`` tactic (documented `here
 <https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction>`_).
 For example:
 |*)
@@ -96,8 +97,8 @@ know if the Coq developers have any plans of improving it in the
 future. It has a few deficiencies, such as not allowing the user to
 name the variables and hypotheses used in the induction proof. I
 personally prefer to add the equality assumptions to the proof myself,
-as in your first attempt, or to reformulate the definition of `subseq`
-as a `Fixpoint`, so that you can invert the hypothesis by
+as in your first attempt, or to reformulate the definition of
+``subseq`` as a ``Fixpoint``, so that you can invert the hypothesis by
 simplification. For example:
 |*)
 

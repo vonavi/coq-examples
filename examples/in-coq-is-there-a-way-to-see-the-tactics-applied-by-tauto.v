@@ -28,10 +28,11 @@ Goal forall P Q : Prop, P /\ Q -> P.
   tauto.
   Show Proof. (* .unfold *)
 
-(*| The `fun (P Q : Prop) (H : P /\ Q)` corresponds to `intros P Q H`.
-Then it uses `and_ind` with a function as argument. This corresponds
-to `exact (and_ind (fun P' Q' => P') H)`. As you can see the trick is
-in the construction of the function argument of `and_ind`.
+(*|
+The ``fun (P Q : Prop) (H : P /\ Q)`` corresponds to ``intros P Q H``.
+Then it uses ``and_ind`` with a function as argument. This corresponds
+to ``exact (and_ind (fun P' Q' => P') H)``. As you can see the trick
+is in the construction of the function argument of ``and_ind``.
 
 It is instructive to look at these proof terms, but if you would do
 the proof manually, you would usually do it in a different way than

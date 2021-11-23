@@ -9,7 +9,7 @@ How to enumerate set in Coq Ensemble
 Question
 --------
 
-How do you prove `enumerateSingletonPowerset`?
+How do you prove ``enumerateSingletonPowerset``?
 |*)
 
 Require Import Coq.Sets.Ensembles.
@@ -21,11 +21,11 @@ Theorem enumerateSingletonPowerset A s (inc : Included _ s (emptyOnly A)):
 Abort. (* .none *)
 
 (*|
-I'm using `Same_set` to avoid extensionality. (Either way is fine.)
+I'm using ``Same_set`` to avoid extensionality. (Either way is fine.)
 
-Conceptually, it seems simple to just say I have `{{}}` so the
-powerset is `{{}, {{}}}` and that's it. But, it's not clear how to say
-anything like that with these primitives on their own.
+Conceptually, it seems simple to just say I have ``{{}}`` so the
+powerset is ``{{}, {{}}}`` and that's it. But, it's not clear how to
+say anything like that with these primitives on their own.
 
 I'd be tempted to try destructing on if empty set was in the set s.
 But, since Emsemble is propositional, checking set membership is not

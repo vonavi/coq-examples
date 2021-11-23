@@ -14,7 +14,7 @@ arithmetic.
 
 I got stuck on a simple fraction law.
 
-We know that `(n + m) / 2 = n / 2 + m / 2` from primary school. In
+We know that ``(n + m) / 2 = n / 2 + m / 2`` from primary school. In
 peano arithmetic this does only hold if n and m are even (because then
 division produces correct results).
 |*)
@@ -63,7 +63,7 @@ Proof.
   now intros P0 P1 IH n; enough (H : P n /\ P (S n)); [|induction n]; intuition.
 Qed.
 
-(*| `nat_ind2` can be used as follows: |*)
+(*| ``nat_ind2`` can be used as follows: |*)
 
 Theorem fraction_addition n m :
   even n -> even m -> Nat.div2 n + Nat.div2 m = Nat.div2 (n + m).
@@ -79,8 +79,8 @@ Answer (larsr)
 You can also prove your theorem without induction if you are ok with
 using the standard library.
 
-If you use `Even m` in your hypothesis (which says `exists n, m =
-2*m`) then you can use simple algebraic rewrites with lemmas from the
+If you use ``Even m`` in your hypothesis (which says ``exists n, m =
+2*m``) then you can use simple algebraic rewrites with lemmas from the
 standard library.
 |*)
 
@@ -99,11 +99,12 @@ Qed.
 The question mark just means "rewrite as many (zero or more) times as
 possible".
 
-`inversion 1` does inversion on the first inductive hypothesis in the
-goal, in this case first `Even n` and then `Even m`. It gives us `n =
-2 * x` and `m = 2 * x0` in the context, which we then substitute.
+``inversion 1`` does inversion on the first inductive hypothesis in
+the goal, in this case first ``Even n`` and then ``Even m``. It gives
+us ``n = 2 * x`` and ``m = 2 * x0`` in the context, which we then
+substitute.
 
-Also note `even_spec: forall n : nat, even n = true <-> Even n`, so
-you can use `even` if you prefer that, just rewrite with `even_spec`
-first...
+Also note ``even_spec: forall n : nat, even n = true <-> Even n``, so
+you can use ``even`` if you prefer that, just rewrite with
+``even_spec`` first...
 |*)

@@ -50,21 +50,21 @@ Recursive definition <span class="kr">is</span>:
 <span class="s2"> | S (S n&#39;) =&gt; fibonacci (S n&#39;) + fibonacci n</span>
 <span class="s2"> | _ =&gt; 1</span>
 <span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre><p>I am wondering why this is wrong. Parenthetically, in the third clause
-of the match, I did not define the property of <code class="highlight coq"><span class="n">n'</span></code> (e.g. <code class="highlight coq"><span class="n">n'</span><span class="o">:</span> <span class="n">nat</span></code>),
-what would be the default of the property of <code class="highlight coq"><span class="n">n'</span></code>?</p>
+of the match, I did not define the property of <tt class="docutils literal">n'</tt> (e.g. <tt class="docutils literal">n':
+nat</tt>), what would be the default of the property of <tt class="docutils literal">n'</tt>?</p>
 <p>Thanks in advance!</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p>All arguments of a recursive call must be structurally decreasing,
 that is you must strip away one constructor symbol in the match. In
-your case the <code class="highlight coq"><span class="o">(</span><span class="n">S</span> <span class="n">n'</span><span class="o">)</span></code> argument is in fact structurally decreasing,
+your case the <tt class="docutils literal">(S n')</tt> argument is in fact structurally decreasing,
 but Coq doesn't detect that (which is a bit silly) because you add
-another constructor <code class="highlight coq"><span class="n">S</span></code>, which is not allowed. The second argument is
-wrong and should probably be <code class="highlight coq"><span class="n">n'</span></code>. Besides one usually defines this
-such that <code class="highlight coq"><span class="n">fibonacci</span> <span class="mi">0</span> <span class="o">=</span> <span class="mi">0</span></code>.</p>
-<p>To get around the issue of <code class="highlight coq"><span class="o">(</span><span class="n">S</span> <span class="n">n'</span><span class="o">)</span></code> one gives it a separate name with
-<code class="highlight coq"><span class="kr">as</span></code> as in:</p>
+another constructor <tt class="docutils literal">S</tt>, which is not allowed. The second argument
+is wrong and should probably be <tt class="docutils literal">n'</tt>. Besides one usually defines
+this such that <tt class="docutils literal">fibonacci 0 = 0</tt>.</p>
+<p>To get around the issue of <tt class="docutils literal">(S n')</tt> one gives it a separate name
+with <tt class="docutils literal">as</tt> as in:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">fibonacci</span> (<span class="nv">n</span>:nat) : nat :=

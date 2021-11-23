@@ -27,14 +27,14 @@
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
 <div class="section" id="question">
 <h1>Question</h1>
-<p>I have statement <code class="highlight coq"><span class="n">true</span> <span class="o">&lt;&gt;</span> <span class="n">false</span></code>, in hypothesis. I want to prove <code class="highlight coq"><span class="n">true</span>
-<span class="o">=</span> <span class="n">false</span></code>. Can I solve it? The problem is that, it can not be solved by
-contradiction.</p>
+<p>I have statement <tt class="docutils literal">true &lt;&gt; false</tt>, in hypothesis. I want to prove
+<tt class="docutils literal">true = false</tt>. Can I solve it? The problem is that, it can not be
+solved by contradiction.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p>I agree that you should provide a better example. That said! You need
-to be clear...is <code class="highlight coq"><span class="n">true</span> <span class="o">&lt;&gt;</span> <span class="n">false</span></code> above the line (eg a hypothesis) or
+to be clear...is <tt class="docutils literal">true &lt;&gt; false</tt> above the line (eg a hypothesis) or
 below the line (a goal)?</p>
 <p>I'm assuming it is a goal, because as a hypothesis, it doesn't
 actually tell you anything (it's just a tautology).</p>
@@ -42,22 +42,22 @@ actually tell you anything (it's just a tautology).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk0"><span class="kn">Goal</span> (true &lt;&gt; false).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; false</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk1"><span class="nb">intros</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">discriminate</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>There are a lot of general ways to deal with
-contradictions...`discriminate` and <code class="highlight coq"><span class="nb">inversion</span></code> are quite common. But
-a clearer example would be better.</p>
-<p>Something to note in general is that <code class="highlight coq"><span class="n">A</span> <span class="o">&lt;&gt;</span> <span class="n">B</span></code> is just a notation for
-<code class="highlight coq"><span class="n">A</span> <span class="o">=</span> <span class="n">B</span> <span class="o">-&gt;</span> <span class="kt">False</span></code>, which is why <code class="highlight coq"><span class="nb">intros</span> <span class="n">contra</span></code> above works, because
-it's pulling out the hypothesis. In cases where you're not sure what
-to do, you can use intros to put the equality above the line and then
-derive a contradiction.</p>
-<p>In the case where you have something like <code class="highlight coq"><span class="n">true</span> <span class="o">&lt;&gt;</span> <span class="n">true</span></code> <em>above</em> the
+contradictions...``discriminate`` and <tt class="docutils literal">inversion</tt> are quite common.
+But a clearer example would be better.</p>
+<p>Something to note in general is that <tt class="docutils literal">A &lt;&gt; B</tt> is just a notation for
+<tt class="docutils literal">A = B <span class="pre">-&gt;</span> False</tt>, which is why <tt class="docutils literal">intros contra</tt> above works,
+because it's pulling out the hypothesis. In cases where you're not
+sure what to do, you can use intros to put the equality above the line
+and then derive a contradiction.</p>
+<p>In the case where you have something like <tt class="docutils literal">true &lt;&gt; true</tt> <em>above</em> the
 line (that's important), then you can apply it.</p>
 <p>Example</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk2"><span class="kn">Goal</span> (true &lt;&gt; true -&gt; <span class="mi">0</span> = <span class="mi">1</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; true -&gt; <span class="mi">0</span> = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk3"><span class="nb">intros</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk4"><span class="nb">exfalso</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk5"><span class="nb">apply</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">true = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><code class="highlight coq"><span class="nb">exfalso</span></code> clears out the current goal and replaces it with <code class="highlight coq"><span class="kt">False</span></code> --
-this is useful when you have an impossible goal but a contradiction in
-your hypothesis (above the line). <code class="highlight coq"><span class="nb">apply</span> <span class="n">contra</span></code> uses the fact that
-<code class="highlight coq"><span class="o">&lt;&gt;</span></code> is <code class="highlight coq"><span class="o">...</span> <span class="o">-&gt;</span> <span class="kt">False</span></code> like I mentioned above.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><tt class="docutils literal">exfalso</tt> clears out the current goal and replaces it with <tt class="docutils literal">False</tt>
+-- this is useful when you have an impossible goal but a contradiction
+in your hypothesis (above the line). <tt class="docutils literal">apply contra</tt> uses the fact
+that <tt class="docutils literal">&lt;&gt;</tt> is <tt class="docutils literal">... <span class="pre">-&gt;</span> False</tt> like I mentioned above.</p>
 </div>
 </div>
 </div>

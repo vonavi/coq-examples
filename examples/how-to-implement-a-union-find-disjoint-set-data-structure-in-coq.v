@@ -40,18 +40,19 @@ I will assume that elements are simply natural numbers. If you want
 another type of elements, simply have another map that binds all
 elements to unique numbers.
 
-Then you would define a function `find : UnionFind → nat → nat` that
-returns the canonical representative of a given element, by following
-links as long as you can. Notice that the function would use
+Then you would define a function ``find : UnionFind -> nat -> nat``
+that returns the canonical representative of a given element, by
+following links as long as you can. Notice that the function would use
 recursion, whose termination argument is not trivial. To make it
 happen, I think that the easiest way is to maintain the invariant that
-a number only links to a lesser number (i.e. if `i` links to `j`, then
-`i > j`). Then the recursion terminates because, when following links,
-the current element is a decreasing natural number.
+a number only links to a lesser number (i.e. if ``i`` links to ``j``,
+then ``i > j``). Then the recursion terminates because, when following
+links, the current element is a decreasing natural number.
 
-Defining the function `union : UnionFind → nat → nat → UnionFind` is
-easier: `union m i j` simply returns an updated map with `max i' j'`
-linking to `min i' j'`, where `i' = find m i` and `j' = find m j`.
+Defining the function ``union : UnionFind -> nat -> nat -> UnionFind``
+is easier: ``union m i j`` simply returns an updated map with ``max i'
+j'`` linking to ``min i' j'``, where ``i' = find m i`` and ``j' = find
+m j``.
 
 [Side note on performance: maintaining the invariant means that you
 cannot adequately choose which of a pair of partitions to merge into
@@ -74,7 +75,8 @@ list are the elements in *reverse order*. The values of the list are
 *offsets*, i.e. the number of positions to skip forward in order to
 reach the target of the link.
 
-- For an element `i` linking to `j` (`i > j`), the offset is `i − j`.
+- For an element ``i`` linking to ``j`` (``i > j``), the offset is ``i
+  − j``.
 - For a canonical representative, the offset is zero.
 
 With my best pseudo-ASCII-art skills, here is a map where the links
@@ -91,7 +93,7 @@ are { 6↦2, 4↦2, 3↦0, 2↦1 } and the canonical representatives are { 5,
         \___________/
 
 The motivation is that the invariant discussed above is then enforced
-*structurally*. Hence, there is hope that `find` could actually be
+*structurally*. Hence, there is hope that ``find`` could actually be
 defined by structural induction (on the structure of the list), and
 have termination for free.
 

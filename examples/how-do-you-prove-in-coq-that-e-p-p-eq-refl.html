@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl">
-<h1 class="title">How do you prove in Coq that <code class="highlight coq"><span class="o">(</span><span class="n">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">)</span> <span class="o">=</span> <span class="n">eq_refl</span></code>?</h1>
+<h1 class="title">How do you prove in Coq that <tt class="docutils literal">(e: p = p) = eq_refl</tt>?</h1>
 <table class="docinfo" frame="void" rules="none">
 <col class="docinfo-name" />
 <col class="docinfo-content" />
@@ -29,10 +29,11 @@
 <h1>Question</h1>
 <p>I am trying to prove this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk0"><span class="kn">Lemma</span> <span class="nf">eq_eq</span>: <span class="kr">forall</span> (<span class="nv">U</span>: <span class="kt">Type</span>) (<span class="nv">p</span>: U) (<span class="nv">eqv</span>: p = p), eq_refl = eqv.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">eqv</span> : p = p), eq_refl = eqv</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>But there just seems to be no way to do it. The problem is the type <code class="highlight coq"><span class="n">p</span>
-<span class="o">=</span> <span class="n">p</span></code> being an equality on the same term, and then trying to match its
-instance. If this were not the case, it is easy enough to prove that a
-term of a type with a single constructor is equal to that constructor.</p>
+</span></span></pre><p>But there just seems to be no way to do it. The problem is the type
+<tt class="docutils literal">p = p</tt> being an equality on the same term, and then trying to match
+its instance. If this were not the case, it is easy enough to prove
+that a term of a type with a single constructor is equal to that
+constructor.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk1"><span class="kn">Lemma</span> <span class="nf">eq_tt</span>: <span class="kr">forall</span> (<span class="nv">U</span>: <span class="kt">Type</span>) (<span class="nv">x</span>: unit), tt = x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">Type</span> -&gt; <span class="kr">forall</span> <span class="nv">x</span> : unit, tt = x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Proof</span> <span class="kr">fun</span> (<span class="nv">U</span>: <span class="kt">Type</span>) (<span class="nv">x</span>: unit) =&gt;
         <span class="kr">match</span> x <span class="kr">as</span> x&#39; <span class="kr">return</span> tt = x&#39; <span class="kr">with</span>
@@ -48,11 +49,11 @@ p&#39; : U
 e : p = p&#39;
 The term <span class="s2">&quot;e&quot;</span> has type <span class="s2">&quot;p = p&#39;&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;p = p&quot;</span>
-(cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div></div></small></span></pre><p>The problem is that the <code class="highlight coq"><span class="kr">return</span></code> clause here translates internally to
-a predicate function something like this:</p>
+(cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div></div></small></span></pre><p>The problem is that the <tt class="docutils literal">return</tt> clause here translates internally
+to a predicate function something like this:</p>
 <p><code class="highlight coq"><span class="kr">fun</span> <span class="o">(</span><span class="nv">p'</span><span class="o">:</span> <span class="n">U</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p'</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="o">=</span> <span class="n">e</span></code></p>
 <p>which fails to typecheck because we have now lost the constraint
-between the 2 terms in <code class="highlight coq"><span class="n">e</span></code>'s equality and <code class="highlight coq"><span class="n">eq_refl</span></code> requires that
+between the 2 terms in <tt class="docutils literal">e</tt>'s equality and <tt class="docutils literal">eq_refl</tt> requires that
 constraint.</p>
 <p>Is there any way around this problem? Am I missing something?</p>
 </div>
@@ -63,14 +64,14 @@ identity proofs (UIP)</a>. It
 was first proven that the negation of UIP is consistent in MLTT with
 <a class="reference external" href="https://www.tcs.ifi.lmu.de/mitarbeiter/martin-hofmann/pdfs/agroupoidinterpretationoftypetheroy.pdf">Hofmann and Streicher's groupoid model</a>
 (pdf link). In this model, types are interpreted as groupoids, where
-the identity type <code class="highlight coq"><span class="n">x</span> <span class="o">=</span> <span class="n">y</span></code> is the set of morphisms from <code class="highlight coq"><span class="n">x</span></code> to <code class="highlight coq"><span class="n">y</span></code> in
-the groupoid. In this model, there can be more than one distinct <code class="highlight coq"><span class="n">e</span><span class="o">:</span> <span class="n">x</span>
-<span class="o">=</span> <span class="n">y</span></code>.</p>
+the identity type <tt class="docutils literal">x = y</tt> is the set of morphisms from <tt class="docutils literal">x</tt> to
+<tt class="docutils literal">y</tt> in the groupoid. In this model, there can be more than one
+distinct <tt class="docutils literal">e: x = y</tt>.</p>
 <p>More recently, <a class="reference external" href="https://ncatlab.org/nlab/show/homotopy+type+theory">homotopy type theory</a> has embraced
 this point of view. Rather than mere groupoids, types are interpreted
 as ∞-groupoids, with not only the possibility of multiple equalities
-between <code class="highlight coq"><span class="n">x</span></code> and <code class="highlight coq"><span class="n">y</span></code>, but also possibly multiple identities between
-identities <code class="highlight coq"><span class="n">p</span> <span class="n">q</span><span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span></code>, etc.</p>
+between <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>, but also possibly multiple identities between
+identities <tt class="docutils literal">p q: x = y</tt>, etc.</p>
 <p>Suffice to say, your lemma isn't provable without an extra axiom such
 as UIP mentioned above or <a class="reference external" href="https://ncatlab.org/nlab/show/axiom+K+%28type+theory%29">Axiom K</a>.</p>
 </div>

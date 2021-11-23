@@ -28,9 +28,9 @@
 <div class="section" id="question">
 <h1>Question</h1>
 <p>I am a beginner at coq.</p>
-<p>I do not know the meaning of <code class="highlight coq"><span class="nb">intros</span> <span class="o">[=]</span></code> and <code class="highlight coq"><span class="nb">intros</span> <span class="o">[=</span> <span class="o">&lt;-</span> <span class="n">H</span><span class="o">]</span></code>. and I
-could not find an easy explanation. Would someone explain these two to
-me please?</p>
+<p>I do not know the meaning of <tt class="docutils literal">intros [=]</tt> and <tt class="docutils literal">intros [= &lt;- H]</tt>.
+and I could not find an easy explanation. Would someone explain these
+two to me please?</p>
 <p>Regards</p>
 </div>
 <div class="section" id="answer">
@@ -41,14 +41,14 @@ I will add a little explanation note.</p>
 is packed in inductive objects on the fly. Here is a first easy
 example (tested with coq 8.13.2).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span>, A /\ B -&gt; B /\ A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, A /\ B -&gt; B /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, A /\ B -&gt; B /\ A</div></blockquote></div></div></small></span></pre><p>If you run the tactic <code class="highlight coq"><span class="nb">intros</span> <span class="n">A</span> <span class="n">B</span> <span class="n">H</span></code> then the hypothesis <code class="highlight coq"><span class="n">H</span></code> will be a
-proof of <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code>. Morally, this contains knowledge that <code class="highlight coq"><span class="n">A</span></code> holds,
-but it cannot be used as such, because it is a proof of a stronger
-fact. It is often the case that users want directly to decompose this
-hypothesis, this would normally be done by typing <code class="highlight coq"><span class="nb">destruct</span> <span class="n">H</span> <span class="kr">as</span> <span class="o">[</span><span class="n">Ha</span>
-<span class="n">Hb</span><span class="o">]</span></code>. But if you know right away that you will not keep hypothesis
-<code class="highlight coq"><span class="n">H</span></code>, why not find a shorter expression. This is what the intro pattern
-is used for.</p>
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, A /\ B -&gt; B /\ A</div></blockquote></div></div></small></span></pre><p>If you run the tactic <tt class="docutils literal">intros A B H</tt> then the hypothesis <tt class="docutils literal">H</tt> will
+be a proof of <tt class="docutils literal">A /\ B</tt>. Morally, this contains knowledge that <tt class="docutils literal">A</tt>
+holds, but it cannot be used as such, because it is a proof of a
+stronger fact. It is often the case that users want directly to
+decompose this hypothesis, this would normally be done by typing
+<tt class="docutils literal">destruct H as [Ha Hb]</tt>. But if you know right away that you will
+not keep hypothesis <tt class="docutils literal">H</tt>, why not find a shorter expression. This is
+what the intro pattern is used for.</p>
 <p>So you type the following command and have the resulting goal:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk2"><span class="nb">intros</span> A B [Ha Hb].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>Ha</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>Hb</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>I will not finish this proof. But you get the idea of what intro
@@ -62,7 +62,15 @@ and we have the following equality.</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk3"><span class="kn">Lemma</span> <span class="nf">intro_pattern_example2</span> <span class="nv">n</span> <span class="nv">m</span> <span class="nv">p</span> <span class="nv">q</span> <span class="nv">l1</span> <span class="nv">l2</span> :
   (n :: S m :: l1) = (p :: S q :: l2) -&gt; q :: p :: l2 = m :: n :: l1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n :: S m :: l1 = p :: S q :: l2 -&gt;
-q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small></span></pre><p>The equality in the left-hand side of the implication is an equality between two lists, but it actually packs several more elementary pieces of information: <code class="highlight coq"><span class="n">n</span> <span class="o">=</span> <span class="n">p</span></code>, <code class="highlight coq"><span class="n">m</span> <span class="o">=</span> <span class="n">q</span></code>, and <code class="highlight coq"><span class="n">l1</span> <span class="o">=</span> <span class="n">l2</span></code>. If you just type <code class="highlight coq"><span class="nb">intros</span> <span class="n">H</span></code>, you obtain the equality between two lists of length 3, but if you type <code class="highlight coq"><span class="nb">intros</span> <span class="o">[=]</span></code>, you ask the proof system to explore the structure of each equality member and check when constructors appear so that the smaller pieces of information can be placed in separate hypothesis instead of the big one. This is a short hand for the use of the <code class="highlight coq"><span class="nb">injection</span></code> tactic. Here is the example.</p>
+q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small></span></pre><p>The equality in the left-hand side of the implication is an equality
+between two lists, but it actually packs several more elementary
+pieces of information: <tt class="docutils literal">n = p</tt>, <tt class="docutils literal">m = q</tt>, and <tt class="docutils literal">l1 = l2</tt>. If you
+just type <tt class="docutils literal">intros H</tt>, you obtain the equality between two lists of
+length 3, but if you type <tt class="docutils literal">intros [=]</tt>, you ask the proof system to
+explore the structure of each equality member and check when
+constructors appear so that the smaller pieces of information can be
+placed in separate hypothesis instead of the big one. This is a short
+hand for the use of the <tt class="docutils literal">injection</tt> tactic. Here is the example.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk4"><span class="nb">intros</span> [= Hn Hm Hl1].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>Hn</var><span class="hyp-type"><b>: </b><span>n = p</span></span></span><br><span><var>Hm</var><span class="hyp-type"><b>: </b><span>m = q</span></span></span><br><span><var>Hl1</var><span class="hyp-type"><b>: </b><span>l1 = l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small></span></pre><p>So you see, this <em>intro pattern</em> unpacks information that would
 otherwise be stuck in a more complex hypothesis.</p>
 <p>Now, when an hypothesis is an equality, there is another action you
@@ -71,19 +79,19 @@ In intro patterns, this is done by replacing the name you would give
 to that equality with an arrow. Let's test this on the previous goal.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk5"><span class="kn">Undo</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n :: S m :: l1 = p :: S q :: l2 -&gt;
 q :: p :: l2 = m :: n :: l1</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk6"><span class="nb">intros</span> [= -&gt; -&gt; -&gt;].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">q :: p :: l2 = q :: p :: l2</div></blockquote></div></div></small></span></pre><p>Now this goal can be solved quickly with <code class="highlight coq"><span class="bp">reflexivity</span></code>, <code class="highlight coq"><span class="nb">trivial</span></code>, or
-<code class="highlight coq"><span class="nb">auto</span></code>. Please note that the hypotheses were used to rewrite, but they
-were not kept in the goal context, so this possibility to rewrite
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="question-about-intros-and-intros-h-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="question-about-intros-and-intros-h-v-chk6"><span class="nb">intros</span> [= -&gt; -&gt; -&gt;].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p, q</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">q :: p :: l2 = q :: p :: l2</div></blockquote></div></div></small></span></pre><p>Now this goal can be solved quickly with <tt class="docutils literal">reflexivity</tt>, <tt class="docutils literal">trivial</tt>,
+or <tt class="docutils literal">auto</tt>. Please note that the hypotheses were used to rewrite, but
+they were not kept in the goal context, so this possibility to rewrite
 directly from the intro pattern has to be used with caution, because
 you are actually losing some information.</p>
-<p>The <code class="highlight coq"><span class="o">[=]</span></code> intro pattern is used especially for equalities and when
+<p>The <tt class="docutils literal">[=]</tt> intro pattern is used especially for equalities and when
 both members are datatype constructors. It exploits the natural
 injectivity property of these constructors. there is another property
 that is respected by datatype constructors. It is the fact that two
 pieces of data with different head constructors can never be equal.
-This is exploited in Coq by the <code class="highlight coq"><span class="bp">discriminate</span></code> tactic. The <code class="highlight coq"><span class="o">[=]</span></code> intro
-pattern is shorthand for both the <code class="highlight coq"><span class="nb">injection</span></code> and <code class="highlight coq"><span class="bp">discriminate</span></code>
-tactics.</p>
+This is exploited in Coq by the <tt class="docutils literal">discriminate</tt> tactic. The <tt class="docutils literal">[=]</tt>
+intro pattern is shorthand for both the <tt class="docutils literal">injection</tt> and
+<tt class="docutils literal">discriminate</tt> tactics.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> Would an explanation like this make it clearer?
 <a class="reference external" href="https://github.com/tchajed/coq-tricks/blob/master/src/IntroPatterns.v">https://github.com/tchajed/coq-tricks/blob/master/src/IntroPatterns.v</a></p>

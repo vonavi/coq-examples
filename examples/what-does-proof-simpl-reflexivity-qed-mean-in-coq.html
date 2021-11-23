@@ -41,24 +41,25 @@ beginning.</p>
   <span class="kr">end</span>.</span></span></pre><p>So let's say we want to prove the correctness of the or function. The
 author wrote a test followed by a proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk0"><span class="kn">Example</span> <span class="nf">test_orb1</span>: (orb true false) = true.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">orb true false = true</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">orb true false = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk2"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Could someone explain to me what <code class="highlight coq"><span class="nb">simpl</span><span class="o">.</span> <span class="bp">reflexivity</span><span class="o">.</span></code> mean? Is there
-any other way we can prove this simple test?</p>
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">orb true false = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-proof-simpl-reflexivity-qed-mean-in-coq-v-chk2"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Could someone explain to me what <tt class="docutils literal">simpl. reflexivity.</tt> mean? Is
+there any other way we can prove this simple test?</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p><code class="highlight coq"><span class="nb">simpl</span></code> is a tactic evaluating the goal. In your case, after executing
-it, the goal will be left to <code class="highlight coq"><span class="n">true</span> <span class="o">=</span> <span class="n">true</span></code>. <code class="highlight coq"><span class="bp">reflexivity</span></code> is a tactic
-discharging goals of the shape <code class="highlight coq"><span class="n">x</span> <span class="o">=</span> <span class="n">x</span></code> (in its simplest incarnation).
-What it does under the hood is to provide the proof term <code class="highlight coq"><span class="n">eq_refl</span> <span class="o">:</span> <span class="n">x</span>
-<span class="o">=</span> <span class="n">x</span></code> as a solution to the current proof obligation.</p>
+<p><tt class="docutils literal">simpl</tt> is a tactic evaluating the goal. In your case, after
+executing it, the goal will be left to <tt class="docutils literal">true = true</tt>.
+<tt class="docutils literal">reflexivity</tt> is a tactic discharging goals of the shape <tt class="docutils literal">x = x</tt>
+(in its simplest incarnation). What it does under the hood is to
+provide the proof term <tt class="docutils literal">eq_refl : x = x</tt> as a solution to the
+current proof obligation.</p>
 <p>Now, there are many ways to achieve this thing that ultimately will
-produce the same (rather trivial) proof <code class="highlight coq"><span class="n">eq_refl</span></code> (try doing <code class="highlight coq"><span class="kn">Print</span>
-<span class="n">test_orb1</span><span class="o">.</span></code>). First, the <code class="highlight coq"><span class="nb">simpl</span></code> operation is not needed because Coq
-will do some computations when applying a term (in particular when
-calling <code class="highlight coq"><span class="bp">reflexivity</span></code>). Second, you could obtain the same effect as
-<code class="highlight coq"><span class="bp">reflexivity</span></code> by calling <code class="highlight coq"><span class="nb">constructor</span></code>, <code class="highlight coq"><span class="nb">apply</span> <span class="n">eq_refl</span></code> or <code class="highlight coq"><span class="nb">refine</span>
-<span class="n">eq_refl</span></code>. These are tactics with different goals but that happen to
-coincide here.</p>
+produce the same (rather trivial) proof <tt class="docutils literal">eq_refl</tt> (try doing <tt class="docutils literal">Print
+test_orb1.</tt>). First, the <tt class="docutils literal">simpl</tt> operation is not needed because
+Coq will do some computations when applying a term (in particular when
+calling <tt class="docutils literal">reflexivity</tt>). Second, you could obtain the same effect as
+<tt class="docutils literal">reflexivity</tt> by calling <tt class="docutils literal">constructor</tt>, <tt class="docutils literal">apply eq_refl</tt> or
+<tt class="docutils literal">refine eq_refl</tt>. These are tactics with different goals but that
+happen to coincide here.</p>
 </div>
 </div>
 </div>

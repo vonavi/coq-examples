@@ -27,14 +27,14 @@
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
 <div class="section" id="question">
 <h1>Question</h1>
-<p>Let's say I have some complex tactics in the body of a <code class="highlight coq"><span class="kr">match</span> <span class="n">goal</span></code>
+<p>Let's say I have some complex tactics in the body of a <tt class="docutils literal">match goal</tt>
 branch that can easily go wrong in a way I might need to debug. Is
 there a way to get the &quot;real&quot; error message from the branch if some
 tactic fails, rather than simply getting &quot;Error: No matching clauses
 for match goal&quot;?</p>
-<p>Take as an example this fake tactic where <code class="highlight coq"><span class="nb">apply</span> <span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">,</span> <span class="n">C</span></code> has several
-chances for something to go wrong. I've been fighting with a real
-tactic somewhat similar to this today.</p>
+<p>Take as an example this fake tactic where <tt class="docutils literal">apply A, B, C</tt> has
+several chances for something to go wrong. I've been fighting with a
+real tactic somewhat similar to this today.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">three_applications</span> :=
   <span class="kr">match goal with</span>
   | [
@@ -50,41 +50,41 @@ tactic somewhat similar to this today.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>The easiest is to use <code class="highlight coq"><span class="kr">lazymatch</span> <span class="n">goal</span></code> instead but it has different
+<p>The easiest is to use <tt class="docutils literal">lazymatch goal</tt> instead but it has different
 semantics, but as I see you match only on one shape, it might be ok
 for you.</p>
-<p>The idea is that <code class="highlight coq"><span class="kr">match</span> <span class="n">goal</span></code> might backtrack: if you have</p>
+<p>The idea is that <tt class="docutils literal">match goal</tt> might backtrack: if you have</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">tac</span> :=
   <span class="kr">match goal with</span>
   | n : nat |- _ =&gt; <span class="nb">destruct</span> n; <span class="bp">reflexivity</span>
   | |- nat =&gt; <span class="bp">exact</span> <span class="mi">0</span>
-  <span class="kr">end</span>.</span></span></pre><p>it will first try to find some <code class="highlight coq"><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span></code> in your hypotheses, starting
-from the most recent, and then try the tactic <code class="highlight coq"><span class="nb">destruct</span> <span class="n">n</span><span class="o">;</span>
-<span class="bp">reflexivity</span></code>. If it fails, it will try to find another natural number.
-If all of them fail, then it will look if the goal matches the second
-clause instead, and if so execute <code class="highlight coq"><span class="bp">exact</span> <span class="mi">0</span></code>. If that fails again, it
-will backtrack once again and conclude that <code class="highlight coq"><span class="n">No</span> <span class="n">matching</span> <span class="n">clauses</span> <span class="kr">for</span>
-<span class="kr">match</span> <span class="n">goal</span></code>.</p>
+  <span class="kr">end</span>.</span></span></pre><p>it will first try to find some <tt class="docutils literal">n : nat</tt> in your hypotheses,
+starting from the most recent, and then try the tactic <tt class="docutils literal">destruct n;
+reflexivity</tt>. If it fails, it will try to find another natural
+number. If all of them fail, then it will look if the goal matches the
+second clause instead, and if so execute <tt class="docutils literal">exact 0</tt>. If that fails
+again, it will backtrack once again and conclude that <tt class="docutils literal">No matching
+clauses for match goal</tt>.</p>
 <p>On the other hand,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">tac</span> :=
   <span class="kr">lazymatch goal with</span>
   | n : nat |- _ =&gt; <span class="nb">destruct</span> n; <span class="bp">reflexivity</span>
   | |- nat =&gt; <span class="bp">exact</span> <span class="mi">0</span>
   <span class="kr">end</span>.</span></span></pre><p>will find the first branch that matches, and then apply the tactic, if
-it fails, no backtracking in the <code class="highlight coq"><span class="kr">lazymatch</span></code>, and it will give you the
-error of the tactic in the corresponding branch.</p>
-<p>Note that I would always use <code class="highlight coq"><span class="kr">lazymatch</span></code>, not just for debugging
+it fails, no backtracking in the <tt class="docutils literal">lazymatch</tt>, and it will give you
+the error of the tactic in the corresponding branch.</p>
+<p>Note that I would always use <tt class="docutils literal">lazymatch</tt>, not just for debugging
 purposes, when I don't find a use case for backtracking.</p>
 <hr class="docutils" />
-<p>In case, <code class="highlight coq"><span class="kr">lazymatch</span></code> is not semantically equivalent to your match and
-backtracking needs to be involved then it will be harder, but indeed,
-using <code class="highlight coq"><span class="kp">idtac</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span></code> can help you see which branch it selected before
-launching the error. Sometimes, writing</p>
+<p>In case, <tt class="docutils literal">lazymatch</tt> is not semantically equivalent to your match
+and backtracking needs to be involved then it will be harder, but
+indeed, using <tt class="docutils literal">idtac A B C</tt> can help you see which branch it
+selected before launching the error. Sometimes, writing</p>
 <p><code class="highlight coq"><span class="kn">Fail</span> <span class="n">three_applications</span><span class="o">.</span></code></p>
 <p>instead of just</p>
 <p><code class="highlight coq"><span class="n">three_applications</span><span class="o">.</span></code></p>
-<p>will help because <code class="highlight coq"><span class="kn">Fail</span></code> will usually keep the printing that you made
-in the command, even if it failed in the end.</p>
+<p>will help because <tt class="docutils literal">Fail</tt> will usually keep the printing that you
+made in the command, even if it failed in the end.</p>
 <p>Once you know the branch, just apply your tactic manually.</p>
 </div>
 </div>

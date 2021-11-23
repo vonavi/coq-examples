@@ -39,23 +39,23 @@ know of are:
   Winterhalter linked something in the comments above that may provide
   more context on this approach.
 - LCF-style theorems provers (e.g. Isabelle, HOL Light, HOL 4). Here a
-  theorem is (roughly speaking) an opaque value of type `thm` in the
+  theorem is (roughly speaking) an opaque value of type ``thm`` in the
   implementation language. Only the comparatively small 'proof kernel'
-  can create these `thm` values and all other parts of the system
+  can create these ``thm`` values and all other parts of the system
   interact with this proof kernel. The kernel offers an interface
   consisting of various small functions that implement small inference
-  steps such as *modus ponens* (if you have a theorem `A ⟹ B` and a
-  theorem `A`, you can get the theorem `B`) or ∀-introduction (if you
-  have the theorem `P x` for a fixed variable `x`, you can get the
-  theorem `∀x. P x`) etc. The kernel also offers an interface for
-  defining new constants. In principle, as long as you can trust that
-  these functions faithfully implement the basic inference steps of
-  the underlying logic, you can trust that any `thm` value you can
-  produce really corresponds to a theorem in your logic. For LCF-style
-  provers, the answer of what the actual proof is is a bit more
-  difficult to answer because they usually don't build proof terms
-  (e.g. Isabelle has them, but they are disabled by default and not
-  widely used). I think one could say that the history of how the
+  steps such as *modus ponens* (if you have a theorem ``A ⟹ B`` and a
+  theorem ``A``, you can get the theorem ``B``) or ∀-introduction (if
+  you have the theorem ``P x`` for a fixed variable ``x``, you can get
+  the theorem ``∀x. P x``) etc. The kernel also offers an interface
+  for defining new constants. In principle, as long as you can trust
+  that these functions faithfully implement the basic inference steps
+  of the underlying logic, you can trust that any ``thm`` value you
+  can produce really corresponds to a theorem in your logic. For
+  LCF-style provers, the answer of what the actual proof is is a bit
+  more difficult to answer because they usually don't build proof
+  terms (e.g. Isabelle has them, but they are disabled by default and
+  not widely used). I think one could say that the history of how the
   kernel primitives are called constitute the proof, and if one were
   to record it, it could – *in principle* – be replayed and checked in
   another system.

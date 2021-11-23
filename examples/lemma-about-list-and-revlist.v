@@ -33,8 +33,8 @@ Main answer
 Before you start proving your theorem, you should try to *thoroughly*
 understand what your theorem says. Your theorem is simply wrong.
 
-Counterexample: `2 :: [1;2] = rev [1;2] ++ [2]`, but `[1;2]` is not a
-palindrome.
+Counterexample: ``2 :: [1;2] = rev [1;2] ++ [2]``, but ``[1;2]`` is
+not a palindrome.
 
 Full proof:
 |*)
@@ -62,7 +62,7 @@ induction that works best is a crucial skill. To name a few:
 - Induction on the list
 - Induction on the length of the list
 
-  - arises quite frequently when dealing with `rev` and other
+  - arises quite frequently when dealing with ``rev`` and other
     functions that preserve length
   - `Example <https://stackoverflow.com/a/18760596/4595904>`_
 

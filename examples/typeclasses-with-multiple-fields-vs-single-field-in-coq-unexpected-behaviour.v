@@ -76,9 +76,9 @@ Thanks a lot!
 Answer
 ------
 
-The `Qed` command creates opaque definitions, which are never unfolded
-by commands like `Compute`. You can tell Coq to make only the proof
-obligation opaque by using the `Program Instance` command:
+The ``Qed`` command creates opaque definitions, which are never
+unfolded by commands like ``Compute``. You can tell Coq to make only
+the proof obligation opaque by using the ``Program Instance`` command:
 |*)
 
 Reset Eq. (* .none *)

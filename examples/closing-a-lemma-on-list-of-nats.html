@@ -29,10 +29,10 @@
 <h1>Question</h1>
 <p>I am stuck to prove the following admitted lemma. Kindly help me how
 to proceed.</p>
-<p>The function <code class="highlight coq"><span class="n">sumoneseq</span></code> adds to and returns list of repetitions of
-<code class="highlight coq"><span class="n">true</span></code>, in reverse order. Given [<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;<strong>true</strong>], it returns [3;2;1].
-The function <code class="highlight coq"><span class="n">sumones</span></code> adds values in the nat list. Given [3;2;1], it
-returns 6.</p>
+<p>The function <tt class="docutils literal">sumoneseq</tt> adds to and returns list of repetitions of
+<tt class="docutils literal">true</tt>, in reverse order. Given [<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;<strong>true</strong>], it returns [3;2;1].
+The function <tt class="docutils literal">sumones</tt> adds values in the nat list. Given [3;2;1],
+it returns 6.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;x :: l&quot;</span> := (cons x l) (<span class="kn">at level</span> <span class="mi">60</span>, <span class="kn">right associativity</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ ]&quot;</span> := nil.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ x ; .. ; y ]&quot;</span> := (cons x .. (cons y nil) ..).</span><span class="alectryon-wsp">
@@ -77,24 +77,24 @@ a + sumones ln + sumones (sumoneseq lb [ ])</div></blockquote></div></div></smal
 <h1>Answer</h1>
 <p>Two things:</p>
 <ol class="arabic simple">
-<li>When proving a property of some function <code class="highlight coq"><span class="n">f</span></code> using a direct
-induction, choose the parameter on which <code class="highlight coq"><span class="n">f</span></code> is structurally
-recursive on. So in your example involving <code class="highlight coq"><span class="n">sumoneseq</span></code>, induct on
-<code class="highlight coq"><span class="n">lb</span></code> instead of <code class="highlight coq"><span class="n">ln</span></code> since <code class="highlight coq"><span class="n">sumoneseq</span></code> is structurally recursive on
-<code class="highlight coq"><span class="n">lb</span></code>.</li>
-<li>Proving a property of some function <code class="highlight coq"><span class="n">f</span></code> where one or more of its
-arguments are fixed to specific values (e.g. <code class="highlight coq"><span class="n">sumoneseq</span></code> with its
-second argument being <code class="highlight coq"><span class="o">[]</span></code>) by direct induction is almost
+<li>When proving a property of some function <tt class="docutils literal">f</tt> using a direct
+induction, choose the parameter on which <tt class="docutils literal">f</tt> is structurally
+recursive on. So in your example involving <tt class="docutils literal">sumoneseq</tt>, induct on
+<tt class="docutils literal">lb</tt> instead of <tt class="docutils literal">ln</tt> since <tt class="docutils literal">sumoneseq</tt> is structurally
+recursive on <tt class="docutils literal">lb</tt>.</li>
+<li>Proving a property of some function <tt class="docutils literal">f</tt> where one or more of its
+arguments are fixed to specific values (e.g. <tt class="docutils literal">sumoneseq</tt> with its
+second argument being <tt class="docutils literal">[]</tt>) by direct induction is almost
 guaranteed to fail, since the value of that argument varies between
-recursive calls of <code class="highlight coq"><span class="n">f</span></code>, meaning that you would not be able to apply
-the induction hypothesis in your inductive case. In that case, you
-need to manually generalize the induction hypothesis by finding a
-more general property on which <code class="highlight coq"><span class="n">f</span></code> holds, with each of its
-arguments being sufficiently general. For example, instead of
-proving <code class="highlight coq"><span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span><span class="o">,</span> <span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="n">ln</span><span class="o">)</span> <span class="o">=</span> <span class="n">sumones</span> <span class="n">ln</span> <span class="o">+</span>
-<span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="o">[])</span></code> directly by induction, try generalizing
-it to something like <code class="highlight coq"><span class="kr">forall</span> <span class="nv">lb</span> <span class="nv">ln</span> <span class="nv">ln'</span><span class="o">,</span> <span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="o">(</span><span class="n">ln</span>
-<span class="o">++</span> <span class="n">ln'</span><span class="o">))</span> <span class="o">=</span> <span class="n">sumones</span> <span class="n">ln</span> <span class="o">+</span> <span class="n">sumones</span> <span class="o">(</span><span class="n">sumoneseq</span> <span class="n">lb</span> <span class="n">ln'</span><span class="o">)</span></code> instead and
+recursive calls of <tt class="docutils literal">f</tt>, meaning that you would not be able to
+apply the induction hypothesis in your inductive case. In that
+case, you need to manually generalize the induction hypothesis by
+finding a more general property on which <tt class="docutils literal">f</tt> holds, with each of
+its arguments being sufficiently general. For example, instead of
+proving <tt class="docutils literal">forall lb ln, sumones (sumoneseq lb ln) = sumones ln +
+sumones (sumoneseq lb [])</tt> directly by induction, try generalizing
+it to something like <tt class="docutils literal">forall lb ln ln', sumones (sumoneseq lb (ln
+++ <span class="pre">ln'))</span> = sumones ln + sumones (sumoneseq lb ln')</tt> instead and
 prove <em>that</em> by direct induction. Your desired result then follows
 as a corollary of that more general result.</li>
 </ol>
@@ -102,18 +102,18 @@ as a corollary of that more general result.</li>
 <a class="reference external" href="https://jamesrwilcox.com/InductionExercises.html">James Wilcox's blog post</a> which generously
 includes 8 exercises of increasing difficulty on doing just that.</p>
 <p>Now try to prove your lemma with these two points in mind. <em>Hint: when
-proving your more general statement about</em> <code class="highlight coq"><span class="n">sumoneseq</span></code> <em>by direct
+proving your more general statement about</em> <tt class="docutils literal">sumoneseq</tt> <em>by direct
 induction, you may also find it helpful to extract out a suitable
-lemma on a certain property of</em> <code class="highlight coq"><span class="n">sumones</span></code>.</p>
+lemma on a certain property of</em> <tt class="docutils literal">sumones</tt>.</p>
 <p>If you've tried again to no avail then the full solution is provided
 below the horizontal rule (<strong>spoiler alert!</strong>).</p>
 <hr class="docutils" />
 <p>Here goes the full solution. As you can probably see, a lot of case
 analysis is required on top of the main induction (likely due to your
-optimization in <code class="highlight coq"><span class="n">sumoneseq</span></code> of discarding <code class="highlight coq"><span class="mi">0</span></code>'s from <code class="highlight coq"><span class="n">ln</span></code>) and the
-reasoning for many of these cases are actually very similar and
+optimization in <tt class="docutils literal">sumoneseq</tt> of discarding <tt class="docutils literal">0</tt>'s from <tt class="docutils literal">ln</tt>) and
+the reasoning for many of these cases are actually very similar and
 repetitive. I could've probably further shortened the proof script
-with a bit of <code class="highlight coq"><span class="kn">Ltac</span></code> programming looking for similar patterns in the
+with a bit of <tt class="docutils literal">Ltac</tt> programming looking for similar patterns in the
 various cases but I haven't bothered doing so since I just hacked it
 up straight away.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List Lia.</span><span class="alectryon-wsp">

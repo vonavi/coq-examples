@@ -29,52 +29,52 @@
 <h1>Question</h1>
 <p>When looking at results for types with decidable equality (especially
 in <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.Eqdep_dec.html">Eqdep_dec</a>) there are
-some of the results that (for a type <code class="highlight coq"><span class="n">A</span></code>) require</p>
+some of the results that (for a type <tt class="docutils literal">A</tt>) require</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, x = y \/ x &lt;&gt; y.</span><span class="alectryon-wsp">
 </span></span></pre><p>whereas some require</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, {x = y} + {x &lt;&gt; y}.</span><span class="alectryon-wsp">
 </span></span></pre><p>It is my impression that it is the last one that is referred to as
 <em>decidable equality</em>, but I am very much uncertain what the difference
-is. I know that <code class="highlight coq"><span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">\/</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span></code> in <code class="highlight coq"><span class="kt">Prop</span></code> and <code class="highlight coq"><span class="o">{</span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">}</span> <span class="o">+</span> <span class="o">{</span><span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">y</span><span class="o">}</span></code>
-is in <code class="highlight coq"><span class="kt">Set</span></code>, and I can prove the first one from the second one but not
-the other way around. As far as I understand it, it is because I am
-not allowed to construct values of type <code class="highlight coq"><span class="kt">Prop</span></code> from values of type
-<code class="highlight coq"><span class="kt">Set</span></code>.</p>
+is. I know that <tt class="docutils literal">x = y \/ x &lt;&gt; y</tt> in <tt class="docutils literal">Prop</tt> and <tt class="docutils literal">{x = y} + {x &lt;&gt;
+y}</tt> is in <tt class="docutils literal">Set</tt>, and I can prove the first one from the second one
+but not the other way around. As far as I understand it, it is because
+I am not allowed to construct values of type <tt class="docutils literal">Prop</tt> from values of
+type <tt class="docutils literal">Set</tt>.</p>
 <p>Can anyone tell what the difference between the two are? Are there
 some example of a type for which the first statement can be proved but
-not the second. Also, is it true that the version with <code class="highlight coq"><span class="o">{</span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">}</span> <span class="o">+</span> <span class="o">{</span><span class="n">x</span>
-<span class="o">&lt;&gt;</span> <span class="n">y</span><span class="o">}</span></code> is what is referred to as decidable equality?</p>
+not the second. Also, is it true that the version with <tt class="docutils literal">{x = y} + {x
+&lt;&gt; y}</tt> is what is referred to as decidable equality?</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p>You are correct that the latter definition, the one which lives in
-<code class="highlight coq"><span class="kt">Set</span></code>, is referred to as <em>decidable equality</em>.</p>
-<p>Intuitively, we interpret objects in <code class="highlight coq"><span class="kt">Set</span></code> as programs, and objects in
-<code class="highlight coq"><span class="kt">Prop</span></code> as proofs. So the decidable equality type is the type of a
-function which takes any two elements of some type <code class="highlight coq"><span class="n">A</span></code> and decides
+<tt class="docutils literal">Set</tt>, is referred to as <em>decidable equality</em>.</p>
+<p>Intuitively, we interpret objects in <tt class="docutils literal">Set</tt> as programs, and objects
+in <tt class="docutils literal">Prop</tt> as proofs. So the decidable equality type is the type of a
+function which takes any two elements of some type <tt class="docutils literal">A</tt> and decides
 whether they are equal or unequal.</p>
 <p>The other statement is slightly weaker. It describes the proposition
-that any two elements of <code class="highlight coq"><span class="n">A</span></code> are either equal of unequal. Notably, we
-would not be able to inspect <em>which</em> outcome is the case for specific
-values of <code class="highlight coq"><span class="n">x</span></code> and <code class="highlight coq"><span class="n">y</span></code>, at least outside of case analysis within a
-proof. This is the result of the <code class="highlight coq"><span class="kt">Prop</span></code> elimination restriction that
-you alluded to (although you got it backwards: one is not allowed to
-construct values of sort <code class="highlight coq"><span class="kt">Set</span></code>/<code class="highlight coq"><span class="kt">Type</span></code> by eliminating/matching on an
-element of sort <code class="highlight coq"><span class="kt">Prop</span></code>).</p>
-<p>Without adding axioms, the <code class="highlight coq"><span class="kt">Prop</span></code> universe is constructive, so I
-believe that there would not be any types <code class="highlight coq"><span class="n">A</span></code> such that equality is
+that any two elements of <tt class="docutils literal">A</tt> are either equal of unequal. Notably,
+we would not be able to inspect <em>which</em> outcome is the case for
+specific values of <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>, at least outside of case analysis
+within a proof. This is the result of the <tt class="docutils literal">Prop</tt> elimination
+restriction that you alluded to (although you got it backwards: one is
+not allowed to construct values of sort <tt class="docutils literal">Set</tt>/<tt class="docutils literal">Type</tt> by
+eliminating/matching on an element of sort <tt class="docutils literal">Prop</tt>).</p>
+<p>Without adding axioms, the <tt class="docutils literal">Prop</tt> universe is constructive, so I
+believe that there would not be any types <tt class="docutils literal">A</tt> such that equality is
 undecidable but the propositional variant is provable. However,
-consider the scenario in which we make the <code class="highlight coq"><span class="kt">Prop</span></code> universe classical
+consider the scenario in which we make the <tt class="docutils literal">Prop</tt> universe classical
 by adding the following axiom:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">classic</span> : <span class="kr">forall</span> <span class="nv">P</span>, P \/ ~P.</span></span></pre><p>This would make the propositional variant trivially provable for any
-type <code class="highlight coq"><span class="n">A</span></code>, while the decidable equality may not be realizable.</p>
+type <tt class="docutils literal">A</tt>, while the decidable equality may not be realizable.</p>
 <p>Note that our axiom is a proposition. Intuitively, it makes sense that
 either a proposition or its negation must hold. If we hadn't made this
-a <code class="highlight coq"><span class="kt">Prop</span></code> (for example, if we axiomatized <code class="highlight coq"><span class="kr">forall</span> <span class="nv">P</span><span class="o">,</span> <span class="o">{</span><span class="n">P</span><span class="o">}</span> <span class="o">+</span> <span class="o">{~</span><span class="n">P</span><span class="o">}</span></code>), then
-we would likely not accept the axiom, since it would instead be
+a <tt class="docutils literal">Prop</tt> (for example, if we axiomatized <tt class="docutils literal">forall P, {P} + {~P}</tt>),
+then we would likely not accept the axiom, since it would instead be
 declaring the existence of a universal decision procedure.</p>
 <p>That was a bit of a digression, but hopefully it demonstrated some
-differences in our interpretation of <code class="highlight coq"><span class="kt">Prop</span></code>'s and <code class="highlight coq"><span class="kt">Set</span></code>'s.</p>
+differences in our interpretation of <tt class="docutils literal">Prop</tt>'s and <tt class="docutils literal">Set</tt>'s.</p>
 </div>
 </div>
 </div>

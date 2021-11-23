@@ -27,33 +27,33 @@
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
 <div class="section" id="question">
 <h1>Question</h1>
-<p>I've already got the idea of <code class="highlight coq"><span class="nb">specialize</span></code> in Coq.</p>
-<p>It works okay with <code class="highlight coq"><span class="nb">specialize</span> <span class="o">(</span><span class="n">H1</span> <span class="n">trm_int</span><span class="o">)</span></code>.</p>
+<p>I've already got the idea of <tt class="docutils literal">specialize</tt> in Coq.</p>
+<p>It works okay with <tt class="docutils literal">specialize (H1 trm_int)</tt>.</p>
 <p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">term</span> <span class="n">x</span><span class="o">.</span></code></p>
 <p>But what about this case</p>
 <p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></p>
-<p>It doesn't work with <code class="highlight coq"><span class="nb">specialize</span> <span class="o">(</span><span class="n">H1</span> <span class="n">trm_int</span> <span class="n">_trm_int</span><span class="o">)</span></code>.</p>
+<p>It doesn't work with <tt class="docutils literal">specialize (H1 trm_int _trm_int)</tt>.</p>
 <p>Edit:</p>
-<p><code class="highlight coq"><span class="nb">specialize</span> <span class="o">(</span><span class="n">H1</span> <span class="n">trm_int</span> <span class="n">_trm_int</span><span class="o">)</span></code> works fine with</p>
+<p><tt class="docutils literal">specialize (H1 trm_int _trm_int)</tt> works fine with</p>
 <p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></p>
-<p>Notice the <code class="highlight coq"><span class="kr">forall</span> <span class="nv">y</span></code> appears in the second premise.</p>
+<p>Notice the <tt class="docutils literal">forall y</tt> appears in the second premise.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>I am not sure I understand your problem. <code class="highlight coq"><span class="nb">specialize</span></code> will apply your
-hypothesis to the arguments you give it. It is not limited to <code class="highlight coq"><span class="kr">forall</span></code>
-quantifiers.</p>
+<p>I am not sure I understand your problem. <tt class="docutils literal">specialize</tt> will apply
+your hypothesis to the arguments you give it. It is not limited to
+<tt class="docutils literal">forall</tt> quantifiers.</p>
 <p>Say you have</p>
 <p><code class="highlight coq"><span class="n">h</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span></code></p>
-<p>you can also use <code class="highlight coq"><span class="nb">specialize</span> <span class="o">(</span><span class="n">h</span> <span class="mi">0</span><span class="o">)</span></code> and you will get</p>
+<p>you can also use <tt class="docutils literal">specialize (h 0)</tt> and you will get</p>
 <p><code class="highlight coq"><span class="n">h</span> <span class="o">:</span> <span class="n">bool</span></code></p>
 <p>So when you have</p>
 <p><code class="highlight coq"><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></p>
-<p>and you specialise, you have to use <code class="highlight coq"><span class="nb">specialize</span> <span class="o">(</span><span class="n">H1</span> <span class="n">some_x</span>
-<span class="n">some_value_x</span> <span class="n">some_y</span><span class="o">)</span></code> where <code class="highlight coq"><span class="n">some_x</span></code> is an instance for <code class="highlight coq"><span class="n">x</span></code>,
-<code class="highlight coq"><span class="n">some_value_x</span></code> is a proof of <code class="highlight coq"><span class="n">value</span> <span class="n">some_x</span></code> and <code class="highlight coq"><span class="n">some_y</span></code> is an
-instance for <code class="highlight coq"><span class="n">y</span></code>.</p>
-<p>Note that there is an alternative using <code class="highlight coq"><span class="kr">with</span></code> that allows you to
+<p>and you specialise, you have to use <tt class="docutils literal">specialize (H1 some_x
+some_value_x some_y)</tt> where <tt class="docutils literal">some_x</tt> is an instance for <tt class="docutils literal">x</tt>,
+<tt class="docutils literal">some_value_x</tt> is a proof of <tt class="docutils literal">value some_x</tt> and <tt class="docutils literal">some_y</tt> is an
+instance for <tt class="docutils literal">y</tt>.</p>
+<p>Note that there is an alternative using <tt class="docutils literal">with</tt> that allows you to
 specialise using names. Please consider the following example</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-specialize-nested-hypotheses-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-specialize-nested-hypotheses-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">foo</span> :
   <span class="kr">forall</span> (<span class="nv">h</span> : <span class="kr">forall</span> <span class="nv">x</span>, x = <span class="mi">0</span> -&gt; <span class="kr">forall</span> <span class="nv">y</span>, y = x -&gt; x = y),

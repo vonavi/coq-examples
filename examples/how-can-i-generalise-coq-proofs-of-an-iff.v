@@ -23,12 +23,12 @@ Proof.
 Abort. (* .none *)
 
 (*|
-where `Q` is itself some kind of iff-shaped predicate.
+where ``Q`` is itself some kind of iff-shaped predicate.
 
-My problem is that the proofs of `P x y -> P x' y` and `P x' y -> P x
-y` are often basically identical, with the only difference between
-that the roles of `x` and `x'` are swapped between them. Can I ask Coq
-to transform the goal into
+My problem is that the proofs of ``P x y -> P x' y`` and ``P x' y -> P
+x y`` are often basically identical, with the only difference between
+that the roles of ``x`` and ``x'`` are swapped between them. Can I ask
+Coq to transform the goal into
 
 `forall x x', P x y -> P x' y`
 
@@ -45,20 +45,21 @@ Answer
 
 In mathematics, one often can make "assumptions" "*without loss of
 generality*" (WLOG) to simplify proofs of this kind. In your example,
-you could say "assume *without loss of generality* that `P x y` holds.
-To prove `P x y <-> P x' y` it is sufficient to prove `P x' y`."
+you could say "assume *without loss of generality* that ``P x y``
+holds. To prove ``P x y <-> P x' y`` it is sufficient to prove ``P x'
+y``."
 
-If you are using `ssreflect`, you have the `wlog tactic
+If you are using ``ssreflect``, you have the `wlog tactic
 <https://coq.inria.fr/refman/proof-engine/ssreflect-proof-language.html#variants-the-suff-and-wlog-tactics>`_.
 
-You essentially `cut` in another goal which can easily solve your
-goal. You can also do it with standard tactics like `assert` or
-`enough` (which is like `assert` but the proof obligations are in the
-other order).
+You essentially ``cut`` in another goal which can easily solve your
+goal. You can also do it with standard tactics like ``assert`` or
+``enough`` (which is like ``assert`` but the proof obligations are in
+the other order).
 
 An example to show what I mean: below I just want to show the
 implication in one direction, because it can easily solve the
-implication in the other direction (with `firstorder`).
+implication in the other direction (with ``firstorder``).
 |*)
 
 Goal forall x y, P x y <-> P y x.

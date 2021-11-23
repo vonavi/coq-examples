@@ -56,12 +56,12 @@ kind of inductive principle, could you formulate its statement?)
 Answer
 ------
 
-The type `sexp` is an example of a *nested inductive type*, where one
-of the recursive occurrences appears inside of another induction. Such
-types are hard to work with in Coq, because the induction principles
-that it generates by default are not useful. However, you can fix this
-issue by writing down your own induction principle by hand. Here is
-one possibility:
+The type ``sexp`` is an example of a *nested inductive type*, where
+one of the recursive occurrences appears inside of another induction.
+Such types are hard to work with in Coq, because the induction
+principles that it generates by default are not useful. However, you
+can fix this issue by writing down your own induction principle by
+hand. Here is one possibility:
 
 .. coq:: none
 |*)

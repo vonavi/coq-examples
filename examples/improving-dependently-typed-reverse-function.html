@@ -63,22 +63,23 @@
 there are a couple less than desirable aspects that I'd like to try
 and refine.</p>
 <p>First, having a bunch of proofs hanging out to munge equivalent types
-seems...annoying. Basically, <code class="highlight coq"><span class="n">same_length</span></code>, <code class="highlight coq"><span class="n">same_length'</span></code>,
-<code class="highlight coq"><span class="n">same_length''</span></code>. Perhaps this is an issue with how I defined
-<code class="highlight coq"><span class="n">irev_aux</span></code>, but I tried some definitions and others required a type
+seems...annoying. Basically, <tt class="docutils literal">same_length</tt>, <tt class="docutils literal">same_length'</tt>,
+<tt class="docutils literal">same_length''</tt>. Perhaps this is an issue with how I defined
+<tt class="docutils literal">irev_aux</tt>, but I tried some definitions and others required a type
 level match which seemed about as annoying.</p>
-<p>I tried using <code class="highlight coq"><span class="nb">refine</span></code>, but got a type error...is there a way to
-invoke <code class="highlight coq"><span class="nb">refine</span></code>, where you then have to prove that the types are in
+<p>I tried using <tt class="docutils literal">refine</tt>, but got a type error...is there a way to
+invoke <tt class="docutils literal">refine</tt>, where you then have to prove that the types are in
 fact equivalent? In a sense that's what I did, but who wants those
 lemmas hanging out.</p>
 <p>Beyond that, I realize there are probably ways to get rid of the
-equality lemmas, but I'm curious how I can make use of <code class="highlight coq"><span class="n">same_length</span></code>.
-I've seen cases of matching on equality proofs before to get the typer
-to unify types...I tried that here but it didn't seem to work.</p>
+equality lemmas, but I'm curious how I can make use of
+<tt class="docutils literal">same_length</tt>. I've seen cases of matching on equality proofs before
+to get the typer to unify types...I tried that here but it didn't seem
+to work.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>There is no way of programming <code class="highlight coq"><span class="n">irev</span></code> without a cast. This is one of
+<p>There is no way of programming <tt class="docutils literal">irev</tt> without a cast. This is one of
 the many reasons why Coq users generally avoid indexed data types like
 this :)</p>
 <p>Here is one possibility for writing this function:</p>
@@ -121,10 +122,10 @@ proof scripts. [require-<span class="kr">in</span>-section,fragile]</blockquote>
     cast (<span class="nb">f_equal</span> ilist (eq_trans (irev_length_plus i <span class="mi">0</span>) (Nat.add_comm _ _)))
          (irev_aux l Nil).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ilist</span>.</span></span></pre><p>If you want to prove anything about <code class="highlight coq"><span class="n">irev</span></code>, the easiest is probably to
-convert the indexed lists to normal lists and reasoning about reversal
-of normal lists. Fun exercise: try showing that <code class="highlight coq"><span class="n">irev</span></code> is its own
-inverse.</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ilist</span>.</span></span></pre><p>If you want to prove anything about <tt class="docutils literal">irev</tt>, the easiest is probably
+to convert the indexed lists to normal lists and reasoning about
+reversal of normal lists. Fun exercise: try showing that <tt class="docutils literal">irev</tt> is
+its own inverse.</p>
 </div>
 </div>
 </div>

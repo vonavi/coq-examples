@@ -57,7 +57,7 @@ So how do I do this? Does Coq have this kind of feature?
 Answer (larsr)
 --------------
 
-You can use `refine` for this. You can write underscores which will
+You can use ``refine`` for this. You can write underscores which will
 turn into obligations for you to solve later.
 |*)
 
@@ -68,7 +68,9 @@ Definition ModusPonens: forall (A B : Prop), ((A -> B) /\ A) -> B.
             | conj H1 H2 => H1 _ (* hole of type A *)
             end).
 
-(*| Now your goal is to provide an `A`. This can be discharged with |*)
+(*|
+Now your goal is to provide an ``A``. This can be discharged with
+|*)
 
   exact H2. Defined.
 
@@ -85,7 +87,7 @@ Fail Definition ModusPonens' :=
     | conj H1 H2 => H1 _ (* hole of type A *)
     end. (* .unfold *)
 
-(*| or use `Program` |*)
+(*| or use ``Program`` |*)
 
 Require Import Program.
 Obligation Tactic := idtac.

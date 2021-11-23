@@ -10,7 +10,7 @@ Question
 --------
 
 Given the inductive definition of evenness, how is it best proved
-that, say, 1024 is an even number? Repeating `apply even_S` down to
+that, say, 1024 is an even number? Repeating ``apply even_S`` down to
 zero is certainly not the right approach.
 |*)
 
@@ -20,8 +20,8 @@ Answer (Arthur Azevedo De Amorim)
 
 As HTNW pointed out, you can use Ltac automation to produce such a
 proof. This has the disadvantage of producing a large proof term
-`even_S (even_S ... even_O)`, thus slowing down proofs. In this case,
-it is better to reformulate the goal using a boolean decision
+``even_S (even_S ... even_O)``, thus slowing down proofs. In this
+case, it is better to reformulate the goal using a boolean decision
 procedure:
 
 .. coq:: none
@@ -45,7 +45,7 @@ Lemma evenb_correct : forall n, evenb n = true <-> even n.
 Admitted. (* .none *)
 
 (*|
-Coq can prove that `evenb 1024 = true` simply by evaluating the
+Coq can prove that ``evenb 1024 = true`` simply by evaluating the
 left-hand side:
 |*)
 
@@ -55,8 +55,8 @@ Goal (even 1024). apply evenb_correct. reflexivity. Qed.
 Answer (HTNW)
 -------------
 
-Repeating `apply even_S` is not the way. `repeat apply even_S` is. If
-`even_S` is a constructor, there's also `repeat constructor`.
+Repeating ``apply even_S`` is not the way. ``repeat apply even_S`` is.
+If ``even_S`` is a constructor, there's also ``repeat constructor``.
 |*)
 
 Reset even. (* .none *)

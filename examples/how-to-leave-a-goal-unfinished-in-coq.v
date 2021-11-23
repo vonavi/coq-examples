@@ -29,13 +29,13 @@ Answer
 ------
 
 You have several ways to terminate a proof in Coq. You probably know
-`Qed` which asserts the proof is completed. There is also `Defined`
-for when you want the proof to have computational content.
+``Qed`` which asserts the proof is completed. There is also
+``Defined`` for when you want the proof to have computational content.
 
 The things you are looking for are:
 
-- `Admitted` which admits the proof, so it can be used later;
-- `Abort` which gives up on proving the lemma.
+- ``Admitted`` which admits the proof, so it can be used later;
+- ``Abort`` which gives up on proving the lemma.
 
 They can be used that way:
 |*)
@@ -52,11 +52,11 @@ Admitted.
 
 (*|
 In both cases you can have a partial proof script before the
-`Admitted`/`Abort` or none at all.
+``Admitted``/``Abort`` or none at all.
 
-As @HTNW points out, you can also use the equivalent tactics `admit`
-and `give_up` inside subgoals of the proof. Using those, the proof
-however *has* to be concluded using either `Admitted` or `Abort`.
+As @HTNW points out, you can also use the equivalent tactics ``admit``
+and ``give_up`` inside subgoals of the proof. Using those, the proof
+however *has* to be concluded using either ``Admitted`` or ``Abort``.
 |*)
 
 Lemma lem : forall A, A + A -> A.
@@ -87,8 +87,8 @@ Defined. (* This is now ok *)
 
 (*|
 You have to be careful using that trick though. You can check that a
-lemma has been proven without axioms using `Print Assumptions lem`. If
-it says "closed under context" you're good, otherwise it will lists
-the axioms it depends on and if `cheating` appears you know it's not
+lemma has been proven without axioms using ``Print Assumptions lem``.
+If it says "closed under context" you're good, otherwise it will lists
+the axioms it depends on and if ``cheating`` appears you know it's not
 entirely proven.
 |*)

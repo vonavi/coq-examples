@@ -1,6 +1,6 @@
 (*|
-Coq can't infer type parameter in `match`
-=========================================
+Coq can't infer type parameter in ``match``
+===========================================
 
 :Link: https://stackoverflow.com/questions/66881274/coq-cant-infer-type-parameter-in-match
 |*)
@@ -25,18 +25,19 @@ Fail Fixpoint bar {n:nat} (A:foo n) (B:foo n) : Prop :=
   end.
 
 (*|
-Coq complains on the definition of `bar`.
+Coq complains on the definition of ``bar``.
 
-But for `B : foo n` to be a `succ C`, `C` must also be a `foo n`. Why
-can't Coq infer this, and how can I fix the definition of `bar`?
+But for ``B : foo n`` to be a ``succ C``, ``C`` must also be a ``foo
+n``. Why can't Coq infer this, and how can I fix the definition of
+``bar``?
 |*)
 
 (*|
 Answer
 ------
 
-When you match on `B`, the type system "forgets" that the new `n'`
-inside `B`'s type is the same as `n`. There is a trick to add that
+When you match on ``B``, the type system "forgets" that the new ``n'``
+inside ``B``'s type is the same as ``n``. There is a trick to add that
 information to the context (there are many ways, plugins, etc. but it
 is good to know how to do it "by hand"). It is called `"The convoy
 pattern" by Adam Chlipala
@@ -45,12 +46,12 @@ must post a question about that once in his/her life (your's truly
 included).
 
 You make the body be not just a value but a function that takes an
-additional input with the type `n=n'` and adds an `eq_refl` term at
-the end. This plays well with how Coq's type system can break down
+additional input with the type ``n=n'`` and adds an ``eq_refl`` term
+at the end. This plays well with how Coq's type system can break down
 terms.
 
-You can either rewrite the `A` type to change its type from `foo n` to
-`foo n'` with tactics, like this:
+You can either rewrite the ``A`` type to change its type from ``foo
+n`` to ``foo n'`` with tactics, like this:
 |*)
 
 Fixpoint bar (n:nat) (A:foo n) (B:foo n) : Prop.
@@ -63,7 +64,7 @@ Fixpoint bar (n:nat) (A:foo n) (B:foo n) : Prop.
   apply A.
 Defined.
 
-(*| or directly with `eq_rect` |*)
+(*| or directly with ``eq_rect`` |*)
 
 Reset bar. (* .none *)
 Fixpoint bar {n:nat} (A:foo n) (B:foo n) : Prop :=

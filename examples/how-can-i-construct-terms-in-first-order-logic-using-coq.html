@@ -28,9 +28,9 @@
 <div class="section" id="question">
 <h1>Question</h1>
 <p>I'm trying to define first-order logic in Coq and beginning at terms.
-Supposing that <code class="highlight coq"><span class="n">c1</span></code> and <code class="highlight coq"><span class="n">c2</span></code> are two constant symbols, variables are
-<code class="highlight coq"><span class="n">nat</span></code> and <code class="highlight coq"><span class="n">f1</span></code> and <code class="highlight coq"><span class="n">f2</span></code> are two function symbols whose arities are 1
-and 2 respectively, I wrote the following code.</p>
+Supposing that <tt class="docutils literal">c1</tt> and <tt class="docutils literal">c2</tt> are two constant symbols, variables
+are <tt class="docutils literal">nat</tt> and <tt class="docutils literal">f1</tt> and <tt class="docutils literal">f2</tt> are two function symbols whose
+arities are 1 and 2 respectively, I wrote the following code.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">var</span> := nat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">const</span> : <span class="kt">Type</span> :=
@@ -49,8 +49,8 @@ and 2 respectively, I wrote the following code.</p>
        (<span class="kr">forall</span> <span class="nv">t</span> : term, P t -&gt; P (F1 t)) -&gt;
        (<span class="kr">forall</span> <span class="nv">t</span> : term,
         P t -&gt; <span class="kr">forall</span> <span class="nv">t0</span> : term, P t0 -&gt; P (F2 t t0)) -&gt;
-       <span class="kr">forall</span> <span class="nv">t</span> : term, P t</blockquote></div></div></small></span></pre><p>Then I wanted to separate functions from the definition of <code class="highlight coq"><span class="n">term</span></code>, so
-I rewrote the above.</p>
+       <span class="kr">forall</span> <span class="nv">t</span> : term, P t</blockquote></div></div></small></span></pre><p>Then I wanted to separate functions from the definition of <tt class="docutils literal">term</tt>,
+so I rewrote the above.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(*Idea A*)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">funct</span> {<span class="nv">X</span> : <span class="kt">Type</span>} : <span class="kt">Type</span> :=
 | f1 : X -&gt; funct
@@ -94,8 +94,8 @@ I rewrote the above.</p>
        (<span class="kr">forall</span> <span class="nv">t</span> <span class="nv">t0</span> : term, P (f2 t t0)) -&gt;
        <span class="kr">forall</span> <span class="nv">f1</span> : funct, P f1</blockquote></div></div></small></span></pre><p>However, both ways seem not to generate the desired induction because
 they don't have induction hypotheses.</p>
-<p>How can I construct <code class="highlight coq"><span class="n">term</span></code> with functions separated from the
-definition of <code class="highlight coq"><span class="n">term</span></code> without loss of proper induction?</p>
+<p>How can I construct <tt class="docutils literal">term</tt> with functions separated from the
+definition of <tt class="docutils literal">term</tt> without loss of proper induction?</p>
 <p>Thanks.</p>
 </div>
 <div class="section" id="answer">
@@ -118,13 +118,13 @@ principle:</p>
 | f2 : term -&gt; term -&gt; funct.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Elimination Schemes</span>.</span></span></pre><p>(This is not strictly necessary, but it helps keeping the global
 namespace clean.)</p>
-<p>Now, let us use the <code class="highlight coq"><span class="kn">Scheme</span></code> command to generate a mutual induction
+<p>Now, let us use the <tt class="docutils literal">Scheme</tt> command to generate a mutual induction
 principle for these types:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Scheme</span> <span class="nf">term_ind&#39;</span> := <span class="kn">Induction for</span> term <span class="kn">Sort</span> <span class="kt">Prop</span>
   <span class="kr">with</span> funct_ind&#39; := <span class="kn">Induction for</span> funct <span class="kn">Sort</span> <span class="kt">Prop</span>.</span></span></pre><p>This principle is already powerful enough for us to prove properties
-of <code class="highlight coq"><span class="n">term</span></code>, but it is a bit awkward to use, since it requires us to
-specify a property that we want to prove about the <code class="highlight coq"><span class="n">funct</span></code> type as
-well (the <code class="highlight coq"><span class="n">P0</span></code> predicate). We can simplify it a bit to avoid
+of <tt class="docutils literal">term</tt>, but it is a bit awkward to use, since it requires us to
+specify a property that we want to prove about the <tt class="docutils literal">funct</tt> type as
+well (the <tt class="docutils literal">P0</tt> predicate). We can simplify it a bit to avoid
 mentioning this auxiliary predicate: all we need to know is that the
 terms inside the function calls satisfy the predicate that we want to
 prove.</p>

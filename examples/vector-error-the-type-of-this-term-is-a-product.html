@@ -79,20 +79,20 @@ while it <span class="kr">is</span> expected to be
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>The function term that you see on the branch of <code class="highlight coq"><span class="n">rectEuc</span></code> is how you
+<p>The function term that you see on the branch of <tt class="docutils literal">rectEuc</tt> is how you
 tell Coq that a pattern-match branch is contradictory. In your first
 recursive function, for instance, you use it to say that the first
-<code class="highlight coq"><span class="n">v'</span></code> cannot be a cons because its length is zero. The reason you are
+<tt class="docutils literal">v'</tt> cannot be a cons because its length is zero. The reason you are
 getting the error in the last branch is because that case is not
 contradictory: nothing in the type of your function prevents the case
-<code class="highlight coq"><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span></code> and <code class="highlight coq"><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span></code>.</p>
+<tt class="docutils literal">k = 0</tt> and <tt class="docutils literal">n = 0</tt>.</p>
 <p>To write dependently typed programs over indexed families, you often
 need to use the <em>convoy pattern</em>: to refine the type of an argument
-<code class="highlight coq"><span class="n">x</span></code> after branching on some expression, your <code class="highlight coq"><span class="kr">match</span></code> needs to return a
-function that abstracts over <code class="highlight coq"><span class="n">x</span></code>. For instance, this function computes
-the last element of a vector by recursion over its length. In the <code class="highlight coq"><span class="n">S</span></code>
-branch, we need to know that the length of <code class="highlight coq"><span class="n">v</span></code> is connected to <code class="highlight coq"><span class="n">n</span></code>
-somehow.</p>
+<tt class="docutils literal">x</tt> after branching on some expression, your <tt class="docutils literal">match</tt> needs to
+return a function that abstracts over <tt class="docutils literal">x</tt>. For instance, this
+function computes the last element of a vector by recursion over its
+length. In the <tt class="docutils literal">S</tt> branch, we need to know that the length of <tt class="docutils literal">v</tt>
+is connected to <tt class="docutils literal">n</tt> somehow.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">head</span> <span class="nv">n</span> (<span class="nv">v</span> : Euc (S n)) : R :=
   <span class="kr">match</span> v <span class="kr">with</span>
   | x ::: _ =&gt; x
@@ -107,9 +107,9 @@ somehow.</p>
   <span class="kr">match</span> n <span class="kr">with</span>
   | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; head <span class="mi">0</span> v
   | S n =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; <span class="nb">last</span> n (tail _ v)
-  <span class="kr">end</span>.</span></span></pre><p>Here is the code for extracting the last <code class="highlight coq"><span class="n">k</span></code> elements. Note that its
-type uses the <code class="highlight coq"><span class="n">Nat</span><span class="o">.</span><span class="n">min</span></code> function to specify the length of the result:
-the result cannot be larger than the original vector!</p>
+  <span class="kr">end</span>.</span></span></pre><p>Here is the code for extracting the last <tt class="docutils literal">k</tt> elements. Note that its
+type uses the <tt class="docutils literal">Nat.min</tt> function to specify the length of the
+result: the result cannot be larger than the original vector!</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">but_last</span> <span class="nv">n</span> : Euc (S n) -&gt; Euc n :=
   <span class="kr">match</span> n <span class="kr">with</span>
   | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; []

@@ -31,22 +31,22 @@ Can anyone help me figure out how to write the rest of of the code?
 Answer
 ------
 
-Your question is a bit vague, as you don't specify what `D` and `R`
-are, and where you are stuck in your proof. Try providing a minimal
-working example, with an explicit `fail` tactic for where you're stuck
-in the proof.
+Your question is a bit vague, as you don't specify what ``D`` and
+``R`` are, and where you are stuck in your proof. Try providing a
+minimal working example, with an explicit ``fail`` tactic for where
+you're stuck in the proof.
 
 In *classical logic* (the one you're use to in maths), as you have the
 *excluded middle* rule, you can always do a case analysis on whether
 something is true or false. In vanilla Coq, built for *intuitionistic
 logic*, it's not the case. Your result is actually *not provable* if
-the predicate `R` is not decidable (if it's not either true or false
-on every input : `forall (x:D), R x \/ ~R x`), if the type `D` is not
-empty.
+the predicate ``R`` is not decidable (if it's not either true or false
+on every input : ``forall (x:D), R x \/ ~R x``), if the type ``D`` is
+not empty.
 
-Try adding the decidability of `R` as an hypothesis and reprove it. It
-should follow more or less this structure (the key being the case
-analysis on whether `(R y)` is true or false):
+Try adding the decidability of ``R`` as an hypothesis and reprove it.
+It should follow more or less this structure (the key being the case
+analysis on whether ``(R y)`` is true or false):
 |*)
 
 Lemma yourGoal :

@@ -36,7 +36,7 @@ recursive definition of list reversal. It goes like so:</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">tr_rev</span> {<span class="nv">X</span>} (<span class="nv">l</span> : list X) : list X :=
-  rev_append l [].</span></span></pre><p>We're, then, asked to prove the equivalence of <code class="highlight coq"><span class="n">tr_rev</span></code> and <code class="highlight coq"><span class="n">rev</span></code>
+  rev_append l [].</span></span></pre><p>We're, then, asked to prove the equivalence of <tt class="docutils literal">tr_rev</tt> and <tt class="docutils literal">rev</tt>
 which, well, is pretty obvious that they are the same. I'm having a
 hard time completing the induction, though. Would appreciate if the
 community would provide any hints as to how to approach this case.</p>
@@ -52,11 +52,11 @@ community would provide any hints as to how to approach this case.</p>
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="sf-volume-1-logic-how-to-prove-tr-rev-rev-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="sf-volume-1-logic-how-to-prove-tr-rev-rev-v-chka"><span class="nb">simpl</span>. <span class="c">(* simplify it *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span>tr_rev l&#39; = rev l&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev_append l&#39; [x] = rev l&#39; ++ [x]</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="sf-volume-1-logic-how-to-prove-tr-rev-rev-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="sf-volume-1-logic-how-to-prove-tr-rev-rev-v-chkb"><span class="nb">unfold</span> tr_rev <span class="kr">in</span> IHl&#39;. <span class="c">(* unfold definition in the Hypothesis *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span>rev_append l&#39; [] = rev l&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev_append l&#39; [x] = rev l&#39; ++ [x]</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="sf-volume-1-logic-how-to-prove-tr-rev-rev-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="sf-volume-1-logic-how-to-prove-tr-rev-rev-v-chkc"><span class="nb">rewrite</span> &lt;- IHl&#39;. <span class="c">(* rewrite based on the hypothesis *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span>rev_append l&#39; [] = rev l&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev_append l&#39; [x] = rev_append l&#39; [] ++ [x]</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Now, <code class="highlight coq"><span class="o">[]</span> <span class="o">++</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span></code> is obviously the same as <code class="highlight coq"><span class="o">[</span><span class="n">x</span><span class="o">]</span></code> but <code class="highlight coq"><span class="nb">simpl</span></code> can't
-simplify it and I couldn't come up with a <code class="highlight coq"><span class="kn">Lemma</span></code> that would help me
-here. I <em>did</em> prove <code class="highlight coq"><span class="n">app_nil_l</span></code> (i.e. <code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">X</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">x</span> <span class="o">:</span> <span class="n">X</span><span class="o">)</span> <span class="o">(</span><span class="nv">l</span> <span class="o">:</span>
-<span class="n">list</span> <span class="n">X</span><span class="o">),</span> <span class="o">[]</span> <span class="o">++</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span></code>) but when I try to rewrite with <code class="highlight coq"><span class="n">app_nil_l</span></code>
-it'll rewrite both sides of the equation.</p>
+</span></span></pre><p>Now, <tt class="docutils literal">[] ++ [x]</tt> is obviously the same as <tt class="docutils literal">[x]</tt> but <tt class="docutils literal">simpl</tt>
+can't simplify it and I couldn't come up with a <tt class="docutils literal">Lemma</tt> that would
+help me here. I <em>did</em> prove <tt class="docutils literal">app_nil_l</tt> (i.e. <tt class="docutils literal">forall (X : Type) (x
+: X) (l : list X), [] ++ [x] = [x]</tt>) but when I try to rewrite with
+<tt class="docutils literal">app_nil_l</tt> it'll rewrite both sides of the equation.</p>
 <p>I could just define that to be an axiom, but I feel like that's
 cheating :-p</p>
 <p>Thanks</p>
@@ -64,17 +64,18 @@ cheating :-p</p>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p>Proving things about definitions with accumulators has a specific
-trick to it. The thing is, facts about <code class="highlight coq"><span class="n">tr_rev</span></code> must necessarily be
-facts about <code class="highlight coq"><span class="n">rev_append</span></code>, but <code class="highlight coq"><span class="n">rev_append</span></code> is defined on two lists,
-while <code class="highlight coq"><span class="n">tr_rev</span></code> is defined on only one. The computation of <code class="highlight coq"><span class="n">rev_append</span></code>
-depends on these two lists, and thus the induction hypothesis needs to
-be general enough to include both of these lists. However, if you fix
-the second input of <code class="highlight coq"><span class="n">rev_append</span></code> to always be the empty list (which
-you implicitly do by stating your result only for <code class="highlight coq"><span class="n">tr_rev</span></code>), then the
-induction hypothesis will always be too weak.</p>
+trick to it. The thing is, facts about <tt class="docutils literal">tr_rev</tt> must necessarily be
+facts about <tt class="docutils literal">rev_append</tt>, but <tt class="docutils literal">rev_append</tt> is defined on two
+lists, while <tt class="docutils literal">tr_rev</tt> is defined on only one. The computation of
+<tt class="docutils literal">rev_append</tt> depends on these two lists, and thus the induction
+hypothesis needs to be general enough to include both of these lists.
+However, if you fix the second input of <tt class="docutils literal">rev_append</tt> to always be
+the empty list (which you implicitly do by stating your result only
+for <tt class="docutils literal">tr_rev</tt>), then the induction hypothesis will always be too
+weak.</p>
 <p>The way around this is to first prove a general result for
-<code class="highlight coq"><span class="n">rev_append</span></code> by induction on <code class="highlight coq"><span class="n">l1</span></code> (and generalizing on <code class="highlight coq"><span class="n">l2</span></code>), and then
-specializing this result for the case of <code class="highlight coq"><span class="n">tr_rev</span></code>.</p>
+<tt class="docutils literal">rev_append</tt> by induction on <tt class="docutils literal">l1</tt> (and generalizing on <tt class="docutils literal">l2</tt>),
+and then specializing this result for the case of <tt class="docutils literal">tr_rev</tt>.</p>
 </div>
 </div>
 </div>

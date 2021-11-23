@@ -27,8 +27,8 @@
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
 <div class="section" id="question">
 <h1>Question</h1>
-<p>I want to use definition of <code class="highlight coq"><span class="n">list_max_le</span></code>. After applying <code class="highlight coq"><span class="kn">Search</span>
-<span class="n">list_max_le</span><span class="o">.</span></code> I get nothing. How I can define <code class="highlight coq"><span class="n">list_max_le</span></code> in Coq?</p>
+<p>I want to use definition of <tt class="docutils literal">list_max_le</tt>. After applying <tt class="docutils literal">Search
+list_max_le.</tt> I get nothing. How I can define <tt class="docutils literal">list_max_le</tt> in Coq?</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
@@ -41,10 +41,10 @@
   Nat.max (list_max l1) (list_max l2)</blockquote><blockquote class="alectryon-message">list_max_lt:
   <span class="kr">forall</span> [l : list nat] (n : nat),
   l &lt;&gt; nil -&gt;
-  list_max l &lt; n &lt;-&gt; Forall (<span class="kr">fun</span> <span class="nv">k</span> : nat =&gt; k &lt; n) l</blockquote></div></div></small></span></pre><p>by using quotes <code class="highlight coq"><span class="s2">&quot;...&quot;</span></code> you search for definitions with has the
+  list_max l &lt; n &lt;-&gt; Forall (<span class="kr">fun</span> <span class="nv">k</span> : nat =&gt; k &lt; n) l</blockquote></div></div></small></span></pre><p>by using quotes <tt class="docutils literal"><span class="pre">&quot;...&quot;</span></tt> you search for definitions with has the
 specified string in its <em>name</em>.</p>
-<p>If you want to see the definition of <code class="highlight coq"><span class="n">list_max_le</span></code>, you use the
-<code class="highlight coq"><span class="kn">Print</span></code> command</p>
+<p>If you want to see the definition of <tt class="docutils literal">list_max_le</tt>, you use the
+<tt class="docutils literal">Print</tt> command</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="less-or-equal-relation-with-largest-element-of-natural-number-list-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="less-or-equal-relation-with-largest-element-of-natural-number-list-v-chk1"><span class="kn">Print</span> list_max_le.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">list_max_le = 
 <span class="kr">fun</span> <span class="nv">l</span> : list nat =&gt;
 list_ind
@@ -141,8 +141,8 @@ list_ind
        Forall (<span class="kr">fun</span> <span class="nv">k</span> : nat =&gt; k &lt;= n) l
 
 <span class="kn">Arguments</span> list_max_le _%list_scope _%nat_scope</blockquote></div></div></small></span></pre><p>but in this case the definition is not very readable.</p>
-<p>If you <code class="highlight coq"><span class="kn">Search</span></code> without <code class="highlight coq"><span class="s2">&quot;...&quot;</span></code>, you search with a pattern that tries
-to match part of the type definition.</p>
+<p>If you <tt class="docutils literal">Search</tt> without <tt class="docutils literal"><span class="pre">&quot;...&quot;</span></tt>, you search with a pattern that
+tries to match part of the type definition.</p>
 <p>So if you search</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="less-or-equal-relation-with-largest-element-of-natural-number-list-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="less-or-equal-relation-with-largest-element-of-natural-number-list-v-chk2"><span class="kn">Search</span> list_max.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">list_max_le:
   <span class="kr">forall</span> (<span class="nv">l</span> : list nat) (<span class="nv">n</span> : nat),
@@ -152,10 +152,10 @@ to match part of the type definition.</p>
   Nat.max (list_max l1) (list_max l2)</blockquote><blockquote class="alectryon-message">list_max_lt:
   <span class="kr">forall</span> [l : list nat] (n : nat),
   l &lt;&gt; nil -&gt;
-  list_max l &lt; n &lt;-&gt; Forall (<span class="kr">fun</span> <span class="nv">k</span> : nat =&gt; k &lt; n) l</blockquote></div></div></small></span></pre><p>You search for all definitions that contains the <em>term</em> <code class="highlight coq"><span class="n">list_max</span></code>.</p>
+  list_max l &lt; n &lt;-&gt; Forall (<span class="kr">fun</span> <span class="nv">k</span> : nat =&gt; k &lt; n) l</blockquote></div></div></small></span></pre><p>You search for all definitions that contains the <em>term</em> <tt class="docutils literal">list_max</tt>.</p>
 <p>You can have many strings and terms to refine your search. As an
 example, if you want some lemma about induction on lists, it is
-probably called something with &quot;ind&quot; in its name, and has the <code class="highlight coq"><span class="n">list</span></code>
+probably called something with &quot;ind&quot; in its name, and has the <tt class="docutils literal">list</tt>
 term in its type (not necessarily in its name). So you can try</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="less-or-equal-relation-with-largest-element-of-natural-number-list-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="less-or-equal-relation-with-largest-element-of-natural-number-list-v-chk3"><span class="kn">Search</span> <span class="s2">&quot;ind&quot;</span> list.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">find:
   <span class="kr">forall</span> [A : <span class="kt">Type</span>], (A -&gt; bool) -&gt; list A -&gt; option A</blockquote><blockquote class="alectryon-message">list_sind:

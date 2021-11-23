@@ -66,13 +66,13 @@ finish the function myself, at least in simple cases like this.</p>
 </div>
 <div class="section" id="answer-larsr">
 <h1>Answer (larsr)</h1>
-<p>You can use <code class="highlight coq"><span class="nb">refine</span></code> for this. You can write underscores which will
+<p>You can use <tt class="docutils literal">refine</tt> for this. You can write underscores which will
 turn into obligations for you to solve later.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk5"><span class="kn">Definition</span> <span class="nf">ModusPonens</span>: <span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>), ((A -&gt; B) /\ A) -&gt; B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, (A -&gt; B) /\ A -&gt; B</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk6"><span class="nb">refine</span> (<span class="kr">fun</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">H</span> =&gt;
             <span class="kr">match</span> H <span class="kr">with</span>
             | conj H1 H2 =&gt; H1 _ <span class="c">(* hole of type A *)</span>
-            <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(A -&gt; B) /\ A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small></span></pre><p>Now your goal is to provide an <code class="highlight coq"><span class="n">A</span></code>. This can be discharged with</p>
+            <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(A -&gt; B) /\ A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small></span></pre><p>Now your goal is to provide an <tt class="docutils literal">A</tt>. This can be discharged with</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> H2.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
 <div class="section" id="answer-li-yao-xia">
 <h1>Answer (Li-yao Xia)</h1>
@@ -93,7 +93,7 @@ More precisely:
   A, B : <span class="kt">Prop</span>
   H : (A -&gt; B) /\ A
   H1 : A -&gt; B
-  H2 : A</blockquote></div></div></small></span></pre><p>or use <code class="highlight coq"><span class="n">Program</span></code></p>
+  H2 : A</blockquote></div></div></small></span></pre><p>or use <tt class="docutils literal">Program</tt></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Obligation Tactic</span> := <span class="kp">idtac</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp"><span class="c">(* By default Program tries to be smart and solve simple obligations</span>

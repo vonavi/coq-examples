@@ -30,12 +30,12 @@ Fail Example ex1 := mkVersion 3 2 (exist _ 5) (exist _ 5). (* .unfold *)
 Answer
 ------
 
-The reason it fails is that you need not only provide a witness (`b`
-and `h` in this case) but also a proof that the corresponding
+The reason it fails is that you need not only provide a witness (``b``
+and ``h`` in this case) but also a proof that the corresponding
 condition holds for the provided witness.
 
 I would switch to booleans to make my life easier, because this allows
-proof by computation, which is basically what `eq_refl` does in the
+proof by computation, which is basically what ``eq_refl`` does in the
 snippet below:
 |*)
 
@@ -65,7 +65,7 @@ Example ex2 := <| 3,2,5~5 |>.
 
 (*|
 If there is a need to add manual proofs then I'd suggest to use
-`Program` mechanism:
+``Program`` mechanism:
 |*)
 
 From Coq Require Import Program.
@@ -77,7 +77,7 @@ Next Obligation.
 Next Obligation.
   now unfold is_true in * |-; rewrite Nat.eqb_eq in * |-; subst. Qed.
 
-(*| or `refine` tactic: |*)
+(*| or ``refine`` tactic: |*)
 
 Definition ex3' b h (condb : b =? 5) (condh : h =? 1) : Version.
 Proof.

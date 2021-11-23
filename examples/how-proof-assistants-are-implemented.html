@@ -50,23 +50,23 @@ much about it and am afraid I'll get something wrong. Théo
 Winterhalter linked something in the comments above that may provide
 more context on this approach.</li>
 <li>LCF-style theorems provers (e.g. Isabelle, HOL Light, HOL 4). Here a
-theorem is (roughly speaking) an opaque value of type <code class="highlight coq"><span class="n">thm</span></code> in the
+theorem is (roughly speaking) an opaque value of type <tt class="docutils literal">thm</tt> in the
 implementation language. Only the comparatively small 'proof kernel'
-can create these <code class="highlight coq"><span class="n">thm</span></code> values and all other parts of the system
+can create these <tt class="docutils literal">thm</tt> values and all other parts of the system
 interact with this proof kernel. The kernel offers an interface
 consisting of various small functions that implement small inference
-steps such as <em>modus ponens</em> (if you have a theorem <code class="highlight coq"><span class="n">A</span> <span class="o">⟹</span> <span class="n">B</span></code> and a
-theorem <code class="highlight coq"><span class="n">A</span></code>, you can get the theorem <code class="highlight coq"><span class="n">B</span></code>) or ∀-introduction (if you
-have the theorem <code class="highlight coq"><span class="n">P</span> <span class="n">x</span></code> for a fixed variable <code class="highlight coq"><span class="n">x</span></code>, you can get the
-theorem <code class="highlight coq"><span class="kr">∀</span><span class="nv">x</span><span class="o">.</span> <span class="n">P</span> <span class="n">x</span></code>) etc. The kernel also offers an interface for
-defining new constants. In principle, as long as you can trust that
-these functions faithfully implement the basic inference steps of
-the underlying logic, you can trust that any <code class="highlight coq"><span class="n">thm</span></code> value you can
-produce really corresponds to a theorem in your logic. For LCF-style
-provers, the answer of what the actual proof is is a bit more
-difficult to answer because they usually don't build proof terms
-(e.g. Isabelle has them, but they are disabled by default and not
-widely used). I think one could say that the history of how the
+steps such as <em>modus ponens</em> (if you have a theorem <tt class="docutils literal">A ⟹ B</tt> and a
+theorem <tt class="docutils literal">A</tt>, you can get the theorem <tt class="docutils literal">B</tt>) or ∀-introduction (if
+you have the theorem <tt class="docutils literal">P x</tt> for a fixed variable <tt class="docutils literal">x</tt>, you can get
+the theorem <tt class="docutils literal">∀x. P x</tt>) etc. The kernel also offers an interface
+for defining new constants. In principle, as long as you can trust
+that these functions faithfully implement the basic inference steps
+of the underlying logic, you can trust that any <tt class="docutils literal">thm</tt> value you
+can produce really corresponds to a theorem in your logic. For
+LCF-style provers, the answer of what the actual proof is is a bit
+more difficult to answer because they usually don't build proof
+terms (e.g. Isabelle has them, but they are disabled by default and
+not widely used). I think one could say that the history of how the
 kernel primitives are called constitute the proof, and if one were
 to record it, it could – <em>in principle</em> – be replayed and checked in
 another system.</li>

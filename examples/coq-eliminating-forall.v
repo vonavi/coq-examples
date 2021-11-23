@@ -1,6 +1,6 @@
 (*|
-Coq: eliminating `forall`?
-==========================
+Coq: eliminating ``forall``?
+============================
 
 :Link: https://stackoverflow.com/questions/68744549/coq-eliminating-forall
 |*)
@@ -19,14 +19,14 @@ Proof.
 Abort. (* .none *)
 
 (*|
-Normally, having `forall a: A, P a` I would deduce `P c`, where `c` is
-a constant. I.e. `forall` quantifier would be eliminated. Once that
-done I would again deduce `exists a` and my simple proof will be
-`Qed`'ed.
+Normally, having ``forall a: A, P a`` I would deduce ``P c``, where
+``c`` is a constant. I.e. ``forall`` quantifier would be eliminated.
+Once that done I would again deduce ``exists a`` and my simple proof
+will be ``Qed``'ed.
 
-However, I can't find right way to eliminate on `forall` in Coq.
+However, I can't find right way to eliminate on ``forall`` in Coq.
 
-I am new to it and I'd like to know how to eliminate `forall` in Coq
+I am new to it and I'd like to know how to eliminate ``forall`` in Coq
 or what's the better way to prove the above-mentioned theorem?
 
 P.S. I have seen `this
@@ -40,7 +40,7 @@ Answer
 
 Unlike other logical formalisms (e.g. Isabelle/HOL), in Coq it is
 perfectly possible to have an empty domain. If you want to prove your
-statement, you have to assume explicitly that `A` is not empty. Here
+statement, you have to assume explicitly that ``A`` is not empty. Here
 is one possibility.
 |*)
 
@@ -58,7 +58,7 @@ Qed.
 (*|
 ----
 
-**Q:** Thanks, is that precisely why `False` is defined as an empty
+**Q:** Thanks, is that precisely why ``False`` is defined as an empty
 type which can not be constructed in any way?
 
 **A:** Yes, it is related to that.

@@ -16,8 +16,8 @@ Variable A : False.
 Axiom B : False.
 
 (*|
-which assume `False` under names `A` and `B`. Both statements work in
-proofs, so I can
+which assume ``False`` under names ``A`` and ``B``. Both statements
+work in proofs, so I can
 |*)
 
 Theorem nothing_makes_sense : forall (a : Type), a.

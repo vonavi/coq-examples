@@ -30,7 +30,7 @@
 <p>I am learning coq and am trying to prove equalities in peano
 arithmetic.</p>
 <p>I got stuck on a simple fraction law.</p>
-<p>We know that <code class="highlight coq"><span class="o">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">m</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">m</span> <span class="o">/</span> <span class="mi">2</span></code> from primary school. In
+<p>We know that <tt class="docutils literal">(n + m) / 2 = n / 2 + m / 2</tt> from primary school. In
 peano arithmetic this does only hold if n and m are even (because then
 division produces correct results).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith Even.</span><span class="alectryon-wsp">
@@ -68,7 +68,7 @@ P <span class="mi">1</span> -&gt;
 (<span class="kr">forall</span> <span class="nv">n</span> : nat, P n -&gt; P (S n) -&gt; P (S (S n))) -&gt;
 <span class="kr">forall</span> <span class="nv">n</span> : nat, P n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> P0 P1 IH n; <span class="nb">enough</span> (H : P n /\ P (S n)); [|<span class="nb">induction</span> n]; <span class="nb">intuition</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><code class="highlight coq"><span class="n">nat_ind2</span></code> can be used as follows:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><tt class="docutils literal">nat_ind2</tt> can be used as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-theorem-proving-simple-fraction-law-in-peano-arithmetic-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-theorem-proving-simple-fraction-law-in-peano-arithmetic-v-chka"><span class="kn">Theorem</span> <span class="nf">fraction_addition</span> <span class="nv">n</span> <span class="nv">m</span> :
   even n -&gt; even m -&gt; Nat.div2 n + Nat.div2 m = Nat.div2 (n + m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">even n -&gt;
 even m -&gt; Nat.div2 n + Nat.div2 m = Nat.div2 (n + m)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -89,8 +89,8 @@ Nat.div2 (S (S n) + m)</div></blockquote></div></div></div></small><span class="
 <h1>Answer (larsr)</h1>
 <p>You can also prove your theorem without induction if you are ok with
 using the standard library.</p>
-<p>If you use <code class="highlight coq"><span class="n">Even</span> <span class="n">m</span></code> in your hypothesis (which says <code class="highlight coq"><span class="kr">exists</span> <span class="nv">n</span><span class="o">,</span> <span class="n">m</span> <span class="o">=</span>
-<span class="mi">2</span><span class="o">*</span><span class="n">m</span></code>) then you can use simple algebraic rewrites with lemmas from the
+<p>If you use <tt class="docutils literal">Even m</tt> in your hypothesis (which says <tt class="docutils literal">exists n, m =
+2*m</tt>) then you can use simple algebraic rewrites with lemmas from the
 standard library.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> PeanoNat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> Nat.</span><span class="alectryon-wsp">
@@ -104,12 +104,13 @@ Even n -&gt; Even m -&gt; n / <span class="mi">2</span> + m / <span class="mi">2
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> ?(div_mul); <span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The question mark just means &quot;rewrite as many (zero or more) times as
 possible&quot;.</p>
-<p><code class="highlight coq"><span class="nb">inversion</span> <span class="mi">1</span></code> does inversion on the first inductive hypothesis in the
-goal, in this case first <code class="highlight coq"><span class="n">Even</span> <span class="n">n</span></code> and then <code class="highlight coq"><span class="n">Even</span> <span class="n">m</span></code>. It gives us <code class="highlight coq"><span class="n">n</span> <span class="o">=</span>
-<span class="mi">2</span> <span class="o">*</span> <span class="n">x</span></code> and <code class="highlight coq"><span class="n">m</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x0</span></code> in the context, which we then substitute.</p>
-<p>Also note <code class="highlight coq"><span class="n">even_spec</span><span class="o">:</span> <span class="kr">forall</span> <span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">even</span> <span class="n">n</span> <span class="o">=</span> <span class="n">true</span> <span class="o">&lt;-&gt;</span> <span class="n">Even</span> <span class="n">n</span></code>, so
-you can use <code class="highlight coq"><span class="n">even</span></code> if you prefer that, just rewrite with <code class="highlight coq"><span class="n">even_spec</span></code>
-first...</p>
+<p><tt class="docutils literal">inversion 1</tt> does inversion on the first inductive hypothesis in
+the goal, in this case first <tt class="docutils literal">Even n</tt> and then <tt class="docutils literal">Even m</tt>. It gives
+us <tt class="docutils literal">n = 2 * x</tt> and <tt class="docutils literal">m = 2 * x0</tt> in the context, which we then
+substitute.</p>
+<p>Also note <tt class="docutils literal">even_spec: forall n : nat, even n = true <span class="pre">&lt;-&gt;</span> Even n</tt>, so
+you can use <tt class="docutils literal">even</tt> if you prefer that, just rewrite with
+<tt class="docutils literal">even_spec</tt> first...</p>
 </div>
 </div>
 </div>

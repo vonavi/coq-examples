@@ -58,7 +58,7 @@ subseq (x :: l1) l2 -&gt; subseq l1 l2</div></blockquote></div></div></small><sp
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk14">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: l1) l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x :: l1 = x :: l1</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I worked in Isabelle before Coq. There originally, the induction
 tactic could not solve directly this goal and the trick was to come up
-with a lemma like <code class="highlight coq"><span class="n">subseq_remove_rewritten</span></code> and then prove the
+with a lemma like <tt class="docutils literal">subseq_remove_rewritten</tt> and then prove the
 original goal. This is the situation in the manual Isabelle/HOL: A
 Proof Assistant for Higher-Order Logic. Later, the tactic became
 smarter and one can write patterns in which to abstract on. So the
@@ -74,11 +74,12 @@ lemma
   by (intro subseq.intros(3))
 </pre>
 <p>I was wondering if Coq has a similar way to avoid proving a lemma like
-<code class="highlight coq"><span class="n">subseq_remove_rewritten</span></code> and go directly to prove <code class="highlight coq"><span class="n">subseq_remove</span></code>.</p>
+<tt class="docutils literal">subseq_remove_rewritten</tt> and go directly to prove
+<tt class="docutils literal">subseq_remove</tt>.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>You can use the <code class="highlight coq"><span class="nb">dependent induction</span></code> tactic (documented <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction">here</a>).
+<p>You can use the <tt class="docutils literal">dependent induction</tt> tactic (documented <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction">here</a>).
 For example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -107,8 +108,8 @@ know if the Coq developers have any plans of improving it in the
 future. It has a few deficiencies, such as not allowing the user to
 name the variables and hypotheses used in the induction proof. I
 personally prefer to add the equality assumptions to the proof myself,
-as in your first attempt, or to reformulate the definition of <code class="highlight coq"><span class="n">subseq</span></code>
-as a <code class="highlight coq"><span class="kn">Fixpoint</span></code>, so that you can invert the hypothesis by
+as in your first attempt, or to reformulate the definition of
+<tt class="docutils literal">subseq</tt> as a <tt class="docutils literal">Fixpoint</tt>, so that you can invert the hypothesis by
 simplification. For example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">

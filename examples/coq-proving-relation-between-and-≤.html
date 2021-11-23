@@ -32,7 +32,7 @@ stumped by the following sub-proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-proving-relation-between-and-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-proving-relation-between-and-v-chk0"><span class="kn">Theorem</span> <span class="nf">sub</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; n &lt; m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; n &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>Or, once unfolded:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-proving-relation-between-and-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-proving-relation-between-and-v-chk1"><span class="kn">Theorem</span> <span class="nf">sub</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; S n &lt;= m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; S n &lt;= m</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Here, <code class="highlight coq"><span class="n">n</span> <span class="o">&lt;=</span> <span class="n">m</span></code> is inductively defined as follows:</p>
+</span></span></pre><p>Here, <tt class="docutils literal">n &lt;= m</tt> is inductively defined as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
 | le_n : <span class="kr">forall</span> <span class="nv">n</span> : nat, le n n
 | le_S : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span></span></pre><p>I have not gotten very far, but my attempt looks like this:</p>
@@ -46,33 +46,33 @@ I would appreciate any guidance in the right direction.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>Since <code class="highlight coq"><span class="n">le</span></code> is defined as an inductive predicate, it makes more sense
-to do the induction on that, rather than <code class="highlight coq"><span class="n">n</span></code>. <code class="highlight coq"><span class="n">le</span></code> doesn't make any
-references to <code class="highlight coq"><span class="mi">0</span></code> or even <code class="highlight coq"><span class="n">S</span> <span class="n">n</span></code> (it does have <code class="highlight coq"><span class="n">S</span> <span class="n">m</span></code>), so induction on
-<code class="highlight coq"><span class="n">n</span></code> is probably not the way to go. Induction on <code class="highlight coq"><span class="n">m</span></code> <em>might</em> work, but
-it's probably harder than necessary.</p>
+<p>Since <tt class="docutils literal">le</tt> is defined as an inductive predicate, it makes more sense
+to do the induction on that, rather than <tt class="docutils literal">n</tt>. <tt class="docutils literal">le</tt> doesn't make
+any references to <tt class="docutils literal">0</tt> or even <tt class="docutils literal">S n</tt> (it does have <tt class="docutils literal">S m</tt>), so
+induction on <tt class="docutils literal">n</tt> is probably not the way to go. Induction on <tt class="docutils literal">m</tt>
+<em>might</em> work, but it's probably harder than necessary.</p>
 <p>Before starting a formal proof, it can often be helpful to think about
 how you would prove this informally (still using the same definitions,
-though). If you assume that <code class="highlight coq"><span class="n">n</span> <span class="o">&lt;=</span> <span class="n">m</span></code>, then by the inductive definition
-of <code class="highlight coq"><span class="n">lt</span></code>, this means that either <code class="highlight coq"><span class="n">n</span></code> and <code class="highlight coq"><span class="n">m</span></code> are the same, or <code class="highlight coq"><span class="n">m</span></code> is
-the successor of some number <code class="highlight coq"><span class="n">m'</span></code> and <code class="highlight coq"><span class="n">n</span></code> is less than or equal to
-<code class="highlight coq"><span class="n">m'</span></code> (can you see why the definition of <code class="highlight coq"><span class="n">lt</span></code> implies this?). In the
-first case, we'll have to use the additional hypothesis that <code class="highlight coq"><span class="n">n</span> <span class="o">&lt;&gt;</span> <span class="n">m</span></code>
-to derive a contradiction. In the second case, we won't even need
-that. <code class="highlight coq"><span class="n">n</span> <span class="o">&lt;=</span> <span class="n">m'</span></code> implies that <code class="highlight coq"><span class="n">S</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">S</span> <span class="n">m'</span></code>, so since <code class="highlight coq"><span class="n">m</span> <span class="o">=</span> <span class="n">S</span> <span class="n">m'</span></code>, <code class="highlight coq"><span class="n">S</span> <span class="n">n</span>
-<span class="o">&lt;=</span> <span class="n">m</span></code>, i.e., <code class="highlight coq"><span class="n">n</span> <span class="o">&lt;</span> <span class="n">m</span></code>.</p>
+though). If you assume that <tt class="docutils literal">n &lt;= m</tt>, then by the inductive
+definition of <tt class="docutils literal">lt</tt>, this means that either <tt class="docutils literal">n</tt> and <tt class="docutils literal">m</tt> are the
+same, or <tt class="docutils literal">m</tt> is the successor of some number <tt class="docutils literal">m'</tt> and <tt class="docutils literal">n</tt> is
+less than or equal to <tt class="docutils literal">m'</tt> (can you see why the definition of <tt class="docutils literal">lt</tt>
+implies this?). In the first case, we'll have to use the additional
+hypothesis that <tt class="docutils literal">n &lt;&gt; m</tt> to derive a contradiction. In the second
+case, we won't even need that. <tt class="docutils literal">n &lt;= m'</tt> implies that <tt class="docutils literal">S n &lt;= S
+m'</tt>, so since <tt class="docutils literal">m = S m'</tt>, <tt class="docutils literal">S n &lt;= m</tt>, i.e., <tt class="docutils literal">n &lt; m</tt>.</p>
 <p>For the formalization, we'll have to prove that assumption on the last
-line that <code class="highlight coq"><span class="n">n</span> <span class="o">&lt;=</span> <span class="n">m</span></code> implies <code class="highlight coq"><span class="n">S</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">S</span> <span class="n">m</span></code>. You should try a similar
+line that <tt class="docutils literal">n &lt;= m</tt> implies <tt class="docutils literal">S n &lt;= S m</tt>. You should try a similar
 informal analysis to prove it. Other than that, the informal proof
-should be straightforward to formalize. Case analysis on <code class="highlight coq"><span class="n">H</span><span class="o">:</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">m</span></code>
-is just <code class="highlight coq"><span class="nb">destruct</span> <span class="n">H</span><span class="o">.</span></code>.</p>
+should be straightforward to formalize. Case analysis on <tt class="docutils literal">H: n &lt;= m</tt>
+is just <tt class="docutils literal">destruct H.</tt>.</p>
 <hr class="docutils" />
 <p>One more thing. This isn't essential, but can often help in the long
 run. When defining an inductive type (or predicate), if you can factor
 out a parameter that's used the same way in each constructor, it can
 make the induction principle more powerful. The way you have it with
-<code class="highlight coq"><span class="n">le</span></code>, <code class="highlight coq"><span class="n">n</span></code> is universally quantified and used the same way for both
-constructors. Every instance of <code class="highlight coq"><span class="n">le</span></code> starts with <code class="highlight coq"><span class="n">le</span> <span class="n">n</span></code>.</p>
+<tt class="docutils literal">le</tt>, <tt class="docutils literal">n</tt> is universally quantified and used the same way for both
+constructors. Every instance of <tt class="docutils literal">le</tt> starts with <tt class="docutils literal">le n</tt>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
 | le_n : <span class="kr">forall</span> <span class="nv">n</span> : nat, le n n
 | le_S : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span></span></pre><p>That means that we can factor out that index into a parameter.</p>
@@ -83,17 +83,17 @@ constructors. Every instance of <code class="highlight coq"><span class="n">le</
      : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>),
        P n -&gt;
        (<span class="kr">forall</span> <span class="nv">m</span> : nat, le&#39; n m -&gt; P m -&gt; P (S m)) -&gt;
-       <span class="kr">forall</span> <span class="nv">n0</span> : nat, le&#39; n n0 -&gt; P n0</blockquote></div></div></small></span></pre><p>Compare this to <code class="highlight coq"><span class="n">le_ind</span></code>.</p>
+       <span class="kr">forall</span> <span class="nv">n0</span> : nat, le&#39; n n0 -&gt; P n0</blockquote></div></div></small></span></pre><p>Compare this to <tt class="docutils literal">le_ind</tt>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-proving-relation-between-and-v-chk10" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">le_ind
      : <span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
        (<span class="kr">forall</span> <span class="nv">n</span> : nat, P n n) -&gt;
        (<span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, le n m -&gt; P n m -&gt; P n (S m)) -&gt;
-       <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">n0</span> : nat, le n n0 -&gt; P n n0</blockquote></div></div></small></span></pre><p>Basically what's happening here is that with <code class="highlight coq"><span class="n">le_ind</span></code>, you have to
-prove everything for every <code class="highlight coq"><span class="n">n</span></code>. With <code class="highlight coq"><span class="n">le'_ind</span></code>, you only need to prove
-it for the particular <code class="highlight coq"><span class="n">n</span></code> that you're using. This can sometimes
-simplify proofs, though it's not necessary for the proof of your
-theorem. It's a good exercise to prove that these two predicates are
-equivalent.</p>
+       <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">n0</span> : nat, le n n0 -&gt; P n n0</blockquote></div></div></small></span></pre><p>Basically what's happening here is that with <tt class="docutils literal">le_ind</tt>, you have to
+prove everything for every <tt class="docutils literal">n</tt>. With <tt class="docutils literal">le'_ind</tt>, you only need to
+prove it for the particular <tt class="docutils literal">n</tt> that you're using. This can
+sometimes simplify proofs, though it's not necessary for the proof of
+your theorem. It's a good exercise to prove that these two predicates
+are equivalent.</p>
 </div>
 </div>
 </div>

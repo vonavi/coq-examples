@@ -32,21 +32,24 @@ where "x = y :> A" := (@eq A x y) : type_scope.
 (*|
 that is it has a single reflexivity constructor.
 
-To prove that `0 = 0` you need to construct a term of this type. The only way to do this is to invoke `eq_refl`. However in order to invoke `eq_refl` the type checker needs to know that `0` is convertible to `0` (that is they are definitionally equal).
+To prove that ``0 = 0`` you need to construct a term of this type. The
+only way to do this is to invoke ``eq_refl``. However in order to
+invoke ``eq_refl`` the type checker needs to know that ``0`` is
+convertible to ``0`` (that is they are definitionally equal).
 
 ----
 
-The type `eq` is a semantic notion of equality, whereas definitional
+The type ``eq`` is a semantic notion of equality, whereas definitional
 equality is a syntactic notion. **This means that the proof assistant
 cannot distinguish between definitionally equal terms, but it can
 distinguish between semantically equal terms.** So the constructor
-`eq_refl` can be seen as a guarantee that definitional (syntactic)
+``eq_refl`` can be seen as a guarantee that definitional (syntactic)
 equality *subsumes* semantic equality.
 
 It is fruitful to ask whether terms may be semantically equal without
 being syntactically equal. Such examples may only be obtained through
-an axiom. For example, by the definition of the recursor (`nat_rec`,
-or more technically, `nat_ind`) for the natural numbers, or by an
+an axiom. For example, by the definition of the recursor (``nat_rec``,
+or more technically, ``nat_ind``) for the natural numbers, or by an
 `extensionality
 <https://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html>`_
 axiom.

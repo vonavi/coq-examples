@@ -12,11 +12,11 @@ Question
 I am stuck to prove the following admitted lemma. Kindly help me how
 to proceed.
 
-The function `sumoneseq` adds to and returns list of repetitions of
-`true`, in reverse order. Given [\ **true**;false;\ **true**;\
+The function ``sumoneseq`` adds to and returns list of repetitions of
+``true``, in reverse order. Given [\ **true**;false;\ **true**;\
 **true**;false;\ **true**;\ **true**;\ **true**], it returns [3;2;1].
-The function `sumones` adds values in the nat list. Given [3;2;1], it
-returns 6.
+The function ``sumones`` adds values in the nat list. Given [3;2;1],
+it returns 6.
 |*)
 
 Notation "x :: l" := (cons x l) (at level 60, right associativity).
@@ -53,24 +53,24 @@ Answer
 
 Two things:
 
-1. When proving a property of some function `f` using a direct
-   induction, choose the parameter on which `f` is structurally
-   recursive on. So in your example involving `sumoneseq`, induct on
-   `lb` instead of `ln` since `sumoneseq` is structurally recursive on
-   `lb`.
-2. Proving a property of some function `f` where one or more of its
-   arguments are fixed to specific values (e.g. `sumoneseq` with its
-   second argument being `[]`) by direct induction is almost
+1. When proving a property of some function ``f`` using a direct
+   induction, choose the parameter on which ``f`` is structurally
+   recursive on. So in your example involving ``sumoneseq``, induct on
+   ``lb`` instead of ``ln`` since ``sumoneseq`` is structurally
+   recursive on ``lb``.
+2. Proving a property of some function ``f`` where one or more of its
+   arguments are fixed to specific values (e.g. ``sumoneseq`` with its
+   second argument being ``[]``) by direct induction is almost
    guaranteed to fail, since the value of that argument varies between
-   recursive calls of `f`, meaning that you would not be able to apply
-   the induction hypothesis in your inductive case. In that case, you
-   need to manually generalize the induction hypothesis by finding a
-   more general property on which `f` holds, with each of its
-   arguments being sufficiently general. For example, instead of
-   proving `forall lb ln, sumones (sumoneseq lb ln) = sumones ln +
-   sumones (sumoneseq lb [])` directly by induction, try generalizing
-   it to something like `forall lb ln ln', sumones (sumoneseq lb (ln
-   ++ ln')) = sumones ln + sumones (sumoneseq lb ln')` instead and
+   recursive calls of ``f``, meaning that you would not be able to
+   apply the induction hypothesis in your inductive case. In that
+   case, you need to manually generalize the induction hypothesis by
+   finding a more general property on which ``f`` holds, with each of
+   its arguments being sufficiently general. For example, instead of
+   proving ``forall lb ln, sumones (sumoneseq lb ln) = sumones ln +
+   sumones (sumoneseq lb [])`` directly by induction, try generalizing
+   it to something like ``forall lb ln ln', sumones (sumoneseq lb (ln
+   ++ ln')) = sumones ln + sumones (sumoneseq lb ln')`` instead and
    prove *that* by direct induction. Your desired result then follows
    as a corollary of that more general result.
 
@@ -80,9 +80,9 @@ You can learn more about generalizing the induction hypothesis in
 includes 8 exercises of increasing difficulty on doing just that.
 
 Now try to prove your lemma with these two points in mind. *Hint: when
-proving your more general statement about* `sumoneseq` *by direct
+proving your more general statement about* ``sumoneseq`` *by direct
 induction, you may also find it helpful to extract out a suitable
-lemma on a certain property of* `sumones`.
+lemma on a certain property of* ``sumones``.
 
 If you've tried again to no avail then the full solution is provided
 below the horizontal rule (**spoiler alert!**).
@@ -91,10 +91,10 @@ below the horizontal rule (**spoiler alert!**).
 
 Here goes the full solution. As you can probably see, a lot of case
 analysis is required on top of the main induction (likely due to your
-optimization in `sumoneseq` of discarding `0`'s from `ln`) and the
-reasoning for many of these cases are actually very similar and
+optimization in ``sumoneseq`` of discarding ``0``'s from ``ln``) and
+the reasoning for many of these cases are actually very similar and
 repetitive. I could've probably further shortened the proof script
-with a bit of `Ltac` programming looking for similar patterns in the
+with a bit of ``Ltac`` programming looking for similar patterns in the
 various cases but I haven't bothered doing so since I just hacked it
 up straight away.
 |*)

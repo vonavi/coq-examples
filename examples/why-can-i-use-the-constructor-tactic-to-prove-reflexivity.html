@@ -41,18 +41,21 @@ does Coq accept this proof?</p>
 <span class="kn">where</span> <span class="s2">&quot;x = y :&gt; A&quot;</span> := (@eq A x y) : type_scope.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ = _ :&gt; _&quot;</span> was already used <span class="kr">in</span> scope
 type_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ = _ :&gt; _&quot;</span> was already used <span class="kr">in</span> scope
 type_scope. [notation-overridden,parsing]</blockquote></div></div></small></span></pre><p>that is it has a single reflexivity constructor.</p>
-<p>To prove that <code class="highlight coq"><span class="mi">0</span> <span class="o">=</span> <span class="mi">0</span></code> you need to construct a term of this type. The only way to do this is to invoke <code class="highlight coq"><span class="n">eq_refl</span></code>. However in order to invoke <code class="highlight coq"><span class="n">eq_refl</span></code> the type checker needs to know that <code class="highlight coq"><span class="mi">0</span></code> is convertible to <code class="highlight coq"><span class="mi">0</span></code> (that is they are definitionally equal).</p>
+<p>To prove that <tt class="docutils literal">0 = 0</tt> you need to construct a term of this type. The
+only way to do this is to invoke <tt class="docutils literal">eq_refl</tt>. However in order to
+invoke <tt class="docutils literal">eq_refl</tt> the type checker needs to know that <tt class="docutils literal">0</tt> is
+convertible to <tt class="docutils literal">0</tt> (that is they are definitionally equal).</p>
 <hr class="docutils" />
-<p>The type <code class="highlight coq"><span class="n">eq</span></code> is a semantic notion of equality, whereas definitional
+<p>The type <tt class="docutils literal">eq</tt> is a semantic notion of equality, whereas definitional
 equality is a syntactic notion. <strong>This means that the proof assistant
 cannot distinguish between definitionally equal terms, but it can
 distinguish between semantically equal terms.</strong> So the constructor
-<code class="highlight coq"><span class="n">eq_refl</span></code> can be seen as a guarantee that definitional (syntactic)
+<tt class="docutils literal">eq_refl</tt> can be seen as a guarantee that definitional (syntactic)
 equality <em>subsumes</em> semantic equality.</p>
 <p>It is fruitful to ask whether terms may be semantically equal without
 being syntactically equal. Such examples may only be obtained through
-an axiom. For example, by the definition of the recursor (<code class="highlight coq"><span class="n">nat_rec</span></code>,
-or more technically, <code class="highlight coq"><span class="n">nat_ind</span></code>) for the natural numbers, or by an
+an axiom. For example, by the definition of the recursor (<tt class="docutils literal">nat_rec</tt>,
+or more technically, <tt class="docutils literal">nat_ind</tt>) for the natural numbers, or by an
 <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html">extensionality</a>
 axiom.</p>
 </div>

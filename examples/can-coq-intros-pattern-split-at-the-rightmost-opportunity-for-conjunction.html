@@ -27,9 +27,9 @@
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
 <div class="section" id="question">
 <h1>Question</h1>
-<p>I am wondering if there is some intro pattern which can introduce <code class="highlight coq"><span class="n">A</span>
-<span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span></code> as</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A /\ B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>I'm aware that <code class="highlight coq"><span class="nb">intros</span> <span class="o">[</span><span class="n">H1</span> <span class="n">H2</span><span class="o">]</span></code> will produce</p>
+<p>I am wondering if there is some intro pattern which can introduce <tt class="docutils literal">A
+/\ B /\ C</tt> as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A /\ B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>I'm aware that <tt class="docutils literal">intros [H1 H2]</tt> will produce</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>B /\ C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>but cannot figure out how to configure the brackets for the other
 direction. This is a trivial example; but I have a more complicated
 combination of conjunctions and disjunctions that I would much prefer
@@ -38,19 +38,20 @@ to destruct from right to left.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>The <code class="highlight coq"><span class="n">_</span> <span class="o">/\</span> <span class="n">_</span></code> notation in Coq is a right-associative <em>binary</em> operator,
-so <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span></code> really stands for <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="o">(</span><span class="n">B</span> <span class="o">/\</span> <span class="n">C</span><span class="o">)</span></code>. If you want to
-build some <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code> you should first fully decompose the <code class="highlight coq"><span class="o">/\</span> </code>
-(<code class="highlight coq"><span class="nb">intros</span> <span class="o">[</span><span class="n">HA</span> <span class="o">[</span><span class="n">HB</span> <span class="n">HC</span><span class="o">]].</span></code>, you can nest the patterns arbitrarily) and
-then build the <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code> hypothesis (for instance using <code class="highlight coq"><span class="nb">assert</span> <span class="o">(</span><span class="n">A</span> <span class="o">/\</span>
-<span class="n">B</span><span class="o">)</span> <span class="kr">as</span> <span class="n">HAB</span> <span class="bp">by</span> <span class="o">(</span><span class="nb">split</span><span class="o">;</span> <span class="o">[</span><span class="bp">exact</span> <span class="n">HA</span><span class="o">|</span> <span class="bp">exact</span> <span class="n">HB</span><span class="o">]).</span></code> or any other way you
-prefer to add an hypothesis).</p>
-<p>In a more complex setting, you might want to write a lemma <code class="highlight coq"><span class="n">and_assoc</span>
-<span class="o">:</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span><span class="o">,</span> <span class="n">A</span> <span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span><span class="o">)</span> <span class="o">/\</span> <span class="n">C</span></code> and use a
-<em>view</em>-pattern. Starting from a goal <code class="highlight coq"><span class="n">A</span> <span class="o">/\</span> <span class="n">B</span> <span class="o">/\</span> <span class="n">C</span> <span class="o">-&gt;</span> <span class="n">P</span></code> you can use
-<code class="highlight coq"><span class="nb">intros</span> <span class="o">[</span><span class="n">HAB</span> <span class="n">HC</span><span class="o">]%</span><span class="n">and_assoc</span><span class="o">.</span></code> to obtain <code class="highlight coq"><span class="n">HAB</span> <span class="o">:</span> <span class="n">A</span> <span class="o">/\</span> <span class="n">B</span></code> and <code class="highlight coq"><span class="n">HC</span> <span class="o">:</span> <span class="n">C</span></code> :
-the <code class="highlight coq"><span class="n">pat</span><span class="o">%</span><span class="n">and_assoc</span></code> part says that <code class="highlight coq"><span class="n">and_assoc</span></code> should be applied first
-to the top assumption and then further destructed with <code class="highlight coq"><span class="n">pat</span></code>.</p>
+<p>The <tt class="docutils literal">_ /\ _</tt> notation in Coq is a right-associative <em>binary</em>
+operator, so <tt class="docutils literal">A /\ B /\ C</tt> really stands for <tt class="docutils literal">A /\ (B /\ C)</tt>. If
+you want to build some <tt class="docutils literal">A /\ B</tt> you should first fully decompose the
+<tt class="docutils literal">/\ `` <span class="pre">(``intros</span> [HA [HB <span class="pre">HC]].</span></tt>, you can nest the patterns
+arbitrarily) and then build the <tt class="docutils literal">A /\ B</tt> hypothesis (for instance
+using <tt class="docutils literal">assert (A /\ B) as HAB by (split; [exact HA| exact <span class="pre">HB]).</span></tt> or
+any other way you prefer to add an hypothesis).</p>
+<p>In a more complex setting, you might want to write a lemma <tt class="docutils literal">and_assoc
+: forall A B C, A /\ B /\ C <span class="pre">-&gt;</span> (A /\ B) /\ C</tt> and use a
+<em>view</em>-pattern. Starting from a goal <tt class="docutils literal">A /\ B /\ C <span class="pre">-&gt;</span> P</tt> you can use
+<tt class="docutils literal">intros [HAB <span class="pre">HC]%and_assoc.</span></tt> to obtain <tt class="docutils literal">HAB : A /\ B</tt> and <tt class="docutils literal">HC :
+C</tt> : the <tt class="docutils literal">pat%and_assoc</tt> part says that <tt class="docutils literal">and_assoc</tt> should be
+applied first to the top assumption and then further destructed with
+<tt class="docutils literal">pat</tt>.</p>
 </div>
 </div>
 </div>

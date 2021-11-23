@@ -40,20 +40,20 @@ use the left part of the implication well.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
-<p>Your question is a bit vague, as you don't specify what <code class="highlight coq"><span class="n">D</span></code> and <code class="highlight coq"><span class="n">R</span></code>
-are, and where you are stuck in your proof. Try providing a minimal
-working example, with an explicit <code class="highlight coq"><span class="kp">fail</span></code> tactic for where you're stuck
-in the proof.</p>
+<p>Your question is a bit vague, as you don't specify what <tt class="docutils literal">D</tt> and
+<tt class="docutils literal">R</tt> are, and where you are stuck in your proof. Try providing a
+minimal working example, with an explicit <tt class="docutils literal">fail</tt> tactic for where
+you're stuck in the proof.</p>
 <p>In <em>classical logic</em> (the one you're use to in maths), as you have the
 <em>excluded middle</em> rule, you can always do a case analysis on whether
 something is true or false. In vanilla Coq, built for <em>intuitionistic
 logic</em>, it's not the case. Your result is actually <em>not provable</em> if
-the predicate <code class="highlight coq"><span class="n">R</span></code> is not decidable (if it's not either true or false
-on every input : <code class="highlight coq"><span class="kr">forall</span> <span class="o">(</span><span class="nv">x</span><span class="o">:</span><span class="n">D</span><span class="o">),</span> <span class="n">R</span> <span class="n">x</span> <span class="o">\/</span> <span class="o">~</span><span class="n">R</span> <span class="n">x</span></code>), if the type <code class="highlight coq"><span class="n">D</span></code> is not
-empty.</p>
-<p>Try adding the decidability of <code class="highlight coq"><span class="n">R</span></code> as an hypothesis and reprove it. It
-should follow more or less this structure (the key being the case
-analysis on whether <code class="highlight coq"><span class="o">(</span><span class="n">R</span> <span class="n">y</span><span class="o">)</span></code> is true or false):</p>
+the predicate <tt class="docutils literal">R</tt> is not decidable (if it's not either true or false
+on every input : <tt class="docutils literal">forall (x:D), R x \/ ~R x</tt>), if the type <tt class="docutils literal">D</tt> is
+not empty.</p>
+<p>Try adding the decidability of <tt class="docutils literal">R</tt> as an hypothesis and reprove it.
+It should follow more or less this structure (the key being the case
+analysis on whether <tt class="docutils literal">(R y)</tt> is true or false):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="can-any-one-help-me-how-to-prove-this-therom-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="can-any-one-help-me-how-to-prove-this-therom-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">yourGoal</span> :
   (<span class="kr">forall</span> <span class="nv">x</span>, R x \/ ~ R x) -&gt; <span class="c">(* Decidability of R *)</span>
   ~ (<span class="kr">exists</span> <span class="nv">x</span>, ~ R x) -&gt; <span class="kr">forall</span> <span class="nv">y</span>, R y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : D, R x \/ ~ R x) -&gt;
