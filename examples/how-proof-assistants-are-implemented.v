@@ -1,13 +1,14 @@
 (*|
+#####################################
 How proof assistants are implemented?
-=====================================
+#####################################
 
 :Link: https://stackoverflow.com/questions/58725547/how-proof-assistants-are-implemented
 |*)
 
 (*|
 Question
---------
+********
 
 What are the main blocks of a proof assistant?
 
@@ -23,7 +24,7 @@ My concern is the same but for proof checking systems.
 
 (*|
 Answer (Manuel Eberl)
----------------------
+*********************
 
 I'm hardly an expert on the matter (I'm only a user of these systems;
 I don't worry too *much* about their internals) and this will probably
@@ -80,7 +81,7 @@ anything about how these are implemented.
 
 (*|
 Answer (Lawrence Paulson)
--------------------------
+*************************
 
 In the case of LCF, HOL and Isabelle, you'll find an extensive answer
 to your question in the journal article "`From LCF to Isabelle/HOL

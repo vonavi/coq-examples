@@ -1,13 +1,14 @@
 (*|
+########################################################
 Classical axioms implies every proposition is decidable?
-========================================================
+########################################################
 
 :Link: https://stackoverflow.com/questions/61316612/classical-axioms-implies-every-proposition-is-decidable
 |*)
 
 (*|
 Question
---------
+********
 
 In the Lean manual 'Theorem proving in Lean' I read: "With the
 classical axioms, we can prove that every proposition is decidable".
@@ -49,7 +50,7 @@ cannot actually provide a witness of this existence?
 
 (*|
 Answer
-------
+******
 
 In the calculus of constructions without any axioms, there is
 *meta-theoretical* property that every proof of ``A \/ B`` is

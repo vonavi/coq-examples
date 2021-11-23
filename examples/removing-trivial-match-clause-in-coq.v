@@ -1,13 +1,14 @@
 (*|
+####################################
 Removing trivial match clause in Coq
-====================================
+####################################
 
 :Link: https://stackoverflow.com/questions/66179133/removing-trivial-match-clause-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 Consider the following example:
 |*)
@@ -37,7 +38,7 @@ error
 
 (*|
 Answer
-------
+******
 
 This is not provable in Coq without assuming an extra axiom, usually
 ``eq_rect_eq`` or something equivalent (Uniqueness of Identity Proofs

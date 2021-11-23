@@ -1,13 +1,14 @@
 (*|
+###############################
 Understanding specialize tactic
-===============================
+###############################
 
 :Link: https://stackoverflow.com/questions/56828692/understanding-specialize-tactic
 |*)
 
 (*|
 Question
---------
+********
 
 Trying to comprehend the `answer
 <https://stackoverflow.com/a/56773900/789186>`_ of @keep_learning I
@@ -78,7 +79,7 @@ Can somebody provide me a minimal example with explanation of what is
 ``specialize`` doing, so I could freely use it?
 
 Update
-~~~~~~
+======
 
 Trying to imitate how ``specialize`` works using apply I did the
 following:
@@ -118,7 +119,7 @@ possible to solve it with apply but without remember?
 
 (*|
 Answer
-------
+******
 
 ``specialize``, in its simplest form, simply replaces a given
 hypothesis with that hypothesis applied to some other term.

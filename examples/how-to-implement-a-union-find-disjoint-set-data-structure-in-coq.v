@@ -1,13 +1,14 @@
 (*|
+###################################################################
 How to implement a union-find (disjoint set) data structure in Coq?
-===================================================================
+###################################################################
 
 :Link: https://stackoverflow.com/questions/66630519/how-to-implement-a-union-find-disjoint-set-data-structure-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I am quite new to Coq, but for my project I have to use a union-find
 data structure in Coq. Are there any implementations of the union-find
@@ -22,7 +23,7 @@ hold an arbitrary data type (or nat if it's too hard) and perform:
 
 (*|
 Answer
-------
+******
 
 If all you need is a mathematical model, with no concern for actual
 performance, I would go for the most straightforward one: a functional

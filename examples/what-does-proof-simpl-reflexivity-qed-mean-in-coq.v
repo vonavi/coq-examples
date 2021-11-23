@@ -1,13 +1,14 @@
 (*|
+######################################################
 What does Proof. simpl. reflexivity. Qed. mean in Coq?
-======================================================
+######################################################
 
 :Link: https://stackoverflow.com/questions/64246592/what-does-proof-simpl-reflexivity-qed-mean-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I'm reading the book Software Foundations and got stuck at the very
 beginning.
@@ -40,7 +41,7 @@ there any other way we can prove this simple test?
 
 (*|
 Answer
-------
+******
 
 ``simpl`` is a tactic evaluating the goal. In your case, after
 executing it, the goal will be left to ``true = true``.

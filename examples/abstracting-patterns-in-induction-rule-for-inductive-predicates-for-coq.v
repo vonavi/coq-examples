@@ -1,13 +1,14 @@
 (*|
+#######################################################################
 Abstracting patterns in induction rule for inductive predicates for Coq
-=======================================================================
+#######################################################################
 
 :Link: https://stackoverflow.com/questions/60027551/abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq
 |*)
 
 (*|
 Question
---------
+********
 
 Consider the following proposition in Coq:
 |*)
@@ -65,7 +66,7 @@ I was wondering if Coq has a similar way to avoid proving a lemma like
 
 (*|
 Answer
-------
+******
 
 You can use the ``dependent induction`` tactic (documented `here
 <https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction>`_).

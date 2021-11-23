@@ -1,13 +1,14 @@
 (*|
+##########################################
 How can I generalise Coq proofs of an iff?
-==========================================
+##########################################
 
 :Link: https://stackoverflow.com/questions/65588333/how-can-i-generalise-coq-proofs-of-an-iff
 |*)
 
 (*|
 Question
---------
+********
 
 A common kind of proof I have to make is something like
 |*)
@@ -43,7 +44,7 @@ SO questions, but nothing told me how to do this.
 
 (*|
 Answer
-------
+******
 
 In mathematics, one often can make "assumptions" "*without loss of
 generality*" (WLOG) to simplify proofs of this kind. In your example,

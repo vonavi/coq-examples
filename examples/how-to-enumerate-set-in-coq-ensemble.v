@@ -1,13 +1,14 @@
 (*|
+####################################
 How to enumerate set in Coq Ensemble
-====================================
+####################################
 
 :Link: https://stackoverflow.com/questions/68789154/how-to-enumerate-set-in-coq-ensemble
 |*)
 
 (*|
 Question
---------
+********
 
 How do you prove ``enumerateSingletonPowerset``?
 |*)
@@ -50,7 +51,7 @@ Edit: Changed from pair to singleton since quantity isn't important.
 
 (*|
 Answer
-------
+******
 
 I found a way to get it to work without any additional axioms using
 the "not not" technique from "Classical Mathematics for a Constructive

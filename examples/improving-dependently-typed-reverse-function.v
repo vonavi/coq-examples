@@ -1,13 +1,14 @@
 (*|
+############################################
 Improving dependently typed reverse function
-============================================
+############################################
 
 :Link: https://stackoverflow.com/questions/63051692/improving-dependently-typed-reverse-function
 |*)
 
 (*|
 Question
---------
+********
 
 Here is the code I have thus far:
 |*)
@@ -71,7 +72,7 @@ to work.
 
 (*|
 Answer
-------
+******
 
 There is no way of programming ``irev`` without a cast. This is one of
 the many reasons why Coq users generally avoid indexed data types like

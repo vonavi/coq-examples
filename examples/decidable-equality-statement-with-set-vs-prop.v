@@ -1,13 +1,14 @@
 (*|
+##############################################
 Decidable equality statement with Set vs. Prop
-==============================================
+##############################################
 
 :Link: https://stackoverflow.com/questions/69710435/decidable-equality-statement-with-set-vs-prop
 |*)
 
 (*|
 Question
---------
+********
 
 When looking at results for types with decidable equality (especially
 in `Eqdep_dec
@@ -44,7 +45,7 @@ not the second. Also, is it true that the version with ``{x = y} + {x
 
 (*|
 Answer
-------
+******
 
 You are correct that the latter definition, the one which lives in
 ``Set``, is referred to as *decidable equality*.

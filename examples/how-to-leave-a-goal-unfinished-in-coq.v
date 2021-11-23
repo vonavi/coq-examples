@@ -1,13 +1,14 @@
 (*|
+#####################################
 How to leave a goal unfinished in Coq
-=====================================
+#####################################
 
 :Link: https://stackoverflow.com/questions/60018942/how-to-leave-a-goal-unfinished-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 In Isabelle, you can leave a goal unfinished in two ways:
 
@@ -26,7 +27,7 @@ modifies the proof structure. That's not what I'm looking for.
 
 (*|
 Answer
-------
+******
 
 You have several ways to terminate a proof in Coq. You probably know
 ``Qed`` which asserts the proof is completed. There is also

@@ -1,13 +1,14 @@
 (*|
+##########################################################
 Why can I use the constructor tactic to prove reflexivity?
-==========================================================
+##########################################################
 
 :Link: https://stackoverflow.com/questions/65959309/why-can-i-use-the-constructor-tactic-to-prove-reflexivity
 |*)
 
 (*|
 Question
---------
+********
 
 The constructor tactic allows you to discharge a goal which is an
 inductive datatype by automatically applying constructors. However,
@@ -19,7 +20,7 @@ Example zeqz : 0 = 0. constructor.
 
 (*|
 Answer
-------
+******
 
 The equality type in Coq is defined as follows
 |*)

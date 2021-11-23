@@ -1,13 +1,14 @@
 (*|
+######################################################
 ``even_Sn_not_even_n`` - apply 1 hypothesis in another
-======================================================
+######################################################
 
 :Link: https://stackoverflow.com/questions/56354064/even-sn-not-even-n-apply-1-hypothesis-in-another
 |*)
 
 (*|
 Question
---------
+********
 
 Unfortunately I got stuck again:
 |*)
@@ -45,7 +46,7 @@ But how to write it in coq?
 
 (*|
 Answer
-------
+******
 
 The usual way to strip double negation is to introduce the "excluded
 middle" axiom, which is defined under the name ``classic`` in

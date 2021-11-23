@@ -1,13 +1,14 @@
 (*|
+##################################################################
 Coq leb <=? does not give me an hypothesis after case or induction
-==================================================================
+##################################################################
 
 :Link: https://stackoverflow.com/questions/66709518/coq-leb-does-not-give-me-an-hypothesis-after-case-or-induction
 |*)
 
 (*|
 Question
---------
+********
 
 I have simplified my situation to the following piece of code,
 hopefully this makes it easier to understand.
@@ -54,7 +55,7 @@ Qed.
 
 (*|
 Answer
-------
+******
 
 To do the case distinction that you are looking for you can use
 |*)

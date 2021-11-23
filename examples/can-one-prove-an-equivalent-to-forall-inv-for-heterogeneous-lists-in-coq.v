@@ -1,13 +1,14 @@
 (*|
+#########################################################################
 Can one prove an equivalent to Forall_inv for heterogeneous lists in Coq?
-=========================================================================
+#########################################################################
 
 :Link: https://stackoverflow.com/questions/59178484/can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 Following Adam Chlipala's `definition
 <http://adam.chlipala.net/cpdt/html/Cpdt.DataStruct.html#lab57>`_ of
@@ -54,7 +55,7 @@ End hlist.
 
 (*|
 Answer
-------
+******
 
 Inductives indexed by indexed types lead to that kind of difficulty.
 
@@ -89,7 +90,7 @@ End hForall'.
 ----
 
 Appendix
-~~~~~~~~
+========
 
 Mostly for educational purposes, here's a few ways to prove that
 inversion lemma for the original inductive definition of ``hForall``

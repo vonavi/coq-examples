@@ -1,13 +1,14 @@
 (*|
+############################################################
 Proofs of structural properties of arguments in match in coq
-============================================================
+############################################################
 
 :Link: https://stackoverflow.com/questions/66064683/proofs-of-structural-properties-of-arguments-in-match-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I would like to write a safe zip function in coq that accepts the
 argument length equality as an argument.
@@ -31,7 +32,7 @@ context of coq functions generally.
 
 (*|
 Answer
-------
+******
 
 Here is the best approach to this particular problem, in my opinion:
 |*)

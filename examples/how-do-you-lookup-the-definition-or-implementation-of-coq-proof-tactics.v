@@ -1,13 +1,14 @@
 (*|
+########################################################################
 How do you lookup the definition or implementation of Coq proof tactics?
-========================================================================
+########################################################################
 
 :Link: https://stackoverflow.com/questions/63823528/how-do-you-lookup-the-definition-or-implementation-of-coq-proof-tactics
 |*)
 
 (*|
 Question
---------
+********
 
 I am looking at `this
 <https://github.com/coq/coq/blob/cdfe69d6da6b32338ba74c9f599c74389089c9dd/theories/Numbers/Natural/Abstract/NAdd.v#L49-L57>`_:
@@ -71,14 +72,14 @@ definition)? What is the way to do this efficiently?
 
 (*|
 Answer (Blaisorblade)
----------------------
+*********************
 
 The answer differs for primitive and user-defined tactics. However,
 the proof script you show uses almost no user-defined tactics, except
 ``now``, which is a notation for the ``easy`` tactic.
 
 For user-defined tactics.
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=========================
 
 For tactics defined as ``Ltac foo args := body.`` you can use ``Print
 Ltac foo`` (e.g. ``Print Ltac easy.``). AFAIK, that does not work for
@@ -86,7 +87,7 @@ tactics defined by ``Tactic Notation``. In both cases, I prefer to
 look at the sources (which I find via ``grep``).
 
 For primitive tactics
-~~~~~~~~~~~~~~~~~~~~~
+=====================
 
 - There is the Coq reference manual
   (https://coq.inria.fr/distrib/current/refman/coq-tacindex.html),
@@ -100,7 +101,7 @@ For primitive tactics
 
 (*|
 Answer (Arthur Azevedo De Amorim)
----------------------------------
+*********************************
 
 As Blaisorblade mentioned, it can be difficult to understand exactly
 what tactics are doing, and it is easier to look at the reference

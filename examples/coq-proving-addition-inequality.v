@@ -1,13 +1,14 @@
 (*|
+###############################
 Coq proving addition inequality
-===============================
+###############################
 
 :Link: https://stackoverflow.com/questions/67177067/coq-proving-addition-inequality
 |*)
 
 (*|
 Question
---------
+********
 
 I am a beginner and trying to prove this lemma:
 |*)
@@ -30,7 +31,7 @@ Abort. (* .none *)
 
 (*|
 Answer
-------
+******
 
 You probably meant
 |*)

@@ -1,13 +1,14 @@
 (*|
+##################################################################################
 What is a concrete example of the type ``Set`` and what is the meaning of ``Set``?
-==================================================================================
+##################################################################################
 
 :Link: https://stackoverflow.com/questions/68056978/what-is-a-concrete-example-of-the-type-set-and-what-is-the-meaning-of-set
 |*)
 
 (*|
 Question
---------
+********
 
 I've been trying to understand what ``Set`` is after encountering it
 in Adam Chlipala's book in addition to `this great discussion in SO
@@ -42,7 +43,7 @@ practical) usefulness.
 
 (*|
 Answer
-------
+******
 
 Though ``Set`` and ``Type`` are different in Coq, this is mostly due
 to historical reasons. Nowadays, most developments do not rely on

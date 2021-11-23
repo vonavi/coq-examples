@@ -1,13 +1,14 @@
 (*|
+######################################
 Coq: Proving relation between < and <=
-======================================
+######################################
 
 :Link: https://stackoverflow.com/questions/57719818/coq-proving-relation-between-and-%e2%89%a4
 |*)
 
 (*|
 Question
---------
+********
 
 I am learning Coq right now and in a larger proof I have become
 stumped by the following sub-proof:
@@ -45,7 +46,7 @@ Admitted. (* .none *)
 
 (*|
 Answer
-------
+******
 
 Since ``le`` is defined as an inductive predicate, it makes more sense
 to do the induction on that, rather than ``n``. ``le`` doesn't make

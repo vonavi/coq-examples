@@ -1,19 +1,20 @@
 (*|
+##################################
 Transitivity of subsequence in COQ
-==================================
+##################################
 
 :Link: https://stackoverflow.com/questions/69797654/transitivity-of-subsequence-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 I have been working my way through logical foundations and have gotten
 very stuck on the transitivity of subsequences exercise.
 
 Exercise: 2 stars, advanced (subsequence)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=========================================
 
 A list is a *subsequence* of another list if all of the elements in
 the first list occur in the same order in the second list, possibly
@@ -59,7 +60,7 @@ right direction would be much appreciated.
 
 (*|
 Answer
-------
+******
 
 That experience suggests generalizing the induction hypothesis over
 ``l3``.

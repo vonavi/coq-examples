@@ -1,13 +1,14 @@
 (*|
+####################################################
 Coq: Recursive definition of fibonacci is ill-formed
-====================================================
+####################################################
 
 :Link: https://stackoverflow.com/questions/67758117/coq-recursive-definition-of-fibonacci-is-ill-formed
 |*)
 
 (*|
 Question
---------
+********
 
 I am trying to define Fibonacci numbers using coq. This is my code:
 
@@ -31,7 +32,7 @@ Thanks in advance!
 
 (*|
 Answer
-------
+******
 
 All arguments of a recursive call must be structurally decreasing,
 that is you must strip away one constructor symbol in the match. In

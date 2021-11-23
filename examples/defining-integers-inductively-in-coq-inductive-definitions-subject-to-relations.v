@@ -1,13 +1,14 @@
 (*|
+#################################################################################
 Defining integers inductively in Coq (inductive definitions subject to relations)
-=================================================================================
+#################################################################################
 
 :Link: https://stackoverflow.com/questions/66222181/defining-integers-inductively-in-coq-inductive-definitions-subject-to-relations
 |*)
 
 (*|
 Question
---------
+********
 
 In Coq, one can define the natural numbers inductively as follows:
 |*)
@@ -35,7 +36,7 @@ do this.
 
 (*|
 Answer
-------
+******
 
 What you are literally asking for is called a Quotient Inductive Type
 (QIT) and is not currently supported in Coq even though there is a way

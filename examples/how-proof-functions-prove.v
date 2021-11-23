@@ -1,13 +1,14 @@
 (*|
+##########################
 How proof functions prove?
-==========================
+##########################
 
 :Link: https://stackoverflow.com/questions/61959394/how-proof-functions-prove
 |*)
 
 (*|
 Question
---------
+********
 
 It'd help my understanding the 'programs/proofs' parallelism if somebody was kind enough to explain me how the proof function is used in the following simple case:
 |*)
@@ -30,7 +31,7 @@ n``?
 
 (*|
 Answer
-------
+******
 
     Is it correct to say that the return value of ex1 is an instance
     of the type ``forall n : nat, 7 * 5 < n -> 6 * 6 <= n``?

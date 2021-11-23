@@ -1,13 +1,14 @@
 (*|
+###################################################
 Can any one help me how to prove this therom in coq
-===================================================
+###################################################
 
 :Link: https://stackoverflow.com/questions/69540976/can-any-one-help-me-how-to-prove-this-therom-in-coq
 |*)
 
 (*|
 Question
---------
+********
 
 This is the first part of my code:
 |*)
@@ -29,7 +30,7 @@ Can anyone help me figure out how to write the rest of of the code?
 
 (*|
 Answer
-------
+******
 
 Your question is a bit vague, as you don't specify what ``D`` and
 ``R`` are, and where you are stuck in your proof. Try providing a

@@ -1,13 +1,14 @@
 (*|
+###########################
 Vector : t A n = t A (n+0)?
-===========================
+###########################
 
 :Link: https://stackoverflow.com/questions/64225642/vector-t-a-n-t-a-n0
 |*)
 
 (*|
 Question
---------
+********
 
 I want trivial lemma below.
 |*)
@@ -23,7 +24,7 @@ Abort.
 
 (*|
 Answer
-------
+******
 
 When you want to prove an equality between complex structures it can
 often be useful to use the ``f_equal`` tactic which will ask to prove

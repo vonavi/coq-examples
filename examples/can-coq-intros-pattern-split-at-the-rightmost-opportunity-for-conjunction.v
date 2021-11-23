@@ -1,13 +1,14 @@
 (*|
+##########################################################################
 can coq intros pattern split at the rightmost opportunity for conjunction?
-==========================================================================
+##########################################################################
 
 :Link: https://stackoverflow.com/questions/63381511/can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction
 |*)
 
 (*|
 Question
---------
+********
 
 I am wondering if there is some intro pattern which can introduce ``A
 /\ B /\ C`` as
@@ -38,7 +39,7 @@ Thanks,
 
 (*|
 Answer
-------
+******
 
 The ``_ /\ _`` notation in Coq is a right-associative *binary*
 operator, so ``A /\ B /\ C`` really stands for ``A /\ (B /\ C)``. If

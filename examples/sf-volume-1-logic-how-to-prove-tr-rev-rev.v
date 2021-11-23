@@ -1,13 +1,14 @@
 (*|
+################################################
 SF Volume 1: Logic: How to prove tr_rev <-> rev?
-================================================
+################################################
 
 :Link: https://stackoverflow.com/questions/69360955/sf-volume-1-logic-how-to-prove-tr-rev-rev
 |*)
 
 (*|
 Question
---------
+********
 
 From Software Foundations Volume 1, chapter Logic we see a tail
 recursive definition of list reversal. It goes like so:
@@ -66,7 +67,7 @@ Thanks
 
 (*|
 Answer
-------
+******
 
 Proving things about definitions with accumulators has a specific
 trick to it. The thing is, facts about ``tr_rev`` must necessarily be
