@@ -27,6 +27,8 @@ finish the proof.
 But when writing Gallina, do we have to solve the whole thing in one
 bang, or make lots of little helper functions? I'd love to be able to
 put use a question mark to ask Coq what it's looking for:
+
+.. coq:: fails
 |*)
 
 Fail Definition ModusPonens' :=
@@ -79,13 +81,15 @@ Answer (Li-yao Xia)
 -------------------
 
 Use an underscore
+
+.. coq:: unfold fails
 |*)
 
 Fail Definition ModusPonens' :=
   fun (A B : Prop) (H : (A -> B) /\ A) =>
     match H with
     | conj H1 H2 => H1 _ (* hole of type A *)
-    end. (* .unfold *)
+    end.
 
 (*| or use ``Program`` |*)
 

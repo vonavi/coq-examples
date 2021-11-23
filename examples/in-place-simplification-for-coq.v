@@ -17,7 +17,7 @@ Goal forall (A : Type) (j' : nat) (f : nat -> A), f (S j') = f (j' + 1).
 
 (*| to be proven automatically by Coq. Currently I have to write: |*)
 
-  intros. apply f_equal. Fail omega.
+  intros. apply f_equal. lia.
   Restart. (* .none *)
 
 (*|

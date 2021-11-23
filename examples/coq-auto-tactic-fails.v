@@ -42,16 +42,16 @@ but I can't see any unfolding done with ``debug auto 100``:
 |*)
 
   (* debug auto: *)
-  * Fail assumption. (*fail*) Restart. (* .none *)
+  * Fail assumption. (* .fails *) (*fail*) Restart. (* .none *)
 
   * intro. (*success*)
-    Fail assumption. (*fail*) Undo. (* .none *)
+    Fail assumption. (* .fails *) (*fail*) Undo. (* .none *)
 
-    Fail intro. (*fail*) Undo. (* .none *)
+    Fail intro. (* .fails *) (*fail*) Undo. (* .none *)
 
-    Fail simple apply le_n. (*fail*) Undo. (* .none *)
+    Fail simple apply le_n. (* .fails *) (*fail*) Undo. (* .none *)
 
-    Fail simple apply le_S. (*fail*)
+    Fail simple apply le_S. (* .fails *) (*fail*)
 Abort. (* .none *)
 
 (*|

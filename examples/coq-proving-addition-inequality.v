@@ -23,7 +23,7 @@ Require Import Lia.
 Lemma test:  forall n m p q : nat,
     n <= p \/ m <= q -> n + m <= p + q.
 Proof.
-  Fail intros; lia.
+  Fail intros; lia. (* .fails *)
 Abort. (* .none *)
 
 (*| but it is not working. How could I proceed? |*)

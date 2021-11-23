@@ -27,8 +27,11 @@ Clearly the left hand side and right hand side are equal. But I am not
 sure how to get rid of the annoying ``match`` clause on the left hand
 side. In particular, trying to ``destruct prf`` yields the following
 error
+
+.. coq:: unfold fails
 |*)
-  Fail destruct prf. (* .unfold .messages *)
+
+  Fail destruct prf.
 
 (*| Is there a way to get rid of this match clause? |*)
 

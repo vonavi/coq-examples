@@ -71,7 +71,7 @@ Proof.
   intros b1 b2 H.
   destruct b1.
   - destruct b2.
-    + simpl. Fail reflexivity. (* .unfold .messages *)
+    + simpl. Fail reflexivity. (* .unfold .fails *)
 Abort. (* .none *)
 
 (*|

@@ -11,10 +11,12 @@ Question
 
 I would like to write a safe zip function in coq that accepts the
 argument length equality as an argument.
+
+.. coq:: fails
 |*)
 
 Fail Fixpoint zip {b a:Type} (l1 : list a) (l2 : list b)
-              (proof : length l1 = length l2) : list (a * b) :=
+     (proof : length l1 = length l2) : list (a * b) :=
   match l1,l2 with
   | nil, nil => nil
   | cons a a', cons b b' => cons (a, b) (zip a' b')

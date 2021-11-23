@@ -59,10 +59,7 @@ As for your second question: ``Set`` is something that lives in
 |*)
 
 Check Set : Type. (* This works *)
-Fail Check Set : Set.
-(* The command has indeed failed with message: *)
-(* The term "Set" has type "Type" while it is expected to have type  *)
-(* "Set" (universe inconsistency: Cannot enforce Set+1 <= Set). *)
+Fail Check Set : Set. (* .unfold *)
 
 (*|
 This restriction is in place to prevent paradoxes in the theory. This
@@ -72,13 +69,9 @@ Coq with the ``-impredicative-set`` option:
 |*)
 
 (* Needs -impredicative-set; otherwise, the first line will also fail.*)
-Fail Check (forall A : Set, A -> A) : Set.
+Fail Check (forall A : Set, A -> A) : Set. (* .fails *)
 Universe u.
-Fail Check (forall A : Type@{u}, A -> A) : Type@{u}.
-(* The command has indeed failed with message: *)
-(* The term "forall A : Type, A -> A" has type "Type@{u+1}" *)
-(* while it is expected to have type "Type@{u}" (universe inconsistency: Cannot enforce *)
-(* u < u because u = u). *)
+Fail Check (forall A : Type@{u}, A -> A) : Type@{u}. (* .unfold *)
 
 (*|
 Note that I had to add the ``Universe u``. declaration to force the

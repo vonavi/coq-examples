@@ -59,7 +59,7 @@ requires manual proof. For concrete values of ``n``, this is easy:
 |*)
 
 (* The next command fails with a type checking error *)
-Fail Compute add_two_even (exist _ 1 eq_refl).
+Fail Compute add_two_even (exist _ 1 eq_refl). (* .fails *)
 (* The next command succeeds *)
 Compute add_two_even (exist _ 4 eq_refl).
 

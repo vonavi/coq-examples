@@ -39,7 +39,7 @@ Fail Fixpoint copy (x : V) (n : nat) : BraunTree :=
   in
   match copy2 x n with
   | (_, snd) => snd
-  end.
+  end. (* .fails *)
 
 (*|
 I know that it is not the separate even and odd cases that is the
@@ -59,7 +59,7 @@ Fail Fixpoint copy (x : V) (n : nat) : BraunTree :=
   in
   match copy2 x n with
   | (_, snd) => snd
-  end.
+  end. (* .fails *)
 
 (*| How can I convince Coq that i is in fact a decreasing argument? |*)
 
