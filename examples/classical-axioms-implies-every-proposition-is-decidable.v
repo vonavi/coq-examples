@@ -82,7 +82,9 @@ To be more precise, in Coq terminology, the term decidable is not used
 for propositions or predicates that enjoy LEM, but for propositions or
 predicates that enjoy the stronger following statement:
 
-`forall x, {P x} + {~P x}`
+.. code-block:: coq
+
+    forall x, {P x} + {~P x}
 
 Proofs of such propositions are often named with ``_dec`` suffix,
 where ``_dec`` directly refers to *decidable*. This abuse is less

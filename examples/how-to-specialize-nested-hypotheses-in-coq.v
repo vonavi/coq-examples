@@ -13,11 +13,15 @@ I've already got the idea of ``specialize`` in Coq.
 
 It works okay with ``specialize (H1 trm_int)``.
 
-`H1 : forall x, value x -> term x.`
+.. code-block:: coq
+
+    H1 : forall x, value x -> term x.
 
 But what about this case
 
-`H1 : forall x, value x -> forall y, value y -> sub x y.`
+.. code-block:: coq
+
+    H1 : forall x, value x -> forall y, value y -> sub x y.
 
 It doesn't work with ``specialize (H1 trm_int _trm_int)``.
 
@@ -25,7 +29,9 @@ Edit:
 
 ``specialize (H1 trm_int _trm_int)`` works fine with
 
-`H1 : forall x y, value x -> value y -> sub x y.`
+.. code-block:: coq
+
+    H1 : forall x y, value x -> value y -> sub x y.
 
 Notice the ``forall y`` appears in the second premise.
 |*)
@@ -40,15 +46,21 @@ your hypothesis to the arguments you give it. It is not limited to
 
 Say you have
 
-`h : nat -> bool`
+.. code-block:: coq
+
+    h : nat -> bool
 
 you can also use ``specialize (h 0)`` and you will get
 
-`h : bool`
+.. code-block:: coq
+
+    h : bool
 
 So when you have
 
-`H1 : forall x, value x -> forall y, value y -> sub x y.`
+.. code-block:: coq
+
+    H1 : forall x, value x -> forall y, value y -> sub x y.
 
 and you specialise, you have to use ``specialize (H1 some_x
 some_value_x some_y)`` where ``some_x`` is an instance for ``x``,

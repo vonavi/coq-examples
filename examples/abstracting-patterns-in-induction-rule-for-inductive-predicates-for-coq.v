@@ -47,7 +47,7 @@ Proof Assistant for Higher-Order Logic. Later, the tactic became
 smarter and one can write patterns in which to abstract on. So the
 proof is written like this:
 
-::
+.. code-block:: isabelle
 
     lemma
       assumes "subseq (x # l1) l2"

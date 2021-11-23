@@ -83,7 +83,7 @@ With my best pseudo-ASCII-art skills, here is a map where the links
 are { 6↦2, 4↦2, 3↦0, 2↦1 } and the canonical representatives are { 5,
 1, 0 }:
 
-::
+.. code::
 
       6   5   4   3   2   1   0   element
       ↓  ↓  ↓  ↓  ↓  ↓  ↓

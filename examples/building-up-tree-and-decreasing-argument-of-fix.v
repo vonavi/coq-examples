@@ -70,15 +70,17 @@ Answer
 ``Fixpoint``/``fix`` only allows recursive calls on a *syntactically*
 smaller argument.
 
-| `Fixpoint example (n : nat) :=`
-|   `... (* There must be a match on [n] somewhere *)`
-|     `... match n with`
-|         `| O => base_case (* no recursive call allowed *)`
-|         `| S m =>`
-|           `... (example m)`
-|           `(* We can only call [example] on [m], or some even *)`
-|           `(* smaller value obtained by matching on [m] *)`
-|         `end ...`
+.. code-block:: coq
+
+    Fixpoint example (n : nat) :=
+      ... (* There must be a match on [n] somewhere *)
+        ... match n with
+            | O => base_case (* no recursive call allowed *)
+            | S m =>
+              ... (example m)
+              (* We can only call [example] on [m], or some even
+                 smaller value obtained by matching on [m] *)
+            end ...
 
 In particular, it's not allowed to make a recursive call on a value
 obtained via some arbitrary function (in this case, ``div`` and

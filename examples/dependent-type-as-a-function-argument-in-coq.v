@@ -12,7 +12,8 @@ Question
 I am very new to Coq. I am trying to experiment with Coq's dependent
 types. What I want to do, is to simply feed an even number to a
 function. For example, in pseudo-code:
-::
+
+.. code::
 
     def next_even(n: {n: Integer | n is even}) :=
     {
@@ -21,15 +22,18 @@ function. For example, in pseudo-code:
 
 Then I want to utilize the function with different arguments, such as
 (in pseudo-code):
-::
+
+.. code-block:: C
 
     next_even(1)    // Coq should show an error
     next_even(4)    // Coq should compute 6
 
 So, in Coq, I want to do the following:
 
-| `Compute (next_even 1).`
-| `Compute (next_even 4).`
+.. code-block:: coq
+
+    Compute (next_even 1).
+    Compute (next_even 4).
 
 How can I construct it?
 |*)
@@ -108,16 +112,20 @@ change makes properties of the accessor function harder to state. For
 example, consider the ``eq_from_tnth`` lemma, which says that two
 lists are equal if all their elements are equal:
 
-| `eq_from_tnth:`
-|   `forall (n : nat) (T : Type) (t1 t2 : n.-tuple T),`
-|     `(forall i : 'I_n, tnth t1 i = tnth t2 i) -> t1 = t2`
+.. code-block:: coq
+
+    eq_from_tnth:
+      forall (n : nat) (T : Type) (t1 t2 : n.-tuple T),
+        (forall i : 'I_n, tnth t1 i = tnth t2 i) -> t1 = t2
 
 The statement of this lemma for arbitrary lists becomes more
 complicated, because we need an extra assumption saying that the two
 lists are of the same size. (Here, ``x0`` is the default value.)
 
-| `eq_from_nth:`
-|   `forall (T : Type) (x0 : T) (s1 s2 : list T),`
-|   `size s1 = size s2 ->`
-|   `(forall i : nat, i < size s1 -> nth x0 s1 i = nth x0 s2 i) -> s1 = s2`
+.. code-block:: coq
+
+    eq_from_nth:
+      forall (T : Type) (x0 : T) (s1 s2 : list T),
+      size s1 = size s2 ->
+      (forall i : nat, i < size s1 -> nth x0 s1 i = nth x0 s2 i) -> s1 = s2
 |*)

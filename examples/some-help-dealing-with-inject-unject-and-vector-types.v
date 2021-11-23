@@ -103,9 +103,11 @@ them.
 
 Edit2: I was able to make it past the Nil case using the following
 
-| `dep_destruct (ilists_size_equal Nil).`
-| `compute.`
-| `reflexivity.`
+.. code-block:: coq
+
+    dep_destruct (ilists_size_equal Nil).
+    compute.
+    reflexivity.
 
 But then get stuck on the Cons case...I will try to prove some
 theorems and see if I can't get there, but I think I'm still missing
