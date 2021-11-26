@@ -85,7 +85,7 @@ Answer (Lawrence Paulson)
 
 In the case of LCF, HOL and Isabelle, you'll find an extensive answer
 to your question in the journal article "`From LCF to Isabelle/HOL
-<https://link.springer.com/article/10.1007%2Fs00165-019-00492-1>`_".
+<https://link.springer.com/article/10.1007%2Fs00165-019-00492-1>`__".
 (It's open access.)
 
 Most dependently typed systems, such as Coq, are also LCF-style

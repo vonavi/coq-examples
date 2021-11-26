@@ -11,7 +11,7 @@ Question
 ********
 
 Following Adam Chlipala's `definition
-<http://adam.chlipala.net/cpdt/html/Cpdt.DataStruct.html#lab57>`_ of
+<http://adam.chlipala.net/cpdt/html/Cpdt.DataStruct.html#lab57>`__ of
 heterogeneous lists, I wanted to define an equivalent of the
 ``Forall`` function on normal lists. This isn't too difficult, and you
 end up with two constructors as usual. Now suppose that I know that a
@@ -21,7 +21,7 @@ that it's true about the head and tail of the list.
 
 I'd like to prove the equivalent for ``hForall`` as defined below,
 starting with the head case. Looking at the source in `Lists/List.v
-<https://github.com/coq/coq/blob/master/theories/Lists/List.v>`_, the
+<https://github.com/coq/coq/blob/master/theories/Lists/List.v>`__, the
 proof for normal lists is easy and runs by inversion on ``Forall (a ::
 l)``. The equivalent for my ``hForall`` gives a mess of dependent
 variables. Am I missing something obvious?

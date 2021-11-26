@@ -42,7 +42,7 @@ inside ``B``'s type is the same as ``n``. There is a trick to add that
 information to the context (there are many ways, plugins, etc. but it
 is good to know how to do it "by hand"). It is called `"The convoy
 pattern" by Adam Chlipala
-<https://stackoverflow.com/search?q=convoy+coq>`_ and every coq user
+<https://stackoverflow.com/search?q=convoy+coq>`__ and every coq user
 must post a question about that once in his/her life (your's truly
 included).
 

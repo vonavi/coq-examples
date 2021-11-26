@@ -23,7 +23,7 @@ Print Rdiv_lt_0_compat. (* .unfold .messages *)
 (*|
 Setting ``Set Printing All.`` doesn't help. There's nothing extra
 available in `the docs page
-<https://coq.inria.fr/library/Coq.Reals.RIneq.html#Rdiv_lt_0_compat>`_.
+<https://coq.inria.fr/library/Coq.Reals.RIneq.html#Rdiv_lt_0_compat>`__.
 |*)
 
 (*|

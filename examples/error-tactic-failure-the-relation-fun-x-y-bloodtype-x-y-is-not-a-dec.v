@@ -115,7 +115,7 @@ cope with an ``or`` in an hypothesis, ``destruct`` will still be
 relevant for that case.
 
 I suggest you read the free document `coq in a hurry
-<https://cel.archives-ouvertes.fr/inria-00001173v6/document>`_ as a
+<https://cel.archives-ouvertes.fr/inria-00001173v6/document>`__ as a
 tutorial for this. In particular, it explains that for every logical
 construct, the way to handle this construct is different, whether the
 construct appears as the conclusion of a goal or as an hypothesis.

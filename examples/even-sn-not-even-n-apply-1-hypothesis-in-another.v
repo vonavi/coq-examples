@@ -51,7 +51,7 @@ Answer
 The usual way to strip double negation is to introduce the "excluded
 middle" axiom, which is defined under the name ``classic`` in
 `Coq.Logic.Classical_Prop
-<https://coq.inria.fr/distrib/current/stdlib/Coq.Logic.Classical_Prop.html>`_,
+<https://coq.inria.fr/distrib/current/stdlib/Coq.Logic.Classical_Prop.html>`__,
 and apply the lemma ``NNPP``.
 
 However, in this particular case, you can use the technique called
@@ -92,7 +92,7 @@ particular property without using the ``classic`` axiom.
 I suggest to complete the exercises under Reflection section in
 IndProp, and then try the following exercises. (\ **Edit:** I uploaded
 the full answer `here
-<https://github.com/Bubbler-4/coq-misc-works/blob/gitpod-vnc/StackOverflow/even_reflect.v>`_.)
+<https://github.com/Bubbler-4/coq-misc-works/blob/gitpod-vnc/StackOverflow/even_reflect.v>`__.)
 |*)
 
 (* Since ``evenb`` has a nontrivial recursion structure, you need the

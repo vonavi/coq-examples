@@ -41,7 +41,7 @@ Answer
 What you are literally asking for is called a Quotient Inductive Type
 (QIT) and is not currently supported in Coq even though there is a way
 to hack around this limitation using private inductive types (see
-`these slides <https://coq.inria.fr/files/coq5-slides-bertot.pdf>`_
+`these slides <https://coq.inria.fr/files/coq5-slides-bertot.pdf>`__
 for instance). It goes without saying that it is far from a
 recommended option (at least in Coq, the situation is different in
 cubical-agda that do support HITs, a general version of QIT).
@@ -51,6 +51,6 @@ solutions are either to go to setoids (that is types equipped with an
 equivalence relation and showing that all your constructions preserve
 these equivalence relation, which is rather heavy) or use specific
 aspects of the quotient that you want to do (see `this paper
-<https://perso.crans.org/cohen/papers/quotients.pdf>`_). The case of
+<https://perso.crans.org/cohen/papers/quotients.pdf>`__). The case of
 integers is actually one of the leading example of that paper.
 |*)

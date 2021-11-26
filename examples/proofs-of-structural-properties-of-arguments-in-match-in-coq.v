@@ -91,7 +91,7 @@ same outputs. Try it to see how fun it is!
 
 To be fair, there are Coq plugins that make it easier to write this
 sort of code (e.g. the `Equations
-<https://github.com/mattam82/Coq-Equations>`_ plugin). But at the end
+<https://github.com/mattam82/Coq-Equations>`__ plugin). But at the end
 of the day they will still generate code that is equivalent to
 ``zip'``. And in this case, the length hypothesis doesn't buy us much.
 
@@ -124,7 +124,7 @@ cases you need to reason about the equality of complicated length
 expressions on types, which Coq is not very good at. For ``vec`` in
 particular, I would recommend you to have a look at the ``tuple``
 library of mathcomp (available `here
-<https://math-comp.github.io/htmldoc/mathcomp.ssreflect.tuple.html>`_),
+<https://math-comp.github.io/htmldoc/mathcomp.ssreflect.tuple.html>`__),
 which provides a good example of how this pattern can be used at
 scale.
 

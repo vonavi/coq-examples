@@ -69,7 +69,7 @@ Answer
 ******
 
 You can use the ``dependent induction`` tactic (documented `here
-<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction>`_).
+<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction>`__).
 For example:
 |*)
 

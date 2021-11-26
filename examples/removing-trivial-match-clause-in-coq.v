@@ -66,6 +66,6 @@ aspect of the field of Homotopy Type Theory (HoTT).
 
 As a side note, there is a somewhat recently added (and still
 experimental) feature `SProp (documentation)
-<https://coq.inria.fr/refman/addendum/sprop.html>`_ that if you also
+<https://coq.inria.fr/refman/addendum/sprop.html>`__ that if you also
 ``Set Definitional UIP`` lets you prove this.
 |*)

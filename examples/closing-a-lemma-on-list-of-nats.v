@@ -77,7 +77,7 @@ Two things:
 
 You can learn more about generalizing the induction hypothesis in
 `James Wilcox's blog post
-<https://jamesrwilcox.com/InductionExercises.html>`_ which generously
+<https://jamesrwilcox.com/InductionExercises.html>`__ which generously
 includes 8 exercises of increasing difficulty on doing just that.
 
 Now try to prove your lemma with these two points in mind. *Hint: when

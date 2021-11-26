@@ -11,7 +11,7 @@ Question
 ********
 
 I am looking at `this
-<https://github.com/coq/coq/blob/cdfe69d6da6b32338ba74c9f599c74389089c9dd/theories/Numbers/Natural/Abstract/NAdd.v#L49-L57>`_:
+<https://github.com/coq/coq/blob/cdfe69d6da6b32338ba74c9f599c74389089c9dd/theories/Numbers/Natural/Abstract/NAdd.v#L49-L57>`__:
 
 .. coq:: none
 |*)
@@ -107,7 +107,7 @@ As Blaisorblade mentioned, it can be difficult to understand exactly
 what tactics are doing, and it is easier to look at the reference
 manual to find out how to use them. However, at a conceptual level,
 tactics are not that complicated. Via the `Curry-Howard correspondence
-<https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence>`_,
+<https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence>`__,
 Coq proofs are represented using the same functional language you use
 to write regular programs. Tactics like ``intros`` or ``destruct`` are
 just metaprograms that write programs in this language.

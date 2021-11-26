@@ -58,17 +58,17 @@ Answer
 ******
 
 Your proposed lemma is precisely the statement of `uniqueness of
-identity proofs (UIP) <https://ncatlab.org/nlab/show/axiom+UIP>`_. It
+identity proofs (UIP) <https://ncatlab.org/nlab/show/axiom+UIP>`__. It
 was first proven that the negation of UIP is consistent in MLTT with
 `Hofmann and Streicher's groupoid model
-<https://www.tcs.ifi.lmu.de/mitarbeiter/martin-hofmann/pdfs/agroupoidinterpretationoftypetheroy.pdf>`_
+<https://www.tcs.ifi.lmu.de/mitarbeiter/martin-hofmann/pdfs/agroupoidinterpretationoftypetheroy.pdf>`__
 (pdf link). In this model, types are interpreted as groupoids, where
 the identity type ``x = y`` is the set of morphisms from ``x`` to
 ``y`` in the groupoid. In this model, there can be more than one
 distinct ``e: x = y``.
 
 More recently, `homotopy type theory
-<https://ncatlab.org/nlab/show/homotopy+type+theory>`_ has embraced
+<https://ncatlab.org/nlab/show/homotopy+type+theory>`__ has embraced
 this point of view. Rather than mere groupoids, types are interpreted
 as ∞-groupoids, with not only the possibility of multiple equalities
 between ``x`` and ``y``, but also possibly multiple identities between
@@ -76,5 +76,5 @@ identities ``p q: x = y``, etc.
 
 Suffice to say, your lemma isn't provable without an extra axiom such
 as UIP mentioned above or `Axiom K
-<https://ncatlab.org/nlab/show/axiom+K+%28type+theory%29>`_.
+<https://ncatlab.org/nlab/show/axiom+K+%28type+theory%29>`__.
 |*)

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Decide disjunctions in sort Prop</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="decide-disjunctions-in-sort-prop">
+<h1 class="title">Decide disjunctions in sort Prop</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/55952695/decide-disjunctions-in-sort-prop">https://stackoverflow.com/questions/55952695/decide-disjunctions-in-sort-prop</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am interested in the probably false lemma:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="decide-disjunctions-in-sort-prop-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="decide-disjunctions-in-sort-prop-v-chk0"><span class="kn">Lemma</span> <span class="nf">decideOr</span> : <span class="kr">forall</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>),
+    (P \/ Q) -&gt; {P} + {Q}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P \/ Q -&gt; {P} + {Q}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>that asserts we can algorithmically decide any proof of an <tt class="docutils literal">or</tt> in
+sort <tt class="docutils literal">Prop</tt>. Of course, Coq does not let us <tt class="docutils literal">destruct</tt> the input
+to extract it in sort <tt class="docutils literal">Set</tt>. However, a proof of <tt class="docutils literal">P \/ Q</tt> is a
+lambda-term that Coq accepts to print, so external tools can process
+it.</p>
+<p>First question: can this lambda-term be decided outside of Coq
+(assuming the term uses no axioms, only plain Coq)? It might be,
+because the rules of constructive logic demand that all disjunctions
+be explicitely chosen, without cheating by a proof by contradiction.
+So can we code a parser of Coq proof terms, and try to decide whether
+the first or the second operand of the <tt class="docutils literal">or</tt> was proved? If the term
+starts with <tt class="docutils literal">or_introl</tt> or <tt class="docutils literal">or_intror</tt> we are done. So I guess the
+problems are when the term is a lambda-application. But then Coq terms
+are strongly normalizing, so we reduce it to a normal form and it
+seems it will start with either <tt class="docutils literal">or_introl</tt> or <tt class="docutils literal">or_intror</tt>.</p>
+<p>Second question: if this problem can be decided outside of Coq, what
+prevents us from internalizing it within Coq, ie proving lemma
+<tt class="docutils literal">decideOr</tt> above?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<div class="section" id="first-question">
+<h2>First question</h2>
+<p>Yes, you can write a program that takes as input a Coq proof of <tt class="docutils literal">A \/
+B</tt> and outputs <tt class="docutils literal">true</tt> or <tt class="docutils literal">false</tt> depending on which side was used
+to prove the disjunction. Indeed, if you write</p>
+<pre class="code coq literal-block">
+<span class="kn">Compute</span> <span class="n">P</span><span class="o">.</span>
+</pre>
+<p>in Coq, where <tt class="docutils literal">P : A \/ B</tt>, Coq will normalize the proof <tt class="docutils literal">P</tt> and
+print which constructor was used. This will not work if <tt class="docutils literal">P</tt> uses
+proofs that end in <tt class="docutils literal">Qed</tt> (because those are not unfolded by the
+evaluator), but in principle it is possible to replace <tt class="docutils literal">Qed</tt> by
+<tt class="docutils literal">Defined</tt> everywhere and make it work.</p>
+</div>
+<div class="section" id="second-question">
+<h2>Second question</h2>
+<p>What prevents us from proving <tt class="docutils literal">decideOr</tt> is that the designers of
+Coq wanted to have a type of propositions that supports the excluded
+middle (using an axiom) while allowing programs to execute. If
+<tt class="docutils literal">decideOr</tt> were a theorem <em>and</em> we wanted to use the excluded middle
+(<tt class="docutils literal">classical : forall A : Prop, A \/ ~ A</tt>), it would not be possible
+to execute programs that branch on the result of <tt class="docutils literal">decideOr (classical
+A)</tt>. This does not mean that <tt class="docutils literal">decideOr</tt> is false: it is perfectly
+possible to admit it as an axiom. There is a difference between not
+being provable (&quot;there does not exist a proof of <tt class="docutils literal">A</tt>&quot;) and being
+refutable (&quot;there exists a proof of <tt class="docutils literal">~ A</tt>&quot;).</p>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -93,13 +93,13 @@ Definition foo (n : nat) :=
 (*|
 There are some tools for facilitating this style of programming, such
 as the `equations plugin
-<https://github.com/mattam82/Coq-Equations>`_, but the general wisdom
+<https://github.com/mattam82/Coq-Equations>`__, but the general wisdom
 in the Coq community is that you should avoid subset types for
 functions like ``add_two_even``, where the constraints do not
 substantially simplify the properties about the function.
 
 You can find many examples of good uses of subset types in the
-`Mathematical Components <https://github.com/math-comp/math-comp>`_
+`Mathematical Components <https://github.com/math-comp/math-comp>`__
 libraries. For example, the libraries use subset types to define a
 type ``n.-tuple T`` of lists of length ``n``, and a type ``'I_n`` of
 integers bounded by ``n``. This allows us to define a total accessor
