@@ -53,7 +53,7 @@ holds. To prove ``P x y <-> P x' y`` it is sufficient to prove ``P x'
 y``."
 
 If you are using ``ssreflect``, you have the `wlog tactic
-<https://coq.inria.fr/refman/proof-engine/ssreflect-proof-language.html#variants-the-suff-and-wlog-tactics>`_.
+<https://coq.inria.fr/refman/proof-engine/ssreflect-proof-language.html#variants-the-suff-and-wlog-tactics>`__.
 
 You essentially ``cut`` in another goal which can easily solve your
 goal. You can also do it with standard tactics like ``assert`` or
@@ -73,5 +73,5 @@ Now I just have to show the goal in one direction, because it implies
 the real goal's both directions.
 
 For more about WLOG see for instance `1
-<https://www.cl.cam.ac.uk/~jrh13/papers/wlog.pdf>`_
+<https://www.cl.cam.ac.uk/~jrh13/papers/wlog.pdf>`__
 |*)

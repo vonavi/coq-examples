@@ -12,7 +12,7 @@ Question
 
 I want last k elements of vector. I wrote this code with reference to
 `Coq.Vectors.VectorDef
-<https://coq.inria.fr/library/Coq.Vectors.VectorDef.html>`_.
+<https://coq.inria.fr/library/Coq.Vectors.VectorDef.html>`__.
 |*)
 
  Require Import Coq.Reals.Reals.

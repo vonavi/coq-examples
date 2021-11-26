@@ -37,7 +37,7 @@ language is concerned. The reasons to choose one over another are
 purely psychological. You can also use ``Remark``, ``Fact``,
 ``Corollary``, ``Proposition`` according to the importance you
 attribute to the result. Here is the `relevant link
-<https://coq.inria.fr/refman/language/gallina-specification-language.html#coq:cmd.theorem>`_
+<https://coq.inria.fr/refman/language/gallina-specification-language.html#coq:cmd.theorem>`__
 in the Coq reference manual.
 
 Some projects' code style guides only allow one keyword to be used for

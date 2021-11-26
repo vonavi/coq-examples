@@ -62,12 +62,12 @@ compression if you want!]
 
 As for which data structure exactly to use for the map: there are
 several available. The `standard library
-<https://coq.inria.fr/library/index.html>`_ (look under the title
+<https://coq.inria.fr/library/index.html>`__ (look under the title
 **FSets**\ ) has several implementations (FMapList, FMapPositive and
 so on) satisfying the interface `FMapInterface
-<https://coq.inria.fr/library/Coq.FSets.FMapInterface.html>`_. The
+<https://coq.inria.fr/library/Coq.FSets.FMapInterface.html>`__. The
 stdpp libray has `gmap
-<https://plv.mpi-sws.org/coqdoc/stdpp/stdpp.gmap.html>`_.
+<https://plv.mpi-sws.org/coqdoc/stdpp/stdpp.gmap.html>`__.
 
 Again if performance is not a concern, just pick the simplest encoding
 or, more importantly, the one that makes your proofs the simplest. I
@@ -102,7 +102,7 @@ have termination for free.
 
 A related paper is: `Sylvain Conchon and Jean-Christophe Filliâtre. A
 Persistent Union-Find Data Structure. In ACM SIGPLAN Workshop on ML
-<https://www.lri.fr/~filliatr/ftp/publis/puf-wml07.pdf>`_.
+<https://www.lri.fr/~filliatr/ftp/publis/puf-wml07.pdf>`__.
 
 It describes the implementation of an efficient union-find data
 structure in ML, that is persistent from the user perspective, but

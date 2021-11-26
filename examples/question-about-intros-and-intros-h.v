@@ -24,7 +24,7 @@ Answer
 ******
 
 The documentation for this is `here
-<https://coq.inria.fr/refman/proof-engine/tactics.html#intro-patterns>`_.
+<https://coq.inria.fr/refman/proof-engine/tactics.html#intro-patterns>`__.
 I will add a little explanation note.
 
 The first historical use of intro patterns is to decompose data that

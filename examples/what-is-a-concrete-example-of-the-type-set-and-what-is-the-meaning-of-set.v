@@ -12,7 +12,7 @@ Question
 
 I've been trying to understand what ``Set`` is after encountering it
 in Adam Chlipala's book in addition to `this great discussion in SO
-<https://stackoverflow.com/questions/39601502/what-exactly-is-a-set-in-coq>`_.
+<https://stackoverflow.com/questions/39601502/what-exactly-is-a-set-in-coq>`__.
 His first example definition binary ops using ``Set``:
 |*)
 

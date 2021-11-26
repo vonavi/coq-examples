@@ -21,7 +21,7 @@ Is there similar functionality in Coq that would allow me to leave a
 goal unfinished to come back later to it? This is useful to sketch the
 structure of the proof while not filling in all the details. Note that
 the approach in `How to switch the current goal in Coq?
-<https://stackoverflow.com/questions/34421064/how-to-switch-the-current-goal-in-coq>`_
+<https://stackoverflow.com/questions/34421064/how-to-switch-the-current-goal-in-coq>`__
 modifies the proof structure. That's not what I'm looking for.
 |*)
 

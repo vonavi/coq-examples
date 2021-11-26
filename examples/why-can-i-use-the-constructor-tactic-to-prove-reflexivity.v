@@ -52,6 +52,6 @@ being syntactically equal. Such examples may only be obtained through
 an axiom. For example, by the definition of the recursor (``nat_rec``,
 or more technically, ``nat_ind``) for the natural numbers, or by an
 `extensionality
-<https://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html>`_
+<https://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html>`__
 axiom.
 |*)

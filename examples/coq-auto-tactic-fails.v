@@ -166,7 +166,7 @@ Answer (Elazar)
 ***************
 
 From the `documentation
-<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.auto>`_:
+<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.auto>`__:
 
     This tactic implements a Prolog-like resolution procedure to solve
     the current goal. It first tries to solve the goal using the
@@ -193,7 +193,7 @@ And if ``auto`` reaches maximum depth, it will fail.
 Note that ``auto`` it does not automatically apply the ``unfold``
 tactic. There's no way to solve ``a <= f(a)`` when ``f`` is opaque,
 without further assumptions. If you want, you can use `Hint Unfold f
-<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:cmdv.hint-unfold>`_
+<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:cmdv.hint-unfold>`__
 or `Hint Transparent f
-<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:cmdv.hint-transparent>`_.
+<https://coq.inria.fr/refman/proof-engine/tactics.html#coq:cmdv.hint-transparent>`__.
 |*)

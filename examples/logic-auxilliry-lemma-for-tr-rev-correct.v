@@ -74,7 +74,7 @@ the induction**. If you specialize any of them too early on, you might
 weaken your induction hypothesis and become stuck again. You may need
 to change the order of these quantified variables or use the
 ``generalize dependent`` tactic (see the `Tactics
-<https://softwarefoundations.cis.upenn.edu/lf-current/Tactics.html>`_
+<https://softwarefoundations.cis.upenn.edu/lf-current/Tactics.html>`__
 chapter of *Logic Foundations*\ ).
 |*)
 
@@ -86,7 +86,7 @@ You can see that the induction hypothesis ``IH`` is not strong enough
 to prove the goal. Here what you need is **a more general statement to
 prove in the first place**. You can find more exercises dedicated to
 this topic `here
-<https://homes.cs.washington.edu/~jrw12/InductionExercises.html>`_.
+<https://homes.cs.washington.edu/~jrw12/InductionExercises.html>`__.
 (Actually, tail-recursive reverse is one of the exercises.)
 
 In your case, the fully generalized statement could be as follows:

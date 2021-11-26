@@ -49,7 +49,7 @@ pattern and a tactic, as in
     grab [P1 \/ _] => destruct it into [H1|H2].
 
 From my understanding of `Tactic Notations
-<https://coq.inria.fr/refman/user-extensions/syntax-extensions.html#tactic-notations>`_,
+<https://coq.inria.fr/refman/user-extensions/syntax-extensions.html#tactic-notations>`__,
 it is not possible to have a cpattern as an argument, but maybe there
 is another way?
 
@@ -158,7 +158,7 @@ Sadly, there appears to be a bit of a mishap in the parsing rules.
 Specifically, the tactic notation needs an untyped term (so we don't
 try and fail to resolve the variables too early), so we need
 ``uconstr``, but `there's no luconstr
-<https://sympa.inria.fr/sympa/arc/coq-club/2015-10/msg00054.html>`_,
+<https://sympa.inria.fr/sympa/arc/coq-club/2015-10/msg00054.html>`__,
 meaning we're forced to add extraneous parentheses. To avoid
 bracket-mania, I've reworked the syntax of your ``grab``. I'm also not
 entirely sure if your ``=>`` syntax makes much sense, because why not
@@ -227,7 +227,7 @@ equal to one of the old ones. Something like ``refine (let it := _ in
 _)`` or ``pose`` should be used to rectify this, but my Ltac-fu is not
 strong enough to do this. See also: this issue advocating for a
 literal `transparent assert
-<https://github.com/coq/coq/issues/3551>`_.
+<https://github.com/coq/coq/issues/3551>`__.
 
 (The new answer solves this caveat.)
 |*)

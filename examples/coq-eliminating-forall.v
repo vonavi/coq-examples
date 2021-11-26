@@ -31,7 +31,7 @@ I am new to it and I'd like to know how to eliminate ``forall`` in Coq
 or what's the better way to prove the above-mentioned theorem?
 
 P.S. I have seen `this
-<https://stackoverflow.com/questions/35994491/coq-elimination-of-forall-quantifier>`_
+<https://stackoverflow.com/questions/35994491/coq-elimination-of-forall-quantifier>`__
 answer but it seems to be unrelated to my question.
 |*)
 

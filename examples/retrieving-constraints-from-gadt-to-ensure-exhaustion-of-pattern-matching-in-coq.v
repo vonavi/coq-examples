@@ -156,7 +156,7 @@ you issue ``Print test.``, you can see that there's a bit of
 hoop-jumping to pass information about the index ``Y`` through the
 primitive ``match``'s which would otherwise ignore it. `See the
 reference manual for more information.
-<https://coq.inria.fr/refman/addendum/extended-pattern-matching.html>`_
+<https://coq.inria.fr/refman/addendum/extended-pattern-matching.html>`__
 |*)
 
 (*|

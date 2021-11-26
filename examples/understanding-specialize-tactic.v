@@ -11,7 +11,7 @@ Question
 ********
 
 Trying to comprehend the `answer
-<https://stackoverflow.com/a/56773900/789186>`_ of @keep_learning I
+<https://stackoverflow.com/a/56773900/789186>`__ of @keep_learning I
 walked through this code step by step:
 |*)
 

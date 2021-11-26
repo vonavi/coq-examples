@@ -65,9 +65,9 @@ induction that works best is a crucial skill. To name a few:
 
   - arises quite frequently when dealing with ``rev`` and other
     functions that preserve length
-  - `Example <https://stackoverflow.com/a/18760596/4595904>`_
+  - `Example <https://stackoverflow.com/a/18760596/4595904>`__
 
 - If simple induction doesn't work, consider a custom induction scheme
 
-  - `nat_ind2 <https://stackoverflow.com/a/56356131/4595904>`_
+  - `nat_ind2 <https://stackoverflow.com/a/56356131/4595904>`__
 |*)

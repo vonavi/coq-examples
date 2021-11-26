@@ -110,7 +110,7 @@ Fixpoint map1 {A : Type} {B : Type} (f : A -> B) (xs : list1 A) :=
 
 (*|
 This is an example of the so-called `convoy pattern
-<http://adam.chlipala.net/cpdt/html/MoreDep.html>`_. Usually, one
+<http://adam.chlipala.net/cpdt/html/MoreDep.html>`__. Usually, one
 needs to add a ``return`` clause to the ``match`` construct so that it
 typechecks, but here Coq is smart enough to infer it.
 

@@ -12,7 +12,7 @@ Question
 
 When looking at results for types with decidable equality (especially
 in `Eqdep_dec
-<https://coq.inria.fr/library/Coq.Logic.Eqdep_dec.html>`_) there are
+<https://coq.inria.fr/library/Coq.Logic.Eqdep_dec.html>`__) there are
 some of the results that (for a type ``A``) require
 |*)
 

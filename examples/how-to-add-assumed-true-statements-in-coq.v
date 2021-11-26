@@ -43,6 +43,6 @@ Proof. intros n m [=]. assumption. Qed.
 
 (*|
 The ``[=]`` `intro pattern
-<https://coq.inria.fr/refman/proof-engine/tactics.html#intropattern-inj-discr-ex>`_
+<https://coq.inria.fr/refman/proof-engine/tactics.html#intropattern-inj-discr-ex>`__
 expresses the built-in injectivity of the ``S`` constructor.
 |*)

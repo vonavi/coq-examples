@@ -105,5 +105,5 @@ With this induction principle, it is now possible to prove your lemma
 
 For a deeper discussion about these nested inductives, you can have a
 look at `CPDT
-<http://adam.chlipala.net/cpdt/html/Cpdt.InductiveTypes.html>`_.
+<http://adam.chlipala.net/cpdt/html/Cpdt.InductiveTypes.html>`__.
 |*)
