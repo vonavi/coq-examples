@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Structural recursion on two arguments</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="structural-recursion-on-two-arguments">
+<h1 class="title">Structural recursion on two arguments</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/55704472/structural-recursion-on-two-arguments">https://stackoverflow.com/questions/55704472/structural-recursion-on-two-arguments</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have tried to make a function in Coq which has a pretty complex
+termination argument. To make it easier, I am able to write the
+function so that it has a natural number as first argument, so that
+either the number or the argument after it is structurally smaller.</p>
+<p>When trying the nested fix approach to recursion on two arguments, Coq
+complains that a proof argument that contains the semantics of the
+decreasing number is not an inductive type.</p>
+<p>I could probably do well-founded recursion manually, but I would like
+to use Program Fixpoint or Equations. With Program Fixpoint I get a
+very ugly version of the well-foundedness proof. Below is a minimal
+code example that demonstrates the ugliness.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tuple_lt</span> : (nat * nat) -&gt; (nat * nat) -&gt; <span class="kt">Prop</span> :=
+  fst_lt : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span> <span class="nv">d</span>, a &lt; c -&gt; tuple_lt (a, b) (c, d).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">f</span> (<span class="nv">a</span> : nat) (<span class="nv">b</span> : nat) {<span class="nv">measure</span> (a, b) tuple_lt} :=
+  <span class="kr">match</span> a <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; <span class="mi">0</span>
+  | S n =&gt; f n b
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk0"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b0</span> : nat,
+tuple_lt (a, b0) (S n, b) -&gt; nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">tuple_lt (n, b) (S n, b)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk1"><span class="nb">apply</span> fst_lt.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b0</span> : nat,
+tuple_lt (a, b0) (S n, b) -&gt; nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &lt; S n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk2"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded
+  (MR tuple_lt
+     (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+      (projT1 recarg, projT2 recarg)))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk3"><span class="nb">unfold</span> well_founded.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> : {_ : nat &amp; nat},
+Acc
+  (MR tuple_lt
+     (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+      (projT1 recarg, projT2 recarg))) a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk4"><span class="nb">unfold</span> MR.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> : {_ : nat &amp; nat},
+Acc
+  (<span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> : {_ : nat &amp; nat} =&gt;
+   tuple_lt (projT1 x, projT2 x) (projT1 y, projT2 y))
+  a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Can I somehow transform a proof of <tt class="docutils literal">Acc tuple_lt</tt> into that ugly
+proof or avoid generating it?</p>
+<p>Is there a proof in the standard library for structural recursion on
+two arguments?</p>
+<p>How do I even write a manual WF proof using Equations? The manual does
+not mention that.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>In simple cases like this one, you shouldn't have to unfold
+definitions such as <tt class="docutils literal">well_founded</tt> and <tt class="docutils literal">MR</tt>, but rather use
+appropriate lemmas.</p>
+<p>To deal with <tt class="docutils literal">MR</tt>, you can use lemma <tt class="docutils literal">measure_wf</tt> in Program.Wf.</p>
+<p>To prove the well-foundedness of <tt class="docutils literal">tuple_lt</tt>, you can rely on lemmas
+showing the well-foundedness of a relation based on the
+well-foundedness of another relation. Here, we can use
+<tt class="docutils literal">well_founded_lt_compat</tt>. In other cases, you may find other lemmas
+useful, such as <tt class="docutils literal">wf_inverse_image</tt>, <tt class="docutils literal">well_founded_ltof</tt> or
+<tt class="docutils literal">well_founded_gtof</tt>.</p>
+<p>The proof of the well-foundedness of <tt class="docutils literal">tuple_lt</tt> becomes simple.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk5"><span class="kn">Lemma</span> <span class="nf">tuple_lt_wf</span> : well_founded tuple_lt.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded tuple_lt</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded tuple_lt</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk7"><span class="nb">apply</span> well_founded_lt_compat <span class="kr">with</span> fst.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat * nat, tuple_lt x y -&gt; fst x &lt; fst y</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span> ? ? []; <span class="bp">assumption</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>And so does the proof of the second obligation.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk8"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded
+  (MR tuple_lt
+     (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+      (projT1 recarg, projT2 recarg)))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chk9"><span class="nb">apply</span> measure_wf.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded tuple_lt</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> tuple_lt_wf.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>(Note that in both cases, you should end the proofs with <tt class="docutils literal">Defined</tt>
+instead of <tt class="docutils literal">Qed</tt>, if you want your function defined by <tt class="docutils literal">Program
+Fixpoint</tt> to compute inside Coq (otherwise it gets stuck on opaque
+proofs); it seems that you can end the proof of the first obligation
+with <tt class="docutils literal">Qed</tt>, though).</p>
+<p>You could also use the following simpler definition for <tt class="docutils literal">tuple_lt</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">tuple_lt</span> (<span class="nv">p1</span> <span class="nv">p2</span> : nat * nat) := fst p1 &lt; fst p2.</span></span></pre><p>In that case, the proof of well-foundedness is trivial.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chka"><span class="kn">Lemma</span> <span class="nf">tuple_lt_wf</span> : well_founded tuple_lt.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded tuple_lt</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="structural-recursion-on-two-arguments-v-chkb"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded tuple_lt</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> well_founded_ltof.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
