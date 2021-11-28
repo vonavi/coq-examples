@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq - return value of type which is equal to function return type</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-return-value-of-type-which-is-equal-to-function-return-type">
+<h1 class="title">Coq - return value of type which is equal to function return type</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/55422961/coq-return-value-of-type-which-is-equal-to-function-return-type">https://stackoverflow.com/questions/55422961/coq-return-value-of-type-which-is-equal-to-function-return-type</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>By some theorem we know that type <tt class="docutils literal">A</tt> equals type <tt class="docutils literal">B</tt>. How can I
+tell this to Coq compiler during type checking?</p>
+<p>I want to implement a non-empty tree such that each node know its
+size:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Struct</span>: positive -&gt; <span class="kt">Type</span> :=
+| Leaf : Struct <span class="mi">1</span>%positive
+| Inner: <span class="kr">forall</span> {<span class="nv">n</span> <span class="nv">m</span>}, Struct n -&gt; Struct m -&gt; Struct (n + m).</span></span></pre><p>I want to create a function which generates a tree of a given size of
+logarithmic depth. E.g. <tt class="docutils literal">7 <span class="pre">-&gt;</span> 6 + 1 <span class="pre">-&gt;</span> (3 + 3) + 1 <span class="pre">-&gt;</span> ((2 + 1) + (2 +
+1)) + 1 <span class="pre">-&gt;</span> <span class="pre">(((1</span> + 1) + 1) + ((1 + 1) + 1)) + 1</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">nat2struct</span> <span class="nv">n</span> : (Struct n) :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | xH =&gt; Leaf
+  | xO n =&gt; Inner (nat2struct n) (nat2struct n)
+  | xI n =&gt; Inner Leaf (Inner (nat2struct n) (nat2struct n))
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+nat2struct : <span class="kr">forall</span> <span class="nv">n</span> : positive, Struct n
+n : positive
+n0 : positive
+The term
+ <span class="s2">&quot;Inner Leaf (Inner (nat2struct n0) (nat2struct n0))&quot;</span>
+has type <span class="s2">&quot;Struct (1 + (n0 + n0))&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type
+ <span class="s2">&quot;Struct ?p@{n1:=n0~1}&quot;</span> (<span class="s2">&quot;?p@{n1:=(n0~1)%positive}&quot;</span>
+has otherwise to <span class="nb">unify</span> <span class="kr">with</span>
+<span class="s2">&quot;(n0~1)%positive&quot;</span> which <span class="kr">is</span> incompatible <span class="kr">with</span> <span class="s2">&quot;(1 +</span>
+<span class="s2">                                               (n0 +</span>
+<span class="s2">                                                n0))%positive&quot;</span>).</blockquote></div></div></small></span></pre><p>However, I get the error. How can I fix this? We know that <tt class="docutils literal">(1 + n +
+n) = xI n</tt>, but Coq doesn't. If I state this theorem before, it
+doesn't change anything:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk1"><span class="kn">Theorem</span> <span class="nf">nBy2p1</span>: <span class="kr">forall</span> <span class="nv">n</span>, Pos.add <span class="mi">1</span>%positive (n + n) = xI n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : positive,
+(<span class="mi">1</span> + (n + n))%positive = (n~<span class="mi">1</span>)%positive</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : positive,
+(<span class="mi">1</span> + (n + n))%positive = (n~<span class="mi">1</span>)%positive</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-return-value-of-type-which-is-equal-to-function-return-type-v-chk3"><span class="kn">Hint Resolve</span> nBy2p1.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><p>Are there some hints for Coq to be aware of this theorem?</p>
+<p>PS1: is this theorem already proved in standard library? I didn't find
+one.</p>
+<p>PS2: I actually want to split more naturally: <tt class="docutils literal">7 <span class="pre">-&gt;</span> 4 + 3 <span class="pre">-&gt;</span> (2 + 2)
++ (2 + 1) <span class="pre">-&gt;</span> ((1 + 1) + (1 + 1)) + ((1 + 1) + 1)</tt>. Is it possible? I
+don't know how to write it so that Coq understands that the function
+converges.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>When type-checking, Coq uses a weaker form of equality (sometimes
+called definitional, judgemental, or computational equality). Unlike
+propositional equality (what &quot;=&quot; binds to by default), definitional
+equality is decidable. Coq can take any two terms and decide if one is
+convertible into the other. If propositional equality were allowed in
+type-checking, type-checking would no longer be decidable <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>.</p>
+<p>To fix your problem (and it is a pretty big problem) you have a few
+options.</p>
+<div class="section" id="make-struct-a-record">
+<h2>Make <tt class="docutils literal">Struct</tt> a record</h2>
+<p>I'll demonstrate the principle using lists. First, we have the notion
+of unsized lists.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">UnsizedList</span> (<span class="nv">A</span>: <span class="kt">Type</span>) :=
+| unil
+| ucons (a: A) (u: UnsizedList A).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> unil {A}, A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> ucons {A} a u, A a u.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">length</span> {<span class="nv">A</span>: <span class="kt">Type</span>} (<span class="nv">u</span>: UnsizedList A) :=
+<span class="kr">match</span> u <span class="kr">with</span>
+| unil =&gt; <span class="mi">0</span>
+| ucons _ u&#39; =&gt; S (length u&#39;)
+<span class="kr">end</span>.</span></span></pre><p>We can also define a sized list, where every element of <tt class="docutils literal">SizedList A
+n</tt> has length <tt class="docutils literal">n</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">SizedList</span> (<span class="nv">A</span>: <span class="kt">Type</span>): nat -&gt; <span class="kt">Type</span> :=
+| snil: SizedList A <span class="mi">0</span>
+| scons {n: nat} (a: A) (u: SizedList A n): SizedList A (S n).</span></span></pre><p>This definition runs into the exact same problem as yours. For
+example, if you want to show that concatenation is associative, you
+can't simply prove <tt class="docutils literal">concat (concat u v) w = concat u (concat v w)</tt>,
+since the two sides of the equality have different types (<tt class="docutils literal">(i + j) +
+k vs i + (j + k)</tt>). If we could simply tell Coq what size we expect
+the list to be, then prove it later, we could solve this. That's what
+this definition does, which packs together an <tt class="docutils literal">UnsizedList</tt> with a
+proof that that list has the desired length.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">SizedListPr</span> (<span class="nv">A</span>: <span class="kt">Type</span>) (<span class="nv">n</span>: nat): <span class="kt">Type</span> :=
+  {
+  list: UnsizedList A;
+  list_len_eq: length list = n;
+  }.</span></span></pre><p>Now we can have <tt class="docutils literal">concat (concat u v) w = concat u (concat v w)</tt>; we
+just need to prove that both sides have length <tt class="docutils literal">(i + j) + k</tt>.</p>
+</div>
+<div class="section" id="use-coercions">
+<h2>Use coercions</h2>
+<p>This approach can get pretty messy if you aren't careful, so it's not
+often the preferred approach.</p>
+<p>Let me define a sort of coercion that maps elements of type <tt class="docutils literal">P x</tt> to
+elements of type <tt class="docutils literal">P y</tt> if <tt class="docutils literal">x = y</tt><a class="footnote-reference" href="#footnote-2" id="footnote-reference-2">[2]</a>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">coercion</span> {<span class="nv">A</span>: <span class="kt">Type</span>} (<span class="nv">P</span>: A -&gt; <span class="kt">Type</span>) {<span class="nv">x</span> <span class="nv">y</span>: A} (<span class="nv">p</span>: x = y): P x -&gt; P y :=
+  <span class="kr">match</span> p <span class="kr">with</span>
+  | eq_refl =&gt; <span class="kr">fun</span> <span class="nv">t</span> =&gt; t
+  <span class="kr">end</span>.</span></span></pre><p>Here we use induction on the term <tt class="docutils literal">p: x = y</tt>. The induction
+principle says, essentially, that if we can prove something when <tt class="docutils literal">x</tt>
+and <tt class="docutils literal">y</tt> are definitionally equal, then we can prove it when they're
+propositionaly equal <a class="footnote-reference" href="#footnote-3" id="footnote-reference-3">[3]</a>. When <tt class="docutils literal">P x</tt> and <tt class="docutils literal">P y</tt> are the same, we
+can just use the identity function.</p>
+<p>Now, for example, the statement of associativity of concatenation for
+sized lists is <tt class="docutils literal">concat (concat u v) w = coercion (SizedList A)
+(add_assoc) (concat u (concat v w))</tt>. So we coerce something of type
+<tt class="docutils literal">SizedList A (i + (j + k))</tt> to something of type <tt class="docutils literal">SizedList A ((i +
+j) + k)</tt> using the equality <tt class="docutils literal">add_assoc: i + (j + k) = (i + j) + k</tt>
+(I've left out some parameters for readability).</p>
+<hr class="docutils" />
+<p>What choice you make is up to you. A discussion of this problem and
+related problems, as well as some additional resolutions can be found
+at the <em>Certified Programming with Dependent Types</em> page <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Equality.html">Equality</a>.</p>
+<hr class="docutils" />
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>See <em>extensional type theory</em> for a class of theories where
+this typically happens. <a class="reference external" href="http://www.lfcs.inf.ed.ac.uk/reports/95/ECS-LFCS-95-327/">Martin Hofmann's thesis</a>
+has an overview of the difference between intensional and
+extensional theories.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[2]</a></td><td>If you're familiar with Homotopy Type Theory, this is
+<tt class="docutils literal">transport</tt>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-3">[3]</a></td><td>There are enough caveats on this statement that the differences
+between propositional and definitional equality still exist.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>
