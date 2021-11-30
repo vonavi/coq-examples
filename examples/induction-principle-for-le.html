@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Induction principle for le</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="induction-principle-for-le">
+<h1 class="title">Induction principle for <code class="highlight coq"><span class="n">le</span></code></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/55196816/induction-principle-for-le">https://stackoverflow.com/questions/55196816/induction-principle-for-le</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>For the inductive type <tt class="docutils literal">nat</tt>, the generated induction principle uses
+the constructors <tt class="docutils literal">O</tt> and <tt class="docutils literal">S</tt> in its statement:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">nat</span> : <span class="kt">Set</span> :=  O : nat | S : nat -&gt; nat
+
+<span class="kn">Arguments</span> S _%nat_scope</blockquote></div></div></small></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">nat_ind
+     : <span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>,
+       P <span class="mi">0</span> -&gt;
+       (<span class="kr">forall</span> <span class="nv">n</span> : nat, P n -&gt; P (S n)) -&gt;
+       <span class="kr">forall</span> <span class="nv">n</span> : nat, P n</blockquote></div></div></small></span></pre><p>But for <tt class="docutils literal">le</tt>, the generated statement does not uses the constructors
+<tt class="docutils literal">le_n</tt> and <tt class="docutils literal">le_S</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">le</span> (<span class="nv">n</span> : nat) : nat -&gt; <span class="kt">Prop</span> :=
+    le_n : n &lt;= n
+  | le_S : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;= S m
+
+<span class="kn">Arguments</span> le (_ _)%nat_scope
+<span class="kn">Arguments</span> le_n _%nat_scope
+<span class="kn">Arguments</span> le_S (_ _)%nat_scope _</blockquote></div></div></small></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">le_ind
+     : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>),
+       P n -&gt;
+       (<span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; P m -&gt; P (S m)) -&gt;
+       <span class="kr">forall</span> <span class="nv">n0</span> : nat, n &lt;= n0 -&gt; P n0</blockquote></div></div></small></span></pre><p>However it is possible to state and prove an induction principle
+following the same shape as the one for <tt class="docutils literal">nat</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk4"><span class="kn">Lemma</span> <span class="nf">le_ind&#39;</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span>, le n m -&gt; <span class="kt">Prop</span>),
+    P n (le_n n) -&gt;
+    (<span class="kr">forall</span> <span class="nv">m</span> (<span class="nv">p</span> : le n m), P m p -&gt; P (S m) (le_S n m p)) -&gt;
+    <span class="kr">forall</span> <span class="nv">m</span> (<span class="nv">p</span> : le n m), P m p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk6"><span class="kr">fix</span> H <span class="mi">6</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk7"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>n &lt;= m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P m p</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk8"><span class="nb">destruct</span> p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P n (le_n n)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="induction-principle-for-le-v-chk9" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>n &lt;= m</span></span></span><br></div><label class="goal-separator" for="induction-principle-for-le-v-chk9"><hr></label><div class="goal-conclusion">P (S m) (le_S n m p)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chka">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P n (le_n n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H0.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chkb">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>n &lt;= m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P (S m) (le_S n m p)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chkc"><span class="nb">apply</span> H1, H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>n &lt;= m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P n (le_n n)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="induction-principle-for-le-v-chkd" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>n &lt;= m</span></span></span><br></div><label class="goal-separator" for="induction-principle-for-le-v-chkd"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</div></blockquote></div></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chke"><span class="nb">apply</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">n</span> : nat)
+  (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span>),
+P n (le_n n) -&gt;
+(<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+ P m p -&gt; P (S m) (le_S n m p)) -&gt;
+<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m), P m p</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P n (le_n n)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>n &lt;= m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">p</span> : n &lt;= m),
+P m p -&gt; P (S m) (le_S n m p)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H1.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I guess the generated one is more convenient. But how does Coq chooses
+the shape for its generated induction principle? If there is any rule,
+I cannot find them in the reference manual. What about other proof
+assistants such as Agda?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>You can manually generate an induction principle for an inductive type
+by using the command <tt class="docutils literal">Scheme</tt> (see the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/user-extensions/proof-schemes.html#generation-of-induction-principles-with-scheme">documentation</a>).</p>
+<p>The command comes in two flavours:</p>
+<ul class="simple">
+<li><tt class="docutils literal">Scheme scheme := Induction for Sort Prop</tt> generates the standard
+induction scheme.</li>
+<li><tt class="docutils literal">Scheme scheme := Minimality for Sort Prop</tt> generates a simplified
+induction scheme more suited to inductive predicates.</li>
+</ul>
+<p>If you define an inductive type in <tt class="docutils literal">Type</tt>, the generated induction
+principle is of the first kind. If you define an inductive type in
+<tt class="docutils literal">Prop</tt> (i.e. an inductive predicate), the generated induction
+principle is of the second kind.</p>
+<p>To obtain the induction principle that you want in the case of <tt class="docutils literal">le</tt>,
+you can define it in <tt class="docutils literal">Type</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> (<span class="nv">n</span> : nat) : nat -&gt; <span class="kt">Type</span> :=
+| le_n : le n n
+| le_S : <span class="kr">forall</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chkf"><span class="kn">Check</span> le_ind.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">le_ind
+     : <span class="kr">forall</span> (<span class="nv">n</span> : nat)
+         (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">n0</span> : nat, le n n0 -&gt; <span class="kt">Prop</span>),
+       P n (le_n n) -&gt;
+       (<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">l</span> : le n m),
+        P m l -&gt; P (S m) (le_S n m l)) -&gt;
+       <span class="kr">forall</span> (<span class="nv">n0</span> : nat) (<span class="nv">l</span> : le n n0), P n0 l</blockquote></div></div></small></span></pre><p>or you can manually ask Coq to generate the expected induction principle:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> (<span class="nv">n</span> : nat) : nat -&gt; <span class="kt">Prop</span> :=
+| le_n : le n n
+| le_S : <span class="kr">forall</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk10"><span class="kn">Check</span> le_ind.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">le_ind
+     : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>),
+       P n -&gt;
+       (<span class="kr">forall</span> <span class="nv">m</span> : nat, le n m -&gt; P m -&gt; P (S m)) -&gt;
+       <span class="kr">forall</span> <span class="nv">n0</span> : nat, le n n0 -&gt; P n0</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Scheme</span> <span class="nf">le_ind2</span> := <span class="kn">Induction for</span> le <span class="kn">Sort</span> <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk11"><span class="kn">Check</span> le_ind2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">le_ind2
+     : <span class="kr">forall</span> (<span class="nv">n</span> : nat)
+         (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">n0</span> : nat, le n n0 -&gt; <span class="kt">Prop</span>),
+       P n (le_n n) -&gt;
+       (<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">l</span> : le n m),
+        P m l -&gt; P (S m) (le_S n m l)) -&gt;
+       <span class="kr">forall</span> (<span class="nv">n0</span> : nat) (<span class="nv">l</span> : le n n0), P n0 l</blockquote></div></div></small></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

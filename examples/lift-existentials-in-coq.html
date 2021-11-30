@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Lift existentials in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="lift-existentials-in-coq">
+<h1 class="title">Lift existentials in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/54944574/lift-existentials-in-coq">https://stackoverflow.com/questions/54944574/lift-existentials-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Can this lemma be proven in Coq?</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="lift-existentials-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="lift-existentials-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">liftExists</span> : <span class="kr">forall</span> (<span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>),
+    (<span class="kr">forall</span> <span class="nv">n</span> : nat, <span class="kr">exists</span> <span class="nv">p</span> : nat, P n p)
+    -&gt; <span class="kr">exists</span> (<span class="nv">f</span> : nat -&gt; nat), <span class="kr">forall</span> <span class="nv">n</span> : nat, P n (f n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
+(<span class="kr">forall</span> <span class="nv">n</span> : nat, <span class="kr">exists</span> <span class="nv">p</span> : nat, P n p) -&gt;
+<span class="kr">exists</span> <span class="nv">f</span> : nat -&gt; nat, <span class="kr">forall</span> <span class="nv">n</span> : nat, P n (f n)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>The simple <tt class="docutils literal">destruct</tt> does not compile, because we cannot eliminate
+the object <tt class="docutils literal">exists p:nat, P n p</tt> in sort <tt class="docutils literal">Prop</tt>, to produce the
+function <tt class="docutils literal">f</tt> in sort <tt class="docutils literal">Set</tt>.</p>
+<p>If Coq cannot prove this lemma, then what is the meaning of <tt class="docutils literal">forall
+n:nat, exists p:nat, P n p</tt>? In constructive mathematics it would
+mean the existence of the function <tt class="docutils literal">f</tt>, but I have the impression
+that we will never see this function <tt class="docutils literal">f</tt> in Coq, not even in sort
+<tt class="docutils literal">Prop</tt> as expressed above.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>It is not provable in Coq because of the restriction on eliminating
+Prop into Set. As for the philosophical &quot;meaning&quot;, I'm not sure if
+anyone has a very good story about this. The inhabitants of <tt class="docutils literal">forall
+n:nat, exists p:nat, P n p</tt> are functions returning a pair of <tt class="docutils literal">p</tt>
+and a proof, but in addition they a functions that can be ignored when
+compiling programs because you know that nothing will look at the
+value that was returned.</p>
+<p>So partly this system of Prop versus Set is a way to compile programs
+more efficiently, but actually this is also used for logical
+properties. In Coq the Prop type is impredicative and the Set type is
+not, and even so it's consistent to assume the law of exluded middle
+for Props as an axiom, and to prove that this is consistent you can
+appeal to a &quot;<a class="reference external" href="http://www.lix.polytechnique.fr/~werner/publis/cc.pdf">proof-irrelevant model</a>&quot;, where you
+interpret types in Props as sets by ignoring all information except
+whether they are inhabited or not. From a classical logic perspective
+(where all you care about are truth values) that makes sense, but if
+you are interested in constructive mathematics it's a bit weird!</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
