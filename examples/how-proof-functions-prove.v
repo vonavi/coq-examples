@@ -10,7 +10,9 @@ How proof functions prove?
 Question
 ********
 
-It'd help my understanding the 'programs/proofs' parallelism if somebody was kind enough to explain me how the proof function is used in the following simple case:
+It'd help my understanding the 'programs/proofs' parallelism if
+somebody was kind enough to explain me how the proof function is used
+in the following simple case:
 |*)
 
 Theorem ex1 : forall n : nat, 7*5 < n -> 6*6 <= n.
