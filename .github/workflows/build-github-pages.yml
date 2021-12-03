@@ -22,7 +22,22 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: cpitclaudel/alectryon
-          path: ./alectryon
+          path: alectryon
+      - name: Copy Alectryon's caches
+        env:
+          SRC_BRANCH: gh-pages
+          CACHE_PATH: content
+        run: |
+          git fetch --depth=1
+          git checkout $SRC_BRANCH
+          if [[ -d $CACHE_PATH ]]; then
+            caches=$(find $CACHE_PATH -type f)
+            git checkout master
+            git checkout $SRC_BRANCH -- $caches
+            mv -v $CACHE_PATH public
+          else
+            git checkout master
+          fi
       - uses: coq-community/docker-coq-action@v1
         with:
           coq_version: ${{ matrix.coq_version }}
@@ -38,12 +53,15 @@ jobs:
               python3 -m pip install --user --upgrade \
                 pygments dominate beautifulsoup4 docutils
             endGroup
-            startGroup 'Fix the ownership of the public directory'
+            startGroup 'Workaround permissions issue'
               sudo chown -R $(id -u):$(id -g) public
             endGroup
             startGroup 'Use Alectryon'
-              find examples -name "*.v" -exec ./alectryon/alectryon.py \
+              find examples -name "*.v" -exec alectryon/alectryon.py \
                 --frontend coq+rst --backend webpage \
+                --long-line-threshold 80 \
+                --cache-directory public/content \
+                --cache-compression gzip \
                 --output-directory public/examples {} \;
               cp examples/*.v public/examples
             endGroup
