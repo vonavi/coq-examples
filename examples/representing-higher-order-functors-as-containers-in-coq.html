@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Representing Higher-Order Functors as Containers in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="representing-higher-order-functors-as-containers-in-coq">
+<h1 class="title">Representing Higher-Order Functors as Containers in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/54864518/representing-higher-order-functors-as-containers-in-coq">https://stackoverflow.com/questions/54864518/representing-higher-order-functors-as-containers-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Following <a class="reference external" href="https://people.cs.kuleuven.be/~tom.schrijvers/Research/papers/haskell2014.pdf">this</a>
+approach, I'm trying to model functional programs using effect
+handlers in Coq, based on an implementation in Haskell. There are two
+approaches presented in the paper:</p>
+<ul>
+<li><p class="first">Effect syntax is represented as a functor and combined with the free
+monad.</p>
+<pre class="code haskell literal-block">
+<span class="kr">data</span> <span class="kt">Prog</span> <span class="n">sig</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Return</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">Op</span> <span class="p">(</span><span class="n">sig</span> <span class="p">(</span><span class="kt">Prog</span> <span class="n">sig</span> <span class="n">a</span><span class="p">))</span>
+</pre>
+<p>Due to the termination check not liking non-strictly positive
+definitions, this data type can't be defined directly. However,
+containers can be used to represent strictly-positive functors, as
+described in <a class="reference external" href="https://arxiv.org/pdf/1805.08059.pdf">this paper</a>.
+This approach works but since I need to model a scoped effect that
+requires explicit scoping syntax, mismatched begin/end tags are
+possible. For reasoning about programs, this is not ideal.</p>
+</li>
+<li><p class="first">The second approach uses higher-order functors, i.e. the following
+data type.</p>
+<pre class="code haskell literal-block">
+<span class="kr">data</span> <span class="kt">Prog</span> <span class="n">sig</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Return</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">Op</span> <span class="p">(</span><span class="n">sig</span> <span class="p">(</span><span class="kt">Prog</span> <span class="n">sig</span><span class="p">)</span> <span class="n">a</span><span class="p">)</span>
+</pre>
+<p>Now sig has the type <tt class="docutils literal">(* <span class="pre">-&gt;</span> *) <span class="pre">-&gt;</span> * <span class="pre">-&gt;</span> *</tt>. The data type can't be
+defined in Coq for the same reasons as before. I'm looking for ways
+to model this data type, so that I can implement scoped effects
+without explicit scoping tags.</p>
+</li>
+</ul>
+<p>My attempts of defining a container for higher-order functors have not
+been fruitful and I can't find anything about this topic. I'm thankful
+for pointers in the right direction and helpful comments.</p>
+<p>Edit: One example of scoped syntax from the paper that I would like to
+represent is the following data type for exceptions.</p>
+<pre class="code haskell literal-block">
+<span class="kr">data</span> <span class="kt">HExc</span> <span class="n">e</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Throw'</span> <span class="n">e</span> <span class="o">|</span> <span class="n">forall</span> <span class="n">x</span><span class="o">.</span> <span class="kt">Catch'</span> <span class="p">(</span><span class="n">m</span> <span class="n">x</span><span class="p">)</span> <span class="p">(</span><span class="n">e</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">x</span><span class="p">)</span> <span class="p">(</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span><span class="p">)</span>
+</pre>
+<p>Edit2: I have merged the suggested idea with my approach.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Ext</span> <span class="nv">Shape</span> (<span class="nv">Pos</span> : Shape -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span>) (<span class="nv">F</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span>) <span class="nv">A</span> :=
+  ext : <span class="kr">forall</span> <span class="nv">s</span>, (<span class="kr">forall</span> <span class="nv">X</span>, Pos s A X -&gt; F X) -&gt; Ext Shape Pos F A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">HContainer</span> (<span class="nv">H</span> : (<span class="kt">Type</span> -&gt; <span class="kt">Type</span>) -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span>) :=
+  {
+  Shape   : <span class="kt">Type</span>;
+  Pos     : Shape -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span>;
+  to      : <span class="kr">forall</span> <span class="nv">M</span> <span class="nv">A</span>, Ext Shape Pos M A -&gt; H M A;
+  <span class="kn">from</span>    : <span class="kr">forall</span> <span class="nv">M</span> <span class="nv">A</span>, H M A -&gt; Ext Shape Pos M A;
+  to_from : <span class="kr">forall</span> <span class="nv">M</span> <span class="nv">A</span> (<span class="nv">fx</span> : H M A), @to M A (@<span class="kn">from</span> M A fx) = fx;
+  from_to : <span class="kr">forall</span> <span class="nv">M</span> <span class="nv">A</span> (<span class="nv">e</span> : Ext Shape Pos M A), @<span class="kn">from</span> M A (@to M A e) = e
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Free</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">H</span> : (<span class="kt">Type</span> -&gt; <span class="kt">Type</span>) -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Free</span> (<span class="nv">HC__F</span> : HContainer H) <span class="nv">A</span> :=
+  | pure : A -&gt; Free HC__F A
+  | impure : Ext Shape Pos (Free HC__F) A -&gt; Free HC__F A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Free</span>.</span></span></pre><p>The code can be found <a class="reference external" href="https://gist.github.com/nbun/3e3f2198eae099c8409bf41c04271b3c">here</a>.
+The Lambda Calculus example works and I can prove that the container
+representation is isomorphic to the data type. I have tried to to the
+same for a simplified version of the exception handler data type but
+it does not fit the container representation.</p>
+<p>Defining a smart constructor does not work, either. In Haskell, the
+constructor works by applying <tt class="docutils literal">Catch'</tt> to a program where an
+exception may occur and a continuation, which is empty in the
+beginning.</p>
+<pre class="code haskell literal-block">
+<span class="nf">catch</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">HExc</span> <span class="o">&lt;:</span> <span class="n">sig</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Prog</span> <span class="n">sig</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Prog</span> <span class="n">sig</span> <span class="n">a</span>
+<span class="nf">catch</span> <span class="n">p</span> <span class="ow">=</span> <span class="n">inject</span> <span class="p">(</span><span class="kt">Catch'</span> <span class="n">p</span> <span class="n">return</span><span class="p">)</span>
+</pre>
+<p>The main issue I see in the Coq implementation is that the shape needs
+to be parameterized over a functor, which leads to all sorts of
+problems.</p>
+</div>
+<div class="section" id="answer-li-yao-xia">
+<h1>Answer (Li-yao Xia)</h1>
+<p>This answer gives more intuition about how to derive containers from
+functors than my previous one. I'm taking quite a different angle, so
+I'm making a new answer instead of revising the old one.</p>
+<div class="section" id="simple-recursive-types">
+<h2>Simple recursive types</h2>
+<p>Let's consider a simple recursive type first to understand
+non-parametric containers, and for comparison with the parameterized
+generalization. Lambda calculus, without caring about scopes, is given
+by the following functor:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">LC_F</span> (<span class="nv">t</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| App : t -&gt; t -&gt; LC_F t
+| Lam : t -&gt; LC_F t.</span><span class="alectryon-wsp">
+</span></span></pre><p>There are two pieces of information we can learn from this type:</p>
+<ul class="simple">
+<li>The <em>shape</em> tells us about the constructors (<tt class="docutils literal">App</tt>, <tt class="docutils literal">Lam</tt>), and
+potentially also auxiliary data not relevant to the recursive nature
+of the syntax (none here). There are two constructors, so the shape
+has two values. <tt class="docutils literal">Shape := App_S | Lam_S</tt> (<tt class="docutils literal">bool</tt> also works, but
+declaring shapes as standalone inductive types is cheap, and named
+constructors also double as documentation.)</li>
+<li>For every shape (i.e., constructor), the <em>position</em> tells us about
+recursive occurences of syntax in that constructor. <tt class="docutils literal">App</tt> contains
+two subterms, hence we can define their two positions as booleans;
+<tt class="docutils literal">Lam</tt> contains one subterm, hence its position is a unit. One
+could also make <tt class="docutils literal">Pos (s : Shape)</tt> an indexed inductive type, but
+that is a pain to program with (just try).</li>
+</ul>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Lambda calculus *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">ShapeLC</span> :=
+| App_S    <span class="c">(* The shape   App _ _ *)</span>
+| Lam_S.   <span class="c">(* The shape   Lam _ *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">PosLC</span> <span class="nv">s</span> :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | App_S =&gt; bool
+  | Lam_S =&gt; unit
+  <span class="kr">end</span>.</span></span></pre></div>
+<div class="section" id="parameterized-recursive-types">
+<h2>Parameterized recursive types</h2>
+<p>Now, properly scoped lambda calculus:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">LC_F</span> (<span class="nv">f</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span>) (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| App : f a -&gt; f a -&gt; LC_F f a
+| Lam : f (sum unit a) -&gt; LC_F f a.</span></span></pre><p>In this case, we can still reuse the <tt class="docutils literal">Shape</tt> and <tt class="docutils literal">Pos</tt> data from
+before. But this functor encodes one more piece of information: how
+each position changes the type parameter <tt class="docutils literal">a</tt>. I call this parameter
+the context (<tt class="docutils literal">Ctx</tt>).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">CtxLC</span> (<span class="nv">s</span> : ShapeLC) : PosLC s -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | App_S =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">a</span> =&gt; a <span class="c">(* subterms of App reuse the same context *)</span>
+  | Lam_S =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">a</span> =&gt; sum unit a
+    <span class="c">(* Lam introduces one variable in the context of its subterm *)</span>
+  <span class="kr">end</span>.</span></span></pre><p>This container <tt class="docutils literal">(ShapeLC, PosLC, CtxLC)</tt> is related to the functor
+<tt class="docutils literal">LC_F</tt> by an isomorphism: between the sigma <tt class="docutils literal">{ s : ShapeLC &amp; forall
+p : PosLC s, f (CtxLC s p a) }</tt> and <tt class="docutils literal">LC_F a</tt>. In particular, note
+how the function <tt class="docutils literal">y : forall p, f (CtxLC s p)</tt> tells you exactly how
+to fill the shape <tt class="docutils literal">s = App_S</tt> or <tt class="docutils literal">s = Lam_S</tt> to construct a value
+<tt class="docutils literal">App (y true) (y false) : LC_F a</tt> or <tt class="docutils literal">Lam (y tt) : LC_F a</tt>.</p>
+<p>My previous representation encoded <tt class="docutils literal">Ctx</tt> in some additional type
+indices of <tt class="docutils literal">Pos</tt>. The representations are equivalent, but this one
+here looks tidier.</p>
+</div>
+<div class="section" id="exception-handler-calculus">
+<h2>Exception handler calculus</h2>
+<p>We'll consider just the <tt class="docutils literal">Catch</tt> constructor. It has four fields: a
+type <tt class="docutils literal">X</tt>, the main computation (which returns an <tt class="docutils literal">X</tt>), an
+exception handler (which also recovers an <tt class="docutils literal">X</tt>), and a continuation
+(consuming the <tt class="docutils literal">X</tt>).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Exc_F</span> (<span class="nv">E</span> : <span class="kt">Type</span>) (<span class="nv">F</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span>) (<span class="nv">A</span> : <span class="kt">Type</span>) :=
+| ccatch : <span class="kr">forall</span> <span class="nv">X</span>, F X -&gt; (E -&gt; F X) -&gt; (X -&gt; F A) -&gt; Exc_F E F A.</span></span></pre><p>The shape is a single constructor, but you must include <tt class="docutils literal">X</tt>.
+Essentially, look at all the fields (possibly unfolding nested
+inductive types), and keep all the data that doesn't mention <tt class="docutils literal">F</tt>,
+that's your shape.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">ShapeExc</span> :=
+| ccatch_S (X : <span class="kt">Type</span>). <span class="c">(* The shape   ccatch X _ (fun e =&gt; _) (fun x =&gt; _) *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* equivalently, Definition ShapeExc := Type. *)</span></span></pre><p>The position type lists all the ways to get an <tt class="docutils literal">F</tt> out of an
+<tt class="docutils literal">Exc_F</tt> of the corresponding shape. In particular, a position
+contains the arguments to apply functions with, and possibly any data
+to resolve branching of any other sort. In particular, you need to
+know the exception type to store exceptions for the handler.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">PosExc</span> (<span class="nv">E</span> : <span class="kt">Type</span>) (<span class="nv">s</span> : ShapeExc) : <span class="kt">Type</span> :=
+| main_pos                      <span class="c">(* F X *)</span>
+| handle_pos (e : E)            <span class="c">(* E -&gt; F X *)</span>
+| continue_pos (x : getX s).    <span class="c">(* X -&gt; F A *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* The function getX takes the type X contained in a ShapeExc value,</span>
+<span class="c">   by pattern-matching: getX (ccatch_S X) := X. *)</span></span></pre><p>Finally, for each position, you need to decide how the context
+changes, i.e., whether you're now computing an <tt class="docutils literal">X</tt> or an <tt class="docutils literal">A</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Ctx</span> (<span class="nv">E</span> : <span class="kt">Type</span>) (<span class="nv">s</span> : ShapeExc) (<span class="nv">p</span> : PosExc E s) : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+  <span class="kr">match</span> p <span class="kr">with</span>
+  | main_pos | handle_pos _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; getX s
+  | continue_pos _ =&gt; <span class="kr">fun</span> <span class="nv">A</span> =&gt; A
+  <span class="kr">end</span>.</span></span></pre><p>Using the conventions from <a class="reference external" href="https://gist.github.com/nbun/3e3f2198eae099c8409bf41c04271b3c">your code</a>,
+you can then encode the <tt class="docutils literal">Catch</tt> constructor as follows:</p>
+<pre class="code coq literal-block">
+<span class="kn">Definition</span> <span class="nf">Catch'</span> <span class="o">{</span><span class="nv">E</span> <span class="nv">X</span> <span class="nv">A</span><span class="o">}</span>
+           <span class="o">(</span><span class="nv">m</span> <span class="o">:</span> <span class="n">Free</span> <span class="o">(</span><span class="n">C__Exc</span> <span class="n">E</span><span class="o">)</span> <span class="n">X</span><span class="o">)</span>
+           <span class="o">(</span><span class="nv">h</span> <span class="o">:</span> <span class="n">E</span> <span class="o">-&gt;</span> <span class="n">Free</span> <span class="o">(</span><span class="n">C__Exc</span> <span class="n">E</span><span class="o">)</span> <span class="n">X</span><span class="o">)</span>
+           <span class="o">(</span><span class="nv">k</span> <span class="o">:</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">Free</span> <span class="o">(</span><span class="n">C__Exc</span> <span class="n">E</span><span class="o">)</span> <span class="n">A</span><span class="o">)</span> <span class="o">:</span> <span class="n">Free</span> <span class="o">(</span><span class="n">C__Exc</span> <span class="n">E</span><span class="o">)</span> <span class="n">A</span> <span class="o">:=</span>
+  <span class="n">impure</span> <span class="o">(&#64;</span><span class="n">ext</span> <span class="o">(</span><span class="n">C__Exc</span> <span class="n">E</span><span class="o">)</span> <span class="o">(</span><span class="n">Free</span> <span class="o">(</span><span class="n">C__Exc</span> <span class="n">E</span><span class="o">))</span> <span class="n">A</span> <span class="o">(</span><span class="n">ccatch_S</span> <span class="n">X</span><span class="o">)</span>
+               <span class="o">(</span><span class="kr">fun</span> <span class="nv">p</span> <span class="o">=&gt;</span>
+                  <span class="kr">match</span> <span class="n">p</span> <span class="kr">with</span>
+                  <span class="o">|</span> <span class="n">main_pos</span> <span class="o">=&gt;</span> <span class="n">m</span>
+                  <span class="o">|</span> <span class="n">handle_pos</span> <span class="n">e</span> <span class="o">=&gt;</span> <span class="n">h</span> <span class="n">e</span>
+                  <span class="o">|</span> <span class="n">continue_pos</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">k</span> <span class="n">x</span>
+                  <span class="kr">end</span><span class="o">)).</span>
+
+<span class="c">(* I had problems with type inference for some reason, hence &#64;ext is
+   explicitly applied *)</span>
+</pre>
+<p>Full gist
+<a class="reference external" href="https://gist.github.com/Lysxia/6e7fb880c14207eda5fc6a5c06ef3522">https://gist.github.com/Lysxia/6e7fb880c14207eda5fc6a5c06ef3522</a></p>
+<hr class="docutils" />
+<p><strong>Q:</strong> This is a really helpful answer and detailed walk-through (and,
+again, a good example of why I like the Coq/FP-community so much ; )).
+Is there any citable publication/reference you've read/wrote that
+gives similar details to the the usage of containers for more
+complicated functors? Since you named your first gist
+&quot;FreeIndexedMonad&quot;, I was wondering if <a class="reference external" href="http://strictlypositive.org/indexed-containers.pdf">Indexed Containers</a> are related?
+After a first glance I couldn't tell if they are also capable of
+handling similar examples to the one above.</p>
+<p><strong>A:</strong> Thanks! This paper is indeed closely related! The two
+presentations here and in the paper are basically equivalent. They
+actually represent higher-order functors <tt class="docutils literal">(I <span class="pre">-&gt;</span> Type) <span class="pre">-&gt;</span> (O <span class="pre">-&gt;</span>
+Type)</tt> and you can generalize <tt class="docutils literal">Ctx s : Pos s <span class="pre">-&gt;</span> Type <span class="pre">-&gt;</span> Type</tt> to
+<tt class="docutils literal">Ctx s : Pos s <span class="pre">-&gt;</span> O <span class="pre">-&gt;</span> I</tt> to do the same here. Sadly I don't know
+any publication to point to offhand otherwise.</p>
+</div>
+</div>
+<div class="section" id="answer-li-yao-xia-1">
+<h1>Answer (Li-yao Xia)</h1>
+<p>The main trick in the &quot;first-order&quot; free monad encoding is to encode a
+functor <tt class="docutils literal">F : Type <span class="pre">-&gt;</span> Type</tt> as a container, which is essentially a
+dependent pair <tt class="docutils literal">{ Shape : Type ; Pos : Shape <span class="pre">-&gt;</span> Type }</tt>, so that,
+for all <tt class="docutils literal">a</tt>, the type <tt class="docutils literal">F a</tt> is isomorphic to the sigma type <tt class="docutils literal">{ s
+: Shape &amp; Pos s <span class="pre">-&gt;</span> a }</tt>.</p>
+<p>Taking this idea further, we can encode a higher-order functor <tt class="docutils literal">F :
+(Type <span class="pre">-&gt;</span> Type) <span class="pre">-&gt;</span> (Type <span class="pre">-&gt;</span> Type)</tt> as a container <tt class="docutils literal">{ Shape : Type &amp;
+Pos : Shape <span class="pre">-&gt;</span> Type <span class="pre">-&gt;</span> (Type <span class="pre">-&gt;</span> Type) }</tt>, so that, for all <tt class="docutils literal">f</tt> and
+<tt class="docutils literal">a</tt>, <tt class="docutils literal">F f a</tt> is isomorphic to <tt class="docutils literal">{ s : Shape &amp; forall x : Type, Pos
+s a x <span class="pre">-&gt;</span> f x }</tt>.</p>
+<p>I don't quite understand what the extra <tt class="docutils literal">Type</tt> parameter in <tt class="docutils literal">Pos</tt>
+is doing there, but It Works(TM), at least to the point that you can
+construct some lambda calculus terms in the resulting type.</p>
+<p>For example, the lambda calculus syntax functor:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">LC_F</span> (<span class="nv">f</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span>) (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| App : f a -&gt; f a -&gt; LC_F f a
+| Lam : f (sum unit a) -&gt; LC_F f a.</span></span></pre><p>is represented by the container <tt class="docutils literal">(Shape, Pos)</tt> defined as:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* LC container *)</span>
+
+</span><span class="alectryon-wsp"><span class="c">(* Two values in bool = two constructors in LC_F *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Shape</span> : <span class="kt">Type</span> := bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">App_F</span> (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+| App_ (b : bool) : App_F a a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Lam_F</span> (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+| Lam_ : Lam_F a (sum unit a).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Pos</span> (<span class="nv">b</span> : bool) : <span class="kt">Type</span> -&gt; (<span class="kt">Type</span> -&gt; <span class="kt">Type</span>) :=
+  <span class="kr">match</span> b <span class="kr">with</span>
+  | true =&gt; App_F
+  | false =&gt; Lam_F
+  <span class="kr">end</span>.</span></span></pre><p>Then the free-like monad <tt class="docutils literal">Prog</tt> (implicitly parameterized by
+<tt class="docutils literal">(Shape, Pos)</tt>) is given by:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Prog</span> (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| Ret : a -&gt; Prog a
+| Op (s : Shape) : (<span class="kr">forall</span> <span class="nv">b</span>, Pos s a b -&gt; Prog b) -&gt; Prog a.</span></span></pre><p>Having defined some boilerplate, you can write the following example:</p>
+<pre class="code coq literal-block">
+<span class="c">(* \f x -&gt; f x x *)</span>
+<span class="kn">Definition</span> <span class="nf">omega</span> <span class="o">{</span><span class="nv">a</span><span class="o">}</span> <span class="o">:</span> <span class="n">LC</span> <span class="n">a</span> <span class="o">:=</span>
+  <span class="n">Lam</span> <span class="c">(* f *)</span> <span class="o">(</span><span class="n">Lam</span> <span class="c">(* x *)</span>
+                 <span class="o">(</span><span class="kr">let</span> <span class="nv">f</span> <span class="o">:=</span> <span class="n">Ret</span> <span class="o">(</span><span class="n">inr</span> <span class="o">(</span><span class="n">inl</span> <span class="n">tt</span><span class="o">))</span> <span class="kr">in</span>
+                  <span class="kr">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="n">Ret</span> <span class="o">(</span><span class="n">inl</span> <span class="n">tt</span><span class="o">)</span> <span class="kr">in</span>
+                  <span class="n">App</span> <span class="o">(</span><span class="n">App</span> <span class="n">f</span> <span class="n">x</span><span class="o">)</span> <span class="n">x</span><span class="o">)).</span>
+</pre>
+<p>Full gist:
+<a class="reference external" href="https://gist.github.com/Lysxia/5485709c4594b836113736626070f488">https://gist.github.com/Lysxia/5485709c4594b836113736626070f488</a></p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
