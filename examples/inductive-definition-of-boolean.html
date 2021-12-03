@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Inductive definition of boolean</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="inductive-definition-of-boolean">
+<h1 class="title">Inductive definition of boolean</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/54728450/inductive-definition-of-boolean">https://stackoverflow.com/questions/54728450/inductive-definition-of-boolean</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Trivially, I'm trying to define my own bool type as:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">mybool</span> : <span class="kt">Type</span> :=
+| true
+| false.</span></span></pre><p>Then I do a <tt class="docutils literal">Print mybool.</tt> but the output says</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="inductive-definition-of-boolean-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">mybool</span> : <span class="kt">Set</span> :=
+    true : mybool | false : mybool</blockquote></div></div></small></span></pre><p>How come the type of <tt class="docutils literal">mybool</tt> is <tt class="docutils literal">Set</tt> but not <tt class="docutils literal">Type</tt>?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Coq uses what is called &quot;Universe Minimization&quot; to put inductive types
+in the smallest possible universe. Since <tt class="docutils literal">mybool</tt> doesn't depend on
+any other types and doesn't do any universal quantification, it can
+safely be put in the (second) lowest level of <tt class="docutils literal">Type</tt>, which is
+<tt class="docutils literal">Set</tt>. The lowest level is Prop, but inductive types are only placed
+in <tt class="docutils literal">Prop</tt> if they only have one constructor (there are some
+exceptions to this), or if it's explicitly annotated.</p>
+<p>Note that Coq's universes are cumulative, so <tt class="docutils literal">mybool</tt> is really in
+every level of <tt class="docutils literal">Type</tt>, but it only shows the minimal level.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> I thought <tt class="docutils literal">Set</tt> is the lowest level of <tt class="docutils literal">Type</tt>, and second
+lowest is <tt class="docutils literal">Prop</tt> (<tt class="docutils literal">Prop</tt> is higher than <tt class="docutils literal">Set</tt>). I thought
+<tt class="docutils literal">Prop</tt> is for propositions. In my bool, we have two constructors.
+Not sure I understand this part.</p>
+<p><strong>A:</strong> <tt class="docutils literal">Prop</tt> indeed is for propositions, and can be thought of as
+types that have at most one element. That means that <tt class="docutils literal">Prop</tt> doesn't
+contain &quot;large&quot; types that are normally found in <tt class="docutils literal">Set</tt>, like <tt class="docutils literal">nat</tt>
+or <tt class="docutils literal">bool</tt>. But on the other hand, everything in <tt class="docutils literal">Prop</tt> fits in
+<tt class="docutils literal">Set</tt>, so <tt class="docutils literal">Prop</tt> is a lower level than <tt class="docutils literal">Set</tt>. You can check this
+with something like <tt class="docutils literal">Axiom P: Prop. Check P: Set.</tt> (which works) vs
+<tt class="docutils literal">Axiom P: Set. Check P: Prop.</tt> (which doesn't).</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
