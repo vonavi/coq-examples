@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Characteristic function of a union</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="characteristic-function-of-a-union">
+<h1 class="title">Characteristic function of a union</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/53352033/characteristic-function-of-a-union">https://stackoverflow.com/questions/53352033/characteristic-function-of-a-union</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In a constructive setting such as Coq's, I expect the proof of a
+disjunction <tt class="docutils literal">A \/ B</tt> to be either a proof of <tt class="docutils literal">A</tt>, or a proof of
+<tt class="docutils literal">B</tt>. If I reformulate this on subsets of a type <tt class="docutils literal">X</tt>, it says that
+if I have a proof that <tt class="docutils literal">x</tt> is in <tt class="docutils literal">A union B</tt>, then I either have a
+proof that <tt class="docutils literal">x</tt> is in <tt class="docutils literal">A</tt>, or a proof that <tt class="docutils literal">x</tt> is in <tt class="docutils literal">B</tt>. So I
+want to define the characteristic function of a union by case
+analysis,</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="characteristic-function-of-a-union-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="characteristic-function-of-a-union-v-chk0"><span class="kn">Definition</span> <span class="nf">characteristicUnion</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">A</span> <span class="nv">B</span> : X -&gt; <span class="kt">Prop</span>)
+           (<span class="nv">x</span> : X) (<span class="nv">un</span> : A x \/ B x) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>A, B</var><span class="hyp-type"><b>: </b><span>X -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>un</var><span class="hyp-type"><b>: </b><span>A x \/ B x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small></span></pre><p>It will be equal to 1 when <tt class="docutils literal">x</tt> is in <tt class="docutils literal">A</tt>, and to 0 when <tt class="docutils literal">x</tt> is
+in <tt class="docutils literal">B</tt>. However Coq does not let me</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="characteristic-function-of-a-union-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="characteristic-function-of-a-union-v-chk1"><span class="nb">destruct</span> un.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Case analysis on sort <span class="kt">Set</span> <span class="kr">is</span> not allowed <span class="kr">for</span> inductive
+definition or.</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Is there another way in Coq to model subsets of type <tt class="docutils literal">X</tt>, that would
+allow me to construct those characteristic functions on unions? I do
+not need to extract programs, so I guess simply disabling the previous
+error on case analysis would work for me.</p>
+<p>Mind that I do not want to model subsets as <tt class="docutils literal">A : X <span class="pre">-&gt;</span> bool</tt>. That
+would be unecessarily stronger: I do not need laws of excluded middle
+such as &quot;either <tt class="docutils literal">x</tt> is in <tt class="docutils literal">A</tt> or <tt class="docutils literal">x</tt> is not in <tt class="docutils literal">A</tt>&quot;.</p>
+</div>
+<div class="section" id="answer-ejgallego">
+<h1>Answer (ejgallego)</h1>
+<p>As pointed out by &#64;András Kovács, Coq prevents you from &quot;extracting&quot;
+computationally relevant information from types in Prop in order to
+allow some more advanced features to be used. There has been a lot of
+research on this topic, including recently Univalent Foundations /
+HoTT, but that would go beyond the scope of this question.</p>
+<p>In your case you want indeed to use the type <tt class="docutils literal">{ A } + { B }</tt> which
+will allow you to do what you want.</p>
+</div>
+<div class="section" id="answer-andras-kovacs">
+<h1>Answer (András Kovács)</h1>
+<p>I think the union of subsets should be a subset as well. We can do
+this by defining union as pointwise disjunction:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subset</span> (<span class="nv">X</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> := X -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">union</span> {<span class="nv">X</span> : <span class="kt">Type</span>}(<span class="nv">A</span> <span class="nv">B</span> : subset X) : subset X :=
+  <span class="kr">fun</span> <span class="nv">x</span> =&gt; A x \/ B x.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

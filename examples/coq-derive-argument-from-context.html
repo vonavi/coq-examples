@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq: Derive argument from context</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-derive-argument-from-context">
+<h1 class="title">Coq: Derive argument from context</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/53344715/coq-derive-argument-from-context">https://stackoverflow.com/questions/53344715/coq-derive-argument-from-context</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* I have a section with many variables and definitions. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">SectionWithDefs</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span>: <span class="kt">Type</span>}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">arg1</span>: A -&gt; B.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">arg2</span>: B -&gt; C.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* Functions that uses these variables. *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> <span class="nv">a</span> := arg2 (arg1 a).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span>
+
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">SectionWithDefs</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Now I want to use some of these functions. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">AnotherSection</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span>: <span class="kt">Type</span>}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* Here are the arguments. *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">arg1</span>: A -&gt; B.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">arg2</span>: B -&gt; C.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">a</span>: A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">CallFunctionWithArgiments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+    <span class="c">(* We can directly pass the arguments to the function... *)</span>
+</span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-derive-argument-from-context-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-derive-argument-from-context-v-chk0"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (f arg1 arg2 a).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= arg2 (arg1 a)
+: C</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">CallFunctionWithArgiments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">LetBlock</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+    <span class="c">(* ... or we can create a sequence of let expression. *)</span>
+</span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Let</span> <span class="nf">f</span> := f arg1 arg2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    <span class="c">(* ... *)</span>
+
+</span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-derive-argument-from-context-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-derive-argument-from-context-v-chk1"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (f a).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= arg2 (arg1 a)
+: C</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">LetBlock</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">AnotherSection</span>.</span></span></pre><p>It is really hard to use the first approach since it is very difficult
+to maintain such code. Writing becomes really painful when there are
+more than five different functions with 4-5 arguments each.</p>
+<p>The second case is more convenient. But I still have a lot of extra
+lines with &quot;let&quot; declarations:</p>
+<pre class="code coq literal-block">
+<span class="kn">Let</span> <span class="nf">f1</span> <span class="o">:=</span> <span class="o">...</span>
+<span class="kn">Let</span> <span class="nf">f2</span> <span class="o">:=</span> <span class="o">...</span>
+<span class="o">...</span>
+<span class="kn">Let</span> <span class="nf">fn</span> <span class="o">:=</span> <span class="o">...</span>
+</pre>
+<p>Is there any way to avoid this extra boilerplate? Ideally, I want Coq
+to just &quot;guess&quot; correct arguments using types or even names of terms
+in a context.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If the context (i.e., the list of <tt class="docutils literal">arg1</tt>, <tt class="docutils literal">arg2</tt>, etc.) is simple
+enough, you could use type classes to not have to pass arguments
+around.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* I have a section with many variables and definitions. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">SectionWithDefs</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span>: <span class="kt">Type</span>}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Arg1</span> : <span class="kt">Type</span> := arg1 : A -&gt; B.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> `{IArg1 : Arg1}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Arg2</span> : <span class="kt">Type</span> := arg2 : B -&gt; C.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> `{IArg2 : Arg2}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* Functions that uses these variables. *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> <span class="nv">a</span> := arg2 (arg1 a).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* ... *)</span>
+
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">SectionWithDefs</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Now I want to use some of these functions. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">AnotherSection</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span>: <span class="kt">Type</span>}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* Here are the arguments. *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> `{MyIArg1 : Arg1 A B}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> `{MyIArg2 : Arg2 B C}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">a</span>: A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">CallFunctionWithInstances</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+    <span class="c">(* The implicit type class arguments [IArg1] and [IArg2] are</span>
+<span class="c">       resolved using instances in scope... *)</span>
+</span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-derive-argument-from-context-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-derive-argument-from-context-v-chk2"><span class="kn">Compute</span> (f a).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= MyIArg2 (MyIArg1 a)
+: C</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">CallFunctionWithInstances</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">AnotherSection</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
