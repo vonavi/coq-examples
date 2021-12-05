@@ -63,7 +63,9 @@ use proofs in programs, I decided to try to do the latter. Here is
 what I have so far.
 |*)
 
-  Definition ilists_sizechange (n1 n2 : nat) (l1 : ilist n1) (P : n1=n2) : ilist n2.
+  Definition ilists_sizechange (n1 n2 : nat) (l1 : ilist n1) (P : n1=n2) :
+    ilist n2.
+  Proof.
     subst. assumption.
   Defined.
 
@@ -146,7 +148,8 @@ four cases:
 |*)
 
   Reset ilists_sizechange. (* .none *)
-  Definition ilists_sizechange (n1 n2 : nat) (l1 : ilist n1) (P: n1=n2) : ilist n2.
+  Definition ilists_sizechange (n1 n2 : nat) (l1 : ilist n1) (P: n1=n2) :
+    ilist n2.
   Proof.
     revert n2 P. (* Generalize the induction hypothesis. *)
     induction l1; destruct n2; discriminate + constructor; auto.
@@ -202,7 +205,8 @@ to construct some other proof, and this generalization allows you to
 use the induction hypothesis independently of that particular proof.
 |*)
 
-  Theorem unject_inject_ : forall n (ls : ilist n) (EQ : n = length (unject ls)),
+  Theorem unject_inject_ :
+    forall n (ls : ilist n) (EQ : n = length (unject ls)),
       inject (unject ls) = ilists_sizechange ls EQ.
   Proof.
     intros n ls; induction ls; cbn.

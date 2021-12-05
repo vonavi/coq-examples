@@ -103,7 +103,8 @@ Section ilist.
     | S i1 => irev_length i1 (S i2)
     end.
 
-  Fixpoint irev_aux i1 i2 (ls: ilist i1): ilist i2 -> ilist (irev_length i1 i2) :=
+  Fixpoint irev_aux i1 i2 (ls: ilist i1):
+    ilist i2 -> ilist (irev_length i1 i2) :=
     match ls with
     | Nil      => fun rev => rev
     | Cons h t => fun rev => irev_aux t (Cons h rev)

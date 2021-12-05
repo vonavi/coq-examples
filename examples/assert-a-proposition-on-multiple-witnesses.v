@@ -29,8 +29,8 @@ previous example) and I want to assert something about all ``k``'s,
 such as
 |*)
 
-Fail Definition allWitnessesBelowOne : Prop
-  := forall n : nat,
+Fail Definition allWitnessesBelowOne : Prop :=
+  forall n : nat,
     match allP n with
     | ex_intro _ k _ => k <= 1
     end. (* .unfold .fails *)
@@ -57,16 +57,16 @@ Answer
 Elaborating on @eponier's comment, when you write
 |*)
 
-Fail Definition allWitnessesBelowOne : Prop
-  := forall n : nat,
+Fail Definition allWitnessesBelowOne : Prop :=
+  forall n : nat,
     match allP n with
     | ex_intro _ k _ => k <= 1
     end. (* .fails *)
 
 (*| you are actually writing |*)
 
-Fail Definition allWitnessesBelowOne : Prop
-  := forall n : nat,
+Fail Definition allWitnessesBelowOne : Prop :=
+  forall n : nat,
     match allP n return Prop with
     | ex_intro _ k _ => k <= 1
     end. (* .fails *)
@@ -102,8 +102,8 @@ Proof.
   intros. exists 0. trivial.
 Defined.
 
-Definition allWitnessesBelowOne : Prop
-  := forall n : nat,
+Definition allWitnessesBelowOne : Prop :=
+  forall n : nat,
     match allP n with
     | exist _ k _ => k <= 1
     end.
@@ -111,8 +111,8 @@ Definition allWitnessesBelowOne : Prop
 (*| An alternative definition of this last one is |*)
 
 Reset allWitnessesBelowOne. (* .none *)
-Definition allWitnessesBelowOne : Prop
-  := forall n : nat,
+Definition allWitnessesBelowOne : Prop :=
+  forall n : nat,
     proj1_sig (allP n) <= 1.
 
 (*|
