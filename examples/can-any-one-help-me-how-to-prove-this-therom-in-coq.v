@@ -1,7 +1,7 @@
 (*|
-###################################################
-Can any one help me how to prove this therom in coq
-###################################################
+####################################################
+Can any one help me how to prove this theorem in coq
+####################################################
 
 :Link: https://stackoverflow.com/questions/69540976/can-any-one-help-me-how-to-prove-this-therom-in-coq
 |*)
@@ -56,7 +56,8 @@ Lemma yourGoal :
 Proof.
   intros Hdec Hex y. (* naming the hypothesis for convenience *)
   specialize (Hdec y).
-  destruct Hdec as [H_Ry_is_true | H_Ry_is_false]. (* case analysis, creates two goals *)
+  (* case analysis, creates two goals *)
+  destruct Hdec as [H_Ry_is_true | H_Ry_is_false].
   + (* (R y) is true, which is our goal. *)
     assumption.
   + (* (R y) is false, which contradicts Hex *)

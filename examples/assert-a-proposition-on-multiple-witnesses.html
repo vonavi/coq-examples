@@ -36,8 +36,8 @@ numbers, for example</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>Then I have a witness <tt class="docutils literal">k</tt> for all <tt class="docutils literal">n</tt> (<tt class="docutils literal">k</tt> is always 0 in the
 previous example) and I want to assert something about all <tt class="docutils literal">k</tt>'s,
 such as</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="assert-a-proposition-on-multiple-witnesses-v-chk4"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span>
-  := <span class="kr">forall</span> <span class="nv">n</span> : nat,
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="assert-a-proposition-on-multiple-witnesses-v-chk4"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span> :=
+  <span class="kr">forall</span> <span class="nv">n</span> : nat,
     <span class="kr">match</span> allP n <span class="kr">with</span>
     | ex_intro _ k _ =&gt; k &lt;= <span class="mi">1</span>
     <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Incorrect elimination of <span class="s2">&quot;allP n&quot;</span>
@@ -60,8 +60,8 @@ solve your problem, however.</p>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p>Elaborating on &#64;eponier's comment, when you write</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="assert-a-proposition-on-multiple-witnesses-v-chk5"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span>
-  := <span class="kr">forall</span> <span class="nv">n</span> : nat,
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="assert-a-proposition-on-multiple-witnesses-v-chk5"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span> :=
+  <span class="kr">forall</span> <span class="nv">n</span> : nat,
     <span class="kr">match</span> allP n <span class="kr">with</span>
     | ex_intro _ k _ =&gt; k &lt;= <span class="mi">1</span>
     <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Incorrect elimination of <span class="s2">&quot;allP n&quot;</span>
@@ -71,8 +71,8 @@ should be <span class="s2">&quot;SProp&quot;</span> or <span class="s2">&quot;Pr
 Elimination of an inductive object of sort <span class="kt">Prop</span>
 <span class="kr">is</span> not allowed on a predicate <span class="kr">in</span> sort <span class="kt">Type</span>
 because proofs can be eliminated <span class="kp">only</span> to build proofs.</blockquote></div></div></small></span></pre><p>you are actually writing</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="assert-a-proposition-on-multiple-witnesses-v-chk6"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span>
-  := <span class="kr">forall</span> <span class="nv">n</span> : nat,
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="assert-a-proposition-on-multiple-witnesses-v-chk6"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span> :=
+  <span class="kr">forall</span> <span class="nv">n</span> : nat,
     <span class="kr">match</span> allP n <span class="kr">return</span> <span class="kt">Prop</span> <span class="kr">with</span>
     | ex_intro _ k _ =&gt; k &lt;= <span class="mi">1</span>
     <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
@@ -103,13 +103,13 @@ sigma (<tt class="docutils literal">sig</tt>) types to say:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="assert-a-proposition-on-multiple-witnesses-v-chk9"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="assert-a-proposition-on-multiple-witnesses-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="assert-a-proposition-on-multiple-witnesses-v-chka"><span class="kr">exists</span> <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span>
-  := <span class="kr">forall</span> <span class="nv">n</span> : nat,
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span> :=
+  <span class="kr">forall</span> <span class="nv">n</span> : nat,
     <span class="kr">match</span> allP n <span class="kr">with</span>
     | exist _ k _ =&gt; k &lt;= <span class="mi">1</span>
     <span class="kr">end</span>.</span></span></pre><p>An alternative definition of this last one is</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span>
-  := <span class="kr">forall</span> <span class="nv">n</span> : nat,
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">allWitnessesBelowOne</span> : <span class="kt">Prop</span> :=
+  <span class="kr">forall</span> <span class="nv">n</span> : nat,
     proj1_sig (allP n) &lt;= <span class="mi">1</span>.</span></span></pre><hr class="docutils" />
 <p>The other thing you can do is that you can do everything continuation
 passing style:</p>

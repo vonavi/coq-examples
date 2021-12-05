@@ -57,7 +57,8 @@ represent is the following data type for exceptions.
 Edit2: I have merged the suggested idea with my approach.
 |*)
 
-Inductive Ext Shape (Pos : Shape -> Type -> Type -> Type) (F : Type -> Type) A :=
+Inductive Ext Shape (Pos : Shape -> Type -> Type -> Type)
+          (F : Type -> Type) A :=
   ext : forall s, (forall X, Pos s A X -> F X) -> Ext Shape Pos F A.
 
 Class HContainer (H : (Type -> Type) -> Type -> Type) :=
