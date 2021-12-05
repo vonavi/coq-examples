@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Display the original name of the imported module in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="display-the-original-name-of-the-imported-module-in-coq">
+<h1 class="title">Display the original name of the imported module in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/52469003/display-the-original-name-of-the-imported-module-in-coq">https://stackoverflow.com/questions/52469003/display-the-original-name-of-the-imported-module-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>How to choose the textual representation of variables which belongs to
+some module? (Please see commentaries inside the code below. It's like
+Notation for modules.) I want to use it because it's preferable to see
+the original meaning of the terms. (and separate different types with
+the same realization: <tt class="docutils literal">SetVars.t</tt>, <tt class="docutils literal">FuncSymb.t</tt>, <tt class="docutils literal">PredSymb.t</tt>,
+etc)</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Structures.Equalities.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.PeanoNat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">mod1</span> (SetVars : UsualDecidableTypeFull).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">h</span> : SetVars.t -&gt; SetVars.t := <span class="kr">fun</span> <span class="nv">x</span> =&gt; x. <span class="c">(*example*)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">mod1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">mod2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">SetVars</span> := PeanoNat.Nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">X</span> := mod1 SetVars.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> X.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="display-the-original-name-of-the-imported-module-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="display-the-original-name-of-the-imported-module-in-coq-v-chk0"><span class="kn">Theorem</span> <span class="nf">q</span> : SetVars.t -&gt; SetVars.t.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">SetVars.t -&gt; SetVars.t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="display-the-original-name-of-the-imported-module-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="display-the-original-name-of-the-imported-module-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">SetVars.t -&gt; SetVars.t</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> h.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>. <span class="c">(* Here everything is OK *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="display-the-original-name-of-the-imported-module-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="display-the-original-name-of-the-imported-module-in-coq-v-chk2"><span class="kn">Check</span> h. <span class="c">(*&quot;h : nat -&gt; nat&quot;*)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">h
+     : nat -&gt; nat</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(*But I want to see &quot;h : SetVars.t -&gt; SetVars.t&quot; *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">mod2</span>.</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Replace</p>
+<pre class="code coq literal-block">
+<span class="kn">Module</span> <span class="nf">SetVars</span> <span class="o">:=</span> <span class="n">PeanoNat</span><span class="o">.</span><span class="n">Nat</span><span class="o">.</span>
+</pre>
+<p>with</p>
+<pre class="code coq literal-block">
+<span class="kn">Module</span> <span class="nf">SetVars</span> <span class="o">:</span> <span class="n">UsualDecidableTypeFull</span> <span class="o">:=</span> <span class="n">PeanoNat</span><span class="o">.</span><span class="n">Nat</span><span class="o">.</span>
+</pre>
+<p>This makes the module <tt class="docutils literal">SetVars</tt> opaque, exposing exactly the
+signature <tt class="docutils literal">UsualDecidableTypeFull</tt>, so that the type <tt class="docutils literal">SetVars.t <span class="pre">-&gt;</span>
+SetVars.t</tt> can no longer be reduced.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

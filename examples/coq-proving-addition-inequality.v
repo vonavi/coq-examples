@@ -41,9 +41,9 @@ Lemma test:  forall n m p q : nat,
 Abort. (* .none *)
 
 (*|
-with ``/\ `` (logical and) rather than ``\/`` (logical or) because
-your theorem does not hold otherwise. As a counterexample, pick ``n =
-p = q = 0`` and ``m = 1``.
+with ``/\`` (logical and) rather than ``\/`` (logical or) because your
+theorem does not hold otherwise. As a counterexample, pick ``n = p = q
+= 0`` and ``m = 1``.
 
 When fixed that way, lia finds the proof automatically.
 

@@ -44,7 +44,7 @@ Answer
 The ``_ /\ _`` notation in Coq is a right-associative *binary*
 operator, so ``A /\ B /\ C`` really stands for ``A /\ (B /\ C)``. If
 you want to build some ``A /\ B`` you should first fully decompose the
-``/\ `` (``intros [HA [HB HC]].``, you can nest the patterns
+``/\`` (``intros [HA [HB HC]].``, you can nest the patterns
 arbitrarily) and then build the ``A /\ B`` hypothesis (for instance
 using ``assert (A /\ B) as HAB by (split; [exact HA| exact HB]).`` or
 any other way you prefer to add an hypothesis).
