@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>When are the constructors of an inductive type exhaustive?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="when-are-the-constructors-of-an-inductive-type-exhaustive">
+<h1 class="title">When are the constructors of an inductive type exhaustive?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/52301832/when-are-the-constructors-of-an-inductive-type-exhaustive">https://stackoverflow.com/questions/52301832/when-are-the-constructors-of-an-inductive-type-exhaustive</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>For a simple inductive type like the natural numbers <tt class="docutils literal">nat</tt>, it is
+easy to prove that the two constructors (zero and successor) give all
+possible natural numbers,</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk0"><span class="kn">Lemma</span> <span class="nf">nat_destruct</span> (<span class="nv">n</span> : nat) : n = O \/ <span class="kr">exists</span> <span class="nv">m</span> : nat, n = S m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span> \/ (<span class="kr">exists</span> <span class="nv">m</span> : nat, n = S m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span> \/ (<span class="kr">exists</span> <span class="nv">m</span> : nat, n = S m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk2"><span class="nb">destruct</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span> \/ (<span class="kr">exists</span> <span class="nv">m</span> : nat, <span class="mi">0</span> = S m)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><label class="goal-separator" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk3"><hr></label><div class="goal-conclusion">S n = <span class="mi">0</span> \/ (<span class="kr">exists</span> <span class="nv">m</span> : nat, S n = S m)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk4">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span> \/ (<span class="kr">exists</span> <span class="nv">m</span> : nat, <span class="mi">0</span> = S m)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk5"><span class="nb">left</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n = <span class="mi">0</span> \/ (<span class="kr">exists</span> <span class="nv">m</span> : nat, S n = S m)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk7"><span class="nb">right</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">m</span> : nat, S n = S m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk8"><span class="kr">exists</span> <span class="nv">n</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n = S n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>However I hear it is not so simple for equality proofs. There is only
+one equality constructor, <tt class="docutils literal">eq_refl</tt>, but Coq cannot prove that</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="when-are-the-constructors-of-an-inductive-type-exhaustive-v-chk9"><span class="kn">Lemma</span> <span class="nf">eq_destruct</span> : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">prEq</span> : x = x),
+    prEq = eq_refl.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">prEq</span> : x = x),
+prEq = eq_refl</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>What exactly blocks this proof? Probably a first problem is that
+equality is not just a type, but a type family <tt class="docutils literal">eq : forall A : Type,
+A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> Prop</tt>. Is there a simpler type family where such a proof is
+impossible? With 1 or 2 arguments instead of 3 maybe?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>I wrote about this issue in a <a class="reference external" href="http://poleiro.info/posts/2018-01-26-equality-in-coq.html">blog post</a>. In
+general, this arises when you define a type family over a type that
+does not have decidable equality. For example, consider the following
+type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">foo</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+| Foo : foo unit.</span></span></pre><p>It is not possible to show (I am pretty sure) that every inhabitant of
+<tt class="docutils literal">foo unit</tt> is of the form <tt class="docutils literal">Foo</tt>.</p>
+<p>This phenomenon is easier to see at the level of proof terms. When you
+destruct a term of such a family, you must generalize over the index
+of the family. You can only relate this index to a known shape such as
+<tt class="docutils literal">unit</tt> if the type has decidable equality.</p>
+<hr class="docutils" />
+<p><strong>A (András Kovács):</strong> Interestingly though, univalence implies that
+every <tt class="docutils literal">foo unit</tt> is <tt class="docutils literal">Foo</tt>.</p>
+<p><strong>Q:</strong> &#64;AndrásKovács Is this because <tt class="docutils literal">unit</tt> is contractible? Would
+it fail if I replaced <tt class="docutils literal">unit</tt> by <tt class="docutils literal">bool</tt>?</p>
+<p><strong>A (András Kovács):</strong> Yes, to both questions.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Ease life in dependently typed programming using Function and Program in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running . Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="ease-life-in-dependently-typed-programming-using-function-and-program-in-coq">
+<h1 class="title">Ease life in dependently typed programming using <tt class="docutils literal">Function</tt> and <tt class="docutils literal">Program</tt> in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/52262322/ease-life-in-dependently-typed-programming-using-function-and-program-in-coq">https://stackoverflow.com/questions/52262322/ease-life-in-dependently-typed-programming-using-function-and-program-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to implement a dependently typed evaluator of STLC in Coq
+using <tt class="docutils literal">Program Fixpoint</tt>. Since the language does not have fixed
+point operator, I think the evaluator should terminate, though the
+termination condition is not structural.</p>
+<p>During my development, I find one source of headache is I simply can't
+keep track of too many variables at the same time, and pattern
+matching is too nested.</p>
+<p>If it were about a mere <tt class="docutils literal">Fixpoint</tt>, I can just implement the body
+using tactics, but when using <tt class="docutils literal">Program Fixpoint</tt> or <tt class="docutils literal">Function</tt>, I
+just cannot. Is there any trick to build body using tactics in this
+case?</p>
+<p>I am stuck at very end:
+<a class="reference external" href="https://gist.github.com/HuStmpHrrr/0d92e646916ae9ec7ced3ff21724ba2d">https://gist.github.com/HuStmpHrrr/0d92e646916ae9ec7ced3ff21724ba2d</a></p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>When using <tt class="docutils literal">Program</tt>, you can simply leave underscores for parts of
+your term you want to fill in using proof mode. Any underscores that
+can be inferred will automatically be filled in and the remaining will
+produce obligations. For example, you can write all of <tt class="docutils literal">run</tt> in
+proof mode by writing <tt class="docutils literal">Program Fixpoint run ... {measure <span class="pre">...}</span> := _.</tt>
+The measure will show up as an argument to <tt class="docutils literal">run</tt> in the context.</p>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Prove properties of lists</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="prove-properties-of-lists">
+<h1 class="title">Prove properties of lists</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/52410544/prove-properties-of-lists">https://stackoverflow.com/questions/52410544/prove-properties-of-lists</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>My aim is to prove that certain properties of generated lists hold.
+For instance, a generator function produces a list of <tt class="docutils literal">1</tt>'s, the
+length of the list is given as an argument; I'd like to prove that the
+length of the list is what the argument specifies. This is what I have
+so far:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">list_gen</span> <span class="nv">lng</span> <span class="nv">acc</span> :=
+  <span class="kr">match</span> lng <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; acc
+  | S lng_1 =&gt; list_gen lng_1 (<span class="mi">1</span> :: acc)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk0"><span class="kn">Lemma</span> <span class="nf">lm0</span> : length (list_gen <span class="mi">0</span> nil) = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">length (list_gen <span class="mi">0</span> nil) = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intuition</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk1"><span class="kn">Lemma</span> <span class="nf">lm1</span> : <span class="kr">forall</span> <span class="nv">lng</span> : nat, length (list_gen lng nil) = lng.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">lng</span> : nat, length (list_gen lng nil) = lng</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk2"><span class="nb">induction</span> lng.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">length (list_gen <span class="mi">0</span> nil) = <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="prove-properties-of-lists-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lng</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHlng</var><span class="hyp-type"><b>: </b><span>length (list_gen lng nil) = lng</span></span></span><br></div><label class="goal-separator" for="prove-properties-of-lists-v-chk3"><hr></label><div class="goal-conclusion">length (list_gen (S lng) nil) = S lng</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk4">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">length (list_gen <span class="mi">0</span> nil) = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> lm0.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="prove-properties-of-lists-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lng</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHlng</var><span class="hyp-type"><b>: </b><span>length (list_gen lng nil) = lng</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (list_gen (S lng) nil) = S lng</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Now after applying <tt class="docutils literal">lm0</tt> the induction step is left. I was hoping
+that the proof of this step would be deduced from the code of
+<tt class="docutils literal">list_gen</tt> but it's most likely a mistaken concept. How can this
+subgoal be proved?</p>
+<hr class="docutils" />
+<p><strong>A (Daniel Schepler):</strong> I would guess probably you need to generalize
+what you're proving to handle cases where the <tt class="docutils literal">acc</tt> argument is not
+<tt class="docutils literal">nil</tt>:</p>
+<pre class="code coq literal-block">
+<span class="kr">forall</span> <span class="o">(</span><span class="nv">lng</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">(</span><span class="nv">acc</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">),</span>
+  <span class="n">length</span> <span class="o">(</span><span class="n">list_gen</span> <span class="n">lng</span> <span class="n">acc</span><span class="o">)</span> <span class="o">=</span> <span class="n">lng</span> <span class="o">+</span> <span class="n">length</span> <span class="n">acc</span><span class="o">.</span>
+</pre>
+<p>(And then simpl should be very helpful in proving the inductive
+step...)</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>I would go with Daniel's approach, however a bit more general one is
+to write out a spec of <tt class="docutils literal">list_gen</tt>, e.g. using <em>non-tail-recursive</em>
+<tt class="docutils literal">repeat</tt> function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List Arith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk6"><span class="kn">Lemma</span> <span class="nf">list_gen_spec</span> : <span class="kr">forall</span> <span class="nv">lng</span> <span class="nv">acc</span>,
+    list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lng</span> : nat) (<span class="nv">acc</span> : list nat),
+list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>where I had to add a bunch of lemmas about <tt class="docutils literal">repeat</tt>'s interaction
+with some standard list functions.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk7"><span class="kn">Lemma</span> <span class="nf">repeat_singleton</span> {<span class="nv">A</span>} (<span class="nv">x</span> : A) :
+  [x] = <span class="kp">repeat</span> x <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">[x] = <span class="kp">repeat</span> x <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk8"><span class="kn">Lemma</span> <span class="nf">repeat_app</span> {<span class="nv">A</span>} (<span class="nv">x</span> : A) <span class="nv">n</span> <span class="nv">m</span> :
+  <span class="kp">repeat</span> x n ++ <span class="kp">repeat</span> x m = <span class="kp">repeat</span> x (n + m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kp">repeat</span> x n ++ <span class="kp">repeat</span> x m = <span class="kp">repeat</span> x (n + m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk9"><span class="kn">Lemma</span> <span class="nf">app_cons</span> {<span class="nv">A</span>} (<span class="nv">x</span> : A) <span class="nv">xs</span> :
+  x :: xs = [x] ++ xs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x :: xs = [x] ++ xs</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.           <span class="c">(* this is a convenience lemma for the next one *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chka"><span class="kn">Lemma</span> <span class="nf">app_cons_middle</span> {<span class="nv">A</span>} (<span class="nv">y</span> : A) <span class="nv">xs</span> <span class="nv">ys</span> :
+  xs ++ y :: ys = (xs ++ [y]) ++ ys.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs, ys</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">xs ++ y :: ys = (xs ++ [y]) ++ ys</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>I'll leave the proofs of these lemmas as an exercise.</p>
+<p>After proving the spec, your lemma could be proved with a few
+rewrites.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chkb"><span class="kn">Lemma</span> <span class="nf">list_gen_spec</span> : <span class="kr">forall</span> <span class="nv">lng</span> <span class="nv">acc</span>,
+    list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lng</span> : nat) (<span class="nv">acc</span> : list nat),
+list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chkc"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">lng</span> : nat) (<span class="nv">acc</span> : list nat),
+list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chkd"><span class="nb">induction</span> lng <span class="kr">as</span> [| lng IH]; <span class="nb">intros</span> xs; <span class="nb">simpl</span>; <span class="nb">trivial</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lng</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">acc</span> : list nat,
+list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list_gen lng (<span class="mi">1</span> :: xs) = <span class="mi">1</span> :: <span class="kp">repeat</span> <span class="mi">1</span> lng ++ xs</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chke"><span class="nb">rewrite</span> IH.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lng</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">acc</span> : list nat,
+list_gen lng acc = <span class="kp">repeat</span> <span class="mi">1</span> lng ++ acc</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kp">repeat</span> <span class="mi">1</span> lng ++ <span class="mi">1</span> :: xs = <span class="mi">1</span> :: <span class="kp">repeat</span> <span class="mi">1</span> lng ++ xs</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> app_cons_middle, repeat_singleton, repeat_app, Nat.add_comm.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chkf"><span class="kn">Lemma</span> <span class="nf">lm1</span> <span class="nv">lng</span> : length (list_gen lng nil) = lng.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lng</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (list_gen lng []) = lng</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-properties-of-lists-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-properties-of-lists-v-chk10"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lng</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (list_gen lng []) = lng</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> list_gen_spec, app_nil_r, repeat_length.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

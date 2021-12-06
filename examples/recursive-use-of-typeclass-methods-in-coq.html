@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Recursive use of typeclass methods in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="recursive-use-of-typeclass-methods-in-coq">
+<h1 class="title">Recursive use of typeclass methods in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/52348668/recursive-use-of-typeclass-methods-in-coq">https://stackoverflow.com/questions/52348668/recursive-use-of-typeclass-methods-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Is there a way to use recursion with Coq's typeclasses? Like for e.g.,
+in defining show for lists, if you want to call the <tt class="docutils literal">show</tt> function
+for lists recursively, then you will have to use a fixpoint like so:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.Ascii.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Local</span> <span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Show</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+  {
+  show : A -&gt; string
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">showNormal</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">showList</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} : <span class="kn">Show</span> (list A) :=
+    {
+    show :=
+      <span class="kr">fix</span> lshow l :=
+        <span class="kr">match</span> l <span class="kr">with</span>
+        | nil =&gt; <span class="s2">&quot;[]&quot;</span>
+        | x :: xs =&gt; show x ++ <span class="s2">&quot; : &quot;</span> ++ lshow xs
+        <span class="kr">end</span>
+    }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">showNormal</span>.</span></span></pre><p>Which is all well and good, but what if I want to define some helper
+function that I'll use for defining <tt class="docutils literal">Show</tt> instances? Like I want to
+create a more DAZZLING show function called <tt class="docutils literal">magicShow</tt> that prints
+stars around something...</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">magicShow</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (a : A) : string :=
+  <span class="s2">&quot;** &quot;</span> ++ show a ++ <span class="s2">&quot; **&quot;</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="recursive-use-of-typeclass-methods-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="recursive-use-of-typeclass-methods-in-coq-v-chk0"><span class="kn">Instance</span> <span class="nf">showMagicList</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} : <span class="kn">Show</span> (list A) :=
+  {
+  show :=
+    <span class="kr">fix</span> lshow l :=
+      <span class="kr">match</span> l <span class="kr">with</span>
+      | nil =&gt; <span class="s2">&quot;[]&quot;</span>
+      | x :: xs =&gt; show x ++ <span class="s2">&quot; : &quot;</span> ++ magicShow xs
+      <span class="kr">end</span>
+  }.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Unable to satisfy the following constraints:
+In environment:
+A : <span class="kt">Type</span>
+H : <span class="kn">Show</span> A
+lshow : list A -&gt; string
+l : list A
+x : A
+xs : list A
+
+<span class="nl">?H</span> : <span class="s2">&quot;Show (list A)&quot;</span>
+</blockquote></div></div></small></span></pre><p>However, in this case Coq can't find a show instance for the list
+<tt class="docutils literal">xs</tt> to pass to <tt class="docutils literal">magicShow</tt>.</p>
+<p>Is there any way to do this in general? I.e., can you define a method
+for a typeclass using functions that rely upon the typeclass instance
+that you're defining?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If you must do this, it can be simulated by explicitly using the
+constructor of the underlying <tt class="docutils literal">Record</tt> (since &quot;Typeclasses are
+Records&quot;, to quote from Software Foundations [<a class="reference external" href="https://softwarefoundations.cis.upenn.edu/qc-current/Typeclasses.html">1</a>]),
+which can be instantiated using the function(s) being defined as a
+fixpoint. I'll post three examples and explain where this can be
+useful.</p>
+<p>The example you posted could be solved like this (all code tested for
+Coq 8.10.1):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Local</span> <span class="kn">Open Scope</span> list_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Local</span> <span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Show</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+  {
+  show : A -&gt; string
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">magicShow</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (a : A) : string :=
+  <span class="s2">&quot;** &quot;</span> ++ show a ++ <span class="s2">&quot; **&quot;</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="recursive-use-of-typeclass-methods-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-use-of-typeclass-methods-in-coq-v-chk1"><span class="kn">Print</span> <span class="kn">Show</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Record</span> <span class="nf">Show</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> := Build_Show
+  { show : A -&gt; string }
+
+<span class="kn">Arguments</span> <span class="kn">Show</span> _%type_scope
+<span class="kn">Arguments</span> Build_Show _%type_scope _%function_scope</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="recursive-use-of-typeclass-methods-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-use-of-typeclass-methods-in-coq-v-chk2"><span class="kn">Check</span> Build_Show.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Build_Show
+     : <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, (A -&gt; string) -&gt; <span class="kn">Show</span> A</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="recursive-use-of-typeclass-methods-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-use-of-typeclass-methods-in-coq-v-chk3"><span class="kn">Check</span> @magicShow.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">@magicShow
+     : <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, <span class="kn">Show</span> A -&gt; A -&gt; string</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">showMagicList</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} : <span class="kn">Show</span> (list A) :=
+  {
+  show :=
+    <span class="kr">fix</span> lshow l :=
+      <span class="kr">match</span> l <span class="kr">with</span>
+      | nil =&gt; <span class="s2">&quot;[]&quot;</span>
+      | x :: xs =&gt; show x ++ <span class="s2">&quot; : &quot;</span> ++ @magicShow _ (@Build_Show _ lshow) xs
+      <span class="kr">end</span>
+  }.</span></span></pre><p>If you are trying to define several typeclass methods like this, it's
+tricky to instantiate the record constructor, but it can be done by
+treating the functions as if they were defined by mutual recursion
+(although there doesn't necessarily have to be any actual mutual
+recursion). Here's a contrived example where <tt class="docutils literal">Show</tt> now has two
+methods. Notice that the typeclass instance is added to the context
+with an anonymous <tt class="docutils literal"><span class="pre">let-in</span></tt> binding. Evidently, this is enough to
+satisfy Coq's typeclass resolution mechanism.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Local</span> <span class="kn">Open Scope</span> list_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Local</span> <span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Show</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+  {
+  show1 : A -&gt; string;
+  show2 : A -&gt; string
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">magicShow1</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (a : A) : string :=
+  <span class="s2">&quot;** &quot;</span> ++ show1 a ++ <span class="s2">&quot; **&quot;</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">magicShow2</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (a : A) : string :=
+  <span class="s2">&quot;** &quot;</span> ++ show2 a ++ <span class="s2">&quot; **&quot;</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">show1__list</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (l : list A) : string :=
+  <span class="kr">let</span> <span class="nv">_</span> := (@Build_Show _ show1__list show2__list) <span class="kr">in</span>
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; <span class="s2">&quot;[]&quot;</span>
+  | x :: xs =&gt; show1 x ++ <span class="s2">&quot; : &quot;</span> ++ magicShow1 xs
+  <span class="kr">end</span>
+<span class="kr">with</span>
+show2__list {A : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (l : list A) : string :=
+  <span class="kr">let</span> <span class="nv">_</span> := (@Build_Show _ show1__list show2__list) <span class="kr">in</span>
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; <span class="s2">&quot;[]&quot;</span>
+  | x :: xs =&gt; show1 x ++ <span class="s2">&quot; : &quot;</span> ++ magicShow2 xs
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">showMagicList</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} : <span class="kn">Show</span> (list A) :=
+  {
+  show1 := show1__list;
+  show2 := show2__list
+  }.</span></span></pre><p>So why would you want to do this? A good example is when you are
+defining decidable equality on (rose) trees. In the middle of the
+definition, we have to recursively appeal to decidable equality of
+<tt class="docutils literal">list (tree A)</tt>. We would like to use the standard library helper
+function <tt class="docutils literal">Coq.Classes.EquivDec.list_eqdec</tt> [<a class="reference external" href="https://coq.inria.fr/library/Coq.Classes.EquivDec.html">2</a>], which
+shows how to pass decidable equality on a type <tt class="docutils literal">A</tt> to <tt class="docutils literal">list A</tt>.
+Since <tt class="docutils literal">list_eqdec</tt> requires a typeclass instance (the very one we
+are in the middle of defining), we have to use the same trick above:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Classes.EquivDec.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Utils.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Generalizable Variables</span> <span class="nf">A</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tree</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| leaf : A -&gt; tree A
+| node : list (tree A) -&gt; tree A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Instance</span> <span class="nf">tree_eqdec</span> `(eqa : EqDec A eq) : EqDec (tree A) eq :=
+  { equiv_dec := <span class="kr">fix</span> tequiv t1 t2 :=
+      <span class="kr">let</span> <span class="nv">_</span> := list_eqdec tequiv <span class="kr">in</span>
+      <span class="kr">match</span> t1, t2 <span class="kr">with</span>
+      | leaf a1, leaf a2 =&gt;
+        <span class="kr">if</span> a1 == a2 <span class="kr">then</span> in_left <span class="kr">else</span> in_right
+      | node ts1, node ts2 =&gt;
+        <span class="kr">if</span> ts1 == ts2 <span class="kr">then</span> in_left <span class="kr">else</span> in_right
+      | _, _ =&gt; in_right
+      <span class="kr">end</span>
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Solve Obligations with</span> <span class="nb">unfold</span> not, equiv, complement <span class="kr">in</span> *;
+  program_simpl; <span class="nb">intuition</span> (<span class="bp">discriminate</span> || <span class="nb">eauto</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-use-of-typeclass-methods-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-use-of-typeclass-methods-in-coq-v-chk4"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>equiv0</var><span class="hyp-type"><b>: </b><span>Equivalence eq</span></span></span><br><span><var>eqa</var><span class="hyp-type"><b>: </b><span>EqDec A eq</span></span></span><br><span><var>tequiv</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span> : tree A,
+{t1 === t2} + {t1 =/= t2}</span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>tree A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">ts1</span> <span class="nv">ts2</span> : list (tree A),
+~ (node ts1 = t1 /\ node ts2 = t2)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a1</span> <span class="nv">a2</span> : A,
+~ (leaf a1 = t1 /\ leaf a2 = t2)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t1 =/= t2</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> t1;
+    <span class="nb">destruct</span> t2;
+    (program_simpl || <span class="nb">unfold</span> complement, not, equiv <span class="kr">in</span> *; <span class="nb">eauto</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Solve Obligations with</span> <span class="nb">split</span>;
+(<span class="nb">intros</span>; <span class="kp">try</span> <span class="nb">unfold</span> complement, equiv ; program_simpl).</span></span></pre><p>Commentary: There is no constructor for creating a record of type
+<tt class="docutils literal">EqDec</tt> (since it only has one class method), so to convince Coq
+that <tt class="docutils literal">list (tree A)</tt> has decidable equality, the invocation is
+simply <tt class="docutils literal">list_eqdec tequiv</tt>. For the uninitiated, <tt class="docutils literal">Program</tt> here is
+simply allowing for holes in the definition of the instance to be
+filled in later as <tt class="docutils literal">Obligation</tt>'s, which is more convenient than
+writing the appropriate proofs inline.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
