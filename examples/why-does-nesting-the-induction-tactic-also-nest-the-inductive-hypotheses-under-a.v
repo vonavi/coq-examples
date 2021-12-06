@@ -18,11 +18,13 @@ Proof.
   - simpl. rewrite (Nat.mul_0_r m). reflexivity.
   - simpl. rewrite <- IHn. induction m.
     + simpl. reflexivity.
-    + simpl. (* .unfold *)
+    + simpl.
+
+(*| The above is from the Software Foundation's second chapter. |*)
+
+      Show 1. (* .unfold .messages *)
 
 (*|
-The above is from the Software Foundation's second chapter.
-
 I am really confused as to what ``IHm`` is supposed to be here. The
 way I understand it, Coq tactics get compiled under the hood to some
 functional program, but I am really not sure what is going on here. I

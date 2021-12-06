@@ -77,12 +77,19 @@ what I have so far.
   Theorem unject_inject_thehardway : forall n (ls : ilist n),
       inject (unject ls) = ilists_sizechange ls (ilists_size_equal ls).
   Proof.
-    intros. induction ls. simpl. (* .unfold *)
+    intros. induction ls. simpl.
+    (* ????????????????? *)
+
+(*|
+When I get to "?????????????????" that's where I'm stuck. I have a
+target like
+|*)
+
+    Show 1. (* .unfold .messages *)
   Admitted. (* .none *)
 
 (*|
-I have a target like ``Nil = ilists_sizechange Nil (ilists_size_equal
-Nil)`` and I'm not really sure what I can do here.
+and I'm not really sure what I can do here.
 
 I tried writing ``ilists_sizechange`` as a more direct function, but
 failed to do so. Not sure how to massage the type checking.

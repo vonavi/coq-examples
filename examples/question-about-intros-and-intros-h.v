@@ -1,7 +1,7 @@
 (*|
-#############################################
-question about intros [=] and intros [= <- H]
-#############################################
+#####################################################
+question about intros ``[=]`` and intros ``[= <- H]``
+#####################################################
 
 :Link: https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h
 |*)
@@ -49,7 +49,7 @@ So you type the following command and have the resulting goal:
 |*)
 
   intros A B [Ha Hb]. (* .unfold *)
-Abort. (* .none *)
+Abort.
 
 (*|
 I will not finish this proof. But you get the idea of what intro

@@ -1,7 +1,7 @@
 (*|
-######################################
-Coq: Proving relation between < and <=
-######################################
+##############################################
+Coq: Proving relation between ``<`` and ``<=``
+##############################################
 
 :Link: https://stackoverflow.com/questions/57719818/coq-proving-relation-between-and-%e2%89%a4
 |*)
@@ -35,7 +35,14 @@ Proof.
   unfold lt. intro n. induction n.
   - induction m.
     + intros. exfalso. contradiction.
-    + (* .unfold *)
+    + admit.
+
+(*|
+In the first inductive step (marked by the first admit), the inductive
+hypothesis shows the following:
+|*)
+
+      Undo. (* .none *) Show 1. (* .unfold .messages *)
 
 (*|
 I am not sure how I can leverage this hypothesis to prove the subgoal.

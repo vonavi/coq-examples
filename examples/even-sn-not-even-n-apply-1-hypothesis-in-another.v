@@ -26,7 +26,11 @@ Proof.
     + inversion_clear H. apply IHn in H0. apply H0.
   - intros H. induction n as [|n' IHn].
     + exfalso. apply H. apply ev_0.
-    + apply ev_SS. (* .unfold *)
+    + apply ev_SS.
+
+(*| Here is the result: |*)
+
+      Show 1. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

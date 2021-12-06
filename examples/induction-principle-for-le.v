@@ -1,7 +1,7 @@
 (*|
-############################
-Induction principle for `le`
-############################
+##############################
+Induction principle for ``le``
+##############################
 
 :Link: https://stackoverflow.com/questions/55196816/induction-principle-for-le
 |*)

@@ -111,6 +111,8 @@ principle for these types:
 Scheme term_ind' := Induction for term Sort Prop
   with funct_ind' := Induction for funct Sort Prop. (* .unfold *)
 
+Check term_ind'. (* .unfold .messages *)
+
 (*|
 This principle is already powerful enough for us to prove properties
 of ``term``, but it is a bit awkward to use, since it requires us to

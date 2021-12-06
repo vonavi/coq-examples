@@ -34,7 +34,7 @@ likewise for ``n`` and ``o`` for all matrix products in my goal.)
 Answer
 ******
 
-You can do syntactical matching on type of ``A`` to extract the
+You can do syntactical matching on ``type of A`` to extract the
 arguments.
 
 .. code-block:: coq

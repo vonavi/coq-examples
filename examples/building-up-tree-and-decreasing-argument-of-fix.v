@@ -13,6 +13,8 @@ Question
 I'm attempting to implement a function to build up a Braun tree with n
 elements using the following function in Coq, but Coq gives me the
 error that it cannot guess decreasing argument of fix:
+
+.. coq:: none
 |*)
 
 Require Import Coq.Init.Nat.
@@ -22,6 +24,8 @@ Parameter V : Type.
 Inductive BraunTree : Type :=
 | E : BraunTree
 | T : V -> BraunTree -> BraunTree -> BraunTree.
+
+(*||*)
 
 Fail Fixpoint copy (x : V) (n : nat) : BraunTree :=
   let
@@ -62,7 +66,16 @@ Fail Fixpoint copy (x : V) (n : nat) : BraunTree :=
   | (_, snd) => snd
   end. (* .fails *)
 
-(*| How can I convince Coq that i is in fact a decreasing argument? |*)
+(*|
+How can I convince Coq that i is in fact a decreasing argument?
+
+**EDIT** Type of ``BraunTree``:
+|*)
+
+Reset BraunTree. (* .none *)
+Inductive BraunTree : Type :=
+| E : BraunTree
+| T : V -> BraunTree -> BraunTree -> BraunTree.
 
 (*|
 Answer

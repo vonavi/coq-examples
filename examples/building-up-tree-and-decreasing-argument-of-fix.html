@@ -30,15 +30,7 @@
 <p>I'm attempting to implement a function to build up a Braun tree with n
 elements using the following function in Coq, but Coq gives me the
 error that it cannot guess decreasing argument of fix:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Init.Nat.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">V</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BraunTree</span> : <span class="kt">Type</span> :=
-| E : BraunTree
-| T : V -&gt; BraunTree -&gt; BraunTree -&gt; BraunTree.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="building-up-tree-and-decreasing-argument-of-fix-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="building-up-tree-and-decreasing-argument-of-fix-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="building-up-tree-and-decreasing-argument-of-fix-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="building-up-tree-and-decreasing-argument-of-fix-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
   <span class="kr">let</span>
     <span class="nv">fix</span> <span class="nv">copy2</span> (<span class="nv">a</span> : V) (<span class="nv">i</span> : nat) : (BraunTree * BraunTree) :=
     <span class="kr">match</span> i <span class="kr">with</span>
@@ -71,7 +63,10 @@ cases:</p>
   <span class="kr">match</span> copy2 x n <span class="kr">with</span>
   | (_, snd) =&gt; snd
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>How can I convince Coq that i is in fact a decreasing argument?</p>
-</div>
+<p><strong>EDIT</strong> Type of <tt class="docutils literal">BraunTree</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BraunTree</span> : <span class="kt">Type</span> :=
+| E : BraunTree
+| T : V -&gt; BraunTree -&gt; BraunTree -&gt; BraunTree.</span></span></pre></div>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p><tt class="docutils literal">Fixpoint</tt>/<tt class="docutils literal">fix</tt> only allows recursive calls on a <em>syntactically</em>

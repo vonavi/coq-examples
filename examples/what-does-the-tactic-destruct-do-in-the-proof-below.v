@@ -73,5 +73,7 @@ Proof.
 Qed.
 
 (*|
-You can also replace ``destruct H`` with ``exfalso; apply H``.
+----
+
+**A:** You can also replace ``destruct H`` with ``exfalso; apply H``.
 |*)

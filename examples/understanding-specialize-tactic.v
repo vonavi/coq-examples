@@ -71,7 +71,7 @@ expression in ``H2`` satisfies ``eq_refl`` constructor and therefore
 And we get
 |*)
 
-  Undo. (* .none *) specialize (H2 eq_refl). (* .unfold .hyps .goals *)
+  Show 1. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
@@ -87,7 +87,11 @@ following:
 
 Example specialize {A B: Type} (H: A -> B) (a: A): B.
 Proof.
-  apply H in a. (* .unfold *)
+  apply H in a.
+
+(*| This gives: |*)
+
+  Show 1. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
@@ -106,7 +110,11 @@ Proof.
 (*||*)
 
   remember (@eq_refl nat 1) as Heq.
-  apply H2 in Heq as H3. (* .unfold *)
+  apply H2 in Heq as H3.
+
+(*| It gives us: |*)
+
+  Show 1. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

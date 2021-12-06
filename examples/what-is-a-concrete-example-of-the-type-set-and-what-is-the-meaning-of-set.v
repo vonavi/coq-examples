@@ -20,9 +20,9 @@ Inductive binop : Set := Plus | Times.
 
 (*| in that book he says:
 
-    Second, there is the : Set fragment, which declares that we are
-    defining a datatype that should be thought of as a constituent of
-    programs.
+    Second, there is the ``: Set`` fragment, which declares that we
+    are defining a datatype that should be thought of as a constituent
+    of programs.
 
 Which confuses me. What does Adam mean here?
 

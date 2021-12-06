@@ -254,16 +254,15 @@ construct some lambda calculus terms in the resulting type.</p>
 | Lam : f (sum unit a) -&gt; LC_F f a.</span></span></pre><p>is represented by the container <tt class="docutils literal">(Shape, Pos)</tt> defined as:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* LC container *)</span>
 
-</span><span class="alectryon-wsp"><span class="c">(* Two values in bool = two constructors in LC_F *)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Shape</span> : <span class="kt">Type</span> := bool.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">App_F</span> (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
 | App_ (b : bool) : App_F a a.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Lam_F</span> (<span class="nv">a</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
 | Lam_ : Lam_F a (sum unit a).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Pos</span> (<span class="nv">b</span> : bool) : <span class="kt">Type</span> -&gt; (<span class="kt">Type</span> -&gt; <span class="kt">Type</span>) :=
+<span class="c">(* Two values in bool = two constructors in LC_F *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Shape</span> : <span class="kt">Type</span> := bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Pos</span> (<span class="nv">b</span> : bool) : <span class="kt">Type</span> -&gt; (<span class="kt">Type</span> -&gt; <span class="kt">Type</span>) :=
   <span class="kr">match</span> b <span class="kr">with</span>
   | true =&gt; App_F
   | false =&gt; Lam_F

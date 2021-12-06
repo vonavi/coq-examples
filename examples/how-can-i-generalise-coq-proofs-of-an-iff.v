@@ -19,8 +19,9 @@ Lemma my_lemma : forall y,
 Proof.
   intros y Q_y.
   split.
-  - admit. (* some proof using Q *)
-  - admit. (* the same proof using Q, but x and x' are swapped *)
+  - (* some proof using Q *) admit. (* .none *)
+
+  - (* the same proof using Q, but x and x' are swapped *) admit. (* .none *)
 Abort. (* .none *)
 
 (*|

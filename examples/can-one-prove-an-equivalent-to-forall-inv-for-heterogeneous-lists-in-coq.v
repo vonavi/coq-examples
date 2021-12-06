@@ -128,6 +128,8 @@ equality:
 Print Assumptions hForall_inv. (* .unfold *)
 
 (*|
+----
+
 With a little more knowledge of how ``destruct`` works/dependent
 pattern-matching, here's a proof without axioms.
 
@@ -145,8 +147,8 @@ indeed you can refactor the goal so that it explicitly depends on
 then be generalized by ``destruct``:
 |*)
 
-Lemma hForall_inv' (a : A) (ls : list A) (x : B a) (hl : hlist ls)
-  : hForall (HCons x hl) -> P a x.
+Lemma hForall_inv' (a : A) (ls : list A) (x : B a) (hl : hlist ls) :
+  hForall (HCons x hl) -> P a x.
 Proof.
   intros H.
   change (match HCons x hl return Prop with

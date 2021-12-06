@@ -145,6 +145,8 @@ After you've gotten the goal to ``S (fold_length l) = S (length l)``
 using either of the above tactics, you can use ``rewrite -> IHl.``
 like you wanted to.
 
+----
+
 .. [1] I thought the slashes only made ``simpl`` unfold things *less*,
    which is why I didn't mention it before. I'm not sure what the
    default actually is, since putting the slash anywhere seems to make

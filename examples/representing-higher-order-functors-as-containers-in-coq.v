@@ -328,15 +328,14 @@ Inductive LC_F (f : Type -> Type) (a : Type) : Type :=
 (* LC container *)
 
 Reset Shape. (* .none *)
-(* Two values in bool = two constructors in LC_F *)
-Definition Shape : Type := bool.
-
 Inductive App_F (a : Type) : Type -> Type :=
 | App_ (b : bool) : App_F a a.
 
 Inductive Lam_F (a : Type) : Type -> Type :=
 | Lam_ : Lam_F a (sum unit a).
 
+(* Two values in bool = two constructors in LC_F *)
+Definition Shape : Type := bool.
 Definition Pos (b : bool) : Type -> (Type -> Type) :=
   match b with
   | true => App_F

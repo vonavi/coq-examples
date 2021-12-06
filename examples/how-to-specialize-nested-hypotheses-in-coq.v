@@ -77,9 +77,13 @@ Lemma foo :
     True.
 Proof.
   intro h.
-  specialize h with (x := 0) (y := 0). (* .unfold *)
+  specialize h with (x := 0) (y := 0).
 
-(*| But you could also give the proof directly with *)
+(*| Here you will end up with |*)
+
+  Show 1. (* .unfold .messages *)
+
+(*| But you could also give the proof directly with |*)
 
   Undo. (* .none *)
   specialize (h 0 eq_refl 0).
