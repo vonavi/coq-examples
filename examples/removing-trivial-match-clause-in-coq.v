@@ -20,19 +20,23 @@ Defined.
 
 Lemma castLemma0 {A : Set} : forall (x : A) prf, cast A prf x = x.
 Proof.
-  intros.
-  compute. (* .unfold *)
+  intros. compute. (* ??? *)
+
+(*|
+After the compute step, we are left with the following context and
+subgoal
+|*)
+
+  Show 1. (* .unfold .messages *)
 
 (*|
 Clearly the left hand side and right hand side are equal. But I am not
 sure how to get rid of the annoying ``match`` clause on the left hand
 side. In particular, trying to ``destruct prf`` yields the following
 error
-
-.. coq:: unfold fails
 |*)
 
-  Fail destruct prf.
+  Fail destruct prf. (* .unfold .fails .messages *)
 
 (*| Is there a way to get rid of this match clause? |*)
 

@@ -39,14 +39,16 @@ Theorem evenb_double_k : forall n,
 Proof.
   intros n H. induction n as [|n' IHn'].
   - exists 0. reflexivity.
-  - (* .unfold *) (* stuck *)
-Abort. (* .none *)
-
+  - (* stuck *)
 (*|
 But apparently induction works one natural number at a time, and
-``exists k : nat, S n' = double k`` is clearly not provable. Is there
-a way to have induction go from ``n`` to ``n + 2``?
+``exists k : nat, S n' = double k`` is clearly not provable.
 |*)
+
+    Show 1. (* .unfold .messages *)
+Abort. (* .none *)
+
+(*| Is there a way to have induction go from ``n`` to ``n + 2``? |*)
 
 (*|
 Answer (Li-yao Xia)

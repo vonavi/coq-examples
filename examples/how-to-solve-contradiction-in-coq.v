@@ -34,9 +34,9 @@ Goal (true <> false).
 Qed.
 
 (*|
-There are a lot of general ways to deal with
-contradictions...``discriminate`` and ``inversion`` are quite common.
-But a clearer example would be better.
+There are a lot of general ways to deal with contradictions...\
+``discriminate`` and ``inversion`` are quite common. But a clearer
+example would be better.
 
 Something to note in general is that ``A <> B`` is just a notation for
 ``A = B -> False``, which is why ``intros contra`` above works,

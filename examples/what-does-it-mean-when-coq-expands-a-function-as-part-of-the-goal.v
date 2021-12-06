@@ -35,13 +35,21 @@ Lemma nonzeros_app : forall l1 l2 : natlist,
 Proof.
   intros l1 l2. induction l1 as [| n' l' IHl'].
   - simpl. reflexivity.
-  - (* .unfold *) simpl. (* .unfold *)
+  - simpl.
+
+(*| at that point Coq changes the goal from: |*)
+
+    Undo. (* .none *) Show 1. (* .unfold .messages *)
+
+(*| to: |*)
+
+    simpl. (* .none *) Show 1. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
-at that point Coq changes the goal, which seems completely mysterious
-to me. What does it mean when Coq just copy pastes the definition of a
-function into my goal? What do I even do with this?
+which seems completely mysterious to me. What does it mean when Coq
+just copy pastes the definition of a function into my goal? What do I
+even do with this?
 
 ----
 
@@ -57,8 +65,9 @@ Proof.
   intros l1 l2. induction l1 as [| n' l' IHl'].
   - simpl. reflexivity.
   - simpl. { induction n'.
-             - (* ... *) admit.
-             - (* ... *) admit. }
+             - (* ... *) admit. (* .none *)
+
+             - (* ... *) admit. (* .none *) }
 Abort. (* .none *)
 
 (*|

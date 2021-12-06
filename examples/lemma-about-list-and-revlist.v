@@ -1,7 +1,7 @@
 (*|
-##############################
-Lemma about list and rev(list)
-##############################
+#####################################
+Lemma about ``list`` and ``rev list``
+#####################################
 
 :Link: https://stackoverflow.com/questions/56860962/lemma-about-list-and-revlist
 |*)
@@ -51,8 +51,14 @@ Proof.
 Qed.
 
 (*|
+----
+
 Minor issues
 ============
+
+``rev(t)`` should be just ``rev t``. Just an aesthetic point, but
+probably you should get yourself more familiar to writing in
+functional programming style.
 
     Usually theorems about lists are proven using induction
 
@@ -61,7 +67,7 @@ are so many ways to do induction on a value, and choosing the
 induction that works best is a crucial skill. To name a few:
 
 - Induction on the list
-- Induction on the length of the list
+- Induction on the *length* of the list
 
   - arises quite frequently when dealing with ``rev`` and other
     functions that preserve length

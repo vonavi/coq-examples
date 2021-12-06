@@ -41,7 +41,11 @@ Next Obligation.
 Qed.
 
 Next Obligation.
-  unfold well_founded. unfold MR. (* .unfold *)
+  unfold well_founded. unfold MR.
+
+(*| The obligation looks like this: |*)
+
+  Show 1. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

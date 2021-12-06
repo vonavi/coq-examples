@@ -1,7 +1,7 @@
 (*|
-##################################################################
-Coq leb <=? does not give me an hypothesis after case or induction
-##################################################################
+############################################################################
+Coq ``leb`` (``<=?``) does not give me an hypothesis after case or induction
+############################################################################
 
 :Link: https://stackoverflow.com/questions/66709518/coq-leb-does-not-give-me-an-hypothesis-after-case-or-induction
 |*)
@@ -19,8 +19,15 @@ I would like to prove the following Lemma:
 Require Import Arith.
 Lemma example: forall a b,
     if a <=? b then a <= b else a > b.
+
+(*| Doing the following step in the proof |*)
+
 Proof.
-  intros. (* .unfold *)
+  intros.
+
+(*| Gives me the result |*)
+
+  Show 1. (* .unfold .messages *)
 
 (*|
 It seems trivial that either ``a`` is smaller than or equal to ``b``,
@@ -31,7 +38,7 @@ I've tried to prove this with ``induction (a <=? b)`` or ``case (a <=?
 b)`` but both give me the following result.
 |*)
 
-induction (a <=? b). (* .unfold *)
+  induction (a <=? b). (* .unfold *)
 Abort. (* .none *)
 
 (*|

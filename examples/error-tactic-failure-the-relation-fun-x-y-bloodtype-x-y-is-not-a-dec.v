@@ -61,7 +61,7 @@ Qed.
 
 (*|
 But I can't prove that any other combination will not result to
-``TypeO`` blood. Because I'm getting following error:
+``TypeO`` blood.
 |*)
 
 Theorem not_double_O_does_not_result_O_type :
@@ -72,7 +72,11 @@ Proof.
   intros b1 b2 H.
   destruct b1.
   - destruct b2.
-    + simpl. Fail reflexivity. (* .unfold .fails *)
+    + simpl. Fail reflexivity. (* .fails *)
+
+(*| Because I'm getting following error: |*)
+
+      Fail reflexivity. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
