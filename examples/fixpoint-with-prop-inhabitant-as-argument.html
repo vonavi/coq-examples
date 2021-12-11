@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Fixpoint with Prop inhabitant as argument</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="fixpoint-with-prop-inhabitant-as-argument">
+<h1 class="title">Fixpoint with <tt class="docutils literal">Prop</tt> inhabitant as argument</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/51763716/fixpoint-with-prop-inhabitant-as-argument">https://stackoverflow.com/questions/51763716/fixpoint-with-prop-inhabitant-as-argument</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Consider the definition of <tt class="docutils literal">find</tt> in <a class="reference external" href="https://coq.inria.fr/library/Coq.Lists.List.html#find">the standard library</a>, which as
+the type <tt class="docutils literal">find: forall A : Type, (A <span class="pre">-&gt;</span> bool) <span class="pre">-&gt;</span> list A <span class="pre">-&gt;</span> option A</tt>.</p>
+<p>Of course, <tt class="docutils literal">find</tt> has to return an <tt class="docutils literal">option A</tt> and not an <tt class="docutils literal">A</tt>
+because we don't know wether there is a &quot;valid&quot; element in the list.</p>
+<p>Now, say I find this definition of <tt class="docutils literal">find</tt> painful, because we have
+to deal with the option, even when we are sure that such an element
+exists in the list.</p>
+<p>Hence, I'd like to define <tt class="docutils literal">myFind</tt> which additionnaly takes a proof
+that there is such an element in the list. It would be something like:</p>
+<pre class="code coq literal-block">
+<span class="kn">Variable</span> <span class="nv">A</span><span class="o">:</span> <span class="kt">Type</span><span class="o">.</span>
+<span class="kn">Fixpoint</span> <span class="nf">myFind</span>
+         <span class="o">(</span><span class="nv">f</span><span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">bool</span><span class="o">)</span>
+         <span class="o">(</span><span class="nv">l</span><span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">)</span>
+         <span class="o">(</span><span class="nv">H</span><span class="o">:</span> <span class="kr">exists</span> <span class="nv">a</span><span class="o">,</span> <span class="n">In</span> <span class="n">a</span> <span class="n">l</span> <span class="o">/\</span> <span class="n">f</span> <span class="n">a</span> <span class="o">=</span> <span class="n">true</span><span class="o">):</span> <span class="n">A</span> <span class="o">:=</span>
+         <span class="o">...</span>
+</pre>
+<p>If I am not mistaken, such a signature informally says: &quot;Give me a
+function, a list, and a proof that you have a &quot;valid&quot; element in the
+list&quot;.</p>
+<p>My question is: how can I use the hypothesis provided and define my
+fixpoint?</p>
+<p>What I have in mind is something like:</p>
+<pre class="code coq literal-block">
+<span class="kr">match</span> <span class="n">l</span> <span class="kr">with</span>
+<span class="o">|</span> <span class="n">nil</span> <span class="o">=&gt;</span> <span class="c">(* Use H to prove this case is not possible *)</span>
+<span class="o">|</span> <span class="n">hd</span> <span class="o">::</span> <span class="n">tl</span> <span class="o">=&gt;</span>
+  <span class="kr">if</span> <span class="n">f</span> <span class="n">hd</span>
+  <span class="kr">then</span> <span class="n">hd</span>
+  <span class="kr">else</span>
+    <span class="c">(* Use H and the fact that f hd = false
+       to prove H': exists a, In a tl /\ f a = true *)</span>
+    <span class="n">myFind</span> <span class="n">f</span> <span class="n">tl</span> <span class="n">H'</span>
+<span class="kr">end</span><span class="o">.</span>
+</pre>
+<hr class="docutils" />
+<p>An bonus point would be to know whether I can embbed a property about
+the result directly within the type, for instance in our case, a proof
+that the return value <tt class="docutils literal">r</tt> is indeed such that <tt class="docutils literal">f r = true</tt>.</p>
+</div>
+<div class="section" id="answer-anton-trunov">
+<h1>Answer (Anton Trunov)</h1>
+<p>We can implement this <tt class="docutils literal">myFind</tt> function by structural recursion over
+the input list. In the case of empty list the <tt class="docutils literal">False_rect</tt> inductive
+principle is our friend because it lets us switch from the logical
+world to the world of computations. In general we cannot destruct
+proofs of propositions if the type of the term under construction
+lives in <tt class="docutils literal">Type</tt>, but if we have an inconsistency the system lets us.</p>
+<p>We can handle the case of the non-empty input list by using the
+<em>convoy pattern</em> (there is a number of great answers on Stackoverflow
+explaining this pattern) and an auxiliary lemma <tt class="docutils literal">find_not_head</tt>.</p>
+<p>It might be useful to add that I use the convoy pattern twice in the
+implementation below: the one on the top level is used to let Coq know
+the input list is empty in the first <tt class="docutils literal">match</tt>-branch -- observe that
+the type of <tt class="docutils literal">H</tt> is different in both branches.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* so we can write `f a` instead of `f a = true` *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">is_true</span> : bool &gt;-&gt; <span class="kt">Sortclass</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Find</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variables</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A -&gt; bool).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* auxiliary lemma *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="fixpoint-with-prop-inhabitant-as-argument-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="fixpoint-with-prop-inhabitant-as-argument-v-chk0"><span class="kn">Fact</span> <span class="nf">find_not_head</span> <span class="nv">h</span> <span class="nv">l</span> : f h = false -&gt;
+                           (<span class="kr">exists</span> <span class="nv">a</span>, In a (h :: l) /\ f a) -&gt;
+                           <span class="kr">exists</span> <span class="nv">a</span>, In a l /\ f a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; bool</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">f h = false -&gt;
+(<span class="kr">exists</span> <span class="nv">a</span> : A, In a (h :: l) /\ f a) -&gt;
+<span class="kr">exists</span> <span class="nv">a</span> : A, In a l /\ f a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="fixpoint-with-prop-inhabitant-as-argument-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="fixpoint-with-prop-inhabitant-as-argument-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; bool</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">f h = false -&gt;
+(<span class="kr">exists</span> <span class="nv">a</span> : A, In a (h :: l) /\ f a) -&gt;
+<span class="kr">exists</span> <span class="nv">a</span> : A, In a l /\ f a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span> E [a [[contra | H] fa_true]]; [<span class="bp">congruence</span> | <span class="bp">now</span> <span class="kr">exists</span> <span class="nv">a</span>].</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">myFind</span> (<span class="nv">l</span> : list A) (<span class="nv">H</span> : <span class="kr">exists</span> <span class="nv">a</span> : A, In a l /\ f a) :
+    {r : A | f r} :=
+    <span class="kr">match</span> l <span class="kr">with</span>
+    | [] =&gt; <span class="kr">fun</span> <span class="nv">H</span> : <span class="kr">exists</span> <span class="nv">a</span> : A, In a [] /\ f a =&gt;
+              False_rect {r : A | f r}
+                         <span class="kr">match</span> H <span class="kr">with</span>
+                         | ex_intro _ _ (conj contra _) =&gt;
+                           <span class="kr">match</span> contra <span class="kr">with</span> <span class="kr">end</span>
+                         <span class="kr">end</span>
+    | h :: l =&gt; <span class="kr">fun</span> <span class="nv">H</span> : <span class="kr">exists</span> <span class="nv">a</span> : A, In a (h :: l) /\ f a =&gt;
+                  (<span class="kr">if</span> f h <span class="kr">as</span> b <span class="kr">return</span> (f h = b -&gt; {r : A | f r})
+                   <span class="kr">then</span> <span class="kr">fun</span> <span class="nv">Efh</span> =&gt; exist _ h Efh
+                   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">Efh</span> =&gt; myFind l (find_not_head Efh H)) eq_refl
+    <span class="kr">end</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Find</span>.</span></span></pre><p>Here is a simplistic test:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">FindTest</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">l</span> := [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">0</span>; <span class="mi">9</span>].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">f</span> := (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n =? <span class="mi">0</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="fixpoint-with-prop-inhabitant-as-argument-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="fixpoint-with-prop-inhabitant-as-argument-v-chk2"><span class="kn">Fact</span> <span class="nf">H</span> : <span class="kr">exists</span> <span class="nv">a</span>, In a l /\ f a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">a</span> : nat, In a l /\ f a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="fixpoint-with-prop-inhabitant-as-argument-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="fixpoint-with-prop-inhabitant-as-argument-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">a</span> : nat, In a l /\ f a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kr">exists</span> <span class="mi">0</span>; <span class="nb">intuition</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="fixpoint-with-prop-inhabitant-as-argument-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="fixpoint-with-prop-inhabitant-as-argument-v-chk4"><span class="kn">Compute</span> myFind f l H.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= exist (<span class="kr">fun</span> <span class="nv">r</span> : nat =&gt; f r) <span class="mi">0</span> eq_refl
+: {r : nat | f r}</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(*</span>
+<span class="c">  = exist (fun r : nat =&gt; f r) 0 eq_refl</span>
+<span class="c">  : {r : nat | f r}</span>
+<span class="c">*)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">FindTest</span>.</span></span></pre></div>
+<div class="section" id="answer-larsr">
+<h1>Answer (larsr)</h1>
+<p>You can also use <tt class="docutils literal">Program</tt> to help you construct the proof arguments
+interactively. You fill in as much as you can in the program body and
+leave <tt class="docutils literal">_</tt> blanks that you get to fill in later with proof tactics.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Find</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">test</span> : A -&gt; bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">FIND</span> <span class="nv">l</span> (<span class="nv">H</span> : <span class="kr">exists</span> <span class="nv">a</span>, test a = true /\ In a l) :
+    {r | test r = true} :=
+    <span class="kr">match</span> l <span class="kr">with</span>
+    | [] =&gt; <span class="kr">match</span> (_ : <span class="kt">False</span>) <span class="kr">with</span> <span class="kr">end</span>
+    | a :: l&#39; =&gt; <span class="kr">if</span> dec (test a) <span class="kr">then</span> a <span class="kr">else</span> FIND l&#39; _
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="fixpoint-with-prop-inhabitant-as-argument-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="fixpoint-with-prop-inhabitant-as-argument-v-chk5"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>test</var><span class="hyp-type"><b>: </b><span>A -&gt; bool</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>test H0 = true</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>In H0 (a :: l&#39;)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>test a = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">a</span> : A, test a = true /\ In a l&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">firstorder</span>; <span class="bp">congruence</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Find</span>.</span></span></pre><p><tt class="docutils literal">Program</tt> is a little better at not forgetting information when you
+do case analysis (it knows the convoy pattern) but it is not perfect,
+hence the use of <tt class="docutils literal">dec</tt> in the <tt class="docutils literal">if</tt> statement.</p>
+<p>(Notice how Coq was able to handle the first obligation, to construct
+a term of type <tt class="docutils literal">False</tt>, all by itself!)</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

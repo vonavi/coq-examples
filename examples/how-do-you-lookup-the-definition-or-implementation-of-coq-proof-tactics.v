@@ -92,11 +92,11 @@ For primitive tactics
 - There is the Coq reference manual
   (https://coq.inria.fr/distrib/current/refman/coq-tacindex.html),
   which does not have complete specification but is usually the
-  closest approximation. It’s not very accessible, so you should first
+  closest approximation. It's not very accessible, so you should first
   refer to one of the many Coq tutorials or introductions, like
   Software Foundations.
-- There is the actual Coq implementation, but that’s not very helpful
-  unless you’re a Coq implementer.
+- There is the actual Coq implementation, but that's not very helpful
+  unless you're a Coq implementer.
 |*)
 
 (*|

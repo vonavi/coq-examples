@@ -52,7 +52,7 @@ Qed.
 (*|
 However, I don't understand the use of ``Equal_Trans`` (line 6). If I
 understand, ``Equal_Trans`` takes 3 arguments: y x z? But why there is
-only 1 argument using ``Equal_Trans`` in ``Add_com`` lemma ?
+only 1 argument using ``Equal_Trans`` in ``Add_com`` lemma?
 
 Thank you in advance for your help.
 |*)
