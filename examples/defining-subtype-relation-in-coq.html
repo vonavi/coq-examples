@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Defining subtype relation in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="defining-subtype-relation-in-coq">
+<h1 class="title">Defining subtype relation in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/51406616/defining-subtype-relation-in-coq">https://stackoverflow.com/questions/51406616/defining-subtype-relation-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Is there a way to define subtype relationship in Coq?</p>
+<p>I read about subset typing, in which a predicate is used to determine
+what goes into the subtype, but this is not what I am aiming for. I
+just want to define a theory in which there is a type (U) and another
+type (I), which is subtype of (U).</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>There is no true subtyping in Coq (except for universe subtyping,
+which is probably not what you want). The closest alternative is to
+use coercions, which are functions that the Coq type checker inserts
+automatically whenever it is expecting an element of one type but
+finds an element of another type instead. For instance, consider the
+following coercion from booleans to natural numbers:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">nat_of_bool</span> (<span class="nv">b</span> : bool) : nat :=
+  <span class="kr">if</span> b <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">0</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">nat_of_bool</span> : bool &gt;-&gt; nat.</span></span></pre><p>After running this snippet, Coq uses <tt class="docutils literal">nat_of_bool</tt> to convert
+<tt class="docutils literal">bool</tt> to <tt class="docutils literal">nat</tt>, as shown here:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="defining-subtype-relation-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="defining-subtype-relation-in-coq-v-chk0"><span class="kn">Check</span> true + <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">true + <span class="mi">3</span>
+     : nat</blockquote></div></div></small></span></pre><p>Thus, <tt class="docutils literal">bool</tt> starts behaving almost as if it were a subtype of <tt class="docutils literal">nat</tt>.</p>
+<p>Though <tt class="docutils literal">nat_of_bool</tt> does not appear here, it is just being hidden
+by Coq's printer. This term is actually the same thing as
+<tt class="docutils literal">nat_of_bool true + 3</tt>, as we can see by asking Coq to print all
+coercions:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Printing Coercions</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="defining-subtype-relation-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="defining-subtype-relation-in-coq-v-chk1"><span class="kn">Check</span> true + <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">nat_of_bool true + <span class="mi">3</span>
+     : nat</blockquote></div></div></small></span></pre><p>The <tt class="docutils literal">:&gt;</tt> symbol <a class="reference external" href="https://stackoverflow.com/questions/51404367/the-coq-symbol">you had asked about earlier</a>, when
+used in a record declaration, is doing the same thing. For instance,
+the code</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">foo</span> := Foo {
+                  sort :&gt; <span class="kt">Type</span>
+                }.</span></span></pre><p>is equivalent to</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">foo</span> := Foo {
+                  sort : <span class="kt">Type</span>
+                }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">sort</span> : foo &gt;-&gt; <span class="kt">Sortclass</span>.</span></span></pre><p>where <tt class="docutils literal">Sortclass</tt> is a special coercion target for <tt class="docutils literal">Type</tt>,
+<tt class="docutils literal">Prop</tt> and <tt class="docutils literal">Set</tt>.</p>
+<p>The <a class="reference external" href="https://coq.inria.fr/refman/addendum/implicit-coercions.html">Coq user manual</a>
+describes coercions in more detail.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

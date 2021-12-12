@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Difference between sumbool and intuitionnistic disjunction</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="difference-between-sumbool-and-intuitionnistic-disjunction">
+<h1 class="title">Difference between <tt class="docutils literal">sumbool</tt> and intuitionnistic disjunction</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/51288196/difference-between-sumbool-and-intuitionnistic-disjunction">https://stackoverflow.com/questions/51288196/difference-between-sumbool-and-intuitionnistic-disjunction</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>According to Coq's documentation</p>
+<blockquote>
+<tt class="docutils literal">sumbool</tt> is a boolean type equipped with the justification of
+their value</blockquote>
+<p>I thought that was already a property of the disjunction, in the
+intuitionnistic (or constructive) logic that Coq implements.</p>
+<p>For example, to prove an excluded middle <tt class="docutils literal">p \/ ~p</tt> in Coq, you have
+to do actual work, it is not a logical axiom. So a proof of <tt class="docutils literal">p \/ q</tt>
+must either be a proof of <tt class="docutils literal">p</tt> or a proof of <tt class="docutils literal">q</tt>.</p>
+<p>Then why do we need <tt class="docutils literal">sumbool p q</tt>?</p>
+<p><strong>EDIT</strong></p>
+<p>By replacing the tactics by exact proofs, I got more specific error
+messages. This one is fine:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk0"><span class="kn">Lemma</span> <span class="nf">sumbool_or</span> : <span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>, sumbool p q -&gt; p \/ q.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>, {p} + {q} -&gt; p \/ q</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>, {p} + {q} -&gt; p \/ q</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (<span class="kr">fun</span> (<span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : sumbool p  q) =&gt;
+           <span class="kr">match</span> H <span class="kr">with</span>
+           | <span class="nb">left</span> p0 =&gt; or_introl p0
+           | <span class="nb">right</span> q0 =&gt; or_intror q0
+           <span class="kr">end</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>However this one tells me</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk2"><span class="kn">Lemma</span> <span class="nf">or_sumbool</span> : <span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>, p \/ q -&gt; sumbool p q.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>, p \/ q -&gt; {p} + {q}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>, p \/ q -&gt; {p} + {q}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="difference-between-sumbool-and-intuitionnistic-disjunction-v-chk4"><span class="bp">exact</span> (<span class="kr">fun</span> (<span class="nv">p</span> <span class="nv">q</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : p \/ q) =&gt;
+                <span class="kr">match</span> H <span class="kr">with</span>
+                | or_introl p0 =&gt; <span class="nb">left</span> p0
+                | or_intror q0 =&gt; <span class="nb">right</span> q0
+                <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Incorrect elimination of <span class="s2">&quot;H&quot;</span> <span class="kr">in</span> the inductive type
+<span class="s2">&quot;or&quot;</span>:
+the <span class="kr">return</span> type has sort <span class="s2">&quot;Set&quot;</span> while it
+should be <span class="s2">&quot;SProp&quot;</span> or <span class="s2">&quot;Prop&quot;</span>.
+Elimination of an inductive object of sort <span class="kt">Prop</span>
+<span class="kr">is</span> not allowed on a predicate <span class="kr">in</span> sort <span class="kt">Set</span>
+because proofs can be eliminated <span class="kp">only</span> to build proofs.</blockquote></div></div></small></span></pre><p>I'm a bit surprised. So a primitive like <tt class="docutils literal">match</tt> depends on the sort
+of thing we want to prove? It looks low-level lambda-calculus though.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The <tt class="docutils literal">sumbool</tt> type lives in Coq's computationally relevant universe
+<tt class="docutils literal">Type</tt> (or <tt class="docutils literal">Set</tt>). In particular, we can write programs using
+functions that return elements of <tt class="docutils literal">{P} + {Q}</tt> (for instance, the
+standard library's <tt class="docutils literal">Nat.eq_dec : forall n m : nat, {n = m} + {n &lt;&gt;
+m}</tt>, which tests whether two numbers are equal).</p>
+<p>Logical disjunction, on the other hand, belongs to the computationally
+irrelevant universe <tt class="docutils literal">Prop</tt>. We cannot perform case analysis on a
+proof of type <tt class="docutils literal">P \/ Q</tt> because Coq was designed to erase proofs when
+a program is extracted, and such a case analysis might alter the
+outcome of a computation. This makes it safe for us, for example, to
+add the excluded middle axiom <tt class="docutils literal">forall P : Prop, P \/ ~ P</tt> without
+impacting the execution of extracted programs.</p>
+<p>It would also be possible to add a strong form of the excluded middle
+that lives in <tt class="docutils literal">Type</tt>: <tt class="docutils literal">forall P : Prop, {P} + {~P}</tt>; however, if
+we use this axiom to write programs, we will not be able to execute
+them.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Think of what is going to happen at runtime. When extracting a
+program (i.e. erasing all the proofs since you don't need them at
+runtime) all arguments of type <tt class="docutils literal">or A B</tt> can be erased, i.e. those
+cannot have any influence on program execution. Whereas it's not
+possible to remove a term of type <tt class="docutils literal">sumbool A B</tt>, we can only hope
+that the extractor would erase the proofs <tt class="docutils literal">left</tt> and <tt class="docutils literal">right</tt>
+constructors carry. Essentially <tt class="docutils literal">sumbool</tt> should turn into a plain
+simple <tt class="docutils literal">bool</tt> type at runtime (that was a part of my answer I was
+writing, but Arthur beat me to it :)).</p>
+<p><strong>A:</strong> Note that the resulting type is <tt class="docutils literal">Prop</tt> for <tt class="docutils literal">or</tt> and <tt class="docutils literal">Set</tt>
+for <tt class="docutils literal">sumbool</tt>. This means you can use terms of <tt class="docutils literal">sumbool</tt> type as
+<em>data</em>, but terms of <tt class="docutils literal">or</tt> type is for <em>specification</em> purposes only.
+Which one to use depends on what you are trying to achieve.
+<tt class="docutils literal">sumbool</tt> can be used inside the logical world, but <tt class="docutils literal">or</tt> can't
+affect computations. You can prove <tt class="docutils literal">Lemma sumbool_to_or P Q : {P} +
+{Q} <span class="pre">-&gt;</span> P \/ Q.</tt>, but not <tt class="docutils literal">P \/ Q <span class="pre">-&gt;</span> {P} + {Q}</tt>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>A simple case of universe inconsistency</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="a-simple-case-of-universe-inconsistency">
+<h1 class="title">A simple case of universe inconsistency</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/51029234/a-simple-case-of-universe-inconsistency">https://stackoverflow.com/questions/51029234/a-simple-case-of-universe-inconsistency</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I can define the following inductive type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+| c1 : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>), A -&gt; T A
+| c2 : T unit.</span></span></pre><p>But then the command <tt class="docutils literal">Check (c1 (T nat))</tt> fails with the message:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="a-simple-case-of-universe-inconsistency-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="a-simple-case-of-universe-inconsistency-v-chk0"><span class="kn">Check</span> (c1 (T nat)).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;T nat&quot;</span> has type <span class="s2">&quot;Type@{max(Set,T.u1+1)}&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Type@{T.u1}&quot;</span>
+(universe inconsistency: Cannot enforce T.u1 &lt;
+T.u1 because T.u1 = T.u1).</blockquote></div></div></small></span></pre><p>How can I tweak the above inductive definition so that <tt class="docutils literal">c1 (T nat)</tt>
+does not cause a universe inconsistency, and without setting universe
+polymorphism on?</p>
+<p>The following works, but I would prefer a solution without adding
+equality:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+| c1 : A -&gt; T A
+| c2&#39; : A = unit -&gt; T A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">c2</span> : T unit := c2&#39; unit eq_refl.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="a-simple-case-of-universe-inconsistency-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="a-simple-case-of-universe-inconsistency-v-chk1"><span class="kn">Check</span> (c1 (T nat)).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">c1 (T nat)
+     : T nat -&gt; T (T nat)</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Let me first answer the question of why we get the universe
+inconsistency in the first place.</p>
+<p>Universe inconsistencies are the errors that Coq reports to avoid
+proofs of <tt class="docutils literal">False</tt> via Russell's paradox, which results from
+considering the set of all sets which do not contain themselves.</p>
+<p>There's a variant which is more convenient to formalize in type theory
+called Hurken's Paradox; see <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.Hurkens.html">Coq.Logic.Hurkens</a> for more
+details. There is a specialization of Hurken's paradox which proves
+that no type can retract to a smaller type. That is, given</p>
+<pre class="code coq literal-block">
+<span class="n">U</span> <span class="o">:=</span> <span class="kt">Type</span><span class="o">&#64;{</span><span class="n">u</span><span class="o">}</span>
+<span class="n">A</span> <span class="o">:</span> <span class="n">U</span>
+<span class="n">down</span> <span class="o">:</span> <span class="n">U</span> <span class="o">-&gt;</span> <span class="n">A</span>
+<span class="n">up</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">U</span>
+<span class="n">up_down</span> <span class="o">:</span> <span class="kr">forall</span> <span class="o">(</span><span class="nv">X</span><span class="o">:</span><span class="n">U</span><span class="o">),</span> <span class="n">up</span> <span class="o">(</span><span class="n">down</span> <span class="n">X</span><span class="o">)</span> <span class="o">=</span> <span class="n">X</span>
+</pre>
+<p>we can prove <tt class="docutils literal">False</tt>.</p>
+<hr class="docutils" />
+<p>This is almost exactly the setup of your <tt class="docutils literal">Inductive</tt> type.
+Annotating your type with universes, you start with</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> : <span class="kt">Type</span>@{i} -&gt; <span class="kt">Type</span>@{j} :=
+| c1 : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>@{i}), A -&gt; T A
+| c2 : T unit.</span></span></pre><p>Note that we can invert this inductive; we may write</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">c1&#39;</span> (<span class="nv">A</span> : <span class="kt">Type</span>@{i}) (<span class="nv">v</span> : T A) : A :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | c1 A x =&gt; x
+  | c2 =&gt; tt
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-simple-case-of-universe-inconsistency-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="a-simple-case-of-universe-inconsistency-v-chk2"><span class="kn">Lemma</span> <span class="nf">c1&#39;_c1</span> (<span class="nv">A</span> : <span class="kt">Type</span>@{i}) : <span class="kr">forall</span> <span class="nv">v</span>, c1&#39; A (c1 A v) = v.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">v</span> : A, c1&#39; A (c1 A v) = v</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-simple-case-of-universe-inconsistency-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="a-simple-case-of-universe-inconsistency-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">v</span> : A, c1&#39; A (c1 A v) = v</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Suppose, for a moment, that <tt class="docutils literal">c1 (T nat)</tt> typechecked. Since <tt class="docutils literal">T nat
+: <span class="pre">Type&#64;{j}</span></tt>, this would require <tt class="docutils literal">j &lt;= i</tt>. If it gave us that <tt class="docutils literal">j &lt;
+i</tt>, then we would be set. We could write <tt class="docutils literal">c1 <span class="pre">Type&#64;{j}</span></tt>. And this is
+exactly the setup for the variant of Hurken's that I mentioned above!
+We could define</p>
+<pre class="code coq literal-block">
+<span class="n">u</span> <span class="o">=</span> <span class="n">j</span>
+<span class="n">U</span> <span class="o">:=</span> <span class="kt">Type</span><span class="o">&#64;{</span><span class="n">j</span><span class="o">}</span>
+<span class="n">A</span> <span class="o">:=</span> <span class="n">T</span> <span class="kt">Type</span><span class="o">&#64;{</span><span class="n">j</span><span class="o">}</span>
+<span class="n">down</span> <span class="o">:</span> <span class="n">U</span> <span class="o">-&gt;</span> <span class="n">A</span> <span class="o">:=</span> <span class="n">c1</span> <span class="kt">Type</span><span class="o">&#64;{</span><span class="n">j</span><span class="o">}</span>
+<span class="n">up</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">U</span> <span class="o">:=</span> <span class="n">c1'</span> <span class="kt">Type</span><span class="o">&#64;{</span><span class="n">j</span><span class="o">}</span>
+<span class="n">up_down</span> <span class="o">:=</span> <span class="n">c1'_c1</span> <span class="kt">Type</span><span class="o">&#64;{</span><span class="n">j</span><span class="o">}</span>
+</pre>
+<p>and hence prove <tt class="docutils literal">False</tt>.</p>
+<p>Coq needs to implement a rule for avoiding this paradox. As described
+<a class="reference external" href="https://github.com/coq/coq/issues/7929#issuecomment-400376700">here</a>,
+the rule is that for each (non-parameter) argument to a constructor of
+an inductive, if the type of the argument has a sort in universe
+<tt class="docutils literal">u</tt>, then the universe of the inductive is constrained to be <tt class="docutils literal">&gt;=
+u</tt>. In this case, this is stricter than Coq needs to be. As mentioned
+by SkySkimmer <a class="reference external" href="https://github.com/coq/coq/issues/7929#issuecomment-400384621">here</a>,
+Coq could recognize arguments which appear directly in locations which
+are indices of the inductive, and disregard those in the same way that
+it disregards parameters.</p>
+<hr class="docutils" />
+<p>So, to finally answer your question, I believe the following are your
+only options:</p>
+<ol class="arabic simple">
+<li>You can <tt class="docutils literal">Set Universe Polymorphism</tt> so that in <tt class="docutils literal">T (T nat)</tt>,
+your two <tt class="docutils literal">T</tt>'s take different universe arguments. (Equivalently,
+you can write <tt class="docutils literal">Polymorphic Inductive</tt>.)</li>
+<li>You can take advantage of how Coq treats parameters of inductive
+types specially, which mandates using equality in your case. (The
+requirement of using equality is a general property of going from
+indexed inductive types to parameterized inductives types---from
+moving arguments from after the <tt class="docutils literal">:</tt> to before it.)</li>
+<li>You can pass Coq the flag <tt class="docutils literal"><span class="pre">-type-in-type</span></tt> to entirely disable
+universe checking.</li>
+<li>You can <a class="reference external" href="https://github.com/coq/coq/issues/7929">fix bug #7929</a>,
+which I reported as part of digging into this question, to make Coq
+handle arguments of constructors which appear in index-position in
+the inductive in the same way it handles parameters of inductive
+types.</li>
+<li>(You can find another edge case of the system, and manage to trick
+Coq into ignoring the universes you want to slip past it, and
+probably find a proof of <tt class="docutils literal">False</tt> in the process. (Possibly
+involving module subtyping, see, e.g., <a class="reference external" href="https://github.com/coq/coq/issues/7695">this recent bug in modules
+with universes</a>.))</li>
+</ol>
+</div>
+</div>
+</div>
+</div></body>
+</html>
