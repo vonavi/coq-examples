@@ -1,0 +1,1164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Destruct if condition in program fixpoint coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="destruct-if-condition-in-program-fixpoint-coq">
+<h1 class="title">Destruct if condition in program fixpoint coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/51017689/destruct-if-condition-in-program-fixpoint-coq">https://stackoverflow.com/questions/51017689/destruct-if-condition-in-program-fixpoint-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to proof the factor function correctness in <a class="reference external" href="https://stackoverflow.com/questions/51012942/use-proof-of-if-expression-true-in-then-part-coq">Use proof of if
+expression = true in then part coq</a></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith Znumtheory.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Local</span> <span class="kn">Open Scope</span> Z_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Coq.Program.Wf.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.micromega.Lia.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">divgt0</span> (<span class="nv">a</span> <span class="nv">b</span> : Z) (<span class="nv">agt0</span> : <span class="mi">0</span> &lt; a) (<span class="nv">bgt1</span> : <span class="mi">1</span> &lt; b) (<span class="nv">dvd</span> : (b | a)) :
+  <span class="mi">0</span> &lt; a / b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>dvd</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt; a / b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>dvd</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt; a / b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> Zdivide_Zdiv_lt_pos.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">factor</span> (<span class="nv">a</span> <span class="nv">b</span> : Z) (<span class="nv">agt0</span> : <span class="mi">0</span> &lt; a) (<span class="nv">bgt1</span> : <span class="mi">1</span> &lt; b)
+        {<span class="nv">measure</span> (Z.abs_nat a)} :=
+  <span class="kr">if</span> Zdivide_dec b a
+  <span class="kr">then</span> <span class="mi">1</span> + factor (a / b) b (divgt0 a b agt0 bgt1 _)  bgt1
+  <span class="kr">else</span> <span class="mi">0</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk2"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>factor</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a0</span> <span class="nv">b</span> : Z,
+<span class="mi">0</span> &lt; a0 -&gt;
+<span class="mi">1</span> &lt; b -&gt;
+(Z.abs_nat a0 &lt; Z.abs_nat a)%nat -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(Z.abs_nat (a / b) &lt; Z.abs_nat a)%nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk3"><span class="nb">assert</span> (<span class="mi">0</span> &lt; a / b &lt; a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>factor</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a0</span> <span class="nv">b</span> : Z,
+<span class="mi">0</span> &lt; a0 -&gt;
+<span class="mi">1</span> &lt; b -&gt;
+(Z.abs_nat a0 &lt; Z.abs_nat a)%nat -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt; a / b &lt; a</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>factor</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a0</span> <span class="nv">b</span> : Z,
+<span class="mi">0</span> &lt; a0 -&gt;
+<span class="mi">1</span> &lt; b -&gt;
+(Z.abs_nat a0 &lt; Z.abs_nat a)%nat -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a / b &lt; a</span></span></span><br></div><label class="goal-separator" for="destruct-if-condition-in-program-fixpoint-coq-v-chk4"><hr></label><div class="goal-conclusion">(Z.abs_nat (a / b) &lt; Z.abs_nat a)%nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>factor</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a0</span> <span class="nv">b</span> : Z,
+<span class="mi">0</span> &lt; a0 -&gt;
+<span class="mi">1</span> &lt; b -&gt;
+(Z.abs_nat a0 &lt; Z.abs_nat a)%nat -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt; a / b &lt; a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> Zdivide_Zdiv_lt_pos.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>factor</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a0</span> <span class="nv">b</span> : Z,
+<span class="mi">0</span> &lt; a0 -&gt;
+<span class="mi">1</span> &lt; b -&gt;
+(Z.abs_nat a0 &lt; Z.abs_nat a)%nat -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a / b &lt; a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(Z.abs_nat (a / b) &lt; Z.abs_nat a)%nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk7"><span class="nb">apply</span> Zabs_nat_lt.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>factor</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a0</span> <span class="nv">b</span> : Z,
+<span class="mi">0</span> &lt; a0 -&gt;
+<span class="mi">1</span> &lt; b -&gt;
+(Z.abs_nat a0 &lt; Z.abs_nat a)%nat -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a / b &lt; a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt;= a / b &lt; a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk8"><span class="kn">Lemma</span> <span class="nf">factor_div</span> (<span class="nv">a</span> <span class="nv">b</span> : Z) (<span class="nv">agt0</span> : <span class="mi">0</span> &lt; a) (<span class="nv">bgt1</span> : <span class="mi">1</span> &lt; b) :
+  (b ^ (factor a b agt0 bgt1) | a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b ^ factor a b agt0 bgt1 | a)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk9"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b ^ factor a b agt0 bgt1 | a)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chka"><span class="nb">unfold</span> factor.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b
+ ^ factor_func
+     (existT
+        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+         {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+        (exist (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b)
+           b
+           (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+              bgt1))) | a)</div></blockquote></div></div></small></span></pre><p>after <tt class="docutils literal">unfold</tt> I expected see a <tt class="docutils literal">if</tt> and destruct its condition,
+but now I see this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chkb" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+
+  a, b : Z
+  agt0 : <span class="mi">0</span> &lt; a
+  bgt1 : <span class="mi">1</span> &lt; b
+  ============================
+  (b
+   ^ factor_func
+       (existT
+          (<span class="kr">fun</span> <span class="nv">a0</span> : Z =&gt;
+           {b0 : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a0, <span class="mi">1</span> &lt; b0}) a
+          (exist
+             (<span class="kr">fun</span> <span class="nv">b0</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b0)
+             b
+             (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                bgt1))) | a)</blockquote></div></div></small></span></pre><p>How I can complete the proof?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><tt class="docutils literal">Program</tt> gives you terms that are difficult to work with, so you
+should prove a lemma that <tt class="docutils literal">factor</tt> is equal to its body, and then
+rewrite with that, instead of unfolding. (I used <tt class="docutils literal">match</tt> instead of
+<tt class="docutils literal">if</tt> to get hold of the <tt class="docutils literal">dvd</tt> proof term.)</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chkc"><span class="kn">Lemma</span> <span class="nf">factor_lemma</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">agt0</span> <span class="nv">bgt1</span>:
+  factor a b agt0 bgt1 =
+  <span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+  | <span class="nb">left</span> dvd =&gt; <span class="mi">1</span> + factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+  | <span class="nb">right</span> notdvd =&gt; <span class="mi">0</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">factor a b agt0 bgt1 =
+<span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+| <span class="nb">left</span> dvd =&gt;
+    <span class="mi">1</span> +
+    factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chkd"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">factor a b agt0 bgt1 =
+<span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+| <span class="nb">left</span> dvd =&gt;
+    <span class="mi">1</span> +
+    factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chke"><span class="nb">unfold</span> factor <span class="nb">at</span> <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">factor_func
+  (existT
+     (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+     a
+     (exist (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+        (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0 bgt1))) =
+<span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+| <span class="nb">left</span> dvd =&gt;
+    <span class="mi">1</span> +
+    factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chkf"><span class="nb">unfold</span> factor_func.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Wf.Fix_sub {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+  (Wf.MR lt
+     (<span class="kr">fun</span>
+        <span class="nv">recarg</span> : {a : Z &amp;
+                 {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+      Z.abs_nat (projT1 recarg)))
+  factor_func_obligation_3
+  (<span class="kr">fun</span> <span class="nv">_</span> : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+   =&gt; Z)
+  (<span class="kr">fun</span>
+     (<span class="nv">recarg</span> : {a : Z &amp;
+               {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}})
+     (<span class="nv">factor&#39;</span> : {recarg&#39;
+                : {a : Z &amp;
+                  {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+                | (Z.abs_nat (projT1 recarg&#39;) &lt;
+                   Z.abs_nat (projT1 recarg))%nat} -&gt;
+                Z) =&gt;
+   <span class="kr">match</span>
+     Zdivide_dec (proj1_sig (projT2 recarg))
+       (projT1 recarg)
+   <span class="kr">with</span>
+   | <span class="nb">left</span> x =&gt;
+       <span class="mi">1</span> +
+       factor&#39;
+         (exist
+            (<span class="kr">fun</span>
+               <span class="nv">recarg&#39;</span> : 
+                {a : Z &amp;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+             (Z.abs_nat (projT1 recarg&#39;) &lt;
+              Z.abs_nat (projT1 recarg))%nat)
+            (existT
+               (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+               (projT1 recarg /
+                proj1_sig (projT2 recarg))
+               (exist
+                  (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                   <span class="kr">exists</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 recarg /
+                      proj1_sig (projT2 recarg), 
+                   <span class="mi">1</span> &lt; b) 
+                  (proj1_sig (projT2 recarg))
+                  (ex_intro
+                     (<span class="kr">fun</span>
+                        <span class="nv">_</span> : 
+                        <span class="mi">0</span> &lt;
+                        projT1 recarg /
+                        proj1_sig (projT2 recarg) =&gt;
+                      <span class="mi">1</span> &lt; proj1_sig (projT2 recarg))
+                     (divgt0 
+                        (projT1 recarg)
+                        (proj1_sig (projT2 recarg))
+                        (ex_proj1
+                        (proj2_sig (projT2 recarg)))
+                        (ex_proj2
+                        (proj2_sig (projT2 recarg)))
+                        (factor_func_obligation_1
+                        (projT1 recarg)
+                        (proj1_sig (projT2 recarg)) x))
+                     (ex_proj2
+                        (proj2_sig (projT2 recarg))))))
+            (factor_func_obligation_2 
+               (projT1 recarg)
+               (proj1_sig (projT2 recarg))
+               (ex_proj1 (proj2_sig (projT2 recarg)))
+               (ex_proj2 (proj2_sig (projT2 recarg)))
+               x))
+   | <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+   <span class="kr">end</span>)
+  (existT
+     (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+     a
+     (exist (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+        (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0 bgt1))) =
+<span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+| <span class="nb">left</span> dvd =&gt;
+    <span class="mi">1</span> +
+    factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk10"><span class="nb">rewrite</span> Program.Wf.Fix_eq; <span class="nb">fold</span> factor_func.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">match</span>
+  Zdivide_dec
+    (proj1_sig
+       (projT2
+          (existT
+             (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+              {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+             (exist
+                (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b)
+                b
+                (ex_intro 
+                   (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0 bgt1)))))
+    (projT1
+       (existT
+          (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+           {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+          (exist
+             (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+             (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                bgt1))))
+<span class="kr">with</span>
+| <span class="nb">left</span> x =&gt;
+    <span class="mi">1</span> +
+    factor_func
+      (proj1_sig
+         (exist
+            (<span class="kr">fun</span>
+               <span class="nv">recarg&#39;</span> : 
+                {a : Z &amp;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+             (Z.abs_nat (projT1 recarg&#39;) &lt;
+              Z.abs_nat
+                (projT1
+                   (existT
+                      (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                       {b : Z
+                       | 
+                       <span class="kr">exists</span> 
+                       <span class="nv">_</span> : (<span class="mi">0</span> &lt; a)%Z, 
+                       (<span class="mi">1</span> &lt; b)%Z}) a
+                      (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> 
+                        <span class="nv">_</span> : (<span class="mi">0</span> &lt; a)%Z, 
+                        (<span class="mi">1</span> &lt; b)%Z) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : (...)%Z =&gt; (<span class="mi">1</span> &lt; b)%Z)
+                        agt0 bgt1)))))%nat)
+            (existT
+               (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+               (projT1
+                  (existT
+                     (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                     (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1))) /
+                proj1_sig
+                  (projT2
+                     (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))
+               (exist
+                  (<span class="kr">fun</span> <span class="nv">b0</span> : Z =&gt;
+                   <span class="kr">exists</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : ..., <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> ... =&gt; <span class="kr">exists</span> ..., ...) b
+                        (ex_intro (...) agt0 bgt1))) /
+                      proj1_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> ... =&gt; {b : Z | ...}) a
+                        (exist (...) b (...)))),
+                     <span class="mi">1</span> &lt; b0)
+                  (proj1_sig
+                     (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))
+                  (ex_intro
+                     (<span class="kr">fun</span>
+                        <span class="nv">_</span> : 
+                        <span class="mi">0</span> &lt;
+                        projT1
+                        (existT
+                        (<span class="kr">fun</span> ... =&gt; {b : Z | ...}) a
+                        (exist (...) b (...))) /
+                        proj1_sig
+                        (projT2 (existT (...) a (...)))
+                      =&gt;
+                      <span class="mi">1</span> &lt;
+                      proj1_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1)))))
+                     (divgt0
+                        (projT1
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : ..., <span class="mi">1</span> &lt; b) b
+                        (ex_intro 
+                        (... =&gt; ...) agt0 bgt1))))
+                        (proj1_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1)))))
+                        (ex_proj1
+                        (proj2_sig
+                        (projT2
+                        (existT 
+                        (... =&gt; ...) a
+                        (exist ... b ...)))))
+                        (ex_proj2
+                        (proj2_sig
+                        (projT2
+                        (existT 
+                        (... =&gt; ...) a
+                        (exist ... b ...)))))
+                        (factor_func_obligation_1
+                        (projT1
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1))))
+                        (proj1_sig
+                        (projT2
+                        (existT 
+                        (... =&gt; ...) a
+                        (exist ... b ...)))) x))
+                     (ex_proj2
+                        (proj2_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1)))))))))
+            (factor_func_obligation_2
+               (projT1
+                  (existT
+                     (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                     (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1))))
+               (proj1_sig
+                  (projT2
+                     (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))
+               (ex_proj1
+                  (proj2_sig
+                     (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1))))))
+               (ex_proj2
+                  (proj2_sig
+                     (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))) x)))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span> =
+<span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+| <span class="nb">left</span> dvd =&gt;
+    <span class="mi">1</span> +
+    factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk11" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><label class="goal-separator" for="destruct-if-condition-in-program-fixpoint-coq-v-chk11"><hr></label><div class="goal-conclusion"><span class="kr">forall</span>
+  (<span class="nv">x</span> : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}})
+  (<span class="nv">f</span>
+   <span class="nv">g</span> : {y
+       : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+       | Wf.MR lt
+           (<span class="kr">fun</span>
+              <span class="nv">recarg</span> : {a : Z &amp;
+                       {b : Z
+                       | 
+                       <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+            Z.abs_nat (projT1 recarg)) y x} -&gt; Z),
+(<span class="kr">forall</span>
+   <span class="nv">y</span> : {y
+       : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+       | Wf.MR lt
+           (<span class="kr">fun</span>
+              <span class="nv">recarg</span> : {a : Z &amp;
+                       {b : Z
+                       | 
+                       <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+            Z.abs_nat (projT1 recarg)) y x}, 
+ f y = g y) -&gt;
+<span class="kr">match</span>
+  Zdivide_dec (proj1_sig (projT2 x)) (projT1 x)
+<span class="kr">with</span>
+| <span class="nb">left</span> x0 =&gt;
+    <span class="mi">1</span> +
+    f
+      (exist
+         (<span class="kr">fun</span>
+            <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+          (Z.abs_nat (projT1 recarg&#39;) &lt;
+           Z.abs_nat (projT1 x))%nat)
+         (existT
+            (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+             {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+            (projT1 x / proj1_sig (projT2 x))
+            (exist
+               (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                <span class="kr">exists</span>
+                  <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x),
+                  <span class="mi">1</span> &lt; b) 
+               (proj1_sig (projT2 x))
+               (ex_intro
+                  (<span class="kr">fun</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x)
+                   =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+                  (divgt0 
+                     (projT1 x) 
+                     (proj1_sig (projT2 x))
+                     (ex_proj1 (proj2_sig (projT2 x)))
+                     (ex_proj2 (proj2_sig (projT2 x)))
+                     (factor_func_obligation_1
+                        (projT1 x)
+                        (proj1_sig (projT2 x)) x0))
+                  (ex_proj2 (proj2_sig (projT2 x))))))
+         (factor_func_obligation_2 
+            (projT1 x) (proj1_sig (projT2 x))
+            (ex_proj1 (proj2_sig (projT2 x)))
+            (ex_proj2 (proj2_sig (projT2 x))) x0))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span> =
+<span class="kr">match</span>
+  Zdivide_dec (proj1_sig (projT2 x)) (projT1 x)
+<span class="kr">with</span>
+| <span class="nb">left</span> x0 =&gt;
+    <span class="mi">1</span> +
+    g
+      (exist
+         (<span class="kr">fun</span>
+            <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+          (Z.abs_nat (projT1 recarg&#39;) &lt;
+           Z.abs_nat (projT1 x))%nat)
+         (existT
+            (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+             {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+            (projT1 x / proj1_sig (projT2 x))
+            (exist
+               (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                <span class="kr">exists</span>
+                  <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x),
+                  <span class="mi">1</span> &lt; b) 
+               (proj1_sig (projT2 x))
+               (ex_intro
+                  (<span class="kr">fun</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x)
+                   =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+                  (divgt0 
+                     (projT1 x) 
+                     (proj1_sig (projT2 x))
+                     (ex_proj1 (proj2_sig (projT2 x)))
+                     (ex_proj2 (proj2_sig (projT2 x)))
+                     (factor_func_obligation_1
+                        (projT1 x)
+                        (proj1_sig (projT2 x)) x0))
+                  (ex_proj2 (proj2_sig (projT2 x))))))
+         (factor_func_obligation_2 
+            (projT1 x) (proj1_sig (projT2 x))
+            (ex_proj1 (proj2_sig (projT2 x)))
+            (ex_proj2 (proj2_sig (projT2 x))) x0))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk12">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">match</span>
+  Zdivide_dec
+    (proj1_sig
+       (projT2
+          (existT
+             (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+              {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+             (exist
+                (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b)
+                b
+                (ex_intro 
+                   (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0 bgt1)))))
+    (projT1
+       (existT
+          (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+           {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+          (exist
+             (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+             (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                bgt1))))
+<span class="kr">with</span>
+| <span class="nb">left</span> x =&gt;
+    <span class="mi">1</span> +
+    factor_func
+      (proj1_sig
+         (exist
+            (<span class="kr">fun</span>
+               <span class="nv">recarg&#39;</span> : 
+                {a : Z &amp;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+             (Z.abs_nat (projT1 recarg&#39;) &lt;
+              Z.abs_nat
+                (projT1
+                   (existT
+                      (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                       {b : Z
+                       | 
+                       <span class="kr">exists</span> 
+                       <span class="nv">_</span> : (<span class="mi">0</span> &lt; a)%Z, 
+                       (<span class="mi">1</span> &lt; b)%Z}) a
+                      (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> 
+                        <span class="nv">_</span> : (<span class="mi">0</span> &lt; a)%Z, 
+                        (<span class="mi">1</span> &lt; b)%Z) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : (...)%Z =&gt; (<span class="mi">1</span> &lt; b)%Z)
+                        agt0 bgt1)))))%nat)
+            (existT
+               (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+               (projT1
+                  (existT
+                     (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                     (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1))) /
+                proj1_sig
+                  (projT2
+                     (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))
+               (exist
+                  (<span class="kr">fun</span> <span class="nv">b0</span> : Z =&gt;
+                   <span class="kr">exists</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : ..., <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> ... =&gt; <span class="kr">exists</span> ..., ...) b
+                        (ex_intro (...) agt0 bgt1))) /
+                      proj1_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> ... =&gt; {b : Z | ...}) a
+                        (exist (...) b (...)))),
+                     <span class="mi">1</span> &lt; b0)
+                  (proj1_sig
+                     (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))
+                  (ex_intro
+                     (<span class="kr">fun</span>
+                        <span class="nv">_</span> : 
+                        <span class="mi">0</span> &lt;
+                        projT1
+                        (existT
+                        (<span class="kr">fun</span> ... =&gt; {b : Z | ...}) a
+                        (exist (...) b (...))) /
+                        proj1_sig
+                        (projT2 (existT (...) a (...)))
+                      =&gt;
+                      <span class="mi">1</span> &lt;
+                      proj1_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1)))))
+                     (divgt0
+                        (projT1
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : ..., <span class="mi">1</span> &lt; b) b
+                        (ex_intro 
+                        (... =&gt; ...) agt0 bgt1))))
+                        (proj1_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1)))))
+                        (ex_proj1
+                        (proj2_sig
+                        (projT2
+                        (existT 
+                        (... =&gt; ...) a
+                        (exist ... b ...)))))
+                        (ex_proj2
+                        (proj2_sig
+                        (projT2
+                        (existT 
+                        (... =&gt; ...) a
+                        (exist ... b ...)))))
+                        (factor_func_obligation_1
+                        (projT1
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1))))
+                        (proj1_sig
+                        (projT2
+                        (existT 
+                        (... =&gt; ...) a
+                        (exist ... b ...)))) x))
+                     (ex_proj2
+                        (proj2_sig
+                        (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z | <span class="kr">exists</span> ..., ...}) a
+                        (exist 
+                        (... =&gt; ...) b
+                        (ex_intro ... agt0 bgt1)))))))))
+            (factor_func_obligation_2
+               (projT1
+                  (existT
+                     (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                     (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1))))
+               (proj1_sig
+                  (projT2
+                     (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))
+               (ex_proj1
+                  (proj2_sig
+                     (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1))))))
+               (ex_proj2
+                  (proj2_sig
+                     (projT2
+                        (existT
+                        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+                        {b : Z
+                        | 
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}) a
+                        (exist
+                        (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                        <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b) b
+                        (ex_intro
+                        (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; <span class="mi">1</span> &lt; b) agt0
+                        bgt1)))))) x)))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span> =
+<span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+| <span class="nb">left</span> dvd =&gt;
+    <span class="mi">1</span> +
+    factor (a / b) b (divgt0 a b agt0 bgt1 dvd) bgt1
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk13">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span>
+  (<span class="nv">x</span> : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}})
+  (<span class="nv">f</span>
+   <span class="nv">g</span> : {y
+       : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+       | Wf.MR lt
+           (<span class="kr">fun</span>
+              <span class="nv">recarg</span> : {a : Z &amp;
+                       {b : Z
+                       | 
+                       <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+            Z.abs_nat (projT1 recarg)) y x} -&gt; Z),
+(<span class="kr">forall</span>
+   <span class="nv">y</span> : {y
+       : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+       | Wf.MR lt
+           (<span class="kr">fun</span>
+              <span class="nv">recarg</span> : {a : Z &amp;
+                       {b : Z
+                       | 
+                       <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+            Z.abs_nat (projT1 recarg)) y x}, 
+ f y = g y) -&gt;
+<span class="kr">match</span>
+  Zdivide_dec (proj1_sig (projT2 x)) (projT1 x)
+<span class="kr">with</span>
+| <span class="nb">left</span> x0 =&gt;
+    <span class="mi">1</span> +
+    f
+      (exist
+         (<span class="kr">fun</span>
+            <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+          (Z.abs_nat (projT1 recarg&#39;) &lt;
+           Z.abs_nat (projT1 x))%nat)
+         (existT
+            (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+             {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+            (projT1 x / proj1_sig (projT2 x))
+            (exist
+               (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                <span class="kr">exists</span>
+                  <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x),
+                  <span class="mi">1</span> &lt; b) 
+               (proj1_sig (projT2 x))
+               (ex_intro
+                  (<span class="kr">fun</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x)
+                   =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+                  (divgt0 
+                     (projT1 x) 
+                     (proj1_sig (projT2 x))
+                     (ex_proj1 (proj2_sig (projT2 x)))
+                     (ex_proj2 (proj2_sig (projT2 x)))
+                     (factor_func_obligation_1
+                        (projT1 x)
+                        (proj1_sig (projT2 x)) x0))
+                  (ex_proj2 (proj2_sig (projT2 x))))))
+         (factor_func_obligation_2 
+            (projT1 x) (proj1_sig (projT2 x))
+            (ex_proj1 (proj2_sig (projT2 x)))
+            (ex_proj2 (proj2_sig (projT2 x))) x0))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span> =
+<span class="kr">match</span>
+  Zdivide_dec (proj1_sig (projT2 x)) (projT1 x)
+<span class="kr">with</span>
+| <span class="nb">left</span> x0 =&gt;
+    <span class="mi">1</span> +
+    g
+      (exist
+         (<span class="kr">fun</span>
+            <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+          (Z.abs_nat (projT1 recarg&#39;) &lt;
+           Z.abs_nat (projT1 x))%nat)
+         (existT
+            (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+             {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+            (projT1 x / proj1_sig (projT2 x))
+            (exist
+               (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                <span class="kr">exists</span>
+                  <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x),
+                  <span class="mi">1</span> &lt; b) 
+               (proj1_sig (projT2 x))
+               (ex_intro
+                  (<span class="kr">fun</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x)
+                   =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+                  (divgt0 
+                     (projT1 x) 
+                     (proj1_sig (projT2 x))
+                     (ex_proj1 (proj2_sig (projT2 x)))
+                     (ex_proj2 (proj2_sig (projT2 x)))
+                     (factor_func_obligation_1
+                        (projT1 x)
+                        (proj1_sig (projT2 x)) x0))
+                  (ex_proj2 (proj2_sig (projT2 x))))))
+         (factor_func_obligation_2 
+            (projT1 x) (proj1_sig (projT2 x))
+            (ex_proj1 (proj2_sig (projT2 x)))
+            (ex_proj2 (proj2_sig (projT2 x))) x0))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk14"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>{a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}</span></span></span><br><span><var>f, g</var><span class="hyp-type"><b>: </b><span>{y : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+| Wf.MR lt
+    (<span class="kr">fun</span>
+       <span class="nv">recarg</span> : {a : Z &amp;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+     =&gt; Z.abs_nat (projT1 recarg)) y x} -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span>
+  <span class="nv">y</span> : {y
+      : {a : Z &amp;
+        {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+      | Wf.MR lt
+          (<span class="kr">fun</span>
+             <span class="nv">recarg</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+           =&gt; Z.abs_nat (projT1 recarg)) y x},
+f y = g y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">match</span>
+  Zdivide_dec (proj1_sig (projT2 x)) (projT1 x)
+<span class="kr">with</span>
+| <span class="nb">left</span> x0 =&gt;
+    <span class="mi">1</span> +
+    f
+      (exist
+         (<span class="kr">fun</span>
+            <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+          (Z.abs_nat (projT1 recarg&#39;) &lt;
+           Z.abs_nat (projT1 x))%nat)
+         (existT
+            (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+             {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+            (projT1 x / proj1_sig (projT2 x))
+            (exist
+               (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                <span class="kr">exists</span>
+                  <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x),
+                  <span class="mi">1</span> &lt; b) 
+               (proj1_sig (projT2 x))
+               (ex_intro
+                  (<span class="kr">fun</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x)
+                   =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+                  (divgt0 
+                     (projT1 x) 
+                     (proj1_sig (projT2 x))
+                     (ex_proj1 (proj2_sig (projT2 x)))
+                     (ex_proj2 (proj2_sig (projT2 x)))
+                     (factor_func_obligation_1
+                        (projT1 x)
+                        (proj1_sig (projT2 x)) x0))
+                  (ex_proj2 (proj2_sig (projT2 x))))))
+         (factor_func_obligation_2 
+            (projT1 x) (proj1_sig (projT2 x))
+            (ex_proj1 (proj2_sig (projT2 x)))
+            (ex_proj2 (proj2_sig (projT2 x))) x0))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span> =
+<span class="kr">match</span>
+  Zdivide_dec (proj1_sig (projT2 x)) (projT1 x)
+<span class="kr">with</span>
+| <span class="nb">left</span> x0 =&gt;
+    <span class="mi">1</span> +
+    g
+      (exist
+         (<span class="kr">fun</span>
+            <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}} =&gt;
+          (Z.abs_nat (projT1 recarg&#39;) &lt;
+           Z.abs_nat (projT1 x))%nat)
+         (existT
+            (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+             {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+            (projT1 x / proj1_sig (projT2 x))
+            (exist
+               (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+                <span class="kr">exists</span>
+                  <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x),
+                  <span class="mi">1</span> &lt; b) 
+               (proj1_sig (projT2 x))
+               (ex_intro
+                  (<span class="kr">fun</span>
+                     <span class="nv">_</span> : 
+                      <span class="mi">0</span> &lt;
+                      projT1 x / proj1_sig (projT2 x)
+                   =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+                  (divgt0 
+                     (projT1 x) 
+                     (proj1_sig (projT2 x))
+                     (ex_proj1 (proj2_sig (projT2 x)))
+                     (ex_proj2 (proj2_sig (projT2 x)))
+                     (factor_func_obligation_1
+                        (projT1 x)
+                        (proj1_sig (projT2 x)) x0))
+                  (ex_proj2 (proj2_sig (projT2 x))))))
+         (factor_func_obligation_2 
+            (projT1 x) (proj1_sig (projT2 x))
+            (ex_proj1 (proj2_sig (projT2 x)))
+            (ex_proj2 (proj2_sig (projT2 x))) x0))
+| <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+<span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk15"><span class="nb">destruct</span> Zdivide_dec; <span class="nb">auto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>{a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}</span></span></span><br><span><var>f, g</var><span class="hyp-type"><b>: </b><span>{y : {a : Z &amp; {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+| Wf.MR lt
+    (<span class="kr">fun</span>
+       <span class="nv">recarg</span> : {a : Z &amp;
+                {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+     =&gt; Z.abs_nat (projT1 recarg)) y x} -&gt; Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span>
+  <span class="nv">y</span> : {y
+      : {a : Z &amp;
+        {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+      | Wf.MR lt
+          (<span class="kr">fun</span>
+             <span class="nv">recarg</span> : {a : Z &amp;
+                      {b : Z
+                      | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+           =&gt; Z.abs_nat (projT1 recarg)) y x},
+f y = g y</span></span></span><br><span><var>d</var><span class="hyp-type"><b>: </b><span>(proj1_sig (projT2 x) | projT1 x)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">1</span> +
+f
+  (exist
+     (<span class="kr">fun</span>
+        <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                  {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+      =&gt;
+      (Z.abs_nat (projT1 recarg&#39;) &lt;
+       Z.abs_nat (projT1 x))%nat)
+     (existT
+        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+         {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+        (projT1 x / proj1_sig (projT2 x))
+        (exist
+           (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+            <span class="kr">exists</span>
+              <span class="nv">_</span> : <span class="mi">0</span> &lt; projT1 x / proj1_sig (projT2 x),
+              <span class="mi">1</span> &lt; b) (proj1_sig (projT2 x))
+           (ex_intro
+              (<span class="kr">fun</span>
+                 <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                     projT1 x / proj1_sig (projT2 x)
+               =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+              (divgt0 (projT1 x)
+                 (proj1_sig (projT2 x))
+                 (ex_proj1 (proj2_sig (projT2 x)))
+                 (ex_proj2 (proj2_sig (projT2 x)))
+                 (factor_func_obligation_1 
+                    (projT1 x) 
+                    (proj1_sig (projT2 x)) d))
+              (ex_proj2 (proj2_sig (projT2 x))))))
+     (factor_func_obligation_2 
+        (projT1 x) (proj1_sig (projT2 x))
+        (ex_proj1 (proj2_sig (projT2 x)))
+        (ex_proj2 (proj2_sig (projT2 x))) d)) =
+<span class="mi">1</span> +
+g
+  (exist
+     (<span class="kr">fun</span>
+        <span class="nv">recarg&#39;</span> : {a : Z &amp;
+                  {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b}}
+      =&gt;
+      (Z.abs_nat (projT1 recarg&#39;) &lt;
+       Z.abs_nat (projT1 x))%nat)
+     (existT
+        (<span class="kr">fun</span> <span class="nv">a</span> : Z =&gt;
+         {b : Z | <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b})
+        (projT1 x / proj1_sig (projT2 x))
+        (exist
+           (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt;
+            <span class="kr">exists</span>
+              <span class="nv">_</span> : <span class="mi">0</span> &lt; projT1 x / proj1_sig (projT2 x),
+              <span class="mi">1</span> &lt; b) (proj1_sig (projT2 x))
+           (ex_intro
+              (<span class="kr">fun</span>
+                 <span class="nv">_</span> : <span class="mi">0</span> &lt;
+                     projT1 x / proj1_sig (projT2 x)
+               =&gt; <span class="mi">1</span> &lt; proj1_sig (projT2 x))
+              (divgt0 (projT1 x)
+                 (proj1_sig (projT2 x))
+                 (ex_proj1 (proj2_sig (projT2 x)))
+                 (ex_proj2 (proj2_sig (projT2 x)))
+                 (factor_func_obligation_1 
+                    (projT1 x) 
+                    (proj1_sig (projT2 x)) d))
+              (ex_proj2 (proj2_sig (projT2 x))))))
+     (factor_func_obligation_2 
+        (projT1 x) (proj1_sig (projT2 x))
+        (ex_proj1 (proj2_sig (projT2 x)))
+        (ex_proj2 (proj2_sig (projT2 x))) d))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>When you unfold and rewrite with <tt class="docutils literal">Fix_eq</tt> you get such a horrible
+goal term to look at that it's best to fold it quickly! :-) It can be
+handled with <tt class="docutils literal">reflexivity</tt> or <tt class="docutils literal">auto</tt> anyway.</p>
+<p>The second goal typically requires algebraic manipulation with <tt class="docutils literal">lia</tt>
+or similar to show that the LHS equals RHS, but in this case it was
+sufficient with <tt class="docutils literal">congruence</tt>.</p>
+<p>How did I know to use <tt class="docutils literal">Fix_eq</tt>? When I unfolded <tt class="docutils literal">factor_func</tt> I
+saw it contained <tt class="docutils literal">Wf.Fix_sub</tt>, so I searched for lemmas with
+<tt class="docutils literal">Search (Wf.Fix_sub).</tt> and found a few.</p>
+<p>Now you should continue your proof by rewriting with the lemma:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk16"><span class="kn">Lemma</span> <span class="nf">factor_div</span> (<span class="nv">a</span> <span class="nv">b</span> : Z) (<span class="nv">agt0</span> : <span class="mi">0</span> &lt; a) (<span class="nv">bgt1</span> : <span class="mi">1</span> &lt; b) :
+  (b ^ (factor a b agt0 bgt1) | a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b ^ factor a b agt0 bgt1 | a)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk17"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b ^ factor a b agt0 bgt1 | a)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk18"><span class="nb">rewrite</span> factor_lemma.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b
+ ^ <span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
+   | <span class="nb">left</span> dvd =&gt;
+       <span class="mi">1</span> +
+       factor (a / b) b (divgt0 a b agt0 bgt1 dvd)
+         bgt1
+   | <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
+   <span class="kr">end</span> | a)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk19"><span class="nb">destruct</span> Zdivide_dec.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>d</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b
+ ^ (<span class="mi">1</span> + factor (a / b) b (divgt0 a b agt0 bgt1 d) bgt1)
+| a)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk1a" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>~ (b | a)</span></span></span><br></div><label class="goal-separator" for="destruct-if-condition-in-program-fixpoint-coq-v-chk1a"><hr></label><div class="goal-conclusion">(b ^ <span class="mi">0</span> | a)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk1b"><span class="mi">2</span>: <span class="bp">now</span> <span class="nb">rewrite</span> Z.pow_0_r; <span class="nb">apply</span> Z.divide_1_l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br><span><var>d</var><span class="hyp-type"><b>: </b><span>(b | a)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b
+ ^ (<span class="mi">1</span> + factor (a / b) b (divgt0 a b agt0 bgt1 d) bgt1)
+| a)</div></blockquote></div></div></small></span></pre><p>Now your goal state is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk1c" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+
+  a, b : Z
+  agt0 : <span class="mi">0</span> &lt; a
+  bgt1 : <span class="mi">1</span> &lt; b
+  d : (b | a)
+  ============================
+  (b
+   ^ (<span class="mi">1</span> +
+      factor (a / b) b (divgt0 a b agt0 bgt1 d) bgt1)
+  | a)</blockquote></div></div></small></span></pre><p>which probably makes more sense.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

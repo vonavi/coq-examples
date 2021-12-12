@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq: cannot unify inductive types</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-cannot-unify-inductive-types">
+<h1 class="title">Coq: cannot unify inductive types</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/50883392/coq-cannot-unify-inductive-types">https://stackoverflow.com/questions/50883392/coq-cannot-unify-inductive-types</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to represent multi-dimensional arrays as restricted
+functions, and I am having a trouble with defining what seem to be a
+primitive function.</p>
+<p>Here are the definitions:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Fin.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> PeanoNat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">ispace</span> : nat -&gt; <span class="kt">Type</span> :=
+  Rect: <span class="kr">forall</span> <span class="nv">d</span> : nat, (Fin.t d -&gt; nat) -&gt; ispace d.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">index</span> : nat -&gt; <span class="kt">Type</span> :=
+  Idx: <span class="kr">forall</span> <span class="nv">d</span> : nat, (Fin.t d -&gt; nat) -&gt; index d.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">bound_idx</span> : <span class="kr">forall</span> <span class="nv">d</span>, index d -&gt; ispace d -&gt; <span class="kt">Prop</span> -&gt; <span class="kt">Type</span> :=
+  RectBoundIdx : <span class="kr">forall</span> <span class="nv">d</span> <span class="nv">f_idx</span> <span class="nv">f_shp</span>,
+    bound_idx d (Idx d f_idx)
+              (Rect d f_shp)
+              (<span class="kr">forall</span> <span class="nv">i</span>, f_idx i &lt; f_shp i).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">array</span> :
+  <span class="kr">forall</span> <span class="nv">d</span> (<span class="nv">is</span> : ispace d),
+    (<span class="kr">forall</span> <span class="nv">idx</span> <span class="nv">pf</span>, bound_idx d idx <span class="kr">is</span> pf -&gt; nat) -&gt; <span class="kt">Type</span> :=
+  RectArray: <span class="kr">forall</span> (<span class="nv">d</span>:nat) <span class="nv">sh_f</span> <span class="nv">val_f</span>, array d (Rect d sh_f) val_f.</span></span></pre><p>I define type families for rectangular index-spaces, for indices and
+for an index that is bounded by a rectangular index-space. The array
+type is a function from a restricted index-space to nat.</p>
+<p>Now, I am trying to construct an array from such a function, and Coq
+tells me:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-cannot-unify-inductive-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-cannot-unify-inductive-types-v-chk0"><span class="kn">Definition</span> <span class="nf">func_to_arr</span> <span class="nv">d</span> <span class="nv">is</span>
+                (<span class="nv">af</span> : <span class="kr">forall</span> <span class="nv">idx</span> <span class="nv">pf</span>, bound_idx d idx <span class="kr">is</span> pf -&gt; nat) :=
+       <span class="kr">match</span> <span class="kr">is</span> <span class="kr">with</span>
+       | Rect d f =&gt; RectArray d f af
+       <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+d : nat
+<span class="kr">is</span> : ispace d
+af :
+<span class="kr">forall</span> (<span class="nv">idx</span> : index d) (<span class="nv">pf</span> : <span class="kt">Prop</span>),
+bound_idx d idx <span class="kr">is</span> pf -&gt; nat
+d0 : nat
+f : t d0 -&gt; nat
+The term <span class="s2">&quot;af&quot;</span> has type
+ <span class="s2">&quot;forall (idx : index d) (pf : Prop),</span>
+<span class="s2">  bound_idx d idx is pf -&gt; nat&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type
+ <span class="s2">&quot;forall (idx : index d0) (pf : Prop),</span>
+<span class="s2">  bound_idx d0 idx (Rect d0 f) pf -&gt; nat&quot;</span>
+(cannot <span class="nb">unify</span> <span class="s2">&quot;index d0&quot;</span> <span class="kn">and</span> <span class="s2">&quot;index d&quot;</span>).</blockquote></div></div></small></span></pre><p>So I am wondering, how can I pass this information to the above
+definition, so that it becomes valid. Unless I misunderstand
+something, the type of af contains all the necessary information to
+reconstruct an array.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This issue is very common in dependently-typed programming with Coq.
+To solve it, people usually use the <em>convoy pattern</em> described in
+<a class="reference external" href="http://adam.chlipala.net/cpdt/">CPDT</a> by A. Chlipala (MoreDep
+chapter, IIRC) and mentioned multiple time on Stackoverflow.</p>
+<p>Here is how you can define the function.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">func_to_arr</span> <span class="nv">d</span> <span class="nv">is</span>
+           (<span class="nv">af</span> : <span class="kr">forall</span> <span class="nv">idx</span> <span class="nv">pf</span>, bound_idx d idx <span class="kr">is</span> pf -&gt; nat) :=
+  <span class="kr">match</span> <span class="kr">is</span> <span class="kr">as</span> is&#39; <span class="kr">in</span> (ispace d1)
+        <span class="kr">return</span>
+        <span class="kr">forall</span> <span class="nv">af&#39;</span> : <span class="kr">forall</span> <span class="nv">idx</span> <span class="nv">pf</span>,
+            bound_idx d1 idx is&#39; pf -&gt; nat, array d1 is&#39; af&#39;
+  <span class="kr">with</span>
+  | Rect d2 f =&gt; <span class="kr">fun</span> <span class="nv">af&#39;</span> =&gt; RectArray d2 f af&#39;
+  <span class="kr">end</span> af.</span></span></pre><p>I'm doing dependent pattern-matching here, basically performing
+&quot;rewrites&quot; of indices so Coq can see the connections between variables
+that a human reader ususally takes for granted. You can read about the
+constructions I used here in <a class="reference external" href="https://coq.inria.fr/refman/addendum/extended-pattern-matching.html#matching-objects-of-dependent-types">extended pattern matching</a>
+section of the manual.</p>
+<p>Incidentally, if you made <tt class="docutils literal">d</tt> a <em>parameter</em> of your inductive types
+instead of making it an <em>index</em>, you would not need to mess with
+<tt class="docutils literal">d1</tt>, <tt class="docutils literal">d2</tt> and the <tt class="docutils literal">in (ispace d1)</tt> would not be necessary. If
+the choice was accidental, then you might want to take a look at the
+<a class="reference external" href="https://stackoverflow.com/questions/24600256/difference-between-type-parameters-and-indices/24601292#24601292">answer explaining the difference between those</a>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
