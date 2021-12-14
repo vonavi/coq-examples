@@ -57,13 +57,15 @@ jobs:
               sudo chown -R $(id -u):$(id -g) public
             endGroup
             startGroup 'Use Alectryon'
-              find examples -name "*.v" -exec alectryon/alectryon.py \
-                --frontend coq+rst --backend webpage \
-                --long-line-threshold 80 \
-                --cache-directory public/content \
-                --cache-compression gzip \
-                --output-directory public/examples {} \;
-              cp examples/*.v public/examples
+              for subdir in examples notes; do
+                find "${subdir}" -name "*.v" \
+                  -exec alectryon/alectryon.py \
+                  --frontend coq+rst --backend webpage \
+                  --long-line-threshold 80 \
+                  --cache-directory public/content \
+                  --cache-compression gzip \
+                  --output-directory public/"${subdir}" {} \;
+              done
             endGroup
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
