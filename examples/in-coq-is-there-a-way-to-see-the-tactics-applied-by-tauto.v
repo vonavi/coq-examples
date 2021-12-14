@@ -1,7 +1,7 @@
 (*|
-###########################################################
-In Coq, is there a way to see the tactics applied by tauto?
-###########################################################
+###############################################################
+In Coq, is there a way to see the tactics applied by ``tauto``?
+###############################################################
 
 :Link: https://stackoverflow.com/questions/66812480/in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto
 |*)
@@ -10,15 +10,16 @@ In Coq, is there a way to see the tactics applied by tauto?
 Question
 ********
 
-Is there a way to see the tactics applied by tauto? I.e., run tauto
-and get a list of tactics to apply (not including tauto)?
+Is there a way to see the tactics applied by ``tauto``? I.e., run
+``tauto`` and get a list of tactics to apply (not including
+``tauto``)?
 |*)
 
 (*|
 Answer
 ******
 
-tauto is a tactic directly written in OCaml, so it does not apply
+``tauto`` is a tactic directly written in OCaml, so it does not apply
 other tactics - it constructs a proof term. But you can have a look at
 the proof term it constructs.
 
@@ -37,8 +38,9 @@ is in the construction of the function argument of ``and_ind``.
 
 It is instructive to look at these proof terms, but if you would do
 the proof manually, you would usually do it in a different way than
-tauto does.
+``tauto`` does.
 
-And if you look at proof terms of tauto, isolate the goal you proof
-with tauto - otherwise the proof term will be hard to digest.
+And if you look at proof terms of ``tauto``, isolate the goal you
+proof with ``tauto`` - otherwise the proof term will be hard to
+digest.
 |*)

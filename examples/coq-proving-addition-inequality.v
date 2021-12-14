@@ -45,7 +45,7 @@ with ``/\`` (logical and) rather than ``\/`` (logical or) because your
 theorem does not hold otherwise. As a counterexample, pick ``n = p = q
 = 0`` and ``m = 1``.
 
-When fixed that way, lia finds the proof automatically.
+When fixed that way, ``lia`` finds the proof automatically.
 
 Also, note it is more idiomatic in Coq to currify types, that is
 replacing conjunction on the left of an arrow with an arrow. This

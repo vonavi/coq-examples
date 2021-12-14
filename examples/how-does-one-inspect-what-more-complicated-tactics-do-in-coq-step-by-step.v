@@ -38,11 +38,11 @@ allows me to do that?
 
 Destruct is suppose to resolve the following issue:
 
-    because the first argument to beq_nat (which is just ``not equal``
-    i.e. ``!=``) does a matching but the first input depends on a
-    unknown variable n and the same thing for ``+`` so the matching
-    can't do anything, so doing ``simpl.`` gets us stuck (for some
-    reason).
+    because the first argument to ``beq_nat`` (which is just ``not
+    equal`` i.e. ``!=``) does a matching but the first input depends
+    on a unknown variable ``n`` and the same thing for ``+`` so the
+    matching can't do anything, so doing ``simpl.`` gets us stuck (for
+    some reason).
 
 which it clearly it must resolve it since Coq later accepts the proof.
 But if one looks carefully what the second goal is, it seems that the
