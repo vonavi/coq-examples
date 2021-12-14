@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>A Coq proof of a theorem which turns a formula containing y into a formula containing f(x)</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-containing-f-x">
+<h1 class="title">A Coq proof of a theorem which turns a formula containing <tt class="docutils literal">y</tt> into a formula containing <tt class="docutils literal">f(x)</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/50231559/a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta">https://stackoverflow.com/questions/50231559/a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to prove:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : T -&gt; U -&gt; <span class="kt">Prop</span>),
+    (<span class="kr">forall</span> (<span class="nv">x</span> : T), <span class="kr">exists</span> (<span class="nv">y</span> : U), P x y)
+    -&gt; (<span class="kr">exists</span> (<span class="nv">f</span> : T -&gt; U), <span class="kr">forall</span> (<span class="nv">x</span> : T), P x (f x)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">T</span> <span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : T -&gt; U -&gt; <span class="kt">Prop</span>),
+(<span class="kr">forall</span> <span class="nv">x</span> : T, <span class="kr">exists</span> <span class="nv">y</span> : U, P x y) -&gt;
+<span class="kr">exists</span> <span class="nv">f</span> : T -&gt; U, <span class="kr">forall</span> <span class="nv">x</span> : T, P x (f x)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>In plain English, what I am trying to do is express the ability to
+turn <tt class="docutils literal">y</tt> into <tt class="docutils literal">f(x)</tt> in a formula. For example, changing <tt class="docutils literal">y = x +
+1</tt> to <tt class="docutils literal">f(x) = x + 1</tt>.</p>
+<p>A proof of the goal with the implication arrow reversed (turning
+<tt class="docutils literal">f(x)</tt> into <tt class="docutils literal">y</tt>) takes 4 lines. However, with this goal I can't
+think of anything to do after <tt class="docutils literal">intros</tt>.</p>
+<p>I'm not even sure this is possible in Coq. If not, is there a better
+way to express what I'm trying to do?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Your result is a form of the axiom of choice and cannot be proved in
+Coq without extra axioms. The problem is that in order to construct
+<tt class="docutils literal">f</tt> you need to extract the element <tt class="docutils literal">y : U</tt> from the proof of
+<tt class="docutils literal">exists y, P x y</tt>. This is forbidden in Coq by design, to ensure
+that proofs have no computational significance.</p>
+<p>A way to get around this restriction is to replace the usual
+existential by its computationally relevant counterpart. We then get
+what Bob Harper calls <em>the theorem of choice</em>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk1"><span class="kn">Goal</span> <span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : T -&gt; U -&gt; <span class="kt">Prop</span>),
+    (<span class="kr">forall</span> (<span class="nv">x</span> : T), { y : U | P x y })
+    -&gt; (<span class="kr">exists</span> (<span class="nv">f</span> : T -&gt; U), <span class="kr">forall</span> (<span class="nv">x</span> : T), P x (f x)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">T</span> <span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : T -&gt; U -&gt; <span class="kt">Prop</span>),
+(<span class="kr">forall</span> <span class="nv">x</span> : T, {y : U | P x y}) -&gt;
+<span class="kr">exists</span> <span class="nv">f</span> : T -&gt; U, <span class="kr">forall</span> <span class="nv">x</span> : T, P x (f x)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">T</span> <span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : T -&gt; U -&gt; <span class="kt">Prop</span>),
+(<span class="kr">forall</span> <span class="nv">x</span> : T, {y : U | P x y}) -&gt;
+<span class="kr">exists</span> <span class="nv">f</span> : T -&gt; U, <span class="kr">forall</span> <span class="nv">x</span> : T, P x (f x)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk3"><span class="nb">intros</span> T U P H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T, U</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>T -&gt; U -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : T, {y : U | P x y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> : T -&gt; U, <span class="kr">forall</span> <span class="nv">x</span> : T, P x (f x)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk4"><span class="kr">exists</span> (<span class="nv">fun</span> <span class="nv">x</span> =&gt; proj1_sig (H x)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T, U</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>T -&gt; U -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : T, {y : U | P x y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : T, P x (proj1_sig (H x))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta-v-chk5"><span class="nb">intros</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T, U</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>T -&gt; U -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : T, {y : U | P x y}</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P x (proj1_sig (H x))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> proj2_sig.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
