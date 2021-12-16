@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>In the coq tactics language, what is the difference between intro and intros</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros">
+<h1 class="title">In the coq tactics language, what is the difference between <tt class="docutils literal">intro</tt> and <tt class="docutils literal">intros</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/50033343/in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros">https://stackoverflow.com/questions/50033343/in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In the Coq tactics language, what is the difference between <tt class="docutils literal">intro</tt>
+and <tt class="docutils literal">intros</tt>?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<div class="section" id="intro-and-intros-behave-differently-if-no-argument-is-supplied">
+<h2><tt class="docutils literal">intro</tt> and <tt class="docutils literal">intros</tt> behave differently if no argument is supplied</h2>
+<p>According to the reference manual:</p>
+<blockquote>
+If the goal is neither a product nor starting with a let
+definition, the tactic <tt class="docutils literal">intro</tt> applies the tactic <tt class="docutils literal">hnf</tt> until
+the tactic <tt class="docutils literal">intro</tt> can be applied or the goal is not
+head-reducible.</blockquote>
+<p>On the other hand, <tt class="docutils literal">intros</tt>, as a variant of <tt class="docutils literal">intro</tt> tactic,</p>
+<blockquote>
+repeats <tt class="docutils literal">intro</tt> until it meets the head-constant. It never
+reduces head-constants and it never fails.</blockquote>
+<p>Example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk0"><span class="kn">Goal</span> not <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">~ <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* does nothing *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk1"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">~ <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* unfolds `not`, revealing `False -&gt; False`;</span>
+<span class="c">     moves the premise to the context *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk2"><span class="nb">intro</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>Note: both <tt class="docutils literal">intro</tt> and <tt class="docutils literal">intros</tt> do the same thing if an argument
+is supplied (<tt class="docutils literal">intro contra</tt> / <tt class="docutils literal">intros contra</tt>).</p>
+</div>
+<div class="section" id="intros-is-polyvariadic-intro-can-only-take-0-or-1-arguments">
+<h2><tt class="docutils literal">intros</tt> is polyvariadic, <tt class="docutils literal">intro</tt> can only take 0 or 1 arguments</h2>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk3"><span class="kn">Goal</span> <span class="kt">True</span> -&gt; <span class="kt">True</span> -&gt; <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span> -&gt; <span class="kt">True</span> -&gt; <span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Fail `intro t1 t2.` *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk4"><span class="nb">intros</span> t1 t2.  <span class="c">(* or `intros` if names do not matter *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
+<div class="section" id="intro-does-not-support-intro-patterns">
+<h2><tt class="docutils literal">intro</tt> does not support intro-patterns</h2>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk5"><span class="kn">Goal</span> <span class="kt">False</span> -&gt; <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span> -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Fail `intro [].` *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span> [].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Some information about intro-patterns can be found in the <a class="reference external" href="https://coq.inria.fr/distrib/V8.8.0/refman/proof-engine/tactics.html#coq:tacn.intros">manual</a>
+or in the <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/">Software Foundations</a> book. See also <a class="reference external" href="https://github.com/tchajed/coq-tricks/blob/master/IntroPatterns.v">this
+example</a>
+of not-so-trivial combination of several intro-patterns.</p>
+</div>
+<div class="section" id="intros-does-not-support-after-before-at-top-at-bottom-switches">
+<h2><tt class="docutils literal">intros</tt> does not support <tt class="docutils literal">after</tt> / <tt class="docutils literal">before</tt> / <tt class="docutils literal">at top</tt> / <tt class="docutils literal">at bottom</tt> switches</h2>
+<p>Let's say we have a proof state like this</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span> -&gt; <span class="kt">True</span></div></blockquote></div></div></small></span></pre><p>then e.g. <tt class="docutils literal">intro H4 after H3</tt> will modify the proof state like so:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br><span><var>H4</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small></span></pre><p>and <tt class="docutils literal">intro H4 after H1</tt> will produce</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros-v-chk8" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H4</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span> /\ <span class="kt">True</span> /\ <span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small></span></pre></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

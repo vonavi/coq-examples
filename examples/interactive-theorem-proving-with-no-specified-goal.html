@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>interactive theorem proving with no specified goal</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running . Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="interactive-theorem-proving-with-no-specified-goal">
+<h1 class="title">interactive theorem proving with no specified goal</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/49569621/interactive-theorem-proving-with-no-specified-goal">https://stackoverflow.com/questions/49569621/interactive-theorem-proving-with-no-specified-goal</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>What's the best approach to do interactive theorem proving in Coq
+without specifying a <tt class="docutils literal">Theorem</tt> definition first? I'd like to state
+some initial assumptions and definitions, and then interactively
+explore transformations to see if I can prove any interesting theorems
+without knowing them ahead of time. I'd like Coq to help me keep track
+of the transformed assumptions and check that my rewrites are valid,
+like when proving explicit theorems in interactive mode. Does Coq have
+support for this use case?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>One convenient method is to use the <tt class="docutils literal">Variable</tt>/<tt class="docutils literal">Hypothesis</tt>
+commands (they do the same thing) to add assumptions and introduce
+example objects (e.g., <tt class="docutils literal">Variable n:nat.</tt> introduces a nat you can
+now work with). Then to get into theorem proving mode what I do
+occasionally is <tt class="docutils literal">Goal False.</tt> to start proving <tt class="docutils literal">False</tt>, just to
+make sure I don't accidentally prove the theorem. You can also
+<tt class="docutils literal">assert</tt> and <tt class="docutils literal">admit</tt> things to get additional assumptions without
+restarting the proof.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> <tt class="docutils literal">Variable</tt> and <tt class="docutils literal">Hypothesis</tt> are just aliases for <tt class="docutils literal">Axiom</tt>,
+right? One of the drawbacks of using that is that they don't show up
+above the horizontal line in interactive mode. I can make <tt class="docutils literal">n1 : nat</tt>
+appear below the line with <tt class="docutils literal">Variable n : nat. remember n as n1</tt>, but
+it also adds <tt class="docutils literal">Heqn1: n1 = n</tt>, which might get annoying when I add
+more variables.</p>
+<p><strong>A:</strong> If you first open a section, then the variables and hypotheses
+will appear on top of the horizontal line during interactive proofs.</p>
+<p><strong>A:</strong> Yes - more specifically, <tt class="docutils literal">Variable</tt>/<tt class="docutils literal">Hypothesis</tt> are
+synonyms for <tt class="docutils literal">Local Axiom</tt> when not in any section. <tt class="docutils literal">Parameter</tt>
+and <tt class="docutils literal">Conjecture</tt> are actually synonyms for <tt class="docutils literal">Axiom</tt>.</p>
+</div>
+</div>
+</div></body>
+</html>

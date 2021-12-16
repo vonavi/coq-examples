@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>how to write to a file, from coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-to-write-to-a-file-from-coq">
+<h1 class="title">how to write to a file, from coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/49746424/how-to-write-to-a-file-from-coq">https://stackoverflow.com/questions/49746424/how-to-write-to-a-file-from-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>This is probably a strange question to ask since Coq is supposed to be
+a purely functional language, but <tt class="docutils literal">Extraction</tt> exists and it clearly
+has side effects, so I'd assume there's probably a more basic command
+to just output a string or some constant to a file, something like
+this:</p>
+<pre class="code coq literal-block">
+<span class="kn">Extraction</span> <span class="s2">&quot;file.txt&quot;</span> <span class="s2">&quot;hello&quot;</span><span class="o">%</span><span class="n">string</span><span class="o">.</span>
+</pre>
+<p>Is this possible? Would it require writing a custom extractor (I don't
+even know if that's possible)?</p>
+<p>The practical reason for this question is related to the motivation
+for the extraction mechanism that is already present in Coq, but let's
+say I want to output C code or something else that's not currently
+supported. I could still write a function in Coq <tt class="docutils literal">extract : Expr <span class="pre">-&gt;</span>
+string</tt> for a custom syntax that I formalize in an inductive type
+<tt class="docutils literal">Expr</tt>. How can I get this string out to a file?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>You can use <tt class="docutils literal">Redirect</tt> with <tt class="docutils literal">Eval</tt> to get close:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-write-to-a-file-from-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-write-to-a-file-from-coq-v-chk0"><span class="kn">Redirect</span> <span class="s2">&quot;file.txt&quot;</span> <span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> <span class="s2">&quot;hello&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">System error: <span class="s2">&quot;file.txt.out: Permission denied&quot;</span></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* file.txt.out now contains:</span>
+<span class="c">     = &quot;hello&quot;</span>
+<span class="c">     : string</span>
+<span class="c">*)</span></span></pre><p>Alternately, write your function <tt class="docutils literal">extract</tt> in Coq, then use the
+extraction mechanism to extract <tt class="docutils literal">extract e</tt> for some <tt class="docutils literal">e</tt> of
+interest, and finally write an OCaml program that imports this
+(string) constant and prints it. The reason to go this route is that
+building up strings in Coq is so slow that you might not be able to
+run <tt class="docutils literal">Eval compute extract e</tt> but you might be able to run it in
+OCaml. You can also then (in an unverified manner) replace Coq strings
+with OCaml native strings so this process is actually efficient; this
+is easy to do by importing <tt class="docutils literal">ExtrOcamlString</tt> in Coq before
+extraction.</p>
+</div>
+</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">examples/how-to-write-to-a-file-from-coq.v</tt>, line 48)</p>
+Coq raised an exception:
+  &gt; System error: &quot;file.txt.out: Permission denied&quot;
+The offending chunk is delimited by &gt;&gt;&gt;…&lt;&lt;&lt; below:
+  &gt; Require Import String.
+  &gt; Open Scope string_scope.
+  &gt; &gt;&gt;&gt;Redirect &quot;file.txt&quot; Eval compute in &quot;hello&quot;.&lt;&lt;&lt;
+  &gt;
+  &gt; (* file.txt.out now contains:
+Results past this point may be unreliable.</div>
+</div>
+</div>
+</div></body>
+</html>
