@@ -25,7 +25,7 @@ Defined.
 
 (*|
 Then I have a witness ``k`` for all ``n`` (``k`` is always 0 in the
-previous example) and I want to assert something about all ``k``'s,
+previous example) and I want to assert something about all ``k``\ s,
 such as
 |*)
 
@@ -84,7 +84,7 @@ or `CPDT on universes
 <http://adam.chlipala.net/cpdt/html/Universes.html>`__.
 
 Another way of looking at this is that, if you do not have any axioms,
-it must be possible to interpret all ``Prop``'s as either the
+it must be possible to interpret all ``Prop``\ s as either the
 singleton set (if they are true) or the empty set (if they are false).
 There is no non-constant function out of a singleton set, so you
 cannot define any interesting properties over a proof of ``exists k :

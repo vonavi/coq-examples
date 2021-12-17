@@ -104,7 +104,7 @@ libraries. For example, the libraries use subset types to define a
 type ``n.-tuple T`` of lists of length ``n``, and a type ``'I_n`` of
 integers bounded by ``n``. This allows us to define a total accessor
 function ``tnth (t : n.-tuple T) (i : 'I_n) : T`` that extracts the
-``i``'th element of the list ``t``. If we define this accessor for
+``i``\ th element of the list ``t``. If we define this accessor for
 arbitrary lists and integers, we need to pass a default value to the
 function to return when the index is out of bounds, or change the
 function's signature so that it returns a value of type ``option T``

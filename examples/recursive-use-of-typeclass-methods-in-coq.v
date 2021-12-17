@@ -213,6 +213,6 @@ Commentary: There is no constructor for creating a record of type
 that ``list (tree A)`` has decidable equality, the invocation is
 simply ``list_eqdec tequiv``. For the uninitiated, ``Program`` here is
 simply allowing for holes in the definition of the instance to be
-filled in later as ``Obligation``'s, which is more convenient than
+filled in later as ``Obligation``\ s, which is more convenient than
 writing the appropriate proofs inline.
 |*)

@@ -46,10 +46,10 @@ So partly this system of ``Prop`` versus ``Set`` is a way to compile
 programs more efficiently, but actually this is also used for logical
 properties. In Coq the ``Prop`` type is impredicative and the ``Set``
 type is not, and even so it's consistent to assume the law of exluded
-middle for ``Prop``'s as an axiom, and to prove that this is
+middle for ``Prop``\ s as an axiom, and to prove that this is
 consistent you can appeal to a "`proof-irrelevant model
 <http://www.lix.polytechnique.fr/~werner/publis/cc.pdf>`__", where you
-interpret types in ``Prop``'s as sets by ignoring all information
+interpret types in ``Prop``\ s as sets by ignoring all information
 except whether they are inhabited or not. From a classical logic
 perspective (where all you care about are truth values) that makes
 sense, but if you are interested in constructive mathematics it's a

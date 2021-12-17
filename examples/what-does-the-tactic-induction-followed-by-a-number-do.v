@@ -1,6 +1,6 @@
 (*|
 ###########################################################
-What does the tactic ``Induction`` followed by a number do?
+What does the tactic ``induction`` followed by a number do?
 ###########################################################
 
 :Link: https://stackoverflow.com/questions/55766757/what-does-the-tactic-induction-followed-by-a-number-do

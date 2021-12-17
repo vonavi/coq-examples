@@ -11,7 +11,7 @@ Question
 ********
 
 My aim is to prove that certain properties of generated lists hold.
-For instance, a generator function produces a list of ``1``'s, the
+For instance, a generator function produces a list of ``1``\ s, the
 length of the list is given as an argument; I'd like to prove that the
 length of the list is what the argument specifies. This is what I have
 so far:

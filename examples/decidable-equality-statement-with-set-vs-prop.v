@@ -1,7 +1,7 @@
 (*|
-##############################################
-Decidable equality statement with Set vs. Prop
-##############################################
+######################################################
+Decidable equality statement with ``Set`` vs. ``Prop``
+######################################################
 
 :Link: https://stackoverflow.com/questions/69710435/decidable-equality-statement-with-set-vs-prop
 |*)
@@ -84,5 +84,5 @@ then we would likely not accept the axiom, since it would instead be
 declaring the existence of a universal decision procedure.
 
 That was a bit of a digression, but hopefully it demonstrated some
-differences in our interpretation of ``Prop``'s and ``Set``'s.
+differences in our interpretation of ``Prop``\ s and ``Set``\ s.
 |*)

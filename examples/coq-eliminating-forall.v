@@ -23,7 +23,7 @@ Abort. (* .none *)
 Normally, having ``forall a: A, P a`` I would deduce ``P c``, where
 ``c`` is a constant. I.e. ``forall`` quantifier would be eliminated.
 Once that done I would again deduce ``exists a`` and my simple proof
-will be ``Qed``'ed.
+will be ``Qed``\ ed.
 
 However, I can't find right way to eliminate on ``forall`` in Coq.
 

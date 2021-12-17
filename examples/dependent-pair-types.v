@@ -30,8 +30,8 @@ Inductive sigT {A : Type} (P : A -> Type) : Type :=
 
 (*|
 Can someone explain how are they different and also in Reading HoTT in
-Coq, it says "Since we haven’t defined propositional equality, we
-can’t do much that is interesting here", why can't we do anything
+Coq, it says "Since we haven't defined propositional equality, we
+can't do much that is interesting here", why can't we do anything
 interesting without propositional equality?
 |*)
 

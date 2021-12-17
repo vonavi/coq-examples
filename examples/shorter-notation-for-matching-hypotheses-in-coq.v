@@ -34,8 +34,8 @@ Reset l0. (* .none *)
 *Is there a more concise way? Or a better approach?*
 
 (Introduction patterns, like ``intros [???? HA HB|??? HA|????? HA HB
-HC HD]``, are not an option—I am tired of finding the right number of
-``?``'s!)
+HC HD]``, are not an option---I am tired of finding the right number
+of ``?``\ s!)
 
 For instance, is it possible to write a ``grab`` tactic to combine a
 pattern and a tactic, as in

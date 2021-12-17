@@ -77,7 +77,7 @@ Fail Check (forall A : Type@{u}, A -> A) : Type@{u}. (* .unfold *)
 (*|
 Note that I had to add the ``Universe u``. declaration to force the
 two occurrences of ``Type`` to be at the same level. Without this
-declaration, Coq would silently put the two ``Type``'s at different
+declaration, Coq would silently put the two ``Type``\ s at different
 universe levels, and the command would be accepted. (This would not
 mean that ``Type`` would have the same behavior as ``Set`` in this
 example, since ``Type@{u}`` and ``Type@{v}`` are different things when

@@ -100,11 +100,11 @@ it would be good to be pointed towards that...
 Answer
 ******
 
-I think you're just missing the ``intuition`` tactic, which
-``intro``'s hypotheses when it sees ``A -> B``, unfolds ``~ P`` to ``P
--> False`` and ``intro``'s that, splits ``/\``'s and ``\/``'s in the
-hypotheses, breaks ``/\``'s in the goal into multiple subgoals, and
-uses ``auto`` to search both branches of ``\/``'s in the goal. That
+I think you're just missing the ``intuition`` tactic, which ``intro``\
+s hypotheses when it sees ``A -> B``, unfolds ``~ P`` to ``P ->
+False`` and ``intro``'s that, splits ``/\``\ s and ``\/``\ s in the
+hypotheses, breaks ``/\``\ s in the goal into multiple subgoals, and
+uses ``auto`` to search both branches of ``\/``\ s in the goal. That
 may seem like a lot but note that these are all basic strategies from
 logic (other than the call to ``auto``).
 

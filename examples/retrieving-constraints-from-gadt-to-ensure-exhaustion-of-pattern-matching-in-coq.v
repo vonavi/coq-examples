@@ -154,7 +154,7 @@ because having the parameters gives Coq enough information for its
 ``match``-elaboration to use information from ``Wrapped``'s index. If
 you issue ``Print test.``, you can see that there's a bit of
 hoop-jumping to pass information about the index ``Y`` through the
-primitive ``match``'s which would otherwise ignore it. `See the
+primitive ``match``\ s which would otherwise ignore it. `See the
 reference manual for more information.
 <https://coq.inria.fr/refman/addendum/extended-pattern-matching.html>`__
 |*)
@@ -206,6 +206,6 @@ two proofs and brings them to the context of our actual result:
 
 I have covered real cases ignoring these assumptions, and I deferred
 "bad" cases to be proven false later which turned to be trivial. I was
-forced to pass the ``eq_refl``'s manually, but it worked and does not
+forced to pass the ``eq_refl``\ s manually, but it worked and does not
 look that bad.
 |*)

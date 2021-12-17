@@ -17,7 +17,7 @@ proved deduction theorem, but then I got stuck with lemma 1 for
 theorem of correctness. So I've formulated one elegant piece of the
 lemma compactly and I invite the community to look at it. That is an
 incomplete the proof of well-foundness of the terms. How to get rid of
-the pair of ``admit``'s properly?
+the pair of ``admit``\ s properly?
 |*)
 
 (* PUBLIC DOMAIN *)

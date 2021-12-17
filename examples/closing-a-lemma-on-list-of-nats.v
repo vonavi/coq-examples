@@ -92,7 +92,7 @@ below the horizontal rule (**spoiler alert!**).
 
 Here goes the full solution. As you can probably see, a lot of case
 analysis is required on top of the main induction (likely due to your
-optimization in ``sumoneseq`` of discarding ``0``'s from ``ln``) and
+optimization in ``sumoneseq`` of discarding ``0``\ s from ``ln``) and
 the reasoning for many of these cases are actually very similar and
 repetitive. I could've probably further shortened the proof script
 with a bit of ``Ltac`` programming looking for similar patterns in the

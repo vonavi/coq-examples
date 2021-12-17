@@ -69,7 +69,7 @@ Qed.
 
 (*|
 After the ``intro``, we see that ``f: P -> Q -> R``, so ``f`` is our
-function that takes ``P``'s and ``Q``'s and produces ``R``'s. After
+function that takes ``P``\ s and ``Q``\ s and produces ``R``\ s. After
 the ``intros`` (which introduces multiple terms), we see that ``q: Q``
 and ``p: P``. The last line (before the ``Qed.``) simply applies the
 function ``f`` to ``p`` and ``q`` to get something in ``R``.

@@ -128,7 +128,7 @@ So, to finally answer your question, I believe the following are your
 only options:
 
 1. You can ``Set Universe Polymorphism`` so that in ``T (T nat)``,
-   your two ``T``'s take different universe arguments. (Equivalently,
+   your two ``T``\ s take different universe arguments. (Equivalently,
    you can write ``Polymorphic Inductive``.)
 2. You can take advantage of how Coq treats parameters of inductive
    types specially, which mandates using equality in your case. (The
