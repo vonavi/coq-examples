@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to make use of information known about this function type in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-to-make-use-of-information-known-about-this-function-type-in-coq">
+<h1 class="title">How to make use of information known about this function type in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/48959586/how-to-make-use-of-information-known-about-this-function-type-in-coq">https://stackoverflow.com/questions/48959586/how-to-make-use-of-information-known-about-this-function-type-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Say I have the following type <tt class="docutils literal">typ</tt> representing <tt class="docutils literal">bool</tt> or
+<tt class="docutils literal">nat</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">typ</span> : <span class="kt">Type</span> := TB | TN.</span></span></pre><p>I also have a function to extract an actual function type from a list
+of <tt class="docutils literal">typ</tt>s and a result type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> ssreflect seq. <span class="c">(* .none *)</span>
+<span class="kn">Fixpoint</span> <span class="nf">get_types</span> (<span class="nv">s</span>: seq typ) (<span class="nv">result_type</span>: <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | nil =&gt; result_type
+  | x :: xs =&gt; <span class="kr">match</span> x <span class="kr">with</span>
+               | TN =&gt; nat -&gt; get_types xs result_type
+               | TB =&gt; bool -&gt; get_types xs result_type
+               <span class="kr">end</span>
+  <span class="kr">end</span>.
+
+<span class="kn">Example</span> <span class="nf">get_types_works</span> : get_types (TB :: TN :: nil) nat = bool -&gt; nat -&gt; nat.
+<span class="kn">Proof</span>. <span class="bp">by</span> []. <span class="kn">Qed</span>.</span></pre><p>Now, I have another function that takes as input a list <tt class="docutils literal">s</tt> of
+<tt class="docutils literal">typ</tt>s and a function of type <tt class="docutils literal">get_types s</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">s</span>: seq typ) (<span class="nv">constructor</span>: get_types s nat) : nat :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | nil =&gt; <span class="mi">2</span> <span class="c">(* Not properly handling empty list case for now *)</span>
+  | TB :: nil =&gt; <span class="nb">constructor</span> true
+  | TN :: nil =&gt; <span class="nb">constructor</span> <span class="mi">2</span>
+  | TB :: xs =&gt; app xs (<span class="nb">constructor</span> true)
+  | TN :: xs =&gt; app xs (<span class="nb">constructor</span> <span class="mi">2</span>)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The reference seq was not found <span class="kr">in</span> the current
+environment.</blockquote></div></div></small></span></pre><p>Defining the above function fails at the line <tt class="docutils literal">| TB :: nil =&gt;
+constructor true</tt>.</p>
+<p>Given we know here that the type of <tt class="docutils literal">get_types s nat</tt> should be
+<tt class="docutils literal">bool <span class="pre">-&gt;</span> nat</tt>, as the value of <tt class="docutils literal">s</tt> is <tt class="docutils literal">TB :: nil</tt>, I'm wondering
+if there's a way we can make Coq aware of this so that the above
+function can be defined?</p>
+<p>If not, is this a limitation of Coq or would the same apply to other
+dependently typed languages?</p>
+<p><strong>Edit:</strong> For context, this is not the original problem I'm trying to
+solve; it's a condensed version to show the issue I was having with
+the type system. In the actual version, rather than hard-coding <tt class="docutils literal">2</tt>
+and <tt class="docutils literal">true</tt>, the <tt class="docutils literal">typ</tt>-like datastructure also carries indices of
+data to parse from a memory slice, and validation functions. The aim
+for <tt class="docutils literal">app</tt> is a function that takes a list of such <tt class="docutils literal">typ</tt>s, a
+slice, and a constructor for a record containing such types, then
+constructs an instance of that record from the indices of the types to
+parse, or returns <tt class="docutils literal">None</tt> if any of the validations fail.</p>
+</div>
+<div class="section" id="answer-tej-chajed">
+<h1>Answer (Tej Chajed)</h1>
+<p>There's nothing wrong with what you want in principle. However, at
+least in Coq, there are some simple rules for how pattern matching is
+typechecked so that information about which constructor was used can
+be used in the type. The surface language (Gallina in this case) hides
+this simplicity by helping compile (or <em>desugar</em>) pattern matches,
+so that as a user you can write more complex patterns than the
+underlying system has to deal with. I'm not as familiar with Idris,
+but based on how complicated dependent pattern matches can be I
+suspect you run into similar limitations there, where you have to fit
+your code into a form the system can type check.</p>
+<p>Here, you're running into two limitations of this pattern matching
+compilation. The first is that the type of constructor is not
+specialized based on the match on <tt class="docutils literal">s</tt>. This is easily fixed by
+computing a function from <tt class="docutils literal">get_types s nat <span class="pre">-&gt;</span> nat</tt>, which the
+compiler gets right.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">typ</span> : <span class="kt">Type</span> := TB | TN.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">get_types</span> (<span class="nv">s</span>: list typ) (<span class="nv">result_type</span>: <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | nil =&gt; result_type
+  | x :: xs =&gt; <span class="kr">match</span> x <span class="kr">with</span>
+               | TN =&gt; nat -&gt; get_types xs result_type
+               | TB =&gt; bool -&gt; get_types xs result_type
+               <span class="kr">end</span>
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">s</span>: list typ) : get_types s nat -&gt; nat :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | nil =&gt; <span class="kr">fun</span> <span class="nv">constructor</span> =&gt; <span class="mi">2</span>
+  | TB :: nil =&gt; <span class="kr">fun</span> <span class="nv">constructor</span> =&gt; <span class="nb">constructor</span> true
+  | TN :: nil =&gt; <span class="kr">fun</span> <span class="nv">constructor</span> =&gt; <span class="nb">constructor</span> <span class="mi">2</span>
+  | TB :: xs =&gt; <span class="kr">fun</span> <span class="nv">constructor</span> =&gt; app xs (<span class="nb">constructor</span> true)
+  | TN :: xs =&gt; <span class="kr">fun</span> <span class="nv">constructor</span> =&gt; app xs (<span class="nb">constructor</span> <span class="mi">2</span>)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of app <span class="kr">is</span> ill-formed.
+In environment
+app : <span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat
+s : list typ
+t : typ
+xs : list typ
+t0 : typ
+l : list typ
+<span class="nb">constructor</span> : get_types (TB :: t0 :: l) nat
+Recursive call to app has principal argument equal to
+<span class="s2">&quot;t0 :: l&quot;</span> instead of
+one of the following variables: <span class="s2">&quot;xs&quot;</span>
+<span class="s2">&quot;l&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun s : list typ =&gt;</span>
+<span class="s2"> match s as s0 return (get_types s0 nat -&gt; nat) with</span>
+<span class="s2"> | [] =&gt; fun _ : get_types [] nat =&gt; 2</span>
+<span class="s2"> | t :: xs =&gt;</span>
+<span class="s2">     match</span>
+<span class="s2">       t as t0</span>
+<span class="s2">       return (get_types (t0 :: xs) nat -&gt; nat)</span>
+<span class="s2">     with</span>
+<span class="s2">     | TB =&gt;</span>
+<span class="s2">         match</span>
+<span class="s2">           xs as xs0</span>
+<span class="s2">           return (get_types (TB :: xs0) nat -&gt; nat)</span>
+<span class="s2">         with</span>
+<span class="s2">         | [] =&gt;</span>
+<span class="s2">             fun constructor : get_types [TB] nat =&gt;</span>
+<span class="s2">             constructor true</span>
+<span class="s2">         | t0 :: l =&gt;</span>
+<span class="s2">             fun</span>
+<span class="s2">               constructor : get_types (TB :: t0 :: l)</span>
+<span class="s2">                               nat =&gt;</span>
+<span class="s2">             app (t0 :: l) (constructor true)</span>
+<span class="s2">         end</span>
+<span class="s2">     | TN =&gt;</span>
+<span class="s2">         match</span>
+<span class="s2">           xs as xs0</span>
+<span class="s2">           return (get_types (TN :: xs0) nat -&gt; nat)</span>
+<span class="s2">         with</span>
+<span class="s2">         | [] =&gt;</span>
+<span class="s2">             fun constructor : get_types [TN] nat =&gt;</span>
+<span class="s2">             constructor 2</span>
+<span class="s2">         | t0 :: l =&gt;</span>
+<span class="s2">             fun</span>
+<span class="s2">               constructor : get_types (TN :: t0 :: l)</span>
+<span class="s2">                               nat =&gt;</span>
+<span class="s2">             app (t0 :: l) (constructor 2)</span>
+<span class="s2">         end</span>
+<span class="s2">     end</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* fails due to limitation of termination checker with nested matches *)</span></span></pre><p>...but then you run into a second problem with the termination
+checker. Note that your match is complex: it analyzes the structure of
+<tt class="docutils literal">s</tt> as well as its head and tail (if it was built with <tt class="docutils literal">cons</tt>).
+Ultimately all pattern matches are compiled to nested pattern matches
+on a single inductive type. If you look at this unfolding, you're
+destructing <tt class="docutils literal">s</tt> into <tt class="docutils literal">t :: xs</tt>, and then destructing <tt class="docutils literal">xs</tt> again
+into <tt class="docutils literal">t0 :: xs'</tt>, before finally recursing on <tt class="docutils literal">xs</tt>. Unfortunately,
+the Coq termination checker only sees this as <tt class="docutils literal">t0 :: xs'</tt> and
+doesn't recognize it as a subterm of <tt class="docutils literal">s</tt> (it really wants <tt class="docutils literal">xs</tt>).</p>
+<p>I had a hard time manually writing your function in a way that type
+checks, but here's a version written using tactics that is
+functionally correct. Note that the definition it produces is quite a
+bit more complicated than any ordinary pattern match, because it has
+to maintain a proof produced by <tt class="docutils literal">destruct_with_eqn</tt>. However, that
+proof is crucial to simultaneously using <tt class="docutils literal">xs</tt> to make the
+termination checker happy and revealing <tt class="docutils literal">t0 :: xs'</tt> for type
+checking the application of the constructor. It may be complicated but
+you can still run it just fine, as the last line illustrates.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk2"><span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">s</span>: list typ) (<span class="nv">constructor</span>: get_types s nat) {<span class="nv">struct</span> <span class="nv">s</span>} : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>get_types s nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk3"><span class="nb">destruct</span> s <span class="kr">as</span> [|t xs]; <span class="nb">simpl</span> <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> t <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types xs nat
+| TN =&gt; nat -&gt; get_types xs nat
+<span class="kr">end</span></span></span></span><br></div><label class="goal-separator" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk4"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> <span class="mi">2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> t <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types xs nat
+| TN =&gt; nat -&gt; get_types xs nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk7">destruct_with_eqn xs; <span class="nb">simpl</span> <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = []</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> t <span class="kr">with</span>
+| TB =&gt; bool -&gt; nat
+| TN =&gt; nat -&gt; nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> t <span class="kr">with</span>
+| TB =&gt;
+    bool -&gt;
+    <span class="kr">match</span> t0 <span class="kr">with</span>
+    | TB =&gt; bool -&gt; get_types l nat
+    | TN =&gt; nat -&gt; get_types l nat
+    <span class="kr">end</span>
+| TN =&gt;
+    nat -&gt;
+    <span class="kr">match</span> t0 <span class="kr">with</span>
+    | TB =&gt; bool -&gt; get_types l nat
+    | TN =&gt; nat -&gt; get_types l nat
+    <span class="kr">end</span>
+<span class="kr">end</span></span></span></span><br></div><label class="goal-separator" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk8"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk9">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = []</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> t <span class="kr">with</span>
+| TB =&gt; bool -&gt; nat
+| TN =&gt; nat -&gt; nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> t; [ <span class="bp">exact</span> (<span class="nb">constructor</span> true) | <span class="bp">exact</span> (<span class="nb">constructor</span> <span class="mi">2</span>) ].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chka">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> t <span class="kr">with</span>
+| TB =&gt;
+    bool -&gt;
+    <span class="kr">match</span> t0 <span class="kr">with</span>
+    | TB =&gt; bool -&gt; get_types l nat
+    | TN =&gt; nat -&gt; get_types l nat
+    <span class="kr">end</span>
+| TN =&gt;
+    nat -&gt;
+    <span class="kr">match</span> t0 <span class="kr">with</span>
+    | TB =&gt; bool -&gt; get_types l nat
+    | TN =&gt; nat -&gt; get_types l nat
+    <span class="kr">end</span>
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkb"><span class="nb">destruct</span> t; <span class="nb">simpl</span> <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>bool -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>nat -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><label class="goal-separator" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkc"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkd">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>bool -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chke"><span class="nb">apply</span> (app xs).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>bool -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types xs nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chkf"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>bool -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types (t0 :: l) nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (<span class="nb">constructor</span> true).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk10">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>nat -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk11"><span class="nb">apply</span> (app xs).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>Heql</var><span class="hyp-type"><b>: </b><span>xs = t0 :: l</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>nat -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types xs nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk12"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>t0</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>nat -&gt;
+<span class="kr">match</span> t0 <span class="kr">with</span>
+| TB =&gt; bool -&gt; get_types l nat
+| TN =&gt; nat -&gt; get_types l nat
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types (t0 :: l) nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (<span class="nb">constructor</span> <span class="mi">2</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk13"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> app [TB; TN] (<span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> =&gt; <span class="kr">if</span> x <span class="kr">then</span> y + <span class="mi">2</span> <span class="kr">else</span> y).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">4</span>
+: nat</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer-eponier">
+<h1>Answer (eponier)</h1>
+<p>Yet two other ways of defining <tt class="docutils literal">app</tt>.</p>
+<p>The first one uses tactics, and relies on <tt class="docutils literal">induction</tt> instead of
+<tt class="docutils literal">Fixpoint</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> seq.
+<span class="kn">Definition</span> <span class="nf">app</span> (<span class="nv">s</span>: seq typ) (<span class="nv">constructor</span>: get_types s nat) : nat.
+<span class="kn">Proof</span>.
+  <span class="nb">induction</span> s <span class="kr">as</span> [|t xs].
+  - <span class="bp">exact</span> <span class="mi">2</span>.
+  - <span class="nb">destruct</span> xs.
+    + <span class="nb">destruct</span> t.
+      * <span class="bp">exact</span> (<span class="nb">constructor</span> true).
+      * <span class="bp">exact</span> (<span class="nb">constructor</span> <span class="mi">2</span>).
+    + <span class="nb">destruct</span> t.
+      * <span class="bp">exact</span> (IHxs (<span class="nb">constructor</span> true)).
+      * <span class="bp">exact</span> (IHxs (<span class="nb">constructor</span> <span class="mi">2</span>)).
+<span class="kn">Defined</span>.</span></pre><p>The second one uses Gallina and complexed pattern-matchings.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk14"><span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">s</span>: seq typ) : get_types s nat -&gt; nat :=
+  <span class="kr">match</span> s <span class="kr">return</span> get_types s nat -&gt; nat <span class="kr">with</span>
+  | nil =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="mi">2</span>
+  | x :: xs =&gt;
+    <span class="kr">match</span> xs <span class="kr">as</span> xs0 <span class="kr">return</span> xs = xs0 -&gt; get_types (x::xs0) nat -&gt; nat <span class="kr">with</span>
+    | nil =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="kr">match</span> x <span class="kr">return</span> get_types (x::nil) nat -&gt; nat <span class="kr">with</span>
+                      | TB =&gt; <span class="kr">fun</span> <span class="nv">c</span> =&gt; c true
+                      | TN =&gt; <span class="kr">fun</span> <span class="nv">c</span> =&gt; c <span class="mi">2</span>
+                      <span class="kr">end</span>
+    | _ =&gt; <span class="kr">fun</span> <span class="nv">e</span> =&gt; <span class="kr">match</span> e <span class="kr">in</span> _ = xs1 <span class="kr">return</span> get_types (x::xs1) nat -&gt; nat <span class="kr">with</span>
+                    | eq_refl =&gt;
+                      <span class="kr">match</span> x <span class="kr">return</span> get_types (x::xs) nat -&gt; nat <span class="kr">with</span>
+                      | TB =&gt; <span class="kr">fun</span> <span class="nv">c</span> =&gt; app xs (c true)
+                      | TN =&gt; <span class="kr">fun</span> <span class="nv">c</span> =&gt; app xs (c <span class="mi">2</span>)
+                      <span class="kr">end</span>
+                    <span class="kr">end</span>
+    <span class="kr">end</span> eq_refl
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;typ&quot;</span> has type <span class="s2">&quot;Set&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>When destructing <tt class="docutils literal">xs</tt>, we remember an equality between the original
+<tt class="docutils literal">xs</tt> and what it is destructed in. We do not need this equality in
+the <tt class="docutils literal">nil</tt> branch and discards it with <tt class="docutils literal">fun _</tt>. In the other
+branch, we pattern-match on the proof of equality (<tt class="docutils literal">match e</tt>), which
+corresponds to a rewriting using this equality. Inside the <tt class="docutils literal">eq_refl</tt>
+branch, we can use the original <tt class="docutils literal">xs</tt> and thus make recursive calls
+allowed by the termination checker. Outside the pattern-match, we
+return the right type expected by the pattern-matching on <tt class="docutils literal">xs</tt>. The
+last thing to do is to provide a proof of the equality of <tt class="docutils literal">xs</tt> and
+<tt class="docutils literal">xs0</tt>, but it is trivially <tt class="docutils literal">eq_refl</tt>.</p>
+</div>
+<div class="section" id="answer-ejgallego">
+<h1>Answer (ejgallego)</h1>
+<p>Well, I am not sure what you are really trying to do, but the first
+step to submit your code into the &quot;convoy&quot; pattern is indeed to add a
+bit more structure to you type interpretation. If you separate the
+interpretation of types from the one for list of types you can easily
+get a skeleton working:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> all_ssreflect.
+
+<span class="kn">Set Implicit Arguments</span>.
+<span class="kn">Unset Strict Implicit</span>.
+<span class="kn">Unset Printing Implicit Defensive</span>.
+
+<span class="kn">Inductive</span> <span class="nf">Typ</span> := TB | TN.
+
+<span class="c">(* Interpretation for types *)</span>
+<span class="kn">Definition</span> <span class="nf">iT</span> <span class="nv">w</span> : <span class="kt">Type</span> :=
+  <span class="kr">match</span> w <span class="kr">with</span> | TB =&gt; bool | TN =&gt; nat <span class="kr">end</span>.
+
+<span class="c">(* Default witness *)</span>
+<span class="kn">Definition</span> <span class="nf">dw</span> <span class="nv">w</span> : iT w :=
+  <span class="kr">match</span> w <span class="kr">with</span> | TB =&gt; true | TN =&gt; <span class="mi">2</span> <span class="kr">end</span>.
+
+<span class="kn">Definition</span> <span class="nf">get_types</span> (<span class="nv">res</span> : <span class="kt">Type</span>) :=
+  <span class="kr">fix</span> gt (args : list Typ) :=
+    <span class="kr">match</span> args <span class="kr">with</span>
+    | [::]        =&gt; res
+    | [:: w &amp; xs] =&gt; iT w -&gt; gt xs
+    <span class="kr">end</span>.
+
+<span class="kn">Variable</span> (<span class="nv">dt</span> : Typ).
+<span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">args</span> : list Typ) : get_types (iT dt) args -&gt; iT dt :=
+  <span class="kr">match</span> args <span class="kr">with</span>
+  | [::]         =&gt; <span class="kr">fun</span> <span class="nv">gt</span> =&gt; dw dt
+  | [:: tw &amp; xs] =&gt; <span class="kr">fun</span> <span class="nv">gt</span> =&gt; app (gt (dw tw))
+  <span class="kr">end</span>.</span></pre><p>Note that I've generalized the return type too as there was no good
+reason to hardcode the definition to <tt class="docutils literal">nat</tt>. A fun exercise is to
+modify the above <tt class="docutils literal">app</tt> function and prove it equivalent to the
+tactic-based version of Tej.</p>
+</div>
+</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">examples/how-to-make-use-of-information-known-about-this-function-type-in-coq.v</tt>, line 26)</p>
+Coq raised an exception:
+  &gt; Cannot find a physical path bound to logical path matching suffix
+  &gt; &lt;&gt; and prefix mathcomp.
+The offending chunk is delimited by &gt;&gt;&gt;…&lt;&lt;&lt; below:
+  &gt; From mathcomp Require Import &gt;&gt;&gt;ssreflect&lt;&lt;&lt; seq. (* .none *)
+  &gt; Fixpoint get_types (s: seq typ) (result_type: Type) : Type :=
+  &gt;   match s with
+Results past this point may be unreliable.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">examples/how-to-make-use-of-information-known-about-this-function-type-in-coq.v</tt>, line 26)</p>
+Orphaned message for sid b'3':
+ &gt;  Cannot find a physical path bound to logical path
+ &gt;  matching suffix &lt;&gt; and prefix mathcomp.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">examples/how-to-make-use-of-information-known-about-this-function-type-in-coq.v</tt>, line 170)</p>
+Coq raised an exception:
+  &gt; Cannot find a physical path bound to logical path matching suffix
+  &gt; &lt;&gt; and prefix mathcomp.
+The offending chunk is delimited by &gt;&gt;&gt;…&lt;&lt;&lt; below:
+  &gt; Reset app. (* .none *)
+  &gt; From mathcomp Require Import &gt;&gt;&gt;seq&lt;&lt;&lt;. (* .none *)
+  &gt; Definition app (s: seq typ) (constructor: get_types s nat) : nat.
+  &gt; Proof.
+Results past this point may be unreliable.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">examples/how-to-make-use-of-information-known-about-this-function-type-in-coq.v</tt>, line 169)</p>
+Orphaned message for sid b'32':
+ &gt;  Cannot find a physical path bound to logical path
+ &gt;  matching suffix &lt;&gt; and prefix mathcomp.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">examples/how-to-make-use-of-information-known-about-this-function-type-in-coq.v</tt>, line 185)</p>
+Coq raised an exception:
+  &gt; The term &quot;typ&quot; has type &quot;Set&quot; while it is expected to have type &quot;nat&quot;.
+The offending chunk is delimited by &gt;&gt;&gt;…&lt;&lt;&lt; below:
+  &gt; Reset app. (* .none *)
+  &gt; Fixpoint app (s: seq &gt;&gt;&gt;typ&lt;&lt;&lt;) : get_types s nat -&gt; nat :=
+  &gt;   match s return get_types s nat -&gt; nat with
+  &gt;   | nil =&gt; fun _ =&gt; 2
+Results past this point may be unreliable.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">examples/how-to-make-use-of-information-known-about-this-function-type-in-coq.v</tt>, line 231)</p>
+Coq raised an exception:
+  &gt; The term &quot;typ&quot; has type &quot;Set&quot; while it is expected to have type &quot;nat&quot;.
+The offending chunk is delimited by &gt;&gt;&gt;…&lt;&lt;&lt; below:
+  &gt; Reset TB. (* .none *)
+  &gt; Set Warnings &quot;-notatio&gt;&gt;&gt;n-o&lt;&lt;&lt;verridden&quot;. (* .none *)
+  &gt; From mathcomp Require Import all_ssreflect.
+  &gt;
+Results past this point may be unreliable.</div>
+</div>
+</div>
+</div></body>
+</html>

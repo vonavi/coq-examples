@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq: viewing proof term during proof script writing</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-viewing-proof-term-during-proof-script-writing">
+<h1 class="title">Coq: viewing proof term during proof script writing</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/48875967/coq-viewing-proof-term-during-proof-script-writing">https://stackoverflow.com/questions/48875967/coq-viewing-proof-term-during-proof-script-writing</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>So, I've got a proof that looks like this:</p>
+<pre class="code coq literal-block">
+<span class="nb">induction</span> <span class="n">t</span><span class="o">;</span> <span class="nb">intros</span><span class="o">;</span> <span class="nb">inversion</span> <span class="n">H</span><span class="o">;</span> <span class="n">crush</span><span class="o">.</span>
+</pre>
+<p>It solves all my goals, but when I do <tt class="docutils literal">Qed</tt>, I get the following
+error:</p>
+<blockquote>
+Cannot guess decreasing argument of fix.</blockquote>
+<p>So somewhere in the generated proof term, there's non-well-founded
+recursion. The problem is, I have no idea where.</p>
+<p>Is there a way to debug this kind of error, or to see the (possibly
+non halting) proof term that the tactics script generates?</p>
+</div>
+<div class="section" id="answer-tej-chajed">
+<h1>Answer (Tej Chajed)</h1>
+<p>You can use <tt class="docutils literal">Show Proof.</tt> to view the proof term so far.</p>
+<p>Another command that can help with seeing where the recursion went
+wrong is <tt class="docutils literal">Guarded.</tt>, which runs the termination checker on the proof
+term so far. You'll need to break apart the tactic script into
+independent sentences to use it, though. Here's an example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-viewing-proof-term-during-proof-script-writing-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">f</span> (<span class="nv">n</span> : nat) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-viewing-proof-term-during-proof-script-writing-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-viewing-proof-term-during-proof-script-writing-v-chk2"><span class="nb">apply</span> plus.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><label class="goal-separator" for="coq-viewing-proof-term-during-proof-script-writing-v-chk3"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-viewing-proof-term-during-proof-script-writing-v-chk4">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (f n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-viewing-proof-term-during-proof-script-writing-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-viewing-proof-term-during-proof-script-writing-v-chk6"><span class="kn">Guarded</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of f <span class="kr">is</span> ill-formed.
+In environment
+f : nat -&gt; nat
+n : nat
+Recursive call to f has principal argument equal to
+<span class="s2">&quot;n&quot;</span> instead of
+a subterm of <span class="s2">&quot;n&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun n : nat =&gt; f n + ?X5@{__:=f; __:=n}&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-viewing-proof-term-during-proof-script-writing-v-chk7"><span class="kn">Defined</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">(<span class="kr">in</span> proof f): Attempt to save an incomplete proof</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small></span></pre><hr class="docutils" />
+<p><strong>Q:</strong> Does <tt class="docutils literal">Guarded</tt> work when Coq cannot guess the decreasing
+argument of fix?</p>
+<p><strong>A:</strong> It turns out when you define a <tt class="docutils literal">Fixpoint</tt> in proof mode, Coq
+always uses the last argument as the decreasing argument (and if it's
+not inductive, the command just fails). Then <tt class="docutils literal">Guarded</tt> ensures that
+this argument is decreased. Note that you can always explicitly
+provide a <tt class="docutils literal">{struct n}</tt> annotation at definition time, though.</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>You can use the <tt class="docutils literal">Show Proof.</tt> command inside proof mode to print the
+proof term produced so far.</p>
+</div>
+<div class="section" id="answer-lily-chung">
+<h1>Answer (Lily Chung)</h1>
+<p>In addition to the other excellent answers, I also want to point out
+that using <tt class="docutils literal">induction</tt> inside an interactive-mode <tt class="docutils literal">Fixpoint</tt> is
+usually a mistake, because you're recursing twice. Writing fixpoints
+in interactive mode is often tricky because most automation tools will
+happily make a recursive call at every possible opportunity, even when
+it would be ill-founded.</p>
+<p>I would advise to use <tt class="docutils literal">Definition</tt> instead of <tt class="docutils literal">Fixpoint</tt> and use
+<tt class="docutils literal">induction</tt> in the proof script. This invokes the explicit recursor,
+which allows for much better control of automation. The disadvantage
+is decreased flexibility since fixpoints have fewer restrictions than
+recursors - but as we've seen, that is both a blessing and a curse.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> If you are very careful, using <tt class="docutils literal">induction</tt> inside of a
+<tt class="docutils literal">Fixpoint</tt> is a relatively easy way to prove things about functions
+which contain nested fixpoints. You have to make sure to specialize
+the fixpoint before running anything like <tt class="docutils literal">auto</tt>, though.</p>
+<p><strong>A:</strong> That's reasonable, though I would also consider abstracting the
+necessary nested induction into its own scheme so that there's no need
+to be so careful.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

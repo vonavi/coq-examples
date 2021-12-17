@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>use module signature definition in module implementation</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="use-module-signature-definition-in-module-implementation">
+<h1 class="title">use module signature definition in module implementation</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/49310103/use-module-signature-definition-in-module-implementation">https://stackoverflow.com/questions/49310103/use-module-signature-definition-in-module-implementation</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm not very familiar with modules in Coq, but it was brought up in a
+recent question I asked. I have the following code.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">Sig</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">n</span> : nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">n_plus_1</span> := n + <span class="mi">1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sig</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">ModuleInstance</span> &lt;: Sig.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">n</span> := <span class="mi">3</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="use-module-signature-definition-in-module-implementation-v-chk0"><span class="kn">End</span> <span class="nf">ModuleInstance</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The <span class="bp">field</span> n_plus_1 <span class="kr">is</span> missing <span class="kr">in</span> use_module_signature_definition_in_module_implementation.ModuleInstance.</blockquote></div></div></small></span></pre><p>Coq complains about the definition of <tt class="docutils literal">n_plus_1</tt> when I try to run
+<tt class="docutils literal">End ModuleInstance</tt>. I'm not sure if this is a correct way to use
+modules, but I want it to just use the definition in the signature,
+it's a complete definition that doesn't need any additional
+information. Is it possible to do it?</p>
+</div>
+<div class="section" id="answer-tej-chajed">
+<h1>Answer (Tej Chajed)</h1>
+<p>You'll need to put your definitions into a separate &quot;module functor&quot;
+(basically a module-level function: these are modules that takes other
+modules as parameters) so that <tt class="docutils literal">Sig</tt> contains only parameters:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">Sig</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">n</span> : nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sig</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* this is the module functor *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">SigUtils</span> (S : Sig).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">n_plus_1</span> := S.n + <span class="mi">1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">SigUtils</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">ModuleInstance</span> &lt;: Sig.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">n</span> := <span class="mi">3</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ModuleInstance</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">ModuleInstanceUtils</span> := SigUtils ModuleInstance.</span></span></pre><p>It's not terribly hard but there is one big limitations: you can't use
+any of your utilities as part of the signature (eg, to make type
+signatures shorter). Another limitation is that your basic definitions
+and derived definitions/properties are in separate modules, so if you
+qualify your references you'll have to use the right name. This is
+irrelevant if you import the modules, though.</p>
+<p>This is the pattern the standard library follows in a few places; for
+example, the <tt class="docutils literal">FSetFacts</tt> and <tt class="docutils literal">FSetProperties</tt> functors.</p>
+</div>
+<div class="section" id="answer-blaisorblade">
+<h1>Answer (Blaisorblade)</h1>
+<p>As an alternative to <a class="reference external" href="https://stackoverflow.com/a/49322214/53974">https://stackoverflow.com/a/49322214/53974</a>, one
+can sometimes use <tt class="docutils literal">Include</tt>, which supports a very limited special
+case of recursive linking. Like in that answer, you should put your
+definitions in a module functor, but then you can <tt class="docutils literal">Include</tt> that,
+both in the rest of your signature, and in the implementing module.
+That allows to reuse your definitions to shorten the declarations, and
+to have them as part of the same module.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk1"><span class="kn">Require Import</span> Lia.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Require</span> <span class="kn">inside</span> a module <span class="kr">is</span> deprecated <span class="kn">and</span> strongly
+discouraged. You can <span class="kn">Require</span> a module <span class="nb">at</span> toplevel <span class="kn">and</span>
+optionally <span class="kn">Import</span> it <span class="kn">inside</span> another one.
+[require-<span class="kr">in</span>-module,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">Sig</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">n</span> : nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sig</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* this is the module functor *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">SigUtils</span> (S : Sig).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">n_plus_1</span> := S.n + <span class="mi">1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">SigUtils</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">ModuleInstance</span> &lt;: Sig.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">n</span> := <span class="mi">3</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> SigUtils.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ModuleInstance</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">Sig2</span> &lt;: Sig.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> Sig.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> SigUtils.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">n_plus_1_eq</span>: n_plus_1 = <span class="mi">1</span> + n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sig2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">ModuleInstance2</span> &lt;: Sig2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> ModuleInstance.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk2"><span class="kn">Lemma</span> <span class="nf">n_plus_1_eq</span>: n_plus_1 = <span class="mi">1</span> + n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n_plus_1 = <span class="mi">1</span> + n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n_plus_1 = <span class="mi">1</span> + n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk4"><span class="nb">unfold</span> n_plus_1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n + <span class="mi">1</span> = <span class="mi">1</span> + n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk5"><span class="kn">Lemma</span> <span class="nf">n_plus_1_neq</span>: n_plus_1 &lt;&gt; <span class="mi">2</span> + n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n_plus_1 &lt;&gt; <span class="mi">2</span> + n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n_plus_1 &lt;&gt; <span class="mi">2</span> + n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="use-module-signature-definition-in-module-implementation-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="use-module-signature-definition-in-module-implementation-v-chk7"><span class="nb">unfold</span> n_plus_1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n + <span class="mi">1</span> &lt;&gt; <span class="mi">2</span> + n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ModuleInstance2</span>.</span></span></pre><p>However, you'll want to beware the semantics of <tt class="docutils literal">Include</tt> (see e.g.
+<a class="reference external" href="https://stackoverflow.com/a/49717951/53974">https://stackoverflow.com/a/49717951/53974</a>). In particular, should you
+include a module in two different modules, you'll get distinct
+definitions. Above, <tt class="docutils literal">SigUtils</tt> is included once in a <tt class="docutils literal">Module Type</tt>
+and once in an implementing <tt class="docutils literal">Module</tt>, which is allowed.</p>
+<p>EDIT: I found a big application of this pattern in the Coq standard
+library. Lots of properties of numbers are proved generically and
+collected in various module types (such as <tt class="docutils literal">NExtraProp</tt> <a class="reference external" href="https://github.com/coq/coq/blob/6d6b2d7132bc768783bad6738d778519c28c8f08/theories/Numbers/Natural/Abstract/NProperties.v#L27-L30">here</a>),
+and then used in concrete definitions through <tt class="docutils literal">Include</tt>, such as
+<a class="reference external" href="https://github.com/coq/coq/blob/6d6b2d7132bc768783bad6738d778519c28c8f08/theories/Arith/PeanoNat.v#L727">here</a>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
