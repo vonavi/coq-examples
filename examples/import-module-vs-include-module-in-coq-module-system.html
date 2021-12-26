@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Import &lt;Module&gt; vs. Include &lt;Module&gt; in Coq Module system</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="import-module-vs-include-module-in-coq-module-system">
+<h1 class="title"><tt class="docutils literal">Import &lt;Module&gt;</tt> vs. <tt class="docutils literal">Include &lt;Module&gt;</tt> in Coq Module system</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/48837996/import-module-vs-include-module-in-coq-module-system">https://stackoverflow.com/questions/48837996/import-module-vs-include-module-in-coq-module-system</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>What is the exact semantics of <tt class="docutils literal">Include M1</tt> inside another module,
+say <tt class="docutils literal">M</tt>? How is it different from doing <tt class="docutils literal">Import M1</tt> inside the
+module <tt class="docutils literal">M</tt>? More precisely what is the semantics of the following
+command:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">M</span> := M1 &lt;+ M2 &lt;+ M3.</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>To summarize the semantics of both vernacular commands:</p>
+<ul class="simple">
+<li>The command <tt class="docutils literal">Include M1</tt> (which can be used in the definition of a
+<em>module</em> or a <em>module type</em>) asks Coq to make a copy of all the
+fields of <tt class="docutils literal">M1</tt>. Thus, it acts just like a &quot;copy-and-paste&quot; of the
+contents of <tt class="docutils literal">M1</tt> inside the ambient module (resp. module type).</li>
+<li>The command <tt class="docutils literal">Import M1</tt> (which can also be used in the definition
+of a <em>module</em> or a <em>module type</em>, but additionally requires that
+<tt class="docutils literal">M1</tt> is a <em>module</em>) allows one to refer to the fields of <tt class="docutils literal">M1</tt>
+with their short identifier (i.e., without needing to use qualified
+identifiers <tt class="docutils literal">M1.field_name</tt>)</li>
+</ul>
+<p>Next, the syntax</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">M</span> := M1 &lt;+ M2 &lt;+ M3.</span></span></pre><p>is a shortcut for:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">M</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> M1.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> M2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> M3.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">M</span>.</span></span></pre><p>The relevant sections of Coq's reference manual are <a class="reference external" href="https://coq.inria.fr/distrib/V8.7.2/refman/gallina-ext.html#sec90">Sect. 2.5.1
+(Include)</a>,
+<a class="reference external" href="https://coq.inria.fr/distrib/V8.7.2/refman/gallina-ext.html#Import">Sect. 2.5.8 (Import)</a>
+and you may also want to take a look at the <a class="reference external" href="https://coq.inria.fr/distrib/V8.7.2/refman/gallina-ext.html#hevea_command55">Export</a>
+command (a variant of <tt class="docutils literal">Import</tt>).</p>
+<p>If at some point you hesitate between <tt class="docutils literal">Include</tt> and <tt class="docutils literal">Import</tt>, you
+should probably try to use <tt class="docutils literal">Import</tt> in the first place, because it
+will have a lighter effect (it won't clone the contents of the
+specified module but just define shorter names).</p>
+<p>Finally, below are two comprehensive examples that illustrate the use
+of modules, module types, and functors in Coq as well as the commands
+<tt class="docutils literal">Include</tt> and <tt class="docutils literal">Import</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="sd">(********************************************)</span>
+<span class="c">(* Example involving a parameterized module *)</span>
+<span class="sd">(********************************************)</span>
+
+</span><span class="alectryon-wsp"><span class="c">(* A signature *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">MT</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">t</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">MT</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* A bigger signature *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">MT1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Include</span> MT.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">u</span> : t.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">f</span> : t -&gt; t.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">MT1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* A parameterized module *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">F1</span> (M1 : MT1).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> M1. <span class="c">(* =&gt; we can now write f rather than M1.f *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">fu</span> := f u.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">F1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* A module implementing MT1 *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">M1</span> &lt;: MT1. <span class="c">(* =&gt; check the signature but don&#39;t make the module opaque *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">t</span> := nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">u</span> := O.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> := S.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">M1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Instantiation *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">FM1</span> := F1 M1.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="import-module-vs-include-module-in-coq-module-system-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="import-module-vs-include-module-in-coq-module-system-v-chk0"><span class="kn">Compute</span> FM1.fu.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">1</span>
+: M1.t</blockquote></div></div></small></span></pre><p>and I recall that <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/vernacular.html#hevea_command97">Compute</a>
+is a shortcut for <tt class="docutils literal">Eval vm_compute in</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="sd">(**********************************************)</span>
+<span class="c">(* Extra example: a parameterized signature   *)</span>
+<span class="c">(*                                            *)</span>
+<span class="c">(* It can be noted that this feature of Coq   *)</span>
+<span class="c">(* module types has no equivalent in OCaml... *)</span>
+<span class="sd">(**********************************************)</span>
+
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">MT2</span> (M : MT).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">u</span> : M.t.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> M. <span class="c">(* =&gt; we can now write t rather than M.t *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">f</span> : t -&gt; t.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">MT2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Another parameterized module *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">F2</span> (M : MT) (M2 : MT2 M).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> M2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">fu</span> := f u.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">F2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Modules implementing MT and MT2 *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">M</span> &lt;: MT.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">t</span> := bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">M</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">M2</span> &lt;: MT2 M.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">u</span> := false.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> := negb.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">M2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Instantiation *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">FM2</span> := F2 M M2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="import-module-vs-include-module-in-coq-module-system-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="import-module-vs-include-module-in-coq-module-system-v-chk1"><span class="kn">Compute</span> FM2.fu.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= true
+: M.t</blockquote></div></div></small></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
