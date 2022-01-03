@@ -3,7 +3,7 @@
 Is it possible to force induction tactic to produce more equations?
 ###################################################################
 
-:Link: https://stackoverflow.com/questions/52015166/is-it-possible-to-force-induction-tactic-to-produce-more-equations
+:Link: https://stackoverflow.com/q/52015166
 |*)
 
 (*|

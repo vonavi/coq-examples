@@ -3,7 +3,7 @@
 Efficient Way of Defining Multiple Functions of the Same Type
 #############################################################
 
-:Link: https://stackoverflow.com/questions/49600938/efficient-way-of-defining-multiple-functions-of-the-same-type
+:Link: https://stackoverflow.com/q/49600938
 |*)
 
 (*|

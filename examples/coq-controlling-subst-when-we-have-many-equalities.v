@@ -3,7 +3,7 @@
 Coq: controlling ``subst`` when we have many equalities
 #######################################################
 
-:Link: https://stackoverflow.com/questions/48840457/coq-controlling-subst-when-we-have-many-equalities
+:Link: https://stackoverflow.com/q/48840457
 |*)
 
 (*|

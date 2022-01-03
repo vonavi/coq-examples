@@ -3,7 +3,7 @@
 Prove properties of lists
 #########################
 
-:Link: https://stackoverflow.com/questions/52410544/prove-properties-of-lists
+:Link: https://stackoverflow.com/q/52410544
 |*)
 
 (*|

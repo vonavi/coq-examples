@@ -3,7 +3,7 @@
 Closing a lemma on list of nats
 ###############################
 
-:Link: https://stackoverflow.com/questions/59747670/closing-a-lemma-on-list-of-nats
+:Link: https://stackoverflow.com/q/59747670
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Does Gallina have holes like in Agda?
 #####################################
 
-:Link: https://stackoverflow.com/questions/60662078/does-gallina-have-holes-like-in-agda
+:Link: https://stackoverflow.com/q/60662078
 |*)
 
 (*|

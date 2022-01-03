@@ -3,7 +3,7 @@
 Ease life in dependently typed programming using ``Function`` and ``Program`` in Coq
 ####################################################################################
 
-:Link: https://stackoverflow.com/questions/52262322/ease-life-in-dependently-typed-programming-using-function-and-program-in-coq
+:Link: https://stackoverflow.com/q/52262322
 |*)
 
 (*|

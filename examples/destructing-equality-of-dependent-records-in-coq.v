@@ -3,7 +3,7 @@
 Destructing equality of dependent records in coq
 ################################################
 
-:Link: https://stackoverflow.com/questions/54569749/destructing-equality-of-dependent-records-in-coq
+:Link: https://stackoverflow.com/q/54569749
 |*)
 
 (*|

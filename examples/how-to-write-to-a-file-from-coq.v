@@ -3,7 +3,7 @@
 how to write to a file, from coq
 ################################
 
-:Link: https://stackoverflow.com/questions/49746424/how-to-write-to-a-file-from-coq
+:Link: https://stackoverflow.com/q/49746424
 |*)
 
 (*|

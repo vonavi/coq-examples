@@ -3,7 +3,7 @@
 How to make use of information known about this function type in Coq
 ####################################################################
 
-:Link: https://stackoverflow.com/questions/48959586/how-to-make-use-of-information-known-about-this-function-type-in-coq
+:Link: https://stackoverflow.com/q/48959586
 |*)
 
 (*|

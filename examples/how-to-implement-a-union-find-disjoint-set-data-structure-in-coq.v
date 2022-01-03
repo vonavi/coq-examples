@@ -3,7 +3,7 @@
 How to implement a union-find (disjoint set) data structure in Coq?
 ###################################################################
 
-:Link: https://stackoverflow.com/questions/66630519/how-to-implement-a-union-find-disjoint-set-data-structure-in-coq
+:Link: https://stackoverflow.com/q/66630519
 |*)
 
 (*|

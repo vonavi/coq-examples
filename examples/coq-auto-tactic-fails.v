@@ -3,7 +3,7 @@
 Coq auto tactic fails
 #####################
 
-:Link: https://stackoverflow.com/questions/61677391/coq-auto-tacitc-fails
+:Link: https://stackoverflow.com/q/61677391
 |*)
 
 (*|

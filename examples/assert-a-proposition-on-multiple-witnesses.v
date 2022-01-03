@@ -3,7 +3,7 @@
 Assert a proposition on multiple witnesses
 ##########################################
 
-:Link: https://stackoverflow.com/questions/54093713/assert-a-proposition-on-multiple-witnesses
+:Link: https://stackoverflow.com/q/54093713
 |*)
 
 (*|

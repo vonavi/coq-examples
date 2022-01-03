@@ -3,7 +3,7 @@
 Some help dealing with inject/unject and vector types
 #####################################################
 
-:Link: https://stackoverflow.com/questions/63017478/some-help-dealing-with-inject-unject-and-vector-types
+:Link: https://stackoverflow.com/q/63017478
 |*)
 
 (*|

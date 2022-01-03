@@ -3,7 +3,7 @@
 Proof leaking in Coq extraction?
 ################################
 
-:Link: https://stackoverflow.com/questions/51844640/proof-leaking-in-coq-extraction
+:Link: https://stackoverflow.com/q/51844640
 |*)
 
 (*|

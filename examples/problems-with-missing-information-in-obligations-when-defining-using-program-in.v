@@ -3,7 +3,7 @@
 Problems with missing information in Obligations when defining using Program in Coq
 ###################################################################################
 
-:Link: https://stackoverflow.com/questions/69138674/problems-with-missing-information-in-obligations-when-defining-using-program-in
+:Link: https://stackoverflow.com/q/69138674
 |*)
 
 (*|

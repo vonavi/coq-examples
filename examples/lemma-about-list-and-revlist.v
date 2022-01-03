@@ -3,7 +3,7 @@
 Lemma about ``list`` and ``rev list``
 #####################################
 
-:Link: https://stackoverflow.com/questions/56860962/lemma-about-list-and-revlist
+:Link: https://stackoverflow.com/q/56860962
 |*)
 
 (*|

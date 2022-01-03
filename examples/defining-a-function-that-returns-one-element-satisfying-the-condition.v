@@ -3,7 +3,7 @@
 Defining a function that returns one element satisfying the condition
 #####################################################################
 
-:Link: https://stackoverflow.com/questions/51112347/defining-a-function-that-returns-one-element-satisfying-the-condition
+:Link: https://stackoverflow.com/q/51112347
 |*)
 
 (*|

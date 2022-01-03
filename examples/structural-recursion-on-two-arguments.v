@@ -3,7 +3,7 @@
 Structural recursion on two arguments
 #####################################
 
-:Link: https://stackoverflow.com/questions/55704472/structural-recursion-on-two-arguments
+:Link: https://stackoverflow.com/q/55704472
 |*)
 
 (*|

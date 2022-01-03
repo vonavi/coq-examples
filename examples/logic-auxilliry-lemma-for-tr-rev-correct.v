@@ -3,7 +3,7 @@
 Logic: auxilliry lemma for tr_rev_correct
 #########################################
 
-:Link: https://stackoverflow.com/questions/55991920/logic-auxilliry-lemma-for-tr-rev-correct
+:Link: https://stackoverflow.com/q/55991920
 |*)
 
 (*|

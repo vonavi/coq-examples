@@ -3,7 +3,7 @@
 How can I use type arguments in an ltac?
 ########################################
 
-:Link: https://stackoverflow.com/questions/55463216/how-can-i-use-type-arguments-in-an-ltac
+:Link: https://stackoverflow.com/q/55463216
 |*)
 
 (*|

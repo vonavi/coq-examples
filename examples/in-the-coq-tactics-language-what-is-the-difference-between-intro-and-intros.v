@@ -3,7 +3,7 @@
 In the coq tactics language, what is the difference between ``intro`` and ``intros``
 ####################################################################################
 
-:Link: https://stackoverflow.com/questions/50033343/in-the-coq-tactics-language-what-is-the-difference-between-intro-and-intros
+:Link: https://stackoverflow.com/q/50033343
 |*)
 
 (*|

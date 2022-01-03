@@ -3,7 +3,7 @@
 How to prove that terms of a first-order language are well-founded?
 ###################################################################
 
-:Link: https://stackoverflow.com/questions/52087304/how-to-prove-that-terms-of-a-first-order-language-are-well-founded
+:Link: https://stackoverflow.com/q/52087304
 |*)
 
 (*|

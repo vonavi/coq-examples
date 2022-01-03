@@ -3,7 +3,7 @@
 Proofs of structural properties of arguments in match in coq
 ############################################################
 
-:Link: https://stackoverflow.com/questions/66064683/proofs-of-structural-properties-of-arguments-in-match-in-coq
+:Link: https://stackoverflow.com/q/66064683
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 use module signature definition in module implementation
 ########################################################
 
-:Link: https://stackoverflow.com/questions/49310103/use-module-signature-definition-in-module-implementation
+:Link: https://stackoverflow.com/q/49310103
 |*)
 
 (*|

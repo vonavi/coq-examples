@@ -3,7 +3,7 @@
 make subset types compatible for function application
 #####################################################
 
-:Link: https://stackoverflow.com/questions/49620573/make-subset-types-compatible-for-function-application
+:Link: https://stackoverflow.com/q/49620573
 |*)
 
 (*|

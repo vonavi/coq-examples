@@ -3,7 +3,7 @@
 How can I generalise Coq proofs of an iff?
 ##########################################
 
-:Link: https://stackoverflow.com/questions/65588333/how-can-i-generalise-coq-proofs-of-an-iff
+:Link: https://stackoverflow.com/q/65588333
 |*)
 
 (*|

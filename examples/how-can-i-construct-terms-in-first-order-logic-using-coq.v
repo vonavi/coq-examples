@@ -3,7 +3,7 @@
 How can I construct terms in first-order logic using Coq?
 #########################################################
 
-:Link: https://stackoverflow.com/questions/64841759/how-can-i-construct-terms-in-first-order-logic-using-coq
+:Link: https://stackoverflow.com/q/64841759
 |*)
 
 (*|

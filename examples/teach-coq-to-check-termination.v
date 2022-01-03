@@ -3,7 +3,7 @@
 Teach coq to check termination
 ##############################
 
-:Link: https://stackoverflow.com/questions/48173854/teach-coq-to-check-termination
+:Link: https://stackoverflow.com/q/48173854
 |*)
 
 (*|

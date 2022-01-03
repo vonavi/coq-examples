@@ -3,7 +3,7 @@
 Destruct if condition in program fixpoint coq
 #############################################
 
-:Link: https://stackoverflow.com/questions/51017689/destruct-if-condition-in-program-fixpoint-coq
+:Link: https://stackoverflow.com/q/51017689
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Turn off automatic induction principle in Coq
 #############################################
 
-:Link: https://stackoverflow.com/questions/51699205/turn-off-automatic-induction-principle-in-coq
+:Link: https://stackoverflow.com/q/51699205
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How proof functions prove?
 ##########################
 
-:Link: https://stackoverflow.com/questions/61959394/how-proof-functions-prove
+:Link: https://stackoverflow.com/q/61959394
 |*)
 
 (*|

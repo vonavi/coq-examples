@@ -3,7 +3,7 @@
 Using induction starting from 1 in Coq
 ######################################
 
-:Link: https://stackoverflow.com/questions/54752428/using-induction-starting-from-1-in-coq
+:Link: https://stackoverflow.com/q/54752428
 |*)
 
 (*|

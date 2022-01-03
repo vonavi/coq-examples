@@ -3,7 +3,7 @@
 Transform casual list into dependently typed list in Coq
 ########################################################
 
-:Link: https://stackoverflow.com/questions/55150915/transform-casual-list-into-dependently-typed-list-in-coq
+:Link: https://stackoverflow.com/q/55150915
 |*)
 
 (*|

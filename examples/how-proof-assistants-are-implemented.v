@@ -3,7 +3,7 @@
 How proof assistants are implemented?
 #####################################
 
-:Link: https://stackoverflow.com/questions/58725547/how-proof-assistants-are-implemented
+:Link: https://stackoverflow.com/q/58725547
 |*)
 
 (*|

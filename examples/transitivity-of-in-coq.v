@@ -3,7 +3,7 @@
 Transitivity of ``->`` in Coq
 #############################
 
-:Link: https://stackoverflow.com/questions/55295029/transitivity-of-in-coq
+:Link: https://stackoverflow.com/q/55295029
 |*)
 
 (*|

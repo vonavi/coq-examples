@@ -3,7 +3,7 @@
 How do you prove in Coq that ``(e: p = p) = eq_refl``?
 ######################################################
 
-:Link: https://stackoverflow.com/questions/60665385/how-do-you-prove-in-coq-that-e-p-p-eq-refl
+:Link: https://stackoverflow.com/q/60665385
 |*)
 
 (*|

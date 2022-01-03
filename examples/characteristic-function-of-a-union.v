@@ -3,7 +3,7 @@
 Characteristic function of a union
 ##################################
 
-:Link: https://stackoverflow.com/questions/53352033/characteristic-function-of-a-union
+:Link: https://stackoverflow.com/q/53352033
 |*)
 
 (*|

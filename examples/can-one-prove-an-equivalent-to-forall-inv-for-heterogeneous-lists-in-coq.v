@@ -3,7 +3,7 @@
 Can one prove an equivalent to ``Forall_inv`` for heterogeneous lists in Coq?
 #############################################################################
 
-:Link: https://stackoverflow.com/questions/59178484/can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq
+:Link: https://stackoverflow.com/q/59178484
 |*)
 
 (*|

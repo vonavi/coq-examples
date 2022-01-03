@@ -3,7 +3,7 @@
 Coq: cannot unify inductive types
 #################################
 
-:Link: https://stackoverflow.com/questions/50883392/coq-cannot-unify-inductive-types
+:Link: https://stackoverflow.com/q/50883392
 |*)
 
 (*|

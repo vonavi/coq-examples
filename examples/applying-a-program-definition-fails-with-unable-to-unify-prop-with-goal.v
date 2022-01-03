@@ -3,7 +3,7 @@
 Applying a Program Definition fails with "unable to unify Prop with [goal]"
 ###########################################################################
 
-:Link: https://stackoverflow.com/questions/50316390/applying-a-program-definition-fails-with-unable-to-unify-prop-with-goal
+:Link: https://stackoverflow.com/q/50316390
 |*)
 
 (*|

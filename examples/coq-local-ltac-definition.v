@@ -3,7 +3,7 @@
 Coq: local ltac definition
 ##########################
 
-:Link: https://stackoverflow.com/questions/51961226/coq-local-ltac-definition
+:Link: https://stackoverflow.com/q/51961226
 |*)
 
 (*|

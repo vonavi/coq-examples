@@ -3,7 +3,7 @@
 Proving that s-expressions printing is injective
 ################################################
 
-:Link: https://stackoverflow.com/questions/69617959/proving-that-s-expressions-printing-is-injective
+:Link: https://stackoverflow.com/q/69617959
 |*)
 
 (*|

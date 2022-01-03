@@ -3,7 +3,7 @@
 How to solve contradiction in Coq
 #################################
 
-:Link: https://stackoverflow.com/questions/63028399/how-to-solve-contradiction-in-coq
+:Link: https://stackoverflow.com/q/63028399
 |*)
 
 (*|

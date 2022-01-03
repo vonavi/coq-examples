@@ -3,7 +3,7 @@
 Church numerals and universe inconsistency
 ##########################################
 
-:Link: https://stackoverflow.com/questions/55091525/church-numerals-and-universe-inconsistency
+:Link: https://stackoverflow.com/q/55091525
 |*)
 
 (*|

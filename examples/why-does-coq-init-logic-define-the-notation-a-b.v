@@ -3,7 +3,7 @@
 Why does ``Coq.Init.Logic`` define the notation ``A -> B``?
 ###########################################################
 
-:Link: https://stackoverflow.com/questions/52247439/why-does-coq-init-logic-define-the-notation-a-b
+:Link: https://stackoverflow.com/q/52247439
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 What is ``eq_rect`` and where is it defined in Coq?
 ###################################################
 
-:Link: https://stackoverflow.com/questions/48352966/what-is-eq-rect-and-where-is-it-defined-in-coq
+:Link: https://stackoverflow.com/q/48352966
 |*)
 
 (*|

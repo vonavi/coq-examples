@@ -3,7 +3,7 @@
 Representing Higher-Order Functors as Containers in Coq
 #######################################################
 
-:Link: https://stackoverflow.com/questions/54864518/representing-higher-order-functors-as-containers-in-coq
+:Link: https://stackoverflow.com/q/54864518
 |*)
 
 (*|

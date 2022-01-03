@@ -3,7 +3,7 @@
 Induction on record member in Coq?
 ##################################
 
-:Link: https://stackoverflow.com/questions/48840413/induction-on-record-member-in-coq
+:Link: https://stackoverflow.com/q/48840413
 |*)
 
 (*|

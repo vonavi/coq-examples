@@ -3,7 +3,7 @@
 Compute ``if`` in a decideable prop in coq
 ##########################################
 
-:Link: https://stackoverflow.com/questions/50733129/compute-if-in-a-decideable-prop-in-coq
+:Link: https://stackoverflow.com/q/50733129
 |*)
 
 (*|

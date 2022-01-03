@@ -3,7 +3,7 @@
 Extensible tactic in Coq
 ########################
 
-:Link: https://stackoverflow.com/questions/48868186/extensible-tactic-in-cow
+:Link: https://stackoverflow.com/q/48868186
 |*)
 
 (*|

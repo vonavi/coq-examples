@@ -3,7 +3,7 @@
 Coq theorem proving: Simple fraction law in peano arithmetic
 ############################################################
 
-:Link: https://stackoverflow.com/questions/59120093/coq-theorem-proving-simple-fraction-law-in-peano-arithmetic
+:Link: https://stackoverflow.com/q/59120093
 |*)
 
 (*|

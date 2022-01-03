@@ -3,7 +3,7 @@
 Coq - return value of type which is equal to function return type
 #################################################################
 
-:Link: https://stackoverflow.com/questions/55422961/coq-return-value-of-type-which-is-equal-to-function-return-type
+:Link: https://stackoverflow.com/q/55422961
 |*)
 
 (*|

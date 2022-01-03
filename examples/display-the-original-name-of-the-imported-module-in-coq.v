@@ -3,7 +3,7 @@
 Display the original name of the imported module in Coq
 #######################################################
 
-:Link: https://stackoverflow.com/questions/52469003/display-the-original-name-of-the-imported-module-in-coq
+:Link: https://stackoverflow.com/q/52469003
 |*)
 
 (*|

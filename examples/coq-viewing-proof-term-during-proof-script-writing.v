@@ -3,7 +3,7 @@
 Coq: viewing proof term during proof script writing
 ###################################################
 
-:Link: https://stackoverflow.com/questions/48875967/coq-viewing-proof-term-during-proof-script-writing
+:Link: https://stackoverflow.com/q/48875967
 |*)
 
 (*|

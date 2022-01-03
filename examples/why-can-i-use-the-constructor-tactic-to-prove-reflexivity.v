@@ -3,7 +3,7 @@
 Why can I use the constructor tactic to prove reflexivity?
 ##########################################################
 
-:Link: https://stackoverflow.com/questions/65959309/why-can-i-use-the-constructor-tactic-to-prove-reflexivity
+:Link: https://stackoverflow.com/q/65959309
 |*)
 
 (*|

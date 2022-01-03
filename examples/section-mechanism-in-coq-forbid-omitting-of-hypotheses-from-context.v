@@ -3,7 +3,7 @@
 Section mechanism in Coq. Forbid omitting of hypotheses from context
 ####################################################################
 
-:Link: https://stackoverflow.com/questions/54804957/section-mechanism-in-coq-forbid-omitting-of-hypotheses-from-context
+:Link: https://stackoverflow.com/q/54804957
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How to debug tactic failure in a match goal branch?
 ###################################################
 
-:Link: https://stackoverflow.com/questions/65501576/how-to-debug-tactic-failure-in-a-match-goal-branch
+:Link: https://stackoverflow.com/q/65501576
 |*)
 
 (*|

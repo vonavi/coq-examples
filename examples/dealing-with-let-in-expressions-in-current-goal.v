@@ -3,7 +3,7 @@
 Dealing with let-in expressions in current goal
 ###############################################
 
-:Link: https://stackoverflow.com/questions/48278491/dealing-with-let-in-expressions-in-current-goal
+:Link: https://stackoverflow.com/q/48278491
 |*)
 
 (*|

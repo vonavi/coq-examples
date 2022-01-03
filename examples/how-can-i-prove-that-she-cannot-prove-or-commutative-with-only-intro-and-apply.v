@@ -3,7 +3,7 @@
 How can I prove that she cannot prove ``Or_commutative`` with only intro and apply?
 ###################################################################################
 
-:Link: https://stackoverflow.com/questions/51871265/how-can-i-prove-that-she-cannot-prove-or-commutative-with-only-intro-and-apply
+:Link: https://stackoverflow.com/q/51871265
 |*)
 
 (*|

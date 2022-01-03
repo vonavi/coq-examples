@@ -3,7 +3,7 @@
 How to prove equality from equality of Some
 ###########################################
 
-:Link: https://stackoverflow.com/questions/60304522/how-to-prove-equality-from-equality-of-some
+:Link: https://stackoverflow.com/q/60304522
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 What does the tactic ``induction`` followed by a number do?
 ###########################################################
 
-:Link: https://stackoverflow.com/questions/55766757/what-does-the-tactic-induction-followed-by-a-number-do
+:Link: https://stackoverflow.com/q/55766757
 |*)
 
 (*|

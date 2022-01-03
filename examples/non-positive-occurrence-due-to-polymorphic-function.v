@@ -3,7 +3,7 @@
 Non-positive occurrence due to polymorphic function
 ###################################################
 
-:Link: https://stackoverflow.com/questions/50222311/non-positive-occurrence-due-to-polymorphic-function
+:Link: https://stackoverflow.com/q/50222311
 |*)
 
 (*|

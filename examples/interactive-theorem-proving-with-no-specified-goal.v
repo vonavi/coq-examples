@@ -3,7 +3,7 @@
 interactive theorem proving with no specified goal
 ##################################################
 
-:Link: https://stackoverflow.com/questions/49569621/interactive-theorem-proving-with-no-specified-goal
+:Link: https://stackoverflow.com/q/49569621
 |*)
 
 (*|

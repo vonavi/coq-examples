@@ -3,7 +3,7 @@
 Proving decidability for a datatype that includes a vector
 ##########################################################
 
-:Link: https://stackoverflow.com/questions/55335098/proving-decidability-for-a-datatype-that-includes-a-vector
+:Link: https://stackoverflow.com/q/55335098
 |*)
 
 (*|

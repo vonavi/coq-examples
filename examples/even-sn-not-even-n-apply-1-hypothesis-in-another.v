@@ -3,7 +3,7 @@
 ``even_Sn_not_even_n`` - apply 1 hypothesis in another
 ######################################################
 
-:Link: https://stackoverflow.com/questions/56354064/even-sn-not-even-n-apply-1-hypothesis-in-another
+:Link: https://stackoverflow.com/q/56354064
 |*)
 
 (*|

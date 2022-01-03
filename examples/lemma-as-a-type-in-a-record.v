@@ -3,7 +3,7 @@
 Lemma as a type in a record
 ###########################
 
-:Link: https://stackoverflow.com/questions/55563771/lemma-as-a-type-in-a-record
+:Link: https://stackoverflow.com/q/55563771
 |*)
 
 (*|

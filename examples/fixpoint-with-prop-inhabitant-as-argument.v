@@ -3,7 +3,7 @@
 Fixpoint with ``Prop`` inhabitant as argument
 #############################################
 
-:Link: https://stackoverflow.com/questions/51763716/fixpoint-with-prop-inhabitant-as-argument
+:Link: https://stackoverflow.com/q/51763716
 |*)
 
 (*|

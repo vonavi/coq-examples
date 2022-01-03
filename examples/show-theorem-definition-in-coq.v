@@ -3,7 +3,7 @@
 Show theorem definition in Coq
 ##############################
 
-:Link: https://stackoverflow.com/questions/62939436/show-theorem-definition-in-coq
+:Link: https://stackoverflow.com/q/62939436
 |*)
 
 (*|

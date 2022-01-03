@@ -3,7 +3,7 @@
 unfold notation in ltac
 #######################
 
-:Link: https://stackoverflow.com/questions/48594507/unfold-notation-in-ltac
+:Link: https://stackoverflow.com/q/48594507
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 When are the constructors of an inductive type exhaustive?
 ##########################################################
 
-:Link: https://stackoverflow.com/questions/52301832/when-are-the-constructors-of-an-inductive-type-exhaustive
+:Link: https://stackoverflow.com/q/52301832
 |*)
 
 (*|

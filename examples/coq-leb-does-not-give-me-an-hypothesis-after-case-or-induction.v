@@ -3,7 +3,7 @@
 Coq ``leb`` (``<=?``) does not give me an hypothesis after case or induction
 ############################################################################
 
-:Link: https://stackoverflow.com/questions/66709518/coq-leb-does-not-give-me-an-hypothesis-after-case-or-induction
+:Link: https://stackoverflow.com/q/66709518
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Specialization of module argument in Coq
 ########################################
 
-:Link: https://stackoverflow.com/questions/54703204/specialization-of-module-argument-in-coq
+:Link: https://stackoverflow.com/q/54703204
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Proving a property on sets
 ##########################
 
-:Link: https://stackoverflow.com/questions/52448832/proving-a-property-on-sets
+:Link: https://stackoverflow.com/q/52448832
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Why does coq's typechecker reject my map definition?
 ####################################################
 
-:Link: https://stackoverflow.com/questions/55969021/why-does-coqs-typechecker-reject-my-map-definition
+:Link: https://stackoverflow.com/q/55969021
 |*)
 
 (*|

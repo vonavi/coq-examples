@@ -3,7 +3,7 @@
 What should be done when simpl does not reduce all the necessary steps?
 #######################################################################
 
-:Link: https://stackoverflow.com/questions/55879360/what-should-be-done-when-simpl-does-not-reduce-all-the-necessary-steps
+:Link: https://stackoverflow.com/q/55879360
 |*)
 
 (*|

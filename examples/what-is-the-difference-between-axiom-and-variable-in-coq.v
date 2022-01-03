@@ -3,7 +3,7 @@
 What is the difference between Axiom and Variable in Coq
 ########################################################
 
-:Link: https://stackoverflow.com/questions/61344787/what-is-the-difference-between-axiom-and-variable-in-coq
+:Link: https://stackoverflow.com/q/61344787
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How to leave a goal unfinished in Coq
 #####################################
 
-:Link: https://stackoverflow.com/questions/60018942/how-to-leave-a-goal-unfinished-in-coq
+:Link: https://stackoverflow.com/q/60018942
 |*)
 
 (*|

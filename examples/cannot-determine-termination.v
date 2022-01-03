@@ -3,7 +3,7 @@
 Cannot determine termination
 ############################
 
-:Link: https://stackoverflow.com/questions/48289090/cannot-determine-termination
+:Link: https://stackoverflow.com/q/48289090
 |*)
 
 (*|

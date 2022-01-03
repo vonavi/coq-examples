@@ -3,7 +3,7 @@
 Call a theorem using let-in
 ###########################
 
-:Link: https://stackoverflow.com/questions/48279204/call-a-theorem-using-let-in
+:Link: https://stackoverflow.com/q/48279204
 |*)
 
 (*|

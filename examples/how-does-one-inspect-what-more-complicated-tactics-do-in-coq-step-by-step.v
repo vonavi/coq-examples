@@ -3,7 +3,7 @@
 How does one inspect what more complicated tactics do in Coq step-by-step?
 ##########################################################################
 
-:Link: https://stackoverflow.com/questions/54047766/how-does-one-inspect-what-more-complicated-tactics-do-in-coq-step-by-step
+:Link: https://stackoverflow.com/q/54047766
 |*)
 
 (*|

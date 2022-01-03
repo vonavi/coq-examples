@@ -3,7 +3,7 @@
 Can I tell Coq to do induction from ``n`` to ``n + 2``?
 #######################################################
 
-:Link: https://stackoverflow.com/questions/53998991/can-i-tell-coq-to-do-induction-from-n-to-n2
+:Link: https://stackoverflow.com/q/53998991
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Recursive use of typeclass methods in Coq
 #########################################
 
-:Link: https://stackoverflow.com/questions/52348668/recursive-use-of-typeclass-methods-in-coq
+:Link: https://stackoverflow.com/q/52348668
 |*)
 
 (*|

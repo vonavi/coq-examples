@@ -3,7 +3,7 @@
 A simple case of universe inconsistency
 #######################################
 
-:Link: https://stackoverflow.com/questions/51029234/a-simple-case-of-universe-inconsistency
+:Link: https://stackoverflow.com/q/51029234
 |*)
 
 (*|

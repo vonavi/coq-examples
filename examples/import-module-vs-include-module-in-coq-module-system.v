@@ -3,7 +3,7 @@
 ``Import <Module>`` vs. ``Include <Module>`` in Coq Module system
 #################################################################
 
-:Link: https://stackoverflow.com/questions/48837996/import-module-vs-include-module-in-coq-module-system
+:Link: https://stackoverflow.com/q/48837996
 |*)
 
 (*|

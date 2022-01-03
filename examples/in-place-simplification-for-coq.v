@@ -3,7 +3,7 @@
 In-place simplification for Coq
 ###############################
 
-:Link: https://stackoverflow.com/questions/61077944/in-place-simplification-for-coq
+:Link: https://stackoverflow.com/q/61077944
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Error "Tactic failure: The relation (``fun x y : BloodType => x <> y``) is not a declared reflexive relation." when proving a theorem about function
 ####################################################################################################################################################
 
-:Link: https://stackoverflow.com/questions/61134408/error-tactic-failure-the-relation-fun-x-y-bloodtype-x-y-is-not-a-dec
+:Link: https://stackoverflow.com/q/61134408
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Coq: eliminating ``forall``?
 ############################
 
-:Link: https://stackoverflow.com/questions/68744549/coq-eliminating-forall
+:Link: https://stackoverflow.com/q/68744549
 |*)
 
 (*|

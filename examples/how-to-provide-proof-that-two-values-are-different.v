@@ -3,7 +3,7 @@
 How to provide proof that two values are different?
 ###################################################
 
-:Link: https://stackoverflow.com/questions/62779463/how-to-provide-proof-that-two-values-are-different
+:Link: https://stackoverflow.com/q/62779463
 |*)
 
 (*|

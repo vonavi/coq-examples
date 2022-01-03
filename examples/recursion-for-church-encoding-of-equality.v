@@ -3,7 +3,7 @@
 Recursion for Church encoding of equality
 #########################################
 
-:Link: https://stackoverflow.com/questions/55089210/recursion-for-church-encoding-of-equality
+:Link: https://stackoverflow.com/q/55089210
 |*)
 
 (*|

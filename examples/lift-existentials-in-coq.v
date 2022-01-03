@@ -3,7 +3,7 @@
 Lift existentials in Coq
 ########################
 
-:Link: https://stackoverflow.com/questions/54944574/lift-existentials-in-coq
+:Link: https://stackoverflow.com/q/54944574
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How to turn an single unification variable into a goal, during proof
 ####################################################################
 
-:Link: https://stackoverflow.com/questions/53549618/how-to-turn-an-single-unification-variable-into-a-goal-during-proof
+:Link: https://stackoverflow.com/q/53549618
 |*)
 
 (*|

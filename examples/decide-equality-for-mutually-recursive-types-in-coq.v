@@ -3,7 +3,7 @@
 ``decide equality`` for Mutually Recursive Types in Coq?
 ########################################################
 
-:Link: https://stackoverflow.com/questions/48268929/decide-equality-for-mutually-recursive-types-in-coq
+:Link: https://stackoverflow.com/q/48268929
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Coq: automate repeated rewriting
 ################################
 
-:Link: https://stackoverflow.com/questions/48139738/coq-automate-repeated-rewriting
+:Link: https://stackoverflow.com/q/48139738
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Generalising a set of proofs in coq
 ###################################
 
-:Link: https://stackoverflow.com/questions/53204593/generalising-a-set-of-proofs-in-coq
+:Link: https://stackoverflow.com/q/53204593
 |*)
 
 (*|

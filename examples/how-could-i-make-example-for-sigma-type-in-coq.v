@@ -3,7 +3,7 @@
 How could I make example for sigma type in Coq?
 ###############################################
 
-:Link: https://stackoverflow.com/questions/56365504/how-could-i-make-example-for-sigma-type-in-coq
+:Link: https://stackoverflow.com/q/56365504
 |*)
 
 (*|

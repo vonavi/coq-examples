@@ -3,7 +3,7 @@
 apply rewrite tactic to sub-expression
 ######################################
 
-:Link: https://stackoverflow.com/questions/55786746/apply-rewrite-tactic-to-sub-expression
+:Link: https://stackoverflow.com/q/55786746
 |*)
 
 (*|

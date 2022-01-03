@@ -3,7 +3,7 @@
 Coq: Derive argument from context
 #################################
 
-:Link: https://stackoverflow.com/questions/53344715/coq-derive-argument-from-context
+:Link: https://stackoverflow.com/q/53344715
 |*)
 
 (*|

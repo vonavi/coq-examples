@@ -3,7 +3,7 @@
 Abstracting patterns in induction rule for inductive predicates for Coq
 #######################################################################
 
-:Link: https://stackoverflow.com/questions/60027551/abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq
+:Link: https://stackoverflow.com/q/60027551
 |*)
 
 (*|

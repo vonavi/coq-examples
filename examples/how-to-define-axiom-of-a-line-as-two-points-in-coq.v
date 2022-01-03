@@ -3,7 +3,7 @@
 How to define axiom of a line as two points in Coq
 ##################################################
 
-:Link: https://stackoverflow.com/questions/54937970/how-to-define-axiom-of-a-line-as-two-points-in-coq
+:Link: https://stackoverflow.com/q/54937970
 |*)
 
 (*|

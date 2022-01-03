@@ -3,7 +3,7 @@
 Typeclasses with multiple fields vs. single field in Coq / Unexpected behaviour of Compute command
 ##################################################################################################
 
-:Link: https://stackoverflow.com/questions/56201202/typeclasses-with-multiple-fields-vs-single-field-in-coq-unexpected-behaviour
+:Link: https://stackoverflow.com/q/56201202
 |*)
 
 (*|

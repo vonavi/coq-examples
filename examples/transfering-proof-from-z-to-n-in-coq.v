@@ -3,7 +3,7 @@
 Transfering proof from Z to N in Coq
 ####################################
 
-:Link: https://stackoverflow.com/questions/54752598/transfering-proof-from-z-to-n-in-coq
+:Link: https://stackoverflow.com/q/54752598
 |*)
 
 (*|

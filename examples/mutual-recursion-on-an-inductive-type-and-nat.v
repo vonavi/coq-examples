@@ -3,7 +3,7 @@
 mutual recursion on an inductive type and ``nat``
 #################################################
 
-:Link: https://stackoverflow.com/questions/50477918/mutual-recursion-on-an-inductive-type-and-nat
+:Link: https://stackoverflow.com/q/50477918
 |*)
 
 (*|

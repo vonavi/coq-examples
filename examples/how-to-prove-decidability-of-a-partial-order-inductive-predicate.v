@@ -3,7 +3,7 @@
 How to prove decidability of a partial order inductive predicate?
 #################################################################
 
-:Link: https://stackoverflow.com/questions/50390613/how-to-prove-decidability-of-a-partial-order-inductive-predicate
+:Link: https://stackoverflow.com/q/50390613
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How to prove that a number is prime using Znumtheory in Coq
 ###########################################################
 
-:Link: https://stackoverflow.com/questions/49282773/how-to-prove-that-a-number-is-prime-using-znumtheory-in-coq
+:Link: https://stackoverflow.com/q/49282773
 |*)
 
 (*|

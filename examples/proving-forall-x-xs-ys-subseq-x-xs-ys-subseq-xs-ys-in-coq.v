@@ -3,7 +3,7 @@
 Proving ``forall x xs ys, subseq (x :: xs) ys -> subseq xs ys`` in Coq
 ######################################################################
 
-:Link: https://stackoverflow.com/questions/54378236/proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq
+:Link: https://stackoverflow.com/q/54378236
 |*)
 
 (*|

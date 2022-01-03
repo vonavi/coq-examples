@@ -3,7 +3,7 @@
 What does it mean when Coq expands a function as part of the goal?
 ##################################################################
 
-:Link: https://stackoverflow.com/questions/54336455/what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal
+:Link: https://stackoverflow.com/q/54336455
 |*)
 
 (*|

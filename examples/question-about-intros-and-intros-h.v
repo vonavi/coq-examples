@@ -3,7 +3,7 @@
 question about intros ``[=]`` and intros ``[= <- H]``
 #####################################################
 
-:Link: https://stackoverflow.com/questions/68059205/question-about-intros-and-intros-h
+:Link: https://stackoverflow.com/q/68059205
 |*)
 
 (*|

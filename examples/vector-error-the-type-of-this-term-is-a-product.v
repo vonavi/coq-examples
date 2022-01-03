@@ -3,7 +3,7 @@
 Vector error : The type of this term is a product
 #################################################
 
-:Link: https://stackoverflow.com/questions/63955903/vector-error-the-type-of-this-term-is-a-product
+:Link: https://stackoverflow.com/q/63955903
 |*)
 
 (*|

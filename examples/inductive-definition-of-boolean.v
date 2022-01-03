@@ -3,7 +3,7 @@
 Inductive definition of boolean
 ###############################
 
-:Link: https://stackoverflow.com/questions/54728450/inductive-definition-of-boolean
+:Link: https://stackoverflow.com/q/54728450
 |*)
 
 (*|

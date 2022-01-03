@@ -3,7 +3,7 @@
 Induction principle for ``le``
 ##############################
 
-:Link: https://stackoverflow.com/questions/55196816/induction-principle-for-le
+:Link: https://stackoverflow.com/q/55196816
 |*)
 
 (*|

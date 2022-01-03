@@ -3,7 +3,7 @@
 How to make algebraic manipulations in Coq easier?
 ##################################################
 
-:Link: https://stackoverflow.com/questions/55406985/how-to-make-algebraic-manipulations-in-coq-easier
+:Link: https://stackoverflow.com/q/55406985
 |*)
 
 (*|

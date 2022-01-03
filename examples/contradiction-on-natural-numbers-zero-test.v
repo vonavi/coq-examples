@@ -3,7 +3,7 @@
 Contradiction on natural number's zero test
 ###########################################
 
-:Link: https://stackoverflow.com/questions/58245731/contradiction-on-natural-numbers-zero-test
+:Link: https://stackoverflow.com/q/58245731
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How to step through semicolons separated tactics sequence in coqide?
 ####################################################################
 
-:Link: https://stackoverflow.com/questions/58021053/how-to-step-through-semicolons-separated-tactics-sequence-in-coqide
+:Link: https://stackoverflow.com/q/58021053
 |*)
 
 (*|

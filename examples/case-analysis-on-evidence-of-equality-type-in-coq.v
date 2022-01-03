@@ -3,7 +3,7 @@
 case analysis on evidence of equality type in Coq
 #################################################
 
-:Link: https://stackoverflow.com/questions/48161372/case-analysis-on-evidence-of-equality-type-in-coq
+:Link: https://stackoverflow.com/q/48161372
 |*)
 
 (*|

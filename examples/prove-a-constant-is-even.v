@@ -3,7 +3,7 @@
 Prove a constant is even
 ########################
 
-:Link: https://stackoverflow.com/questions/62326896/prove-a-constant-is-even
+:Link: https://stackoverflow.com/q/62326896
 |*)
 
 (*|

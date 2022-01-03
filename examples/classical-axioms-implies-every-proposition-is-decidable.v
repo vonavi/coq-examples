@@ -3,7 +3,7 @@
 Classical axioms implies every proposition is decidable?
 ########################################################
 
-:Link: https://stackoverflow.com/questions/61316612/classical-axioms-implies-every-proposition-is-decidable
+:Link: https://stackoverflow.com/q/61316612
 |*)
 
 (*|

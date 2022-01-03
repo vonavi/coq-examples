@@ -3,7 +3,7 @@
 Building up tree and decreasing argument of fix
 ###############################################
 
-:Link: https://stackoverflow.com/questions/56132183/building-up-tree-and-decreasing-argument-of-fix
+:Link: https://stackoverflow.com/q/56132183
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 How to add "assumed true" statements in Coq
 ###########################################
 
-:Link: https://stackoverflow.com/questions/68060895/how-to-add-assumed-true-statements-in-coq
+:Link: https://stackoverflow.com/q/68060895
 |*)
 
 (*|

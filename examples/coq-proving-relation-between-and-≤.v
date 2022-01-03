@@ -3,7 +3,7 @@
 Coq: Proving relation between ``<`` and ``<=``
 ##############################################
 
-:Link: https://stackoverflow.com/questions/57719818/coq-proving-relation-between-and-%e2%89%a4
+:Link: https://stackoverflow.com/q/57719818
 |*)
 
 (*|

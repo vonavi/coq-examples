@@ -3,7 +3,7 @@
 Decidable equality statement with ``Set`` vs. ``Prop``
 ######################################################
 
-:Link: https://stackoverflow.com/questions/69710435/decidable-equality-statement-with-set-vs-prop
+:Link: https://stackoverflow.com/q/69710435
 |*)
 
 (*|

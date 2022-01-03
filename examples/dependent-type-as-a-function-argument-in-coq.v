@@ -3,7 +3,7 @@
 Dependent type as a function argument in Coq
 ############################################
 
-:Link: https://stackoverflow.com/questions/58848680/dependent-type-as-a-function-argument-in-coq
+:Link: https://stackoverflow.com/q/58848680
 |*)
 
 (*|

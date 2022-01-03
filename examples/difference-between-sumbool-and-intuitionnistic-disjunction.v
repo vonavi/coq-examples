@@ -3,7 +3,7 @@
 Difference between ``sumbool`` and intuitionnistic disjunction
 ##############################################################
 
-:Link: https://stackoverflow.com/questions/51288196/difference-between-sumbool-and-intuitionnistic-disjunction
+:Link: https://stackoverflow.com/q/51288196
 |*)
 
 (*|

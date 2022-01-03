@@ -3,7 +3,7 @@
 Transitivity of subsequence in COQ
 ##################################
 
-:Link: https://stackoverflow.com/questions/69797654/transitivity-of-subsequence-in-coq
+:Link: https://stackoverflow.com/q/69797654
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 less or equal relation with largest element of natural number list
 ##################################################################
 
-:Link: https://stackoverflow.com/questions/67379273/less-or-equal-relation-with-largest-element-of-natural-number-list
+:Link: https://stackoverflow.com/q/67379273
 |*)
 
 (*|

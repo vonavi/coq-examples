@@ -3,7 +3,7 @@
 deriving facts on pattern matching in coq
 #########################################
 
-:Link: https://stackoverflow.com/questions/48276348/deriving-facts-on-pattern-matching-in-coq
+:Link: https://stackoverflow.com/q/48276348
 |*)
 
 (*|

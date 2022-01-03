@@ -3,7 +3,7 @@
 SF Volume 1: Logic: How to prove tr_rev <-> rev?
 ################################################
 
-:Link: https://stackoverflow.com/questions/69360955/sf-volume-1-logic-how-to-prove-tr-rev-rev
+:Link: https://stackoverflow.com/q/69360955
 |*)
 
 (*|

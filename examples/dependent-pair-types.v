@@ -3,7 +3,7 @@
 Dependent Pair Types
 ####################
 
-:Link: https://stackoverflow.com/questions/51053375/dependent-pair-types
+:Link: https://stackoverflow.com/q/51053375
 |*)
 
 (*|

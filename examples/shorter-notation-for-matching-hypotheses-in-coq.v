@@ -3,7 +3,7 @@
 Shorter notation for matching hypotheses in Coq?
 ################################################
 
-:Link: https://stackoverflow.com/questions/55992567/shorter-notation-for-matching-hypotheses-in-coq
+:Link: https://stackoverflow.com/q/55992567
 |*)
 
 (*|

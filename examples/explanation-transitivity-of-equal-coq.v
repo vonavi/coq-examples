@@ -3,7 +3,7 @@
 Explanation transitivity of equal coq
 #####################################
 
-:Link: https://stackoverflow.com/questions/54731299/explanation-transitivity-of-equal-coq
+:Link: https://stackoverflow.com/q/54731299
 |*)
 
 (*|

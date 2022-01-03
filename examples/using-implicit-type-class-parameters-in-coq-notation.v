@@ -3,7 +3,7 @@
 Using Implicit Type Class Parameters in Coq Notation
 ####################################################
 
-:Link: https://stackoverflow.com/questions/48394056/using-implicit-type-class-parameters-in-coq-notation
+:Link: https://stackoverflow.com/q/48394056
 |*)
 
 (*|

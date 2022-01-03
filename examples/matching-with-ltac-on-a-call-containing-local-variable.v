@@ -3,7 +3,7 @@
 Matching with Ltac on a call containing local variable
 ######################################################
 
-:Link: https://stackoverflow.com/questions/48568716/matching-with-ltac-on-a-call-containing-local-variable
+:Link: https://stackoverflow.com/q/48568716
 |*)
 
 (*|

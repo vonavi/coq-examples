@@ -3,7 +3,7 @@
 Generic equality lifting in coq
 ###############################
 
-:Link: https://stackoverflow.com/questions/60616818/generic-equality-lifting-in-coq
+:Link: https://stackoverflow.com/q/60616818
 |*)
 
 (*|

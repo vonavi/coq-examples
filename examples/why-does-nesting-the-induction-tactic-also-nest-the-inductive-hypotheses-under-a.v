@@ -3,7 +3,7 @@
 Why does nesting the induction tactic also nest the inductive hypotheses under a lambda?
 ########################################################################################
 
-:Link: https://stackoverflow.com/questions/55596125/why-does-nesting-the-induction-tactic-also-nest-the-inductive-hypotheses-under-a
+:Link: https://stackoverflow.com/q/55596125
 |*)
 
 (*|

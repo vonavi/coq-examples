@@ -3,7 +3,7 @@
 Proving equivalence of two programs expressed as different types
 ################################################################
 
-:Link: https://stackoverflow.com/questions/68870467/proving-equivalence-of-two-programs-expressed-as-different-types
+:Link: https://stackoverflow.com/q/68870467
 |*)
 
 (*|

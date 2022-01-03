@@ -3,7 +3,7 @@
 Can any one help me how to prove this theorem in coq
 ####################################################
 
-:Link: https://stackoverflow.com/questions/69540976/can-any-one-help-me-how-to-prove-this-therom-in-coq
+:Link: https://stackoverflow.com/q/69540976
 |*)
 
 (*|

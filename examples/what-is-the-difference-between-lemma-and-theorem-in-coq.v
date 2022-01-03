@@ -3,7 +3,7 @@
 What is the difference between Lemma and Theorem in Coq
 #######################################################
 
-:Link: https://stackoverflow.com/questions/56517779/what-is-the-difference-between-lemma-and-theorem-in-coq
+:Link: https://stackoverflow.com/q/56517779
 |*)
 
 (*|

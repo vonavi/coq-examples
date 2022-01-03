@@ -3,7 +3,7 @@
 reasoning about typeclass instance that has been picked up in a theorem?
 ########################################################################
 
-:Link: https://stackoverflow.com/questions/50889650/reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem
+:Link: https://stackoverflow.com/q/50889650
 |*)
 
 (*|

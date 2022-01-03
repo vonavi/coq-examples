@@ -3,7 +3,7 @@
 Are all proofs of ``true = true`` the same?
 ###########################################
 
-:Link: https://stackoverflow.com/questions/50847669/are-all-proofs-of-true-true-the-same
+:Link: https://stackoverflow.com/q/50847669
 |*)
 
 (*|

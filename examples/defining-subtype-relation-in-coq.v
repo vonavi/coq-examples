@@ -3,7 +3,7 @@
 Defining subtype relation in Coq
 ################################
 
-:Link: https://stackoverflow.com/questions/51406616/defining-subtype-relation-in-coq
+:Link: https://stackoverflow.com/q/51406616
 |*)
 
 (*|

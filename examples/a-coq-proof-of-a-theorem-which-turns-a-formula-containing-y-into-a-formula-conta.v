@@ -3,7 +3,7 @@
 A Coq proof of a theorem which turns a formula containing ``y`` into a formula containing ``f(x)``
 ##################################################################################################
 
-:Link: https://stackoverflow.com/questions/50231559/a-coq-proof-of-a-theorem-which-turns-a-formula-containing-y-into-a-formula-conta
+:Link: https://stackoverflow.com/q/50231559
 |*)
 
 (*|

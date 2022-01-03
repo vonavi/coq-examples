@@ -3,7 +3,7 @@
 Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq
 ################################################################################
 
-:Link: https://stackoverflow.com/questions/56525092/retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq
+:Link: https://stackoverflow.com/q/56525092
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Coq: Rewriting with ``forall`` in hypothesis or goal
 ####################################################
 
-:Link: https://stackoverflow.com/questions/52602536/coq-rewriting-with-forall-in-hypothesis-or-goal
+:Link: https://stackoverflow.com/q/52602536
 |*)
 
 (*|

@@ -3,7 +3,7 @@
 Decide disjunctions in sort Prop
 ################################
 
-:Link: https://stackoverflow.com/questions/55952695/decide-disjunctions-in-sort-prop
+:Link: https://stackoverflow.com/q/55952695
 |*)
 
 (*|

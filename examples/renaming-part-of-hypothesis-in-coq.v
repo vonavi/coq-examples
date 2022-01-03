@@ -3,7 +3,7 @@
 renaming part of hypothesis in Coq
 ##################################
 
-:Link: https://stackoverflow.com/questions/52350119/renaming-part-of-hypothesis-in-coq
+:Link: https://stackoverflow.com/q/52350119
 |*)
 
 (*|
