@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>case analysis on evidence of equality type in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="case-analysis-on-evidence-of-equality-type-in-coq">
+<h1 class="title">case analysis on evidence of equality type in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/48161372/case-analysis-on-evidence-of-equality-type-in-coq">https://stackoverflow.com/questions/48161372/case-analysis-on-evidence-of-equality-type-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have a query about inductively defined relation <tt class="docutils literal">eq</tt> in Coq.
+Consider the following definition of <tt class="docutils literal">eq</tt> in Coq:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">eq</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Prop</span> :=
+    eq_refl : x = x
+
+<span class="kn">Arguments</span> eq {A}%type_scope _ _
+<span class="kn">Arguments</span> eq_refl {A}%type_scope {x}, [_] _</blockquote></div></div></small></span></pre><p>This is an inductively defined relation just like <tt class="docutils literal">Le</tt> (<tt class="docutils literal">&lt;=</tt>).
+Therefore I should be able to do case analysis on any evidence of this
+type. However, when I tried proving the following result I could not
+succeed.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">true_num</span> : <span class="kr">forall</span> <span class="nv">m</span> : nat, <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : m = m, x = y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : m = m), x = y</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : m = m), x = y</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk3"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>m = m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk4"><span class="nb">destruct</span> x.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Abstracting <span class="nb">over</span> the terms <span class="s2">&quot;m&quot;</span> <span class="kn">and</span> <span class="s2">&quot;x&quot;</span> leads to a term
+<span class="kr">fun</span> (<span class="nv">m0</span> : nat) (<span class="nv">x0</span> : m0 = m0) =&gt; x0 = y
+which <span class="kr">is</span> ill-typed.
+Reason <span class="kr">is</span>: Illegal application: 
+The term <span class="s2">&quot;@eq&quot;</span> of type
+ <span class="s2">&quot;forall A : Type, A -&gt; A -&gt; Prop&quot;</span>
+cannot be applied to the terms
+ <span class="s2">&quot;m0 = m0&quot;</span> : <span class="s2">&quot;Prop&quot;</span>
+ <span class="s2">&quot;x0&quot;</span> : <span class="s2">&quot;m0 = m0&quot;</span>
+ <span class="s2">&quot;y&quot;</span> : <span class="s2">&quot;m = m&quot;</span>
+The <span class="mi">3</span>rd term has type <span class="s2">&quot;m = m&quot;</span>
+which should be coercible to <span class="s2">&quot;m0 = m0&quot;</span>.</blockquote></div></div></small></span></pre><p>I am unable to decode this error.</p>
+<p>The only proof for <tt class="docutils literal">m = m</tt> should be <tt class="docutils literal">&#64;eq_refl nat m</tt> since
+<tt class="docutils literal">eq_refl</tt> is the only constructor. Hence one should be able to prove
+the equality of <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> by doing case analysis.</p>
+<p>What is wrong with this line of reasoning?</p>
+</div>
+<div class="section" id="answer-ejgallego">
+<h1>Answer (ejgallego)</h1>
+<p>The error is due to the way <tt class="docutils literal">destruct</tt> works, recall that the tactic
+tries to build a match statement, and in order to do so it has some
+heuristics as to bring dependent hypotheses into context.</p>
+<p>In particular, in this case it tries to abstract over the variable
+<tt class="docutils literal">m</tt>, which is an index to the <tt class="docutils literal">eq</tt> inductive in <tt class="docutils literal">y : m = m</tt>;
+however <tt class="docutils literal">y</tt> is not brought into context, hence the error as <tt class="docutils literal">m !=
+m0</tt> [with <tt class="docutils literal">m0</tt> being the abstracted <tt class="docutils literal">m</tt>]. You can workaround that
+problem it by doing a &quot;less smart&quot; match, which won't modify <tt class="docutils literal">m</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk5"><span class="nb">refine</span> (<span class="kr">match</span> x <span class="kr">with</span> | @eq_refl _ _ =&gt; _ <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>m = m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span></pre><p>but usually, the best solution is to bring the hypothesis at fault
+into scope:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk6"><span class="nb">revert</span> y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>m = m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : m = m, x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk7"><span class="nb">destruct</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : m = m, eq_refl = y</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>On the other hand, to prove your goal simple pattern-matching won't
+suffice as pointed out by the other excellent answers. My preferred
+practical approach to solve goals like yours is to use a library:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk8"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> all_ssreflect.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ | _ ]&quot;</span> was already used <span class="kr">in</span> scope
+fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ : _ | _ ]&quot;</span> was already used <span class="kr">in</span>
+scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ &amp; _ | _ ]&quot;</span> was already used
+<span class="kr">in</span> scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ &amp; _ ]&quot;</span> was already used <span class="kr">in</span>
+scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ | _ ]&quot;</span> was already used <span class="kr">in</span>
+scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ ]&quot;</span> was already used <span class="kr">in</span> scope
+fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ + _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ - _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt;= _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt; _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &gt;= _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &gt; _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt;= _ &lt;= _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt; _ &lt;= _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt;= _ &lt; _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt; _ &lt; _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ * _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chk9"><span class="kn">Lemma</span> <span class="nf">true_num</span> (<span class="nv">m</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : m = m) : x = y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>m = m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="case-analysis-on-evidence-of-equality-type-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="case-analysis-on-evidence-of-equality-type-in-coq-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>m = m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span>: eq_irrelevance.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In this case, the proper side conditions for the <tt class="docutils literal">nat</tt> type are
+inferred automatically by the machinery of the library.</p>
+</div>
+<div class="section" id="answer-jason-gross">
+<h1>Answer (Jason Gross)</h1>
+<blockquote>
+The only proof for <tt class="docutils literal">m = m</tt> should be <tt class="docutils literal">&#64;eq_refl nat m</tt> since
+<tt class="docutils literal">eq_refl</tt> is the only constructor</blockquote>
+<p>No. Your theorem happens to be true because you are talking about
+equality of <tt class="docutils literal">nat</tt>, but your reasoning goes through just as well (or
+poorly) if you replace <tt class="docutils literal">nat</tt> with <tt class="docutils literal">Type</tt>, and replacing <tt class="docutils literal">nat</tt>
+with <tt class="docutils literal">Type</tt> makes the theorem unprovable.</p>
+<p>The issue is that the equality type <em>family is freely generated</em> by
+the reflexively proof. Therefore, since everything in Coq respects
+equality in the right way (this is the bit I'm a bit fuzzy on), to
+prove a property of all proofs of equality in a family (i.e. all
+proofs of <tt class="docutils literal">x = y</tt> for some fixed <tt class="docutils literal">x</tt> and <em>for all</em> <tt class="docutils literal">y</tt>), it
+suffices to prove the property of the generator, the reflexively
+proof. However, once you fix both endpoints, so to speak, you no
+longer have this property. Said another way, the induction principle
+for <tt class="docutils literal">eq</tt> is really an induction principle for <tt class="docutils literal">{ y | x = y }</tt>, not
+for <tt class="docutils literal">x = y</tt>. Similarly, the induction principle for vectors
+(length-indexed lists) is really an induction principle for <tt class="docutils literal">{ n &amp;
+Vector.t A n }</tt>.</p>
+<p>To decode the error messages, it might help to try manually applying
+the induction principle for <tt class="docutils literal">eq</tt>. The induction principle states:
+given a type <tt class="docutils literal">A</tt>, a term <tt class="docutils literal">x : A</tt>, and a property <tt class="docutils literal">P : forall y :
+A, x = y <span class="pre">-&gt;</span> Prop</tt>, to prove <tt class="docutils literal">P y e</tt> for any given <tt class="docutils literal">y : A</tt> and any
+proof <tt class="docutils literal">e : x = y</tt>, it suffices to prove <tt class="docutils literal">P x eq_refl</tt>. (To see why
+this makes sense, consider the non dependent version: given a type
+<tt class="docutils literal">A</tt>, a term <tt class="docutils literal">x : A</tt>, and a property <tt class="docutils literal">P : A <span class="pre">-&gt;</span> Prop</tt>, for any <tt class="docutils literal">y
+: A</tt> and any proof <tt class="docutils literal">e : x = y</tt>, to prove <tt class="docutils literal">P y</tt>, it suffices to
+prove <tt class="docutils literal">P x</tt>.)</p>
+<p>If you try applying this by hand, you will find that there is no way
+to construct a well-typed function <tt class="docutils literal">P</tt> when you are trying to induct
+over the second proof of equality.</p>
+<p>There is an excellent blog post that explains this in much more depth here: <a class="reference external" href="http://math.andrej.com/2013/08/28/the-elements-of-an-inductive-type/">http://math.andrej.com/2013/08/28/the-elements-of-an-inductive-type/</a></p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

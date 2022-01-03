@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>deriving facts on pattern matching in coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="deriving-facts-on-pattern-matching-in-coq">
+<h1 class="title">deriving facts on pattern matching in coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/48276348/deriving-facts-on-pattern-matching-in-coq">https://stackoverflow.com/questions/48276348/deriving-facts-on-pattern-matching-in-coq</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Consider the following program</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">useGt0</span> (<span class="nv">n</span>: nat) (<span class="nv">witness</span>: n &gt; <span class="mi">0</span>) : nat :=
+  <span class="mi">10</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="deriving-facts-on-pattern-matching-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">createGt0</span> (<span class="nv">n</span>: nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | O =&gt; <span class="mi">42</span>
+  | S n&#39; =&gt; useGt0 n _ <span class="c">(* ??? *)</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The following term contains unresolved implicit arguments:
+  (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt;
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="mi">42</span>
+   | S n&#39; =&gt; useGt0 n <span class="nl">?witness</span>
+   <span class="kr">end</span>)
+More precisely: 
+- <span class="nl">?witness</span>: Cannot infer this placeholder of type
+  <span class="s2">&quot;n &gt; 0&quot;</span> <span class="kr">in</span> environment:
+  n, n&#39; : nat</blockquote></div></div></small></span></pre><p>Clearly, <tt class="docutils literal">n &gt; 0</tt> is inhabited, because <tt class="docutils literal">n = S n'</tt>. However, how do
+I get access to the proof that <tt class="docutils literal">n = S n'</tt>? From <tt class="docutils literal">n = S n'</tt>, we can
+derive that <tt class="docutils literal">n &gt; 0</tt>.</p>
+<p>In general, I wish to understand: <em>How do I extract information from a
+pattern match?</em></p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The standard way to define <tt class="docutils literal">createGt0</tt> function is to use the convoy
+pattern (you can find several explanations using <a class="reference external" href="https://stackoverflow.com/questions/tagged/coq+convoy-pattern">[coq]
+[convoy-pattern]</a>
+search query on Stackoverflow). The standard link is A. Chlipala's
+CPDT book.</p>
+<p>Here is a solution:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> PeanoNat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">createGt0</span> (<span class="nv">n</span> : nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">as</span> x <span class="kr">return</span> (n = x -&gt; nat) <span class="kr">with</span>
+  | O =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="mi">42</span>
+  | S n&#39; =&gt; <span class="kr">fun</span> <span class="nv">E</span> =&gt;
+              useGt0 n (eq_ind_r (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n &gt; <span class="mi">0</span>) (Nat.lt_0_succ n&#39;) E)
+  <span class="kr">end</span> eq_refl.</span></span></pre><p>Another option is to use <tt class="docutils literal">Program</tt> mechanism, which lets you program
+in non-dependently-typed style, deferring proof obligations until a
+later time:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Definition</span> <span class="nf">createGt0</span> (<span class="nv">n</span> : nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | O =&gt; <span class="mi">42</span>
+  | S n&#39; =&gt; useGt0 n _
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk1"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n&#39; &gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Nat.lt_0_succ.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>At last, you could use tactics to build your function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk2"><span class="kn">Definition</span> <span class="nf">createGt0</span> (<span class="nv">n</span> : nat) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk4"><span class="nb">destruct</span> n <span class="nb">eqn</span>:E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><label class="goal-separator" for="deriving-facts-on-pattern-matching-in-coq-v-chk5"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> <span class="mi">42</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk7">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk8"><span class="nb">refine</span> (useGt0 n _).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk9"><span class="nb">rewrite</span> E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n0 &gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Nat.lt_0_succ.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>If you end your function with <tt class="docutils literal">Qed</tt>, Coq will consider it opaque and
+won't reduce. Try ending the function with both <tt class="docutils literal">Qed</tt> and
+<tt class="docutils literal">Defined</tt> and execute the following command:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chka"><span class="kn">Compute</span> createGt0 <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">42</span>
+: nat</blockquote></div></div></small></span></pre><hr class="docutils" />
+<p><strong>Q:</strong> I am clearly out of my depth here. <tt class="docutils literal">eq_ind_r</tt> states that if
+a property <tt class="docutils literal">P</tt> holds for <tt class="docutils literal">x</tt>, then <tt class="docutils literal">x = y</tt> implies <tt class="docutils literal">P y</tt>,
+correct?</p>
+<p><strong>A:</strong> Yes, it is correct. <tt class="docutils literal">E</tt> has type <tt class="docutils literal">n = S n'</tt>, and
+<tt class="docutils literal">Nat.lt_0_succ n'</tt> gives us a proof of <tt class="docutils literal">S n' &gt; 0</tt>, but we want a
+proof of <tt class="docutils literal">n &gt; 0</tt>, so we use <tt class="docutils literal">eq_ind_r</tt> to substitute <tt class="docutils literal">n</tt> for <tt class="docutils literal">S
+n'</tt> in that proof of <tt class="docutils literal">S n' &gt; 0</tt>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

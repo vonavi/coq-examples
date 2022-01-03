@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq: automate repeated rewriting</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-automate-repeated-rewriting">
+<h1 class="title">Coq: automate repeated rewriting</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/questions/48139738/coq-automate-repeated-rewriting">https://stackoverflow.com/questions/48139738/coq-automate-repeated-rewriting</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-automate-repeated-rewriting-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-automate-repeated-rewriting-v-chk0"><span class="kn">Example</span> <span class="nf">test</span> : <span class="kr">forall</span> <span class="nv">f</span> (<span class="nv">n</span> : nat), f n = n -&gt; f (f n) = n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">n</span> : nat),
+f n = n -&gt; f (f n) = n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-automate-repeated-rewriting-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-automate-repeated-rewriting-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">n</span> : nat),
+f n = n -&gt; f (f n) = n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-automate-repeated-rewriting-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-automate-repeated-rewriting-v-chk2"><span class="nb">intros</span> f n H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>f n = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">f (f n) = n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-automate-repeated-rewriting-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-automate-repeated-rewriting-v-chk3"><span class="kp">repeat</span> <span class="nb">rewrite</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>f n = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>What would be a good way to further automate this? In particular, I
+would like to not have to mention the name of the hypothesis anywhere.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> <tt class="docutils literal">repeat rewrite H.</tt> can be replaced with <tt class="docutils literal">rewrite <span class="pre">?H.</span></tt>
+(rewrite zero or more times) or <tt class="docutils literal">rewrite !H.</tt> (rewrite one or more
+times)</p>
+<p><strong>A:</strong> There is also <tt class="docutils literal">autorewrite</tt> tactics.</p>
+<p><strong>Q:</strong> Is there a way to make <tt class="docutils literal">autorewrite</tt> consider local
+hypotheses?</p>
+<p><strong>A:</strong> You can use this new <a class="reference external" href="https://github.com/coq/coq/blob/2d6e395dead61a49ede6208bc40e16b4b8e68ce4/CHANGES#L1028">strat_rewrite tactic</a>:
+<tt class="docutils literal">Require Import Setoid. Hint Rewrite my_hint : my_db. <span class="pre">&lt;...&gt;</span>
+rewrite_strat topdown &lt;local_term&gt;; topdown (hints my_db).</tt></p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If the goal can be solved with some sequence of rewrites, then the
+<a class="reference external" href="https://coq.inria.fr/refman/tactics.html#congruence">congruence</a>
+tactic can handle it.</p>
+<blockquote>
+<p>The tactic <tt class="docutils literal">congruence</tt>, by Pierre Corbineau, implements the
+standard Nelson and Oppen congruence closure algorithm, which is a
+decision procedure for ground equalities with uninterpreted
+symbols. It also include the constructor theory (see 8.5.7 and
+8.5.6). If the goal is a non-quantified equality, <tt class="docutils literal">congruence</tt>
+tries to prove it with non-quantified equalities in the context.
+Otherwise it tries to infer a discriminable equality from those in
+the context. Alternatively, <tt class="docutils literal">congruence</tt> tries to prove that a
+hypothesis is equal to the goal or to the negation of another
+hypothesis.</p>
+<p><tt class="docutils literal">congruence</tt> is also able to take advantage of hypotheses
+stating quantified equalities, you have to provide a bound for the
+number of extra equalities generated that way. Please note that
+one of the members of the equality must contain all the quantified
+variables in order for <tt class="docutils literal">congruence</tt> to match against it.</p>
+</blockquote>
+<p>The above basically means that <tt class="docutils literal">congruence</tt> can solve your goal if
+it can be solved using <tt class="docutils literal">rewrite</tt> and <tt class="docutils literal">discriminate</tt> tactics. But
+sometimes <tt class="docutils literal">congruence</tt> can't help you because it does not unfold
+definitions for you -- in that case you'll have to help it.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-automate-repeated-rewriting-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-automate-repeated-rewriting-v-chk4"><span class="kn">Example</span> <span class="nf">test</span> : <span class="kr">forall</span> <span class="nv">f</span> (<span class="nv">n</span> : nat), f n = n -&gt; f (f n) = n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">n</span> : nat),
+f n = n -&gt; f (f n) = n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-automate-repeated-rewriting-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-automate-repeated-rewriting-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">n</span> : nat),
+f n = n -&gt; f (f n) = n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
