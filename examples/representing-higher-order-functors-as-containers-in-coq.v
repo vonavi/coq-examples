@@ -318,7 +318,7 @@ construct some lambda calculus terms in the resulting type.
 For example, the lambda calculus syntax functor:
 |*)
 
-Reset LC_F. (* .none *)
+Reset Initial. (* .none *)
 Inductive LC_F (f : Type -> Type) (a : Type) : Type :=
 | App : f a -> f a -> LC_F f a
 | Lam : f (sum unit a) -> LC_F f a.
@@ -327,7 +327,6 @@ Inductive LC_F (f : Type -> Type) (a : Type) : Type :=
 
 (* LC container *)
 
-Reset Shape. (* .none *)
 Inductive App_F (a : Type) : Type -> Type :=
 | App_ (b : bool) : App_F a a.
 

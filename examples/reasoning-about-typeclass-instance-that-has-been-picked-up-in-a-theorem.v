@@ -60,7 +60,7 @@ end the proof with a ``Defined`` and it will go through.
 For the sake of completeness, here is the final proof:
 |*)
 
-Reset Action. (* .none *)
+Reset Initial. (* .none *)
 Class Action (Actor: Type) (Acted: Type) :=
   {
   act : Actor -> Acted -> Acted;

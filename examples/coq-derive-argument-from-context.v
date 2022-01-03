@@ -84,7 +84,7 @@ enough, you could use type classes to not have to pass arguments
 around.
 |*)
 
-Reset SectionWithDefs. (* .none *)
+Reset Initial. (* .none *)
 (* I have a section with many variables and definitions. *)
 Section SectionWithDefs.
 

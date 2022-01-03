@@ -73,7 +73,7 @@ You can use the ``dependent induction`` tactic (documented `here
 For example:
 |*)
 
-Reset subseq. (* .none *)
+Reset Initial. (* .none *)
 Require Import Coq.Lists.List.
 Import ListNotations.
 Require Import Coq.Program.Equality. (* Needed to use the tactic *)
@@ -103,7 +103,7 @@ as in your first attempt, or to reformulate the definition of
 simplification. For example:
 |*)
 
-Reset subseq. (* .none *)
+Reset Initial. (* .none *)
 Require Import Coq.Lists.List.
 Import ListNotations.
 

@@ -149,7 +149,7 @@ i)``. But overall the recursive cases still naturally match an
 informal specification:
 |*)
 
-Reset V. (* .none *)
+Reset Initial. (* .none *)
 Require Import NArith PArith.
 
 Parameter V : Type.
@@ -181,7 +181,6 @@ Definition copy (x : V) (n : N) : BraunTree :=
     | (_, snd) => snd
     end
   end.
-Reset copy. (* .none *)
 
 (*|
 ----
@@ -193,6 +192,8 @@ We add fuel to the ``fix`` as the decreasing argument. We can only run
 out if ``n = i = 0``, so we know what the result should be then.
 |*)
 
+Reset copy. (* .none *)
+Require Import Coq.Init.Nat. (* .none *)
 (* note: This doesn't need to be a Fixpoint *)
 Definition copy (x : V) (n : nat) : BraunTree :=
   let

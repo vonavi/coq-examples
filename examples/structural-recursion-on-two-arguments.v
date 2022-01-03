@@ -102,7 +102,7 @@ with ``Qed``, though).
 You could also use the following simpler definition for ``tuple_lt``:
 |*)
 
-Reset tuple_lt. (* .none *)
+Reset Initial. (* .none *)
 Require Import Coq.Arith.Wf_nat. (* .none *)
 Definition tuple_lt (p1 p2 : nat * nat) := fst p1 < fst p2.
 

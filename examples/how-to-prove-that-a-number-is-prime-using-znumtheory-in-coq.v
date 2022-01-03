@@ -57,10 +57,10 @@ it more or less readable. But try to step through it in the IDE, if
 you care for it...
 |*)
 
+Reset Initial. (* .none *)
 Require Import ZArith.
 Require Import Znumtheory.
 
-Reset prime. (* .none *)
 Inductive prime (p : Z) : Prop :=
   prime_intro :
     1 < p -> (forall n : Z, 1 <= n < p -> rel_prime n p) -> prime p.
@@ -150,11 +150,11 @@ Answer (epoiner)
 I have a variant of @larsr's proof.
 |*)
 
+Reset Initial. (* .none *)
 Require Import ZArith.
 Require Import Znumtheory.
 Require Import Lia.
 
-Reset prime3. (* .none *)
 Theorem prime3 : prime 3.
 Proof.
   constructor.
@@ -237,9 +237,17 @@ Answer (larsr)
 
 Fun fact: @epoiner's answer can be used together with Ltac in a proof
 script for any prime number.
+
+.. coq:: none
 |*)
 
-Reset prime113. (* .none *)
+Reset Initial.
+Require Import ZArith.
+Require Import Znumtheory.
+Require Import Lia.
+
+(*||*)
+
 Theorem prime113 : prime 113.
 Proof.
   constructor.

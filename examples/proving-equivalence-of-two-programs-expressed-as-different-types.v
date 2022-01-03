@@ -112,7 +112,7 @@ However, complex systems require more care. The general recipe looks
 as follows:
 |*)
 
-Reset A. (* .none *)
+Reset Initial. (* .none *)
 Variables X Y : Type. (* States of two transition systems *)
 Variable A : Type. (* Actions *)
 

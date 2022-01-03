@@ -100,7 +100,7 @@ various cases but I haven't bothered doing so since I just hacked it
 up straight away.
 |*)
 
-Reset sumoneseq. (* .none *)
+Reset Initial. (* .none *)
 From Coq Require Import List Lia.
 Import ListNotations.
 

@@ -42,7 +42,7 @@ Answer (Daniel Schepler)
 One possibility would be to use the ``Program`` functionality:
 |*)
 
-Reset add_one_if_gt_2. (* .none *)
+Reset Initial. (* .none *)
 Require Import Program.
 
 Program Definition add_one_if_gt_2 (i : {i1 : nat | i1 > 2}) :=
@@ -78,7 +78,7 @@ component and repack it into a term of type ``{i1 : nat | i1 > 2}``,
 which is a pair:
 |*)
 
-Reset add_one_if_gt_2.
+Reset Initial.
 Definition add_one_if_gt_2 (i : {i1 : nat | i1 > 2}) :=
   S (proj1_sig i).
 

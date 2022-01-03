@@ -42,7 +42,7 @@ Like the case of natural numbers, the recursion principle is simply an
 eta expansion:
 |*)
 
-Reset equal. (* .none *)
+Reset Initial. (* .none *)
 Definition equal {A : Type} (x : A) : A -> Type :=
   fun x' => forall (P : A -> Type), P x -> P x'.
 

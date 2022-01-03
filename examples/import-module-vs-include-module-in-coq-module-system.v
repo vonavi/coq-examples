@@ -81,7 +81,7 @@ of modules, module types, and functors in Coq as well as the commands
 (* Example involving a parameterized module *)
 (********************************************)
 
-Reset M1. (* .none *)
+Reset Initial. (* .none *)
 (* A signature *)
 Module Type MT.
   Parameter t : Type.

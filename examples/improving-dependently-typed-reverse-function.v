@@ -81,7 +81,7 @@ this :)
 Here is one possibility for writing this function:
 |*)
 
-Reset ilist. (* .none *) Reset A. (* .none *)
+Reset Initial. (* .none *)
 Require Import Coq.Arith.Arith.
 
 Set Implicit Arguments.

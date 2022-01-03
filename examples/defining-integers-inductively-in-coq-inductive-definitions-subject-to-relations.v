@@ -22,7 +22,7 @@ I would like to know if it's possible to define the **integers**
 inductively, in a similar fashion? I can do something like
 |*)
 
-Reset nat. (* .none *)
+Reset Initial. (* .none *)
 Inductive int :=
 | zero : int
 | succ : int -> int

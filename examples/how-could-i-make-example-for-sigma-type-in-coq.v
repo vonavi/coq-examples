@@ -40,7 +40,7 @@ proof by computation, which is basically what ``eq_refl`` does in the
 snippet below:
 |*)
 
-Reset Version. (* .none *)
+Reset Initial. (* .none *)
 From Coq Require Import Bool Arith.
 
 Coercion is_true : bool >-> Sortclass.

@@ -61,7 +61,7 @@ expression, allowing you to keep track of the information you need.
 To illustrate, consider the following proof script.
 |*)
 
-Reset Foo. (* .none *)
+Reset Initial. (* .none *)
 Record Foo : Type := mkFoo { foo: nat }.
 
 Definition double (f: Foo) : Foo :=

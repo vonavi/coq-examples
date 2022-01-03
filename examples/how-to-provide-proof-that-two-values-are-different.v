@@ -56,7 +56,7 @@ Qed.
 In your example, you just have to provide proof that ``true = true``.
 |*)
 
-Reset easily. (* .none *)
+Reset Initial. (* .none *)
 Theorem easily : true <> true -> False.
   intro H. cbv in H. exact (H eq_refl).
   Restart. (* or just contradiction *)

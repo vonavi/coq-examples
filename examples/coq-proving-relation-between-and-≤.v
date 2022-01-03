@@ -88,7 +88,7 @@ make the induction principle more powerful. The way you have it with
 constructors. Every instance of ``le`` starts with ``le n``.
 |*)
 
-Reset le. (* .none *)
+Reset Initial. (* .none *)
 Inductive le : nat -> nat -> Prop :=
 | le_n : forall n : nat, le n n
 | le_S : forall n m : nat, le n m -> le n (S m).

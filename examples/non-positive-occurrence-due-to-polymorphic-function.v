@@ -41,7 +41,6 @@ I am currently working my way around it using vector, like so
 Require Import Coq.Vectors.Vector.
 
 Inductive Foo := MkFoo : forall n (l : Vector.t Foo n), n <> 0 -> Foo.
-Reset Foo. (* .none *)
 
 (*|
 but the complications that arise due to the use of dependent data
@@ -69,6 +68,7 @@ definition, unfortunately. I see two paths forward:
    well-formedness predicate:
 |*)
 
+Reset Initial. (* .none *)
 Require Import Coq.Lists.List.
 
 Inductive Foo := mkFoo : list Foo -> Foo.

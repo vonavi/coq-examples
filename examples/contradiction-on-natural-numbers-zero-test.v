@@ -71,7 +71,8 @@ equality on purpose? Note that ``n <> 0`` is a notation for ``n = 0 ->
 False``.
 |*)
 
-Reset notzero. (* .none *)
+Reset Initial. (* .none *)
+Require Import PeanoNat. (* .none *)
 Lemma notzero : forall n, n <> 0 -> (n =? 0) = false.
 Proof.
   intros n h. destruct (Nat.eqb_spec n 0).
@@ -85,7 +86,8 @@ it is ``0`` then you can use your hypothesis to conclude, and if it is
 some ``S m`` then your goal will be provable by ``reflexivity``.
 |*)
 
-Reset notzero. (* .none *)
+Reset Initial. (* .none *)
+Require Import PeanoNat. (* .none *)
 Lemma notzero : forall n, n <> 0 -> n =? 0 = false.
 Proof.
   intros n h. destruct n.

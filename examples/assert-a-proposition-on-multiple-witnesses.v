@@ -94,7 +94,7 @@ The simplest way to fix this is to stop using ``Prop``. Instead use
 sigma (``sig``) types to say:
 |*)
 
-Reset P. (* .none *)
+Reset Initial. (* .none *)
 Definition P (n : nat) := { k : nat | True }.
 
 Lemma allP : forall n : nat, P n.
@@ -122,7 +122,7 @@ The other thing you can do is that you can do everything continuation
 passing style:
 |*)
 
-Reset P. (* .none *)
+Reset Initial. (* .none *)
 Definition P (n : nat) : Prop := exists k:nat, True.
 
 Lemma allP : forall n : nat, P n.

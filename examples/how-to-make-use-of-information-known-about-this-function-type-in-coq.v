@@ -93,7 +93,7 @@ computing a function from ``get_types s nat -> nat``, which the
 compiler gets right.
 |*)
 
-Reset typ. (* .none *)
+Reset Initial. (* .none *)
 Require Import List.
 Import ListNotations.
 
@@ -223,7 +223,7 @@ interpretation of types from the one for list of types you can easily
 get a skeleton working:
 |*)
 
-Reset TB. (* .none *)
+Reset Initial. (* .none *)
 Set Warnings "-notation-overridden". (* .none *)
 From mathcomp Require Import all_ssreflect.
 

@@ -34,9 +34,9 @@ This is not a thing you can do with ``Definition ... :=``. However,
 you can use ``Proof using``:
 |*)
 
+Reset Initial. (* .none *)
 Section sec.
   Context (n : nat).
-  Reset Q. (* .none *)
   Definition Q : Set.
   Proof using n. exact bool. Defined.
 End sec.

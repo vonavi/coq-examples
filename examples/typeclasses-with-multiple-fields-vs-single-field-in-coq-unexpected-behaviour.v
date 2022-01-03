@@ -39,7 +39,7 @@ Compute (true =? false). (* .unfold *)
 I get the message as expected. But if I do the following instead,
 |*)
 
-Reset Eq. (* .none *)
+Reset Initial. (* .none *)
 Class Eq A :=
   {
   eqb: A -> A -> bool;
@@ -82,7 +82,7 @@ unfolded by commands like ``Compute``. You can tell Coq to make only
 the proof obligation opaque by using the ``Program Instance`` command:
 |*)
 
-Reset Eq. (* .none *)
+Reset Initial. (* .none *)
 Require Import Coq.Program.Tactics.
 
 Class Eq A :=

@@ -89,9 +89,10 @@ k``. Luckily, the standard library provides an easy way of doing so,
 with the ``Fix`` combined:
 |*)
 
+Reset Initial. (* .none *)
+Require Import Coq.Arith.PeanoNat. (* .none *)
 Require Import Coq.Arith.Wf_nat.
 
-Reset nat_strong_induction_set. (* .none *)
 Definition nat_strong_induction_set
            (P : nat -> Set)
            (ind_step : forall n : nat, (forall k : nat, (lt k n -> P k)) -> P n)

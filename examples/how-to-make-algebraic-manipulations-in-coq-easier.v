@@ -18,9 +18,7 @@ shouldn't be so long to prove. Any hints?
 Here is an example:
 |*)
 
-Require Import ZArith.
 Require Import QArith.
-Open Scope Q_scope.
 
 Theorem q_less: forall x y z, (0 <= x <= y)%Z -> x # z <= y # z.
 Proof.
@@ -50,7 +48,8 @@ libraries of theorems are designed to work in *backward* proof style.
 Contrast this with my proposal for the same proof:
 |*)
 
-Reset q_less. (* .none *)
+Reset Initial. (* .none *)
+Require Import QArith. (* .none *)
 Theorem q_less: forall x y z, (0 <= x <= y)%Z -> x # z <= y # z.
 Proof.
   intros x y z cmp. rewrite !Qmake_Qdiv. apply Qmult_le_compat_r.

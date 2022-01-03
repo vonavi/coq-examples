@@ -64,7 +64,7 @@ You can use ``refine`` for this. You can write underscores which will
 turn into obligations for you to solve later.
 |*)
 
-Reset ModusPonens. (* .none *)
+Reset Initial. (* .none *)
 Definition ModusPonens: forall (A B : Prop), ((A -> B) /\ A) -> B.
   refine (fun A B H =>
             match H with

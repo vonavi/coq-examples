@@ -84,7 +84,7 @@ The example you posted could be solved like this (all code tested for
 Coq 8.10.1):
 |*)
 
-Reset Show. (* .none *)
+Reset Initial. (* .none *)
 Require Import Strings.String.
 
 Local Open Scope list_scope.
@@ -123,7 +123,7 @@ with an anonymous ``let-in`` binding. Evidently, this is enough to
 satisfy Coq's typeclass resolution mechanism.
 |*)
 
-Reset Show. (* .none *)
+Reset Initial. (* .none *)
 Require Import Strings.String.
 
 Local Open Scope list_scope.

@@ -30,7 +30,7 @@ Answer
 The ``easy`` tactic is powerful enough to solve this:
 |*)
 
-Reset DirectSum. (* .none *)
+Reset Initial. (* .none *)
 Inductive DirectSum (L R: Type): Type :=
 | Left: L -> DirectSum L R
 | Right: R -> DirectSum L R.

@@ -115,7 +115,7 @@ Two general alternatives to inductive indexed types are:
   pattern-matching will be necessary.
 |*)
 
-Reset vec. (* .none *)
+Reset Initial. (* .none *)
 Fixpoint vec (A : Set) (n : nat) :=
   match n with
   | O => unit | S n => (A * vec A n)%type
@@ -207,7 +207,7 @@ decidability proof for vectors.
 Here's a complete working proof:
 |*)
 
-Reset vec. (* .none *)
+Reset Initial. (* .none *)
 Require Vectors.VectorDef.
 Require Import Logic.Eqdep_dec.
 Require Import PeanoNat.

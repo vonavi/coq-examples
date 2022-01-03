@@ -61,7 +61,7 @@ World" https://arxiv.org/pdf/1008.1213.pdf
 check. Sorry for weird phrasing in proofs.)
 |*)
 
-Reset emptyOnly. (* .none *)
+Reset Initial. (* .none *)
 Require Import Coq.Sets.Ensembles.
 
 (* Classical reasoning without extra axioms. *)

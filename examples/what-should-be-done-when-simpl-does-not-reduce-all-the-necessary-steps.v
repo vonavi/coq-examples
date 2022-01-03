@@ -66,9 +66,16 @@ Answer
 
 For the purposes of this answer, I'll assume the definition of
 ``fold`` is something along the lines of
+
+.. coq:: none
 |*)
 
-Reset fold. (* .none *)
+Reset Initial.
+Require Import List.
+Import ListNotations.
+
+(*||*)
+
 Fixpoint fold {A B: Type} (f: A -> B -> B) (u: list A) (b: B): B :=
   match u with
   | [] => b

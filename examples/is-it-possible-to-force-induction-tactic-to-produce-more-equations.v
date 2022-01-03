@@ -137,9 +137,16 @@ Qed.
 Basically, you have to grow the size of your goal to reduce it later.
 
 Had you chosen a simpler encoding, e.g.
+
+.. coq:: none
 |*)
 
-Reset subseq. (* .none *)
+Reset Initial.
+Require Import List.
+Import ListNotations.
+
+(*||*)
+
 Reserved Notation "l <<< k" (at level 10).
 Inductive subseq {X : Type} : list X -> list X -> Prop :=
 | empty_subseq : [] <<< []

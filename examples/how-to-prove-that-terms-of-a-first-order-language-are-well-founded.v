@@ -101,7 +101,7 @@ You can do it by defining a height function on ``Terms``, and showing
 that decreasing ``rela`` implies decreasing heights:
 |*)
 
-Reset SetVars. (* .none *)
+Reset Initial. (* .none *)
 Require Export Coq.Vectors.Vector.
 Require Export Coq.Lists.List.
 Require Import Bool.Bool.

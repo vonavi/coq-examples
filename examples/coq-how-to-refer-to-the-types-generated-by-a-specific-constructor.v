@@ -38,7 +38,7 @@ instead of ``nat``, or add an argument that reduces input space, for
 instance ``(H: a <> 0)``
 |*)
 
-Reset plusfive. (* .none *)
+Reset Initial. (* .none *)
 Definition plusfive (a : nat) (H : a <> 0) :=
   match a as e return a = e -> _ with
   | S _ => fun _  => a + 5

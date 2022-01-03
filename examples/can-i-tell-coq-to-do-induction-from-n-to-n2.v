@@ -189,7 +189,7 @@ Qed.
 Definitions used in this answer:
 |*)
 
-Reset evenb.  (* .none *)
+Reset Initial.  (* .none *)
 Fixpoint evenb n :=
   match n with
   | S (S n') => evenb n'

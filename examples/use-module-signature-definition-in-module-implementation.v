@@ -40,6 +40,7 @@ You'll need to put your definitions into a separate "module functor"
 modules as parameters) so that ``Sig`` contains only parameters:
 |*)
 
+Reset Initial. (* .none *)
 Module Type Sig.
   Parameter n : nat.
 End Sig.
@@ -80,7 +81,7 @@ That allows to reuse your definitions to shorten the declarations, and
 to have them as part of the same module.
 |*)
 
-Reset Sig. (* .none *)
+Reset Initial. (* .none *)
 Require Import Lia.
 
 Module Type Sig.

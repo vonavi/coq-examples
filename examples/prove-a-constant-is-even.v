@@ -60,7 +60,7 @@ Repeating ``apply even_S`` is not the way. ``repeat apply even_S`` is.
 If ``even_S`` is a constructor, there's also ``repeat constructor``.
 |*)
 
-Reset even. (* .none *)
+Reset Initial. (* .none *)
 Inductive even : nat -> Prop :=
 | even_O : even O
 | even_S : forall n, even n -> even (S (S n)).

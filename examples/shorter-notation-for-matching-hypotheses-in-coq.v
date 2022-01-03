@@ -28,7 +28,6 @@ Proof.
   match goal with H: _ = _ |- _ => rewrite H end.
   assumption.
 Qed.
-Reset l0. (* .none *)
 
 (*|
 *Is there a more concise way? Or a better approach?*
@@ -73,6 +72,7 @@ You can iterate over all the assumptions until you find a matching
 one:
 |*)
 
+Reset Initial. (* .none *)
 Tactic Notation "summon" uconstr(ty) "as" ident(id) :=
   match goal with H : _ |- _ => pose (id := H : ty) end.
 
@@ -126,7 +126,6 @@ Proof.
   - assumption.
   - summon (_ = _) as H => rewrite H. assumption.
 Qed.
-Reset l0. (* .none *)
 
 (*|
 Old answer
@@ -139,6 +138,7 @@ You can summon an assumption matching a type pattern into a name with
 ``eassert (name : ty) by eassumption.``.
 |*)
 
+Reset Initial. (* .none *)
 Lemma l0 : forall P1 P2, P1 \/ (P1 = P2) -> P2 -> P1.
 Proof.
   intros.

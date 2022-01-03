@@ -32,7 +32,7 @@ The following works, but I would prefer a solution without adding
 equality:
 |*)
 
-Reset T. (* .none *)
+Reset Initial. (* .none *)
 Inductive T (A : Type) : Type :=
 | c1 : A -> T A
 | c2' : A = unit -> T A.
@@ -74,7 +74,7 @@ This is almost exactly the setup of your ``Inductive`` type.
 Annotating your type with universes, you start with
 |*)
 
-Reset T. (* .none *)
+Reset Initial. (* .none *)
 Universes i j. (* .none *)
 Inductive T : Type@{i} -> Type@{j} :=
 | c1 : forall (A : Type@{i}), A -> T A

@@ -82,7 +82,7 @@ Abort. (* .none *)
 
 (*| Edit: My first solution was |*)
 
-Reset make_visible. (* .none *)
+Reset Initial. (* .none *)
 Definition make_visible {X} (f : X) := (fun _ => f) tt.
 
 (*| but, as Anton pointed out, this is easier. |*)

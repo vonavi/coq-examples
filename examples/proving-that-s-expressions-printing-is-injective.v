@@ -67,8 +67,7 @@ hand. Here is one possibility:
 .. coq:: none
 |*)
 
-Reset sexp.
-
+Reset Initial.
 Require Import Coq.Lists.List Coq.Strings.String.
 Import ListNotations.
 

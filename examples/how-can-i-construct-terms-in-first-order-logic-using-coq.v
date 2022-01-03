@@ -51,7 +51,7 @@ Inductive term : Type :=
 Check term_ind. (* .unfold *)
 Check funct_ind term. (* .unfold *)
 
-Reset term. (* .none *) Reset funct. (* .none *)
+Reset funct. (* .none *)
 (*Idea B*)
 Inductive term : Type :=
 | Con : const -> term
@@ -89,7 +89,7 @@ First, let ask Coq not to generate its weak default induction
 principle:
 |*)
 
-Reset term. (* .none *) Reset funct. (* .none *)
+Reset funct. (* .none *)
 Unset Elimination Schemes.
 Inductive term : Type :=
 | Con : const -> term
@@ -166,7 +166,7 @@ To get an induction principle for your other approach, you have to
 write a proof term by hand:
 |*)
 
-Reset var. (* .none *)
+Reset Initial. (* .none *)
 Definition var := nat.
 
 Inductive const : Type :=

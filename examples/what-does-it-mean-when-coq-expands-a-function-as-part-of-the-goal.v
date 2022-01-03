@@ -89,10 +89,10 @@ I am assuming that you have defined ``nonzeros`` in the following way
 (or similar):
 |*)
 
+Reset Initial. (* .none *)
 Require Import List.
 Import ListNotations.
 
-Reset natlist. (* .none *)
 Definition natlist := list nat.
 
 Fixpoint nonzeros (l : natlist) :=

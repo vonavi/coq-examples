@@ -104,7 +104,6 @@ statement as a corollary of this one:
 Corollary rev_append_app: forall (X : Type) (x : X) (l : list X),
     rev_append l [x] = rev_append l [] ++ [x].
 Proof. intros. apply (rev_append_app' _ _ [] [x]). Qed.
-Reset rev_append_app. (* .none *)
 
 (*|
 Answer (xingfe123)
@@ -113,6 +112,7 @@ Answer (xingfe123)
 use the generalize dependent tactic like this:
 |*)
 
+Reset rev_append_app. (* .none *)
 Lemma rev_append_app: forall (X : Type) (l l1 : list X) (x : X),
     rev_append l (l1 ++ [x]) = rev_append l l1 ++ [x].
   intros. generalize dependent l1. induction l as [| h t IH].

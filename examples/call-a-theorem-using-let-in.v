@@ -47,7 +47,7 @@ Admitted. (* .none *)
 Lemma split_in3 : forall {A} (l : list A) x l1 l2,
     (l1, l2) = split l -> In x l1 \/ In x l2 <-> In x l.
 Admitted. (* .none *)
-Reset split. (* .none *)
+Reset Initial. (* .none *)
 
 (*|
 Answer
@@ -82,6 +82,8 @@ primitive record above your code, then you can prove:
 
 .. coq:: none
 |*)
+
+Require Import List. Import ListNotations.
 
 Fixpoint split {A} (l : list A) :=
   match l with

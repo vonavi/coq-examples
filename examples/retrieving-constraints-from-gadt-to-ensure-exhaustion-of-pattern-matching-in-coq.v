@@ -89,7 +89,7 @@ forall (A : Type), A -> list A -> list A``.) If I make the ``Set`` a
 parameter of ``MyTy``, then ``extract`` can be defined:
 |*)
 
-Reset MyTy. (* .none *)
+Reset Initial. (* .none *)
 Inductive MyTy (A : Set) : Type :=
   MkMyTy : A -> MyTy A.
 
@@ -168,8 +168,7 @@ The solution turned out to be simple but tricky:
 .. coq:: none
 |*)
 
-Reset AB.
-
+Reset Initial.
 Inductive AB : Set := A | B.
 Inductive XY : Set := X | Y.
 
