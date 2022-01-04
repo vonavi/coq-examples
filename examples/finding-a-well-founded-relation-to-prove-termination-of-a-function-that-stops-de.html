@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Finding a well founded relation to prove termination of a function that stops decreasing at some point</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-decreasing-at-some-point">
+<h1 class="title">Finding a well founded relation to prove termination of a function that stops decreasing at some point</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48121413">https://stackoverflow.com/q/48121413</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Suppose we have:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> Z_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">range</span> (<span class="nv">from</span> <span class="nv">to</span> : Z) {<span class="nv">measure</span> <span class="nv">f</span> <span class="nv">R</span>} : list Z :=
+  <span class="kr">if</span> <span class="kn">from</span> &lt;? to
+  <span class="kr">then</span> <span class="kn">from</span> :: range (<span class="kn">from</span> + <span class="mi">1</span>) to
+  <span class="kr">else</span> [].</span></span></pre><p>I'd like to convince Coq that this terminates - I tried by measuring
+the size of the range as <tt class="docutils literal">abs (to - from)</tt>. However, this doesn't
+quite work because once the range is empty (that is, <tt class="docutils literal">from &gt;= to</tt>),
+it simply starts increasing once again.</p>
+<p>Using my custom:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">preceeds_eq</span> (<span class="nv">l</span> <span class="nv">r</span> : option nat) : <span class="kt">Prop</span> :=
+  <span class="kr">match</span> l, r <span class="kr">with</span>
+  | None, None     =&gt; <span class="kt">False</span>
+  | None, Some _   =&gt; <span class="kt">True</span>
+  | Some _, None   =&gt; <span class="kt">False</span>
+  | Some x, Some y =&gt; (x &lt; y)%nat
+  <span class="kr">end</span>.</span></span></pre><p>and the cast:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk0"><span class="kn">Definition</span> <span class="nf">Z_to_nat</span> (<span class="nv">z</span> : Z) (<span class="nv">p</span> : <span class="mi">0</span> &lt;= z) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk2"><span class="nb">dependent destruction</span> z.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>p0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= Z.pos p</span></span></span><br></div><label class="goal-separator" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk3"><hr></label><div class="goal-conclusion">nat</div></blockquote><input class="alectryon-extra-goal-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>p0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= Z.neg p</span></span></span><br></div><label class="goal-separator" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk4"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> <span class="mi">0</span>%nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>p0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= Z.pos p</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (Pos.to_nat p).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk7">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>p0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= Z.neg p</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk8"><span class="nb">assert</span> (Z.neg p &lt; <span class="mi">0</span>) <span class="bp">by</span> <span class="nb">apply</span> Zlt_neg_0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>p0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt;= Z.neg p</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Z.neg p &lt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">contradiction</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>I've also tried measuring with:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">get_range</span> (<span class="nv">from</span> <span class="nv">to</span> : Z) : option nat :=
+  <span class="kr">let</span> <span class="nv">range</span> := (to - <span class="kn">from</span>) <span class="kr">in</span>
+  <span class="kr">if</span> (range &lt;? <span class="mi">0</span>)
+  <span class="kr">then</span> None
+  <span class="kr">else</span> Some (Z_to_nat (Z.abs range) (Z.abs_nonneg range)).</span></span></pre><p>But it runs into the issue that I cannot show that <tt class="docutils literal">None &lt; None</tt> and
+using reflexive <tt class="docutils literal">preceeds_eq</tt> makes the relation not well founded,
+which brings me back to the same problem.</p>
+<p>Is there a way to convince Coq that <tt class="docutils literal">range</tt> terminates? Is my
+approach completely broken?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If you map the length of you interval to <tt class="docutils literal">nat</tt> using <tt class="docutils literal">Z.abs_nat</tt>
+or <tt class="docutils literal">Z.to_nat</tt> functions, and use a function deciding if the range is
+not-empty with a more informative result type (<tt class="docutils literal">Z_lt_dec</tt>) then the
+solution becomes very simple:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">range</span> (<span class="nv">from</span> <span class="nv">to</span> : Z)
+        {<span class="nv">measure</span> (Z.abs_nat (to - from))} : list Z :=
+  <span class="kr">if</span> Z_lt_dec <span class="kn">from</span> to
+  <span class="kr">then</span> <span class="kn">from</span> :: range (<span class="kn">from</span> + <span class="mi">1</span>) to
+  <span class="kr">else</span> [].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chk9"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>from, to</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>range</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">from0</span> <span class="nv">to0</span> : Z,
+Z.abs_nat (to0 - from0) &lt;
+Z.abs_nat (to - <span class="kn">from</span>) -&gt; 
+list Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="kn">from</span> &lt; to)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Z.abs_nat (to - (<span class="kn">from</span> + <span class="mi">1</span>)) &lt; Z.abs_nat (to - <span class="kn">from</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chka"><span class="nb">apply</span> Zabs_nat_lt.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>from, to</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>range</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">from0</span> <span class="nv">to0</span> : Z,
+Z.abs_nat (to0 - from0) &lt;
+Z.abs_nat (to - <span class="kn">from</span>) -&gt; 
+list Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="kn">from</span> &lt; to)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> &lt;= to - (<span class="kn">from</span> + <span class="mi">1</span>) &lt; to - <span class="kn">from</span>)%Z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto with</span> zarith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Using <tt class="docutils literal">Z_lt_dec</tt> instead of its boolean counter-part gives you the
+benefit of propagating the proof of <tt class="docutils literal">from &lt; to</tt> into the context,
+which gives you the ability to deal with the proof obligation easily.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> <tt class="docutils literal">Z_lt_dec</tt> is a decision procedure too, but in addition to
+marking the result as true or false (which are called <tt class="docutils literal">left</tt> and
+<tt class="docutils literal">right</tt> respectively) it also attaches a proof to the result. It's
+quite suggestively called <tt class="docutils literal">sumbool</tt> -- once I tried to explain its
+usage in <a class="reference external" href="https://stackoverflow.com/a/42313822/2747511">this answer</a> (in its second
+half).</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

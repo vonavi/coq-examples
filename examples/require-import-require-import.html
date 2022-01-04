@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Require, Import, Require Import</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="require-import-require-import">
+<h1 class="title"><tt class="docutils literal">Require</tt>, <tt class="docutils literal">Import</tt>, <tt class="docutils literal">Require Import</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47973317">https://stackoverflow.com/q/47973317</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In Coq, what's the difference between ... ?</p>
+<ul class="simple">
+<li><tt class="docutils literal">Require X.</tt></li>
+<li><tt class="docutils literal">Import X.</tt></li>
+<li><tt class="docutils literal">Require Import X.</tt></li>
+</ul>
+<p>I have basically memorized some common patterns. I usually see code
+using <tt class="docutils literal">Require Import X</tt>. Then there's <tt class="docutils literal">Import ListNotation</tt>. And
+I just noticed it's also possible to write just <tt class="docutils literal">Require X</tt>. What's
+the difference? Some practical examples would be appreciated.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><tt class="docutils literal">Require</tt> loads a library whereas <tt class="docutils literal">Import</tt> brings its definitions
+into scope. <tt class="docutils literal">Require Import</tt> does both. If you only have the library
+loaded, you'll need to refer to names fully qualified. Coq allows
+top-level modules corresponding to files to define modules; these have
+to be imported separately to bring all of their definitions into
+scope, and they can't be <tt class="docutils literal">Require</tt>d - that's what's going on with
+<tt class="docutils literal">ListNotations</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* List is not loaded by default *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="require-import-require-import-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="require-import-require-import-v-chk0"><span class="kn">Check</span> List.map.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The reference List.map was not found <span class="kr">in</span> the current
+environment.</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* the full name is technically Coq.Lists.List *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* note that lists are actually defined in Coq.Init.Datatypes which is</span>
+<span class="c">   imported by default, so [list] is unqualified and the [x::xs]</span>
+<span class="c">   notation is already defined *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="require-import-require-import-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="require-import-require-import-v-chk1"><span class="kn">Print</span> List.map.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">List.map = 
+<span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A -&gt; B) =&gt;
+<span class="kr">fix</span> map (l : list A) : list B :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; nil
+  | (a :: t)%list =&gt; (f a :: map t)%list
+  <span class="kr">end</span>
+     : <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>, (A -&gt; B) -&gt; list A -&gt; list B
+
+<span class="kn">Arguments</span> List.map [A B]%type_scope _%function_scope
+  _%list_scope</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* bring everything in List into scope *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* this includes the ListNotations submodule *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* note that now list notations are available, and the list notation</span>
+<span class="c">   scope is open (from importing List) *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="require-import-require-import-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="require-import-require-import-v-chk2"><span class="kn">Print</span> List.map.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">map = 
+<span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A -&gt; B) =&gt;
+<span class="kr">fix</span> map (l : list A) : list B :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | [] =&gt; []
+  | a :: t =&gt; f a :: map t
+  <span class="kr">end</span>
+     : <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>, (A -&gt; B) -&gt; list A -&gt; list B
+
+<span class="kn">Arguments</span> map [A B]%type_scope _%function_scope
+  _%list_scope</blockquote></div></div></small></span></pre><p>Note there are some quirks with how Coq handles modules, especially
+compared to other languages:</p>
+<ul class="simple">
+<li>Coq does not require a full path to a module, only an unambiguous
+suffix. Indeed I rarely see full import paths, even to standard
+library modules.</li>
+<li>Notations cannot be used except by importing the module, and unlike
+most objects there's no way to refer to a notation, fully qualified
+or otherwise.</li>
+<li>Importing a module can have side effects, for example changing
+notation interpretation scopes or setting options if you use
+<tt class="docutils literal">Global Set</tt> in the module being imported.</li>
+<li>Importing is fairly limited (especially compared to Haskell) -
+there's no way to rename a module at import time, or selectively
+import some definitions.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></body>
+</html>
