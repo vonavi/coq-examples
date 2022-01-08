@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Program Fixpoint: recursive call in let and hypothesis of the obligation</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation">
+<h1 class="title"><tt class="docutils literal">Program Fixpoint</tt>: recursive call in <tt class="docutils literal">let</tt> and hypothesis of the obligation</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47909582">https://stackoverflow.com/q/47909582</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Say I have the following <tt class="docutils literal">Program Fixpoint</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">f</span> <span class="nv">l</span> {<span class="nv">measure</span> (length l)} : list nat :=
+  <span class="kr">let</span> <span class="nv">f_rec</span> := (f (tl l) ) <span class="kr">in</span>
+  <span class="kr">match</span> hd_error l <span class="kr">with</span>
+  | Some n =&gt; n :: f_rec
+  | None =&gt; []
+  <span class="kr">end</span>.</span></span></pre><p>(This example basically returns <tt class="docutils literal">l</tt> in a very stupid way, for the
+sake of having a simple example).</p>
+<p>Here, I have a recursive call to <tt class="docutils literal">f</tt> (stored in <tt class="docutils literal">f_rec</tt>) which is
+only used if <tt class="docutils literal">l</tt> contains an element, which ensures that when I use
+<tt class="docutils literal">f_rec</tt>, <tt class="docutils literal">length (tl l)</tt> is indeed smaller than <tt class="docutils literal">length l</tt>.</p>
+<p>However, when I want to solve the obligation</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk0"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
+length l0 &lt; length l -&gt; list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl l) &lt; length l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>I don't have the hypothesis <tt class="docutils literal">hd_error l = Some n</tt> which I need.</p>
+<p>(Somehow, I have the impression that it is understood as &quot;compute <tt class="docutils literal">f
+(tl l)</tt> at the <tt class="docutils literal">let ... in</tt> place&quot;, and not &quot;delay the computation
+until it is actually used&quot;).</p>
+<hr class="docutils" />
+<p>To illustrate the difference, if I &quot;inline&quot; the <tt class="docutils literal">let ... in</tt>
+statement:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">f</span> <span class="nv">l</span> {<span class="nv">measure</span> (length l)} : list nat :=
+  <span class="kr">match</span> hd_error l <span class="kr">with</span>
+  | Some n =&gt; n :: f (tl l)
+  | None =&gt; []
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk1"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
+length l0 &lt; length l -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error l</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl l) &lt; length l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk2"><span class="nb">destruct</span> l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l</span> : list nat,
+length l &lt; length [] -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error []</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl []) &lt; length []</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
+length l0 &lt; length (n0 :: l) -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error (n0 :: l)</span></span></span><br></div><label class="goal-separator" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk3"><hr></label><div class="goal-conclusion">length (tl (n0 :: l)) &lt; length (n0 :: l)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Here I have <tt class="docutils literal">Heq_anonymous : Some n = hd_error []</tt> in the
+environment.</p>
+<hr class="docutils" />
+<p>My question is the following: is it possible to have the hypothesis I
+need, i.e. to have the hypothesis generated by the <tt class="docutils literal">match ... with</tt>
+statement?</p>
+<p>N.B.: Moving the <tt class="docutils literal">let</tt> is a solution, but I am curious to know
+whether this is possible without doing so. For instance, it might be
+useful in the case <tt class="docutils literal">f_rec</tt> is used in various contexts, to avoid
+duplicating <tt class="docutils literal">f (tl l)</tt>.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>One trick is to explicitly ask for the hypothesis you need (I recently
+saw it in <a class="reference external" href="https://stackoverflow.com/a/46859452/2747511">this answer</a> by <a class="reference external" href="https://stackoverflow.com/users/946226/joachim-breitner">Joachim Breitner</a>):</p>
+<pre class="code coq literal-block">
+<span class="kr">let</span> <span class="nv">f_rec</span> <span class="o">:=</span> <span class="kr">fun</span> <span class="nv">pf</span> <span class="o">:</span> <span class="n">length</span> <span class="o">(</span><span class="n">tl</span> <span class="n">l</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="n">l</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">tl</span> <span class="n">l</span><span class="o">)</span> <span class="kr">in</span>
+</pre>
+<p>This way you will be able to use <tt class="docutils literal">f_rec</tt> only when it makes sense.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">f</span> <span class="nv">l</span> {<span class="nv">measure</span> (length l)} : list nat :=
+  <span class="kr">let</span> <span class="nv">f_rec</span> := <span class="kr">fun</span> <span class="nv">pf</span> : length (tl l) &lt; length l =&gt; f (tl l) <span class="kr">in</span>
+  <span class="kr">match</span> hd_error l <span class="kr">with</span>
+  | Some n =&gt; n :: f_rec _
+  | None =&gt; []
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk4"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
+length l0 &lt; length l -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error l</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl l) &lt; length l</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> l; [<span class="bp">discriminate</span> | <span class="nb">auto</span>].</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

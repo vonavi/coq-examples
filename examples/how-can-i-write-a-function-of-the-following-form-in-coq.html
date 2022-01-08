@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How can I write a function of the following form in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="how-can-i-write-a-function-of-the-following-form-in-coq">
+<h1 class="title">How can I write a function of the following form in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47947777">https://stackoverflow.com/q/47947777</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<pre class="code coq literal-block">
+<span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">subtermOfX</span><span class="o">)</span>
+</pre>
+<p>Is recursion only allowed if the arg to the function is a direct
+subterm of the arg passed so that Coq can see that it actually
+terminates?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>It's possible to write such function <tt class="docutils literal">f</tt> if function <tt class="docutils literal">g</tt> preserves
+the property of being a subterm.</p>
+<p>Some of the standard functions have this property, e.g. <tt class="docutils literal">pred</tt>,
+<tt class="docutils literal">sub</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Arith List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">foo</span> (<span class="nv">x</span> : nat) : nat :=
+  <span class="kr">match</span> x <span class="kr">with</span>
+  | O =&gt; <span class="mi">42</span>
+  | S x&#39; =&gt; foo (pred x&#39;)       <span class="c">(* foo (x&#39; - 1) works too *)</span>
+  <span class="kr">end</span>.</span></span></pre><p>On the other hand some (standard) functions do not have this property,
+but can be rewritten to remedy this deficiency. E.g. the standard
+<tt class="docutils literal">tl</tt> function does not preserve the subterm property, so the
+following fails:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-write-a-function-of-the-following-form-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-can-i-write-a-function-of-the-following-form-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">bar</span> (<span class="nv">xs</span> : list nat) : list nat :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | [] =&gt; []
+  | x :: xs&#39; =&gt; bar (tl xs&#39;)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of bar <span class="kr">is</span> ill-formed.
+In environment
+bar : list nat -&gt; list nat
+xs : list nat
+x : nat
+xs&#39; : list nat
+Recursive call to bar has principal argument equal to
+<span class="s2">&quot;tl xs&#39;&quot;</span> instead of <span class="s2">&quot;xs&#39;&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun xs : list nat =&gt;</span>
+<span class="s2"> match xs with</span>
+<span class="s2"> | [] =&gt; []</span>
+<span class="s2"> | _ :: xs&#39; =&gt; bar (tl xs&#39;)</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre><p>but if we redefine the tail function like so</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-write-a-function-of-the-following-form-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-write-a-function-of-the-following-form-in-coq-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">new_tl</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">xs</span> : list A) :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | [] =&gt; xs                    <span class="c">(* `tl` returns `[]` here *)</span>
+  | _ :: xs&#39; =&gt; xs&#39;
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Not a truly recursive fixpoint.
+[non-recursive,fixpoints]</blockquote></div></div></small></span></pre><p>we can recover the desired property:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">bar</span> (<span class="nv">xs</span> : list nat) : list nat :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | [] =&gt; []
+  | x :: xs&#39; =&gt; bar (new_tl xs&#39;)
+  <span class="kr">end</span>.</span></span></pre><p>The only difference between <tt class="docutils literal">tl</tt> and <tt class="docutils literal">new_tl</tt> is that in the case
+of empty input list <tt class="docutils literal">tl</tt> returns <tt class="docutils literal">[]</tt>, but <tt class="docutils literal">new_tl</tt> returns the
+original list.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
