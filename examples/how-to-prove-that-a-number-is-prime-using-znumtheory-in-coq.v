@@ -107,7 +107,8 @@ this, we can prove such simple facts by computation:
 |*)
 
 Set Warnings "-notation-overridden". (* .none *)
-From mathcomp Require Import ssreflect ssrbool ssrnat prime.
+From Coq Require Import ssreflect ssrbool.
+From mathcomp Require Import ssrnat prime.
 
 Lemma prime_3 : prime 3. Proof. reflexivity. Qed.
 

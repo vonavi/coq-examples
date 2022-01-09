@@ -21,7 +21,8 @@ I also have a function to extract an actual function type from a list
 of ``typ``\ s and a result type:
 |*)
 
-From mathcomp Require Import ssreflect seq. (* .none *)
+From Coq Require Import ssreflect. (* .none *)
+From mathcomp Require Import seq. (* .none *)
 Fixpoint get_types (s: seq typ) (result_type: Type) : Type :=
   match s with
   | nil => result_type
