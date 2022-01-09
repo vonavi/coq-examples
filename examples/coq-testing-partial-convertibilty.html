@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq: Testing partial convertibilty</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="coq-testing-partial-convertibilty">
+<h1 class="title">Coq: Testing partial convertibilty</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47838883">https://stackoverflow.com/q/47838883</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In the following example, unification (unsurprisingly) doesn't infer a
+canonical structure:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Structure</span> <span class="nf">Pn</span> := sr {gs: nat}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Canonical Structure</span> <span class="nf">Pn_1</span>: Pn := sr <span class="mi">1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-testing-partial-convertibilty-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-testing-partial-convertibilty-v-chk0"><span class="kn">Canonical Structure</span> <span class="nf">Pn_2</span>: Pn := sr <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Ignoring canonical projection to S <span class="bp">by</span> gs <span class="kr">in</span> Pn_2:
+redundant <span class="kr">with</span> Pn_1
+[redundant-canonical-projection,typechecker]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* fail *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-testing-partial-convertibilty-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-testing-partial-convertibilty-v-chk1"><span class="kn">Check</span> <span class="kp">ltac</span>:(<span class="kr">tryif</span> <span class="nb">unify</span> <span class="mi">2</span> (gs _) <span class="kr">then</span> <span class="kp">idtac</span> <span class="s2">&quot;success&quot;</span> <span class="kr">else</span> <span class="kp">idtac</span> <span class="s2">&quot;fail&quot;</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kp">fail</span></blockquote><blockquote class="alectryon-message"><span class="nl">?Goal</span>
+     : <span class="nl">?T</span>
+<span class="kn">where</span>
+<span class="nl">?T</span> : [ |- <span class="kt">Type</span>]
+<span class="nl">?Goal</span> : [ |- <span class="nl">?T</span>]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* success *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-testing-partial-convertibilty-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-testing-partial-convertibilty-v-chk2"><span class="kn">Check</span> <span class="kp">ltac</span>:(<span class="kr">tryif</span> <span class="nb">unify</span> <span class="mi">2</span> (gs Pn_2) <span class="kr">then</span> <span class="kp">idtac</span> <span class="s2">&quot;success&quot;</span> <span class="kr">else</span> <span class="kp">idtac</span> <span class="s2">&quot;fail&quot;</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">success</blockquote><blockquote class="alectryon-message"><span class="nl">?Goal</span>
+     : <span class="nl">?T</span>
+<span class="kn">where</span>
+<span class="nl">?T</span> : [ |- <span class="kt">Type</span>]
+<span class="nl">?Goal</span> : [ |- <span class="nl">?T</span>]</blockquote></div></div></small></span></pre><p>Is it possible to make the first unification to succeed, e.g. with
+<tt class="docutils literal">unify ... with ...</tt>? Or is there a better tactic instead of <a class="reference external" href="https://coq.inria.fr/refman/tactics.html#sec431">unify</a> for testing the
+partial convertibility of <tt class="docutils literal">2</tt> and <tt class="docutils literal">(gs _)</tt>? Feel free to use e.g.
+type classes instead of canonical structures to make this work</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Instance inference for canonical structures is dispatched on a term's
+head. The numbers 1 and 2 have the same head (<tt class="docutils literal">S</tt>), leading to
+overlapping instances that break inference. (Indeed, Coq gives an
+error message once you declare the second instance.)</p>
+<p>One solution is to use separate definitions, since those change the
+term's head:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Pn</span> := sr {gs: nat}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">one</span> := <span class="mi">1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">two</span> := <span class="mi">2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Canonical Structure</span> <span class="nf">Pn_1</span> := sr one.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Canonical Structure</span> <span class="nf">Pn_2</span> := sr two. <span class="c">(* Now the error message goes away *)</span></span></span></pre><p>(There is even a <a class="reference external" href="https://people.mpi-sws.org/~beta/lessadhoc/">paper</a> by Georges Gonthier
+and collaborators showing how to program the inference mechanism in
+this way.)</p>
+<p>As for the ltac, it seems that <tt class="docutils literal">unify</tt> type-checks its arguments
+separately, which prevents canonical-structure inference from
+triggering. We can fix this problem by putting two terms in a context
+that forces the checker to unify them.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">check_instance</span> t :=
+  <span class="kr">let</span> <span class="nv">p</span> := <span class="kp">constr</span>:(eq_refl : t = gs _) <span class="kr">in</span> <span class="kp">idtac</span>.</span></span></pre><p>Now these work:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-testing-partial-convertibilty-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-testing-partial-convertibilty-v-chk3"><span class="kn">Check</span> <span class="kp">ltac</span>:(<span class="kr">tryif</span> check_instance one <span class="kr">then</span> <span class="kp">idtac</span> <span class="s2">&quot;success&quot;</span>
+             <span class="kr">else</span> <span class="kp">idtac</span> <span class="s2">&quot;fail&quot;</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">success</blockquote><blockquote class="alectryon-message"><span class="nl">?Goal</span>
+     : <span class="nl">?T</span>
+<span class="kn">where</span>
+<span class="nl">?T</span> : [ |- <span class="kt">Type</span>]
+<span class="nl">?Goal</span> : [ |- <span class="nl">?T</span>]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-testing-partial-convertibilty-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-testing-partial-convertibilty-v-chk4"><span class="kn">Check</span> <span class="kp">ltac</span>:(<span class="kr">tryif</span> check_instance two <span class="kr">then</span> <span class="kp">idtac</span> <span class="s2">&quot;success&quot;</span>
+             <span class="kr">else</span> <span class="kp">idtac</span> <span class="s2">&quot;fail&quot;</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">success</blockquote><blockquote class="alectryon-message"><span class="nl">?Goal</span>
+     : <span class="nl">?T</span>
+<span class="kn">where</span>
+<span class="nl">?T</span> : [ |- <span class="kt">Type</span>]
+<span class="nl">?Goal</span> : [ |- <span class="nl">?T</span>]</blockquote></div></div></small></span></pre><p>I suspect that with type classes you should be able to avoid the
+inference problem, because it is not dispatched on the head of a term.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> &quot;We can fix this problem by putting two terms in a context that
+forces the checker to unify them.&quot; -- Do I understand correctly that
+defining <tt class="docutils literal">p</tt> is instrumental for creating the context?</p>
+<p><strong>A:</strong> I wouldn't say that defining <tt class="docutils literal">p</tt> is the important bit by
+itself, but calling into the type checker. Defining <tt class="docutils literal">p</tt> is one way
+of doing it, but there could be also be another tactic that
+accomplishes that directly.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

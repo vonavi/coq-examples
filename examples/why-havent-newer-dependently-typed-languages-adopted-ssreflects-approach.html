@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Why haven't newer dependently typed languages adopted SSReflect's approach?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="why-haven-t-newer-dependently-typed-languages-adopted-ssreflect-s-approach">
+<h1 class="title">Why haven't newer dependently typed languages adopted SSReflect's approach?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/49477427">https://stackoverflow.com/q/49477427</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>There are two conventions I've found in Coq's SSReflect extension that
+seem particularly useful but which I haven't seen widely adopted in
+newer dependently-typed languages (Lean, Agda, Idris).</p>
+<p>Firstly, where possible predicates are expressed as boolean-returning
+functions rather than inductively defined datatypes. This brings
+decidability by default, opens up more opportunities for proof by
+computation, and improves checking performance by avoiding the need
+for the proof engine to carry around large proof terms. The main
+disadvantage I see is the need to use reflection lemmas to manipulate
+these boolean predicates when proving.</p>
+<p>Secondly, datatypes with invariants are defined as dependent records
+containing a simple datatype plus a proof of the invariant. For
+instance, fixed length sequences are defined in SSReflect like:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Record</span> <span class="nf">tuple_of</span> (<span class="nv">n</span> : nat) (<span class="nv">T</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> := Tuple
+  { tval : list T;
+    _ : is_true (eqtype.eq_op (seq.size tval) n) }
+
+<span class="kn">Arguments</span> tuple_of _%nat_scope _%type_scope
+<span class="kn">Arguments</span> Tuple [n]%nat_scope [T]%type_scope
+  [tval]%list_scope _</blockquote></div></div></small></span></pre><p>A <tt class="docutils literal">seq</tt> and a proof of that sequence's length being a certain value.
+This is opposed to how e.g. Idris defines this type:</p>
+<pre class="code idris literal-block">
+<span class="kr">data</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="ow">(</span>len<span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Nat</span><span class="ow">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="ow">(</span>elem<span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Type</span><span class="ow">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Type</span>
+</pre>
+<p>A dependently typed datastructure in which the invariant is part of
+its type. One advantage of SSReflect's approach is that it allows
+reuse, so that for instance many of the functions defined for <tt class="docutils literal">seq</tt>
+and proofs about them can still be used with <tt class="docutils literal">tuple</tt> (by operating
+on the underlying <tt class="docutils literal">seq</tt>), whereas with Idris' approach functions
+like <tt class="docutils literal">reverse</tt>, <tt class="docutils literal">append</tt> and the like need to be rewritten for
+<tt class="docutils literal">Vect</tt>. Lean actually has a SSReflect style equivalent in its
+standard library, <tt class="docutils literal">vector</tt>, but it also has an Idris-style <tt class="docutils literal">array</tt>
+which seems to have an optimised implementation in the runtime.</p>
+<p>One <a class="reference external" href="http://ilyasergey.net/pnp/pnp.pdf">SSReflect-oriented book</a>
+even claims the <tt class="docutils literal">Vect n A</tt> style approach is an antipattern:</p>
+<blockquote>
+A common anti-pattern in dependently-typed languages and Coq in
+particular is to encode such algebraic properties into the
+definitions of the datatypes and functions themselves (a canonical
+example of such approach are length-indexed lists). While this
+approach looks appealing, as it demonstrates the power of
+dependent types to capture certain properties of datatypes and
+functions on them, it is inherently non-scalable, as there will be
+always another property of interest, which has not been foreseen
+by a designer of the datatype/function, so it will have to be
+encoded as an external fact anyway. This is why we advocate the
+approach, in which datatypes and functions are defined as close to
+the way they would be defined by a programmer as possible, and all
+necessary properties of them are proved separately.</blockquote>
+<p>My question is hence, why haven't these approaches been more widely
+adopted. Are there disadvantages I'm missing, or maybe their
+advantages are less significant in languages with better support for
+dependent pattern matching than Coq?</p>
+</div>
+<div class="section" id="answer-daniel-schepler">
+<h1>Answer (Daniel Schepler)</h1>
+<p>I can provide some thoughts on the first point (defining predicates as
+boolean-returning functions). My biggest issue with this approach is:
+then it is by definition impossible for the function to have bugs,
+even if it turns out what it's calculating isn't what you intended it
+to calculate. In many cases, it would also obscure what you actually
+mean by the predicate if you have to include implementation details of
+the decision procedure for the predicate in its definition.</p>
+<p>In mathematical applications, there will also be issues if you want to
+define a predicate which is a specialization of something which is not
+decidable in general, even if it happens to be decidable in your
+specific case. One example of what I'm talking about here would be
+defining the group with a given presentation: in Coq, a common way to
+define this would be the setoid with underlying set being formal
+expressions in the generators, and the equality given by &quot;word
+equivalence&quot;. In general, this relation is not decidable, though in
+many specific cases it is. However, if you are restricted to defining
+groups with presentations where the word problem is decidable, then
+you lose the ability to define the unifying concept which ties all the
+different examples together, and prove things generically about finite
+presentations or about finitely presented groups. On the other hand,
+defining the word equivalence relation as an abstract <tt class="docutils literal">Prop</tt> or
+equivalent is straightforward (if possibly a little long).</p>
+<p>Personally, I prefer to give the most transparent possible definition
+of the predicate first, and then provide decision procedures where
+possible (functions returning values of type <tt class="docutils literal">{P} + {~P}</tt> is my
+preference here, though the boolean-returning functions would work
+well too). Coq's typeclass mechanism could provide a convenient way to
+register such decision procedures; for example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Decision</span> (<span class="nv">P</span> : <span class="kt">Prop</span>) : <span class="kt">Set</span> :=
+  decide : {P} + {~P}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> decide P {Decision}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">True_dec</span> : Decision <span class="kt">True</span> := <span class="nb">left</span> _ I.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">and_dec</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>) `{DP : Decision P} `{DQ : Decision Q} :
+  Decision (P /\ Q) :=
+  <span class="kr">match</span> DP, DQ <span class="kr">with</span>
+  | <span class="nb">left</span> p, <span class="nb">left</span> q =&gt; <span class="nb">left</span> _ (conj p q)
+  | _, <span class="nb">right</span> not_q =&gt; <span class="nb">right</span> _ (<span class="kr">fun</span> <span class="nv">H</span> : P /\ Q =&gt;
+                                 <span class="kr">match</span> H <span class="kr">with</span>
+                                 | conj _ q =&gt; False_ind <span class="kt">False</span> (not_q q)
+                                 <span class="kr">end</span>)
+  | <span class="nb">right</span> not_p, _ =&gt; <span class="nb">right</span> _ (<span class="kr">fun</span> <span class="nv">H</span> : P /\ Q =&gt;
+                                 <span class="kr">match</span> H <span class="kr">with</span>
+                                 | conj p _ =&gt; False_ind <span class="kt">False</span> (not_p p)
+                                 <span class="kr">end</span>)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Recap standard library definition of Forall *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Forall</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) : list A -&gt; <span class="kt">Prop</span> :=
+| Forall_nil : Forall P nil
+| Forall_cons : <span class="kr">forall</span> <span class="nv">h</span> <span class="nv">t</span>, P h -&gt; Forall P t -&gt; Forall P (cons h t).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* Or, if you prefer:</span>
+<span class="c">   Fixpoint Forall {A : Type} (P : A -&gt; Prop) (l : list A) : Prop :=</span>
+<span class="c">   match l with</span>
+<span class="c">   | nil =&gt; True</span>
+<span class="c">   | cons h t =&gt; P h /\ Forall P t</span>
+<span class="c">   end.</span>
+<span class="c"> *)</span>
+
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">Forall_dec</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">P</span> : A-&gt;<span class="kt">Prop</span>)
+        `{<span class="kr">forall</span> <span class="nv">x</span> : A, Decision (P x)} (l : list A) :
+  Decision (Forall P l) :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; <span class="nb">left</span> _ _
+  | cons h t =&gt; <span class="kr">if</span> decide (P h) <span class="kr">then</span>
+                  <span class="kr">if</span> Forall_dec P t <span class="kr">then</span>
+                    <span class="nb">left</span> _ _
+                  <span class="kr">else</span>
+                    <span class="nb">right</span> _ _
+                <span class="kr">else</span>
+                  <span class="nb">right</span> _ _
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* resolve obligations here *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk1"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, Decision (P x)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Forall P nil</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk2"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, Decision (P x)</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P h</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Forall P t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Forall P (h :: t)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk3"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, Decision (P x)</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>P h</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>~ Forall P t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ Forall P (h :: t)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk4"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, Decision (P x)</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>~ P h</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ Forall P (h :: t)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Existing Instance</span> <span class="nf">Forall_dec</span>.</span></span></pre></div>
+<div class="section" id="answer-user3237465">
+<h1>Answer (user3237465)</h1>
+<blockquote>
+This brings decidability by default, opens up more opportunities
+for proof by computation, and improves checking performance by
+avoiding the need for the proof engine to carry around large proof
+terms.</blockquote>
+<p>You don't have to carry around large terms as described in the <a class="reference external" href="https://eb.host.cs.st-andrews.ac.uk/writings/thesis.pdf">Edwin
+Brady's thesis</a> under the
+name of &quot;forcing optimisation&quot;. Agda does have forcing which affects
+type checking (especially how universes are computed is relevant), but
+I'm not sure if stuff used only at the type check time really gets
+erased before the run time. Anyway, Agda has two notions of
+irrelevance: <tt class="docutils literal">.(eq : p ≡ q)</tt> is the usual irrelevance (meaning
+<tt class="docutils literal">eq</tt> is irrelevant at the type checking time, so it's definitionally
+equal to any other term of such type) and <tt class="docutils literal"><span class="pre">..(x</span> : A)</tt> is spine
+irrelevance (not sure if it's a correct term. I think Agda sources
+call such thing &quot;non-strict irrelevance&quot;) which is literally for
+erasion of computationally irrelevant, but not completely irrelevant
+terms. So you can define</p>
+<pre class="code agda literal-block">
+<span class="kr">data</span><span class="w"> </span>Vec<span class="w"> </span><span class="o">{</span>α<span class="o">}</span><span class="w"> </span><span class="o">(</span>A<span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Set</span><span class="w"> </span>α<span class="o">)</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="ow">..</span><span class="o">(</span>n<span class="w"> </span><span class="ow">:</span><span class="w"> </span>ℕ<span class="o">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Set</span><span class="w"> </span>α<span class="w"> </span><span class="kr">where</span><span class="w">
+  </span><span class="nf">[]</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>Vec<span class="w"> </span>A<span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="nf">_∷_</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="ow">∀</span><span class="w"> </span><span class="ow">..</span><span class="o">{</span>n<span class="o">}</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>A<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Vec<span class="w"> </span>A<span class="w"> </span>n<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Vec<span class="w"> </span>A<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>n<span class="o">)</span>
+</pre>
+<p>and <tt class="docutils literal">n</tt> will be erased before the run time. Or at least it seems to
+be designed so, it's hard to be sure, because Agda has lots of poorly
+documented features.</p>
+<p>And you can write those zero-cost proofs in Coq, just because it too
+implements irrelevance for stuff that lives in <tt class="docutils literal">Prop</tt>. But
+irrelevance is built-in into Coq's theory very deeply, while in Agda
+it's a separate feature, so it's perfectly understandable, why people
+find use of irrelevance in Coq more readily than in Agda.</p>
+<blockquote>
+One advantage of SSReflect's approach is that it allows reuse, so
+that for instance many of the functions defined for <tt class="docutils literal">seq</tt> and
+proofs about them can still be used with <tt class="docutils literal">tuple</tt> (by operating
+on the underlying <tt class="docutils literal">seq</tt>), whereas with Idris' approach functions
+like reverse, append and the like need to be rewritten for
+<tt class="docutils literal">Vect</tt>.</blockquote>
+<p>It's not a real reuse if you have to prove properties anyway and those
+proofs have the same complexity as functions defined over indexed
+data. It's also inconvenient to do the job of a unification machinery
+and pass around explicit proofs and apply lemmas to get <tt class="docutils literal">length xs ≡
+n</tt> from <tt class="docutils literal">suc (length xs) ≡ n</tt> (and also <tt class="docutils literal">sym</tt>, <tt class="docutils literal">trans</tt>,
+<tt class="docutils literal">subst</tt> and all other lemmas that a unification machinery can save
+you from in many cases). Moreover, you lose some clarity by abusing
+propositional equality: having <tt class="docutils literal">xs : List A; length xs ≡ n + m</tt>
+instead of <tt class="docutils literal">xs : Vec A (n + m)</tt> doesn't improve readability of your
+contexts, especially if they are huge which is often the case. And
+there is another problem: sometimes it's just harder to define a
+function using SSReflect's approach: you mentioned <tt class="docutils literal">reverse</tt> for
+<tt class="docutils literal">Vect</tt>, I challenge you to define this function from scratch (with
+<tt class="docutils literal">reverse</tt> for <tt class="docutils literal">List</tt> as a &quot;reused&quot; part under the hood) and then
+compare your solution to the definition in <tt class="docutils literal">Data.Vec</tt> from the Agda
+standard library. And if you don't have irrelevance enabled for
+propositions by default (which is the case for Agda), then you'd also
+need to prove properties about proofs if you want to prove, say,
+<tt class="docutils literal">reverse (reverse xs) ≡ xs</tt> which is a lot of non-trivial
+boilerplate.</p>
+<p>So SSReflect's approach is not perfect. The other one is too. Is there
+anything that improves upon both? Yes, Ornaments (see <a class="reference external" href="http://plv.mpi-sws.org/plerg/papers/mcbride-ornaments-2up.pdf">Ornamental
+Algebras, Algebraic Ornaments</a> and
+<a class="reference external" href="https://pages.lip6.fr/Pierre-Evariste.Dagand/stuffs/journal-2013-catorn-jfp/paper.pdf">The essence of ornaments</a>).
+You can easily get <tt class="docutils literal">Vec</tt> from <tt class="docutils literal">List</tt> by applying the corresponding
+ornamental algebra, but I can't say how much code reuse you'll get
+from it and whether types will drive you nuts or not. I heard people
+actually use ornaments somewhere.</p>
+<p>So it's not that we have an ideal SSReflect's solution and others
+refuse to adopt it. There is just a hope for a more suitable way to
+get actual code reuse.</p>
+<div class="section" id="update">
+<h2>UPDATE</h2>
+<p><strong>Anton Trunov</strong> in their comment made me realize I'm a bit too
+Agda-minded and people in Coq have tactics which can simplify proofs a
+lot, so proving in Coq is generally easier (provided you have weapons
+like <tt class="docutils literal">crush</tt> from the <a class="reference external" href="http://adam.chlipala.net/cpdt/">CPDT</a>
+book) than defining functions over data. Well, then I guess proof
+irrelevance by default and heavy tactics machinery is what makes
+SSReflect's approach effective in Coq.</p>
+<hr class="docutils" />
+<p><strong>A (Anton Trunov):</strong> Defining <tt class="docutils literal">reverse</tt> function is easy:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">trev</span> <span class="nv">T</span> <span class="nv">n</span> (<span class="nv">t</span> : n.-tuple T) := [tuple of rev t].</span></span></pre><p>Here we have reused <tt class="docutils literal">rev</tt> function for lists (called <tt class="docutils literal">seq</tt> in
+ssr-speak). Proving that <tt class="docutils literal">trev</tt> is involutive is easy as well:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk5"><span class="kn">Lemma</span> <span class="nf">trevK</span> <span class="nv">T</span> <span class="nv">n</span> : involutive (@trev T n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">involutive (trev T n)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="why-havent-newer-dependently-typed-languages-adopted-ssreflects-approach-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">involutive (trev T n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">by</span> <span class="nb">move</span>=&gt;t; <span class="nb">apply</span>: val_inj; <span class="nb">rewrite</span> /= revK.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Here we again reuse <tt class="docutils literal">revK</tt> for lists and the non-trivial part
+proof-irrelevance lemma <tt class="docutils literal">val_inj</tt>.</p>
+<p><strong>Q:</strong> &#64;AntonTrunov, interesting, thank you. Could you please
+elaborate how the proof works under the hood?</p>
+<p><strong>Q:</strong> &#64;AntonTrunov, oh, no, I mean a real reverse which appears to be
+named <tt class="docutils literal">rev'</tt> in the Coq sources. Not the silly <tt class="docutils literal">| x :: l' =&gt; rev l'
+++ [x]</tt>.</p>
+<p><strong>A (Anton Trunov):</strong> I have used mathcomp's <a class="reference external" href="https://github.com/math-comp/math-comp/blob/c17414bbef21bb3d0b96ee004c29ef7d56e55e2e/mathcomp/ssreflect/seq.v#L781">linear time rev</a>.</p>
+<p><strong>A (Anton Trunov):</strong> The proof I provided above relies on <tt class="docutils literal">val_inj</tt>
+lemma to strip off the <tt class="docutils literal">_ : size tval == n</tt> part. In SSReflect
+<tt class="docutils literal">==</tt> means boolean decidable equality and we operate on <tt class="docutils literal">nat</tt>, so
+<tt class="docutils literal">val_inj</tt> removes the proof-irrelevant part of <tt class="docutils literal">Tuple</tt> and lets us
+deal with the underlying lists so we can reuse the list lemmas. Here
+is a <a class="reference external" href="https://gist.github.com/anton-trunov/1c82bdb3b77a3488b1cd909328631e05">gist</a>
+with all the imports.</p>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

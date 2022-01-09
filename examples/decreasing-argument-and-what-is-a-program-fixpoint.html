@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Decreasing argument (and what is a Program Fixpoint)</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="alectryon-banner">Built with <a href="https://github.com/cpitclaudel/alectryon/">Alectryon</a>, running Coq+SerAPI v8.13.0+0.13.0. Bubbles (<span class="alectryon-bubble"></span>) indicate interactive fragments: hover for details, tap to reveal contents. Use <kbd>Ctrl+↑</kbd> <kbd>Ctrl+↓</kbd> to navigate, <kbd>Ctrl+🖱️</kbd> to focus. On Mac, use <kbd>⌘</kbd> instead of <kbd>Ctrl</kbd>.</div><div class="document" id="decreasing-argument-and-what-is-a-program-fixpoint">
+<h1 class="title">Decreasing argument (and what is a <tt class="docutils literal">Program Fixpoint</tt>)</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47816742">https://stackoverflow.com/q/47816742</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Consider the following fixpoint:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">my_type</span>: <span class="kt">Type</span>:=
+| Left: my_type
+| Right: my_type.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="decreasing-argument-and-what-is-a-program-fixpoint-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="decreasing-argument-and-what-is-a-program-fixpoint-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">decrease</span> (<span class="nv">which</span> : my_type) (<span class="nv">left</span> <span class="nv">right</span> : list my_type) :
+  list my_type :=
+  <span class="kr">match</span> which <span class="kr">with</span>
+  | Left =&gt;
+      <span class="kr">match</span> <span class="nb">left with</span>
+      | [] =&gt; []
+      | a::tl =&gt; decrease a tl <span class="nb">right</span>
+      <span class="kr">end</span>
+  | Right =&gt;
+      <span class="kr">match</span> <span class="nb">right with</span>
+      | [] =&gt; []
+      | a::tl =&gt; decrease a <span class="nb">left</span> tl
+      <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>Coq rejects the following fixpoint because it can not guess the
+decreasing fixpoint (sometimes the <tt class="docutils literal">left</tt> list looses its head,
+sometimes it is the <tt class="docutils literal">right</tt> one).</p>
+<p>This <a class="reference external" href="https://stackoverflow.com/questions/33302526/well-founded-recursion-in-coq">answer</a>
+shows that one can solve this by using a <tt class="docutils literal">Program Fixpoint</tt> and
+specifying a <tt class="docutils literal">{measure ((length <span class="pre">left)+(length</span> <span class="pre">right))}</span></tt>.</p>
+<p>My questions are:</p>
+<ul class="simple">
+<li>What is the difference between a regular <tt class="docutils literal">Fixpoint</tt> and a
+<tt class="docutils literal">Program Fixpoint</tt>?</li>
+<li>Is it possible to explicit the decreasing argument in a regular
+<tt class="docutils literal">Fixpoint</tt>?</li>
+<li>What is the <tt class="docutils literal">Next Obligation</tt> goal?</li>
+</ul>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<ul>
+<li><p class="first">The <tt class="docutils literal">Fixpoint</tt> command in Coq constructs a recursive function
+using Coq's primitive <tt class="docutils literal">fix</tt>, which checks for structural recursion
+to ensure termination. This is the only recursion in Coq, and all
+other techniques ultimately desugar to a <tt class="docutils literal">fix</tt> of some sort.</p>
+<p><tt class="docutils literal">Program Fixpoint</tt> is a feature of <a class="reference external" href="https://coq.inria.fr/refman/program.html">Program</a>, which allows writing
+definitions in a slightly extended language that are then compiled
+into Coq definitions. <tt class="docutils literal">Program Fixpoint</tt> accepts any recursive
+function, generates an appropriate proof obligation that shows the
+function terminates (by decreasing some measure of its arguments on
+each recursive subcall), and then packages up the definition and
+termination proof into a Coq definition that structurally decreases
+an argument. If that sounds magical it basically is, but <a class="reference external" href="http://adam.chlipala.net/cpdt/html/GeneralRec.html">CPDT</a> gives a good
+explanation of how to do this kind of encoding.</p>
+</li>
+<li><p class="first">Yes, you can add a <tt class="docutils literal">{struct arg}</tt> annotation to explicitly specify
+<em>which argument is structurally decreasing</em>: <tt class="docutils literal">Fixpoint decrease
+(which: my_type) (left right: list my_type) {struct right} : list
+my_type</tt>. This doesn't help for your example, since your function
+doesn't in general structurally decrease either argument. All
+primitive <tt class="docutils literal">fix</tt> constructs have a <tt class="docutils literal">struct</tt> annotation, but Coq
+can usually infer it automatically when you write a <tt class="docutils literal">Fixpoint</tt>.
+For example, here's <tt class="docutils literal">Nat.add</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="decreasing-argument-and-what-is-a-program-fixpoint-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Nat.add = 
+<span class="kr">fix</span> add (n m : nat) {<span class="kr">struct</span> n} : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; m
+  | S p =&gt; S (add p m)
+  <span class="kr">end</span>
+     : nat -&gt; nat -&gt; nat
+
+<span class="kn">Arguments</span> Nat.add (_ _)%nat_scope</blockquote></div></div></small></span></pre></li>
+<li><p class="first">You get two types of goals from <tt class="docutils literal">Next Obligation</tt> with <tt class="docutils literal">Program
+Fixpoint</tt>: first that each subcall has a smaller argument (using
+<tt class="docutils literal">measure</tt>, &quot;smaller&quot; is defined using &lt; on nats), and second, that
+the &quot;smaller&quot; relation is well-founded; this is, it has no
+infinitely descending sequences of smaller and smaller objects. I'm
+not sure why <tt class="docutils literal">Program Fixpoint</tt> doesn't do this automatically for
+<tt class="docutils literal">Nat.lt</tt>, given that it should know the relevant theorem. Note
+that <tt class="docutils literal">Program</tt> has more features than just more general recursion,
+so it can generate other goals related to those features as well,
+depending on the definition you write.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div></body>
+</html>
