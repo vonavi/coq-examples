@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+DATA_DIRS="examples notes"
+ROOT_DIR=$(dirname "$0")/..
+
+for data_dir in ${DATA_DIRS}; do
+    data_path=${ROOT_DIR}/public/_data/${data_dir}.yml
+
+    > "${data_path}"
+    for src_path in "${ROOT_DIR}/${data_dir}"/*.v; do
+        title=$(sed -En '/^#+$/,/^#+$/p' "${src_path}" | grep -Ev '^#+$')
+        # Escape characters
+        title=$(sed -e 's/"/\\"/g' <<< "${title}")
+        title=$(sed -E 's@``([^`]+)``@<code>\1</code>@g' <<< "${title}")
+
+        src_path=${src_path##*/}
+        dst_path=${data_dir}/${src_path%.v}.html
+        ( echo;
+          echo "- path: \"${dst_path}\"";
+          echo "  title: \"${title}\"" ) >> "${data_path}"
+    done
+    sed -i '1d' "${data_path}"
+done
+
+exit 0
