@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to specify explicit equality in Coq search patterns?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-specify-explicit-equality-in-coq-search-patterns">
+<h1 class="title">How to specify explicit equality in Coq search patterns?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47488993">https://stackoverflow.com/q/47488993</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Suppose we have a hypothesis <tt class="docutils literal">x - x = 0</tt>.</p>
+<p>One would presume a theorem for this already exists, so we fire up
+<tt class="docutils literal">SearchAbout (_ - _ = 0)</tt>. In this case however, we actually know
+that these underscores are equivalent. As such, I would prefer to
+write something like <tt class="docutils literal">SearchAbout (fun a =&gt; a - a = 0)</tt> or something
+along those lines.</p>
+<p>Is it possible?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>First of all, you need to import the <tt class="docutils literal">Arith</tt> module (or a module
+supporting reasoning with the kind of numbers you'd like to deal
+with):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Arith.</span></span></pre><p>Then <tt class="docutils literal">Search <span class="pre">(?x</span> - <span class="pre">?x</span> = 0).</tt> will return</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-specify-explicit-equality-in-coq-search-patterns-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Nat.sub_diag: <span class="kr">forall</span> <span class="nv">n</span> : nat, n - n = <span class="mi">0</span></blockquote></div></div></small></span></pre><p>You can also more concisely search for a relevant rewriting lemma with
+<tt class="docutils literal">SearchRewrite <span class="pre">(?x</span> - <span class="pre">?x).</span></tt> (note that you only need to specify one
+side of the equality).</p>
+<p>By the way, the <tt class="docutils literal">SearchAbout</tt> command is deprecated.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

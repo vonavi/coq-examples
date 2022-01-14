@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to define an automatically unfoldable definition</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-define-an-automatically-unfoldable-definition">
+<h1 class="title">How to define an automatically unfoldable definition</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47594706">https://stackoverflow.com/q/47594706</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I sometimes want to define some shortcut for existing functions like
+in the following example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">T</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">zero</span> <span class="nv">one</span> : T.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">f</span> : T -&gt; T -&gt; option T.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk0"><span class="kn">Hypothesis</span> <span class="nv">f_unit</span> : <span class="kr">forall</span> <span class="nv">t</span>, f zero t = None.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">g</span> (<span class="nv">t</span> : T) := f t one.</span></span></pre><p>However, this definition seems to be abstract since I cannot use
+theorems about <tt class="docutils literal">f</tt> on instances of <tt class="docutils literal">g</tt> without first unfolding:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk1"><span class="kn">Goal</span> g zero = None.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g zero = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk2"><span class="nb">unfold</span> g.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f zero one = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk3"><span class="nb">rewrite</span> f_unit.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">None = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Is there a way to mark definitions as automatically unfoldable?</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Yes, I would like not to have to manually <tt class="docutils literal">unfold</tt>.</p>
+<p><strong>A:</strong> You could allow <tt class="docutils literal">simpl</tt> to expand the definition of <tt class="docutils literal">g</tt> by
+declaring <tt class="docutils literal">Arguments g t /.</tt></p>
+<p><strong>A:</strong> Or define <tt class="docutils literal">g</tt> as a &quot;parsing-only&quot; shorthand notation instead
+of a function. Something like: <tt class="docutils literal">Notation &quot;'g' t&quot; := (f t one) (at
+level 0, parsing only).</tt></p>
+<p><strong>A:</strong> Or <tt class="docutils literal">Hint Unfold g.</tt> and then use <tt class="docutils literal">autounfold</tt> tactic in the
+proof.</p>
+<p><strong>A:</strong> Also, ssreflect can do it with with context patterns: <tt class="docutils literal">Require
+Import ssreflect.</tt> then your goal can be proved by <tt class="docutils literal">by rewrite [g
+_]f_unit.</tt>. This <tt class="docutils literal">[g _]</tt> pattern makes <tt class="docutils literal">rewrite</tt> to unfold the
+definition of <tt class="docutils literal">g</tt>.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>There are a couple of ways to accomplish what you ask, and here is an
+explanation of the ones I know:</p>
+<hr class="docutils" />
+<ol class="arabic">
+<li><p class="first">Use an abbreviation. To quote <a class="reference external" href="https://coq.inria.fr/refman/syntax-extensions.html#Abbreviations">the reference manual</a>:</p>
+<blockquote>
+<p>An <em>abbreviation</em> is a name, possibly applied to arguments,
+that denotes a (presumably) more complex expression.</p>
+<p>[...]</p>
+<p>Abbreviations are bound to an absolute name as an ordinary
+definition is, and they can be referred by qualified names too.</p>
+<p>Abbreviations are syntactic in the sense that they are bound to
+expressions which are not typed at the time of the definition
+of the abbreviation but at the time it is used.</p>
+</blockquote>
+<p>In your case, this would be</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">g</span> t := (f t one).</span></span></pre><p>This is much like Daniel Schepler's suggestion of a <tt class="docutils literal">Notation</tt>,
+except that it does not reserve <tt class="docutils literal">g</tt> as a global keyword.</p>
+</li>
+</ol>
+<hr class="docutils" />
+<ol class="arabic" start="2">
+<li><p class="first">Use <tt class="docutils literal">setoid_rewrite</tt>. Coq's <tt class="docutils literal">setoid_rewrite</tt> tactic is similar
+to <tt class="docutils literal">rewrite</tt>, except that it looks for occurrences modulo δ
+(unfolding), can rewrite under binders, and a few other minor
+things.</p>
+<p>For your example, this is:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Setoids.Setoid.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk4"><span class="kn">Goal</span> g zero = None.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g zero = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g zero = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk6"><span class="nb">setoid_rewrite</span> f_unit.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">None = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
+</ol>
+<hr class="docutils" />
+<ol class="arabic" start="3">
+<li><p class="first">In some cases, you can use <tt class="docutils literal">Set Keyed Unification</tt> and <tt class="docutils literal">Declare
+Equivalent Keys</tt>, though this does not work in your case (I've
+opened an issue <a class="reference external" href="https://github.com/coq/coq/issues/6317">on GitHub here</a>. This tells <tt class="docutils literal">rewrite</tt>
+to &quot;unfold&quot; one head constant to another, though it apparently
+isn't quite good enough to handle your case. There's a bit of
+documentation <a class="reference external" href="https://github.com/coq/coq/commit/3fe4912b568916676644baeb982a3e10c592d887">on the relevant commit message</a>,
+and an <a class="reference external" href="https://github.com/coq/coq/issues/4551">open issue to add proper documentation</a>.</p>
+<p>Here is an example this is useful:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">T</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">zero</span> <span class="nv">one</span>: T.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">f</span> : T -&gt; T -&gt; option T.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk7"><span class="kn">Hypothesis</span> <span class="nv">f_unit</span> : <span class="kr">forall</span> <span class="nv">t</span>, f zero t = None.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">g</span> := f zero zero.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Keyed Unification</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk8"><span class="kn">Goal</span> g = None.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chk9"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chka" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-define-an-automatically-unfoldable-definition-v-chka"><span class="nb">rewrite</span> f_unit.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found no subterm matching <span class="s2">&quot;f zero ?M160&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chkb">Declare Equivalent Keys g f.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-an-automatically-unfoldable-definition-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-an-automatically-unfoldable-definition-v-chkc"><span class="nb">rewrite</span> f_unit.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">None = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
+</ol>
+</div>
+</div>
+</div>
+</div></body>
+</html>
