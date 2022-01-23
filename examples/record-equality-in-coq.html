@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Record equality in coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="record-equality-in-coq">
+<h1 class="title">Record equality in coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50924127">https://stackoverflow.com/q/50924127</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>For example I have this sample record:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Sample</span> := {
+    SA :&gt; nat;
+    SB :&gt; Z;
+    SCond : Z.abs_nat SB &lt;&gt; SA
+  }.</span></span></pre><p>When I want to proof this Lemma:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">Sample_eq</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : Sample, a = b &lt;-&gt; SA a = SA b /\ SB a = SB b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : Sample, a = b &lt;-&gt; a = b /\ a = b</div></blockquote></div></div></small></span></pre><p>I see this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="record-equality-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+
+  ============================
+  <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : Sample, a = b &lt;-&gt; a = b /\ a = b</blockquote></div></div></small></span></pre><p>Question 1: How to force Coq to show SA a instead of a?</p>
+<p>Question 2: How to proof this Lemma?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<div class="section" id="question-1">
+<h2>Question 1</h2>
+<p>Coq prints <tt class="docutils literal">SA</tt> because you declared it as a coercion. You can
+prevent this by adding the option <tt class="docutils literal">Set Printing Coercions.</tt> to your
+file. As far as I know, there is no way of just making Coq print only
+<tt class="docutils literal">SA</tt> but not other coercions such as <tt class="docutils literal">SB</tt>. You can, however,
+replace the <tt class="docutils literal">:&gt;</tt> by <tt class="docutils literal">:</tt> to prevent <tt class="docutils literal">SA</tt> from being declared as a
+coercion.</p>
+</div>
+<div class="section" id="question-2">
+<h2>Question 2</h2>
+<p>Your lemma cannot be proved without assuming extra axioms into Coq's
+theory. The problem is that you need to show that two proofs of
+<tt class="docutils literal">Z.abs_nat SB &lt;&gt; SA</tt> are equal in order to show that two records of
+type <tt class="docutils literal">Sample</tt> are equal, and there is nothing in Coq's theory that
+can help you with that. You have two options:</p>
+<ol class="arabic">
+<li><p class="first">Use the axiom of proof irrelevance, which says <tt class="docutils literal">forall (P : Prop)
+(p1 p2 : P), p1 = p2</tt>. For example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.ZArith.ZArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Logic.ProofIrrelevance.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Sample</span> := {
+    SA : nat;
+    SB : Z;
+    SCond : Z.abs_nat SB &lt;&gt; SA
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk2"><span class="kn">Lemma</span> <span class="nf">Sample_eq</span> <span class="nv">a</span> <span class="nv">b</span> : SA a = SA b -&gt; SB a = SB b -&gt; a = b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Sample</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SA a = SA b -&gt; SB a = SB b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Sample</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SA a = SA b -&gt; SB a = SB b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk4"><span class="nb">destruct</span> a <span class="kr">as</span> [x1 y1 p1], b <span class="kr">as</span> [x2 y2 p2].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p1</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y1 &lt;&gt; x1</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p2</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y2 &lt;&gt; x2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SA {| SA := x1; SB := y1; SCond := p1 |} =
+SA {| SA := x2; SB := y2; SCond := p2 |} -&gt;
+SB {| SA := x1; SB := y1; SCond := p1 |} =
+SB {| SA := x2; SB := y2; SCond := p2 |} -&gt;
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk5"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p1</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y1 &lt;&gt; x1</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p2</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y2 &lt;&gt; x2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x1 = x2 -&gt;
+y1 = y2 -&gt;
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk6"><span class="nb">intros</span> e1 e2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p1</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y1 &lt;&gt; x1</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p2</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y2 &lt;&gt; x2</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk7"><span class="nb">revert</span> p1 p2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">p1</span> : Z.abs_nat y1 &lt;&gt; x1)
+  (<span class="nv">p2</span> : Z.abs_nat y2 &lt;&gt; x2),
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk8"><span class="nb">rewrite</span> &lt;- e1, &lt;- e2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">p1</span> <span class="nv">p2</span> : Z.abs_nat y1 &lt;&gt; x1,
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x1; SB := y1; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk9"><span class="nb">intros</span> p1 p2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br><span><var>p1, p2</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y1 &lt;&gt; x1</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x1; SB := y1; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> (proof_irrelevance _ p1 p2).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>(Note the calls to <tt class="docutils literal">revert</tt>: they are needed to prevent dependent
+type errors when rewriting with <tt class="docutils literal">e1</tt> and <tt class="docutils literal">e2</tt>.)</p>
+</li>
+<li><p class="first">Replace inequality with a proposition for which proof irrelevance
+is valid without extra axioms. A typical solution is to use a
+boolean version of the proposition. The <tt class="docutils literal">DecidableEqDepSet</tt>
+module shows that the proofs of equality for a type that has
+decidable equality, such as the booleans, satisfies proof
+irrelevance.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.ZArith.ZArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Logic.ProofIrrelevance.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Logic.Eqdep_dec.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">BoolDecidableSet</span> &lt;: DecidableSet.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">U</span> := bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">eq_dec</span> := Bool.bool_dec.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">BoolDecidableSet</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">BoolDecidableEqDepSet</span> := DecidableEqDepSet BoolDecidableSet.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Sample</span> := {
+    SA : nat;
+    SB : Z;
+    SCond : Nat.eqb (Z.abs_nat SB) SA = false
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chka"><span class="kn">Lemma</span> <span class="nf">Sample_eq</span> <span class="nv">a</span> <span class="nv">b</span> : SA a = SA b -&gt; SB a = SB b -&gt; a = b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Sample</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SA a = SA b -&gt; SB a = SB b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chkb"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Sample</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SA a = SA b -&gt; SB a = SB b -&gt; a = b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chkc"><span class="nb">destruct</span> a <span class="kr">as</span> [x1 y1 p1], b <span class="kr">as</span> [x2 y2 p2].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p1</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y1 =? x1) = false</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p2</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y2 =? x2) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SA {| SA := x1; SB := y1; SCond := p1 |} =
+SA {| SA := x2; SB := y2; SCond := p2 |} -&gt;
+SB {| SA := x1; SB := y1; SCond := p1 |} =
+SB {| SA := x2; SB := y2; SCond := p2 |} -&gt;
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chkd"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p1</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y1 =? x1) = false</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p2</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y2 =? x2) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x1 = x2 -&gt;
+y1 = y2 -&gt;
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chke"><span class="nb">intros</span> e1 e2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p1</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y1 =? x1) = false</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>p2</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y2 =? x2) = false</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chkf"><span class="nb">revert</span> p1 p2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">p1</span> : (Z.abs_nat y1 =? x1) = false)
+  (<span class="nv">p2</span> : (Z.abs_nat y2 =? x2) = false),
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x2; SB := y2; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk10"><span class="nb">rewrite</span> &lt;- e1, &lt;- e2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">p1</span> <span class="nv">p2</span> : (Z.abs_nat y1 =? x1) = false,
+{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x1; SB := y1; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk11"><span class="nb">intros</span> p1 p2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br><span><var>p1, p2</var><span class="hyp-type"><b>: </b><span>(Z.abs_nat y1 =? x1) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{| SA := x1; SB := y1; SCond := p1 |} =
+{| SA := x1; SB := y1; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> (BoolDecidableEqDepSet.UIP _ _ p1 p2).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Instantiating an existential with a specific proof</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="instantiating-an-existential-with-a-specific-proof">
+<h1 class="title">Instantiating an existential with a specific proof</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46791645">https://stackoverflow.com/q/46791645</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm currently trying to write a tactic that instantiates an
+existential quantifier using a term that can be generated easily (in
+this specific example, from <tt class="docutils literal">tauto</tt>). My first attempt:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">mytac</span> :=
+  <span class="kr">match goal with</span>
+    | |- (<span class="kr">exists</span> (<span class="nv">_</span> : <span class="nl">?X</span>), _) =&gt;
+      <span class="nb">cut</span> X; [ <span class="kr">let</span> <span class="nv">t</span> := <span class="kp">fresh</span> <span class="s2">&quot;t&quot;</span> <span class="kr">in</span> <span class="nb">intro</span> t; <span class="kr">exists</span> <span class="nv">t</span>; <span class="nb">firstorder</span> | <span class="bp">tauto</span> ]
+  <span class="kr">end</span>.</span></span></pre><p>This tactic will work on a simple problem like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk0"><span class="kn">Lemma</span> <span class="nf">obv1</span> (<span class="nv">X</span> : <span class="kt">Set</span>) : <span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, f = f.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, f = f</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input">mytac.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>However it won't work on a goal like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk1"><span class="kn">Lemma</span> <span class="nf">obv2</span> (<span class="nv">X</span> : <span class="kt">Set</span>) : <span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, <span class="kr">forall</span> <span class="nv">x</span>, f x = x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, <span class="kr">forall</span> <span class="nv">x</span> : X, f x = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk2">mytac.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>X -&gt; X</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t x = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Here I would like to use this tactic, trusting that the <tt class="docutils literal">f</tt> which
+<tt class="docutils literal">tauto</tt> finds will be just <tt class="docutils literal">fun x =&gt; x</tt>, thus subbing in the
+specific proof (which should be the identity function) and not just
+the generic <tt class="docutils literal">t</tt> from my current script. How might I go about writing
+such a tactic?</p>
+</div>
+<div class="section" id="answer-tej-chajed">
+<h1>Answer (Tej Chajed)</h1>
+<p>It's much more common to create an existential variable and let some
+tactic (<tt class="docutils literal">eauto</tt> or <tt class="docutils literal">tauto</tt> for example) instantiate the variable
+by unification.</p>
+<p>On the other hand, you can also literally use a tactic to provide the
+witness using tactics in terms:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">mytac</span> :=
+  <span class="kr">match goal with</span>
+  | [ |- <span class="kr">exists</span> (<span class="nv">_</span> : <span class="nl">?T</span>), _ ] =&gt; <span class="kr">exists</span> (<span class="nv">ltac</span>:(<span class="bp">tauto</span>) : T)
+  <span class="nv">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk3"><span class="kn">Lemma</span> <span class="nf">obv1</span> (<span class="nv">X</span> : <span class="kt">Set</span>) : <span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, f = f.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, f = f</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, f = f</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk5">mytac.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">H</span> : X =&gt; H) = (<span class="kr">fun</span> <span class="nv">H</span> : X =&gt; H)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>You need the type ascription <tt class="docutils literal">: T</tt> so that the tactic-in-term
+<tt class="docutils literal"><span class="pre">ltac:(tauto)</span></tt> has the right goal (the type the <tt class="docutils literal">exists</tt> expects).</p>
+<p>I'm not sure this is all that useful (usually the type of the witness
+isn't very informative and you want to use the rest of the goal to
+choose it), but it's cool that you can do this nonetheless.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> Do you happen to know if there are more powerful tactics for finding unifiers? Just playing around a bit it seems that the <tt class="docutils literal">eexists</tt> + <tt class="docutils literal">eauto/tauto</tt> approach doesn't work on something with multiple instantiations like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk6"><span class="kn">Lemma</span> <span class="nf">two_ids</span> (<span class="nv">X</span> : <span class="kt">Set</span>) : <span class="kr">exists</span> <span class="nv">f</span> <span class="nv">g</span> : X -&gt; X, <span class="kr">forall</span> <span class="nv">x</span>, f (g x) = x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> <span class="nv">g</span> : X -&gt; X, <span class="kr">forall</span> <span class="nv">x</span> : X, f (g x) = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>or something a touch trickier like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk7"><span class="kn">Lemma</span> <span class="nf">const</span> : <span class="kr">forall</span> (<span class="nv">X</span> <span class="nv">Y</span> : <span class="kt">Set</span>) (<span class="nv">y</span> : Y), <span class="kr">exists</span> <span class="nv">f</span> : X -&gt; Y,
+  <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">x&#39;</span>, f x = f x&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">X</span> <span class="nv">Y</span> : <span class="kt">Set</span>,
+Y -&gt; <span class="kr">exists</span> <span class="nv">f</span> : X -&gt; Y, <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">x&#39;</span> : X, f x = f x&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>(the needed unifier being <tt class="docutils literal">fun _ =&gt; y</tt>)</p>
+</div>
+<div class="section" id="answer-eponier">
+<h1>Answer (eponier)</h1>
+<p>You can use <tt class="docutils literal">eexists</tt> to introduce an existential variable, and let
+<tt class="docutils literal">tauto</tt> instantiates it.</p>
+<p>This give the following simple code.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="instantiating-an-existential-with-a-specific-proof-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="instantiating-an-existential-with-a-specific-proof-v-chk8"><span class="kn">Lemma</span> <span class="nf">obv2</span> (<span class="nv">X</span> : <span class="kt">Set</span>) : <span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, <span class="kr">forall</span> <span class="nv">x</span>, f x = x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">f</span> : X -&gt; X, <span class="kr">forall</span> <span class="nv">x</span> : X, f x = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eexists</span>; <span class="bp">tauto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

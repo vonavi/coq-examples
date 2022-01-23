@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Understanding &quot;well founded&quot; proofs in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="understanding-well-founded-proofs-in-coq">
+<h1 class="title">Understanding &quot;well founded&quot; proofs in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50204730">https://stackoverflow.com/q/50204730</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm writing a fixpoint that requires an integer to be incremented
+&quot;towards&quot; zero at every iteration. This is too complicated for Coq to
+recognize as a decreasing argument automatically and I'm trying prove
+that my fixpoint will terminate.</p>
+<p>I have been copying (what I believe is) an example of a
+well-foundedness proof for a step function on Z from the standard
+library. <a class="reference external" href="https://coq.inria.fr/library/Coq.ZArith.Zwf.html">(Here)</a></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith.Zwf.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">wf_proof_wf_inc</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">c</span> : Z.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Let</span> <span class="nf">Z_increment</span> (<span class="nv">z</span> : Z) := (z + ((Z.sgn c) * (-<span class="mi">1</span>)))%Z.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-well-founded-proofs-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-well-founded-proofs-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">Zwf_wf_inc</span> : well_founded (Zwf c).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>Z_increment</var><span><span class="hyp-body"><b>:= </b><span><span class="kr">fun</span> <span class="nv">z</span> : Z =&gt; (z + Z.sgn c * -<span class="mi">1</span>)%Z</span></span><span class="hyp-type"><b>: </b><span>Z -&gt; Z</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded (Zwf c)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-well-founded-proofs-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-well-founded-proofs-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>Z_increment</var><span><span class="hyp-body"><b>:= </b><span><span class="kr">fun</span> <span class="nv">z</span> : Z =&gt; (z + Z.sgn c * -<span class="mi">1</span>)%Z</span></span><span class="hyp-type"><b>: </b><span>Z -&gt; Z</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded (Zwf c)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-well-founded-proofs-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-well-founded-proofs-in-coq-v-chk2"><span class="nb">unfold</span> well_founded.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>Z_increment</var><span><span class="hyp-body"><b>:= </b><span><span class="kr">fun</span> <span class="nv">z</span> : Z =&gt; (z + Z.sgn c * -<span class="mi">1</span>)%Z</span></span><span class="hyp-type"><b>: </b><span>Z -&gt; Z</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> : Z, Acc (Zwf c) a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-well-founded-proofs-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-well-founded-proofs-in-coq-v-chk3"><span class="nb">intros</span> a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>Z_increment</var><span><span class="hyp-body"><b>:= </b><span><span class="kr">fun</span> <span class="nv">z</span> : Z =&gt; (z + Z.sgn c * -<span class="mi">1</span>)%Z</span></span><span class="hyp-type"><b>: </b><span>Z -&gt; Z</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Acc (Zwf c) a</div></blockquote></div></div></small></span></pre><p>which creates the following context:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-well-founded-proofs-in-coq-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+
+  c : Z
+  Z_increment := <span class="kr">fun</span> <span class="nv">z</span> : Z =&gt; (z + Z.sgn c * -<span class="mi">1</span>)%Z
+   : Z -&gt; Z
+  a : Z
+  ============================
+  Acc (Zwf c) a</blockquote></div></div></small></span></pre><p>My question is what does this goal actually mean?</p>
+<p>I thought that the goal I'd have to prove for this would at least
+involve the step function that I want to show has the &quot;well founded&quot;
+property, &quot;Z_increment&quot;.</p>
+<p>The most useful explanation I have looked at is <a class="reference external" href="https://github.com/coq/coq/wiki/Inductive-and-Co-Inductive-Types">this</a>
+but I've never worked with the list type that it uses and it doesn't
+explain what is meant by terms like &quot;accessible&quot;.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Basically, you don't need to do a well founded proof, you just need to
+prove that your function decreases the (natural number) <tt class="docutils literal">abs z</tt>.
+More concretely, you can implement <tt class="docutils literal">abs (z : Z) : nat := z_to_nat (z
+* Z.sgn z)</tt> (with some appropriate conversion to nat) and then use
+this as a measure with <tt class="docutils literal">Function</tt>, something like <tt class="docutils literal">Function foo z
+{measure abs z} := ...</tt>.</p>
+<p>The well founded business is for showing <em>relations</em> are well-founded:
+the idea is that you can prove your function terminates by showing it
+&quot;decreases&quot; some well-founded relation <tt class="docutils literal">R</tt> (think of it as <tt class="docutils literal">&lt;</tt>);
+that is, the definition of <tt class="docutils literal">f x</tt> makes recursive subcalls <tt class="docutils literal">f y</tt>
+only when <tt class="docutils literal">R y x</tt>. For this to work <tt class="docutils literal">R</tt> has to be <em>well-founded</em>,
+which intuitively means it has no infinitely descending chains. CPDT's
+<a class="reference external" href="http://adam.chlipala.net/cpdt/html/Cpdt.GeneralRec.html">general recursion chapter</a> as a
+really good explanation of how this really works.</p>
+<p>How does this relate to what you're doing? The standard library proves
+that, for all lower bounds <tt class="docutils literal">c</tt>, <tt class="docutils literal">x &lt; y</tt> is a well-founded relation
+in <tt class="docutils literal">Z</tt> if additionally its only applied to <tt class="docutils literal">y &gt;= c</tt>. I don't think
+this applies to you - instead you move towards zero, so you can just
+decrease <tt class="docutils literal">abs z</tt> with the usual <tt class="docutils literal">&lt;</tt> relation on <tt class="docutils literal">nat</tt>s. The
+standard library already has a proof that this relation is well
+founded, and that's what <tt class="docutils literal">Function ... {measure <span class="pre">...}</span></tt> uses.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Nested recursion and Program Fixpoint or Function</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="nested-recursion-and-program-fixpoint-or-function">
+<h1 class="title">Nested recursion and <tt class="docutils literal">Program Fixpoint</tt> or <tt class="docutils literal">Function</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46838928">https://stackoverflow.com/q/46838928</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'd like to define the following function using <tt class="docutils literal">Program Fixpoint</tt>
+or <tt class="docutils literal">Function</tt> in Coq:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Wf.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Recdef.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Tree</span> := Node : nat -&gt; list Tree -&gt; Tree.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">height</span> (<span class="nv">t</span> : Tree) : nat :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+  | Node x ts =&gt; S (fold_right Nat.max <span class="mi">0</span> (map height ts))
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">mapTree</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">t</span> : Tree)
+        {<span class="nv">measure</span> (height t)} : Tree :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+    Node x ts =&gt; Node (f x) (map (<span class="kr">fun</span> <span class="nv">t</span> =&gt; mapTree f t) ts)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk0"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : Tree,
+height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt; height (Node x ts)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>Unfortunately, at this point I have a proof obligation <tt class="docutils literal">height t &lt;
+height (Node x ts)</tt> without knowing that <tt class="docutils literal">t</tt> is a member of <tt class="docutils literal">ts</tt>.</p>
+<p>Similarly with <tt class="docutils literal">Function</tt> instead of <tt class="docutils literal">Program Fixpoint</tt>, only that
+<tt class="docutils literal">Function</tt> detects the problem and aborts the definition:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">the term <span class="kr">fun</span> <span class="nv">t</span> : Tree =&gt; mapTree0 f t can not contain a recursive call to mapTree0</blockquote></div></div></small></span></pre><p>I would expect to get a proof obligation of <tt class="docutils literal">In t ts <span class="pre">-&gt;</span> height t &lt;
+height (Node x ts)</tt>.</p>
+<p>Is there a way of getting that that does not involve restructuring the
+function definition? (I know work-arounds that require inlining the
+definition of <tt class="docutils literal">map</tt> here, for example – I'd like to avoid these.)</p>
+<div class="section" id="isabelle">
+<h2>Isabelle</h2>
+<p>To justify that expectation, let me show what happens when I do the
+same in Isabelle, using the <tt class="docutils literal">function</tt> command, which is (AFAIK)
+related to Coq's <tt class="docutils literal">Function</tt> command:</p>
+<pre class="code isabelle literal-block">
+<span class="k">theory</span> <span class="n">Tree</span> <span class="kp">imports</span> <span class="n">Main</span> <span class="k">begin</span>
+
+<span class="k">datatype</span> <span class="n">Tree</span> <span class="o">=</span> <span class="n">Node</span> <span class="n">nat</span> <span class="s">&quot;Tree list&quot;</span>
+
+<span class="k">fun</span> <span class="n">height</span> <span class="kp">where</span>
+  <span class="s">&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</span>
+
+<span class="kn">function</span> <span class="n">mapTree</span> <span class="kp">where</span>
+  <span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span>
+<span class="k">by</span> <span class="n">pat_completeness</span> <span class="n">auto</span>
+
+<span class="kn">termination</span>
+<span class="k">proof</span> <span class="o">(</span><span class="n">relation</span> <span class="s">&quot;measure (λ(f, t). height t)&quot;</span><span class="o">)</span>
+  <span class="k">show</span> <span class="s">&quot;wf (measure (λ(f, t). height t))&quot;</span> <span class="k">by</span> <span class="n">auto</span>
+<span class="k">next</span>
+  <span class="k">fix</span> <span class="n">f</span> <span class="o">::</span> <span class="s">&quot;nat ⇒ nat&quot;</span> <span class="kp">and</span> <span class="n">x</span> <span class="o">::</span> <span class="n">nat</span> <span class="kp">and</span> <span class="n">ts</span> <span class="o">::</span> <span class="s">&quot;Tree list&quot;</span> <span class="kp">and</span> <span class="n">t</span>
+  <span class="k">assume</span> <span class="s">&quot;t ∈ set ts&quot;</span>
+  <span class="k">thus</span> <span class="s">&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</span>
+    <span class="k">by</span> <span class="o">(</span><span class="n">induction</span> <span class="n">ts</span><span class="o">)</span> <span class="n">auto</span>
+<span class="k">qed</span>
+</pre>
+<p>In the termination proof, I get the assumption <tt class="docutils literal">t ∈ set ts</tt>.</p>
+<p>Note that Isabelle does not require a manual termination proof here,
+and the following definition works just fine:</p>
+<pre class="code isabelle literal-block">
+<span class="k">fun</span> <span class="n">mapTree</span> <span class="kp">where</span>
+  <span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span>
+</pre>
+<p>This works because the <tt class="docutils literal">map</tt> function has a &quot;congruence lemma&quot; of
+the form</p>
+<pre class="code isabelle literal-block">
+<span class="s">&quot;xs = ys ⟹ (⋀x. x ∈ set ys ⟹ f x = g x) ⟹ map f xs = map g ys&quot;</span>
+</pre>
+<p>that the <tt class="docutils literal">function</tt> command uses to find out that the termination
+proof only needs to consider <tt class="docutils literal">t ∈ set ts</tt>.</p>
+<p>If such a lemma is not available, e.g. because I define</p>
+<pre class="code isabelle literal-block">
+<span class="k">definition</span> <span class="s">&quot;map' = map&quot;</span>
+</pre>
+<p>and use that in <tt class="docutils literal">mapTree</tt>, I get the same unprovable proof
+obligation as in Coq. I can make it work again by declaring a
+congruence lemma for <tt class="docutils literal">map'</tt>, e.g. using</p>
+<pre class="code isabelle literal-block">
+<span class="k">declare</span> <span class="n">map_cong</span><span class="o">[</span><span class="n">folded</span> <span class="n">map'_def</span><span class="o">,</span><span class="n">fundef_cong</span><span class="o">]</span>
+</pre>
+</div>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>In this case, you actually do not need well-founded recursion in its
+full generality:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tree</span> := Node : nat -&gt; list tree -&gt; tree.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">map_tree</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">t</span> : tree) : tree :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+  | Node x ts =&gt; Node (f x) (map (<span class="kr">fun</span> <span class="nv">t</span> =&gt; map_tree f t) ts)
+  <span class="kr">end</span>.</span></span></pre><p>Coq is able to figure out by itself that recursive calls to
+<tt class="docutils literal">map_tree</tt> are performed on strict subterms. However, proving
+anything about this function is difficult, as the induction principle
+generated for <tt class="docutils literal">tree</tt> is not useful:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">tree_ind
+     : <span class="kr">forall</span> <span class="nv">P</span> : tree -&gt; <span class="kt">Prop</span>,
+       (<span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">l</span> : list tree), P (Node n l)) -&gt;
+       <span class="kr">forall</span> <span class="nv">t</span> : tree, P t</blockquote></div></div></small></span></pre><p>This is essentially the same problem you described earlier. Luckily,
+we can fix the issue by proving our own induction principle with a
+proof term.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Unset Elimination Schemes</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tree</span> := Node : nat -&gt; list tree -&gt; tree.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Elimination Schemes</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">tree_ind</span>
+         (<span class="nv">P</span> : tree -&gt; <span class="kt">Prop</span>)
+         (<span class="nv">IH</span> : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">ts</span> : list tree),
+             fold_right (<span class="kr">fun</span> <span class="nv">t</span> =&gt; and (P t)) <span class="kt">True</span> ts -&gt;
+             P (Node n ts))
+         (<span class="nv">t</span> : tree) : P t :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+  | Node n ts =&gt;
+      <span class="kr">let fix</span> <span class="nv">loop</span> <span class="nv">ts</span> :=
+        <span class="kr">match</span> ts <span class="kr">return</span> fold_right (<span class="kr">fun</span> <span class="nv">t&#39;</span> =&gt; <span class="kn">and</span> (P t&#39;)) <span class="kt">True</span> ts <span class="kr">with</span>
+        | [] =&gt; I
+        | t&#39; :: ts&#39; =&gt; conj (tree_ind P IH t&#39;) (loop ts&#39;)
+        <span class="kr">end</span> <span class="kr">in</span>
+      IH n ts (loop ts)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">map_tree</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">t</span> : tree) : tree :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+  | Node x ts =&gt; Node (f x) (map (<span class="kr">fun</span> <span class="nv">t</span> =&gt; map_tree f t) ts)
+  <span class="kr">end</span>.</span></span></pre><p>The <tt class="docutils literal">Unset Elimination Schemes</tt> command prevents Coq from generating
+its default (and not useful) induction principle for <tt class="docutils literal">tree</tt>. The
+occurrence of <tt class="docutils literal">fold_right</tt> on the induction hypothesis simply
+expresses that the predicate <tt class="docutils literal">P</tt> holds of every tree <tt class="docutils literal">t'</tt>
+appearing in <tt class="docutils literal">ts</tt>.</p>
+<p>Here is a statement that you can prove using this induction principle:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk3"><span class="kn">Lemma</span> <span class="nf">map_tree_comp</span> <span class="nv">f</span> <span class="nv">g</span> <span class="nv">t</span> :
+  map_tree f (map_tree g t) = map_tree (<span class="kr">fun</span> <span class="nv">n</span> =&gt; f (g n)) t.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g t) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g t) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk5"><span class="nb">induction</span> t <span class="kr">as</span> [n ts IH].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)) <span class="kt">True</span>
+  ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g (Node n ts)) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) (Node n ts)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk6"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)) <span class="kt">True</span>
+  ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Node (f (g n))
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+     (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts)) =
+Node (f (g n))
+  (map
+     (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk7"><span class="nb">f_equal</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)) <span class="kt">True</span>
+  ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts) =
+map
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)
+  ts</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk8"><span class="nb">induction</span> ts <span class="kr">as</span> [|t&#39; ts&#39; IHts]; <span class="kp">try</span> <span class="bp">easy</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t'</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br><span><var>ts'</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)) <span class="kt">True</span>
+  (t&#39; :: ts&#39;)</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t))
+  <span class="kt">True</span> ts&#39; -&gt;
+map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) (t&#39; :: ts&#39;)) =
+map
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)
+  (t&#39; :: ts&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk9"><span class="nb">simpl</span> <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t'</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br><span><var>ts'</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>map_tree f (map_tree g t&#39;) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t&#39; /\
+fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t)) <span class="kt">True</span>
+  ts&#39;</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t))
+  <span class="kt">True</span> ts&#39; -&gt;
+map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g t&#39;)
+:: map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+     (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t&#39;
+:: map
+     (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chka"><span class="nb">destruct</span> IH <span class="kr">as</span> [IHt&#39; IHts&#39;].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t'</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br><span><var>ts'</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IHt'</var><span class="hyp-type"><b>: </b><span>map_tree f (map_tree g t&#39;) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t&#39;</span></span></span><br><span><var>IHts'</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t))
+  <span class="kt">True</span> ts&#39;</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t))
+  <span class="kt">True</span> ts&#39; -&gt;
+map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g t&#39;)
+:: map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+     (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t&#39;
+:: map
+     (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chkb"><span class="nb">specialize</span> (IHts IHts&#39;).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t'</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br><span><var>ts'</var><span class="hyp-type"><b>: </b><span>list tree</span></span></span><br><span><var>IHt'</var><span class="hyp-type"><b>: </b><span>map_tree f (map_tree g t&#39;) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t&#39;</span></span></span><br><span><var>IHts'</var><span class="hyp-type"><b>: </b><span>fold_right
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   <span class="kn">and</span>
+     (map_tree f (map_tree g t) =
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t))
+  <span class="kt">True</span> ts&#39;</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+  (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map
+  (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+   map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g t&#39;)
+:: map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree f t)
+     (map (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt; map_tree g t) ts&#39;) =
+map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t&#39;
+:: map
+     (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
+      map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> IHt&#39;, &lt;- IHts.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+<div class="section" id="answer-joachim-breitner">
+<h1>Answer (Joachim Breitner)</h1>
+<p>In general, it might be advisable to avoid this problem. But if one
+really wants to obtain the proof obligation that Isabelle gives you,
+here is a way:</p>
+<p>In Isabelle, we can give an external lemma that stats that <tt class="docutils literal">map</tt>
+applies its arguments only to members of the given list. In Coq, we
+cannot do this in an external lemma, but we can do it in the type. So
+instead of the normal type of map</p>
+<pre class="code coq literal-block">
+<span class="k">forall</span> <span class="n">A</span> <span class="n">B</span><span class="o">,</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">B</span>
+</pre>
+<p>we want the type to say &quot;f is only ever applied to elements of the list&quot;:</p>
+<pre class="code coq literal-block">
+<span class="k">forall</span> <span class="n">A</span> <span class="n">B</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">),</span> <span class="o">(</span><span class="k">forall</span> <span class="n">x</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">In</span> <span class="n">x</span> <span class="n">xs</span> <span class="o">-&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">B</span>
+</pre>
+<p>(It requires reordering the argument so that the type of <tt class="docutils literal">f</tt> can
+mention <tt class="docutils literal">xs</tt>).</p>
+<p>Writing this function is not trivial, and I found it easier to use a
+proof script:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chkc"><span class="kn">Definition</span> <span class="nf">map</span> {<span class="nv">A</span> <span class="nv">B</span>} (<span class="nv">xs</span> : list A) (<span class="nv">f</span> : <span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) : list B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list B</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chkd"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list B</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chke"><span class="nb">induction</span> xs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x [] -&gt; B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list B</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chkf" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><label class="goal-separator" for="nested-recursion-and-program-fixpoint-or-function-v-chkf"><hr></label><div class="goal-conclusion">list B</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk10">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x [] -&gt; B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list B</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> [].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk11">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list B</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk12"><span class="nb">refine</span> (f a _ :: IHxs _).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In a (a :: xs)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk13" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><label class="goal-separator" for="nested-recursion-and-program-fixpoint-or-function-v-chk13"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk14">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In a (a :: xs)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk15"><span class="nb">left</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a = a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk16">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk17"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In x xs</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk18"><span class="nb">eapply</span> f.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In x xs</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In <span class="nl">?x</span> (a :: xs)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk19"><span class="nb">right</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x (a :: xs) -&gt; B</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>(<span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) -&gt; list B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In x xs</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In <span class="nl">?x</span> xs</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">eassumption</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>But you can also write it &quot;by hand&quot;:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">map</span> {<span class="nv">A</span> <span class="nv">B</span>} (<span class="nv">xs</span> : list A) :
+  <span class="kr">forall</span> (<span class="nv">f</span> : <span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B), list B :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | [] =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; []
+  | x :: xs =&gt;
+      <span class="kr">fun</span> <span class="nv">f</span> =&gt; f x (or_introl eq_refl) :: map xs (<span class="kr">fun</span> <span class="nv">y</span> <span class="nv">h</span> =&gt; f y (or_intror h))
+  <span class="kr">end</span>.</span></span></pre><p>In either case, the result is nice: I can use this function in
+<tt class="docutils literal">mapTree</tt>, i.e.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">mapTree</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">t</span> : Tree)
+        {<span class="nv">measure</span> (height t)} : Tree :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+    Node x ts =&gt; Node (f x) (map ts (<span class="kr">fun</span> <span class="nv">t</span> <span class="nv">_</span> =&gt; mapTree f t))
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1a"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : Tree,
+height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt; height (Node x ts)</div></blockquote></div></div></small></span></pre><p>and I don’t have to do anything with the new argument to <tt class="docutils literal">f</tt>, but it
+shows up in the the termination proof obligation, as <tt class="docutils literal">In t ts <span class="pre">-&gt;</span>
+height t &lt; height (Node x ts)</tt> as desired. So I can prove that and
+define <tt class="docutils literal">mapTree</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1b"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : Tree,
+height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;
+S (fold_right Nat.max <span class="mi">0</span> (List.map height ts))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1c"><span class="nb">apply</span> Lt.le_lt_n_Sm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
+<span class="kr">forall</span> <span class="nv">t</span> : Tree,
+height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;= fold_right Nat.max <span class="mi">0</span> (List.map height ts)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1d"><span class="nb">clear</span> mapTree.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;= fold_right Nat.max <span class="mi">0</span> (List.map height ts)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1e"><span class="nb">induction</span> ts; <span class="nb">inversion_clear</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>In t ts -&gt;
+height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>a = t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height (a :: ts))</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1f" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>In t ts -&gt;
+height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><label class="goal-separator" for="nested-recursion-and-program-fixpoint-or-function-v-chk1f"><hr></label><div class="goal-conclusion">height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height (a :: ts))</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk20">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>In t ts -&gt;
+height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>a = t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height (a :: ts))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk21"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>In t ts -&gt;
+height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height (t :: ts))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> PeanoNat.Nat.le_max_l.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk22" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk22">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>In t ts -&gt;
+height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height (a :: ts))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk23" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk23"><span class="nb">rewrite</span> IHts <span class="bp">by</span> <span class="bp">assumption</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>IHts</var><span class="hyp-type"><b>: </b><span>In t ts -&gt;
+height t &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">fold_right Nat.max <span class="mi">0</span> (List.map height ts) &lt;=
+fold_right Nat.max <span class="mi">0</span> (List.map height (a :: ts))</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> PeanoNat.Nat.le_max_r.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>It only works with <tt class="docutils literal">Program Fixpoint</tt>, not with <tt class="docutils literal">Function</tt>,
+unfortunately.</p>
+</div>
+<div class="section" id="answer-matthieu-sozeau">
+<h1>Answer (Matthieu Sozeau)</h1>
+<p>You can now do this with Equations and get the right elimination
+principle automatically, using either <a class="reference external" href="http://mattam82.github.io/Coq-Equations/examples/Examples.nested_mut_rec.html">structural nested recursion</a>
+or <a class="reference external" href="http://mattam82.github.io/Coq-Equations/examples/Examples.RoseTree.html">well-founded recursion</a>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
