@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Existential goals are filled in too soon</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="existential-goals-are-filled-in-too-soon">
+<h1 class="title">Existential goals are filled in too soon</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/51332966">https://stackoverflow.com/q/51332966</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have a <tt class="docutils literal">Class</tt> containing both data and axioms. I want to build
+another instance in proof mode, based on (1) an existing instance and
+(2) some other input. I want to <tt class="docutils literal">destruct</tt> this second input before
+creating the new instance of the record.</p>
+<p>The minimal <tt class="docutils literal">Class</tt> that works as an example is shrunk from one in
+<a class="reference external" href="https://github.com/jwiegley/category-theory">jwiegley/category-theory</a>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Unicode.Utf8.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Init.Datatypes.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Classes.Morphisms.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Classes.SetoidDec.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Generalizable All Variables</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reserved Infix</span> <span class="s2">&quot;~&gt;&quot;</span> (<span class="kn">at level</span> <span class="mi">90</span>, <span class="kn">right associativity</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reserved Infix</span> <span class="s2">&quot;∘&quot;</span> (<span class="kn">at level</span> <span class="mi">40</span>, <span class="kn">left associativity</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk0"><span class="kn">Record</span> <span class="nf">Category</span> := {
+    obj : <span class="kt">Type</span>;
+
+    uhom := <span class="kt">Type</span> : <span class="kt">Type</span>;
+    hom : obj -&gt; obj -&gt; uhom <span class="kn">where</span> <span class="s2">&quot;a ~&gt; b&quot;</span> := (hom a b);
+    homset :&gt; <span class="kr">∀</span> <span class="nv">X</span> <span class="nv">Y</span>, Setoid (X ~&gt; Y);
+
+    compose {x y z} (f: y ~&gt; z) (g : x ~&gt; y) : x ~&gt; z
+    <span class="kn">where</span> <span class="s2">&quot;f ∘ g&quot;</span> := (compose f g);
+
+    compose_respects x y z :&gt;
+                     Proper (equiv ==&gt; equiv ==&gt; equiv) (@compose x y z);
+  }.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">New coercion path [compose_respects] : Category &gt;-&gt; <span class="kt">Funclass</span> <span class="kr">is</span> ambiguous <span class="kr">with</span> existing 
+[homset] : Category &gt;-&gt; <span class="kt">Funclass</span>.
+[ambiguous-paths,typechecker]</blockquote></div></div></small></span></pre><p>Suppose (2) is bool:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk1"><span class="kn">Definition</span> <span class="nf">newCat</span> (<span class="nv">C</span> : Category) (<span class="nv">b</span> : bool) : Category.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Category</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Category</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk3"><span class="nb">destruct</span> b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Category</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="existential-goals-are-filled-in-too-soon-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br></div><label class="goal-separator" for="existential-goals-are-filled-in-too-soon-v-chk4"><hr></label><div class="goal-conclusion">Category</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Category</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk6"><span class="nb">eapply</span> Build_Category.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">∀</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : <span class="kt">Type</span>,
+  Proper (equiv ==&gt; equiv ==&gt; equiv) (<span class="nl">?compose</span> x y z)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-goals-are-filled-in-too-soon-v-chk7"><span class="kn">Unshelve</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">∀</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : <span class="kt">Type</span>,
+  Proper (equiv ==&gt; equiv ==&gt; equiv) (<span class="nl">?compose</span> x y z)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="existential-goals-are-filled-in-too-soon-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>C</var><span class="hyp-type"><b>: </b><span>Category</span></span></span><br></div><label class="goal-separator" for="existential-goals-are-filled-in-too-soon-v-chk8"><hr></label><div class="goal-conclusion"><span class="kr">∀</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : <span class="kt">Type</span>,
+  (<span class="kr">λ</span> <span class="nv">_</span> <span class="nv">A</span> : <span class="kt">Type</span>, A) y z
+  → (<span class="kr">λ</span> <span class="nv">_</span> <span class="nv">A</span> : <span class="kt">Type</span>, A) x y → (<span class="kr">λ</span> <span class="nv">_</span> <span class="nv">A</span> : <span class="kt">Type</span>, A) x z</div></blockquote></div></div></div></small></span></pre><p>At this point, <tt class="docutils literal">obj</tt> is filled in with <tt class="docutils literal">Type</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="existential-goals-are-filled-in-too-soon-v-chk9" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">2</span> subgoals
+
+  C : Category
+  ============================
+  <span class="kr">∀</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : <span class="kt">Type</span>,
+    Proper (equiv ==&gt; equiv ==&gt; equiv)
+      (<span class="nl">?compose</span> x y z)
+
+subgoal <span class="mi">2</span> <span class="kr">is</span>:
+ <span class="kr">∀</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : <span class="kt">Type</span>,
+   (<span class="kr">λ</span> <span class="nv">_</span> <span class="nv">A</span> : <span class="kt">Type</span>, A) y z
+   → (<span class="kr">λ</span> <span class="nv">_</span> <span class="nv">A</span> : <span class="kt">Type</span>, A) x y → (<span class="kr">λ</span> <span class="nv">_</span> <span class="nv">A</span> : <span class="kt">Type</span>, A) x z</blockquote></div></div></small></span></pre><p>This behavior disappears if I remove the <tt class="docutils literal">compose_respects</tt> axiom
+(or use some other kind of <tt class="docutils literal">Record</tt> without such a field). If I
+change <tt class="docutils literal">Category</tt> into a <tt class="docutils literal">Class</tt>, <tt class="docutils literal">obj</tt> will be filled in as the
+<tt class="docutils literal">obj</tt> of <tt class="docutils literal">C</tt>. It seems to have something to do with typeclass
+resolution (the fact that the <tt class="docutils literal">equiv</tt>s have implicit typeclass
+arguments?).</p>
+<p>Is there someway to prevent these (or any!) variables from being
+filled in with unification? The optimal result would be something like
+<tt class="docutils literal">eapply</tt>+<tt class="docutils literal">Unshelve</tt> where no existentials are generated at
+all, and I can fill in the record's fields as subgoals, in order.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>It looks like <tt class="docutils literal">simple notypeclasses refine {| obj := _ |}</tt> does the
+trick.</p>
+<ul class="simple">
+<li><tt class="docutils literal">{| obj := _|}</tt> is record syntax that functions as shorthand for
+<tt class="docutils literal">Build_Category _ _ _ _ _</tt>.</li>
+<li><tt class="docutils literal">simple notypeclasses refine</tt> is all one tactic. It's a variant of
+<tt class="docutils literal">notypeclasses refine</tt> that doesn't shelve goals and performs no
+reduction.</li>
+<li>Sadly there isn't a generic <tt class="docutils literal">notypeclasses</tt> combinator, unlike
+<tt class="docutils literal">unshelve</tt>. There's just <tt class="docutils literal">notypeclasses refine</tt> and <tt class="docutils literal">simple
+notypeclasses refine</tt>.</li>
+</ul>
+<p>For debugging, you can use the (undocumented) <tt class="docutils literal">Set Typeclasses
+Debug</tt>. This reveals that <tt class="docutils literal">eapply Build_Category</tt> does resolve some
+typeclasses, and <tt class="docutils literal">refine {| obj := _|}</tt> is even worse.</p>
+<p>As an aside, I don't think it makes sense to have <tt class="docutils literal">Class Category</tt>
+without any type-level parameters - why would you ever want just any
+category automatically inferred?</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

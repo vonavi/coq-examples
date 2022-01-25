@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How does decidable equality works with List.remove?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-does-decidable-equality-works-with-list-remove">
+<h1 class="title">How does decidable equality works with <tt class="docutils literal">List.remove</tt>?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46589021">https://stackoverflow.com/q/46589021</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am starting in Coq and discovered that I have to provide a proof of
+decidable equality to use <tt class="docutils literal">List.remove</tt>, e.g.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> List.ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> : <span class="kt">Set</span> := A | B | C.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk0"><span class="kn">Lemma</span> <span class="nf">eq_dec</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> a, b; <span class="kp">try</span> (<span class="nb">left</span>; <span class="bp">reflexivity</span>); <span class="kp">try</span> (<span class="nb">right</span>; <span class="bp">congruence</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> (<span class="nv">xs</span> : list T) : list T := List.remove eq_dec A xs.</span></span></pre><p>This now type-checks, but I don't understand how to use it.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk2"><span class="kn">Theorem</span> <span class="nf">foo</span> : f [A; B; C] = [B; C].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-does-decidable-equality-works-with-list-remove-v-chk4"><span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Unable to <span class="nb">unify</span> <span class="s2">&quot;[B; C]&quot;</span> <span class="kr">with</span> <span class="s2">&quot;f [A; B; C]&quot;</span>.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>How does this decidable equality work and what is some good source I
+could read about it?</p>
+<div class="section" id="edit-1">
+<h2>Edit 1</h2>
+<p>I just learned about the <a class="reference external" href="https://coq.inria.fr/distrib/8.6.1/refman/Reference-Manual010.html#hevea_tactic174">decide equality</a>
+tactic, which</p>
+<blockquote>
+solves a goal of the form <tt class="docutils literal">forall x y : R, {x=y} + {~x=y}</tt>,
+where <tt class="docutils literal">R</tt> is an inductive type such that its constructors do not
+take proofs or functions as arguments, nor objects in dependent
+types.</blockquote>
+<p>So <tt class="docutils literal">eq_dec</tt> can rewriten:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk5"><span class="kn">Lemma</span> <span class="nf">eq_dec</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">decide equality</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
+<div class="section" id="edit-2">
+<h2>Edit 2</h2>
+<p>I just learned about the <a class="reference external" href="https://coq.inria.fr/distrib/8.6.1/refman/Reference-Manual015.html#hevea_command235">Scheme Equality for T</a>
+command, which</p>
+<blockquote>
+Tries to generate a Boolean equality and a proof of the
+decidability of the usual equality. If identi involves some other
+inductive types, their equality has to be defined first.</blockquote>
+<p>So <tt class="docutils literal">T_beq : T <span class="pre">-&gt;</span> T <span class="pre">-&gt;</span> bool</tt> and <tt class="docutils literal">T_eq_dec : forall x y : T, {x = y}
++ {x &lt;&gt; y}</tt> can be automatically generated.</p>
+</div>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>The problem is that you used the <tt class="docutils literal">Qed</tt> command to end your proof.
+This causes the <tt class="docutils literal">eq_dec</tt> function you just defined to become opaque,
+thus preventing Coq from simplifying expressions involving it. A
+simple solution in this case is to use <tt class="docutils literal">Defined</tt> instead:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> List.ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> : <span class="kt">Set</span> := A | B | C.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk7"><span class="kn">Lemma</span> <span class="nf">eq_dec</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : T, {a = b} + {a &lt;&gt; b}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> a, b; <span class="kp">try</span> (<span class="nb">left</span>; <span class="bp">reflexivity</span>); <span class="kp">try</span> (<span class="nb">right</span>; <span class="bp">congruence</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> (<span class="nv">xs</span> : list T) : list T := List.remove eq_dec A xs.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk9"><span class="kn">Theorem</span> <span class="nf">foo</span> : f [A; B; C] = [B; C].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>You can check Adam Chlipala's <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Subset.html">CPDT book</a> to learn more
+about this style of programming.</p>
+<p>There is also an alternative approach, which I personally prefer. The
+idea is to program normal equality tests that return booleans, and
+prove after the fact that the tests are correct. This is useful for
+two reasons.</p>
+<ol class="arabic simple">
+<li>It allows reusing standard boolean operators to write these
+functions; and</li>
+<li>functions that involve proofs (like <tt class="docutils literal">eq_dec</tt>) can interact badly
+with Coq's reduction machinery, because the reduction needs to take
+the proofs into account.</li>
+</ol>
+<p>You can read more about this alternative style in the <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/lf-current/IndProp.html#lab223">Software
+Foundations book</a>.
+You can also have a look at the <a class="reference external" href="https://math-comp.github.io/math-comp/">mathematical components</a> library, which uses this
+style pervasively -- for example, to define a notion of <a class="reference external" href="http://ssr.msr-inria.inria.fr/~jenkins/current/mathcomp.ssreflect.eqtype.html">type with
+decidable equality</a>.</p>
+</div>
+<div class="section" id="answer-yves">
+<h1>Answer (Yves)</h1>
+<p>You can also keep the proof of decidable equality opaque, but in this
+case you have to use another tactic than <tt class="docutils literal">reflexivity</tt> to prove your
+result.</p>
+<p>In the same context as your example, try this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chkb"><span class="kn">Theorem</span> <span class="nf">foo</span> : f [A; B; C] = [B; C].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chkc"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chkd"><span class="nb">unfold</span> f.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">remove eq_dec A [A; B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chke"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chkf"><span class="nb">case</span> (eq_dec A A); [<span class="nb">intros</span> _ | <span class="nb">intros</span> abs; <span class="nb">case</span> abs; <span class="nb">auto</span>].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk10"><span class="nb">case</span> (eq_dec A B); [<span class="bp">discriminate</span> | <span class="nb">intros</span> _].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-decidable-equality-works-with-list-remove-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-decidable-equality-works-with-list-remove-v-chk11"><span class="nb">case</span> (eq_dec A C); [<span class="bp">discriminate</span> | <span class="nb">intros</span> _].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[B; C] = [B; C]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Knowing that this solution exists may be very useful when you want to
+reason more abstractly about the equality between elements of your
+type and when computation cannot do everything for you.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> Could this pattern be automated using Ltac? i.e. a
+<tt class="docutils literal">reduce_eq_dec x y</tt> that would detect whether <tt class="docutils literal">x</tt> is syntactically
+equal to <tt class="docutils literal">y</tt> and use either the <tt class="docutils literal">case</tt> or <tt class="docutils literal">discriminate</tt>
+approach you highlighted?</p>
+<p><strong>A:</strong> yes, and using <tt class="docutils literal">try</tt> you don't even have to be able to tested
+whether <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> really are equal.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
