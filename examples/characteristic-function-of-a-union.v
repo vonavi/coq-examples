@@ -44,9 +44,9 @@ Answer (ejgallego)
 ******************
 
 As pointed out by @András Kovács, Coq prevents you from "extracting"
-computationally relevant information from types in Prop in order to
-allow some more advanced features to be used. There has been a lot of
-research on this topic, including recently Univalent Foundations /
+computationally relevant information from types in ``Prop`` in order
+to allow some more advanced features to be used. There has been a lot
+of research on this topic, including recently Univalent Foundations /
 HoTT, but that would go beyond the scope of this question.
 
 In your case you want indeed to use the type ``{ A } + { B }`` which

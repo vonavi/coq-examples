@@ -1,7 +1,7 @@
 (*|
-###########################################
-How to prove equality from equality of Some
-###########################################
+###############################################
+How to prove equality from equality of ``Some``
+###############################################
 
 :Link: https://stackoverflow.com/q/60304522
 |*)

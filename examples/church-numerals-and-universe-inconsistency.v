@@ -11,7 +11,7 @@ Question
 ********
 
 In the following code, the statement ``add'_commut`` is accepted by
-Coq but ``add_commut is`` rejected because of a universe
+Coq but ``add_commut`` is rejected because of a universe
 inconsistency.
 |*)
 

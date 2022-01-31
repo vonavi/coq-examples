@@ -11,7 +11,7 @@ for data_dir in ${DATA_DIRS}; do
         title=$(sed -En '/^#+$/,/^#+$/p' "${src_path}" | grep -Ev '^#+$')
         # Escape characters
         title=$(sed -e 's/"/\\"/g' <<< "${title}")
-        title=$(sed -E 's@``([^`]+)``@<code>\1</code>@g' <<< "${title}")
+        title=$(sed -E 's@``([^`]+)``@<tt>\1</tt>@g' <<< "${title}")
 
         src_path=${src_path##*/}
         dst_path=${data_dir}/${src_path%.v}.html

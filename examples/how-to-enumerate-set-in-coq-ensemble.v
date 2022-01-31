@@ -107,6 +107,6 @@ Qed.
 
 (*|
 So, by rephrasing the theorem to use weak or, it is now possible to
-prove it directly, and without appealing to the structure of A, that
-membership is decidable, or classical logic.
+prove it directly, and without appealing to the structure of ``A``,
+that membership is decidable, or classical logic.
 |*)

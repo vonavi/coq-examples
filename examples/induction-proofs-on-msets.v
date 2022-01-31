@@ -1,7 +1,7 @@
 (*|
-#########################
-Induction proofs on MSets
-#########################
+###############################
+Induction proofs on ``MSet``\ s
+###############################
 
 :Link: https://stackoverflow.com/q/47572526
 |*)

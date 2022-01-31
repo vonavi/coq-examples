@@ -94,7 +94,8 @@ strong, but it is still an abuse of terminology.
 ----
 
 **Q:** Do you mean external vs internal decidability in the
-terminology of nLab? ncatlab.org/nlab/show/decidable+proposition
+terminology of nLab? `ncatlab.org/nlab/show/decidable+proposition
+<https://ncatlab.org/nlab/show/decidable+proposition>`__
 (sect. 1)
 
 **A:** Thanks for the pointer @AntonTrunov. No, I think there is an

@@ -31,7 +31,7 @@ Proof.
 (*|
 At this point, there are two solutions that don't answer my questions:
 (1) I could run (``eauto``) and then do ``Grab Existential
-Variables``, but suppose that eauto doesn't succeed until I
+Variables``, but suppose that ``eauto`` doesn't succeed until I
 instantiate the unification variable; (2) I could just pass the proof
 term explicitly with ``instantiate (1 := H0 H)`` (or even
 ``instantiate (1:= ltac:(eauto))``), but assume that the proof of the

@@ -1,7 +1,7 @@
 (*|
-################################
-Decide disjunctions in sort Prop
-################################
+####################################
+Decide disjunctions in sort ``Prop``
+####################################
 
 :Link: https://stackoverflow.com/q/55952695
 |*)
