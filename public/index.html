@@ -1,7 +1,7 @@
 ---
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -9,11 +9,23 @@
   </head>
 
   <body>
+    {% for tag in site.all_tags %}
+    <tt>{{ tag }}</tt>:
+    {% assign tagged = site.data.examples | where_exp: 'ex', 'ex.tags contains tag' %}
+    <ol>
+      {% for example in tagged %}
+      <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
+      {% endfor %}
+    </ol>
+    {% endfor %}
+
+    <em>others</em>:
     <ol>
       {% for example in site.data.examples %}
-      <li>
-        <a href="{{ example.path | relative_url }}">{{ example.title }}</a>
-      </li>
+      {% assign tags = example.tags | where_exp: 'tag', 'site.all_tags contains tag' %}
+      {% if tags == nil or tags == empty %}
+      <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
+      {% endif %}
       {% endfor %}
     </ol>
   </body>

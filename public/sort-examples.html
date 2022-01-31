@@ -1,7 +1,7 @@
 ---
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -15,9 +15,12 @@
   <body>
     <div class="grid-container">
       {% for example in site.data.examples %}
+      {% assign tags = example.tags | where_exp: 'tag', 'site.all_tags contains tag' %}
+      {% if tags == nil or tags == empty %}
       <div class="grid-item">
         <iframe src="{{ example.path | relative_url }}" title="{{ example.title }}"></iframe>
       </div>
+      {% endif %}
       {% endfor %}
     </div>
   </body>
