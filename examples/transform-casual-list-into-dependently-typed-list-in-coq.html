@@ -53,10 +53,10 @@ to the result:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">pcount</span> (<span class="nv">l</span> : list A) : nat :=
   <span class="kr">match</span> l <span class="kr">with</span>
   | nil =&gt; O
-  | h :: t =&gt; <span class="kr">if</span> P_dec h <span class="kr">then</span> S(pcount t) <span class="kr">else</span> pcount t
+  | h :: t =&gt; <span class="kr">if</span> P_dec h <span class="kr">then</span> S (pcount t) <span class="kr">else</span> pcount t
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="transform-casual-list-into-dependently-typed-list-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="transform-casual-list-into-dependently-typed-list-in-coq-v-chk3"><span class="kn">Fixpoint</span> <span class="nf">plistIn</span> (<span class="nv">l</span> : list A) : (plist (pcount l)) :=
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="transform-casual-list-into-dependently-typed-list-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="transform-casual-list-into-dependently-typed-list-in-coq-v-chk3"><span class="kn">Fixpoint</span> <span class="nf">plistIn</span> (<span class="nv">l</span> : list A) : plist (pcount l) :=
   <span class="kr">match</span> l <span class="kr">with</span>
   | nil =&gt; pnil
   | h :: t =&gt; <span class="kr">match</span> P_dec h <span class="kr">with</span>
@@ -82,7 +82,7 @@ cannot let Coq know this truth.</p>
 <p>Below, the keyword <tt class="docutils literal">as</tt> introduces a new variable <tt class="docutils literal">p</tt>, and
 <tt class="docutils literal">return</tt> tells the type of the whole <tt class="docutils literal">match</tt> expression,
 parameterized by <tt class="docutils literal">p</tt>.</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">plistIn</span> (<span class="nv">l</span> : list A) : (plist (pcount l)) :=
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">plistIn</span> (<span class="nv">l</span> : list A) : plist (pcount l) :=
   <span class="kr">match</span> l <span class="kr">with</span>
   | nil =&gt; pnil
   | h :: t =&gt; <span class="kr">match</span> P_dec h <span class="kr">as</span> p <span class="kr">return</span> plist (<span class="kr">if</span> p <span class="kr">then</span> _ <span class="kr">else</span> _) <span class="kr">with</span>
