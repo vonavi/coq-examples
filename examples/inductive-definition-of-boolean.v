@@ -31,8 +31,8 @@ Coq uses what is called "Universe Minimization" to put inductive types
 in the smallest possible universe. Since ``mybool`` doesn't depend on
 any other types and doesn't do any universal quantification, it can
 safely be put in the (second) lowest level of ``Type``, which is
-``Set``. The lowest level is Prop, but inductive types are only placed
-in ``Prop`` if they only have one constructor (there are some
+``Set``. The lowest level is ``Prop``, but inductive types are only
+placed in ``Prop`` if they only have one constructor (there are some
 exceptions to this), or if it's explicitly annotated.
 
 Note that Coq's universes are cumulative, so ``mybool`` is really in

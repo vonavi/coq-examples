@@ -1,7 +1,7 @@
 (*|
-#################################################
-Vector error : The type of this term is a product
-#################################################
+################################################
+Vector error: The type of this term is a product
+################################################
 
 :Link: https://stackoverflow.com/q/63955903
 |*)
@@ -10,8 +10,8 @@ Vector error : The type of this term is a product
 Question
 ********
 
-I want last k elements of vector. I wrote this code with reference to
-`Coq.Vectors.VectorDef
+I want last ``k`` elements of vector. I wrote this code with reference
+to `Coq.Vectors.VectorDef
 <https://coq.inria.fr/library/Coq.Vectors.VectorDef.html>`__.
 |*)
 

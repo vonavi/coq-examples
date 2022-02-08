@@ -29,9 +29,9 @@ Inductive int :=
 | pred : int -> int.
 
 (*|
-but then I want to assert in the *definition* of ``int`` that
-``succ(pred x) = x`` and ``pred(succ x) = x``, and I'm not sure how to
-do this.
+but then I want to assert in the *definition* of ``int`` that ``succ
+(pred x) = x`` and ``pred (succ x) = x``, and I'm not sure how to do
+this.
 |*)
 
 (*|

@@ -37,10 +37,10 @@ Import ListNotations. (* .none *)
 Fixpoint pcount (l : list A) : nat :=
   match l with
   | nil => O
-  | h :: t => if P_dec h then S(pcount t) else pcount t
+  | h :: t => if P_dec h then S (pcount t) else pcount t
   end.
 
-Fail Fixpoint plistIn (l : list A) : (plist (pcount l)) :=
+Fail Fixpoint plistIn (l : list A) : plist (pcount l) :=
   match l with
   | nil => pnil
   | h :: t => match P_dec h with
@@ -72,7 +72,7 @@ Below, the keyword ``as`` introduces a new variable ``p``, and
 parameterized by ``p``.
 |*)
 
-Fixpoint plistIn (l : list A) : (plist (pcount l)) :=
+Fixpoint plistIn (l : list A) : plist (pcount l) :=
   match l with
   | nil => pnil
   | h :: t => match P_dec h as p return plist (if p then _ else _) with

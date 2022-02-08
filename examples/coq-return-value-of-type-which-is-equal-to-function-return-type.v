@@ -63,7 +63,7 @@ Answer
 
 When type-checking, Coq uses a weaker form of equality (sometimes
 called definitional, judgemental, or computational equality). Unlike
-propositional equality (what "=" binds to by default), definitional
+propositional equality (what ``=`` binds to by default), definitional
 equality is decidable. Coq can take any two terms and decide if one is
 convertible into the other. If propositional equality were allowed in
 type-checking, type-checking would no longer be decidable [1]_.

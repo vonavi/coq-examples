@@ -13,7 +13,7 @@ Question
 Consider the following example:
 |*)
 
-Definition cast {A : Set} (B : Set) (prf : A = B) (x : A)   : B.
+Definition cast {A : Set} (B : Set) (prf : A = B) (x : A) : B.
   rewrite prf in x.
   refine x.
 Defined.

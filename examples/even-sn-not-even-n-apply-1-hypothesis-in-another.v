@@ -59,9 +59,9 @@ middle" axiom, which is defined under the name ``classic`` in
 and apply the lemma ``NNPP``.
 
 However, in this particular case, you can use the technique called
-**reflection** by showing that the Prop is consistent with a boolean
-function (you might remember the ``evenb`` function introduced earlier
-in the book).
+**reflection** by showing that the ``Prop`` is consistent with a
+boolean function (you might remember the ``evenb`` function introduced
+earlier in the book).
 
 .. coq:: none
 |*)
@@ -88,9 +88,9 @@ Lemma even_reflect : forall n : nat, reflect (even n) (evenb n).
 Abort. (* .none *)
 
 (*|
-and then use it to move between a Prop and a boolean (which contain
-the same information i.e. the (non-)evenness of ``n``) at the same
-time. This also means that you can do classical reasoning on that
+and then use it to move between a ``Prop`` and a boolean (which
+contain the same information i.e. the (non-)evenness of ``n``) at the
+same time. This also means that you can do classical reasoning on that
 particular property without using the ``classic`` axiom.
 
 I suggest to complete the exercises under Reflection section in

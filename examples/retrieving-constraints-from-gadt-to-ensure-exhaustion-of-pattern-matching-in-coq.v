@@ -108,8 +108,8 @@ the match gave me ``S : Set`` (the name was automatically chosen by
 Coq) and ``x : S``, as per the constructor ``MkMyTy``, with no mention
 of ``nat``. Meanwhile, because ``MyTy`` has a parameter in the second
 version, I actually get ``x : nat``. The ``_`` is really a placeholder
-this time; it is mandatory to write it as _, because there's nothing
-to match, and you can ``Set Asymmetric Patterns`` to make it
+this time; it is mandatory to write it as ``_``, because there's
+nothing to match, and you can ``Set Asymmetric Patterns`` to make it
 disappear.
 
 The reason we distinguish between parameters and indices is because

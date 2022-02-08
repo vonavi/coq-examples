@@ -78,7 +78,7 @@ component and repack it into a term of type ``{i1 : nat | i1 > 2}``,
 which is a pair:
 |*)
 
-Reset Initial.
+Reset Initial. (* .none *)
 Definition add_one_if_gt_2 (i : {i1 : nat | i1 > 2}) :=
   S (proj1_sig i).
 

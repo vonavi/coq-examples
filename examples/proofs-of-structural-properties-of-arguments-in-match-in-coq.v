@@ -75,7 +75,7 @@ Unlike ``zip``, ``zip'`` uses its proof argument in two ways. In the
 contradictory cases, it invokes some tactic code (``ltac:(easy)``) to
 argue that this case cannot arise. In the recursive case, it needs to
 find a proof of ``length xs = length ys`` to apply the recursive call;
-for this, it uses the ``congruence`` tacitc.
+for this, it uses the ``congruence`` tactic.
 
 Why is ``zip`` better than ``zip'``? Its code is shorter and easier to
 read. In particular, note how ``zip'`` has a match returning a

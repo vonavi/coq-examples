@@ -21,9 +21,9 @@ variables that get injected explicitly as terms.
 It's pretty clear how to write this down with Coq (I've got a snippet
 of code at the bottom), but I'd like to prove some sort of
 decidability result. I've managed to prove decidability for vectors
-("If I have decidability on A, then I can get decidability on
-VectorDef.t A n"), but I can't work out how to do the same for my tree
-type.
+("If I have decidability on ``A``, then I can get decidability on
+``VectorDef.t A n``"), but I can't work out how to do the same for my
+tree type.
 
 I tried doing an explicit recursion over the structure of a tree, but
 I ended up needing to call out to my "decidable vector" function,

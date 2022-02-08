@@ -10,9 +10,9 @@ Building up tree and decreasing argument of fix
 Question
 ********
 
-I'm attempting to implement a function to build up a Braun tree with n
-elements using the following function in Coq, but Coq gives me the
-error that it cannot guess decreasing argument of fix:
+I'm attempting to implement a function to build up a Braun tree with
+``n`` elements using the following function in Coq, but Coq gives me
+the error that it cannot guess decreasing argument of fix:
 
 .. coq:: none
 |*)

@@ -10,7 +10,7 @@ Teach coq to check termination
 Question
 ********
 
-Coq, unlike many others, accepts an optional explicit parameter,which
+Coq, unlike many others, accepts an optional explicit parameter, which
 can be used to indicate the decreasing structure of a fixpoint
 definition.
 
@@ -24,7 +24,7 @@ defines the syntax. but from it, we've known that it must be an
 identifier, instead of a general measure.
 
 However, in general, there are recursive functions, that the
-termination is not quite obvious,or it in fact is, but just difficult
+termination is not quite obvious, or it in fact is, but just difficult
 for the termination checker to find a decreasing structure. For
 example, following program interleaves two lists,
 |*)

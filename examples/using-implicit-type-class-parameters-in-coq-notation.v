@@ -94,8 +94,8 @@ Class Group {S : Type} {op : alg_group_binop S} : Type := {
 }.
 
 (*|
-Answer
-******
+Answer (Anton Trunov)
+*********************
 
 Here is how Pierre Castéran and Matthieu Sozeau solve this problem in
 `A Gentle Introduction to Type Classes and Relations in Coq
