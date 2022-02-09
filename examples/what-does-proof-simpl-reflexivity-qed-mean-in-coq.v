@@ -1,7 +1,7 @@
 (*|
-######################################################
-What does Proof. simpl. reflexivity. Qed. mean in Coq?
-######################################################
+##########################################################
+What does ``Proof. simpl. reflexivity. Qed.`` mean in Coq?
+##########################################################
 
 :Link: https://stackoverflow.com/q/64246592
 |*)
@@ -27,8 +27,8 @@ Definition orb (b1: bool) (b2: bool) : bool :=
   end.
 
 (*|
-So let's say we want to prove the correctness of the or function. The
-author wrote a test followed by a proof:
+So let's say we want to prove the correctness of the ``or`` function.
+The author wrote a test followed by a proof:
 |*)
 
 Example test_orb1: (orb true false) = true.

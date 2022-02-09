@@ -1,7 +1,7 @@
 (*|
-#######################################################################
-What should be done when simpl does not reduce all the necessary steps?
-#######################################################################
+###########################################################################
+What should be done when ``simpl`` does not reduce all the necessary steps?
+###########################################################################
 
 :Link: https://stackoverflow.com/q/55879360
 |*)
@@ -51,9 +51,9 @@ During the running of the tests I had an issue where ``simpl`` would
 refuse to dive in, but ``reflexivity`` did the trick, so I tried the
 same thing here and the proof succeeded.
 
-Note that one would not expect reflexivity to pass given the state of
-the goal, but it does. In this example it worked, but it did force me
-to do the rewrite in the opposite direction of what I intended
+Note that one would not expect ``reflexivity`` to pass given the state
+of the goal, but it does. In this example it worked, but it did force
+me to do the rewrite in the opposite direction of what I intended
 originally.
 
 Is it possible to have more control over ``simpl`` so that it does the
