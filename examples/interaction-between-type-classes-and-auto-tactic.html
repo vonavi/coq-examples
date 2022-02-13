@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Interaction between type classes and auto tactic</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="interaction-between-type-classes-and-auto-tactic">
+<h1 class="title">Interaction between type classes and auto tactic</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46244909">https://stackoverflow.com/q/46244909</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Consider this simple development. I have two trivial data types:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">A</span> :=
+| A1
+| A2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">B</span> :=
+| B1 : A -&gt; B
+| B2.</span></span></pre><p>Now I introduce a concept of relation and define ordering on data
+types <tt class="docutils literal">A</tt> and <tt class="docutils literal">B</tt> expressed as an inductive data type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">relation</span> (<span class="nv">X</span> : <span class="kt">Type</span>) := X -&gt; X -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reserved Notation</span> <span class="s2">&quot;a1 &#39;&lt;=A&#39; a2&quot;</span> (<span class="kn">at level</span> <span class="mi">70</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">AOrd</span> : relation A :=
+| A1_Ord : A1 &lt;=A A1
+| A2_Ord : A2 &lt;=A A2
+| A1_A2  : A1 &lt;=A A2
+<span class="kn">where</span> <span class="s2">&quot;a1 &#39;&lt;=A&#39; a2&quot;</span> := (AOrd a1 a2).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reserved Notation</span> <span class="s2">&quot;b1 &#39;&lt;=B&#39; b2&quot;</span> (<span class="kn">at level</span> <span class="mi">70</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BOrd</span> : relation B :=
+| B1_Ord : <span class="kr">forall</span> <span class="nv">a1</span> <span class="nv">a2</span>,
+    a1 &lt;=A a2 -&gt; B1 a1 &lt;=B B1 a2
+| B2_Ord :
+  B2 &lt;=B B2
+| B1_B2  : <span class="kr">forall</span> <span class="nv">a</span>,
+    B1 a &lt;=B B2
+<span class="kn">where</span> <span class="s2">&quot;b1 &#39;&lt;=B&#39; b2&quot;</span> := (BOrd b1 b2).</span></span></pre><p>Finally, I introduce a concept of reflexivity and prove that both of
+my relations are reflexive:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">reflexive</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">R</span> : relation X) :=
+  <span class="kr">forall</span> <span class="nv">a</span> : X, R a a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk0"><span class="kn">Hint Constructors</span> AOrd BOrd.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1"><span class="kn">Theorem</span> <span class="nf">AOrd_reflexive</span> : reflexive AOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk3"><span class="nb">intro</span> a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a &lt;=A a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">induction</span> a; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk4"><span class="kn">Hint Resolve</span> AOrd_reflexive.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk5"><span class="kn">Theorem</span> <span class="nf">BOrd_reflexive</span> : reflexive BOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive BOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive BOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk7"><span class="nb">intro</span> b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b &lt;=B b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">induction</span> b; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Both proofs are finished with <tt class="docutils literal">auto</tt> tactic, with the first proof
+crucially relying on <tt class="docutils literal">Hint Constructors</tt> and the second one
+additionally on <tt class="docutils literal">Hint Resolve AOrd_reflexive being</tt> added to hint
+database.</p>
+<p>An ugly thing about the code above is having a separate notation for
+ordering relation for <tt class="docutils literal">A</tt> and <tt class="docutils literal">B</tt> data types. I'd like to be able
+to uniformly use <tt class="docutils literal">&lt;=</tt> everywhere. <a class="reference external" href="https://stackoverflow.com/a/44057494/1273482">This answer</a> provides a solution
+to the problem: use type classes. So I introduce a type class for
+ordering and redefine my ordering relations to use this new notation:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">OrderR</span> (<span class="nv">T</span> : <span class="kt">Type</span>) := orderR : relation T.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;x &#39;&lt;=&#39; y&quot;</span> := (orderR x y) (<span class="kn">at level</span> <span class="mi">70</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">AOrd</span> : OrderR A :=
+| A1_Ord : A1 &lt;= A1
+| A2_Ord : A2 &lt;= A2
+| A1_A2  : A1 &lt;= A2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BOrd</span> `{OrderR A} : OrderR B :=
+| B1_Ord : <span class="kr">forall</span> <span class="nv">a1</span> <span class="nv">a2</span>,
+    a1 &lt;= a2 -&gt; B1 a1 &lt;= B1 a2
+| B2_Ord :
+  B2 &lt;= B2
+| B1_B2  : <span class="kr">forall</span> <span class="nv">a</span>,
+    B1 a &lt;= B2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk8"><span class="kn">Hint Constructors</span> AOrd BOrd.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><p>But now proof automation breaks! For example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk9"><span class="kn">Theorem</span> <span class="nf">AOrd_reflexive</span> : reflexive AOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chkb"><span class="nb">intro</span> a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">AOrd a a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chkc"><span class="nb">induction</span> a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">AOrd A1 A1</div></blockquote><div class="alectryon-extra-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">AOrd A2 A2</div></blockquote></div></div></div></small></span></pre><p>leaves me with a goal:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chkd" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+
+  ============================
+  AOrd A1 A1</blockquote></div></div></small></span></pre><p>that <tt class="docutils literal">auto</tt> no longer solves despite <tt class="docutils literal">AOrd</tt> constructors being in
+hint database. I can solve the goal with <tt class="docutils literal">constructor</tt> though:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chke"><span class="kn">Theorem</span> <span class="nf">AOrd_reflexive</span> : reflexive AOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chkf"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk10"><span class="nb">intro</span> a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">AOrd a a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">induction</span> a; <span class="nb">constructor</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>More problems arise in second proof. After doing:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk11"><span class="kn">Theorem</span> <span class="nf">BOrd_reflexive</span> `{OrderR A} : reflexive BOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>OrderR A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive BOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk12"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>OrderR A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive BOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk13"><span class="nb">intro</span> b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>OrderR A</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">BOrd b b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk14"><span class="nb">induction</span> b; <span class="nb">constructor</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>OrderR A</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a &lt;= a</div></blockquote></div></div></small></span></pre><p>I am left with goal:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk15" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : OrderR A
+  a : A
+  ============================
+  a &lt;= a</blockquote></div></div></small></span></pre><p>Again, <tt class="docutils literal">auto</tt> no longer solves this goal. Even <tt class="docutils literal">apply
+AOrd_reflexive</tt> does not work.</p>
+<p>My question is: is it possible to have a uniform notation by relying
+on type classes and maintain benefits of proof automation? Or is there
+a different solution to having a uniform notation for various data
+types.</p>
+</div>
+<div class="section" id="answer-eponier">
+<h1>Answer (eponier)</h1>
+<p>A solution that does not involve typeclasses is to take advantage of
+the scope mechanism of Coq.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">A</span> :=
+| A1
+| A2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">B</span> :=
+| B1 : A -&gt; B
+| B2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">relation</span> (<span class="nv">X</span> : <span class="kt">Type</span>) := X -&gt; X -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reserved Notation</span> <span class="s2">&quot;a1 &#39;&lt;=&#39; a2&quot;</span> (<span class="kn">at level</span> <span class="mi">70</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk16"><span class="kn">Inductive</span> <span class="nf">AOrd</span> : relation A :=
+| A1_Ord : A1 &lt;= A1
+| A2_Ord : A2 &lt;= A2
+| A1_A2  : A1 &lt;= A2
+<span class="kn">where</span> <span class="s2">&quot;a1 &#39;&lt;=&#39; a2&quot;</span> := (AOrd a1 a2) : a_scope.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Declaring a scope implicitly <span class="kr">is</span> deprecated; use <span class="kr">in</span>
+advance an explicit <span class="s2">&quot;Declare Scope a_scope.&quot;</span>.
+[undeclared-scope,deprecated]</blockquote><blockquote class="alectryon-message">Declaring a scope implicitly <span class="kr">is</span> deprecated; use <span class="kr">in</span>
+advance an explicit <span class="s2">&quot;Declare Scope a_scope.&quot;</span>.
+[undeclared-scope,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Delimit Scope</span> a_scope <span class="kr">with</span> a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk17"><span class="kn">Inductive</span> <span class="nf">BOrd</span> : relation B :=
+| B1_Ord : <span class="kr">forall</span> <span class="nv">a1</span> <span class="nv">a2</span>,
+    (a1 &lt;= a2)%a -&gt; B1 a1 &lt;= B1 a2
+| B2_Ord :
+  B2 &lt;= B2
+| B1_B2  : <span class="kr">forall</span> <span class="nv">a</span>,
+    B1 a &lt;= B2
+<span class="kn">where</span> <span class="s2">&quot;b1 &#39;&lt;=&#39; b2&quot;</span> := (BOrd b1 b2) : b_scope.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Declaring a scope implicitly <span class="kr">is</span> deprecated; use <span class="kr">in</span>
+advance an explicit <span class="s2">&quot;Declare Scope b_scope.&quot;</span>.
+[undeclared-scope,deprecated]</blockquote><blockquote class="alectryon-message">Declaring a scope implicitly <span class="kr">is</span> deprecated; use <span class="kr">in</span>
+advance an explicit <span class="s2">&quot;Declare Scope b_scope.&quot;</span>.
+[undeclared-scope,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Delimit Scope</span> b_scope <span class="kr">with</span> b.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">reflexive</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">R</span> : relation X) :=
+  <span class="kr">forall</span> <span class="nv">a</span> : X, R a a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk18"><span class="kn">Hint Constructors</span> AOrd BOrd.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk19"><span class="kn">Theorem</span> <span class="nf">AOrd_reflexive</span> : reflexive AOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1a"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive AOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1b"><span class="nb">intro</span> a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(a &lt;= a)%a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">induction</span> a; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1c"><span class="kn">Hint Resolve</span> AOrd_reflexive.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1d"><span class="kn">Theorem</span> <span class="nf">BOrd_reflexive</span> : reflexive BOrd.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive BOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1e"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">reflexive BOrd</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk1f"><span class="nb">intro</span> b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b &lt;= b)%b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">induction</span> b; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+<div class="section" id="answer-jason-gross">
+<h1>Answer (Jason Gross)</h1>
+<p>The issue is that your hints are set to trigger on, e.g., <tt class="docutils literal">&#64;orderR _
+AOrd A1 A2</tt>, not <tt class="docutils literal">AOrd A1 A2</tt>. So the automation never sees the
+pattern it's looking for, and never triggers the hints. Here are two
+solutions:</p>
+<ol class="arabic">
+<li><p class="first">You can adjust the type of your constructors when adding them to
+the hint database, so that they trigger when you want them to:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk20"><span class="kn">Hint Resolve</span> (A1_Ord : AOrd _ _) (A2_Ord : AOrd _ _) (A1_A2 : AOrd _ _).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote><blockquote class="alectryon-message">Declaring arbitrary terms <span class="kr">as</span> hints <span class="kr">is</span> fragile; it <span class="kr">is</span>
+recommended to declare a toplevel constant instead
+[fragile-hint-<span class="kp">constr</span>,automation]</blockquote><blockquote class="alectryon-message">Declaring arbitrary terms <span class="kr">as</span> hints <span class="kr">is</span> fragile; it <span class="kr">is</span>
+recommended to declare a toplevel constant instead
+[fragile-hint-<span class="kp">constr</span>,automation]</blockquote><blockquote class="alectryon-message">Declaring arbitrary terms <span class="kr">as</span> hints <span class="kr">is</span> fragile; it <span class="kr">is</span>
+recommended to declare a toplevel constant instead
+[fragile-hint-<span class="kp">constr</span>,automation]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk21"><span class="kn">Hint Resolve</span> (@B1_Ord : <span class="kr">forall</span> <span class="nv">H</span> <span class="nv">a1</span> <span class="nv">a2</span>, _ -&gt; BOrd _ _)
+     (@B2_Ord : <span class="kr">forall</span> <span class="nv">H</span>, BOrd _ _)
+     (@B1_B2 : <span class="kr">forall</span> <span class="nv">H</span> <span class="nv">a</span>, BOrd _ _).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote><blockquote class="alectryon-message">Declaring arbitrary terms <span class="kr">as</span> hints <span class="kr">is</span> fragile; it <span class="kr">is</span>
+recommended to declare a toplevel constant instead
+[fragile-hint-<span class="kp">constr</span>,automation]</blockquote><blockquote class="alectryon-message">Declaring arbitrary terms <span class="kr">as</span> hints <span class="kr">is</span> fragile; it <span class="kr">is</span>
+recommended to declare a toplevel constant instead
+[fragile-hint-<span class="kp">constr</span>,automation]</blockquote><blockquote class="alectryon-message">Declaring arbitrary terms <span class="kr">as</span> hints <span class="kr">is</span> fragile; it <span class="kr">is</span>
+recommended to declare a toplevel constant instead
+[fragile-hint-<span class="kp">constr</span>,automation]</blockquote></div></div></small></span></pre></li>
+<li><p class="first">You can define &quot;folding&quot; lemmas that convert the types, and add
+those to the database:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">fold_AOrd</span> <span class="nv">a1</span> <span class="nv">a2</span> (<span class="nv">v</span> : a1 &lt;= a2) : AOrd a1 a2 := v.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">fold_BOrd</span> `{OrderR A} (a1 a2 : B) (v : a1 &lt;= a2) : BOrd a1 a2 := v.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="interaction-between-type-classes-and-auto-tactic-v-chk22" style="display: none" type="checkbox"><label class="alectryon-input" for="interaction-between-type-classes-and-auto-tactic-v-chk22"><span class="kn">Hint Resolve</span> fold_AOrd fold_BOrd.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre></li>
+</ol>
+<hr class="docutils" />
+<p><strong>Q:</strong> Thanks Jason. I'm afraid your solution does not work for me.
+Folding lemmas don't seem to change anything. Adjusting type of
+constructors works when proving <tt class="docutils literal">AOrd_reflexive</tt> but in the proof of
+<tt class="docutils literal">BOrd_reflexive</tt> it is still not possible to prove <tt class="docutils literal">a &lt;= a</tt> from
+<tt class="docutils literal">AOrd_reflexive</tt>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

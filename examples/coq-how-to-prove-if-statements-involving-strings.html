@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq: How to prove if statements involving strings?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-how-to-prove-if-statements-involving-strings">
+<h1 class="title">Coq: How to prove if statements involving strings?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46434503">https://stackoverflow.com/q/46434503</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have a <tt class="docutils literal">string a</tt> and on comparison with <tt class="docutils literal">string b</tt>, if equals
+has an <tt class="docutils literal">string c</tt>, else has <tt class="docutils literal">string x</tt>. I know in the hypothesis
+that <tt class="docutils literal">fun x &lt;= fun c</tt>. How do I prove this below statement? <tt class="docutils literal">fun</tt>
+is some function which takes in <tt class="docutils literal">string</tt> and returns <tt class="docutils literal">nat</tt>.</p>
+<pre class="code coq literal-block">
+<span class="kr">fun</span> <span class="o">(</span><span class="nv">if</span> <span class="nv">a</span> <span class="o">==</span> <span class="n">b</span> <span class="kr">then</span> <span class="n">c</span> <span class="kr">else</span> <span class="n">x</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">S</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">c</span><span class="o">).</span>
+</pre>
+<p>The logic seems obvious but I am unable to split the if statements in
+coq. Any help would be appreciated.</p>
+</div>
+<div class="section" id="answer-ejgallego">
+<h1>Answer (ejgallego)</h1>
+<p>Let me complement Yves answer pointing out to a general &quot;view&quot; pattern
+that works well in many situations were case analysis is needed. I
+will use the built-in support in math-comp but the technique is not
+specific to it.</p>
+<p>Let's assume your initial goal:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chk0"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> all_ssreflect.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ | _ ]&quot;</span> was already used <span class="kr">in</span> scope
+fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ : _ | _ ]&quot;</span> was already used <span class="kr">in</span>
+scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ &amp; _ | _ ]&quot;</span> was already used
+<span class="kr">in</span> scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ &amp; _ ]&quot;</span> was already used <span class="kr">in</span>
+scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ | _ ]&quot;</span> was already used <span class="kr">in</span>
+scope fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ in _ ]&quot;</span> was already used <span class="kr">in</span> scope
+fun_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ + _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ - _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt;= _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt; _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &gt;= _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &gt; _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt;= _ &lt;= _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt; _ &lt;= _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt;= _ &lt; _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ &lt; _ &lt; _&quot;</span> was already used <span class="kr">in</span> scope
+nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ * _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
+[notation-overridden,parsing]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chk1"><span class="kn">Variables</span> (<span class="nv">T</span> : eqType) (<span class="nv">a</span> <span class="nv">b</span> : T).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chk2"><span class="kn">Lemma</span> <span class="nf">u</span> : (<span class="kr">if</span> a == b <span class="kr">then</span> <span class="mi">0</span> <span class="kr">else</span> <span class="mi">1</span>) = <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> a == b <span class="kr">then</span> <span class="mi">0</span> <span class="kr">else</span> <span class="mi">1</span>) = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> a == b <span class="kr">then</span> <span class="mi">0</span> <span class="kr">else</span> <span class="mi">1</span>) = <span class="mi">2</span></div></blockquote></div></div></small></span></pre><p>now, you could use <tt class="docutils literal">case_eq</tt> + <tt class="docutils literal">simpl</tt> to arrive to next step;
+however, you can also match using more specialized &quot;view&quot; lemmas. For
+example, you could use <tt class="docutils literal">ifP</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">ifP
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">b</span> : bool) (<span class="nv">vT</span> <span class="nv">vF</span> : A),
+       if_spec b vT vF (b = false) b
+         (<span class="kr">if</span> b <span class="kr">then</span> vT <span class="kr">else</span> vF)</blockquote></div></div></small></span></pre><p>where <tt class="docutils literal">if_spec</tt> is:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Variant</span>
+<span class="nf">if_spec</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">b</span> : bool) (<span class="nv">vT</span> <span class="nv">vF</span> : A)
+(<span class="nv">not_b</span> : <span class="kt">Prop</span>) : bool -&gt; A -&gt; <span class="kt">Set</span> :=
+    IfSpecTrue : b -&gt; if_spec b vT vF not_b true vT
+  | IfSpecFalse : not_b -&gt;
+                  if_spec b vT vF not_b false vF
+
+<span class="kn">Arguments</span> if_spec [A]%type_scope _%bool_scope _ _
+  _%type_scope _%bool_scope _
+<span class="kn">Arguments</span> IfSpecTrue [A]%type_scope [b]%bool_scope _ _
+  _%type_scope _
+<span class="kn">Arguments</span> IfSpecFalse [A]%type_scope _%bool_scope _ _
+  [not_b]%type_scope _</blockquote></div></div></small></span></pre><p>That looks a bit confusing, the important bit is the parameters to the
+type family <tt class="docutils literal">bool <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> Set</tt>. The first exercise is &quot;prove the
+<tt class="docutils literal">ifP</tt> lemma!&quot;.</p>
+<p>Indeed, if we use <tt class="docutils literal">ifP</tt> in our proof, we get:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chk6"><span class="nb">case</span>: ifP.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">a == b -&gt; <span class="mi">0</span> = <span class="mi">2</span></div></blockquote><div class="alectryon-extra-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(a == b) = false -&gt; <span class="mi">1</span> = <span class="mi">2</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">a == b -&gt; <span class="mi">0</span> = <span class="mi">2</span></div></blockquote><div class="alectryon-extra-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(a == b) = false -&gt; <span class="mi">1</span> = <span class="mi">2</span></div></blockquote></div></div></div></small></span></pre><p>Note that we didn't have to specify anything! Indeed, lemmas of the
+form <tt class="docutils literal">{ A } + { B }</tt> are just special cases of this view pattern.
+This trick works in many other situations, for example, you can also
+use <tt class="docutils literal">eqP</tt>, which has a spec relating the boolean equality with the
+propositional one. If you do:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chk8"><span class="nb">case</span>: eqP.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b -&gt; <span class="mi">0</span> = <span class="mi">2</span></div></blockquote><div class="alectryon-extra-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">a &lt;&gt; b -&gt; <span class="mi">1</span> = <span class="mi">2</span></div></blockquote></div></div></div></small></span></pre><p>you'll get:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk9" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">a = b -&gt; <span class="mi">0</span> = <span class="mi">2</span></div></blockquote><div class="alectryon-extra-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">a &lt;&gt; b -&gt; <span class="mi">1</span> = <span class="mi">2</span></div></blockquote></div></div></div></small></span></pre><p>which is very convenient. In fact, <tt class="docutils literal">eqP</tt> is basically a generic
+version of the <tt class="docutils literal">type_dec</tt> principle.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> Where does the name &quot;view&quot; come from and what is the general
+intuition one should have about views? I mean, they are not rewriting
+equations or inversion lemmas.</p>
+<p><strong>A:</strong> I am not sure where does the name &quot;view&quot; come from, likely
+there are better names, maybe &quot;specification&quot;. I call it view as for
+some operators (ie <tt class="docutils literal">&lt;=</tt>) you have different &quot;views&quot; on the case
+analysis. The intuition behind a &quot;view&quot; is that it will do case
+analysis on some construction, <em>populating the context properly</em> as to
+continue the proof. This is sometimes not trivial and usually saves
+quite a bit amount of time.</p>
+</div>
+<div class="section" id="answer-yves">
+<h1>Answer (Yves)</h1>
+<p>If you can write an if-then-else statement, it means that the test
+expression <tt class="docutils literal">a == b</tt> is in a type with two constructors (like
+<tt class="docutils literal">bool</tt>) or (<tt class="docutils literal">sumbool</tt>). I will first assume the type is <tt class="docutils literal">bool</tt>.
+In that case, the best approach during a proof is to enter the
+following command.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chka"><span class="nb">case_eq</span> (a == b); <span class="nb">intros</span> hyp_ab.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>hyp_ab</var><span class="hyp-type"><b>: </b><span>(a == b) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">fn c &lt;= S (fn c)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chkb" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>hyp_ab</var><span class="hyp-type"><b>: </b><span>(a == b) = false</span></span></span><br></div><label class="goal-separator" for="coq-how-to-prove-if-statements-involving-strings-v-chkb"><hr></label><div class="goal-conclusion">fn x &lt;= S (fn c)</div></blockquote></div></div></div></small></span></pre><p>This will generate two goals. In the first one, you will have an
+hypothesis that asserts that the test succeeds and the goal conclusion
+has the following shape (the <em>if-then-else</em> is replaced by the <em>then</em>
+branch):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chkc" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+
+  hyp_ab : (a == b) = true
+  ============================
+  fn c &lt;= S (fn c)</blockquote></div></div></small></span></pre><p>In the second goal, you will have an hypothesis and the goal
+conclusion has the following shape (the <em>if-then-else</em> is replaced by
+the <em>else</em> branch).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chkd" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">2</span> <span class="kr">is</span>:
+
+  hyp_ab : (a == b) = false
+  ============================
+  fn x &lt;= S (fn c)</blockquote></div></div></small></span></pre><p>You should be able to carry on from there.</p>
+<p>On the other hand, the <tt class="docutils literal">String</tt> library from Coq has a function
+<tt class="docutils literal">string_dec</tt> with return type</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">string_dec
+     : <span class="kr">forall</span> <span class="nv">s1</span> <span class="nv">s2</span> : string, {s1 = s2} + {s1 &lt;&gt; s2}</blockquote></div></div></small></span></pre><p>If your notation <tt class="docutils literal">a == b</tt> is a pretty notation for <tt class="docutils literal">string_dec a
+b</tt>, it is better to use the following tactic:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-if-statements-involving-strings-v-chkf"><span class="nb">destruct</span> (a == b) <span class="kr">as</span> [hyp_ab | hyp_ab].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>hyp_ab</var><span class="hyp-type"><b>: </b><span>a = b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">fn c &lt;= S (fn c)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-how-to-prove-if-statements-involving-strings-v-chk10" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>hyp_ab</var><span class="hyp-type"><b>: </b><span>a &lt;&gt; b</span></span></span><br></div><label class="goal-separator" for="coq-how-to-prove-if-statements-involving-strings-v-chk10"><hr></label><div class="goal-conclusion">fn x &lt;= S (fn c)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>The behavior will be quite close to what I described above, only
+easier to use.</p>
+<p>Intuitively, when you reason on an <em>if-then-else</em> statement, you use a
+command like <tt class="docutils literal">case_eq</tt>, <tt class="docutils literal">destruct</tt>, or <tt class="docutils literal">case</tt> that leads you to
+studying separately the two executions paths, remember in an
+hypothesis why you took each of these executions paths.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
