@@ -17,7 +17,7 @@ From Coq Require Import List Program.
 Import ListNotations.
 
 Program Fixpoint f l {measure (length l)} : list nat :=
-  let f_rec := (f (tl l) ) in
+  let f_rec := f (tl l) in
   match hd_error l with
   | Some n => n :: f_rec
   | None => []
