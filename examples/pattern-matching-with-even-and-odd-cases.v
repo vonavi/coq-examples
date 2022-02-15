@@ -18,7 +18,7 @@ Fail Fixpoint sum_of_halves (a : nat) : nat :=
   match a with
   | 0 => 0
   | 2 * k => a + (sum_of_halves k)
-  | S (2 * k)  => a + (sum_of_halves k)
+  | S (2 * k) => a + (sum_of_halves k)
   end. (* .unfold .fails *)
 
 (*|
