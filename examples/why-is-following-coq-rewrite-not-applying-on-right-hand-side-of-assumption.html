@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Why is following Coq rewrite not applying on right hand side of assumption?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption">
+<h1 class="title">Why is following Coq rewrite not applying on right hand side of assumption?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46016461">https://stackoverflow.com/q/46016461</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have following Coq env.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHm</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, n + n = m + m -&gt; n = m</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>S (n + S n) = S (m + S m)</span></span></span><br><span><var>ll</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">k</span> : nat, k + S k = S k + k</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>Doing <tt class="docutils literal">rewrite ll in H</tt>, only changes the LHS <tt class="docutils literal">S (n + S n)</tt> to <tt class="docutils literal">S
+(S n + n)</tt> but not the RHS <tt class="docutils literal">S (m + S m)</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHm</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, n + n = m + m -&gt; n = m</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>S (S n + n) = S (m + S m)</span></span></span><br><span><var>ll</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">k</span> : nat, k + S k = S k + k</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p><tt class="docutils literal">ll</tt> should be applicable on all variables of type <tt class="docutils literal">nat</tt>. What is
+wrong here?</p>
+<hr class="docutils" />
+<p><strong>A (ejgallego):</strong> <tt class="docutils literal">rewrite H</tt> will only use one instantiation of
+<tt class="docutils literal">H</tt>, you need to use the <tt class="docutils literal">!</tt> quantifier to force more rewrites to
+happen. Example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk2"><span class="kn">Lemma</span> <span class="nf">ex</span> <span class="nv">n</span> <span class="nv">m</span> : n = m -&gt; n + <span class="mi">0</span> = m + <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = m -&gt; n + <span class="mi">0</span> = m + <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = m -&gt; n + <span class="mi">0</span> = m + <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> &lt;- !plus_n_O.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Expanding on Emilio's comment, <tt class="docutils literal">rewrite H</tt> and <tt class="docutils literal">rewrite H in H'</tt>
+will first find an instantiation for all (dependently) quantified
+variables of <tt class="docutils literal">H</tt>, and then replace all occurrences <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a> of that
+instantiated LHS with the RHS. I believe it finds the topmost/leftmost
+instantiation in the syntax tree. So, for example, if you do this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk4"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>,
+    (<span class="kr">forall</span> <span class="nv">x</span>, x + <span class="mi">0</span> = x) -&gt; (a + <span class="mi">0</span>) * (a + <span class="mi">0</span>) * (b + <span class="mi">0</span>) = a * a * b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat,
+(<span class="kr">forall</span> <span class="nv">x</span> : nat, x + <span class="mi">0</span> = x) -&gt;
+(a + <span class="mi">0</span>) * (a + <span class="mi">0</span>) * (b + <span class="mi">0</span>) = a * a * b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk5"><span class="nb">intros</span> a b H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : nat, x + <span class="mi">0</span> = x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(a + <span class="mi">0</span>) * (a + <span class="mi">0</span>) * (b + <span class="mi">0</span>) = a * a * b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="why-is-following-coq-rewrite-not-applying-on-right-hand-side-of-assumption-v-chk6"><span class="nb">rewrite</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : nat, x + <span class="mi">0</span> = x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a * a * (b + <span class="mi">0</span>) = a * a * b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>the <tt class="docutils literal">rewrite H</tt> will choose to instantiate <tt class="docutils literal">x</tt> with <tt class="docutils literal">a</tt>, and the
+resulting goal will be <tt class="docutils literal">a * a * (b + 0) = a * a * b</tt>. You can prefix
+the lemma with <tt class="docutils literal">!</tt> (as in <tt class="docutils literal">rewrite !H</tt>) to mean &quot;rewrite
+everywhere, picking as many instantiations as you can&quot;, or with <tt class="docutils literal">?</tt>
+(as in <tt class="docutils literal">rewrite <span class="pre">?H</span></tt>) to mean <tt class="docutils literal">try rewrite !H</tt>, i.e., you can pick
+multiple instantiations, and also don't fail if you can't find any.</p>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>There's actually a bit more nuance, which is that the
+replacement is done in a single pass with rewrite H and in multiple
+passes with <tt class="docutils literal">rewrite <span class="pre">?H</span></tt> and <tt class="docutils literal">rewrite !H</tt>. This only shows up
+when the first replacement(s) expose other replacement locations
+that weren't previously available. This shows up, for example, if
+you rewrite with <tt class="docutils literal">a + 0 = a</tt> in the goal <tt class="docutils literal">(a + 0) + 0 = a</tt>;
+<tt class="docutils literal">rewrite H</tt> leaves the goal <tt class="docutils literal">a + 0 = 0</tt>.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div></body>
+</html>
