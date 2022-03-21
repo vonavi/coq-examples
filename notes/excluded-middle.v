@@ -45,68 +45,84 @@ of `Turing machine <https://en.wikipedia.org/wiki/Turing_machine>`__.
 As a result, not every proposition ``P x`` returns true or false,
 sometimes it may does not halt. After taking a look at this lemma
 again, we see that we are also trying to prove that ``P x`` return the
-result for every ``x``. In contrast, the previous lemma
+result for some ``x``. In contrast, the previous lemma
 ``forall_not_exists`` includes the statement of ``P x`` halting as a
 hypothesis.
 
 In other words, `the excluded-middle law
 <https://en.wikipedia.org/wiki/Law_of_excluded_middle>`__ (``P x \/ ~
-P x``) is not always valid in constructive logic. However, it can be
-introduced to provide the proof for our example:
+P x``) is not always valid in constructive logic; but is not in
+contradiction with it. In fact, this law is provided by module
+``Coq.Logic.Classical``, and is usually used in two equivalent forms:
 |*)
 
-Lemma not_forall_exists : forall {T : Type} (P : T -> Prop),
-    ~ (forall x, P x) -> (exists x, ~ P x).
-Proof.
-  intros T P. (* .unfold .no-hyps *)
-Abort. (* .none *)
+Require Import Coq.Logic.Classical. (* .none *)
+Check classic. (* .unfold .messages *)
+Check NNPP. (* .unfold .messages *)
 
 (*|
-There is a useful trick in order to deal with goals like ``~ P -> Q``,
-which we formulate as a lemma and prove it in two different ways. Of
-course, both of them are based on the excluded-middle law, which in
-turn is provided by module ``Coq.Logic.Classical``.
+Taking a look again at lemma ``not_forall_exists``, one sees that its
+statement has the form of ``~ P -> Q``. There is a useful trick in
+order to deal with such goals called `proof by contradiction
+<https://en.wikipedia.org/wiki/Proof_by_contradiction>`__. It is based
+on the excluded-middle law, and we will proof it in two different
+ways.
 |*)
 
+Reset Initial. (* .none *)
 Require Import Coq.Logic.Classical.
 
-Lemma negate_impl : forall P Q : Prop, (~ P -> Q) -> (~ Q -> P).
+Lemma assume_opposite : forall P Q : Prop, (~ P -> Q) -> (~ Q -> P).
 Proof.
   intros P Q H H0. apply NNPP. intro H1. apply H0, (H H1).
 Qed.
 
-Reset negate_impl.
-Lemma negate_impl : forall P Q : Prop, (~ P -> Q) -> (~ Q -> P).
+Reset assume_opposite.
+
+Lemma assume_opposite : forall P Q : Prop, (~ P -> Q) -> (~ Q -> P).
 Proof.
   intros P Q. case (classic P); auto. intros H H0 H1.
   exfalso. apply H1, (H0 H).
 Qed.
 
-(*| Now, we can make a step ahead: |*)
+(*|
+It should be noticed that lemma ``assume_opposite`` changes the order
+of computation (the result ``Q`` now precedes the assumption ``P``),
+which is prohibited in a real computation. However, it does not relate
+to propositions (``Prop``) which are excluded from computation in Coq.
+The reason is to keep the ability to add the excluded-middle law for
+``Prop``.
+
+So, let us "change the order of computation" at lemma
+``not_forall_exists``:
+|*)
 
 Lemma not_forall_exists : forall {T : Type} (P : T -> Prop),
     ~ (forall x, P x) -> (exists x, ~ P x).
 Proof.
-  intros T P. apply negate_impl. intros H x.
+  intros T P. apply assume_opposite. intros H x.
 
 (*|
-It should be noted that the use of the trick allows us to get value
-``x``---a candidate for ``exists x, ~ P x``:
+As a result, we get value ``x``---a candidate for ``exists x, ~ P
+x``---impossible in the direct computation:
 |*)
 
-  assert (~ ~ P x) by (intro H0; apply H; now exists x). revert H0.
+  assert (~ ~ P x) by (intro H0; apply H; now exists x).
 
 (*|
-The goal is transformed to suit the form of lemma ``negate_impl``, in
-order to demonstrate the generality of the lemma. Now, its application
-finishes the proof:
+We will transform the goal to suit lemma ``assume_opposite``, in order
+to demonstrate the generality of the lemma. Then, its application will
+finish the proof:
 |*)
 
-  now apply negate_impl.
+  revert H0. now apply assume_opposite.
 Qed.
 
 (*|
 ----
+
+Below are appropriate examples found on `Stack Overflow
+<https://stackoverflow.com/>`__:
 
 1. `<../examples/can-any-one-help-me-how-to-prove-this-therom-in-coq.html>`__
 2. `<../examples/how-to-enumerate-set-in-coq-ensemble.html>`__
