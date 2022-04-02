@@ -35,9 +35,9 @@ either the number or the argument after it is structurally smaller.</p>
 complains that a proof argument that contains the semantics of the
 decreasing number is not an inductive type.</p>
 <p>I could probably do well-founded recursion manually, but I would like
-to use Program Fixpoint or Equations. With Program Fixpoint I get a
-very ugly version of the well-foundedness proof. Below is a minimal
-code example that demonstrates the ugliness.</p>
+to use <tt class="docutils literal">Program Fixpoint</tt> or <tt class="docutils literal">Equations</tt>. With <tt class="docutils literal">Program
+Fixpoint</tt> I get a very ugly version of the well-foundedness proof.
+Below is a minimal code example that demonstrates the ugliness.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tuple_lt</span> : (nat * nat) -&gt; (nat * nat) -&gt; <span class="kt">Prop</span> :=
@@ -68,7 +68,7 @@ Acc
   (<span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> : {_ : nat &amp; nat} =&gt;
    tuple_lt (projT1 x, projT2 x) (projT1 y, projT2 y))
   a</div></blockquote></div></div></small></span></pre><p>The obligation looks like this:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">subgoal <span class="mi">1</span> <span class="kr">is</span>:
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="structural-recursion-on-two-arguments-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   ============================
   <span class="kr">forall</span> <span class="nv">a</span> : {_ : nat &amp; nat},
@@ -79,15 +79,16 @@ Acc
 proof or avoid generating it?</p>
 <p>Is there a proof in the standard library for structural recursion on
 two arguments?</p>
-<p>How do I even write a manual WF proof using Equations? The manual does
-not mention that.</p>
+<p>How do I even write a manual WF proof using <tt class="docutils literal">Equations</tt>? The manual
+does not mention that.</p>
 </div>
 <div class="section" id="answer">
 <h1>Answer</h1>
 <p>In simple cases like this one, you shouldn't have to unfold
 definitions such as <tt class="docutils literal">well_founded</tt> and <tt class="docutils literal">MR</tt>, but rather use
 appropriate lemmas.</p>
-<p>To deal with <tt class="docutils literal">MR</tt>, you can use lemma <tt class="docutils literal">measure_wf</tt> in Program.Wf.</p>
+<p>To deal with <tt class="docutils literal">MR</tt>, you can use lemma <tt class="docutils literal">measure_wf</tt> in
+<tt class="docutils literal">Program.Wf</tt>.</p>
 <p>To prove the well-foundedness of <tt class="docutils literal">tuple_lt</tt>, you can rely on lemmas
 showing the well-foundedness of a relation based on the
 well-foundedness of another relation. Here, we can use
