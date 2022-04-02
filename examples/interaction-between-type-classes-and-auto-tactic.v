@@ -112,7 +112,7 @@ Proof.
 
 (*| leaves me with a goal: |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

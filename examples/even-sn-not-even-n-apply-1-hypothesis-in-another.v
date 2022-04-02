@@ -30,7 +30,7 @@ Proof.
 
 (*| Here is the result: |*)
 
-      Show 1. (* .unfold .messages *)
+      Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

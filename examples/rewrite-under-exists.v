@@ -26,7 +26,7 @@ Proof.
 
 (*| After introducing, I have the following environment: |*)
 
-  Show 1. (* .unfold .no-in .no-messages *)
+  Show. (* .unfold .messages *)
 
 (*|
 My question is: is there a possibility to rewrite ``H`` under the
@@ -95,7 +95,7 @@ can be finished by:
 
 (*| After ``inversion H0``, we have in the environment: |*)
 
-  Restart. (* .none *) intros. (* .none *)
-  inversion H0. (* .unfold .no-in .no-messages *)
+  Restart. (* .none *) intros. (* .none *) inversion H0. (* .none *)
+  Show. (* .unfold .messages *)
 
 (*| and we can now work with ``x``. |*)

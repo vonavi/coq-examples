@@ -42,7 +42,7 @@ In the first inductive step (marked by the first admit), the inductive
 hypothesis shows the following:
 |*)
 
-      Undo. (* .none *) Show 1. (* .unfold .messages *)
+      Undo. (* .none *) Show. (* .unfold .messages *)
 
 (*|
 I am not sure how I can leverage this hypothesis to prove the subgoal.

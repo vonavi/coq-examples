@@ -25,7 +25,7 @@ Proof.
 
 (*| The resulting goal after invoking ``unfold`` is |*)
 
-  Show 1. (* .unfold .goals *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

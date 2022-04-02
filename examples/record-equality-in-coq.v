@@ -26,7 +26,7 @@ Lemma Sample_eq : forall a b : Sample, a = b <-> SA a = SA b /\ SB a = SB b.
 
 (*| I see this: |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

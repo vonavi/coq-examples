@@ -85,7 +85,7 @@ When I get to "?????????????????" that's where I'm stuck. I have a
 target like
 |*)
 
-    Show 1. (* .unfold .messages *)
+    Show. (* .unfold .messages *)
   Admitted. (* .none *)
 
 (*|

@@ -47,10 +47,16 @@ Destruct is suppose to resolve the following issue:
 which it clearly it must resolve it since Coq later accepts the proof.
 But if one looks carefully what the second goal is, it seems that the
 same issue as above is re-introduced:
+
+.. coq:: none
 |*)
 
-Goal forall n : nat, beq_nat (n + 1) 0 = false. (* .none *)
-  intros n. (* .none *) destruct n as [| n']. (* .unfold .no-in *)
+Goal forall n : nat, beq_nat (n + 1) 0 = false.
+  intros n. destruct n as [| n'].
+
+(*||*)
+
+  Show. (* .unfold .messages *)
 
 (*|
 now we have ``n'`` as the first argument for both ``beq_nat`` and

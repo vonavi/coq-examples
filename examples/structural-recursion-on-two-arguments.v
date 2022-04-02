@@ -20,9 +20,9 @@ complains that a proof argument that contains the semantics of the
 decreasing number is not an inductive type.
 
 I could probably do well-founded recursion manually, but I would like
-to use Program Fixpoint or Equations. With Program Fixpoint I get a
-very ugly version of the well-foundedness proof. Below is a minimal
-code example that demonstrates the ugliness.
+to use ``Program Fixpoint`` or ``Equations``. With ``Program
+Fixpoint`` I get a very ugly version of the well-foundedness proof.
+Below is a minimal code example that demonstrates the ugliness.
 |*)
 
 Require Import Program.
@@ -45,7 +45,7 @@ Next Obligation.
 
 (*| The obligation looks like this: |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
@@ -55,8 +55,8 @@ proof or avoid generating it?
 Is there a proof in the standard library for structural recursion on
 two arguments?
 
-How do I even write a manual WF proof using Equations? The manual does
-not mention that.
+How do I even write a manual WF proof using ``Equations``? The manual
+does not mention that.
 |*)
 
 (*|
@@ -67,7 +67,8 @@ In simple cases like this one, you shouldn't have to unfold
 definitions such as ``well_founded`` and ``MR``, but rather use
 appropriate lemmas.
 
-To deal with ``MR``, you can use lemma ``measure_wf`` in Program.Wf.
+To deal with ``MR``, you can use lemma ``measure_wf`` in
+``Program.Wf``.
 
 To prove the well-foundedness of ``tuple_lt``, you can rely on lemmas
 showing the well-foundedness of a relation based on the

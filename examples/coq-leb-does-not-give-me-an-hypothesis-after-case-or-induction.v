@@ -27,7 +27,7 @@ Proof.
 
 (*| Gives me the result |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 
 (*|
 It seems trivial that either ``a`` is smaller than or equal to ``b``,

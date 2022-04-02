@@ -29,7 +29,7 @@ Proof.
 
 (*| This leaves me with the goal: |*)
 
-  Show 1. (* .unfold .goals *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

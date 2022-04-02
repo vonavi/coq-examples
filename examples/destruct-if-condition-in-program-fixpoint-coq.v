@@ -48,7 +48,7 @@ Proof.
 after ``unfold`` I expected see a ``if`` and destruct its condition,
 but now I see this:
 |*)
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*| How I can complete the proof? |*)
@@ -99,7 +99,7 @@ Proof.
   2: now rewrite Z.pow_0_r; apply Z.divide_1_l.
 
 (*| Now your goal state is |*)
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*| which probably makes more sense. |*)

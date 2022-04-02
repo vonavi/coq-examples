@@ -31,7 +31,7 @@ Proof.
 
 (*||*)
 
-      Show 1. (* .unfold .messages *)
+      Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

@@ -42,10 +42,11 @@ Reset test_nostutter_4.
 Example test_nostutter_4 : not (nostutter [3;1;1;4]).
 Proof.
   intro. inversion_clear H. inversion_clear H0.
+  unfold not in H2.
 
 (*||*)
 
-  unfold not in H2. (* .unfold .hyps .goals *)
+  Show. (* .unfold .messages *)
 
 (*|
 Here is ``eq`` Prop whose constructor ``eq_refl`` is used in
@@ -71,7 +72,7 @@ expression in ``H2`` satisfies ``eq_refl`` constructor and therefore
 And we get
 |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
@@ -91,7 +92,7 @@ Proof.
 
 (*| This gives: |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
@@ -114,7 +115,7 @@ Proof.
 
 (*| It gives us: |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

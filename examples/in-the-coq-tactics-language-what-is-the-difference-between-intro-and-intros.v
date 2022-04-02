@@ -84,14 +84,14 @@ Let's say we have a proof state like this
 
 Goal True -> (True /\ True) -> (True /\ True /\ True)
      -> (True /\ True /\ True /\ True -> True). (* .none *)
-  intros H1 H2 H3. (* .unfold .no-in *)
+  intros H1 H2 H3. (* .none *) Show. (* .unfold .messages *)
 
 (*|
 then e.g. ``intro H4 after H3`` will modify the proof state like so:
 |*)
 
-  intro H4 after H3. (* .unfold .no-in *)
+  intro H4 after H3. (* .none *) Show. (* .unfold .messages *)
 
 (*| and ``intro H4 after H1`` will produce |*)
 
-  Undo. (* .none *) intro H4 after H1. (* .unfold .no-in *)
+  Undo. (* .none *) intro H4 after H1. (* .none *) Show. (* .unfold .messages *)

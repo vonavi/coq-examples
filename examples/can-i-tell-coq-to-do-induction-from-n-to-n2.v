@@ -45,7 +45,7 @@ But apparently induction works one natural number at a time, and
 ``exists k : nat, S n' = double k`` is clearly not provable.
 |*)
 
-    Show 1. (* .unfold .messages *)
+    Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*| Is there a way to have induction go from ``n`` to ``n + 2``? |*)

@@ -81,7 +81,7 @@ Proof.
 
 (*| Here you will end up with |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 
 (*| But you could also give the proof directly with |*)
 

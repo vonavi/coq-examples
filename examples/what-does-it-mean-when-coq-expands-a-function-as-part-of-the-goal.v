@@ -39,11 +39,11 @@ Proof.
 
 (*| at that point Coq changes the goal from: |*)
 
-    Undo. (* .none *) Show 1. (* .unfold .messages *)
+    Undo. (* .none *) Show. (* .unfold .messages *)
 
 (*| to: |*)
 
-    simpl. (* .none *) Show 1. (* .unfold .messages *)
+    simpl. (* .none *) Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

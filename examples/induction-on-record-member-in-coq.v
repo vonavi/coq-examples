@@ -75,7 +75,7 @@ Proof.
 
 (*| After calling ``remember``, the goal becomes: |*)
 
-  Undo 2. (* .none *) Show 1. (* .unfold .messages *)
+  Undo 2. (* .none *) Show. (* .unfold .messages *)
 
 (*|
 If you do induction on ``n`` directly after ``remember``, it is

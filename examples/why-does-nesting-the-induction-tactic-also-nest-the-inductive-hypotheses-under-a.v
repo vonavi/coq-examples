@@ -22,7 +22,7 @@ Proof.
 
 (*| The above is from the Software Foundation's second chapter. |*)
 
-      Show 1. (* .unfold .messages *)
+      Show. (* .unfold .messages *)
 
 (*|
 I am really confused as to what ``IHm`` is supposed to be here. The
@@ -84,7 +84,7 @@ determine the predicate ``P : nat -> Prop`` that you want to prove by
 induction. Before calling ``induction`` for the second time, the proof
 state looks like this:
 |*)
-      Undo 6. (* .unfold .no-in *)
+      Undo 6. (* .none *) Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

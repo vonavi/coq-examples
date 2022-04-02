@@ -27,7 +27,7 @@ After the compute step, we are left with the following context and
 subgoal
 |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 
 (*|
 Clearly the left hand side and right hand side are equal. But I am not

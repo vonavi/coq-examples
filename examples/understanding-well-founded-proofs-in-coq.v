@@ -33,7 +33,7 @@ Section wf_proof_wf_inc.
 
 (*| which creates the following context: |*)
 
-    Show 1. (* .unfold .messages *)
+    Show. (* .unfold .messages *)
   Admitted. (* .none *)
 End wf_proof_wf_inc. (* .none *)
 

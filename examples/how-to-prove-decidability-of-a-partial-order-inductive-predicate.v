@@ -86,11 +86,11 @@ mater). I get stuck in situations like the following:
 Reset le_dec.
 Theorem le_dec : forall x y, { le x y } + { ~le x y }.
   intros x y. destruct x, y; eauto using le.
-  - apply right.
+  - apply right. intros H.
 
 (*||*)
 
-    intros H. (* .unfold .no-in *)
+    Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|

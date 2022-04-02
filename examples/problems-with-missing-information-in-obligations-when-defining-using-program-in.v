@@ -31,7 +31,7 @@ The problem is that, when I start solving the first obligation, this
 is what I am left with
 |*)
 
-  Show 1. (* .unfold .messages *)
+  Show. (* .unfold .messages *)
 Abort. (* .none *)
 
 (*|
