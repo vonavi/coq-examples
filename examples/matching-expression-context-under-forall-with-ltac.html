@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Matching expression context under forall with Ltac</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="matching-expression-context-under-forall-with-ltac">
+<h1 class="title">Matching expression context under <tt class="docutils literal">forall</tt> with Ltac</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45389615">https://stackoverflow.com/q/45389615</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Say I have the following definitions in Coq:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Compare</span> := Lt | Eq | Gt.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">compare</span> (<span class="nv">x</span> <span class="nv">y</span> : nat) : Compare :=
+  <span class="kr">match</span> x, y <span class="kr">with</span>
+  | <span class="mi">0</span>, <span class="mi">0</span>   =&gt; Eq
+  | <span class="mi">0</span>, S _ =&gt; Lt
+  | S _, <span class="mi">0</span> =&gt; Gt
+  | S x&#39;, S y&#39; =&gt; <span class="nb">compare</span> x&#39; y&#39;
+  <span class="kr">end</span>.</span></span></pre><p>Now consider this lemma:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-expression-context-under-forall-with-ltac-v-chk0"><span class="kn">Lemma</span> <span class="nf">foo</span> : <span class="kr">forall</span> (<span class="nv">x</span> : nat),
+    (<span class="kr">forall</span> <span class="nv">z</span>, <span class="kr">match</span> <span class="nb">compare</span> x z <span class="kr">with</span>
+               | Lt =&gt; <span class="kt">False</span>
+               | Eq =&gt; <span class="kt">False</span>
+               | Gt =&gt; <span class="kt">False</span>
+               <span class="kr">end</span>) -&gt; nat -&gt; <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat,
+(<span class="kr">forall</span> <span class="nv">z</span> : nat,
+ <span class="kr">match</span> <span class="nb">compare</span> x z <span class="kr">with</span>
+ | Lt | _ =&gt; <span class="kt">False</span>
+ <span class="kr">end</span>) -&gt; nat -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-expression-context-under-forall-with-ltac-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat,
+(<span class="kr">forall</span> <span class="nv">z</span> : nat,
+ <span class="kr">match</span> <span class="nb">compare</span> x z <span class="kr">with</span>
+ | Lt | _ =&gt; <span class="kt">False</span>
+ <span class="kr">end</span>) -&gt; nat -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-expression-context-under-forall-with-ltac-v-chk2"><span class="nb">intros</span> x H y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">z</span> : nat,
+<span class="kr">match</span> <span class="nb">compare</span> x z <span class="kr">with</span>
+| Lt | _ =&gt; <span class="kt">False</span>
+<span class="kr">end</span></span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small></span></pre><p>At this point proof state looks like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  x : nat
+  H : <span class="kr">forall</span> <span class="nv">z</span> : nat,
+      <span class="kr">match</span> <span class="nb">compare</span> x z <span class="kr">with</span>
+      | Lt | _ =&gt; <span class="kt">False</span>
+      <span class="kr">end</span>
+  y : nat
+  ============================
+  <span class="kt">False</span></blockquote></div></div></small></span></pre><p>I'd like to write Ltac <tt class="docutils literal">match goal</tt> that will detect that:</p>
+<ol class="loweralpha simple">
+<li>there is a hypothesis <tt class="docutils literal">x : nat</tt> that is used as an argument to
+<tt class="docutils literal">compare</tt> somewhere inside a quantified hypothesis <tt class="docutils literal">H</tt></li>
+<li>and there is some other hypothesis of type <tt class="docutils literal">nat</tt> - namely <tt class="docutils literal">y</tt> -
+that can be used to specialize the quantified hypothesis.</li>
+<li>and once we have those two things specialize <tt class="docutils literal">H</tt> to <tt class="docutils literal">y</tt></li>
+</ol>
+<p>I tried doing it like this:</p>
+<pre class="code coq literal-block">
+<span class="kr">match goal with</span>
+<span class="o">|</span> <span class="o">[</span> <span class="n">X</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">Y</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">H</span> <span class="o">:</span> <span class="kr">forall</span> <span class="o">(</span><span class="nv">z</span> <span class="o">:</span> <span class="n">nat</span><span class="o">),</span> <span class="kp">context</span><span class="o">[</span><span class="nb">compare</span> <span class="n">X</span> <span class="n">z</span><span class="o">]</span> <span class="o">|-</span> <span class="n">_</span> <span class="o">]</span> <span class="o">=&gt;</span>
+    <span class="nb">specialize</span> <span class="o">(</span><span class="n">H</span> <span class="n">Y</span><span class="o">)</span>
+<span class="kr">end</span><span class="o">.</span>
+</pre>
+<p>But there are at least two things that are wrong with this code:</p>
+<ol class="arabic simple">
+<li>Using <tt class="docutils literal">context</tt> under a <tt class="docutils literal">forall</tt> seems disallowed.</li>
+<li>I can't figure out a correct way to pass <tt class="docutils literal">X</tt> as argument to
+<tt class="docutils literal">compare</tt> in a way that it is recognized as something that exists
+as a hypothesis.</li>
+</ol>
+</div>
+<div class="section" id="answer-yves">
+<h1>Answer (Yves)</h1>
+<p>If you want to check that <tt class="docutils literal">X</tt> occurs in the quantified hypothesis
+<tt class="docutils literal">H</tt>, it suffices to check that it occurs in <tt class="docutils literal">H</tt> after it is
+instantiated with any value that does not contain <tt class="docutils literal">X</tt>. For instance,
+you can instantiate <tt class="docutils literal">H</tt> with <tt class="docutils literal">Y</tt> by simply writing the application
+of <tt class="docutils literal">H</tt> as a function to <tt class="docutils literal">Y</tt>. Here is my proposal:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-expression-context-under-forall-with-ltac-v-chk4"><span class="kr">match goal with</span>
+  | X : nat, H : _, Y : nat |- _ =&gt;
+      <span class="kr">match</span> <span class="kp">type of</span> (H Y) <span class="kr">with</span>
+      | <span class="kp">context</span>[X] =&gt; <span class="nb">specialize</span> (H Y)
+      <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> <span class="nb">compare</span> x y <span class="kr">with</span>
+| Lt | _ =&gt; <span class="kt">False</span>
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small></span></pre><p>This Ltac text really checks that <tt class="docutils literal">H</tt> is a function. If you want to
+be more precise and state that <tt class="docutils literal">H</tt> should really be a universal
+quantification (or a product type), then you can check that the type
+of <tt class="docutils literal">(H Y)</tt> also contains <tt class="docutils literal">Y</tt>, as in the following fragment:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-expression-context-under-forall-with-ltac-v-chk5"><span class="kr">match goal with</span>
+  | X : nat, H : _, Y : nat |- _ =&gt;
+      <span class="kr">match</span> <span class="kp">type of</span> (H Y) <span class="kr">with</span>
+      | <span class="kp">context</span>[X] =&gt;
+          <span class="kr">match</span> <span class="kp">type of</span> (H Y) <span class="kr">with</span>
+          | <span class="kp">context</span>[Y] =&gt; <span class="nb">specialize</span> (H Y)
+          <span class="kr">end</span>
+      <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> <span class="nb">compare</span> x y <span class="kr">with</span>
+| Lt | _ =&gt; <span class="kt">False</span>
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small></span></pre><hr class="docutils" />
+<p><strong>Q:</strong> Can you explain the meaning of <tt class="docutils literal">match type</tt>? Is this
+documented anywhere in Coq manual?</p>
+<p><strong>A:</strong> Here you have the combination of two constructs of the Ltac
+language. <tt class="docutils literal">match ... with</tt> and <tt class="docutils literal">type of</tt>. If you write <tt class="docutils literal">match H
+with</tt> you only look at the symbol <tt class="docutils literal">H</tt>, on the other hand, if you
+want to observe the hypothesis statement, you have to look at its
+type. This is documented in section 9 of the manual.</p>
+</div>
+<div class="section" id="answer-daniel-schoepe">
+<h1>Answer (Daniel Schoepe)</h1>
+<p>This doesn't quite do what you are asking for, but it's somewhat
+close:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-expression-context-under-forall-with-ltac-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-expression-context-under-forall-with-ltac-v-chk6"><span class="kr">match goal with</span>
+  | [ X : nat, Y : nat, H : <span class="kp">context</span>[<span class="nb">compare</span> <span class="nl">?a</span> _] |- _ ] =&gt;
+      <span class="kr">match</span> <span class="kp">type of</span> H <span class="kr">with</span>
+      | <span class="kr">forall</span> (<span class="nv">z</span> : nat), _ =&gt;
+          <span class="kr">match</span> a <span class="kr">with</span>
+          | X =&gt; <span class="nb">specialize</span> (H Y)
+          <span class="kr">end</span>
+      <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> <span class="nb">compare</span> x y <span class="kr">with</span>
+| Lt | _ =&gt; <span class="kt">False</span>
+<span class="kr">end</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small></span></pre><p>However, this does not check that the second argument to <tt class="docutils literal">compare</tt>
+matches the <tt class="docutils literal">z</tt> that is bound by the <tt class="docutils literal">forall</tt>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
