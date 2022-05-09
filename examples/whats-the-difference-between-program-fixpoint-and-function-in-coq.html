@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>What's the difference between Program Fixpoint and Function in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="what-s-the-difference-between-program-fixpoint-and-function-in-coq">
+<h1 class="title">What's the difference between <tt class="docutils literal">Program Fixpoint</tt> and <tt class="docutils literal">Function</tt> in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44606245">https://stackoverflow.com/q/44606245</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>They seem to serve similar purposes. The one difference I've noticed
+so far is that while <tt class="docutils literal">Program Fixpoint</tt> will accept a compound
+measure like <tt class="docutils literal">{measure (length l1 + length l2)}</tt>, <tt class="docutils literal">Function</tt> seems
+to reject this and will only allow <tt class="docutils literal">{measure length l1}</tt>.</p>
+<p>Is <tt class="docutils literal">Program Fixpoint</tt> strictly more powerful than <tt class="docutils literal">Function</tt>, or
+are they better suited for different use cases?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This may not be a complete list, but it is what I have found so far:</p>
+<ul class="simple">
+<li>As you already mentioned, <tt class="docutils literal">Program Fixpoint</tt> allows the measure to
+look at more than one argument.</li>
+<li><tt class="docutils literal">Function</tt> creates a <tt class="docutils literal">foo_equation</tt> lemma that can be used to
+rewrite calls to <tt class="docutils literal">foo</tt> with its RHS. Very useful to avoid problems
+like <a class="reference external" href="https://stackoverflow.com/q/36329256/946226">Coq simpl for Program Fixpoint</a>.</li>
+<li>In some (simple?) cases, <tt class="docutils literal">Function</tt> can define a <tt class="docutils literal">foo_ind</tt> lemma
+to perform induction along the structure of recursive calls of
+<tt class="docutils literal">foo</tt>. Again, very useful to prove things about <tt class="docutils literal">foo</tt> without
+effectively repeating the termination argument in the proof.</li>
+<li><tt class="docutils literal">Program Fixpoint</tt> can be tricked into supporting nested
+recursion, see <a class="reference external" href="https://stackoverflow.com/a/46859452/946226">https://stackoverflow.com/a/46859452/946226</a>. This is
+also why <tt class="docutils literal">Program Fixpoint</tt> can <a class="reference external" href="https://stackoverflow.com/questions/10292421/error-in-defining-ackermann-in-coq">define the Ackermann</a>
+function when <tt class="docutils literal">Function</tt> cannot.</li>
+</ul>
+</div>
+</div>
+</div></body>
+</html>

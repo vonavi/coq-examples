@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Pattern matching using information from theorems</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="pattern-matching-using-information-from-theorems">
+<h1 class="title">Pattern matching using information from theorems</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44413328">https://stackoverflow.com/q/44413328</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have the following question, look in the code.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Suppose we have type A *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk0"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Type</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Also we have a function that returns the type (option A) *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk1"><span class="kn">Variable</span> <span class="nv">f_opt</span> : A -&gt; option A.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Then, I can prove that this function always returns something: *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk2"><span class="kn">Theorem</span> <span class="nf">always_some</span> : <span class="kr">forall</span> <span class="nv">x</span>, <span class="kr">exists</span> <span class="nv">y</span>, f_opt x = Some y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : A, <span class="kr">exists</span> <span class="nv">y</span> : A, f_opt x = Some y</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Or, equivalently: *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk3"><span class="kn">Theorem</span> <span class="nf">always_not_none</span> : <span class="kr">forall</span> <span class="nv">x</span>, f_opt x &lt;&gt; None.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : A, f_opt x &lt;&gt; None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>Now I would like to get a version of <tt class="docutils literal">f_opt</tt> that always returns a
+value of type <tt class="docutils literal">A</tt>. Something like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="pattern-matching-using-information-from-theorems-v-chk4"><span class="kn">Definition</span> <span class="nf">f</span> <span class="nv">x</span> : A :=
+  <span class="kr">match</span> f_opt x <span class="kr">with</span>
+  | Some y =&gt; y
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
+None</blockquote></div></div></small></span></pre><p>I understand that I need to do some kind of work with types, but I do
+not understand what exactly i should do.</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>In Coq's underlying theory, every pattern matching must be exhaustive
+-- that is, it must explicitly consider all the constructors of the
+inductive type in question. This is why you are getting the error
+message you saw.</p>
+<p>How do we get around this restriction? There are a few solutions.
+First, let's see how to convince Coq that the <tt class="docutils literal">None</tt> branch can
+never occur. For this, we will use your <tt class="docutils literal">always_not_none</tt> theorem:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> <span class="nv">x</span> : A :=
+  <span class="kr">match</span> f_opt x <span class="kr">as</span> res <span class="kr">return</span> res &lt;&gt; None -&gt; A <span class="kr">with</span>
+  | Some y =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; y
+  | None =&gt; <span class="kr">fun</span> <span class="nv">H</span> =&gt; <span class="kr">match</span> H eq_refl <span class="kr">with</span> <span class="kr">end</span>
+  <span class="kr">end</span> (always_not_none x).</span></span></pre><p>This code might look strange at first sight, but it almost performs
+the pattern match you want. To explain to Coq that the <tt class="docutils literal">None</tt> case
+never arises, it combines <tt class="docutils literal">always_not_none</tt> with the fact that
+<tt class="docutils literal">f_opt x = None</tt> on that branch to derive a contradiction. This is
+the <tt class="docutils literal">H eq_refl</tt> term on that branch. Then, the <tt class="docutils literal">match</tt> on that
+contradiction suffices to convince Coq that the branch is spurious. A
+bit more formally, because <tt class="docutils literal">False</tt>, the contradictory proposition,
+is defined without any constructors, when we match on a term of type
+<tt class="docutils literal">False</tt>, there are no branches to deal with, and the entire
+expression can return any type that we want -- in this case, <tt class="docutils literal">A</tt>.</p>
+<p>What is strange about this code is the type annotations on the match,
+and that it returns a function instead of something of type <tt class="docutils literal">A</tt>
+directly. This is done because of how dependent pattern match works in
+Coq: whenever we want to make use of information that we obtain from
+being in a particular branch of a match (here, that <tt class="docutils literal">f_opt x</tt> is
+equal to <tt class="docutils literal">None</tt> in that branch), we must explicitly make the match
+return a function -- what Adam Chlipala calls the <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">convoy pattern</a>. This is done so
+that Coq knows where you plan to use that extra information and check
+that it is done correctly. Here, we use that <tt class="docutils literal">f_opt x</tt> is <tt class="docutils literal">None</tt>
+to feed the hypothesis needed by <tt class="docutils literal">always_not_none x</tt> to derive a
+contradiction.</p>
+<p>Although this will solve your problem, I would generally advise you
+against doing it this way. For instance, if you know that your <tt class="docutils literal">A</tt>
+type is inhabited by some element <tt class="docutils literal">a : A</tt>, then you can simply make
+<tt class="docutils literal">f</tt> return <tt class="docutils literal">a</tt> on that branch. This has the benefit of avoiding
+mentioning proofs inside your functions, which often gets in the way
+when simplifying and rewriting terms.</p>
+</div>
+<div class="section" id="answer-daniel-schepler">
+<h1>Answer (Daniel Schepler)</h1>
+<p>Using Coq's <tt class="docutils literal">Program</tt> module, you can write an exhaustive pattern
+match, but annotate that some branches should be impossible to reach
+and then later provide the proof that this is the case:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Definition</span> <span class="nf">f</span> <span class="nv">x</span> : A :=
+  <span class="kr">match</span> f_opt x <span class="kr">with</span>
+  | Some a =&gt; a
+  | None =&gt; !
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk5"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>None = f_opt x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk6"><span class="nb">destruct</span> (always_some x).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>None = f_opt x</span></span></span><br><span><var>x0</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>f_opt x = Some x0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>(The <tt class="docutils literal">Program</tt> module does a lot of the work behind the scenes that
+in a complete explicit definition you would have to write using the
+&quot;convoy pattern&quot;. Do be aware, however, that sometimes <tt class="docutils literal">Program</tt>
+tends to generate lots of dependencies on <tt class="docutils literal">JMeq</tt> and the axiom
+<tt class="docutils literal">JMeq_eq</tt> when dependent types are involved, even when it might not
+be necessary.)</p>
+<hr class="docutils" />
+<p><strong>A:</strong> To check if <tt class="docutils literal">f</tt> depends on any additional axioms one can use
+<tt class="docutils literal">Print Assumptions f.</tt> command.</p>
+</div>
+<div class="section" id="answer-vinz">
+<h1>Answer (Vinz)</h1>
+<p>You will need to put your existential proof <tt class="docutils literal">always_not_none</tt> in
+<tt class="docutils literal">Set</tt> or <tt class="docutils literal">Type</tt> to do so:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-using-information-from-theorems-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-using-information-from-theorems-v-chk7"><span class="kn">Theorem</span> <span class="nf">always_some</span> : <span class="kr">forall</span> <span class="nv">x</span>, {y : A &amp; f_opt x = Some y}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : A, {y : A &amp; f_opt x = Some y}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>Then you can do the following (or use <tt class="docutils literal">refine</tt> or <tt class="docutils literal">Program</tt>):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">f</span> (<span class="nv">x</span> : A) : A :=
+  <span class="kr">let</span> <span class="nv">s</span> := always_some x <span class="kr">in</span> <span class="kr">let</span> (<span class="nv">x0</span>, _) := s <span class="kr">in</span> x0.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

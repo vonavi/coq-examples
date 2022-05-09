@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Using typeclass instances within typeclasses</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="using-typeclass-instances-within-typeclasses">
+<h1 class="title">Using typeclass instances within typeclasses</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44638611">https://stackoverflow.com/q/44638611</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to define two instances of a type class, one of which will
+use the other's instance. However, unless I bind the function's name
+outside of the second definition Coq is unable to determine it should
+use the type class instance from <tt class="docutils literal">bexp</tt> (take a look at the comment
+for dirty hack). Is there a way to avoid this sort of hack in Coq?</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Compilable</span> (<span class="nv">A</span> : <span class="kt">Type</span>) := { compile : A -&gt; bool }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">cexp</span> : <span class="kt">Type</span> :=
+| CAnd :  cexp -&gt; cexp -&gt; cexp
+| COr  :  cexp -&gt; cexp -&gt; cexp
+| CProp : bexp -&gt; cexp.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> : Compilable bexp :=
+  { compile :=
+    <span class="kr">fix</span> compile b :=
+      <span class="kr">match</span> b <span class="kr">with</span>
+        <span class="c">(* elided *)</span>
+      <span class="kr">end</span>
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">compile2</span> := compile.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span>: Compilable cexp :=
+  { compile :=
+    <span class="kr">fix</span> compile c :=
+      <span class="kr">match</span> c <span class="kr">with</span>
+      | CAnd x y =&gt; compile x &amp;&amp; compile y
+      | COr x y =&gt; compile x || compile y
+      | CProp e =&gt; compile2 e <span class="c">(* &lt;-- dirty hack *)</span>
+      <span class="kr">end</span>
+  }.</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This can be fixed if we replace <tt class="docutils literal">compile</tt> with some other name
+(<tt class="docutils literal">rec</tt>) like so:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> : Compilable cexp :=
+  { compile :=
+    <span class="kr">fix</span> rec c :=
+      <span class="kr">match</span> c <span class="kr">with</span>
+      | CAnd x y =&gt; rec x &amp;&amp; rec y
+      | COr x y =&gt; rec x || rec y
+      | CProp e =&gt; compile e
+      <span class="kr">end</span>
+  }.</span></span></pre><p>In this comment the OP pointed out that Haskell easily deals with this
+situation. To understand the reason why Coq does not do it let us take
+a look at the type of <tt class="docutils literal">compile</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="using-typeclass-instances-within-typeclasses-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-typeclass-instances-within-typeclasses-v-chk0"><span class="kn">About</span> compile.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">compile : <span class="kr">forall</span> {<span class="nv">A</span> : <span class="kt">Type</span>}, Compilable A -&gt; A -&gt; bool
+
+compile <span class="kr">is</span> not universe polymorphic
+<span class="kn">Arguments</span> compile {A}%type_scope {Compilable} _
+compile <span class="kr">is</span> transparent
+Expands to: Constant
+using_typeclass_instances_within_typeclasses.compile</blockquote></div></div></small></span></pre><p>We can see that Coq is more explicit about how typeclasses work. When
+you call <tt class="docutils literal">compile e</tt> Coq sort of inserts placeholders standing for
+the implicit arguments like so <tt class="docutils literal">&#64;compile _ _ e</tt> (see <a class="reference external" href="https://www.cis.upenn.edu/~bcpierce/courses/670Fall12/slides.pdf">these slides</a>,
+pages 21-25 for more detail). But with <tt class="docutils literal">fix compile c</tt> you shadowed
+the previous binding, hence the type error.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
