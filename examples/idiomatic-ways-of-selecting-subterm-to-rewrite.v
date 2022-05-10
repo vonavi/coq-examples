@@ -102,7 +102,7 @@ proof and what tends to be stable during development and what isn't.
 Answer (ejgallego)
 ******************
 
-IMHO your best option is to use the ssreflect pattern selection
+IMO your best option is to use the ssreflect pattern selection
 language, available in Coq 8.7 or by installing math-comp in earlier
 versions. This language is documented in the manual:
 https://hal.inria.fr/inria-00258384

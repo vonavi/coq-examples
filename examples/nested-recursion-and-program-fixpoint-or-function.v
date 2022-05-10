@@ -283,7 +283,7 @@ Program Fixpoint mapTree (f : nat -> nat) (t : Tree)
 Next Obligation.
 
 (*|
-and I don’t have to do anything with the new argument to ``f``, but it
+and I don't have to do anything with the new argument to ``f``, but it
 shows up in the the termination proof obligation, as ``In t ts ->
 height t < height (Node x ts)`` as desired. So I can prove that and
 define ``mapTree``:
