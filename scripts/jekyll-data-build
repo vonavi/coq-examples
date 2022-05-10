@@ -5,21 +5,44 @@ ROOT_DIR=$(dirname "$0")/..
 
 for data_dir in ${DATA_DIRS}; do
     data_path=${ROOT_DIR}/public/_data/${data_dir}.yml
+    [[ -f $data_path ]] || touch "$data_path"
 
-    > "${data_path}"
+    temp_data=$(mktemp --tmpdir data.yml.XXXXXX)
+    trap "rm -f $temp_data" EXIT
+
+    start=true
     for src_path in "${ROOT_DIR}/${data_dir}"/*.v; do
-        title=$(sed -En '/^#+$/,/^#+$/p' "${src_path}" | grep -Ev '^#+$')
-        # Escape characters
-        title=$(sed -e 's/"/\\"/g' <<< "${title}")
-        title=$(sed -E 's@``([^`]+)``@<tt>\1</tt>@g' <<< "${title}")
+        # Separate sections
+        $start || echo >> "$temp_data"
+        start=false
 
-        src_path=${src_path##*/}
-        dst_path=${data_dir}/${src_path%.v}.html
-        ( echo;
-          echo "- path: \"${dst_path}\"";
-          echo "  title: \"${title}\"" ) >> "${data_path}"
+        basename=${src_path##*/}
+        dst_file=${basename%.v}.html
+        section=$(sed -En "/${dst_file}/,/^ *$/p" "$data_path")
+
+        if [[ -n $section ]]; then
+            echo "$section" >> "$temp_data"
+        else
+            title=$(sed -En '/^#+$/,/^#+$/p' "$src_path" | grep -Ev '^#+$')
+
+            # Escape characters
+            title=$(sed 's@"@\\"@g' <<< "$title")
+
+            # Interpret inline code
+            tmp_title=$title
+            while [[ -n $tmp_title ]]; do
+                title=$tmp_title
+                tmp_title=$(sed -nE 's@(^|[^_0-9a-zA-Z])``@\1<tt>@p' <<< "$tmp_title")
+                tmp_title=$(sed -nE 's@``($|[^_0-9a-zA-Z])@</tt>\1@p' <<< "$tmp_title")
+            done
+            title=$(sed 's@\\ @@g' <<< "$title")
+
+            ( echo "- path: \"${data_dir}/${dst_file}\"";
+              echo "  title: \"${title}\"" ) >> "$temp_data"
+        fi
     done
-    sed -i '1d' "${data_path}"
+
+    cp -f "$temp_data" "$data_path"
 done
 
 exit 0
