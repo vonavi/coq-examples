@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq losing information from if-statement when doing recursive function with Program</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-program">
+<h1 class="title">Coq losing information from if-statement when doing recursive function with <tt class="docutils literal">Program</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/43897968">https://stackoverflow.com/q/43897968</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to write this recursive variant of <tt class="docutils literal">gcd</tt> as simply and
+&quot;naturally&quot; as possible in Coq.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">gcd</span> (<span class="nv">a</span> <span class="nv">b</span> : nat) {<span class="nv">measure</span> <span class="nv">b</span>} :=
+  <span class="kr">if</span> <span class="mi">0</span> &lt;? b <span class="kr">then</span> gcd b (a mod b) <span class="kr">else</span> a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk0"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a mod b &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Here I need to prove that `a mod b &lt; b` *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk1"><span class="nb">apply</span> Nat.mod_upper_bound.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b &lt;&gt; <span class="mi">0</span></div></blockquote></div></div></small></span></pre><p>Now I need to prove that <tt class="docutils literal">b &lt;&gt; 0</tt> but I have lost the info that we
+are in the <tt class="docutils literal">0 &lt;? b = false</tt> branch.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  a, b : nat
+  gcd : nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat
+  ============================
+  b &lt;&gt; <span class="mi">0</span></blockquote></div></div></small></span></pre><p>How do I keep the information from the if statement?</p>
+<p>I know I could use <tt class="docutils literal">match</tt>, but how to I write it with <tt class="docutils literal">if</tt>?</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">gcd</span> (<span class="nv">a</span> <span class="nv">b</span> : nat) {<span class="nv">measure</span> <span class="nv">b</span>} :=
+  <span class="kr">match</span> b <span class="kr">with</span> <span class="mi">0</span> =&gt; a | S b&#39; =&gt; gcd b (a mod b) <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk3"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b</span> : nat, b &lt; S b&#39; -&gt; nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a mod S b&#39; &lt; S b&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk4"><span class="nb">apply</span> Nat.mod_upper_bound.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b</span> : nat, b &lt; S b&#39; -&gt; nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S b&#39; &lt;&gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Goal:  S b&#39; &lt;&gt; 0 *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>=== EDIT ===</p>
+<p>I noticed that Coq (in more recent versions?) remembers the
+association between <tt class="docutils literal">0 &lt;? b</tt> and the match patterns (<tt class="docutils literal">true</tt> or
+<tt class="docutils literal">false</tt> in this case). Or is it a feature of <tt class="docutils literal">Program</tt>? Anyway, I
+thought that <tt class="docutils literal">if</tt> essentially was expanded into this <tt class="docutils literal">match</tt>
+statement, but apparently it isn't...</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">gcd</span> (<span class="nv">a</span> <span class="nv">b</span> : nat) {<span class="nv">measure</span> <span class="nv">b</span>} : nat:=
+  <span class="kr">match</span> <span class="mi">0</span> &lt;? b <span class="kr">with</span>
+  | true =&gt; gcd b (a mod b)
+  | false =&gt; a
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk5"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>true = (<span class="mi">0</span> &lt;? b)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a mod b &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk6"><span class="nb">apply</span> Nat.mod_upper_bound.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>true = (<span class="mi">0</span> &lt;? b)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b &lt;&gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* now we have ` true = (0 &lt;? b)` in the assumptions, and the goal `b &lt;&gt; 0` *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> b.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><hr class="docutils" />
+<p><strong>A:</strong> <a class="reference external" href="http://stackoverflow.com/questions/42285235/writing-well-founded-programs-in-coq-using-fix-or-program-fixpoint">This</a>
+is a related question.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>One can use <tt class="docutils literal">lt_dec</tt> to do that.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">lt_dec = 
+<span class="kr">fun</span> <span class="nv">n</span> <span class="nv">m</span> : nat =&gt; le_dec (S n) m
+     : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, {n &lt; m} + {~ n &lt; m}
+
+<span class="kn">Arguments</span> lt_dec (_ _)%nat_scope</blockquote></div></div></small></span></pre><p>This way we can keep the proofs we need in the context, unlike when
+using <tt class="docutils literal">&lt;?</tt>, which returns a <tt class="docutils literal">bool</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">gcd</span> (<span class="nv">a</span> <span class="nv">b</span> : nat) {<span class="nv">measure</span> <span class="nv">b</span>} :=
+  <span class="kr">if</span> lt_dec <span class="mi">0</span> b <span class="kr">then</span> gcd b (a mod b) <span class="kr">else</span> a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk8"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a mod b &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-losing-information-from-if-statement-when-doing-recursive-function-with-prog-v-chk9"><span class="nb">apply</span> Nat.mod_upper_bound.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>gcd</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kr">forall</span> <span class="nv">b0</span> : nat, b0 &lt; b -&gt; nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b &lt;&gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><hr class="docutils" />
+<p>Yes, it is a feature of <tt class="docutils literal">Program</tt>. Actually the reference manual
+explain it in a very clear manner (see <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual027.html#sec752">§24.1</a>):</p>
+<blockquote>
+<p>Generation of equalities. A <tt class="docutils literal">match</tt> expression is always
+generalized by the corresponding equality. As an example, the
+expression:</p>
+<pre class="code coq literal-block">
+<span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span>
+<span class="o">|</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="n">t</span>
+<span class="o">|</span> <span class="n">S</span> <span class="n">n</span> <span class="o">=&gt;</span> <span class="n">u</span>
+<span class="kr">end</span><span class="o">.</span>
+</pre>
+<p>will be first rewritten to:</p>
+<pre class="code coq literal-block">
+<span class="o">(</span><span class="kr">match</span> <span class="n">x</span> <span class="kr">as</span> <span class="n">y</span> <span class="kr">return</span> <span class="o">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">_</span><span class="o">)</span> <span class="kr">with</span>
+ <span class="o">|</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">H</span> <span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">t</span>
+ <span class="o">|</span> <span class="n">S</span> <span class="n">n</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">H</span> <span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">S</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">u</span>
+ <span class="kr">end</span><span class="o">)</span> <span class="o">(</span><span class="n">eq_refl</span> <span class="n">n</span><span class="o">).</span>
+</pre>
+</blockquote>
+<p>Here is the reason why <tt class="docutils literal">if</tt> is different:</p>
+<blockquote>
+<p>To give more control over the generation of equalities, the
+typechecker will fall back directly to Coq's usual typing of
+dependent pattern-matching if a <tt class="docutils literal">return</tt> or <tt class="docutils literal">in</tt> clause is
+specified. Likewise, the <tt class="docutils literal">if</tt> construct is not treated specially
+by <tt class="docutils literal">Program</tt> so boolean tests in the code are not automatically
+reflected in the obligations. One can use the <tt class="docutils literal">dec</tt> combinator
+to get the correct hypotheses as in:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Definition</span> <span class="nf">id</span> (<span class="nv">n</span> : nat) : { x : nat | x = n } :=
+  <span class="kr">if</span> dec (leb n <span class="mi">0</span>) <span class="kr">then</span> <span class="mi">0</span>
+  <span class="kr">else</span> S (pred n).</span></span></pre></blockquote>
+</div>
+</div>
+</div>
+</div></body>
+</html>

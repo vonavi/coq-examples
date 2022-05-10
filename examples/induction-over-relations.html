@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Induction over relations</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="induction-over-relations">
+<h1 class="title">Induction over relations</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44024840">https://stackoverflow.com/q/44024840</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm trying to prove the following toy theorem about the ordering of
+the naturals:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
+| le_n : <span class="kr">forall</span> <span class="nv">n</span>, Le n n
+| le_S : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, Le n m -&gt; Le n (S m).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk0"><span class="kn">Theorem</span> <span class="nf">le_Sn_m</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, Le (S n) m -&gt; Le n m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, Le (S n) m -&gt; Le n m</div></blockquote></div></div></small></span></pre><p>On paper, this is a simple induction on <tt class="docutils literal">Le (S n) m</tt>. In particular,
+the base case of <tt class="docutils literal">le_n</tt> is trivial.</p>
+<p>In Coq though, beginning my proof with induction gives me the
+following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, Le (S n) m -&gt; Le n m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk2"><span class="nb">intros</span> n m H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le (S n) m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk3"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n n0</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="induction-over-relations-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le n0 m</span></span></span><br><span><var>IHLe</var><span class="hyp-type"><b>: </b><span>Le n m</span></span></span><br></div><label class="goal-separator" for="induction-over-relations-v-chk4"><hr></label><div class="goal-conclusion">Le n (S m)</div></blockquote></div></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-over-relations-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">2</span> subgoals
+
+  n, n0 : nat
+  ============================
+  Le n n0
+
+subgoal <span class="mi">2</span> <span class="kr">is</span>:
+ Le n (S m)</blockquote></div></div></small></span></pre><p>How should I proceed instead?</p>
+</div>
+<div class="section" id="answer-vinz">
+<h1>Answer (Vinz)</h1>
+<p>This is due to a limitation of Coq, when using <tt class="docutils literal">induction</tt> on term
+that are not made only of variables. By doing your induction, Coq
+forgets about the fact that the first argument was a <tt class="docutils literal">S</tt> of some
+<tt class="docutils literal">n</tt>.</p>
+<p>You can do the following instead:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk6"><span class="kn">Theorem</span> <span class="nf">le_Sn_m_</span> : <span class="kr">forall</span> <span class="nv">X</span> <span class="nv">m</span>, Le X m -&gt; <span class="kr">forall</span> <span class="nv">n</span>, X = S n -&gt; Le n m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">X</span> <span class="nv">m</span> : nat,
+Le X m -&gt; <span class="kr">forall</span> <span class="nv">n</span> : nat, X = S n -&gt; Le n m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>I think there is a <tt class="docutils literal">dependent induction</tt> somewhere that could save
+you this intermediate lemma but I can't recall where.</p>
+</div>
+<div class="section" id="answer-zimm-i48">
+<h1>Answer (Zimm i48)</h1>
+<p>Similar to &#64;Vinz suggestion, but without changing the statement you
+are proving:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk7"><span class="kn">Theorem</span> <span class="nf">le_Sn_m</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, Le (S n) m -&gt; Le n m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, Le (S n) m -&gt; Le n m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, Le (S n) m -&gt; Le n m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk9"><span class="nb">intros</span> n m H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le (S n) m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chka"><span class="nb">remember</span> (S n) <span class="kr">as</span> p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m, p</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heqp</var><span class="hyp-type"><b>: </b><span>p = S n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le p m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chkb"><span class="nb">induction</span> H; <span class="nb">subst</span> n0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n (S n)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="induction-over-relations-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHLe</var><span class="hyp-type"><b>: </b><span>S n = S n -&gt; Le n m</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le (S n) m</span></span></span><br></div><label class="goal-separator" for="induction-over-relations-v-chkc"><hr></label><div class="goal-conclusion">Le n (S m)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chkd">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n (S n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">do</span> <span class="mi">2</span> <span class="nb">constructor</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chke">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHLe</var><span class="hyp-type"><b>: </b><span>S n = S n -&gt; Le n m</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le (S n) m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n (S m)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chkf"><span class="nb">constructor</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHLe</var><span class="hyp-type"><b>: </b><span>S n = S n -&gt; Le n m</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le (S n) m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> IHLe.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Using the <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacv.remember">remember</a>
+tactic will introduce an equality in your context which will avoid
+losing this critical information.</p>
+</div>
+<div class="section" id="answer-anton-trunov">
+<h1>Answer (Anton Trunov)</h1>
+<p>This is happening because Coq treats differently <em>indices</em> and
+<em>parameters</em> (see the accepted answer to <a class="reference external" href="https://stackoverflow.com/q/24600256/2747511">this question</a> for a very nice
+explanation). Your <tt class="docutils literal">Le</tt> relation uses indices only, whereas the
+standard definition makes the first argument a parameter:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-over-relations-v-chk10" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">le</span> (<span class="nv">n</span> : nat) : nat -&gt; <span class="kt">Prop</span> :=
+    le_n : n &lt;= n
+  | le_S : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;= S m
+
+<span class="kn">Arguments</span> le (_ _)%nat_scope
+<span class="kn">Arguments</span> Peano.le_n _%nat_scope
+<span class="kn">Arguments</span> Peano.le_S (_ _)%nat_scope _</blockquote></div></div></small></span></pre><p>I can recommend reading <a class="reference external" href="https://homes.cs.washington.edu/~jrw12/dep-destruct.html">this blog post</a> by James
+Wilcox. Here is a relevant excerpt:</p>
+<blockquote>
+When Coq performs a case analysis, it first abstracts over all
+indices. You may have seen this manifest as a loss of information
+when using destruct on predicates</blockquote>
+<p>So you can either (1) change your <tt class="docutils literal">Le</tt> relation so it would use a
+parameter, or (2) use the <tt class="docutils literal">remember</tt> tactic as was suggested by
+&#64;Zimm i48, or (3) use the <tt class="docutils literal">dependent induction</tt> tactic mentioned by
+&#64;Vinz:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Equality. <span class="c">(* for `dependent induction` *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
+| le_n : <span class="kr">forall</span> <span class="nv">n</span>, Le n n
+| le_S : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, Le n m -&gt; Le n (S m).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk11"><span class="kn">Hint Constructors</span> Le. <span class="c">(* so `auto` will work *)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk12"><span class="kn">Theorem</span> <span class="nf">le_Sn_m</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, Le (S n) m -&gt; Le n m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, Le (S n) m -&gt; Le n m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk13"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, Le (S n) m -&gt; Le n m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-over-relations-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-over-relations-v-chk14"><span class="nb">intros</span> n m H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Le (S n) m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Le n m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">dependent induction</span> H; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

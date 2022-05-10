@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Split conjunction goal into subgoals</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="split-conjunction-goal-into-subgoals">
+<h1 class="title">Split conjunction goal into subgoals</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/43945888">https://stackoverflow.com/q/43945888</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Consider the following toy exercise:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk0"><span class="kn">Theorem</span> <span class="nf">swap_id</span> : <span class="kr">forall</span> (<span class="nv">m</span> <span class="nv">n</span> : nat), m = n -&gt; (m, n) = (n, m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk2"><span class="nb">intros</span> m n H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(m, n) = (n, m)</div></blockquote></div></div></small></span></pre><p>At this point I have the following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  m, n : nat
+  H : m = n
+  ============================
+  (m, n) = (n, m)</blockquote></div></div></small></span></pre><p>I would like to split the goal into two subgoals, <tt class="docutils literal">m = n</tt> and <tt class="docutils literal">n =
+m</tt>. Is there a tactic which does that?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Solve using the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#hevea_tactic169">f_equal</a>
+tactic:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk4"><span class="kn">Theorem</span> <span class="nf">test</span> : <span class="kr">forall</span> (<span class="nv">m</span> <span class="nv">n</span> : nat), m = n -&gt; (m, n) = (n, m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk6"><span class="nb">intros</span> m n H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk7"><span class="nb">f_equal</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">m = n</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="split-conjunction-goal-into-subgoals-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m = n</span></span></span><br></div><label class="goal-separator" for="split-conjunction-goal-into-subgoals-v-chk8"><hr></label><div class="goal-conclusion">n = m</div></blockquote></div></div></div></small></span></pre><p>With state:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk9" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">2</span> subgoals
+
+  m, n : nat
+  H : m = n
+  ============================
+  m = n
+
+subgoal <span class="mi">2</span> <span class="kr">is</span>:
+ n = m</blockquote></div></div></small></span></pre><hr class="docutils" />
+<p><strong>A:</strong> A comment about the reason <tt class="docutils literal">f_equal</tt> works: if we unfold some
+notations, we'll get from the goal <tt class="docutils literal">(m, n) = (n, m)</tt> to <tt class="docutils literal">pair m n =
+pair n m</tt>, where <tt class="docutils literal">pair</tt> is the only constructor of the <tt class="docutils literal">prod</tt>
+datatype. At this point it should be obvious why <tt class="docutils literal">f_equal</tt> splits
+the goal into two subgoals.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
