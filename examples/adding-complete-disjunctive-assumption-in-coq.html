@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Adding complete disjunctive assumption in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="adding-complete-disjunctive-assumption-in-coq">
+<h1 class="title">Adding complete disjunctive assumption in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42342015">https://stackoverflow.com/q/42342015</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In mathematics, we often proceed as follows: &quot;Now let us consider two
+cases, the number <tt class="docutils literal">k</tt> can be <tt class="docutils literal">even</tt> or <tt class="docutils literal">odd</tt>. For the <tt class="docutils literal">even</tt>
+case, we can say <tt class="docutils literal">exists k', 2k' = k</tt>...&quot;</p>
+<p>Which expands to the general idea of reasoning about an entire set of
+objects by disassembling it into several disjunct subsets that can be
+used to reconstruct the original set.</p>
+<p>How is this reasoning principle captured in Coq considering we do not
+always have an assumption that is one of the subsets we want to
+deconstruct into?</p>
+<p>Consider the follow example for demonstration:</p>
+<pre class="code coq literal-block">
+<span class="kr">forall</span> <span class="nv">n</span><span class="o">,</span> <span class="n">Nat</span><span class="o">.</span><span class="n">Even</span> <span class="n">n</span> <span class="o">=&gt;</span> <span class="n">P</span> <span class="n">n</span><span class="o">.</span>
+</pre>
+<p>Here we can naturally do <tt class="docutils literal">inversion</tt> on <tt class="docutils literal">Nat.Even n</tt> to get <tt class="docutils literal">n =
+2*x</tt> (and an automatically-false eliminated assumption that <tt class="docutils literal">n = 2*x
++ 1</tt>). However, suppose we have the following:</p>
+<pre class="code coq literal-block">
+<span class="kr">forall</span> <span class="nv">n</span><span class="o">,</span> <span class="n">P</span> <span class="n">n</span>
+</pre>
+<p>How can I state: &quot;let us consider <tt class="docutils literal">even n</tt>s and <tt class="docutils literal">odd n</tt>s&quot;. Do
+I need to first show that we have decidable <tt class="docutils literal">forall n : nat, even n
+\/ odd n</tt>? That is, introduce a new (local or global) lemma listing
+all the required subsets? What are the best practices?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Indeed, to reason about a splitting of a class of objects in Coq you
+need to show an algorithm splitting them, unless you want to reason
+classically (there is nothing wrong with that).</p>
+<p>IMO, a key point is getting such decidability hypotheses &quot;for free&quot;.
+For instance, you could implement <tt class="docutils literal">odd : nat <span class="pre">-&gt;</span> bool</tt> as a boolean
+function, as it is done in some libraries, then you get the splitting
+for free.</p>
+<p>[edit] You can use some slightly more convenient techniques for
+pattern matching, by encoding the pertinent cases as inductives:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> PeanoNat Nat Bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">parity_spec</span> (<span class="nv">n</span> : nat) : <span class="kt">Type</span> :=
+| parity_spec_odd : odd  n = true -&gt; parity_spec n
+| parity_spec_even: even n = true -&gt; parity_spec n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="adding-complete-disjunctive-assumption-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="adding-complete-disjunctive-assumption-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">parityP</span> <span class="nv">n</span> : parity_spec n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">parity_spec n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="adding-complete-disjunctive-assumption-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="adding-complete-disjunctive-assumption-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">parity_spec n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="adding-complete-disjunctive-assumption-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="adding-complete-disjunctive-assumption-in-coq-v-chk2"><span class="nb">case</span> (even n) <span class="nb">eqn</span>:H; [<span class="bp">now</span> <span class="nb">right</span>|<span class="nb">left</span>].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>even n = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">odd n = true</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> &lt;- Nat.negb_even, H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="adding-complete-disjunctive-assumption-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="adding-complete-disjunctive-assumption-in-coq-v-chk3"><span class="kn">Lemma</span> <span class="nf">test</span> <span class="nv">n</span> : even n = true \/ odd n = true.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">even n = true \/ odd n = true</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="adding-complete-disjunctive-assumption-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="adding-complete-disjunctive-assumption-in-coq-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">even n = true \/ odd n = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">case</span> (parityP n); <span class="nb">auto</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
+<p><strong>A:</strong> Yes, so with the standard library's <tt class="docutils literal">Nat.odd</tt> for this, just
+do <tt class="docutils literal">destruct (Nat.odd n) eqn:Hodd.</tt> That puts <tt class="docutils literal">Hodd: Nat.odd n =
+true</tt> in one goal context and <tt class="docutils literal">Hodd : Nat.odd n = false</tt> in
+another. (If you don't put the <tt class="docutils literal">eqn:Hname</tt>, Coq forgets the
+association between <tt class="docutils literal">odd n</tt> and the case its considering.)</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

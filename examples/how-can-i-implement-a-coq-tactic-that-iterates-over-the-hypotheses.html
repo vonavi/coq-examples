@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How can I implement a Coq tactic that iterates over the hypotheses?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses">
+<h1 class="title">How can I implement a Coq tactic that iterates over the hypotheses?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42709481">https://stackoverflow.com/q/42709481</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>As minimal example for my general question, suppose we have the
+following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">C</span> : <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">blah</span> := C.</span></span></pre><p>I would like to implement a tactic that automatically unfolds <tt class="docutils literal">blah</tt>
+in all hypotheses of the goal.</p>
+<p>I tried this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">my_auto_unfold</span> :=
+  <span class="kp">repeat</span> <span class="kr">match goal with</span>
+         | [ H: <span class="nl">?P</span> |- <span class="nl">?P</span> ] =&gt; <span class="nb">unfold</span> blah <span class="kr">in</span> H
+         <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk0"><span class="kn">Theorem</span> <span class="nf">g</span> : blah -&gt; blah -&gt; blah.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">blah -&gt; blah -&gt; blah</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">blah -&gt; blah -&gt; blah</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H, H0</var><span class="hyp-type"><b>: </b><span>blah</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">blah</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk3">my_auto_unfold.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>blah</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">blah</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>But only one hypothesis had <tt class="docutils literal">blah</tt> unfolded.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>I think you may be looking for the <tt class="docutils literal">progress</tt> tactical. If you do
+this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">my_auto_unfold</span> :=
+  <span class="kp">repeat</span> <span class="kr">match goal with</span>
+         | [ H: <span class="nl">?P</span> |- <span class="nl">?P</span> ] =&gt; <span class="kp">progress</span> <span class="nb">unfold</span> blah <span class="kr">in</span> H
+         <span class="kr">end</span>.</span></span></pre><p>then it will unfold <tt class="docutils literal">blah</tt> in both hypotheses. You can even do:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">in_all_hyps</span> tac :=
+  <span class="kp">repeat</span> <span class="kr">match goal with</span>
+         | [ H : _ |- _ ] =&gt; <span class="kp">progress</span> tac H
+         <span class="kr">end</span>.</span></span></pre><p>to generalize this pattern. Note that this may run the tactic in each
+hypothesis multiple times.</p>
+<hr class="docutils" />
+<p>If you want to run over all the hypotheses once, in order, this is
+significantly harder (especially if you want to preserve evar contexts
+and not add dumb stuff to the proof term). Here is the quick-and-dirty
+way to do that (assuming your tactic doesn't mess with the goal):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">C</span> : <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">blah</span> := C.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">BLOCK</span> := <span class="kt">True</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">repeat_until_block</span> tac :=
+  <span class="kr">lazymatch goal with</span>
+  | [ |- BLOCK -&gt; _ ] =&gt; <span class="nb">intros</span> _
+  | [ |- _ ] =&gt; tac (); repeat_until_block tac
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">on_each_hyp_once</span> tac :=
+  <span class="nb">generalize</span> (I : BLOCK);
+  <span class="kp">repeat</span> <span class="kr">match goal with</span>
+         | [ H : _ |- _ ] =&gt; <span class="nb">revert</span> H
+         <span class="kr">end</span>;
+  repeat_until_block
+    <span class="kp">ltac</span>:(<span class="kr">fun</span> <span class="nv">_</span>
+          =&gt; <span class="nb">intro</span>;
+             <span class="kr">lazymatch goal with</span>
+             | [ H : _ |- _ ] =&gt; tac H
+             <span class="kr">end</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk4"><span class="kn">Theorem</span> <span class="nf">g</span> : blah -&gt; blah -&gt; fst (id blah, <span class="kt">True</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">blah -&gt; blah -&gt; fst (id blah, <span class="kt">True</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">blah -&gt; blah -&gt; fst (id blah, <span class="kt">True</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk6"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H, H0</var><span class="hyp-type"><b>: </b><span>blah</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">fst (id blah, <span class="kt">True</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk7">on_each_hyp_once <span class="kp">ltac</span>:(<span class="kr">fun</span> <span class="nv">H</span> =&gt; <span class="nb">unfold</span> blah <span class="kr">in</span> H).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H, H0</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">fst (id blah, <span class="kt">True</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>The idea is that you insert a dummy identifier to mark where you are
+in the goal (i.e., to mark how many variables can be introduced), and
+then you revert all of the context into the goal, so that you can
+reintroduce the context one hypothesis at a time, running the tactic
+on each hypothesis you just introduced.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

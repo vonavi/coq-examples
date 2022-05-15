@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Pigeonhole proof without decidable equality or excluded middle</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle">
+<h1 class="title">Pigeonhole proof without decidable equality or excluded middle</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42585024">https://stackoverflow.com/q/42585024</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In Software Foundations <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/lf-current/IndProp.html#lab244">IndProp.v</a>
+one is asked to prove the <strong>pigeonhole principle</strong>, and one may use
+<em>excluded middle</em>, but it is mentioned that it is not strictly
+necessary. I've been trying to prove it without EM, but my brain seems
+to be wired classically.</p>
+<p>Q: How would one prove the theorem <em>without</em> using excluded middle?
+How should one generally approach proofs for types without decidable
+equality, where one can't easily reason by cases?</p>
+<p>I'd be very happy for a complete proof to look at, but please avoid
+posting it &quot;in the clear&quot;, so as to not spoil the exercise in the
+Software Foundations course.</p>
+<p>The definition uses two inductive predicates, <tt class="docutils literal">In</tt> and <tt class="docutils literal">repeats</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Pigeon</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> (<span class="nv">X</span> : <span class="kt">Type</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Implicit Type</span> (x : X).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">In</span> <span class="nv">x</span> <span class="nv">l</span> : <span class="kt">Prop</span> :=
+    <span class="kr">match</span> l <span class="kr">with</span>
+    | nil =&gt; <span class="kt">False</span>
+    | x&#39; :: l&#39; =&gt; x&#39; = x \/ In x l&#39;
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Hypothesis</span> <span class="nv">in_split</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">l</span>, In x l -&gt;  <span class="kr">exists</span> <span class="nv">l1</span> <span class="nv">l2</span>, l = l1 ++ x :: l2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Hypothesis</span> <span class="nv">in_app</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">l1</span> <span class="nv">l2</span>, In x (l1 ++ l2) &lt;-&gt; In x l1 \/ In x l2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">repeats</span> : list X -&gt; <span class="kt">Prop</span> :=
+    repeats_hd l x : In x l    -&gt; repeats (x :: l)
+  | repeats_tl l x : repeats l -&gt; repeats (x :: l).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk0"><span class="kn">Theorem</span> <span class="nf">pigeonhole_principle_NO_EM</span> :  <span class="sd">(***   pigeonhole   ***)</span>
+    <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span>,
+      length l2 &lt; length l1 -&gt;          <span class="c">(* There are more pigeons than nests *)</span>
+      (<span class="kr">forall</span> <span class="nv">x</span>, In x l1 -&gt; In x l2) -&gt; <span class="c">(* All pigeons are in some nest *)</span>
+      repeats l1.                       <span class="c">(* Thus, some pigeons share nest *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>in_split</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l</span> : list X),
+In x l -&gt;
+<span class="kr">exists</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X, l = l1 ++ x :: l2</span></span></span><br><span><var>in_app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
+In x (l1 ++ l2) &lt;-&gt; In x l1 \/ In x l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X,
+length l2 &lt; length l1 -&gt;
+(<span class="kr">forall</span> <span class="nv">x</span>, In x l1 -&gt; In x l2) -&gt; repeats l1</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>in_split</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l</span> : list X),
+In x l -&gt;
+<span class="kr">exists</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X, l = l1 ++ x :: l2</span></span></span><br><span><var>in_app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
+In x (l1 ++ l2) &lt;-&gt; In x l1 \/ In x l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X,
+length l2 &lt; length l1 -&gt;
+(<span class="kr">forall</span> <span class="nv">x</span>, In x l1 -&gt; In x l2) -&gt; repeats l1</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    <span class="c">(* ??? *)</span>
+</span></pre><hr class="docutils" />
+<p><strong>Q:</strong> Thanks, could you give an example?</p>
+<p><strong>A (gallais):</strong> Cf. <a class="reference external" href="https://github.com/gallais/potpourri/blob/master/agda/poc/PigeonHole.agda">this proof in Agda</a>
+for instance.</p>
+</div>
+<div class="section" id="answer-stewbasic">
+<h1>Answer (stewbasic)</h1>
+<p>I'll describe the thought process that led me to a solution, in case
+it helps. We may apply induction and it is straightforward to reduce
+to the case <tt class="docutils literal">l1 = a :: l1'</tt>, <tt class="docutils literal">l2 = a :: l2'</tt>. Now <tt class="docutils literal">l1'</tt> is a
+subset of <tt class="docutils literal">a :: l2'</tt>. My EM-trained intuition is that one of the
+following holds:</p>
+<ul class="simple">
+<li><tt class="docutils literal">a</tt> is in <tt class="docutils literal">l1'</tt>.</li>
+<li><tt class="docutils literal">a</tt> is not in <tt class="docutils literal">l1'</tt>.</li>
+</ul>
+<p>In the latter case, each element of <tt class="docutils literal">l1'</tt> is in <tt class="docutils literal">a :: l2'</tt> but
+differs from <tt class="docutils literal">a</tt>, and therefore must be in <tt class="docutils literal">l2'</tt>. Thus <tt class="docutils literal">l1'</tt> is
+a subset of <tt class="docutils literal">l2'</tt>, and we can apply the inductive hypothesis.</p>
+<p>Unfortunately if <tt class="docutils literal">In</tt> is not decidable, the above can't be directly
+formalized. In particular if equality is not decidable for the given
+type, it's difficult to prove elements are unequal, and therefore
+difficult to prove a negative statement like <tt class="docutils literal">~(In a l1')</tt>. However,
+we wanted to use that negative statement to prove a positive one,
+namely</p>
+<pre class="code coq literal-block">
+<span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">In</span> <span class="n">x</span> <span class="n">l1'</span> <span class="o">-&gt;</span> <span class="n">In</span> <span class="n">x</span> <span class="n">l2'</span>
+</pre>
+<p>By analogy, suppose we wanted to prove</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  P, Q, R : <span class="kt">Prop</span>
+  H : P \/ Q
+  H0 : Q -&gt; R
+  ============================
+  P \/ R</blockquote></div></div></small></span></pre><p>The above intuitive argument is like starting from <tt class="docutils literal">P \/ ~P</tt>, and
+using <tt class="docutils literal">~P <span class="pre">-&gt;</span> Q <span class="pre">-&gt;</span> R</tt> in the second case. We can use a direct proof
+to avoid EM.</p>
+<p>Quantifying over the list <tt class="docutils literal">l1'</tt> makes this a bit more complicated,
+but still we can construct a direct proof using the following lemma,
+which can be proven by induction.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk3"><span class="kn">Lemma</span> <span class="nf">split_or</span> (<span class="nv">l</span> : list X) (<span class="nv">P</span> <span class="nv">Q</span> : X -&gt; <span class="kt">Prop</span>) :
+    (<span class="kr">forall</span> <span class="nv">x</span>, In x l -&gt; (P x \/ Q x)) -&gt;
+    (<span class="kr">exists</span> <span class="nv">x</span>, In x l /\ P x) \/ (<span class="kr">forall</span> <span class="nv">x</span>, In x l -&gt; Q x).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>in_split</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l</span> : list X),
+In x l -&gt;
+<span class="kr">exists</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X, l = l1 ++ x :: l2</span></span></span><br><span><var>in_app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
+In x (l1 ++ l2) &lt;-&gt; In x l1 \/ In x l2</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>P, Q</var><span class="hyp-type"><b>: </b><span>X -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span>, In x l -&gt; P x \/ Q x) -&gt;
+(<span class="kr">exists</span> <span class="nv">x</span>, In x l /\ P x) \/ (<span class="kr">forall</span> <span class="nv">x</span>, In x l -&gt; Q x)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><hr class="docutils" />
+<p>Finally note that the intuitive pigeonhole principle could also be
+formalized as the following way, which cannot be proven when the type
+has undecidable equality (note that it has a negative statement in the
+conclusion):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">pigeon2</span> : <span class="kt">Prop</span> := <span class="kr">forall</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
+      length l2 &lt; length l1 -&gt;
+      (<span class="kr">exists</span> <span class="nv">x</span>, In x l1 /\ ~(In x l2)) \/ repeats l1.</span></span></pre></div>
+<div class="section" id="answer-andras-kovacs">
+<h1>Answer (András Kovács)</h1>
+<p>A possible constructive proof goes like this:</p>
+<p>We prove <tt class="docutils literal">pigeonhole_principle_NO_EM</tt> by induction on <tt class="docutils literal">l1</tt>. Only
+the non-empty case is possible because of the length constraint. So,
+assume <tt class="docutils literal">l1 = x :: l1'</tt>. Now, check whether there is some element of
+<tt class="docutils literal">l1'</tt> which is mapped by <tt class="docutils literal">f : (forall x, In x l1 <span class="pre">-&gt;</span> In x l2)</tt> to
+the same membership proof as <tt class="docutils literal">x</tt>. If there is such an <tt class="docutils literal">x'</tt>
+element, then it follows that <tt class="docutils literal">x = x'</tt>, therefore <tt class="docutils literal">l1</tt> repeats. If
+there is no such element, then we can get <tt class="docutils literal">l2'</tt> by removing the
+element that <tt class="docutils literal">x</tt> is mapped to from <tt class="docutils literal">l2</tt>, and apply the induction
+hypothesis to <tt class="docutils literal">l2'</tt> and the appropriate <tt class="docutils literal">f' : forall x, In x l1' <span class="pre">-&gt;</span>
+In x l2'</tt> function.</p>
+<p>That's it, but I note that actually formalizing this proof is not easy
+with the definitions given, because we need to prove heterogeneous or
+dependent equalities, since we have to compare membership proofs for
+possibly different elements.</p>
+<p>As to the question of getting the hang of constructive proofs in
+general, an important skill or habit is always examining what kind of
+data we have, not just what kind of logical facts we know. In this
+case, membership proofs are actually indices pointing into lists,
+bundled together with proofs that the pointed-to elements equal
+certain values. If membership proofs didn't tell where exactly
+elements are located then this proof would not be possible
+constructively.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> I follow what you mean (it is quite similar to the EM proof's
+structure), except for how to &quot;check whether there is some element of
+<tt class="docutils literal">l1'</tt> which is mapped by <tt class="docutils literal">f : (forall x, In x l1 <span class="pre">-&gt;</span> In x l2)</tt> to
+the same membership proof as <tt class="docutils literal">x</tt>&quot;. Sorry for being so slow...</p>
+<p><strong>Q:</strong> Perhaps a stupid question, but won't membership proofs of <tt class="docutils literal">In
+x L</tt> and <tt class="docutils literal">In x' L</tt> be different if the first one contains &quot;<tt class="docutils literal">x</tt> is
+at index 3 in the list&quot; and the other one contains &quot;<tt class="docutils literal">x'</tt> is at index
+8&quot;, even if <tt class="docutils literal">x = x'</tt>?</p>
+<p><strong>A:</strong> To the first question: iterate through the list and decide for
+each element whether it's mapped to the same index as <tt class="docutils literal">x</tt>. You first
+have to implement dec. equality of membership proofs by induction on
+them, then implement this check by induction on lists. To the second:
+if <tt class="docutils literal">In x L</tt> and <tt class="docutils literal">In y L</tt> point to the same index, then <tt class="docutils literal">x = y</tt>.
+We don't decide anything about equalities of elements, we decide
+equality of indices, which implies equality of elements.</p>
+<p><strong>Q:</strong> &quot;You first have to implement dec. equality of membership proofs
+by induction on them&quot; -- Do you mean I should prove i.e.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk4"><span class="kn">Lemma</span> <span class="nf">in_proof_dec</span> : <span class="kr">forall</span> <span class="nv">l</span> <span class="nv">x</span> (<span class="nv">p</span> <span class="nv">q</span> : In x l), {p = q} + {p &lt;&gt; q}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>in_split</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l</span> : list X),
+In x l -&gt;
+<span class="kr">exists</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X, l = l1 ++ x :: l2</span></span></span><br><span><var>in_app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
+In x (l1 ++ l2) &lt;-&gt; In x l1 \/ In x l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">l</span> : list X) <span class="nv">x</span> (<span class="nv">p</span> <span class="nv">q</span> : In x l),
+{p = q} + {p &lt;&gt; q}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Could you show how to do this, please? (Here <tt class="docutils literal">In</tt> is unfortunately a
+function and not an inductive predicate, so I need to compare
+functions, which I can't, without assuming functional extensionality)</p>
+<p><strong>A:</strong> We'd like to decide <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.JMeq.html">heterogeneous</a> equality of <tt class="docutils literal">In
+x l</tt> and <tt class="docutils literal">In y l</tt>. That's done by induction on <tt class="docutils literal">l</tt> if <tt class="docutils literal">In</tt> is
+recursively defined on <tt class="docutils literal">l</tt>. Unfortunately I don't have immediately
+deployable Coq skills, so I can't write example code. You can look at
+the link in gallais' comment. He does a great job doing a simple proof
+in Agda, and he also avoids heterogeneous <tt class="docutils literal">In</tt> equalities. You can
+certainly understand the types of the lemmas there even if you don't
+know Agda.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How can I read Coq's definition of proj1_sig?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-read-coq-s-definition-of-proj1-sig">
+<h1 class="title">How can I read Coq's definition of <tt class="docutils literal">proj1_sig</tt>?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41461247">https://stackoverflow.com/q/41461247</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In Coq, <tt class="docutils literal">sig</tt> is defined as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">sig</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) : <span class="kt">Type</span> :=
+    exist : <span class="kr">forall</span> <span class="nv">x</span> : A, P x -&gt; {x : A | P x}
+
+<span class="kn">Arguments</span> sig [A]%type_scope _%type_scope
+<span class="kn">Arguments</span> exist [A]%type_scope _%function_scope _ _</blockquote></div></div></small></span></pre><p>Which I read as</p>
+<blockquote>
+<tt class="docutils literal">A sig P</tt> is a type, where <tt class="docutils literal">P</tt> is a function taking an <tt class="docutils literal">A</tt>
+and returning a <tt class="docutils literal">Prop</tt>. The type is defined such that an element
+<tt class="docutils literal">x</tt> of type <tt class="docutils literal">A</tt> is of type <tt class="docutils literal">sig P</tt> if <tt class="docutils literal">P x</tt> holds.</blockquote>
+<p><tt class="docutils literal">proj1_sig</tt> is defined as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">proj1_sig = 
+<span class="kr">fun</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) (<span class="nv">e</span> : {x : A | P x}) =&gt;
+<span class="kr">let</span> (<span class="nv">a</span>, _) := e <span class="kr">in</span> a
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>),
+       {x : A | P x} -&gt; A
+
+<span class="kn">Arguments</span> proj1_sig [A]%type_scope [P]%function_scope
+  _</blockquote></div></div></small></span></pre><p>I'm not sure what to make of that. Could somebody provide a more
+intuitive understanding?</p>
+<hr class="docutils" />
+<p><strong>A:</strong> This <a class="reference external" href="http://stackoverflow.com/questions/38777736/how-do-i-read-the-definition-of-ex-intro">question</a>
+is somewhat related. And <a class="reference external" href="http://stackoverflow.com/questions/11593270/coq-extract-witness-from-proposition">this</a>
+one and <a class="reference external" href="http://stackoverflow.com/questions/26493911/how-to-extract-z-from-subset-type-z-z-z-0">this</a>.
+Also, <a class="reference external" href="http://stackoverflow.com/questions/27079513/prove-equality-on-sigma-types">this</a>
+question on equality of sigma types can be of some interest too. I've
+added these links because the automatic ones were not too close.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<div class="section" id="non-dependent-pairs-vs-sig">
+<h2>Non-dependent pairs vs. <tt class="docutils literal">sig</tt></h2>
+<blockquote>
+The type is defined such that an element <tt class="docutils literal">x</tt> of type <tt class="docutils literal">A</tt> is of
+type <tt class="docutils literal">sig P</tt> if <tt class="docutils literal">P x</tt> holds.</blockquote>
+<p>That is not entirely correct: we can't say <tt class="docutils literal">x : sig A P</tt>. An
+inhabitant <tt class="docutils literal">e</tt> of type <tt class="docutils literal">sig A P</tt> is essentially a <em>pair</em> of an
+element <tt class="docutils literal">x : A</tt> and a proof that <tt class="docutils literal">P x</tt> holds (this is called a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Dependent_type#Dependent_pair_type">dependent pair</a>).
+<tt class="docutils literal">x</tt> and <tt class="docutils literal">P x</tt> are &quot;wrapped&quot; together using the data constructor
+<tt class="docutils literal">exist</tt>.</p>
+<p>To see this let us first consider the non-dependent pair type
+<tt class="docutils literal">prod</tt>, which is defined as follows:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">prod</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+    pair : A -&gt; B -&gt; A * B
+
+<span class="kn">Arguments</span> prod (_ _)%type_scope
+<span class="kn">Arguments</span> pair {A B}%type_scope _ _</blockquote></div></div></small></span></pre><p><tt class="docutils literal">prod</tt>'s inhabitants are pairs, like <tt class="docutils literal">pair 1 true</tt> (or, using
+notations, <tt class="docutils literal">(1, true)</tt>), where the <em>types</em> of both components are
+<em>independent</em> of each other.</p>
+<p>Since <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt> in Coq is just syntactic sugar for <tt class="docutils literal">forall _ : A,
+B</tt> (defined <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Logic.html">here</a>), the definition
+of <tt class="docutils literal">prod</tt> can be desugared into</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">prod</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=  pair : <span class="kr">forall</span> <span class="nv">_</span> : A, B -&gt; prod A B.</span></span></pre><p>The above definition, perhaps, can help to see that elements of <tt class="docutils literal">sig
+A P</tt> are (dependent) pairs.</p>
+</div>
+<div class="section" id="what-we-can-derive-from-implementation-and-type-of-proj1-sig">
+<h2>What we can derive from implementation and type of <tt class="docutils literal">proj1_sig</tt></h2>
+<p>From the implementation we can see that <tt class="docutils literal">proj1_sig e</tt> unpacks the
+pair and returns the <em>first</em> component, viz. <tt class="docutils literal">x</tt>, throwing away the
+proof of <tt class="docutils literal">P x</tt>.</p>
+<p>The <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Specif.html">Coq.Init.Specif</a> module contains
+the following comment:</p>
+<blockquote>
+<tt class="docutils literal">(sig A P)</tt>, or more suggestively <tt class="docutils literal">{x:A | P x}</tt>, denotes the
+subset of elements of the type <tt class="docutils literal">A</tt> which satisfy the predicate
+<tt class="docutils literal">P</tt>.</blockquote>
+<p>If we look at the type of <tt class="docutils literal">proj1_sig</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-read-coqs-definition-of-proj1-sig-v-chk3"><span class="kn">Check</span> proj1_sig.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">proj1_sig
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>),
+       {x : A | P x} -&gt; A</blockquote></div></div></small></span></pre><p>we will see that <tt class="docutils literal">proj1_sig</tt> gives us a way of recovering an element
+of a superset <tt class="docutils literal">A</tt> from its subset <tt class="docutils literal">{x : A | P x}</tt>.</p>
+</div>
+<div class="section" id="analogue-between-fst-and-proj1-sig">
+<h2>Analogue between <tt class="docutils literal">fst</tt> and <tt class="docutils literal">proj1_sig</tt></h2>
+<p>Also, we can say that in some sense <tt class="docutils literal">proj1_sig</tt> is analogous to the
+<a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Datatypes.html#fst">fst</a>
+function, which returns the first component of a pair:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-read-coqs-definition-of-proj1-sig-v-chk4"><span class="kn">Check</span> @fst.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">@fst
+     : <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>, A * B -&gt; A</blockquote></div></div></small></span></pre><p>There is a trivial property of <tt class="docutils literal">fst</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-read-coqs-definition-of-proj1-sig-v-chk5"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> (<span class="nv">a</span> : A) (<span class="nv">b</span> : B),
+    fst (a, b) = a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">a</span> : A) (<span class="nv">b</span> : B), fst (a, b) = a</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-read-coqs-definition-of-proj1-sig-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">a</span> : A) (<span class="nv">b</span> : B), fst (a, b) = a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We can formulate a similar statement for <tt class="docutils literal">proj1_sig</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-read-coqs-definition-of-proj1-sig-v-chk7"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) (<span class="nv">x</span> : A) (<span class="nv">prf</span> : P x),
+    proj1_sig (exist P x prf) = x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) (<span class="nv">x</span> : A) (<span class="nv">prf</span> : P x),
+proj1_sig (exist P x prf) = x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-read-coqs-definition-of-proj1-sig-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-read-coqs-definition-of-proj1-sig-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>) (<span class="nv">x</span> : A) (<span class="nv">prf</span> : P x),
+proj1_sig (exist P x prf) = x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
+<p><strong>Q:</strong> Okay, so suppose I have an element <tt class="docutils literal">x</tt> of <tt class="docutils literal">sig P</tt>. Is
+<tt class="docutils literal">proj1_sig x</tt> just <tt class="docutils literal">x</tt>?</p>
+<p><strong>A:</strong> No, it's not. <tt class="docutils literal">x</tt> is a &quot;pair&quot;. You probably meant something
+like this <tt class="docutils literal">proj1_sig (exist P x prf) = x</tt>, which is an analogue of
+<tt class="docutils literal">fst (a, b) = a</tt>.</p>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

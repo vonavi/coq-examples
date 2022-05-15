@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Which vector library to use in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="which-vector-library-to-use-in-coq">
+<h1 class="title">Which vector library to use in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42302300">https://stackoverflow.com/q/42302300</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm wondering, is there a commonly used library for vectors in Coq,
+i.e. lists indexed by their length in their type.</p>
+<p>Some tutorials reference <tt class="docutils literal">Bvector</tt>, but it's not found when I try to
+import it.</p>
+<p>There's <tt class="docutils literal">Coq.Vectors.Vectordef</tt>, but the type defined there is just
+named <tt class="docutils literal">t</tt> which makes me think it's intended for internal use.</p>
+<p>What is the best or most common practice for someone who doesn't want
+to roll their own library? Am I wrong about the vectors in the
+standard library? Or is there another lib I'm missing? Or do people
+just use lists, paired with proofs of their length?</p>
+<hr class="docutils" />
+<p><strong>A:</strong> I think &#64;ejgallego answers this question in this <a class="reference external" href="https://sympa.inria.fr/sympa/arc/coq-club/2017-01/msg00099.html">coq-club
+thread</a>.
+Also, <a class="reference external" href="http://stackoverflow.com/a/30159566/2747511">this answer</a> by
+Arthur Azevedo de Amorim has the same spirit: &quot;While dependent types
+are interesting for some things, it not clear how useful they are in
+general. My impression is that some feel that they are very
+complicated to use, and that the benefit of having certain properties
+expressed at the type level versus having them as separate theorems is
+not worth this additional complexity.&quot;</p>
+<p><strong>A:</strong> Also, you can <tt class="docutils literal">Require Vector</tt> (without importing) and use
+the qualified name <tt class="docutils literal">Vector.t</tt>.</p>
+<p><strong>A:</strong> If you want something ready to use AFAICT math-comp's <tt class="docutils literal">tuple</tt>
+is the only option, others have experimented with &quot;the fixpoint
+definition&quot;, you may have luck with it too.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>There are generally three approaches to vectors in Coq, each with
+their own trade-offs:</p>
+<ol class="arabic simple">
+<li>Inductively defined vectors, as provided by the Coq standard
+library.</li>
+<li>Lists paired with an assertion of their length.</li>
+<li>Recursively-nested tuples.</li>
+</ol>
+<p>Lists-with-length are nice in that they're easily coerced to lists, so
+you can reuse a lot of functions that operate on plain lists.
+Inductive vectors have the downside of requiring a lot of
+dependently-typed pattern matching, depending on what you're doing
+with them.</p>
+<p>For most developments, I prefer the recursive tuple definition:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Vec</span> <span class="nv">A</span> : nat -&gt; <span class="kt">Type</span> :=
+  <span class="kr">fix</span> vec n := <span class="kr">match</span> n <span class="kr">return</span> <span class="kt">Type</span> <span class="kr">with</span>
+               | O   =&gt; unit
+               | S n =&gt; prod A (vec n)
+               <span class="kr">end</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
