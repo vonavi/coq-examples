@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Different induction principles for Prop and Type</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="different-induction-principles-for-prop-and-type">
+<h1 class="title">Different induction principles for <tt class="docutils literal">Prop</tt> and <tt class="docutils literal">Type</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/39683390">https://stackoverflow.com/q/39683390</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I noticed that Coq synthesizes different induction principles on
+equality for <tt class="docutils literal">Prop</tt> and <tt class="docutils literal">Type</tt>. Does anybody have an explanation
+for that?</p>
+<p>Equality is defined as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">eq</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Prop</span> :=
+    eq_refl : x = x
+
+<span class="kn">Arguments</span> eq {A}%type_scope _ _
+<span class="kn">Arguments</span> eq_refl {A}%type_scope {x}, [_] _</blockquote></div></div></small></span></pre><p>And the associated induction principle has the following type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_ind
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>),
+       P x -&gt; <span class="kr">forall</span> <span class="nv">y</span> : A, x = y -&gt; P y</blockquote></div></div></small></span></pre><p>Now let's define a <tt class="docutils literal">Type</tt> pendant of <tt class="docutils literal">eq</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">eqT</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Type</span> := eqT_refl : eqT x x.</span></span></pre><p>The automatically generated induction principle is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eqT_ind
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A)
+         (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">a</span> : A, eqT x a -&gt; <span class="kt">Prop</span>),
+       P x (eqT_refl x) -&gt;
+       <span class="kr">forall</span> (<span class="nv">y</span> : A) (<span class="nv">e</span> : eqT x y), P y e</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><em>Note</em>: I'm going to use <tt class="docutils literal">_rect</tt> principles everywhere instead of
+<tt class="docutils literal">_ind</tt>, since <tt class="docutils literal">_ind</tt> principles are usually implemented via the
+<tt class="docutils literal">_rect</tt> ones.</p>
+<div class="section" id="type-of-eqt-rect">
+<h2>Type of <tt class="docutils literal">eqT_rect</tt></h2>
+<p>Let's take a look at the predicate <tt class="docutils literal">P</tt>. When dealing with inductive
+families, the number of arguments of <tt class="docutils literal">P</tt> is equal to the number of
+<em>non-parametric</em> arguments <tt class="docutils literal">(indices) + 1</tt>.</p>
+<p>Let me give some examples (they can be easily skipped).</p>
+<ul>
+<li><p class="first">Natural numbers don't have parameters at all:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">nat</span> : <span class="kt">Set</span> :=  O : nat | S : nat -&gt; nat
+
+<span class="kn">Arguments</span> S _%nat_scope</blockquote></div></div></small></span></pre><p>So, the predicate <tt class="docutils literal">P</tt> will be of type <tt class="docutils literal">nat <span class="pre">-&gt;</span> Type</tt>.</p>
+</li>
+<li><p class="first">Lists have one parametric argument (<tt class="docutils literal">A</tt>):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">list</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
+    nil : list A | cons : A -&gt; list A -&gt; list A
+
+<span class="kn">Arguments</span> list _%type_scope
+<span class="kn">Arguments</span> nil {A}%type_scope
+<span class="kn">Arguments</span> cons {A}%type_scope a l%list_scope
+  (<span class="kn">where</span> some original arguments <span class="nb">have</span> been renamed)</blockquote></div></div></small></span></pre><p>Again, <tt class="docutils literal">P</tt> has only one argument: <tt class="docutils literal">P : list A <span class="pre">-&gt;</span> Type</tt>.</p>
+</li>
+<li><p class="first">Vectors are a different:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">t</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : nat -&gt; <span class="kt">Type</span> :=
+    nil : VectorDef.t A <span class="mi">0</span>
+  | cons : A -&gt;
+           <span class="kr">forall</span> <span class="nv">n</span> : nat,
+           VectorDef.t A n -&gt; VectorDef.t A (S n)
+
+<span class="kn">Arguments</span> VectorDef.t _%type_scope _%nat_scope
+<span class="kn">Arguments</span> VectorDef.nil _%type_scope
+<span class="kn">Arguments</span> VectorDef.cons _%type_scope _ _%nat_scope _</blockquote></div></div></small></span></pre><p><tt class="docutils literal">P</tt> has 2 arguments, because <tt class="docutils literal">n</tt> in <tt class="docutils literal">vec A n</tt> is a
+non-parameteric argument:</p>
+<pre class="code coq literal-block">
+<span class="n">P</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">vec</span> <span class="n">A</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="kt">Type</span>
+</pre>
+</li>
+</ul>
+<p>The above explains <tt class="docutils literal">eqT_rect</tt> (and, of course, <tt class="docutils literal">eqT_ind</tt> as a
+consequence), since the argument after <tt class="docutils literal">(x : A)</tt> is non-parametric,
+<tt class="docutils literal">P</tt> has 2 arguments:</p>
+<pre class="code coq literal-block">
+<span class="n">P</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">a</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">eqT</span> <span class="n">x</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Type</span>
+</pre>
+<p>which justifies the overall type for <tt class="docutils literal">eqT_rect</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eqT_rect
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A)
+         (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">a</span> : A, eqT x a -&gt; <span class="kt">Type</span>),
+       P x (eqT_refl x) -&gt;
+       <span class="kr">forall</span> (<span class="nv">y</span> : A) (<span class="nv">e</span> : eqT x y), P y e</blockquote></div></div></small></span></pre><p>The induction principle obtained in this way is called a <em>maximal
+induction principle</em>.</p>
+</div>
+<div class="section" id="type-of-eq-rect">
+<h2>Type of <tt class="docutils literal">eq_rect</tt></h2>
+<p>The generated induction principles for inductive predicates (such as
+<tt class="docutils literal">eq</tt>) are simplified to express proof irrelevance (the term for this
+is <em>simplified induction principle</em>).</p>
+<p>When defining a predicate <tt class="docutils literal">P</tt>, Coq simply drops the last argument of
+the predicate (which is the type being defined, and it lives in
+<tt class="docutils literal">Prop</tt>). That's why the predicate used in <tt class="docutils literal">eq_rect</tt> is unary. This
+fact shapes the type of <tt class="docutils literal">eq_rect</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_rect
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">P</span> : A -&gt; <span class="kt">Type</span>),
+       P x -&gt; <span class="kr">forall</span> <span class="nv">y</span> : A, x = y -&gt; P y</blockquote></div></div></small></span></pre></div>
+<div class="section" id="how-to-generate-maximal-induction-principle">
+<h2>How to generate maximal induction principle</h2>
+<p>We can also make Coq generate non-simplified induction principle for
+<tt class="docutils literal">eq</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Scheme</span> <span class="nf">eq_rect_max</span> := <span class="kn">Induction for</span> eq <span class="kn">Sort</span> <span class="kt">Type</span>.</span></span></pre><p>The resulting type is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="different-induction-principles-for-prop-and-type-v-chk8" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_rect_max
+     : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A)
+         (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">a</span> : A, x = a -&gt; <span class="kt">Type</span>),
+       P x eq_refl -&gt;
+       <span class="kr">forall</span> (<span class="nv">y</span> : A) (<span class="nv">e</span> : x = y), P y e</blockquote></div></div></small></span></pre><p>and it has the same structure as <tt class="docutils literal">eqT_rect</tt>.</p>
+</div>
+<div class="section" id="references">
+<h2>References</h2>
+<p>For more detailed explanation see sect. 14.1.3 ... 14.1.6 of the book
+&quot;Interactive Theorem Proving and Program Development (Coq'Art: The
+Calculus of Inductive Constructions)&quot; by Bertot and Castéran (2004).</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Updated link:
+<a class="reference external" href="https://coq.inria.fr/refman/user-extensions/proof-schemes.html#generation-of-induction-principles-with-scheme">https://coq.inria.fr/refman/user-extensions/proof-schemes.html#generation-of-induction-principles-with-scheme</a></p>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>All-quantified type variable in (value) constructor cannot be explicitly typed as wanted</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-as-wanted">
+<h1 class="title">All-quantified type variable in (value) constructor cannot be explicitly typed as wanted</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41104527">https://stackoverflow.com/q/41104527</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have the following GADT.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">GADT</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+| A : <span class="kr">forall</span> <span class="nv">A</span>, GADT A
+| B : GADT bool.</span></span></pre><p>And the following data type that has one constructor with an
+all-qualified type variable.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrap</span> <span class="nv">A</span> :=
+| wrap : GADT A -&gt; Wrap A
+| unwrap : <span class="kr">forall</span> <span class="nv">X</span>, GADT X -&gt; (X -&gt; Wrap A) -&gt; Wrap A.</span></span></pre><p>Then I want to define a recursive function that uses the function
+within <tt class="docutils literal">unwrap</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk0"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">wrappedGADT</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) : option (GADT A) :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | wrap _ x =&gt; Some x
+  | unwrap _ _ fx k =&gt; <span class="kr">match</span> fx <span class="kr">with</span>
+                       | A _ =&gt; None
+                       | B =&gt; wrappedGADT (k true)
+                       <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+wrappedGADT : <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+              Wrap A -&gt; option (GADT A)
+A : <span class="kt">Type</span>
+xs : Wrap A
+T : <span class="kt">Type</span>
+fx : GADT T
+k : T -&gt; Wrap A
+The term <span class="s2">&quot;true&quot;</span> has type <span class="s2">&quot;bool&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;T&quot;</span>.</blockquote></div></div></small></span></pre><p>I was assuming that when I inspect <tt class="docutils literal">fx</tt> and get case <tt class="docutils literal">B</tt>, the
+parameter <tt class="docutils literal">fx</tt> has type <tt class="docutils literal">GADT bool</tt>, thus, the all-quantified type
+variable <tt class="docutils literal">X</tt> is <tt class="docutils literal">bool</tt> as well. Is this assumption wrong?</p>
+<p>Next, I tried to explicitly type <tt class="docutils literal">unwrap</tt> as follows.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk1"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">wrappedGADT</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) : option (GADT A) :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | wrap _ x =&gt; Some x
+  | @nwrap _ bool fx k =&gt; <span class="kr">match</span> fx <span class="kr">with</span>
+                          | A _ =&gt; None
+                          | B =&gt; wrappedGADT (k true)
+                          <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Unknown <span class="nb">constructor</span>: nwrap.</blockquote></div></div></small></span></pre><p>Can anybody give any pointers to the origin of this problem?</p>
+</div>
+<div class="section" id="answer-daniel-schepler">
+<h1>Answer (Daniel Schepler)</h1>
+<p>Unfortunately, raw match statements in Coq aren't always very smart
+about the kind of reasoning you're applying here. The &quot;convoy pattern&quot;
+(see CPDT for more information about it) is usually the answer for
+resolving this type of problem. The immediate application here would
+look something like:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">wrappedGADT</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) {<span class="nv">struct</span> <span class="nv">xs</span>} : option (GADT A) :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | wrap _ x =&gt; Some x
+  | unwrap _ _ fx k =&gt; <span class="kr">match</span> fx <span class="kr">in</span> (GADT T)
+                             <span class="kr">return</span> ((T -&gt; Wrap A) -&gt; option (GADT A)) <span class="kr">with</span>
+                       | A _ =&gt; <span class="kr">fun</span> <span class="nv">k0</span> =&gt; None
+                       | B =&gt; <span class="kr">fun</span> <span class="nv">k0</span> =&gt; wrappedGADT (k0 true)
+                       <span class="kr">end</span> k
+  <span class="kr">end</span>.</span></span></pre><p>However, this runs into another issue, that Coq isn't able to verify
+the termination condition after passing the function through the
+&quot;convoy&quot;. It seems that to work around that, it suffices to first
+define the function of recursive calls on values of <tt class="docutils literal">k</tt> and then
+convoy that instead:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">wrappedGADT</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) {<span class="nv">struct</span> <span class="nv">xs</span>} : option (GADT A) :=
+  <span class="kr">match</span> xs <span class="kr">with</span>
+  | wrap _ x =&gt; Some x
+  | unwrap _ _ fx k =&gt;
+      <span class="kr">let</span> <span class="nv">r</span> := <span class="kr">fun</span> <span class="nv">x</span> =&gt; wrappedGADT (k x) <span class="kr">in</span>
+      <span class="kr">match</span> fx <span class="kr">in</span> (GADT T)
+            <span class="kr">return</span> ((T -&gt; option (GADT A)) -&gt; option (GADT A)) <span class="kr">with</span>
+      | A _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; None
+      | B =&gt; <span class="kr">fun</span> <span class="nv">r&#39;</span> =&gt; r&#39; true
+      <span class="kr">end</span> r
+  <span class="kr">end</span>.</span></span></pre><p>For your second code attempt, you're creating a local variable
+<tt class="docutils literal">bool</tt> to hold the type called <tt class="docutils literal">X</tt> in the <tt class="docutils literal">unwrap</tt> constructor,
+which is then shadowing the <tt class="docutils literal">Datatypes.bool</tt> definition. In general,
+there's no way to match only on one specific type in the Coq kernel
+language (although typeclasses provide a way to simulate that,
+somewhat).</p>
+</div>
+<div class="section" id="answer-anton-trunov">
+<h1>Answer (Anton Trunov)</h1>
+<p>Here is an alternative implementation, which constructs
+<tt class="docutils literal">wrappedGADT</tt>'s body using tactics. It has one advantage that it
+doesn't require manual <tt class="docutils literal">return</tt> annotations from the user. The
+overall structure closely resembles your original code with the
+<tt class="docutils literal">match</tt> expression.</p>
+<p>It is crucial to use <tt class="docutils literal">induction xs</tt> as opposed to <tt class="docutils literal">destruct xs</tt>
+here, because the <tt class="docutils literal">Wrap</tt> type is recursive.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk2"><span class="kn">Fixpoint</span> <span class="nf">wrappedGADT&#39;</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) : option (GADT A).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>Wrap A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk3"><span class="nb">induction</span> xs <span class="kr">as</span> [x | ? fx k r].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>GADT A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A, X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>fx</var><span class="hyp-type"><b>: </b><span>GADT X</span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>X -&gt; Wrap A</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>X -&gt; option (GADT A)</span></span></span><br></div><label class="goal-separator" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk4"><hr></label><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>GADT A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (Some x).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A, X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>fx</var><span class="hyp-type"><b>: </b><span>GADT X</span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>X -&gt; Wrap A</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>X -&gt; option (GADT A)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk7"><span class="nb">destruct</span> fx <span class="kr">as</span> [T | ].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A, T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>T -&gt; Wrap A</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>T -&gt; option (GADT A)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>bool -&gt; Wrap A</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>bool -&gt; option (GADT A)</span></span></span><br></div><label class="goal-separator" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk8"><hr></label><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk9">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A, T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>T -&gt; Wrap A</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>T -&gt; option (GADT A)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> None.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chka">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wrappedGADT'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+Wrap A -&gt; option (GADT A)</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>bool -&gt; Wrap A</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>bool -&gt; option (GADT A)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option (GADT A)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (r true).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>Here is a proof that the two implementations are extensionally equal.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkb"><span class="kn">Goal</span> <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">xs</span> : Wrap A),
+    wrappedGADT xs = wrappedGADT&#39; xs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">xs</span> : Wrap A),
+wrappedGADT xs = wrappedGADT&#39; xs</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkc"><span class="kn">Proof with</span> <span class="nb">auto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">xs</span> : Wrap A),
+wrappedGADT xs = wrappedGADT&#39; xs</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkd"><span class="nb">intros</span> A xs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>Wrap A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">wrappedGADT xs = wrappedGADT&#39; xs</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chke"><span class="nb">induction</span> xs...</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>g</var><span class="hyp-type"><b>: </b><span>GADT X</span></span></span><br><span><var>w</var><span class="hyp-type"><b>: </b><span>X -&gt; Wrap A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : X,
+wrappedGADT (w x) = wrappedGADT&#39; (w x)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">wrappedGADT (unwrap A X g w) =
+wrappedGADT&#39; (unwrap A X g w)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chkf"><span class="nb">destruct</span> g...</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>w</var><span class="hyp-type"><b>: </b><span>bool -&gt; Wrap A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : bool,
+wrappedGADT (w x) = wrappedGADT&#39; (w x)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">wrappedGADT (unwrap A bool B w) =
+wrappedGADT&#39; (unwrap A bool B w)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">simpl</span>; <span class="nb">rewrite</span> H; <span class="nb">destruct</span> (w true)...</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
+<p>If we look at the term generated for <tt class="docutils literal">wrappedGADT'</tt> (using <tt class="docutils literal">Print
+wrappedGADT'.</tt>), we'll be able to construct one more solution using
+the <tt class="docutils literal">Wrap_rect</tt> induction principle generated for the <tt class="docutils literal">Wrap</tt>
+datatype (I just removed unused variable <tt class="docutils literal">k</tt> from the <tt class="docutils literal">match</tt>
+expression in <tt class="docutils literal">wrappedGADT'</tt>):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">wrappedGADT&#39;&#39;</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) : option (GADT A) :=
+  Wrap_rect _
+            _
+            (<span class="kr">fun</span> <span class="nv">t</span> =&gt; Some t)
+            (<span class="kr">fun</span> <span class="nv">_</span> <span class="nv">fx</span> <span class="nv">k</span> <span class="nv">r</span> =&gt;
+               <span class="kr">match</span> fx <span class="kr">in</span> (GADT T)
+                     <span class="kr">return</span> ((T -&gt; option (GADT A)) -&gt; option (GADT A)) <span class="kr">with</span>
+               | A _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; None
+               | B =&gt; <span class="kr">fun</span> <span class="nv">r&#39;</span> =&gt; r&#39; true
+               <span class="kr">end</span> r)
+            xs.</span></span></pre><p>This solution can then lead to a solution a-la <a class="reference external" href="https://stackoverflow.com/a/41111181/2747511">Daniel's</a>, if we unfold
+<tt class="docutils literal">Wrap_rect</tt>, implemented as <tt class="docutils literal">Fixpoint</tt> itself.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

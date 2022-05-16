@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Unfold a notation within a scope</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="unfold-a-notation-within-a-scope">
+<h1 class="title">Unfold a notation within a scope</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/39514651">https://stackoverflow.com/q/39514651</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p><a class="reference external" href="https://stackoverflow.com/a/26032966/3335288">This answer</a>
+provides a simple useful trick: <tt class="docutils literal">unfold <span class="pre">&quot;&gt;=&quot;</span></tt> is the same as
+<tt class="docutils literal">unfold ge</tt> but does not require you to know that <tt class="docutils literal">&gt;=</tt> is the
+notation for <tt class="docutils literal">ge</tt>.</p>
+<p>Can you do the same for notations within a scope?</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> NArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="unfold-a-notation-within-a-scope-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">x</span>, (x &gt;= x)%N.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : N, (x &gt;= x)%N</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="unfold-a-notation-within-a-scope-v-chk1"><span class="nb">unfold</span> <span class="s2">&quot;&gt;=&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : N, (x &gt;= x)%N</div></blockquote></div></div></small></span></pre><p>Here <tt class="docutils literal">unfold <span class="pre">&quot;&gt;=&quot;</span></tt> does not do anything because it tries to unfold
+<tt class="docutils literal">ge</tt>, not <tt class="docutils literal">N.ge</tt>.</p>
+<p>I have found the following solution:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="unfold-a-notation-within-a-scope-v-chk2"><span class="kn">Open Scope</span> N.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : N, x &gt;= x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="unfold-a-notation-within-a-scope-v-chk3"><span class="nb">unfold</span> <span class="s2">&quot;&gt;=&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : N, (x ?= x) &lt;&gt; Lt</div></blockquote></div></div></small></span></pre><p>But is there a syntax allowing to unfold this notation without first
+opening the scope?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Yes, you can use the template <tt class="docutils literal">unfold string % scope</tt> as follows:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> NArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="unfold-a-notation-within-a-scope-v-chk4"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">x</span>, (x &gt;= x)%N.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : N, (x &gt;= x)%N</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="unfold-a-notation-within-a-scope-v-chk5"><span class="nb">unfold</span> <span class="s2">&quot;&gt;=&quot;</span> % N.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : N, (x ?= x)%N &lt;&gt; Lt</div></blockquote></div></div></small></span></pre><p>This gives us the goal</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="unfold-a-notation-within-a-scope-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  <span class="kr">forall</span> <span class="nv">x</span> : N, (x ?= x)%N &lt;&gt; Lt</blockquote></div></div></small></span></pre><p>with unfolded <tt class="docutils literal">&gt;=</tt>.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> <tt class="docutils literal">(term) % scope</tt> is the standard syntax for local opening of
+an interpretation scope. It so happens that Coq accepts it in this
+case too. It's actually not <tt class="docutils literal">scope</tt>, but <tt class="docutils literal">key</tt>, I'm being sloppy
+here.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

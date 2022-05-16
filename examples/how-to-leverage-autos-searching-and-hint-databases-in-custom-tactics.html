@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to leverage auto's searching and hint databases in custom tactics?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-leverage-auto-s-searching-and-hint-databases-in-custom-tactics">
+<h1 class="title">How to leverage <tt class="docutils literal">auto</tt>'s searching and hint databases in custom tactics?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41171406">https://stackoverflow.com/q/41171406</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In my coq development I am learning how to create new tactics tailored
+to my problem domain, a la <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Match.html">Prof. Adam Chlipala</a>. On that page he
+describes how to create powerful custom tactics by e.g. combining
+<tt class="docutils literal">repeat</tt> with <tt class="docutils literal">match</tt>.</p>
+<p>Now, I already have a powerful one-shot tactic in use, <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#sec390">auto</a>. It
+strings together chains of steps found from hint databases. I have
+invested some effort in curating those hint databases, so I'd like to
+continue using it as well.</p>
+<p>However this presents a problem. <strong>It isn't clear what the &quot;right&quot; way
+is to incorporate</strong> <tt class="docutils literal">auto</tt><strong>'s functionality into customized
+tactics.</strong></p>
+<p>For example, since (per its page) <tt class="docutils literal">auto</tt> always either solves the
+goal or does nothing, putting it inside a loop is no more powerful
+than calling it once after the loop.</p>
+<p>To see why this isn't ideal, consider a hypothetical way to directly
+call a single &quot;step&quot; of <tt class="docutils literal">auto</tt>, which succeeds if it could make a
+change (as opposed to only when it solved the goal) and fails
+otherwise. Such single-steps could be interleaved with custom behavior
+in a match repeat loop, allowing us to e.g. <tt class="docutils literal">try contradiction</tt> or
+<tt class="docutils literal">try congruence</tt> at intermediate points within the search tree.</p>
+<p>Are there good design patterns for incorporating <tt class="docutils literal">auto</tt>'s
+functionality into custom tactics?</p>
+<p>Can <tt class="docutils literal">auto</tt>'s behavior be decomposed into &quot;single step&quot; tactics that
+we can use?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>What I would do instead would be to incorporate other tactics within
+<a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.auto">auto</a>.
+You can do so by using the <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:cmdv.hint-extern">Hint Extern num pat =&gt; mytactic : mybase</a>
+command where <tt class="docutils literal">num</tt> is a priority number (0 being the highest
+priority), <tt class="docutils literal">pat</tt> a pattern to filter when the hint should be used
+and <tt class="docutils literal">mytactic</tt> and <tt class="docutils literal">mybase</tt> are of course the tactic you want to
+apply and the base you want to add the hint to (do not use the default
+<tt class="docutils literal">core</tt>; build up your custom base instead and call it with <tt class="docutils literal">auto
+with mybase</tt>; if you do not want to include the lemmas from the
+<tt class="docutils literal">core</tt> base in the search, add the fake base <tt class="docutils literal">nocore</tt>: <tt class="docutils literal">auto with
+mybase nocore</tt>).</p>
+<p>If you start relying on <tt class="docutils literal">auto</tt> very much, I would switch instead to
+the almost equivalent but better behaved <a class="reference external" href="https://coq.inria.fr/refman/addendum/type-classes.html#coq:tacn.typeclasses-eauto">typeclasses eauto with
+mybase</a>.
+Contrary to what its name suggests, it is a general purpose tactic
+that has nothing to do with type classes (as long as you explicitly
+provide the hint base on which it should be working). One of the main
+behavior difference to know is that the search depth is unbounded by
+default. So beware of possible infinite loops or fix a finite limit
+with the variant <tt class="docutils literal">typeclasses eauto num with mybase</tt>.</p>
+</div>
+</div>
+</div></body>
+</html>
