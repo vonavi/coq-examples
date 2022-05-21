@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Best way to handle (sub) types of the form { x : nat | x &gt;= 13 /\ x &lt;= 19 }?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19">
+<h1 class="title">Best way to handle (sub) types of the form <tt class="docutils literal">{ x : nat | x &gt;= 13 /\ x &lt;= 19 }</tt>?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/37897316">https://stackoverflow.com/q/37897316</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Coq would let me define this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">teenagers</span> : <span class="kt">Set</span> := { x : nat | x &gt;= <span class="mi">13</span> /\ x &lt;= <span class="mi">19</span> }.</span></span></pre><p>and also:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk0"><span class="kn">Variable</span> <span class="nv">Julia</span> : teenagers.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small></span></pre><p>but not:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk1"><span class="kn">Example</span> <span class="nf">minus_20</span> : <span class="kr">forall</span> <span class="nv">x</span> : teenagers, x &lt; <span class="mi">20</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+x : teenagers
+The term <span class="s2">&quot;x&quot;</span> has type <span class="s2">&quot;teenagers&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>or:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk2"><span class="kn">Example</span> <span class="nf">Julia_fact1</span> : Julia &gt; <span class="mi">12</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;Julia&quot;</span> has type <span class="s2">&quot;teenagers&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This is because Julia (of type <tt class="docutils literal">teenagers</tt>) cannot be compared to 12
+(<tt class="docutils literal">nat</tt>).</p>
+<p><strong>Q:</strong> How should I inform Coq that Julia's support type is <tt class="docutils literal">nat</tt> so
+that I can write anything useful about her?</p>
+<p><strong>Q':</strong> My definition of teenagers seems like a dead end; it is more
+declarative than constructive and I seem to have lost inductive
+properties of <tt class="docutils literal">nat</tt>. How can I show up its inhabitants? If there is
+no way, I can still stick to <tt class="docutils literal">nat</tt> and work with <tt class="docutils literal">Prop</tt> and
+functions. (newbie here, less than one week self learning with
+<a class="reference external" href="https://www.cis.upenn.edu/~bcpierce/sf/current/index.html">Pierce's SF</a>).</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The pattern you are using in <tt class="docutils literal">teenagers</tt> is an instance of the
+&quot;subType&quot; pattern. As you have noted, a <tt class="docutils literal">{ x : nat | P x }</tt> is
+different from <tt class="docutils literal">nat</tt>. Currently, Coq provides little support to
+handle these kind of types effectively, but if you restrict to
+&quot;well-behaved&quot; classes of <tt class="docutils literal">P</tt>, you can actually work in a reasonable
+way. [This should really become a Coq FAQ BTW]</p>
+<p>In the long term, you may want to use special support for this
+pattern. A good example of such support is provided by the math-comp
+library <tt class="docutils literal">subType</tt> interface.</p>
+<p>Describing this interface is beyond your original question, so I will
+end with a few comments:</p>
+<ul>
+<li><p class="first">In your <tt class="docutils literal">minus_20</tt> example, you want to use the <em>first projection</em>
+of your teenagers datatype. Try <tt class="docutils literal">forall x : teenagers, proj1_sig x
+&lt; 20</tt>. Coq can try to insert such projection automatically if you
+declare the projection as a <tt class="docutils literal">Coercion</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lia.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">teenagers</span> : <span class="kt">Set</span> := { x : nat | x &gt;= <span class="mi">13</span> /\ x &lt;= <span class="mi">19</span> }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">teen_to_nat</span> := <span class="kr">fun</span> <span class="nv">x</span> : teenagers =&gt; proj1_sig x.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Implicit Type</span> <span class="nf">t</span> : teenagers.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk3"><span class="kn">Lemma</span> <span class="nf">u</span> <span class="nv">t</span> : t &lt; <span class="mi">20</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t</var><span class="hyp-type"><b>: </b><span>teenagers</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t &lt; <span class="mi">20</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t</var><span class="hyp-type"><b>: </b><span>teenagers</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t &lt; <span class="mi">20</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> t; <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
+<li><p class="first">As you have correctly observed, <tt class="docutils literal">{ x : T | P x }</tt> is not the same
+in Coq than <tt class="docutils literal">x</tt>. In principle, you cannot transfer reasoning from
+objects of type <tt class="docutils literal">T</tt> to objects of type <tt class="docutils literal">{ x : T | P x }</tt> as you
+must also reason in addition about objects of type <tt class="docutils literal">P x</tt>. But for
+a wide class of <tt class="docutils literal">P</tt>, you can show that the <tt class="docutils literal">teen_to_nat</tt>
+projection is injective, that is:</p>
+<pre class="code coq literal-block">
+<span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">,</span> <span class="n">teen_to_nat</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">teen_to_nat</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span>
+</pre>
+<p>Then, reasoning over the base type can be transferred to the
+subtype. See also: <a class="reference external" href="https://stackoverflow.com/questions/35290012/inductive-subset-of-an-inductive-set-in-coq/35300521#35300521">Inductive subset of an inductive set in Coq</a></p>
+</li>
+</ul>
+<p><strong>[edit]:</strong> I've added a couple typical examples of subTypes in
+math-comp, as I think they illustrate well the concept:</p>
+<ul class="simple">
+<li>Sized lists or <tt class="docutils literal"><span class="pre">n.-tuples</span></tt>. A list of length <tt class="docutils literal">n</tt> is represented
+in math-comp as a pair of a single list plus a proof of size, that
+is to say <tt class="docutils literal"><span class="pre">n.-tuple</span> T = { s : seq T | size s == n}</tt>. Thanks to
+injectivity and coertions, you can use all the regular list
+functions over tuples and they work fine.</li>
+<li>Bounded natural or ordinals: similarly, the type <tt class="docutils literal">'I_n = { x : nat
+| x &lt; n }</tt> works almost the same than a natural number, but with a
+bound.</li>
+</ul>
+<hr class="docutils" />
+<p><strong>A:</strong> CPDT covers subset types, starting from <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Cpdt.Subset.html">this chapter</a>.</p>
+<p><strong>A:</strong> I heard something is on the works... There will be a tutorial
+soon at ITP soon thou:
+<a class="reference external" href="https://github.com/math-comp/wiki/wiki/tutorial-itp2016">https://github.com/math-comp/wiki/wiki/tutorial-itp2016</a> which can be
+run in the browser, also this provides some exercises
+<a class="reference external" href="https://team.inria.fr/marelle/en/advanced-coq-winter-school-2016">https://team.inria.fr/marelle/en/advanced-coq-winter-school-2016</a> but
+it is geared towards math.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
