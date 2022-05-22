@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to import the library Coq.Arith.PeanoNat in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-import-the-library-coq-arith-peanonat-in-coq">
+<h1 class="title">How to import the library <tt class="docutils literal">Coq.Arith.PeanoNat</tt> in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36621752">https://stackoverflow.com/q/36621752</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I need to use the part of the standard library called
+<tt class="docutils literal">Coq.Arith.PeanoNat</tt>
+(<a class="reference external" href="https://coq.inria.fr/library/Coq.Arith.PeanoNat.html">https://coq.inria.fr/library/Coq.Arith.PeanoNat.html</a>).</p>
+<p>I've tried either importing the entire Arith library or just this
+module, but I can't use it either way.</p>
+<p>Every other library I've tried works just fine. When I do <tt class="docutils literal">Require
+Import Bool.</tt> I compile and I can use it correctly. Upon <tt class="docutils literal">Print
+Bool.</tt> I can take a look at all the functions inside in the next
+format:</p>
+<pre class="code literal-block">
+Module
+Bool
+:= Struct
+Definition...
+.
+.
+.
+End
+</pre>
+<p>When I do either <tt class="docutils literal">Require Import Arith.PeanoNat.</tt> or <tt class="docutils literal">Require
+Import Arith.</tt> I get this as immediate output:</p>
+<pre class="code literal-block">
+[Loading ML file z_syntax_plugin.cmxs ... done]
+[Loading ML file quote_plugin.cmxs ... done]
+[Loading ML file newring_plugin.cmxs ... done]
+&lt;W&gt; Grammar extension: in [tactic:simple_tactic], some rule has been masked
+&lt;W&gt; Grammar extension: in [tactic:simple_tactic], some rule has been masked
+&lt;W&gt; Grammar extension: in [tactic:simple_tactic], some rule has been masked
+&lt;W&gt; Grammar extension: in [tactic:simple_tactic], some rule has been masked
+&lt;W&gt; Grammar extension: in [tactic:simple_tactic], some rule has been masked
+</pre>
+<p>When I ask Coq <tt class="docutils literal">Print Arith.PeanoNat</tt> it outputs: <tt class="docutils literal">Module Arith :=
+Struct End</tt>, it seems to be empty. When I try to use anything from
+the library, for example <tt class="docutils literal">le_le</tt> under boolean comparisons, I get
+the standard <tt class="docutils literal">Error: leb_le not a defined object.</tt> I have updated
+Coq and the libraries, and I have no idea of what might be going on
+here. I'd appreciate your input in fixing this library problem.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If I am not mistaken, <tt class="docutils literal">Require</tt> is the keyword to load a file.
+<tt class="docutils literal">Import</tt> has to do with managing name spaces. Often they are used
+together, as in <tt class="docutils literal">Require Import PeanoNat.</tt>, but they are really
+doing two different things.</p>
+<p>When coq files (<tt class="docutils literal">DirName/FileName.vo</tt>) are loaded with <tt class="docutils literal">Require</tt>,
+it is as if the contents of <tt class="docutils literal">FileName.vo</tt> is wrapped in <tt class="docutils literal">Module
+DirName.FileName ... End.</tt> Everyting defined in the file is then
+accessed with <tt class="docutils literal">DirName.FileName.Name</tt>.</p>
+<p>The file can itself have modules <tt class="docutils literal">M</tt> inside of it, and to get to
+<tt class="docutils literal">M</tt>'s contents, one has to type
+<tt class="docutils literal">DirName.FileName.ModuleName.Name1</tt> etc.</p>
+<p><tt class="docutils literal">Import</tt> is used to get all the definitions up to the top level. By
+doing <tt class="docutils literal">Import DirName.FileName.ModuleName</tt> the module <tt class="docutils literal">Name1</tt> is
+now imported to the top level, and can be referenced without the long
+path.</p>
+<p>In your example above, the file <tt class="docutils literal">Arith/PeanoNat.vo</tt> defines the
+module <tt class="docutils literal">Nat</tt>. Actually, that is all it defines. So if you do
+<tt class="docutils literal">Require Import Arith.PeanoNat</tt> you get <tt class="docutils literal">PeanoNat.Nat</tt> at the top
+level. And then <tt class="docutils literal">Import PeanoNat.Nat</tt> will bring <tt class="docutils literal">Nat</tt> to the top
+level. Note that you can't do <tt class="docutils literal">Require Import PeanoNat.Nat</tt> because
+it is no <tt class="docutils literal">.vo</tt> file.</p>
+<p>Coq can sometimes find a <tt class="docutils literal">.vo</tt> file without you having to specify
+the whole path, so you can also do <tt class="docutils literal">Require Import PeanoNat.</tt> and
+coq will find the file. If you wonder where it found it, do <tt class="docutils literal">Locate
+PeanoNat</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> PeanoNat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-import-the-library-coq-arith-peanonat-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-import-the-library-coq-arith-peanonat-in-coq-v-chk0"><span class="kn">Locate</span> PeanoNat.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Module</span> <span class="nf">Coq</span>.Arith.PeanoNat</blockquote></div></div></small></span></pre><p>Another <tt class="docutils literal">Nat</tt> is also available from another place than
+<tt class="docutils literal">PeanoNat</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-import-the-library-coq-arith-peanonat-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-import-the-library-coq-arith-peanonat-in-coq-v-chk1"><span class="kn">Locate</span> Nat.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Module</span> <span class="nf">Coq</span>.Init.Nat</blockquote></div></div></small></span></pre><p>So, you don't <tt class="docutils literal">Import</tt> a library, you <tt class="docutils literal">Require</tt> it. You use
+<tt class="docutils literal">Import</tt> to not have to use the full path name. I hope this helps
+you debug what is happening.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

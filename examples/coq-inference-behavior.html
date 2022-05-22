@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq inference behavior</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-inference-behavior">
+<h1 class="title">Coq inference behavior</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36996020">https://stackoverflow.com/q/36996020</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm trying to write the following Agda snippet in Coq.</p>
+<pre class="code agda literal-block">
+<span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Fin</span><span class="w"> </span><span class="kr">using</span><span class="w"> </span><span class="o">(</span>Fin;<span class="w"> </span>suc;<span class="w"> </span>zero<span class="o">)</span><span class="w">
+</span><span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Nat</span><span class="w"> </span><span class="kr">using</span><span class="w"> </span><span class="o">(</span>ℕ;<span class="w"> </span>suc;<span class="w"> </span>zero<span class="o">)</span><span class="w">
+
+</span><span class="nf">thin</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="o">{</span>n<span class="w"> </span><span class="ow">:</span><span class="w"> </span>ℕ<span class="o">}</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Fin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>n<span class="o">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Fin<span class="w"> </span>n<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Fin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>n<span class="o">)</span><span class="w">
+</span>thin<span class="w"> </span>zero<span class="w">    </span>y<span class="w">       </span><span class="ow">=</span><span class="w"> </span>suc<span class="w"> </span>y<span class="w">
+</span>thin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>x<span class="o">)</span><span class="w"> </span>zero<span class="w">    </span><span class="ow">=</span><span class="w"> </span>zero<span class="w">
+</span>thin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>x<span class="o">)</span><span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>y<span class="o">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>suc<span class="w"> </span><span class="o">(</span>thin<span class="w"> </span>x<span class="w"> </span>y<span class="o">)</span>
+</pre>
+<p>I thought this could be straightforwardly translated to Coq as:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Fin</span> : nat -&gt; <span class="kt">Type</span> :=
+| fz {n : nat} : Fin (S n)
+| fs {n : nat} : Fin n -&gt; Fin (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-inference-behavior-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">thin</span> {<span class="nv">n</span> : nat} (<span class="nv">x</span> : Fin (S n)) (<span class="nv">y</span> : Fin n) : Fin (S n) :=
+  <span class="kr">match</span> x, y <span class="kr">with</span>
+  | fz,    y&#39; =&gt; fs y&#39;
+  | fs x&#39;, fz =&gt; fz
+  | fs x&#39;, fs y&#39; =&gt; fs (thin x&#39; y&#39;)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+thin : <span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)
+n : nat
+x : Fin (S n)
+y : Fin n
+n0 : nat
+x&#39; : Fin n0
+n1 : nat
+y&#39; : Fin n1
+The term <span class="s2">&quot;x&#39;&quot;</span> has type <span class="s2">&quot;Fin n0&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Fin (S ?n1)&quot;</span>.</blockquote></div></div></small></span></pre><p>I believe Coq should be able to figure out the implicit parameter
+<tt class="docutils literal">n</tt> so I have no idea what is going on. I think I am unaware of a
+difference between the type systems of Agda and Coq since the former
+typechecks fine.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>When pattern matching with dependent types, Coq does not usually
+consider some essential relations between the variables in the context
+and the variables introduced in the branches.</p>
+<p>The easiest solution is to define the function in proof mode, at least
+to understand what is going on.</p>
+<p>This gives:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">thin</span> {<span class="nv">n</span> : nat} (<span class="nv">x</span> : Fin (S n)) (<span class="nv">y</span> : Fin n) : Fin (S n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S n)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S n)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk3"><span class="nb">remember</span> (S n) <span class="kr">as</span> n1. <span class="c">(* trick to keep the information when destructing *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n, n1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heqn1</var><span class="hyp-type"><b>: </b><span>n1 = S n</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin n1</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin n1</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk4"><span class="nb">destruct</span> x; <span class="nb">apply</span> eq_add_S <span class="kr">in</span> Heqn1; <span class="nb">subst</span> n0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S n)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-inference-behavior-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><label class="goal-separator" for="coq-inference-behavior-v-chk5"><hr></label><div class="goal-conclusion">Fin (S n)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk7"><span class="nb">apply</span> fs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk8">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chk9"><span class="nb">destruct</span> y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S (S n))</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-inference-behavior-v-chka" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><label class="goal-separator" for="coq-inference-behavior-v-chka"><hr></label><div class="goal-conclusion">Fin (S (S n))</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chkb">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S (S n))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> fz.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chkc">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S (S n))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-inference-behavior-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-inference-behavior-v-chkd"><span class="nb">apply</span> fs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>thin</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fin (S n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> thin; <span class="bp">assumption</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>. <span class="c">(* to create a transparent constant, as given by a classic Fixpoint *)</span></span></span></pre><p>You can then print the value and read the lambda term to understand
+how to define it directly. This could give:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-inference-behavior-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">thin = 
+<span class="kr">fix</span> thin
+  (n : nat) (x : Fin (S n)) (y : Fin n) {<span class="kr">struct</span> x} :
+    Fin (S n) :=
+  <span class="kr">let</span> <span class="nv">n1</span> := S n <span class="kr">in</span>
+  <span class="kr">let</span> <span class="nv">Heqn1</span> : n1 = S n := eq_refl <span class="kr">in</span>
+  <span class="kr">match</span> x <span class="kr">in</span> (Fin n0) <span class="kr">return</span> (n0 = S n -&gt; Fin n0) <span class="kr">with</span>
+  | @fz n0 =&gt;
+      <span class="kr">fun</span> <span class="nv">Heqn2</span> : S n0 = S n =&gt;
+      <span class="kr">let</span> <span class="nv">Heqn3</span> : n0 = n := eq_add_S n0 n Heqn2 <span class="kr">in</span>
+      eq_rec_r (<span class="kr">fun</span> <span class="nv">n2</span> : nat =&gt; Fin (S n2)) (fs y)
+        Heqn3
+  | @fs n0 x0 =&gt;
+      <span class="kr">fun</span> <span class="nv">Heqn2</span> : S n0 = S n =&gt;
+      <span class="kr">let</span> <span class="nv">Heqn3</span> : n0 = n := eq_add_S n0 n Heqn2 <span class="kr">in</span>
+      eq_rec_r (<span class="kr">fun</span> <span class="nv">n2</span> : nat =&gt; Fin n2 -&gt; Fin (S n2))
+        (<span class="kr">fun</span> <span class="nv">x1</span> : Fin n =&gt;
+         <span class="kr">match</span>
+           y <span class="kr">in</span> (Fin n2) <span class="kr">return</span> (Fin n2 -&gt; Fin (S n2))
+         <span class="kr">with</span>
+         | @fz n2 =&gt; <span class="kr">fun</span> <span class="nv">_</span> : Fin (S n2) =&gt; fz
+         | @fs n2 y0 =&gt;
+             <span class="kr">fun</span> <span class="nv">x2</span> : Fin (S n2) =&gt; fs (thin n2 x2 y0)
+         <span class="kr">end</span> x1) Heqn3 x0
+  <span class="kr">end</span> Heqn1
+     : <span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)
+
+<span class="kn">Arguments</span> thin {n}%nat_scope _ _</blockquote></div></div></small></span></pre><p>The <tt class="docutils literal">return</tt> clauses of the pattern matchings is used to solve the
+problem presented above: they connect the variables introduced in the
+branches and the ones in the context. This is discussed more deeply
+here: <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">http://adam.chlipala.net/cpdt/html/MoreDep.html</a>.</p>
+<p>Also note that this particular inductive type was discussed a few
+weeks ago on the coq-club mailing list. See
+<a class="reference external" href="https://sympa.inria.fr/sympa/arc/coq-club/2016-03/msg00206.html">https://sympa.inria.fr/sympa/arc/coq-club/2016-03/msg00206.html</a>.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> This helps a lot, thanks! I should have finished Chlipala's
+book before actually trying to do stuff in Coq. One more question I
+have: is it considered bad practice to define functions in proof mode?</p>
+<p><strong>A:</strong> I don't really know. Usually, I do that to check the lambda
+term and write it myself. Anyway, I try to use mostly low-level
+tactics to create a readable lambda term. Tactics like <tt class="docutils literal">inversion</tt>
+create</p>
+<p><strong>A:</strong> Tactics like <tt class="docutils literal">inversion</tt> create non-natural terms and should
+be avoided. Maybe other users have stronger opinions on this
+particular subject.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

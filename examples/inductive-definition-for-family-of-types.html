@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Inductive definition for family of types</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="inductive-definition-for-family-of-types">
+<h1 class="title">Inductive definition for family of types</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/37366941">https://stackoverflow.com/q/37366941</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have been struggling on this for a while now. I have an inductive
+type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">char</span> := nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">string</span> := list char.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Exp</span> : <span class="kt">Set</span> :=
+| Lit  : char -&gt; Exp
+| And  : Exp -&gt; Exp -&gt; Exp
+| Or   : Exp -&gt; Exp -&gt; Exp
+| Many : Exp -&gt; Exp.</span></span></pre><p>from which I define a family of types inductively:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Language</span> : Exp -&gt; <span class="kt">Set</span> :=
+| LangLit     : <span class="kr">forall</span> <span class="nv">c</span> : char, Language (Lit c)
+| LangAnd     :
+  <span class="kr">forall</span> <span class="nv">r1</span> <span class="nv">r2</span> : Exp, Language(r1) -&gt; Language(r2) -&gt; Language(And r1 r2)
+| LangOrLeft  : <span class="kr">forall</span> <span class="nv">r1</span> <span class="nv">r2</span> : Exp, Language(r1) -&gt; Language(Or r1 r2)
+| LangOrRight : <span class="kr">forall</span> <span class="nv">r1</span> <span class="nv">r2</span> : Exp, Language(r2) -&gt; Language(Or r1 r2)
+| LangEmpty   : <span class="kr">forall</span> <span class="nv">r</span> : Exp, Language (Many r)
+| LangMany    :
+  <span class="kr">forall</span> <span class="nv">r</span> : Exp, Language (Many r) -&gt; Language r -&gt; Language (Many r).</span></span></pre><p>The rational here is that given a regular expression <tt class="docutils literal">r : Exp</tt> I am
+attempting to represent the language associated with <tt class="docutils literal">r</tt> as a type
+<tt class="docutils literal">Language r</tt>, and I am doing so with a single inductive definition.</p>
+<p>I would like to prove:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk0"><span class="kn">Lemma</span> <span class="nf">L1</span> : <span class="kr">forall</span> (<span class="nv">c</span> : char) (<span class="nv">x</span> : Language (Lit c)),
+    x = LangLit c.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">c</span> : char) (<span class="nv">x</span> : Language (Lit c)),
+x = LangLit c</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>(In other words, the type <tt class="docutils literal">Language (Lit c)</tt> has only one element,
+i.e. the language of the regular expression <tt class="docutils literal">'c'</tt> is made of the
+single string <tt class="docutils literal">&quot;c&quot;</tt>. Of course I need to define some semantics
+converting elements of <tt class="docutils literal">Language r</tt> to <tt class="docutils literal">string</tt>)</p>
+<p>Now the specifics of this problem are not important and simply serve
+to motivate my question: let us use <tt class="docutils literal">nat</tt> instead of <tt class="docutils literal">Exp</tt> and let
+us define a type <tt class="docutils literal">List n</tt> which represents the lists of length
+<tt class="docutils literal">n</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">A</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">List</span> : nat -&gt; <span class="kt">Set</span> :=
+| ListNil  : List <span class="mi">0</span>
+| ListCons : <span class="kr">forall</span> <span class="nv">n</span> : nat, A -&gt; List n -&gt; List (S n).</span></span></pre><p>Here again I am using a single inductive definition to define a family
+of types <tt class="docutils literal">List n</tt>.</p>
+<p>I would like to prove:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk1"><span class="kn">Lemma</span> <span class="nf">L2</span> : <span class="kr">forall</span> <span class="nv">x</span> : List <span class="mi">0</span>, x = ListNil.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : List <span class="mi">0</span>, x = ListNil</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>(in other words, the type <tt class="docutils literal">List 0</tt> has only one element).</p>
+<p>I have run out of ideas on this one.</p>
+<p>Normally when attempting to prove (negative) results with inductive
+types (or predicates), I would use the <tt class="docutils literal">elim</tt> tactic (having made
+sure all the relevant hypothesis are inside my goal (<tt class="docutils literal">generalize</tt>)
+and only variables occur in the type constructors). But <tt class="docutils literal">elim</tt> is no
+good in this case.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If you are willing to accept more than just the basic logic of Coq,
+you can just use the <tt class="docutils literal">dependent destruction</tt> tactic, available in
+the <tt class="docutils literal">Program</tt> library (I've taken the liberty of rephrasing your
+last example in terms of standard-library vectors):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Coq.Vectors.Vector.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk2"><span class="kn">Lemma</span> <span class="nf">l0</span> <span class="nv">A</span> (<span class="nv">v</span> : Vector.t A <span class="mi">0</span>) : v = @Vector.nil A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vector.t A <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">v = Vector.nil A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vector.t A <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">v = Vector.nil A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">dependent destruction</span> v.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>If you inspect the term, you'll see that this tactic relied on the
+<tt class="docutils literal">JMeq_eq</tt> axiom to get the proof to go through:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk4"><span class="kn">Print Assumptions</span> l0.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Axioms</span>:
+JMeq_eq : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> <span class="nv">y</span> : A), x ~= y -&gt; x = y</blockquote></div></div></small></span></pre><p>Fortunately, it is possible to prove <tt class="docutils literal">l0</tt> without having to resort
+to features outside of Coq's basic logic, by making a small change to
+the statement of the previous lemma.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk5"><span class="kn">Lemma</span> <span class="nf">l0_gen</span> <span class="nv">A</span> <span class="nv">n</span> (<span class="nv">v</span> : Vector.t A n) :
+  <span class="kr">match</span> n <span class="kr">return</span> Vector.t A n -&gt; <span class="kt">Prop</span> <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; v = @Vector.nil A
+  | _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="kt">True</span>
+  <span class="kr">end</span> v.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vector.t A n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">match</span> n <span class="kr">return</span> (Vector.t A n -&gt; <span class="kt">Prop</span>) <span class="kr">with</span>
+| <span class="mi">0</span> =&gt; <span class="kr">fun</span> <span class="nv">v</span> : Vector.t A <span class="mi">0</span> =&gt; v = Vector.nil A
+| S n0 =&gt; <span class="kr">fun</span> <span class="nv">_</span> : Vector.t A (S n0) =&gt; <span class="kt">True</span>
+<span class="kr">end</span> v</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vector.t A n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">match</span> n <span class="kr">return</span> (Vector.t A n -&gt; <span class="kt">Prop</span>) <span class="kr">with</span>
+| <span class="mi">0</span> =&gt; <span class="kr">fun</span> <span class="nv">v</span> : Vector.t A <span class="mi">0</span> =&gt; v = Vector.nil A
+| S n0 =&gt; <span class="kr">fun</span> <span class="nv">_</span> : Vector.t A (S n0) =&gt; <span class="kt">True</span>
+<span class="kr">end</span> v</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> v.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk7"><span class="kn">Lemma</span> <span class="nf">l0&#39;</span> <span class="nv">A</span> (<span class="nv">v</span> : Vector.t A <span class="mi">0</span>) : v = @Vector.nil A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vector.t A <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">v = Vector.nil A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vector.t A <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">v = Vector.nil A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (l0_gen A <span class="mi">0</span> v).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We can see that this new proof does not require any additional axioms:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="inductive-definition-for-family-of-types-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="inductive-definition-for-family-of-types-v-chk9"><span class="kn">Print Assumptions</span> l0&#39;.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Closed <span class="nb">under</span> the <span class="kn">global</span> <span class="kp">context</span></blockquote></div></div></small></span></pre><p>What happened here? The problem, roughly speaking, is that in Coq we
+cannot perform case analysis on terms of dependent types whose indices
+have a specific shape (such as <tt class="docutils literal">0</tt>, in your case) <em>directly</em>.
+Instead, we must prove a more general statement where the problematic
+indices are replaced by variables. This is exactly what the <tt class="docutils literal">l0_gen</tt>
+lemma is doing. Notice how we had to make the match on <tt class="docutils literal">n</tt> return a
+function that abstracts on <tt class="docutils literal">v</tt>. This is another instance of what is
+known as <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Cpdt.MoreDep.html">&quot;convoy pattern&quot;</a>. Had we
+written</p>
+<pre class="code coq literal-block">
+<span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
+<span class="o">|</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="o">&#64;</span><span class="n">Vector</span><span class="o">.</span><span class="n">nil</span> <span class="n">A</span>
+<span class="o">|</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="kt">True</span>
+<span class="kr">end</span><span class="o">.</span>
+</pre>
+<p>Coq would see the <tt class="docutils literal">v</tt> in the <tt class="docutils literal">0</tt> branch as having type <tt class="docutils literal">Vector.t
+A n</tt>, making that branch ill-typed.</p>
+<p>Coming up with such generalizations is one of the big pains of doing
+dependently typed programming in Coq. Other systems, such as Agda,
+make it possible to write this kind of code with much less effort, but
+it was only recently <a class="reference external" href="https://people.cs.kuleuven.be/~jesper.cockx/Without-K/Pattern-matching-without-K.pdf">shown</a>
+that this can be done without relying on the extra axioms that Coq
+wanted to avoid including in its basic theory. We can only hope that
+this will be simplified in future versions.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> I also find this alternative proof <tt class="docutils literal">by apply: eq_dep_eq; move
+E: {1 2}0 v =&gt; iz v; case: iz / v E.</tt> useful sometimes. Indeed,
+<tt class="docutils literal">eq_dep</tt> and similar tricks can be very useful when working with
+dependent types.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
