@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Recursive partial functions in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="recursive-partial-functions-in-coq">
+<h1 class="title">Recursive partial functions in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35696496">https://stackoverflow.com/q/35696496</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I would like to know which is the best way to define a partial
+recursive function in Coq.</p>
+<p>Suppose that I want to define a function that returns the maximum
+element of a list of natural numbers. However, we want this function
+to be defined only for non-empty lists.</p>
+<p>I've been trying the following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="recursive-partial-functions-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">MaxValueList</span> (<span class="nv">l</span> : list nat | l &lt;&gt; []) : nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | [n] =&gt; n
+  | n :: l&#39; =&gt; max n (MaxValueList l&#39;)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found a <span class="nb">constructor</span> of inductive type list
+ while a <span class="nb">constructor</span> of sig <span class="kr">is</span> expected.</blockquote></div></div></small></span></pre><p>However, this is not going to work since <tt class="docutils literal">::</tt> is a constructor for
+list and not for <tt class="docutils literal">{l : list nat | l &lt;&gt; []}</tt>.</p>
+<p>My other attempt was using <tt class="docutils literal">option</tt>. In this case I tried the
+following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="recursive-partial-functions-in-coq-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">MaxValueList</span> (<span class="nv">l</span> : list nat) : option nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | [] =&gt; None
+  | [n] =&gt; Some n
+  | n :: l&#39; =&gt; max n (MaxValueList l&#39;)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+MaxValueList : list nat -&gt; option nat
+l : list nat
+n : nat
+l&#39; : list nat
+n0 : nat
+l0 : list nat
+l&#39;0 := n0 :: l0 : list nat
+The term <span class="s2">&quot;MaxValueList l&#39;0&quot;</span> has type <span class="s2">&quot;option nat&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This did not work either since <tt class="docutils literal">max : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt> and
+<tt class="docutils literal">MaxValueList l' : option nat</tt>.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Personally, I would favor Arthur's choice of <tt class="docutils literal">max</tt> with a
+neutral element. One comment thou, the type <tt class="docutils literal">T = {l : list nat | l &lt;&gt;
+[]}</tt> is definitively speaking trouble, why? Because given two lists
+<tt class="docutils literal">l1 l2 : T</tt> in order to prove their equality you must prove that the
+<tt class="docutils literal">l &lt;&gt; []</tt> proofs are equal too, which is usually very hard...</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>Here's a possible solution to your problem:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">MaxValueListAux</span> (<span class="nv">n</span> : nat) (<span class="nv">l</span> : list nat) : nat :=
+  fold_left max l n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">MaxValueListNE</span> (<span class="nv">l</span> : list nat) : l &lt;&gt; [] -&gt; nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | []      =&gt; <span class="kr">fun</span> <span class="nv">H</span> =&gt; <span class="kr">match</span> H eq_refl <span class="kr">with</span> <span class="kr">end</span>
+  | n :: l&#39; =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; MaxValueListAux n l&#39;
+  <span class="kr">end</span>.</span></span></pre><p>Here, I've split the original <tt class="docutils literal">MaxValueList</tt> into two parts: a
+<tt class="docutils literal">MaxValueListAux</tt> function that computes the greatest element of a
+list given a default value, and <tt class="docutils literal">MaxValueListNE</tt>, which is a wrapper
+to the first function and takes a proof argument. This second function
+merely discharges the impossible case and calls the first one with the
+appropriate arguments; I'll explain how exactly this works shortly.
+Because of this split, we don't run into the issue of constructing a
+proof argument in the nonempty branch of <tt class="docutils literal">MaxValueListNE</tt>; the only
+proof work that we have to do is to get rid of the empty case.</p>
+<p>Notice that the second function is written in a weird way: instead of
+declaring <tt class="docutils literal">l &lt;&gt; []</tt> as another argument to <tt class="docutils literal">MaxValueListNE</tt>, I've
+put it in the return type of that function. This is because of the way
+dependent pattern matching works in Coq; roughly speaking, whenever
+you need to combine information that you obtain on a <tt class="docutils literal">match</tt> (such
+as the fact that the <tt class="docutils literal">l</tt> is empty on the <tt class="docutils literal">[]</tt> branch) with
+information that comes from &quot;outside&quot; the match (such as the proof of
+<tt class="docutils literal">l &lt;&gt; []</tt>), you need to make your <tt class="docutils literal">match</tt> statement return a
+function. This leads to a trick that Adam Chlipala calls the <em>convoy
+pattern</em>, which you can learn more about <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">here</a>. Putting that
+argument as part of the return type allows Coq to infer type
+annotations that are required by the <tt class="docutils literal">match</tt> statement.</p>
+<p>So, how exactly does <tt class="docutils literal">MaxValueListNE</tt> work? To understand this, we
+must talk a little bit about how dependent pattern matching works in
+Coq. As I mentioned earlier, we wrote this function in this particular
+way so that Coq could infer some missing type annotations. But we can
+add those by hand as well:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">MaxValueListNE</span> (<span class="nv">l</span> : list nat) : l &lt;&gt; [] -&gt; nat :=
+  <span class="kr">match</span> l <span class="kr">return</span> l &lt;&gt; [] -&gt; nat <span class="kr">with</span>
+  | []      =&gt; <span class="kr">fun</span> (<span class="nv">H</span> : [] &lt;&gt; [])      =&gt; <span class="kr">match</span> H eq_refl <span class="kr">with</span> <span class="kr">end</span>
+  | n :: l&#39; =&gt; <span class="kr">fun</span> (<span class="nv">_</span> : n :: l&#39; &lt;&gt; []) =&gt; MaxValueListAux n l&#39;
+  <span class="kr">end</span>.</span></span></pre><p>When Coq reads this definition, it tries to type check the function,
+and, in particular, make sure that every branch of the <tt class="docutils literal">match</tt>
+returns an element of the type it promises to return. But when doing
+so, it is allowed to replace every occurrence of the discriminee (in
+this case, <tt class="docutils literal">l</tt>) by whatever value corresponds to that branch. In the
+first branch above, this means replacing <tt class="docutils literal">l</tt> by <tt class="docutils literal">[]</tt>, which in
+turn implies that the returned function takes an argument of type <tt class="docutils literal">[]
+&lt;&gt; []</tt>. Recall that in Coq, <tt class="docutils literal">[] &lt;&gt; []</tt> is the same thing as <tt class="docutils literal">[] =
+[] <span class="pre">-&gt;</span> False</tt>. Since <tt class="docutils literal">False</tt> has no constructors, we can get rid of
+that contradictory branch by pattern-matching on <tt class="docutils literal">H eq_refl</tt>, where
+<tt class="docutils literal">eq_refl</tt> is the only constructor of the equality type, and is taken
+to have type <tt class="docutils literal">[] = []</tt> in that particular case.</p>
+<p>Now, it is worth noting that adding more type information is not
+necessarily good. In the case of your function, I prefer to omit the
+proof argument and write simply</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">MaxValueList</span> <span class="nv">l</span> := fold_left max l <span class="mi">0</span>.</span></span></pre><p>Note that <tt class="docutils literal">0</tt> is a neutral element for <tt class="docutils literal">max</tt>, thus it makes sense
+to return that value on the empty case. It allows us for instance to
+prove a result like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk2"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span>,
+    MaxValueList (l1 ++ l2) = max (MaxValueList l1) (MaxValueList l2).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : list nat,
+MaxValueList (l1 ++ l2) =
+Nat.max (MaxValueList l1) (MaxValueList l2)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Of course, this doesn't work for every case: if we replaced <tt class="docutils literal">max</tt> by
+<tt class="docutils literal">min</tt>, the above theorem wouldn't hold anymore. Still, I think it
+would still be easier to program with and reason about a
+<tt class="docutils literal">MinValueList</tt> function that works for arbitrary lists: if some
+result about that function only works for nonempty elements, we can
+add those hypotheses to our theorem:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk3"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span>,
+    l1 &lt;&gt; [] -&gt;
+    MinValueList (l1 ++ l2) = min (MinValueList l1) (MinValueList l2).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : list nat,
+l1 &lt;&gt; [] -&gt;
+MinValueList (l1 ++ l2) =
+Nat.min (MinValueList l1) (MinValueList l2)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>This is how people usually define division in Coq. Instead of having a
+partial function <tt class="docutils literal">div : forall (n1 n2 : nat), n2 &lt;&gt; 0 <span class="pre">-&gt;</span> nat</tt>, we
+write instead a total function <tt class="docutils literal">div : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt>, and prove
+<em>theorems</em> about that function assuming that its second argument is
+not zero.</p>
+</div>
+<div class="section" id="answer-rodrigo-ribeiro">
+<h1>Answer (Rodrigo Ribeiro)</h1>
+<p>One alternative is to use <tt class="docutils literal">refine</tt> tactic to construct functions
+using a theorem proving like style.</p>
+<p>Whenever I need to construct terms with proofs (like your function) I
+prefer to use definitions and refine tactic, since it provides a more
+clear and easy way to automate proofs about propositions.</p>
+<p>Below is a similar function that I have defined in a simple
+formalisation. You can modify it easily to enforce the non-empty list
+input requirement. The idea is to use refine tactic to provide the
+structure of the function and the proof terms for function properties
+are marked with holes <tt class="docutils literal">_</tt> and latter filled with tactics.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk4"><span class="kn">Definition</span> <span class="nf">max_list</span> : <span class="kr">forall</span> <span class="nv">l</span> : list nat, {n | <span class="kr">forall</span> <span class="nv">n&#39;</span>, In n&#39; l -&gt; n &gt; n&#39;}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> : list nat,
+{n : nat | <span class="kr">forall</span> <span class="nv">n&#39;</span> : nat, In n&#39; l -&gt; n &gt; n&#39;}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (<span class="kr">fix</span> max_list (l : list nat) : {n | <span class="kr">forall</span> <span class="nv">n&#39;</span>, In n&#39; l -&gt; n &gt; n&#39;} :=
+            <span class="kr">match</span> l <span class="kr">with</span>
+            | nil =&gt; exist _ <span class="mi">0</span> _
+            | x :: l&#39; =&gt;
+                <span class="kr">match</span> max_list l&#39; <span class="kr">with</span>
+                  exist _ x&#39; _ =&gt;
+                    <span class="kr">match</span> le_gt_dec x x&#39; <span class="kr">with</span>
+                    | <span class="nb">left</span> _ =&gt; exist _ (S x&#39;) _
+                    | <span class="nb">right</span> _ =&gt; exist _ (S x) _
+                    <span class="kr">end</span>
+                <span class="kr">end</span>
+            <span class="kr">end</span>); <span class="nb">clear</span> max_list; <span class="nb">simpl</span> <span class="kr">in</span> *; <span class="nb">intuition</span>;
+    <span class="kp">try</span> (<span class="kr">match goal with</span>
+         | [H : <span class="kp">context</span>[In _ _ -&gt; _],
+            H1 : In _ _ |- _] =&gt; <span class="nb">apply</span> H <span class="kr">in</span> H1
+         <span class="kr">end</span>); <span class="nb">subst</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>There are the so called <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual027.html">Program</a>
+functionality that eases writing functions with dependent types. Maybe
+is worth checking it. My experience is that it generate some
+complicated hypothesis and, because of it, I prefer to use <tt class="docutils literal">refine</tt>.</p>
+</div>
+<div class="section" id="answer-larsr">
+<h1>Answer (larsr)</h1>
+<p>The convoy pattern is a must to understand, but some of its reasoning
+can be avoided by using <tt class="docutils literal">Program</tt>. <tt class="docutils literal">Program</tt> also lets you write
+more normal looking programs. I haven't really used it so I'll take
+this chance to try it.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Wf.</span></span></pre><p>From <tt class="docutils literal">False</tt> you can derive a value of any type that you need.
+Useful in impossible branches in a match statement.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IMPOSSIBLE</span> {<span class="nv">T</span>} (<span class="nv">f</span> : <span class="kt">False</span>) :T := <span class="kr">match</span> f <span class="kr">with</span> <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">maxval</span> (<span class="nv">l</span> : list nat) (<span class="nv">H</span> : l &lt;&gt; nil) {<span class="nv">measure</span> (length l)} : nat
+  := <span class="kr">match</span> l <span class="kr">with</span>
+     | []           =&gt; IMPOSSIBLE _
+     | [a]          =&gt; a
+     | a :: b :: l&#39; =&gt; max a (maxval (b :: l&#39;) _)
+     <span class="kr">end</span>.</span></span></pre><p>EDIT: As <tt class="docutils literal">eponier</tt> points out, if we include <tt class="docutils literal">Require Import
+Arith.</tt> before we define maxval, we will be done here. Otherwise we
+will have to prove the remaining obligations, like this: (END EDIT)</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk5"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded
+  (MR lt
+     (<span class="kr">fun</span> <span class="nv">recarg</span> : {l : list nat | l &lt;&gt; []} =&gt;
+      length (proj1_sig recarg)))</div></blockquote></div></div></small></span></pre><p>Now we only have to prove that the recursion terminates. The goal is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  well_founded
+    (MR lt
+       (<span class="kr">fun</span> <span class="nv">recarg</span> : {l : list nat | l &lt;&gt; []} =&gt;
+        length (proj1_sig recarg)))</blockquote></div></div></small></span></pre><p>EDIT: <tt class="docutils literal">eponier</tt> points out that this is easily proved by</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> measure_wf, PeanoNat.Nat.lt_wf_0.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

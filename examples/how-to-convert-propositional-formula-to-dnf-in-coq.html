@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to convert propositional formula to DNF in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-convert-propositional-formula-to-dnf-in-coq">
+<h1 class="title">How to convert propositional formula to DNF in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35507853">https://stackoverflow.com/q/35507853</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have defined my propositional formulas as follows:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">propForm</span> : <span class="kt">Set</span> :=
+| top : propForm
+| bot : propForm
+| var : propVar -&gt; propForm
+| orp : propForm -&gt; propForm -&gt; propForm
+| andp : propForm -&gt; propForm -&gt; propForm.</span></span></pre><p>I am trying to define a function for transforming a propositional
+formula into one in DNF. For this, I have defined a function which
+distributes terms using the distributive law:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">distribute</span> (<span class="nv">f</span> : propForm) : propForm -&gt; propForm :=
+  <span class="kr">fix</span> distribute1 (g : propForm) : propForm :=
+    <span class="kr">match</span> f <span class="kr">with</span>
+    | f1 \/p f2 =&gt; <span class="kr">match</span> g <span class="kr">with</span>
+                   | g1 \/p g2 =&gt; distribute1 g1 \/p distribute1 g2
+                   | _ =&gt; distribute f1 g \/p distribute f2 g
+                   <span class="kr">end</span>
+    | _ =&gt; <span class="kr">match</span> g <span class="kr">with</span>
+           | g1 \/p g2 =&gt; distribute1 g1 \/p distribute1 g2
+           | _ =&gt; f /\p g
+           <span class="kr">end</span>
+    <span class="kr">end</span>.</span></span></pre><p>This function works fine. However, I still need to define a function
+which transforms the propositional formula to DNF. The following
+function would do what I want, however it is not accepted by Coq
+because the function is not structurally decreasing in f' for the last
+case. Any hints and tips would be appreciated.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">toDNF</span> (<span class="nv">f&#39;</span> : propForm) : propForm :=
+  <span class="kr">match</span> f&#39; <span class="kr">with</span>
+  | top =&gt; f&#39;
+  | bot =&gt; f&#39;
+  | var _ =&gt; f&#39;
+  | f1 \/p f2 =&gt; toDNF f1 \/p toDNF f2
+  | f1 /\p f2 =&gt; toDNF (distribute f1 f2)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of toDNF <span class="kr">is</span> ill-formed.
+In environment
+toDNF : propForm -&gt; propForm
+f&#39; : propForm
+f1 : propForm
+f2 : propForm
+Recursive call to toDNF has principal argument equal
+to <span class="s2">&quot;distribute f1 f2&quot;</span> instead of
+one of the following variables: <span class="s2">&quot;f1&quot;</span>
+<span class="s2">&quot;f2&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun f&#39; : propForm =&gt;</span>
+<span class="s2"> match f&#39; with</span>
+<span class="s2"> | f1 \/p f2 =&gt; toDNF f1 \/p toDNF f2</span>
+<span class="s2"> | f1 /\p f2 =&gt; toDNF (distribute f1 f2)</span>
+<span class="s2"> | _ =&gt; f&#39;</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Your function is a special case of normalizing an expression from a
+semi-ring. I wrote a <a class="reference external" href="http://poleiro.info/posts/2015-04-13-writing-reflective-tactics.html">post</a>
+explaining how to do that in the case of arithmetic expressions, using
+the Ssreflect and MathComp libraries, but I'll include a more direct
+answer here.</p>
+<p>One idea is to use lists of lists to represent formulas in DNF: after
+all, they are just a conjunction of a list of disjunctions, which are
+just lists of literals. You can then reuse the list library to write
+your function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Sol1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk1"><span class="kn">Require Import</span> Coq.Lists.List.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Require</span> <span class="kn">inside</span> a module <span class="kr">is</span> deprecated <span class="kn">and</span> strongly
+discouraged. You can <span class="kn">Require</span> a module <span class="nb">at</span> toplevel <span class="kn">and</span>
+optionally <span class="kn">Import</span> it <span class="kn">inside</span> another one.
+[require-<span class="kr">in</span>-module,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">propVar</span> := nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">propAtom</span> :=
+  | top | bot | var :&gt; propVar -&gt; propAtom.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">propForm</span> : <span class="kt">Set</span> :=
+  | atom :&gt; propAtom -&gt; propForm
+  | orp : propForm -&gt; propForm -&gt; propForm
+  | andp : propForm -&gt; propForm -&gt; propForm.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">dnfForm</span> := list (list propAtom).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">andd</span> (<span class="nv">f1</span> <span class="nv">f2</span> : dnfForm) : dnfForm :=
+    <span class="kr">match</span> f1 <span class="kr">with</span>
+    | [] =&gt;
+        <span class="c">(* false &amp;&amp; f2 = false *)</span>
+        []
+    | cf :: f1 =&gt;
+        <span class="c">(* (cf || f1) &amp;&amp; f2 = cf &amp;&amp; f2 || f1 &amp;&amp; f2 *)</span>
+        map (app cf) f2 ++ andd f1 f2
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">toDNF</span> (<span class="nv">f</span> : propForm) : dnfForm :=
+    <span class="kr">match</span> f <span class="kr">with</span>
+    | atom a =&gt; [[a]]
+    | orp f1 f2 =&gt; toDNF f1 ++ toDNF f2
+    | andp f1 f2 =&gt; andd (toDNF f1) (toDNF f2)
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk2"><span class="kn">Compute</span> (toDNF (andp (orp <span class="mi">3</span> <span class="mi">4</span>) (orp <span class="mi">1</span> <span class="mi">2</span>))).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= [[<span class="mi">3</span>; <span class="mi">1</span>]; [<span class="mi">3</span>; <span class="mi">2</span>]; [<span class="mi">4</span>; <span class="mi">1</span>]; [<span class="mi">4</span>; <span class="mi">2</span>]]
+: dnfForm</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sol1</span>.</span></span></pre><p>There are two things to note here. First, I factored variables and
+constants as a separate <tt class="docutils literal">propAtom</tt> type, and I have called
+<tt class="docutils literal">distribute</tt> <tt class="docutils literal">andd</tt>, because you can think of it as computing the
+AND of two expressions in DNF.</p>
+<p>Here's another solution that is based on your original code. It seems
+that your <tt class="docutils literal">distribute</tt> function preserves the invariant of being in
+DNF; that is, if <tt class="docutils literal">f1</tt> and <tt class="docutils literal">f2</tt> are in DNF, then so is <tt class="docutils literal">distribute
+f1 f2</tt>. Thus, you can just flip the order of the calls:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Sol2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">propVar</span> := nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">propForm</span> : <span class="kt">Set</span> :=
+  | top : propForm
+  | bot : propForm
+  | var :&gt; propVar -&gt; propForm
+  | orp : propForm -&gt; propForm -&gt; propForm
+  | andp : propForm -&gt; propForm -&gt; propForm.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">distribute</span> (<span class="nv">f</span>:propForm) : propForm -&gt; propForm :=
+    <span class="kr">fix</span> distribute1 (g:propForm) : propForm :=
+      <span class="kr">match</span> f <span class="kr">with</span>
+      | orp f1 f2 =&gt; <span class="kr">match</span> g <span class="kr">with</span>
+                     | orp g1 g2 =&gt; orp (distribute1 g1) (distribute1 g2)
+                     | _ =&gt; orp (distribute f1 g) (distribute f2 g)
+                     <span class="kr">end</span>
+      | _ =&gt; <span class="kr">match</span> g <span class="kr">with</span>
+             | orp g1 g2 =&gt; orp (distribute1 g1) (distribute1 g2)
+             | _ =&gt; andp f g
+             <span class="kr">end</span>
+      <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">toDNF</span> (<span class="nv">f&#39;</span>:propForm):propForm :=
+    <span class="kr">match</span> f&#39; <span class="kr">with</span>
+    | top =&gt; f&#39;
+    | bot =&gt; f&#39;
+    | var _ =&gt; f&#39;
+    | orp f1 f2 =&gt; orp (toDNF f1) (toDNF f2)
+    | andp f1 f2 =&gt; distribute (toDNF f1) (toDNF f2)
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk3"><span class="kn">Compute</span> (toDNF (andp (orp <span class="mi">3</span> <span class="mi">4</span>) (orp <span class="mi">1</span> <span class="mi">2</span>))).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= orp (orp (andp <span class="mi">3</span> <span class="mi">1</span>) (andp <span class="mi">4</span> <span class="mi">1</span>))
+    (orp (andp <span class="mi">3</span> <span class="mi">2</span>) (andp <span class="mi">4</span> <span class="mi">2</span>))
+: propForm</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sol2</span>.</span></span></pre><hr class="docutils" />
+<p><strong>Q:</strong> Thank you, I had actually all ready proven that my distribute
+indeed preserves the invariant of being in DNF. However, I had not
+realized the repercussion that I could flip the order of the calls.
+Because I need equivalence between the propositional formulas,
+defining a sepperate type would have been a lot of work, since I would
+also require complete and sound conversions.</p>
+<p><strong>A:</strong> I see your point, but it's not actually too bad, since you can
+always write a function to convert a DNF formula (as a list of lists)
+back to a generic one. If you have a good infrastructure to reason
+about lists and algebraic structures (as Ssreflect provides), then the
+amount of code that you'll save definitely justifies using this
+approach.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

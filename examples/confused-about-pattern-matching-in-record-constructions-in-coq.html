@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Confused about pattern matching in Record constructions in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="confused-about-pattern-matching-in-record-constructions-in-coq">
+<h1 class="title">Confused about pattern matching in <tt class="docutils literal">Record</tt> constructions in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36265021">https://stackoverflow.com/q/36265021</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I've been using Coq for a very short time and I still bump into walls
+with some things. I've defined a set with a <tt class="docutils literal">Record</tt> construction.
+Now I need to do some pattern matching to use it, but I'm having
+issues properly using it. First, these are my elements.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">element</span> : <span class="kt">Set</span> :=
+| empty : element
+| fun_m : element -&gt; element -&gt; element
+| n_fun : nat -&gt; element -&gt; element.</span></span></pre><p>I pick the elements with certain characteristic to make a subset of
+them the next way:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">esp_char</span> : element -&gt; <span class="kt">Prop</span> :=
+| esp1 : esp_char empty
+| esp2 : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">E</span> : element), esp_char E -&gt; esp_char (n_fun n E).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">especial</span> : <span class="kt">Set</span> := mk_esp {E : element; C : (esp_char E)}.</span></span></pre><p>Now, I need to use definition and fix point on the <tt class="docutils literal">especial</tt>
+elements, just the two that I picked. I have read the documentation on
+Record and what I get is that I'd need to do something like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">Size</span> (<span class="nv">E</span> : especial) : nat :=
+  <span class="kr">match</span> E <span class="kr">with</span>
+  |{| E := empty |}      =&gt; <span class="mi">0</span>
+  |{| E := n_fun n E0 |} =&gt; (Size E0) + <span class="mi">1</span>
+  |{| E := _ |}          =&gt; <span class="mi">0</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+Size : especial -&gt; nat
+E : especial
+e : element
+e0 : esp_char e
+n : nat
+E0 : element
+The term <span class="s2">&quot;E0&quot;</span> has type <span class="s2">&quot;element&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;especial&quot;</span>.</blockquote></div></div></small></span></pre><p>Of course this tells me that I'm missing everything on the inductive
+part of elements so I add <tt class="docutils literal">{| E := _ |} =&gt; 0</tt>, or anything, just to
+make the induction full. Even doing this, I then find this problem:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+Size : especial -&gt; nat
+E : especial
+e : element
+e0 : esp_char e
+n : nat
+E0 : element
+The term <span class="s2">&quot;E0&quot;</span> has type <span class="s2">&quot;element&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;especial&quot;</span>.</blockquote></div></div></small></span></pre><p>What I have been unable to do is fix that last thing, I have a lemma
+proving that if <tt class="docutils literal">n_fun n E0</tt> is <tt class="docutils literal">especial</tt> then <tt class="docutils literal">E0</tt> is
+<tt class="docutils literal">especial</tt>, but I can't build it as so inside the <tt class="docutils literal">Fixpoint</tt>. I
+also defined the size for &quot;all elements&quot; and then just picked the
+<tt class="docutils literal">especial</tt> ones in a definition, but I want to be able to do direct
+pattern matching directly on the set <tt class="docutils literal">especial</tt>. Thank you for your
+input.</p>
+<p>EDIT: Forgot to mention that I also have a coercion to always send
+<tt class="docutils literal">especial</tt> to <tt class="docutils literal">elements</tt>.</p>
+<p>EDIT: This is the approach I had before posting:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">ElementSize</span> (<span class="nv">E</span> : element) : nat :=
+  <span class="kr">match</span> E <span class="kr">with</span>
+  | n_fun n E0 =&gt; (ElementSize E0) + <span class="mi">1</span>
+  | _  =&gt; <span class="mi">0</span>
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk2"><span class="kn">Definition</span> <span class="nf">Size</span> (<span class="nv">E</span> : especial) := ElementSize E.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+E : especial
+The term <span class="s2">&quot;E&quot;</span> has type <span class="s2">&quot;especial&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;element&quot;</span>.</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer-ejgallego">
+<h1>Answer (ejgallego)</h1>
+<p>I'd have tried to do:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk3"><span class="kn">Lemma</span> <span class="nf">mk_especial_proof</span> <span class="nv">n</span> <span class="nv">E</span> : esp_char (n_fun n E) -&gt; esp_char E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>element</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">esp_char (n_fun n E) -&gt; esp_char E</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>element</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">esp_char (n_fun n E) -&gt; esp_char E</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> U; <span class="nb">inversion</span> U.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk5"><span class="kn">Fixpoint</span> <span class="nf">Size</span> (<span class="nv">E</span> : especial) : nat :=
+  <span class="kr">match</span> E <span class="kr">with</span>
+  |{| E := empty              |} =&gt; <span class="mi">0</span>
+  |{| E := n_fun n E0; C := P |} =&gt;
+     (Size (mk_esp E0 (mk_especial_proof _ _ P))) + <span class="mi">1</span>
+  |{| E := fun_m E1 E2        |} =&gt; <span class="mi">0</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of Size <span class="kr">is</span> ill-formed.
+In environment
+Size : especial -&gt; nat
+Recursive definition on <span class="s2">&quot;especial&quot;</span>
+which should be a recursive inductive type.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun E : especial =&gt;</span>
+<span class="s2"> match E with</span>
+<span class="s2"> | {| E := E3; C := P |} =&gt;</span>
+<span class="s2">     match E3 as E4 return (esp_char E4 -&gt; nat) with</span>
+<span class="s2">     | empty =&gt; fun _ : esp_char empty =&gt; 0</span>
+<span class="s2">     | fun_m E1 E2 =&gt;</span>
+<span class="s2">         fun _ : esp_char (fun_m E1 E2) =&gt; 0</span>
+<span class="s2">     | n_fun n E0 =&gt;</span>
+<span class="s2">         fun P0 : esp_char (n_fun n E0) =&gt;</span>
+<span class="s2">         Size</span>
+<span class="s2">           {|</span>
+<span class="s2">             E := E0; C := mk_especial_proof n E0 P0</span>
+<span class="s2">           |} + 1</span>
+<span class="s2">     end P</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre><p>However this will fail the termination check. I'm not familiar with
+how to overcome this problem with records. I'd definitively follow the
+approach I mentioned in the comments (using a fixpoint over the base
+datatype).</p>
+<p>EDIT: Added single fixpoint solution.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">size_e</span> <span class="nv">e</span> :=
+  <span class="kr">match</span> e <span class="kr">with</span>
+  | empty       =&gt; <span class="mi">0</span>
+  | fun_m e1 e2 =&gt; <span class="mi">0</span>
+  | n_fun _   e =&gt; <span class="mi">1</span> + size_e e
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">size_esp</span> <span class="nv">e</span> := size_e (E e).</span></span></pre></div>
+<div class="section" id="answer-larsr">
+<h1>Answer (larsr)</h1>
+<p>I reduced your example to this, but you can easily go back to your
+definition. We have a set, and a subset defined by an inductive
+predicate. Often one uses sigma types for this, with the notation <tt class="docutils literal">{b
+| Small b}</tt>, but it is actually the same as the <tt class="docutils literal">Record</tt> definition
+used in your example, so never mind :-).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Big</span> : <span class="kt">Set</span> :=          <span class="c">(* a big set *)</span>
+| A
+| B (b0 b1 : Big)
+| C (b : Big).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Small</span> : Big -&gt; <span class="kt">Prop</span> := <span class="c">(* a subset *)</span>
+| A&#39; : Small A
+| C&#39; (b : Big) : Small b -&gt; Small (C b).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">small</span> := mk_small { b : Big; P : Small b }.</span></span></pre><p>Here is a solution.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk6"><span class="kn">Lemma</span> <span class="nf">Small_lemma</span> : <span class="kr">forall</span> <span class="nv">b</span>, Small (C b) -&gt; Small b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b</span> : Big, Small (C b) -&gt; Small b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk7"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b</span> : Big, Small (C b) -&gt; Small b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk8"><span class="nb">intros</span> b H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>Big</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Small (C b)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Small b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">inversion</span> H.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">size</span> (<span class="nv">b</span> : Big) : Small b -&gt; nat :=
+  <span class="kr">match</span> b <span class="kr">with</span>
+  | A =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="mi">0</span>
+  | B _ _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="mi">0</span>
+  | C b&#39; =&gt; <span class="kr">fun</span> <span class="nv">H</span> =&gt; <span class="mi">1</span> + size b&#39; (Small_lemma _ H)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Size</span> (<span class="nv">s</span> : small) : nat :=
+  <span class="kr">let</span> (<span class="nv">b</span>, H) := s <span class="kr">in</span> size b H.</span></span></pre><p>To be able to use the hypothesis <tt class="docutils literal">H</tt> in the <tt class="docutils literal">match</tt>-branches, it
+is sent into the branch as a function argument. Otherwise the
+destruction of <tt class="docutils literal">b</tt> is not performed on the <tt class="docutils literal">H</tt> term, and Coq can't
+prove that we do a structural recursion on <tt class="docutils literal">H</tt>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

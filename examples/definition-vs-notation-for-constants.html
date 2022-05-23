@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Definition vs Notation for constants</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="definition-vs-notation-for-constants">
+<h1 class="title"><tt class="docutils literal">Definition</tt> vs <tt class="docutils literal">Notation</tt> for constants</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35180475">https://stackoverflow.com/q/35180475</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm extending an existing project (Featherweight Java formalization),
+and there are a number of constants, such as:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">env</span> := (list (var * typ)).</span></span></pre><p>What would change if I used <tt class="docutils literal">Definition</tt> instead:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">env</span> := list (var * typ).</span></span></pre><p>Why did the author use <tt class="docutils literal">Notation</tt> here?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Whenever you try to apply or rewrite with a lemma, there's a component
+in Coq called the <em>unifier</em> that tries to find out how to instantiate
+your lemma so that it can work with the situation at hand (and
+checking that it indeed applies there). The behavior of this unifier
+is a bit different depending on whether you use notations or
+definitions.</p>
+<p>Notations are invisible to Coq's theory: they only affect the parsing
+and printing behavior of the system. In particular, the unifier
+doesn't need to explicitly unfold a notation when analyzing a term.
+Definitions, on the other hand, must be explicitly unfolded by the
+unifier. The problem is that the unifier works <em>heuristically</em>, and
+cannot tell with 100% certainty when some definition must be unfolded
+or not. As a consequence, we often find ourselves with a goal that
+mentions a definition that the unifier doesn't unfold by itself,
+preventing us from applying a lemma or rewriting, and having to
+manually add a call to unfold ourselves to get it to work.</p>
+<p>Thus, notations can be used as a hack to help the unifier understand
+what an abbreviation means without manual unfolding steps.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
