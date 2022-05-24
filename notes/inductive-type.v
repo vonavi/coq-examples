@@ -1,23 +1,14 @@
 (*|
-#######################################################
-Inductive type not restricted to mathematical induction
-#######################################################
+###################################
+Every proof deserves its own "view"
+###################################
 
-Many properties of natural numbers are proven using `mathematical
-induction <https://en.wikipedia.org/wiki/Mathematical_induction>`__.
-This principle gives a proof that statement :math:`P(n)` holds for
-every natural number :math:`n = 0, 1, 2, \ldots`, and consists of two
-steps:
-
-1. The **initial** or **base case**: prove that the statement holds
-   for :math:`0`.
-2. The **induction step**: prove that for every :math:`n`, if the
-   statement holds for :math:`n`, then it holds for :math:`n + 1`.
-
-In Coq, natural numbers encoded using `Peano's encoding
-<https://en.wikipedia.org/wiki/Peano_axioms>`__ are given by the
-following `inductive type
-<https://en.wikipedia.org/wiki/Inductive_type>`__:
+It is obvious that the validity of statement strongly depends on the
+number sets appearing in its formulation. That leads to an illusion
+that the proof itself should rely on particular properties of these
+numbers. For instance, the definition of natural numbers in Coq
+follows `Peano's encoding
+<https://en.wikipedia.org/wiki/Peano_axioms>`__:
 |*)
 
 Print nat. (* .unfold .messages *)
@@ -29,15 +20,27 @@ successor function which represents adding 1 to a number. Thus, ``O``
 is zero, ``S O`` is one, ``S (S O)`` is two, ``S (S (S O))`` is three,
 and so on.
 
-As most inductive types, ``nat`` comes with a function to prove its
-properties:
+In turn, this encoding of natural numbers brings us the ``nat_ind``
+induction principle playing a vital role in proving properties of
+natural numbers:
 |*)
 
 Check nat_ind. (* .unfold .messages *)
 
 (*|
-Not surprising that that is mathematical induction. Example of proof
-by induction using ``induction`` tactic:
+The induction principle, usually called `mathematical induction
+<https://en.wikipedia.org/wiki/Mathematical_induction>`__, reads the
+following. Proposition :math:`P(n)` holds for every natural number
+:math:`n = 0, 1, 2, \dots` if the following two statements are
+satisfied:
+
+1. The **initial** or **base state**: the proposition holds for
+   :math:`n = 0`.
+2. The **induction step**: if the proposition holds for :math:`n`,
+   then it holds for :math:`n + 1`.
+
+Below is an illustrating example using tactic ``induction`` to invoke
+the induction principle:
 |*)
 
 Require Import PeanoNat Lia.
@@ -47,14 +50,30 @@ Proof.
   intro n. induction n.
   - easy.
   - rewrite Nat.pow_succ_r; [| apply Nat.le_0_l].
-    apply Nat.mul_le_mono_l with (p:=2) in IHn.
-    apply (Nat.le_trans _ (2 * S n)); auto. lia.
+    apply Nat.mul_le_mono_l with (p := 2) in IHn.
+    apply (Nat.le_trans _ (2 * S n)); lia.
 Qed.
 
 (*|
-Albeit mathematical induction is a very natural way of proving
-properties about natural numbers, its applicability to most cases is
-overemphasized. Just try to prove by induction the following lemma:
+With complete information about natural numbers, provided by the
+induction principle, can we proof the lemma below?
+|*)
+
+Lemma triangle_num : forall n : nat, Nat.Even (n * (S n)).
+Proof.
+  intro n. induction n; [now exists 0 |].
+  Show. (* .unfold .messages *)
+Abort. (* .none *)
+
+(*|
+It seems that we stuck here. On one hand, it is enough to show that
+``n`` or ``S n`` is even in order to finish the proof. On the other
+hand, we cannot choose which one is even for this concrete number
+``n``. Moreover, the induction does not give any useful information
+here, is not it?
+
+----
+
 |*)
 
 Lemma mod_sym : forall a b : nat,
