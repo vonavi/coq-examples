@@ -1,0 +1,978 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Proof by case analysis in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="proof-by-case-analysis-in-coq">
+<h1 class="title">Proof by case analysis in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/33856689">https://stackoverflow.com/q/33856689</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to prove a Proposition about the following function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">division</span> (<span class="nv">m</span> : nat) (<span class="nv">n</span> : nat) {<span class="nv">measure</span> <span class="nv">m</span>} : nat :=
+  <span class="kr">match</span> <span class="mi">0</span> &lt;? n <span class="kr">with</span>
+  | false =&gt; <span class="mi">0</span>
+  | true =&gt; <span class="kr">match</span> n &lt;=? m <span class="kr">with</span>
+            | false =&gt; <span class="mi">0</span>
+            | true =&gt; S (division (menos m n) n)
+            <span class="kr">end</span>
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span></pre><p><tt class="docutils literal">menos</tt> is natural subtraction.</p>
+<p>I am trying to prove some fact involving division. I wrote down an
+informal proof were I first consider a case analysis in <tt class="docutils literal">lt_nat 0 n</tt>
+and then in the case when <tt class="docutils literal">lt_nat</tt> is true a further case analysis
+in <tt class="docutils literal">leq_nat n m</tt>. This is in order to reduce the definition of
+division.</p>
+<p>However I can not find how to express this case analysis in Coq. I
+tried with <tt class="docutils literal">destruct (leq_nat n m)</tt> but it does nothing. I am
+expecting Coq to generate two subgoals: one where I need to prove my
+proposition assuming <tt class="docutils literal">leq_nat n m = false</tt> and one assuming
+<tt class="docutils literal">leq_nat n m = true</tt>.</p>
+<p>Furthermore, I can not unfold the definition of division in my proof!
+When I try <tt class="docutils literal">unfold division</tt> I get: <tt class="docutils literal">division_func (existT (fun _ :
+nat =&gt; nat) m n)</tt>.</p>
+<p>How can I perfom case analysis in <tt class="docutils literal">leq_nat n m</tt>? Why is it that I
+can not unfold the definition of division as I usually do with other
+functions?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Everything is more complicated than usual because of <tt class="docutils literal">Program
+Fixpoint</tt>, which does not define your function as you would expect
+with a classic <tt class="docutils literal">Fixpoint</tt>, since it needs to find a structurally
+recursive way of defining it. What <tt class="docutils literal">division</tt> really is, is hidden
+in <tt class="docutils literal">division_func</tt>.</p>
+<p>Therefore, to manipulate your function, you need to prove basic
+lemmas, including the one stating that your function can be replaced
+by its body.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">division_eq</span> : <span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span>,
+    division m n = <span class="kr">match</span> <span class="mi">0</span> &lt;? n <span class="kr">with</span>
+                   | false =&gt; <span class="mi">0</span>
+                   | true =&gt; <span class="kr">match</span> n &lt;=? m <span class="kr">with</span>
+                             | false =&gt; <span class="mi">0</span>
+                             | true =&gt; S (division (menos m n) n)
+                             <span class="kr">end</span>
+                   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
+division m n =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m <span class="kr">then</span> S (division (menos m n) n) <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small></span></pre><p>Now, the question is how to prove this result. Here is the only
+solution I know, which I consider really unsatisfying.</p>
+<p>I use the tactic <tt class="docutils literal">fix_sub_eq</tt> located in <tt class="docutils literal">Program.Wf</tt>, or
+<tt class="docutils literal">fix_sub_eq_ext</tt> in <tt class="docutils literal">Program.Wf.WfExtensionality</tt>.</p>
+<p>This gives something like:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
+division m n =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m <span class="kr">then</span> S (division (menos m n) n) <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">division m n =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m <span class="kr">then</span> S (division (menos m n) n) <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk3"><span class="nb">unfold</span> division.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">division_func (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk4"><span class="nb">unfold</span> division_func <span class="nb">at</span> <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fix_sub {_ : nat &amp; nat}
+  (MR lt
+     (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt; projT1 recarg))
+  division_func_obligation_2
+  (<span class="kr">fun</span> <span class="nv">_</span> : {_ : nat &amp; nat} =&gt; nat)
+  (<span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+     (<span class="nv">division&#39;</span> : {recarg&#39; : 
+                  {_ : nat &amp; nat}
+                  | projT1 recarg&#39; &lt; projT1 recarg} -&gt;
+                  nat) =&gt;
+   (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+     <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt; nat)
+    <span class="kr">then</span>
+     <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 recarg)
+     =&gt;
+     (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span> anonymous&#39;
+       <span class="kr">return</span>
+         (anonymous&#39; =
+          (projT2 recarg &lt;=? projT1 recarg) -&gt; nat)
+      <span class="kr">then</span>
+       <span class="kr">fun</span>
+         <span class="nv">Heq_anonymous0</span> : 
+          true = (projT2 recarg &lt;=? projT1 recarg) =&gt;
+       S
+         (division&#39;
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt; projT1 recarg)
+               (existT 
+                  (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos 
+                     (projT1 recarg) 
+                     (projT2 recarg)) 
+                  (projT2 recarg))
+               (division_func_obligation_1
+                  (projT1 recarg) 
+                  (projT2 recarg)
+                  (<span class="kr">fun</span> 
+                     (<span class="nv">m</span> <span class="nv">n</span> : nat)
+                     (<span class="nv">recproof</span> : m &lt; projT1 recarg) =&gt;
+                   division&#39;
+                     (exist (...) (...) recproof))
+                  Heq_anonymous Heq_anonymous0)))
+      <span class="kr">else</span>
+       <span class="kr">fun</span>
+         <span class="nv">_</span> : false = (projT2 recarg &lt;=? projT1 recarg)
+       =&gt; <span class="mi">0</span>) eq_refl
+    <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+     eq_refl) (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk5"><span class="nb">rewrite</span> fix_sub_eq.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> <span class="nv">f_sub</span> :=
+   <span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+     (<span class="nv">division&#39;</span> : {recarg&#39; : 
+                  {_ : nat &amp; nat}
+                  | projT1 recarg&#39; &lt; projT1 recarg} -&gt;
+                  nat) =&gt;
+   (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+     <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt; nat)
+    <span class="kr">then</span>
+     <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 recarg)
+     =&gt;
+     (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span> anonymous&#39;
+       <span class="kr">return</span>
+         (anonymous&#39; =
+          (projT2 recarg &lt;=? projT1 recarg) -&gt; nat)
+      <span class="kr">then</span>
+       <span class="kr">fun</span>
+         <span class="nv">Heq_anonymous0</span> : 
+          true = (projT2 recarg &lt;=? projT1 recarg) =&gt;
+       S
+         (division&#39;
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt; projT1 recarg)
+               (existT 
+                  (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos 
+                     (projT1 recarg) 
+                     (projT2 recarg)) 
+                  (projT2 recarg))
+               (division_func_obligation_1
+                  (projT1 recarg) 
+                  (projT2 recarg)
+                  (<span class="kr">fun</span> 
+                     (<span class="nv">m</span> <span class="nv">n</span> : nat) 
+                     (<span class="nv">recproof</span> : m &lt; ...) =&gt;
+                   division&#39; (exist ... ... recproof))
+                  Heq_anonymous Heq_anonymous0)))
+      <span class="kr">else</span>
+       <span class="kr">fun</span>
+         <span class="nv">_</span> : false = (projT2 recarg &lt;=? projT1 recarg)
+       =&gt; <span class="mi">0</span>) eq_refl
+    <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+     eq_refl <span class="kr">in</span>
+ f_sub (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)
+   (<span class="kr">fun</span>
+      <span class="nv">y</span> : {y : {_ : nat &amp; nat}
+          | MR lt
+              (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+               projT1 recarg) y
+              (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)} =&gt;
+    Fix_sub {_ : nat &amp; nat}
+      (MR lt
+         (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+          projT1 recarg)) division_func_obligation_2
+      (<span class="kr">fun</span> <span class="nv">_</span> : {_ : nat &amp; nat} =&gt; nat)
+      (<span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+         (<span class="nv">division&#39;</span> : {recarg&#39; : 
+                      {_ : nat &amp; nat}
+                      | 
+                      projT1 recarg&#39; &lt; projT1 recarg} -&gt;
+                      nat) =&gt;
+       (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+         <span class="kr">return</span>
+           (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt; nat)
+        <span class="kr">then</span>
+         <span class="kr">fun</span>
+           <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 recarg)
+         =&gt;
+         (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span>
+           anonymous&#39;
+           <span class="kr">return</span>
+             (anonymous&#39; =
+              (projT2 recarg &lt;=? projT1 recarg) -&gt; nat)
+          <span class="kr">then</span>
+           <span class="kr">fun</span>
+             <span class="nv">Heq_anonymous0</span> : 
+              true = (projT2 recarg &lt;=? projT1 recarg)
+           =&gt;
+           S
+             (division&#39;
+                (exist 
+                   (<span class="kr">fun</span> ... =&gt; ... &lt; ...)
+                   (existT (...) (...) (...))
+                   (division_func_obligation_1 
+                      (...) 
+                      (...) 
+                      (...) Heq_anonymous
+                      Heq_anonymous0)))
+          <span class="kr">else</span>
+           <span class="kr">fun</span>
+             <span class="nv">_</span> : false =
+                 (projT2 recarg &lt;=? projT1 recarg) =&gt;
+           <span class="mi">0</span>) eq_refl
+        <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+         eq_refl) (proj1_sig y))) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk6" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk6"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : {_ : nat &amp; nat})
+  (<span class="nv">f</span>
+   <span class="nv">g</span> : {y : {_ : nat &amp; nat}
+       | MR lt
+           (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+            projT1 recarg) y x} -&gt; nat),
+(<span class="kr">forall</span>
+   <span class="nv">y</span> : {y : {_ : nat &amp; nat}
+       | MR lt
+           (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+            projT1 recarg) y x}, 
+ f y = g y) -&gt;
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 x <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 x) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 x) =&gt;
+  (<span class="kr">if</span> projT2 x &lt;=? projT1 x <span class="kr">as</span> anonymous&#39;
+    <span class="kr">return</span>
+      (anonymous&#39; = (projT2 x &lt;=? projT1 x) -&gt; nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span>
+      <span class="nv">Heq_anonymous0</span> : true = (projT2 x &lt;=? projT1 x)
+    =&gt;
+    S
+      (f
+         (exist
+            (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+             projT1 recarg&#39; &lt; projT1 x)
+            (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+               (menos (projT1 x) (projT2 x))
+               (projT2 x))
+            (division_func_obligation_1 
+               (projT1 x) 
+               (projT2 x)
+               (<span class="kr">fun</span> (<span class="nv">m</span> <span class="nv">n</span> : nat)
+                  (<span class="nv">recproof</span> : m &lt; projT1 x) =&gt;
+                f
+                  (exist 
+                     (... =&gt; ...) 
+                     (existT ... m n) recproof))
+               Heq_anonymous Heq_anonymous0)))
+   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (projT2 x &lt;=? projT1 x) =&gt; <span class="mi">0</span>)
+    eq_refl
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 x) =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 x <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 x) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 x) =&gt;
+  (<span class="kr">if</span> projT2 x &lt;=? projT1 x <span class="kr">as</span> anonymous&#39;
+    <span class="kr">return</span>
+      (anonymous&#39; = (projT2 x &lt;=? projT1 x) -&gt; nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span>
+      <span class="nv">Heq_anonymous0</span> : true = (projT2 x &lt;=? projT1 x)
+    =&gt;
+    S
+      (g
+         (exist
+            (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+             projT1 recarg&#39; &lt; projT1 x)
+            (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+               (menos (projT1 x) (projT2 x))
+               (projT2 x))
+            (division_func_obligation_1 
+               (projT1 x) 
+               (projT2 x)
+               (<span class="kr">fun</span> (<span class="nv">m</span> <span class="nv">n</span> : nat)
+                  (<span class="nv">recproof</span> : m &lt; projT1 x) =&gt;
+                g
+                  (exist 
+                     (... =&gt; ...) 
+                     (existT ... m n) recproof))
+               Heq_anonymous Heq_anonymous0)))
+   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (projT2 x &lt;=? projT1 x) =&gt; <span class="mi">0</span>)
+    eq_refl
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 x) =&gt; <span class="mi">0</span>) eq_refl</div></blockquote></div></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk7"><span class="kp">repeat</span> <span class="nb">fold</span> division_func.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> <span class="nv">f_sub</span> :=
+   <span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+     (<span class="nv">division&#39;</span> : {recarg&#39; : 
+                  {_ : nat &amp; nat}
+                  | projT1 recarg&#39; &lt; projT1 recarg} -&gt;
+                  nat) =&gt;
+   (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+     <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt; nat)
+    <span class="kr">then</span>
+     <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 recarg)
+     =&gt;
+     (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span> anonymous&#39;
+       <span class="kr">return</span>
+         (anonymous&#39; =
+          (projT2 recarg &lt;=? projT1 recarg) -&gt; nat)
+      <span class="kr">then</span>
+       <span class="kr">fun</span>
+         <span class="nv">Heq_anonymous0</span> : 
+          true = (projT2 recarg &lt;=? projT1 recarg) =&gt;
+       S
+         (division&#39;
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt; projT1 recarg)
+               (existT 
+                  (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos 
+                     (projT1 recarg) 
+                     (projT2 recarg)) 
+                  (projT2 recarg))
+               (division_func_obligation_1
+                  (projT1 recarg) 
+                  (projT2 recarg)
+                  (<span class="kr">fun</span> 
+                     (<span class="nv">m</span> <span class="nv">n</span> : nat) 
+                     (<span class="nv">recproof</span> : m &lt; ...) =&gt;
+                   division&#39; (exist ... ... recproof))
+                  Heq_anonymous Heq_anonymous0)))
+      <span class="kr">else</span>
+       <span class="kr">fun</span>
+         <span class="nv">_</span> : false = (projT2 recarg &lt;=? projT1 recarg)
+       =&gt; <span class="mi">0</span>) eq_refl
+    <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+     eq_refl <span class="kr">in</span>
+ f_sub (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)
+   (<span class="kr">fun</span>
+      <span class="nv">y</span> : {y : {_ : nat &amp; nat}
+          | MR lt
+              (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+               projT1 recarg) y
+              (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)} =&gt;
+    division_func (proj1_sig y))) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk8"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : {_ : nat &amp; nat})
+  (<span class="nv">f</span>
+   <span class="nv">g</span> : {y : {_ : nat &amp; nat}
+       | MR lt
+           (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+            projT1 recarg) y x} -&gt; nat),
+(<span class="kr">forall</span>
+   <span class="nv">y</span> : {y : {_ : nat &amp; nat}
+       | MR lt
+           (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+            projT1 recarg) y x}, 
+ f y = g y) -&gt;
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 x <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 x) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 x) =&gt;
+  (<span class="kr">if</span> projT2 x &lt;=? projT1 x <span class="kr">as</span> anonymous&#39;
+    <span class="kr">return</span>
+      (anonymous&#39; = (projT2 x &lt;=? projT1 x) -&gt; nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span>
+      <span class="nv">Heq_anonymous0</span> : true = (projT2 x &lt;=? projT1 x)
+    =&gt;
+    S
+      (f
+         (exist
+            (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+             projT1 recarg&#39; &lt; projT1 x)
+            (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+               (menos (projT1 x) (projT2 x))
+               (projT2 x))
+            (division_func_obligation_1 
+               (projT1 x) 
+               (projT2 x)
+               (<span class="kr">fun</span> (<span class="nv">m</span> <span class="nv">n</span> : nat)
+                  (<span class="nv">recproof</span> : m &lt; projT1 x) =&gt;
+                f
+                  (exist 
+                     (... =&gt; ...) 
+                     (existT ... m n) recproof))
+               Heq_anonymous Heq_anonymous0)))
+   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (projT2 x &lt;=? projT1 x) =&gt; <span class="mi">0</span>)
+    eq_refl
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 x) =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 x <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 x) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 x) =&gt;
+  (<span class="kr">if</span> projT2 x &lt;=? projT1 x <span class="kr">as</span> anonymous&#39;
+    <span class="kr">return</span>
+      (anonymous&#39; = (projT2 x &lt;=? projT1 x) -&gt; nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span>
+      <span class="nv">Heq_anonymous0</span> : true = (projT2 x &lt;=? projT1 x)
+    =&gt;
+    S
+      (g
+         (exist
+            (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+             projT1 recarg&#39; &lt; projT1 x)
+            (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+               (menos (projT1 x) (projT2 x))
+               (projT2 x))
+            (division_func_obligation_1 
+               (projT1 x) 
+               (projT2 x)
+               (<span class="kr">fun</span> (<span class="nv">m</span> <span class="nv">n</span> : nat)
+                  (<span class="nv">recproof</span> : m &lt; projT1 x) =&gt;
+                g
+                  (exist 
+                     (... =&gt; ...) 
+                     (existT ... m n) recproof))
+               Heq_anonymous Heq_anonymous0)))
+   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (projT2 x &lt;=? projT1 x) =&gt; <span class="mi">0</span>)
+    eq_refl
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 x) =&gt; <span class="mi">0</span>) eq_refl</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk9">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> <span class="nv">f_sub</span> :=
+   <span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+     (<span class="nv">division&#39;</span> : {recarg&#39; : 
+                  {_ : nat &amp; nat}
+                  | projT1 recarg&#39; &lt; projT1 recarg} -&gt;
+                  nat) =&gt;
+   (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+     <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt; nat)
+    <span class="kr">then</span>
+     <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 recarg)
+     =&gt;
+     (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span> anonymous&#39;
+       <span class="kr">return</span>
+         (anonymous&#39; =
+          (projT2 recarg &lt;=? projT1 recarg) -&gt; nat)
+      <span class="kr">then</span>
+       <span class="kr">fun</span>
+         <span class="nv">Heq_anonymous0</span> : 
+          true = (projT2 recarg &lt;=? projT1 recarg) =&gt;
+       S
+         (division&#39;
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt; projT1 recarg)
+               (existT 
+                  (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos 
+                     (projT1 recarg) 
+                     (projT2 recarg)) 
+                  (projT2 recarg))
+               (division_func_obligation_1
+                  (projT1 recarg) 
+                  (projT2 recarg)
+                  (<span class="kr">fun</span> 
+                     (<span class="nv">m</span> <span class="nv">n</span> : nat) 
+                     (<span class="nv">recproof</span> : m &lt; ...) =&gt;
+                   division&#39; (exist ... ... recproof))
+                  Heq_anonymous Heq_anonymous0)))
+      <span class="kr">else</span>
+       <span class="kr">fun</span>
+         <span class="nv">_</span> : false = (projT2 recarg &lt;=? projT1 recarg)
+       =&gt; <span class="mi">0</span>) eq_refl
+    <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+     eq_refl <span class="kr">in</span>
+ f_sub (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)
+   (<span class="kr">fun</span>
+      <span class="nv">y</span> : {y : {_ : nat &amp; nat}
+          | MR lt
+              (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+               projT1 recarg) y
+              (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)} =&gt;
+    division_func (proj1_sig y))) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chka"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> <span class="mi">0</span> &lt;? n <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? n) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">_</span> : true = (<span class="mi">0</span> &lt;? n) =&gt;
+  (<span class="kr">if</span> n &lt;=? m <span class="kr">as</span> anonymous&#39;
+    <span class="kr">return</span> (anonymous&#39; = (n &lt;=? m) -&gt; nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span> <span class="nv">_</span> : true = (n &lt;=? m) =&gt;
+    S
+      (division_func
+         (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (n &lt;=? m) =&gt; <span class="mi">0</span>) eq_refl
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? n) =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chkb"><span class="nb">destruct</span> (Nat.ltb <span class="mi">0</span> n) <span class="nb">eqn</span>:H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> n &lt;=? m <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (n &lt;=? m) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">_</span> : true = (n &lt;=? m) =&gt;
+  S
+    (division_func
+       (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (n &lt;=? m) =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> n &lt;=? m
+ <span class="kr">then</span>
+  S
+    (division_func
+       (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chkc"><hr></label><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chkd"><span class="nb">destruct</span> (Nat.leb n m) <span class="nb">eqn</span>:H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n)) =
+S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chke" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = false</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chke"><hr></label><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chkf" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chkf"><hr></label><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk10">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n)) =
+S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk11">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk12">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span></span></pre><p>But the second goal is quite complicated. The easy and general way of
+solving it is to use the axioms <tt class="docutils literal">proof_irrelevance</tt> and
+<tt class="docutils literal">functional_extensionality</tt>. It should be possible to prove this
+particular subgoal without any axioms, but I have not found the right
+way to do it. Instead of manually applying the axioms, you can use the
+second tactic <tt class="docutils literal">fix_sub_eq_ext</tt> which calls them directly, leaving
+you a single goal.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk13"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
+division m n =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m <span class="kr">then</span> S (division (menos m n) n) <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk14"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">division m n =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m <span class="kr">then</span> S (division (menos m n) n) <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk15"><span class="nb">unfold</span> division.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">division_func (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk16"><span class="nb">unfold</span> division_func <span class="nb">at</span> <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Fix_sub {_ : nat &amp; nat}
+  (MR lt
+     (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt; projT1 recarg))
+  division_func_obligation_2
+  (<span class="kr">fun</span> <span class="nv">_</span> : {_ : nat &amp; nat} =&gt; nat)
+  (<span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+     (<span class="nv">division&#39;</span> : {recarg&#39; : {_ : nat &amp; nat}
+                  | projT1 recarg&#39; &lt; projT1 recarg} -&gt;
+                  nat) =&gt;
+   (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+     <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt; nat)
+    <span class="kr">then</span>
+     <span class="kr">fun</span> <span class="nv">Heq_anonymous</span> : true = (<span class="mi">0</span> &lt;? projT2 recarg)
+     =&gt;
+     (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span> anonymous&#39;
+       <span class="kr">return</span>
+         (anonymous&#39; =
+          (projT2 recarg &lt;=? projT1 recarg) -&gt; nat)
+      <span class="kr">then</span>
+       <span class="kr">fun</span>
+         <span class="nv">Heq_anonymous0</span> : true =
+                          (projT2 recarg &lt;=?
+                           projT1 recarg) =&gt;
+       S
+         (division&#39;
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt; projT1 recarg)
+               (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos (projT1 recarg)
+                     (projT2 recarg)) (projT2 recarg))
+               (division_func_obligation_1
+                  (projT1 recarg) (projT2 recarg)
+                  (<span class="kr">fun</span> (<span class="nv">m</span> <span class="nv">n</span> : nat)
+                     (<span class="nv">recproof</span> : m &lt; projT1 recarg) =&gt;
+                   division&#39;
+                     (exist (...) (...) recproof))
+                  Heq_anonymous Heq_anonymous0)))
+      <span class="kr">else</span>
+       <span class="kr">fun</span>
+         <span class="nv">_</span> : false = (projT2 recarg &lt;=? projT1 recarg)
+       =&gt; <span class="mi">0</span>) eq_refl
+    <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+     eq_refl) (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk17"><span class="nb">rewrite</span> WfExtensionality.fix_sub_eq_ext.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) <span class="kr">as</span>
+  anonymous&#39;
+  <span class="kr">return</span>
+    (anonymous&#39; =
+     (<span class="mi">0</span> &lt;? projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)) -&gt;
+     nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span>
+    <span class="nv">Heq_anonymous</span> : true =
+                    (<span class="mi">0</span> &lt;?
+                     projT2
+                       (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m
+                          n)) =&gt;
+  (<span class="kr">if</span>
+    projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) &lt;=?
+    projT1 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) <span class="kr">as</span>
+    anonymous&#39;
+    <span class="kr">return</span>
+      (anonymous&#39; =
+       (projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) &lt;=?
+        projT1 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)) -&gt;
+       nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span>
+      <span class="nv">Heq_anonymous0</span> : true =
+                       (projT2
+                          (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                             m n) &lt;=?
+                        projT1
+                          (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                             m n)) =&gt;
+    S
+      (Fix_sub {_ : nat &amp; nat}
+         (MR lt
+            (<span class="kr">fun</span> <span class="nv">recarg</span> : {_ : nat &amp; nat} =&gt;
+             projT1 recarg))
+         division_func_obligation_2
+         (<span class="kr">fun</span> <span class="nv">_</span> : {_ : nat &amp; nat} =&gt; nat)
+         (<span class="kr">fun</span> (<span class="nv">recarg</span> : {_ : nat &amp; nat})
+            (<span class="nv">division&#39;</span> : {recarg&#39; : {_ : nat &amp; nat}
+                         | projT1 recarg&#39; &lt;
+                           projT1 recarg} -&gt; nat) =&gt;
+          (<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 recarg <span class="kr">as</span> anonymous&#39;
+            <span class="kr">return</span>
+              (anonymous&#39; = (<span class="mi">0</span> &lt;? projT2 recarg) -&gt;
+               nat)
+           <span class="kr">then</span>
+            <span class="kr">fun</span>
+              <span class="nv">Heq_anonymous1</span> : true =
+                               (<span class="mi">0</span> &lt;? projT2 recarg) =&gt;
+            (<span class="kr">if</span> projT2 recarg &lt;=? projT1 recarg <span class="kr">as</span>
+              anonymous&#39; <span class="kr">return</span> (...)
+             <span class="kr">then</span> <span class="kr">fun</span> ... =&gt; S ...
+             <span class="kr">else</span> <span class="kr">fun</span> ... =&gt; <span class="mi">0</span>) eq_refl
+           <span class="kr">else</span>
+            <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? projT2 recarg) =&gt; <span class="mi">0</span>)
+            eq_refl)
+         (proj1_sig
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt;
+                projT1 (existT (<span class="kr">fun</span> ... =&gt; nat) m n))
+               (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos (projT1 (existT (...) m n))
+                     (projT2 (existT (...) m n)))
+                  (projT2
+                     (existT (<span class="kr">fun</span> ... =&gt; nat) m n)))
+               (division_func_obligation_1
+                  (projT1
+                     (existT (<span class="kr">fun</span> ... =&gt; nat) m n))
+                  (projT2
+                     (existT (<span class="kr">fun</span> ... =&gt; nat) m n))
+                  (<span class="kr">fun</span> (<span class="nv">m0</span> <span class="nv">n0</span> : nat)
+                     (<span class="nv">recproof</span> : m0 &lt; projT1 (...)) =&gt;
+                   Fix_sub {_ : nat &amp; nat}
+                     (MR lt (... =&gt; ...))
+                     division_func_obligation_2
+                     (<span class="kr">fun</span> <span class="nv">_</span> : ... =&gt; nat)
+                     (<span class="kr">fun</span> (<span class="nv">recarg</span> : ...)
+                        (<span class="nv">division&#39;</span> : ...) =&gt;
+                      (...) eq_refl)
+                     (proj1_sig
+                        (exist ... ... recproof)))
+                  Heq_anonymous Heq_anonymous0))))
+   <span class="kr">else</span>
+    <span class="kr">fun</span>
+      <span class="nv">_</span> : false =
+          (projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) &lt;=?
+           projT1 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n))
+    =&gt; <span class="mi">0</span>) eq_refl
+ <span class="kr">else</span>
+  <span class="kr">fun</span>
+    <span class="nv">_</span> : false =
+        (<span class="mi">0</span> &lt;? projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n))
+  =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk18"><span class="kp">repeat</span> <span class="nb">fold</span> division_func.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> <span class="mi">0</span> &lt;? projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) <span class="kr">as</span>
+  anonymous&#39;
+  <span class="kr">return</span>
+    (anonymous&#39; =
+     (<span class="mi">0</span> &lt;? projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)) -&gt;
+     nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span>
+    <span class="nv">Heq_anonymous</span> : true =
+                    (<span class="mi">0</span> &lt;?
+                     projT2
+                       (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m
+                          n)) =&gt;
+  (<span class="kr">if</span>
+    projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) &lt;=?
+    projT1 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) <span class="kr">as</span>
+    anonymous&#39;
+    <span class="kr">return</span>
+      (anonymous&#39; =
+       (projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) &lt;=?
+        projT1 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n)) -&gt;
+       nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span>
+      <span class="nv">Heq_anonymous0</span> : true =
+                       (projT2
+                          (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                             m n) &lt;=?
+                        projT1
+                          (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                             m n)) =&gt;
+    S
+      (division_func
+         (proj1_sig
+            (exist
+               (<span class="kr">fun</span> <span class="nv">recarg&#39;</span> : {_ : nat &amp; nat} =&gt;
+                projT1 recarg&#39; &lt;
+                projT1 (existT (<span class="kr">fun</span> ... =&gt; nat) m n))
+               (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat)
+                  (menos (projT1 (existT (...) m n))
+                     (projT2 (existT (...) m n)))
+                  (projT2
+                     (existT (<span class="kr">fun</span> ... =&gt; nat) m n)))
+               (division_func_obligation_1
+                  (projT1
+                     (existT (<span class="kr">fun</span> ... =&gt; nat) m n))
+                  (projT2
+                     (existT (<span class="kr">fun</span> ... =&gt; nat) m n))
+                  (<span class="kr">fun</span> (<span class="nv">m0</span> <span class="nv">n0</span> : nat)
+                     (<span class="nv">recproof</span> : m0 &lt; projT1 (...)) =&gt;
+                   division_func
+                     (proj1_sig
+                        (exist ... ... recproof)))
+                  Heq_anonymous Heq_anonymous0))))
+   <span class="kr">else</span>
+    <span class="kr">fun</span>
+      <span class="nv">_</span> : false =
+          (projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n) &lt;=?
+           projT1 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n))
+    =&gt; <span class="mi">0</span>) eq_refl
+ <span class="kr">else</span>
+  <span class="kr">fun</span>
+    <span class="nv">_</span> : false =
+        (<span class="mi">0</span> &lt;? projT2 (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) m n))
+  =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk19"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> <span class="mi">0</span> &lt;? n <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (<span class="mi">0</span> &lt;? n) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">_</span> : true = (<span class="mi">0</span> &lt;? n) =&gt;
+  (<span class="kr">if</span> n &lt;=? m <span class="kr">as</span> anonymous&#39;
+    <span class="kr">return</span> (anonymous&#39; = (n &lt;=? m) -&gt; nat)
+   <span class="kr">then</span>
+    <span class="kr">fun</span> <span class="nv">_</span> : true = (n &lt;=? m) =&gt;
+    S
+      (division_func
+         (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+   <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (n &lt;=? m) =&gt; <span class="mi">0</span>) eq_refl
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (<span class="mi">0</span> &lt;? n) =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+ <span class="kr">then</span>
+  <span class="kr">if</span> n &lt;=? m
+  <span class="kr">then</span>
+   S
+     (division_func
+        (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+  <span class="kr">else</span> <span class="mi">0</span>
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk1a"><span class="nb">destruct</span> (Nat.ltb <span class="mi">0</span> n) <span class="nb">eqn</span>:H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> n &lt;=? m <span class="kr">as</span> anonymous&#39;
+  <span class="kr">return</span> (anonymous&#39; = (n &lt;=? m) -&gt; nat)
+ <span class="kr">then</span>
+  <span class="kr">fun</span> <span class="nv">_</span> : true = (n &lt;=? m) =&gt;
+  S
+    (division_func
+       (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+ <span class="kr">else</span> <span class="kr">fun</span> <span class="nv">_</span> : false = (n &lt;=? m) =&gt; <span class="mi">0</span>) eq_refl =
+(<span class="kr">if</span> n &lt;=? m
+ <span class="kr">then</span>
+  S
+    (division_func
+       (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))
+ <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk1b" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk1b"><hr></label><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk1c"><span class="nb">destruct</span> (Nat.leb n m) <span class="nb">eqn</span>:H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n)) =
+S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk1d" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = false</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk1d"><hr></label><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk1e" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk1e"><hr></label><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk1f">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n)) =
+S
+  (division_func
+     (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk20">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk21">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I have not found a better way to use <tt class="docutils literal">Program Fixpoint</tt>, that's why
+I prefer using <tt class="docutils literal">Function</tt>, which has other defaults, but generates
+directly the equation lemma.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Recdef.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk22" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk22"><span class="kn">Function</span> <span class="nf">division</span> (m : nat) (n : nat) {<span class="kn">measure</span> (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n) m} : nat :=
+  <span class="kr">match</span> <span class="mi">0</span> &lt;? n <span class="kr">with</span>
+  | false =&gt; <span class="mi">0</span>
+  | true =&gt; <span class="kr">match</span> n &lt;=? m <span class="kr">with</span>
+            | false =&gt; <span class="mi">0</span>
+            | true =&gt; S (division (menos m n) n)
+            <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt; (n &lt;=? m) = true -&gt; menos m n &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk23" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk23"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt; (n &lt;=? m) = true -&gt; menos m n &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk24" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk24"><span class="nb">intros</span> m n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> &lt;? n) = true -&gt; (n &lt;=? m) = true -&gt; menos m n &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk25" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk25"><span class="nb">revert</span> m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt; (n &lt;=? m) = true -&gt; menos m n &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk26" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk26"><span class="nb">induction</span> n; <span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? <span class="mi">0</span>) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m <span class="mi">0</span> &lt; m</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk27" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? m) = true</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk27"><hr></label><div class="goal-conclusion">menos m (S n) &lt; m</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk28" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk28">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? <span class="mi">0</span>) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m <span class="mi">0</span> &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">discriminate</span> teq.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk29" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk29">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m (S n) &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk2a" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk2a"><span class="nb">destruct</span> m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? <span class="mi">0</span>) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos <span class="mi">0</span> (S n) &lt; <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk2b" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? S m) = true</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk2b"><hr></label><div class="goal-conclusion">menos (S m) (S n) &lt; S m</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk2c" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk2c">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? <span class="mi">0</span>) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos <span class="mi">0</span> (S n) &lt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">discriminate</span> teq0.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk2d" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk2d">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos (S m) (S n) &lt; S m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk2e" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk2e"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? n) = true -&gt;
+(n &lt;=? m) = true -&gt; menos m n &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S n) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S n &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m n &lt; S m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk2f" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk2f"><span class="nb">destruct</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? <span class="mi">0</span>) = true -&gt;
+(<span class="mi">0</span> &lt;=? m) = true -&gt; menos m <span class="mi">0</span> &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? <span class="mi">1</span>) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(<span class="mi">1</span> &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m <span class="mi">0</span> &lt; S m</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk30" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk30"><hr></label><div class="goal-conclusion">menos m (S n) &lt; S m</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk31" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk31">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? <span class="mi">0</span>) = true -&gt;
+(<span class="mi">0</span> &lt;=? m) = true -&gt; menos m <span class="mi">0</span> &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? <span class="mi">1</span>) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(<span class="mi">1</span> &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m <span class="mi">0</span> &lt; S m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> m; <span class="nb">apply</span> le_n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk32" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk32">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m (S n) &lt; S m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk33" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk33"><span class="nb">transitivity</span> m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m (S n) &lt; m</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk34" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk34"><hr></label><div class="goal-conclusion">m &lt; S m</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk35" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk35">--</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">menos m (S n) &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk36" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk36"><span class="nb">apply</span> IHn.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> &lt;? S n) = true</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proof-by-case-analysis-in-coq-v-chk37" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><label class="goal-separator" for="proof-by-case-analysis-in-coq-v-chk37"><hr></label><div class="goal-conclusion">(S n &lt;=? m) = true</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">           </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk38" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk38">++</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> &lt;? S n) = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">           </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk39" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk39">++</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(S n &lt;=? m) = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk3a" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk3a">--</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> : nat,
+(<span class="mi">0</span> &lt;? S n) = true -&gt;
+(S n &lt;=? m) = true -&gt; menos m (S n) &lt; m</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>teq</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? S (S n)) = true</span></span></span><br><span><var>teq0</var><span class="hyp-type"><b>: </b><span>(S (S n) &lt;=? S m) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">m &lt; S m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> le_n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk3b" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk3b"><span class="kn">Check</span> division_equation.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">division_equation
+     : <span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
+       division m n =
+       (<span class="kr">if</span> <span class="mi">0</span> &lt;? n
+        <span class="kr">then</span>
+         <span class="kr">if</span> n &lt;=? m
+         <span class="kr">then</span> S (division (menos m n) n)
+         <span class="kr">else</span> <span class="mi">0</span>
+        <span class="kr">else</span> <span class="mi">0</span>)</blockquote></div></div></small></span></pre><p>Now you have the equation lemma, you can rewrite with it and reason as
+usual.</p>
+<p>About your problem with <tt class="docutils literal">destruct</tt>, <tt class="docutils literal">destruct</tt> does not unfold the
+definitions. Therefore, if you have no occurrences of the term you're
+destructing in your goal or any of the hypotheses, <tt class="docutils literal">destruct</tt> will
+not do anything interesting, unless you save the equation it produces.
+You can use <tt class="docutils literal">destruct ... eqn:H</tt> for this purpose. I did not know
+<tt class="docutils literal">case_eq</tt> but it seems to do the same thing.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
