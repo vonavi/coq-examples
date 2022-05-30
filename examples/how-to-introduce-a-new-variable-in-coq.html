@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to introduce a new variable in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-introduce-a-new-variable-in-coq">
+<h1 class="title">How to introduce a new variable in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/33005260">https://stackoverflow.com/q/33005260</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I was wondering if there is a way to introduce an entirely new
+variable during the proof of a theorem in Coq?</p>
+<p>For a complete example, consider the following property <a class="reference external" href="http://www.cis.upenn.edu/~bcpierce/sf/current/Prop.html">from here</a> about the
+evenness of the length of a list.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">ev_list</span> {<span class="nv">X</span> : <span class="kt">Type</span>}: list X -&gt; <span class="kt">Prop</span> :=
+| el_nil : ev_list []
+| el_cc  : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">l</span>, ev_list l -&gt; ev_list (x :: y :: l).</span></span></pre><p>Now I want to prove that for any list <tt class="docutils literal">l</tt> if its <tt class="docutils literal">length</tt> is even,
+then <tt class="docutils literal">ev_list l</tt> holds:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">ev_length__ev_list&#39;</span> : <span class="kr">forall</span> <span class="nv">X</span> (<span class="nv">l</span> : list X), ev (length l) -&gt; ev_list l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list X),
+ev (length l) -&gt; ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list X),
+ev (length l) -&gt; ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk2"><span class="nb">intros</span> X l H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev (length l)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">ev_list l</div></blockquote></div></div></small></span></pre><p>which gives:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  X : <span class="kt">Type</span>
+  l : list X
+  H : ev (length l)
+  ============================
+  ev_list l</blockquote></div></div></small></span></pre><p>Now, I'd like to &quot;define&quot; a new free variable <tt class="docutils literal">n</tt> and a hypothesis
+<tt class="docutils literal">n = length l</tt>. In hand-written math, I think we can do this, and
+then do induction about <tt class="docutils literal">n</tt>. But is there a way to do the same in
+Coq?</p>
+<p>Note. the reasons I ask are that:</p>
+<ol class="arabic simple">
+<li>I don't want to introduce this <tt class="docutils literal">n</tt> artificially into the
+statement of the theorem itself, as is done in the page linked
+earlier, which IMHO is unnatural.</li>
+<li>I tried to <tt class="docutils literal">induction H.</tt>, but it seems not working. Coq wasn't
+able to do case analysis on <tt class="docutils literal">length l</tt>'s <tt class="docutils literal">ev</tt>-ness, and no
+induction hypothesis (IH) was generated.</li>
+</ol>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>This is a common issue in Coq proofs. You can use the <tt class="docutils literal">remember</tt>
+tactic:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk4"><span class="nb">remember</span> (length l) <span class="kr">as</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heqn</var><span class="hyp-type"><b>: </b><span>n = length l</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">ev_list l</div></blockquote></div></div></small></span></pre><p>If you're doing induction on <tt class="docutils literal">H</tt> as well, you might also have to
+generalize over <tt class="docutils literal">l</tt> beforehand, by doing</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk5"><span class="nb">generalize dependent</span> l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> : list X, n = length l -&gt; ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk6"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> : list X, <span class="mi">0</span> = length l -&gt; ev_list l</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk7" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev n</span></span></span><br><span><var>IHev</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l</span> : list X, n = length l -&gt; ev_list l</span></span></span><br></div><label class="goal-separator" for="how-to-introduce-a-new-variable-in-coq-v-chk7"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> : list X, S (S n) = length l -&gt; ev_list l</div></blockquote></div></div></div></small></span></pre></div>
+<div class="section" id="answer-eponier">
+<h1>Answer (eponier)</h1>
+<p>If you want to add a new variable only for your induction, you can use directly</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chk8"><span class="nb">induction</span> (length l) <span class="nb">eqn</span>:H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>length l = <span class="mi">0</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">ev_list l</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chk9" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>length l = S n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev (S n)</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span>length l = n -&gt; ev n -&gt; ev_list l</span></span></span><br></div><label class="goal-separator" for="how-to-introduce-a-new-variable-in-coq-v-chk9"><hr></label><div class="goal-conclusion">ev_list l</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span></pre></div>
+<div class="section" id="answer-konstantin-weitz">
+<h1>Answer (Konstantin Weitz)</h1>
+<p>According to the Curry-Howard Isomorphism, hypothesis in your context
+are just variables. You can define new variables with a function. The
+following <tt class="docutils literal">refine</tt> tactic extends the goal with a fresh variable
+<tt class="docutils literal">n</tt> (that is set to <tt class="docutils literal">length l</tt>) and a proof <tt class="docutils literal">e</tt> that <tt class="docutils literal">n =
+length l</tt> (that is set to <tt class="docutils literal">eq_refl</tt>).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chka"><span class="kn">Lemma</span> <span class="nf">ev_length__ev_list&#39;</span> : <span class="kr">forall</span> <span class="nv">X</span> (<span class="nv">l</span> : list X), ev (length l) -&gt; ev_list l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list X),
+ev (length l) -&gt; ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chkb"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list X),
+ev (length l) -&gt; ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chkc"><span class="nb">intros</span> X l H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev (length l)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-introduce-a-new-variable-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-introduce-a-new-variable-in-coq-v-chkd"><span class="nb">refine</span> ((<span class="kr">fun</span> <span class="nv">n</span> (<span class="nv">e</span>:n = length l) =&gt; _) (length l) eq_refl).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>ev (length l)</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>n = length l</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">ev_list l</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* proof *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

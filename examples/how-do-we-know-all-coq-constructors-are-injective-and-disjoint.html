@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How do we know all Coq constructors are injective and disjoint?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint">
+<h1 class="title">How do we know all Coq constructors are injective and disjoint?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/32662889">https://stackoverflow.com/q/32662889</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>According to <a class="reference external" href="http://www.cis.upenn.edu/~bcpierce/sf/current/MoreCoq.html">this course</a>, all
+constructors (for inductive types) are injective and disjoint:</p>
+<blockquote>
+...Similar principles apply to all inductively defined types: all
+constructors are injective, and the values built from distinct
+constructors are never equal. For lists, the <tt class="docutils literal">cons</tt> constructor
+is injective and <tt class="docutils literal">nil</tt> is different from every non-empty list.
+For booleans, <tt class="docutils literal">true</tt> and <tt class="docutils literal">false</tt> are unequal.</blockquote>
+<p>(And the <tt class="docutils literal">inversion</tt> tactic based on this assumption)</p>
+<p>I am just wondering how do we know this assumption holds?</p>
+<p>How do we know that, e.g., we cannot define natural numbers based on</p>
+<ol class="arabic">
+<li><p class="first">a &quot;Successor&quot; and maybe a &quot;Double&quot; constructor like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">num</span> : <span class="kt">Type</span> :=
+| O : num
+| S : num -&gt; num
+| D : num -&gt; num.</span></span></pre><p>and</p>
+</li>
+<li><p class="first">some <tt class="docutils literal">plus</tt> function so that one number <tt class="docutils literal">2</tt> can be reached via
+two different sequences/routes of constructors, <tt class="docutils literal">S (S O)</tt> and <tt class="docutils literal">D
+(S O)</tt>?</p>
+</li>
+</ol>
+<p>What's the mechanism in Coq that ensures the above will never happen?</p>
+<p>P.S. I am not suggesting the above <tt class="docutils literal">num</tt> example is possible. I am
+just wondering what makes it impossible.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>When you define an inductive data type in Coq, you are essentially
+defining a <em>tree</em> type. Each constructor gives a kind of node that is
+allowed to occur in your tree, and its arguments determine the
+children and elements that that node can have. Finally, functions
+defined on inductive types (with the <tt class="docutils literal">match</tt> clause) can check the
+constructors that were used to produce a value of that type in
+<em>arbitrary</em> ways. This makes Coq constructors very different from
+constructors you see in an OO language, for instance. An object
+constructor is implemented as a regular function that initializes a
+value of a given type; Coq constructors, on the other hand, are
+enumerating the possible values that the <em>representation</em> of our type
+allows. To understand this difference better, we can compare the
+different functions we can define on an object in a traditional OO
+language, and on an element of an inductive type in Coq. Let's use
+your <tt class="docutils literal">num</tt> type as an example. Here's an object-oriented definition:</p>
+<pre class="code java literal-block">
+<span class="kd">class</span> <span class="nc">Num</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">;</span><span class="w">
+
+    </span><span class="kd">private</span><span class="w"> </span><span class="nf">Num</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="k">this</span><span class="p">.</span><span class="na">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+    </span><span class="cm">/* These are the three &quot;constructors&quot;, even though they
+       wouldn't correspond to what is called a &quot;constructor&quot; in
+       Java, for instance */</span><span class="w">
+
+    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="nf">zero</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Num</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="nf">succ</span><span class="p">(</span><span class="n">Num</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Num</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="na">val</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="nf">doub</span><span class="p">(</span><span class="n">Num</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Num</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="na">val</span><span class="p">);</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span>
+</pre>
+<p>And here's a definition in Coq:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">num</span> : <span class="kt">Type</span> :=
+| zero : num
+| succ : num -&gt; num
+| doub : num -&gt; num.</span></span></pre><p>In the OO example, when we write a function that takes a <tt class="docutils literal">Num</tt>
+argument, there's no way of knowing which &quot;constructor&quot; was used to
+produce that value, because this information is not stored in the
+<tt class="docutils literal">val</tt> field. In particular <tt class="docutils literal"><span class="pre">Num.doub(Num.succ(Num.zero()))</span></tt> and
+<tt class="docutils literal"><span class="pre">Num.succ(Num.succ(Num.zero()))</span></tt> would be equal values.</p>
+<p>In the Coq example, on the other hand, things change, because we <em>can</em>
+determine which constructor was used to form a <tt class="docutils literal">num</tt> value, thanks
+to the <tt class="docutils literal">match</tt> statement. For instance, using Coq strings, we could
+write a function like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Strings.String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">cons_name</span> (<span class="nv">n</span> : num) : string :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | zero   =&gt; <span class="s2">&quot;zero&quot;</span>
+  | succ _ =&gt; <span class="s2">&quot;succ&quot;</span>
+  | doub _ =&gt; <span class="s2">&quot;doub&quot;</span>
+  <span class="kr">end</span>.</span></span></pre><p>In particular, even though your intended meaning for the constructors
+implies that <tt class="docutils literal">succ (succ zero)</tt> and <tt class="docutils literal">doub (succ zero)</tt> should be
+&quot;morally&quot; equal, we can distinguish them by applying the <tt class="docutils literal">cons_name</tt>
+function to them:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk0"><span class="kn">Compute</span> cons_name (doub (succ zero)).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="s2">&quot;doub&quot;</span>
+: string</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk1"><span class="kn">Compute</span> cons_name (succ (succ zero)).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="s2">&quot;succ&quot;</span>
+: string</blockquote></div></div></small></span></pre><p>As a matter of fact, we can use <tt class="docutils literal">match</tt> to distinguish between
+<tt class="docutils literal">succ</tt> and <tt class="docutils literal">doub</tt> in <em>arbitrary</em> ways:</p>
+<pre class="code coq literal-block">
+<span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
+<span class="o">|</span> <span class="n">zero</span>   <span class="o">=&gt;</span> <span class="n">false</span>
+<span class="o">|</span> <span class="n">succ</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">false</span>
+<span class="o">|</span> <span class="n">doub</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">true</span>
+<span class="kr">end</span><span class="o">.</span>
+</pre>
+<p>Now, <tt class="docutils literal">a = b</tt> in Coq means that there is no possible way we can
+distinguish between <tt class="docutils literal">a</tt> and <tt class="docutils literal">b</tt>. The above examples show why
+<tt class="docutils literal">doub (succ zero)</tt> and <tt class="docutils literal">succ (succ zero)</tt> cannot be equal, because
+we can write functions that don't respect the meaning that we had in
+mind when we wrote that type.</p>
+<p>This explains why constructors are disjoint. That they are injective
+is actually also a consequence of pattern-matching. For instance,
+suppose that we wanted to prove the following statement:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk2"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, succ n = succ m -&gt; n = m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : num, succ n = succ m -&gt; n = m</div></blockquote></div></div></small></span></pre><p>We can begin the proof with</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk3"><span class="nb">intros</span> n m H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>num</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>succ n = succ m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = m</div></blockquote></div></div></small></span></pre><p>Leading us to</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  n, m : num
+  H : succ n = succ m
+  ============================
+  n = m</blockquote></div></div></small></span></pre><p>Notice that this goal is by simplification equivalent to</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  n, m : num
+  H : succ n = succ m
+  ============================
+  <span class="kr">match</span> succ n <span class="kr">with</span>
+  | succ n&#39; =&gt; n&#39; = m
+  | _ =&gt; <span class="kt">True</span>
+  <span class="kr">end</span></blockquote></div></div></small></span></pre><p>If we do <tt class="docutils literal">rewrite H</tt>, we obtain</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  n, m : num
+  H : succ n = succ m
+  ============================
+  <span class="kr">match</span> succ m <span class="kr">with</span>
+  | succ n&#39; =&gt; n&#39; = m
+  | _ =&gt; <span class="kt">True</span>
+  <span class="kr">end</span></blockquote></div></div></small></span></pre><p>which simplifies to</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-we-know-all-coq-constructors-are-injective-and-disjoint-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  n, m : num
+  H : succ n = succ m
+  ============================
+  m = m</blockquote></div></div></small></span></pre><p>At this point, we can conclude with <tt class="docutils literal">reflexivity</tt>. This technique is
+quite general, and is actually at the core of what <tt class="docutils literal">inversion</tt> does.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

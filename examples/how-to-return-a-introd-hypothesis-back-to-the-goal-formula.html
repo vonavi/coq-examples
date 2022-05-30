@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to return a (intro'd) hypothesis back to the goal formula?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-return-a-intro-d-hypothesis-back-to-the-goal-formula">
+<h1 class="title">How to return a (<tt class="docutils literal">intro</tt>'d) hypothesis back to the goal formula?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/32567436">https://stackoverflow.com/q/32567436</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>For the proof:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameters</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk0"><span class="kn">Goal</span> A -&gt; B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">A -&gt; B</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk1"><span class="nb">intro</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B</div></blockquote></div></div></small></span></pre><p>I get:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : A
+  ============================
+  B</blockquote></div></div></small></span></pre><p>How do I return then <tt class="docutils literal">A</tt> back to the goal section? To return to:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  A -&gt; B</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>Use the <tt class="docutils literal">revert</tt> tactic:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk4"><span class="nb">revert</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">A -&gt; B</div></blockquote></div></div></small></span></pre><p>It is exactly the inverse of <tt class="docutils literal">intro</tt>, cf. <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual010.html#hevea_tactic39">the reference manual</a>.</p>
+</div>
+<div class="section" id="answer-konstantin-weitz">
+<h1>Answer (Konstantin Weitz)</h1>
+<p>You can use the <tt class="docutils literal">revert</tt> tactic.</p>
+<p>Given Coq's plethora of tactics, each with various corner cases and
+varying quality of documentation, it's quite common that you won't
+know which tactic to use.</p>
+<p>In such cases, I find it useful to think of your proof as a program
+(see Curry-Howard Isomorphism) and to ask yourself what term you would
+have to write to solve your goal. The advantages of this approach is
+that Coq's term language is easier to learn (because there just aren't
+that many different kinds of terms) and expressive enough to solve all
+goals solvable with tactics (sometimes the proofs are more verbose
+though).</p>
+<p>You can use the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#hevea_tactic7">refine</a>
+tactic to write your proofs in the term language. The argument of
+<tt class="docutils literal">refine</tt> is a term with holes <tt class="docutils literal">_</tt>. <tt class="docutils literal">refine</tt> discharges the
+current goal using the term and generates a subgoal for every hole in
+the term. Once you know how <tt class="docutils literal">refine</tt> works, all you have to do is to
+come up with a term that does what you want. For example:</p>
+<ul class="simple">
+<li>revert a hypothesis <tt class="docutils literal">h</tt> with <tt class="docutils literal">refine (_ h)</tt>.</li>
+<li>introduce a hypothesis <tt class="docutils literal">h</tt> with <tt class="docutils literal">refine (fun h =&gt; _)</tt>.</li>
+<li>duplicate a hypothesis <tt class="docutils literal">h</tt> with <tt class="docutils literal">refine ((fun h' =&gt; _) h)</tt>.</li>
+</ul>
+<p>Note that Coq's tactics tend to do quite a bit of magic behind the
+scenes. For example, the <tt class="docutils literal">revert</tt> tactic is &quot;smarter&quot; than the
+<tt class="docutils literal">refine</tt> above when dealing with dependent variables:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk5"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span> : nat, n &gt;= <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk6"><span class="nb">intro</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk7"><span class="nb">revert</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk8"><span class="kn">Restart</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chk9"><span class="nb">intro</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chka"><span class="nb">refine</span> (_ n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat, x &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chkb"><span class="kn">Restart</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chkc"><span class="nb">intro</span> n&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n&#39; &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-return-a-introd-hypothesis-back-to-the-goal-formula-v-chkd"><span class="nb">refine</span> ((_ : <span class="kr">forall</span> <span class="nv">n</span>, n &gt;= <span class="mi">0</span>) n&#39;).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &gt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

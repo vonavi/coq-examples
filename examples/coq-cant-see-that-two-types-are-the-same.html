@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq can't see that two types are the same</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-can-t-see-that-two-types-are-the-same">
+<h1 class="title">Coq can't see that two types are the same</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/32487915">https://stackoverflow.com/q/32487915</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to define the <tt class="docutils literal">rev</tt> function on a vector, the size of it
+is embedded in it and I can't figure out how to define the <tt class="docutils literal">rev</tt>
+function on it.</p>
+<p>Here is my type definition:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">vect</span> {<span class="nv">X</span> : <span class="kt">Type</span>} : nat -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
+| Nil  : vect <span class="mi">0</span> X
+| Cons : <span class="kr">forall</span> <span class="nv">n</span>, X -&gt; vect n X -&gt; vect (S n) X.</span></span></pre><p>I have defined some useful functions on it:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">app</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">n</span> <span class="nv">m</span> : nat} (<span class="nv">v1</span> : vect n X) (<span class="nv">v2</span> : vect m X) :
+  vect (n + m) X :=
+  <span class="kr">match</span> v1 <span class="kr">with</span>
+  | Nil =&gt; v2
+  | Cons _ x xs =&gt; Cons _ x (app xs v2)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Infix</span> <span class="s2">&quot;:::&quot;</span> := (Cons _) (<span class="kn">at level</span> <span class="mi">60</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;{{ }}&quot;</span> := Nil (<span class="kn">format</span> <span class="s2">&quot;{{ }}&quot;</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;{{ x }}&quot;</span> := (Cons _ x Nil).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">fold_left</span> {<span class="nv">X</span> <span class="nv">Y</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat}
+         (<span class="nv">f</span> : Y -&gt; X -&gt; Y) (<span class="nv">acc</span> : Y) (<span class="nv">v</span> : vect n X) : Y :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | Nil =&gt; acc
+  | Cons _ x xs =&gt; fold_left f (f acc x) xs
+  <span class="kr">end</span>.</span></span></pre><p>And now, I want to define <tt class="docutils literal">rev</tt>. My first tentative was through
+<tt class="docutils literal">fold_left</tt> but it turned out to be a total failure.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-cant-see-that-two-types-are-the-same-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">rev</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat} (<span class="nv">v</span> : @vect X n X) : @vect X n X :=
+  fold_left (<span class="kr">fun</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">k</span> : nat) (<span class="nv">acc</span> : vect k X) (<span class="nv">x</span> : X) =&gt;
+               x ::: acc) {{ }} v.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The <span class="kp">type of</span> this term <span class="kr">is</span> a product
+while it <span class="kr">is</span> expected to be a sort.</blockquote></div></div></small></span></pre><p>I don't understand the error</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+The <span class="kp">type of</span> this term <span class="kr">is</span> a product
+while it <span class="kr">is</span> expected to be a sort.</blockquote></div></div></small></span></pre><hr class="docutils" />
+<p>My second tentative is almost good but Coq can't see that <tt class="docutils literal">S n = (n +
+1)</tt> natively and I don't know how to tell Coq so.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-cant-see-that-two-types-are-the-same-v-chk2"><span class="kn">Fixpoint</span> <span class="nf">rev</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat} (<span class="nv">v</span> : @vect X n X) : @vect X n X :=
+  <span class="kr">match</span> v <span class="kr">in</span> (vect n X) <span class="kr">return</span> (vect n X) <span class="kr">with</span>
+  | Nil =&gt; Nil
+  | Cons _ x xs =&gt; app (rev xs) {{ x }}
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+rev : <span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat),
+      vect n X -&gt; vect n X
+X : <span class="kt">Type</span>
+n : nat
+v : vect n X
+n0 : nat
+x : X
+xs : vect n0 X
+The term <span class="s2">&quot;app (rev X n0 xs) {{x}}&quot;</span> has type
+ <span class="s2">&quot;vect (n0 + 1) X&quot;</span> while it <span class="kr">is</span> expected to <span class="nb">have</span> type
+ <span class="s2">&quot;vect (S n0) X&quot;</span> (cannot <span class="nb">unify</span> <span class="s2">&quot;n0 + 1&quot;</span> <span class="kn">and</span> <span class="s2">&quot;S n0&quot;</span>).</blockquote></div></div></small></span></pre><p>The error being</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+rev : <span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat),
+      vect n X -&gt; vect n X
+X : <span class="kt">Type</span>
+n : nat
+v : vect n X
+n0 : nat
+x : X
+xs : vect n0 X
+The term <span class="s2">&quot;app (rev X n0 xs) {{x}}&quot;</span> has type
+ <span class="s2">&quot;vect (n0 + 1) X&quot;</span> while it <span class="kr">is</span> expected to <span class="nb">have</span> type
+ <span class="s2">&quot;vect (S n0) X&quot;</span> (cannot <span class="nb">unify</span> <span class="s2">&quot;n0 + 1&quot;</span> <span class="kn">and</span> <span class="s2">&quot;S n0&quot;</span>).</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<pre class="literal-block">
+Fixpoint rev {X : Type} {n : nat} (v : &#64;vect X n X) : &#64;vect X n X :=
+  fold_left (fun (X : Type) (k : nat) (acc : vect k X) (x : X) =&gt;
+               x ::: acc) {{ }} v.
+</pre>
+<p>The first explicit argument to <tt class="docutils literal">fold_left</tt> must have a type of the
+form <tt class="docutils literal"><span class="pre">?1</span> <span class="pre">-&gt;</span> <span class="pre">?2</span> <span class="pre">-&gt;</span> <span class="pre">?1</span></tt>, i.e. a function of two arguments whose return
+type is the same as the first argument. [Dependent] &quot;product&quot; is Coq
+terminology for a function. You're passing a term of the form <tt class="docutils literal">fun
+(X:Type) b c d =&gt; …</tt>, so <tt class="docutils literal"><span class="pre">?1</span></tt> is <tt class="docutils literal">Type</tt>, and the term <tt class="docutils literal">fun c d
+=&gt; …</tt> (which obviously has a product type) must have the type <tt class="docutils literal">?</tt>
+given the context, so it must have the type <tt class="docutils literal">Type</tt>, i.e. it must be
+a sort.</p>
+<p>If you try to fix this, you'll realize that your <tt class="docutils literal">fold_left</tt>
+function doesn't work here: you need to vary the length of the vector
+during the iteration, but the iterator argument to <tt class="docutils literal">fold_left</tt> has a
+type that's constant during the iteration. With the <tt class="docutils literal">fold_left</tt>
+function that you have, if you start from the accumulator <tt class="docutils literal">Nil</tt>,
+which is a vector of length <tt class="docutils literal">0</tt>, you'll end up with a result of the
+same type, again a vector of length <tt class="docutils literal">0</tt>.</p>
+<p>I haven't thought about how to define a more general iterator that
+would let you define <tt class="docutils literal">rev</tt>, but I'm sure it's possible.</p>
+<hr class="docutils" />
+<p>As to your second attempt, the problem with <tt class="docutils literal">vect (n0 + 1) X</tt> and
+<tt class="docutils literal">vect (S n0) X</tt> is that they are not the same type, because <tt class="docutils literal">n0 +
+1</tt> is not convertible to <tt class="docutils literal">S n0</tt>. The terms <tt class="docutils literal">n0 + 1</tt> are equal but
+not convertible, and terms used as types are only interchangeable if
+they're convertible.</p>
+<p>If two types are equal, you can write a function that &quot;casts&quot; a term
+of one type into a term of the other type. In fact, the general
+function to do that is <tt class="docutils literal">eq_rect</tt>, the destructor for the equality
+type family. You may find it to define a specialized function to cast
+a vector to a vector of provably-but-not-necessarily-convertibly equal
+length.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">vect_eq_nat</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">m</span> <span class="nv">n</span> : nat} (<span class="nv">H</span> : m = n) <span class="nv">v</span> :=
+  eq_rect _ (<span class="kr">fun</span> <span class="nv">k</span> =&gt; @vect X k X) v _ H.</span></span></pre><p>If the usage of <tt class="docutils literal">eq_rect</tt> doesn't immediately stand out, you can
+define such functions through tactics. Just be sure that you're
+defining a function that not only has the right type but has the
+desired result, and make the definition transparent.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-see-that-two-types-are-the-same-v-chk4"><span class="kn">Definition</span> <span class="nf">vect_eq_nat</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">m</span> <span class="nv">n</span> : nat} :
+  m = n -&gt; @vect X m X -&gt; @vect X n X.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">m = n -&gt; vect m X -&gt; vect n X</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-see-that-two-types-are-the-same-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">m = n -&gt; vect m X -&gt; vect n X</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-see-that-two-types-are-the-same-v-chk6"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m = n</span></span></span><br><span><var>X0</var><span class="hyp-type"><b>: </b><span>vect m X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">vect n X</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-see-that-two-types-are-the-same-v-chk7"><span class="nb">rewrite</span> &lt;- H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m = n</span></span></span><br><span><var>X0</var><span class="hyp-type"><b>: </b><span>vect m X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">vect m X</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> X0.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-see-that-two-types-are-the-same-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-see-that-two-types-are-the-same-v-chk8"><span class="kn">Print</span> vect_eq_nat.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vect_eq_nat = 
+<span class="kr">fun</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">m</span> <span class="nv">n</span> : nat) (<span class="nv">H</span> : m = n) (<span class="nv">X0</span> : vect m X)
+=&gt; eq_rect m (<span class="kr">fun</span> <span class="nv">n0</span> : nat =&gt; vect n0 X) X0 n H
+     : <span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">m</span> <span class="nv">n</span> : nat),
+       m = n -&gt; vect m X -&gt; vect n X
+
+<span class="kn">Arguments</span> vect_eq_nat {X}%type_scope {m n}%nat_scope _
+  _</blockquote></div></div></small></span></pre><p>You can also use the <tt class="docutils literal">Program</tt> vernacular to mix proofs and terms.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Tactics.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lia.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Definition</span> <span class="nf">vect_plus_comm</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat} (<span class="nv">v</span> : @vect X (n+<span class="mi">1</span>) X) :
+  @vect X (S n) X := vect_eq_nat _ v.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input">Solve Obligation <span class="mi">0</span> <span class="kr">with</span> (<span class="nb">intros</span>; <span class="bp">lia</span>).</span></span></pre><p>Now you can use this auxiliary definition to define <tt class="docutils literal">rev</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">rev</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat} (<span class="nv">v</span> : @vect X n X) : @vect X n X :=
+  <span class="kr">match</span> v <span class="kr">in</span> (vect n X) <span class="kr">return</span> (vect n X) <span class="kr">with</span>
+  | Nil =&gt; Nil
+  | Cons _ x xs =&gt; vect_plus_comm (app (rev xs) (Cons _ x Nil))
+  <span class="kr">end</span>.</span></span></pre><p>You can use <tt class="docutils literal">Program Fixpoint</tt> to define <tt class="docutils literal">rev</tt> directly, once
+you've put that casting step in place. The one proof obligation is the
+equality between <tt class="docutils literal">S n0</tt> and <tt class="docutils literal">n0 + 1</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">rev&#39;</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat} (<span class="nv">v</span> : @vect X n X) : @vect X n X :=
+  <span class="kr">match</span> v <span class="kr">in</span> (vect n X) <span class="kr">return</span> (vect n X) <span class="kr">with</span>
+  | Nil =&gt; Nil
+  | Cons _ x xs =&gt; vect_eq_nat _ (app (rev&#39; xs) (Cons _ x Nil))
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input">Solve Obligation <span class="mi">0</span> <span class="kr">with</span> (<span class="nb">intros</span>; <span class="bp">lia</span>).</span></span></pre><hr class="docutils" />
+<p><strong>A:</strong> A type for <tt class="docutils literal">fold_left</tt> that works is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">fold_left</span> {<span class="nv">X</span> : <span class="kt">Type</span>} {<span class="nv">Y</span> : nat -&gt; <span class="kt">Type</span>} {<span class="nv">n</span> <span class="nv">k</span> : nat}
+         (<span class="nv">f</span> : <span class="kr">forall</span> <span class="nv">m</span>, Y m -&gt; X -&gt; Y (S m)) (<span class="nv">acc</span> : Y k)
+         (<span class="nv">v</span> : @vect X n X) : Y (n + k) :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | Nil =&gt; eq_rect_r Y acc (Nat.add_0_l k)
+  | Cons n&#39; x v&#39; =&gt;
+      eq_rect_r Y (fold_left f (f k acc x) v&#39;) (Nat.add_succ_comm n&#39; k)
+  <span class="kr">end</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

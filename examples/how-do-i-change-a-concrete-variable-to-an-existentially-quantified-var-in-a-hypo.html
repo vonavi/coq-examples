@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How do I change a concrete variable to an existentially quantified var in a hypothesis?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypothesis">
+<h1 class="title">How do I change a concrete variable to an existentially quantified var in a hypothesis?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/32402952">https://stackoverflow.com/q/32402952</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Say I have a hypothesis like this:</p>
+<pre class="code coq literal-block">
+<span class="n">FooProp</span> <span class="n">a</span> <span class="n">b</span>
+</pre>
+<p>I want to change the hypothesis to this form:</p>
+<pre class="code coq literal-block">
+<span class="kr">exists</span> <span class="nv">a</span><span class="o">,</span> <span class="n">FooProp</span> <span class="n">a</span> <span class="n">b</span><span class="o">.</span>
+</pre>
+<p>How can I do this?</p>
+<p>I know I can do <tt class="docutils literal">assert (exists a, FooProp a b) by eauto</tt> but I'm
+trying to find a solution that doesn't require me to explicitly write
+down the entire hypothesis; this is bad for automation and is just
+generally a headache when the hypothesis are nontrivial. Ideally I'd
+like to specify <tt class="docutils literal">intro_exists a in H1</tt> or something; it really
+should be that simple.</p>
+<p><strong>EDIT</strong>: Why? Because I have a lemma like this:</p>
+<pre class="code coq literal-block">
+<span class="kn">Lemma</span> <span class="nf">find_instr_in</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">c</span> <span class="nv">i</span><span class="o">,</span>
+    <span class="n">In</span> <span class="n">i</span> <span class="n">c</span> <span class="o">&lt;-&gt;</span> <span class="o">(</span><span class="kr">exists</span> <span class="nv">z</span> <span class="o">:</span> <span class="n">Z</span><span class="o">,</span> <span class="n">find_instr</span> <span class="n">z</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">i</span><span class="o">).</span>
+</pre>
+<p>And a hypothesis like this:</p>
+<pre class="code coq literal-block">
+<span class="n">H1</span><span class="o">:</span> <span class="n">find_instr</span> <span class="n">z</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">i</span>
+</pre>
+<p>And I'm trying to rewrite like this:</p>
+<pre class="code coq literal-block">
+<span class="nb">rewrite</span> <span class="o">&lt;-</span> <span class="n">find_instr_in</span> <span class="kr">in</span> <span class="n">H1</span>
+</pre>
+<p>Which fails with the error <tt class="docutils literal">Found no subterm matching &quot;exists z, <span class="pre">...&quot;</span>
+...</tt>. But if I <tt class="docutils literal">assert (exists z, find_instr z c = Some i) by
+eauto.</tt> first the rewrite works.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>How about something like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">intro_exists&#39;</span> a H :=
+  <span class="nb">pattern</span> a <span class="kr">in</span> H; <span class="nb">apply</span> ex_intro <span class="kr">in</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Tactic Notation</span> <span class="s2">&quot;intro_exists&quot;</span> <span class="kn">ident</span>(a) <span class="s2">&quot;in&quot;</span> <span class="kn">ident</span>(H) := intro_exists&#39; a H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">daryl</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">FooProp</span> : A -&gt; B -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypo-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypo-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>, FooProp a b -&gt; <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>FooProp</var><span class="hyp-type"><b>: </b><span>A -&gt; B -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">a</span> : A) (<span class="nv">b</span> : B), FooProp a b -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypo-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypo-v-chk1"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>FooProp</var><span class="hyp-type"><b>: </b><span>A -&gt; B -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>FooProp a b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypo-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-change-a-concrete-variable-to-an-existentially-quantified-var-in-a-hypo-v-chk2">intro_exists a <span class="kr">in</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>FooProp</var><span class="hyp-type"><b>: </b><span>A -&gt; B -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">exists</span> <span class="nv">a</span> : A, FooProp a b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">daryl</span>.</span></span></pre><p>The key to this is the <tt class="docutils literal">pattern</tt> tactic, which finds occurrences of
+a term and abstracts them into a function applied to an argument. So
+<tt class="docutils literal">pattern a</tt> converts the type of <tt class="docutils literal">H</tt> from <tt class="docutils literal">FooProp a b</tt> to
+<tt class="docutils literal">(fun x =&gt; FooProp x b) a</tt>. After that, Coq can figure out what you
+mean when you apply <tt class="docutils literal">ex_intro</tt>.</p>
+<hr class="docutils" />
+<p><strong>Edit:</strong> All that being said, in your concrete case I would actually
+recommend a different approach, which is to not state your lemma like
+that. Instead it is convenient to split it into two lemmas, one for
+each direction. The forwards direction is just the same, but the
+backwards direction should be restated as follows</p>
+<pre class="code coq literal-block">
+<span class="kr">forall</span> <span class="nv">c</span> <span class="nv">i</span> <span class="nv">z</span><span class="o">,</span>
+  <span class="n">find_instr</span> <span class="n">z</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">In</span> <span class="n">i</span> <span class="n">c</span><span class="o">.</span>
+</pre>
+<p>If you do this, then the rewrite will succeed without needing to
+introduce the existential.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
