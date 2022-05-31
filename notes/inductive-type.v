@@ -39,42 +39,41 @@ satisfied:
 2. The **induction step**: if the proposition holds for :math:`n`,
    then it holds for :math:`n + 1`.
 
-Below is an illustrating example using tactic ``induction`` to invoke
-the induction principle:
+Below is our illustrating example the consideration of which we start
+from applying the induction principle (tactic ``induction``):
 |*)
 
-Require Import PeanoNat Lia.
+Require Import PeanoNat.
 
-Lemma pow_2_bound : forall n : nat, S n <= 2 ^ n.
+Lemma triangle_num : forall n : nat, Nat.even (n * S n) = true.
 Proof.
-  intro n. induction n.
-  - easy.
-  - rewrite Nat.pow_succ_r; [| apply Nat.le_0_l].
-    apply Nat.mul_le_mono_l with (p := 2) in IHn.
-    apply (Nat.le_trans _ (2 * S n)); lia.
+  intro n. rewrite Nat.even_mul, Bool.orb_true_iff.
+  induction n; tauto.
 Qed.
 
 (*|
-With complete information about natural numbers, provided by the
-induction principle, can we proof the lemma below?
+Here, despite the use of the induction principle, our major
+observation relates to the fact that ``n`` or ``S n`` is even. The
+role of the induction principle is to use this fact in order to
+conclude the evenness of ``S n`` or ``S (S n)``.
 |*)
 
-Lemma triangle_num : forall n : nat, Nat.Even (n * (S n)).
+Inductive parity n :=
+| parity_even : Nat.even n = true -> parity n
+| parity_even_S : Nat.even (S n) = true -> parity n.
+
+Lemma parity_spec : forall n : nat, parity n.
 Proof.
-  intro n. induction n; [now exists 0 |].
-  Show. (* .unfold .messages *)
-Abort. (* .none *)
+  intro n. induction n as [| ? [? | ?]]; now constructor.
+Qed.
 
-(*|
-It seems that we stuck here. On one hand, it is enough to show that
-``n`` or ``S n`` is even in order to finish the proof. On the other
-hand, we cannot choose which one is even for this concrete number
-``n``. Moreover, the induction does not give any useful information
-here, is not it?
+Lemma triangle_num' : forall n : nat, Nat.even (n * S n) = true.
+Proof.
+  intro n. rewrite Nat.even_mul, Bool.orb_true_iff.
+  destruct (parity_spec n); tauto.
+Qed.
 
-----
-
-|*)
+(*| ---- |*)
 
 Lemma mod_sym : forall a b : nat,
     a <> 0 -> b <> 0 -> a mod b = b mod a <-> a = b.
