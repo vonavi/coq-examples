@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Can't automate a lemma that works manually in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="can-t-automate-a-lemma-that-works-manually-in-coq">
+<h1 class="title">Can't automate a lemma that works manually in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/30156837">https://stackoverflow.com/q/30156837</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>(It seems that <a class="reference external" href="https://stackoverflow.com/questions/29978765/why-does-hint-resolve-x-fail-where-lets-x-works">my previous question</a>
+had too much irrelevant information, so I tried to abstract away the
+details. I'm not sure it's still the same problem, but I'll delete the
+other question if the same solution works for both.)</p>
+<p>I'm trying to reason about some custom-defined lists and predicates:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">alphabet</span> := A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">sentence</span> : <span class="kt">Type</span> := list alphabet.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk0"><span class="kn">Variable</span> <span class="nv">pred1</span> : sentence -&gt; <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1"><span class="kn">Variable</span> <span class="nv">pred2</span> : sentence -&gt; <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk2"><span class="kn">Variable</span> <span class="nv">conclusion</span> : <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small></span></pre><p>Now, with the following hypotheses,</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk3"><span class="kn">Hypothesis</span> <span class="nv">H1</span> : <span class="kr">forall</span> (<span class="nv">X</span> : sentence),
+    pred1 X -&gt; pred2 (X ++ X).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk4"><span class="kn">Hypothesis</span> <span class="nv">H2</span> : <span class="kr">forall</span> <span class="nv">X</span>,
+    pred2 X -&gt; conclusion.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small></span></pre><p>I want to prove</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk5"><span class="kn">Example</span> <span class="nf">manual</span> : pred1 [A] -&gt; conclusion.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small></span></pre><p>Which is obviously true, since <tt class="docutils literal">conclusion</tt> follows whenever some
+<tt class="docutils literal">sentence</tt> has <tt class="docutils literal">pred2</tt>, and <tt class="docutils literal">pred1</tt> for any <tt class="docutils literal">sentence</tt> implies
+that the repetition of that <tt class="docutils literal">sentence</tt> has <tt class="docutils literal">pred2</tt>. A hand-written
+proof would be</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk6"><span class="nb">intro</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">conclusion</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk7"><span class="nb">eapply</span> H2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred2 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk8"><span class="nb">apply</span> H1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> H.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Notice that the proof uses nothing but <tt class="docutils literal">intro</tt>, <tt class="docutils literal">apply</tt>,
+<tt class="docutils literal">eapply</tt>, and <tt class="docutils literal">exact</tt>. This means that the proof should allow a
+straightforward automation, as long as <tt class="docutils literal">H1</tt> and <tt class="docutils literal">H2</tt> are available
+in the context. For instance, a semi-automatic version</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk9"><span class="kn">Example</span> <span class="nf">semiauto</span> : pred1 [A] -&gt; conclusion.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chka"><span class="nb">pose proof</span> H1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">X</span> : sentence, pred1 X -&gt; pred2 (X ++ X)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chkb"><span class="nb">pose proof</span> H2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">X</span> : sentence, pred1 X -&gt; pred2 (X ++ X)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">X</span> : sentence, pred2 X -&gt; conclusion</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eauto</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>works exactly as you would expect. Now, let's try a fully automated
+version with hints:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chkc"><span class="kn">Hint Resolve</span> H1 H2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chkd"><span class="kn">Example</span> <span class="nf">auto</span> : pred1 [A] -&gt; conclusion.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chke"><span class="nb">eauto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chkf"><span class="nb">intro</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">conclusion</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk10"><span class="nb">eauto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">conclusion</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk11"><span class="nb">eapply</span> H2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred2 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk12"><span class="nb">eauto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred2 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk13"><span class="nb">apply</span> H1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [A]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eauto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>This is strange. <tt class="docutils literal">eauto</tt> fails not only in the beginning, but for
+every step except the last. Why does this happen?</p>
+<p>Some guesses : the consequent of <tt class="docutils literal">H1</tt> includes the form <tt class="docutils literal">X ++ X</tt>,
+which might be causing problems with unification. Perhaps Coq performs
+some implicit cleanup with <tt class="docutils literal">H1</tt> when it is explicitly introduced to
+context, but not when it's just in hint DB.</p>
+<p>Any ideas?</p>
+<hr class="docutils" />
+<p><strong>A:</strong> I don't have an answer, but <tt class="docutils literal">eauto using H1, H2.</tt> solves your
+goal. I don't know why it doesn't pick up the hints from the hint
+database...</p>
+<p><strong>A:</strong> Putting <tt class="docutils literal">debug</tt> infront of <tt class="docutils literal">eauto</tt>, i.e. <tt class="docutils literal">debug eauto
+using H1, H2.</tt> shows the search that takes place. And when in proof
+mode, <tt class="docutils literal">Print Hint.</tt> prints which hints are applicable at each
+moment. For some reason, <tt class="docutils literal">H1</tt> and <tt class="docutils literal">H2</tt> are applicable, but
+<tt class="docutils literal">eauto</tt> doesn't try them.</p>
+</div>
+<div class="section" id="answer-jason-gross">
+<h1>Answer (Jason Gross)</h1>
+<p>The issue is transparency of <tt class="docutils literal">sentence</tt>.</p>
+<p>Building on Anton Trunov's answer, if you look very closely, you'll
+notice that a difference between <tt class="docutils literal">Print HintDb core</tt> and <tt class="docutils literal">Create
+HintDb foo</tt>. <tt class="docutils literal">Print HintDb foo.</tt> is that <tt class="docutils literal">Print HintDb core</tt> says</p>
+<pre class="literal-block">
+Unfoldable variable definitions: none.
+Unfoldable constant definitions: none
+</pre>
+<p>while <tt class="docutils literal">Create HintDb foo.</tt> <tt class="docutils literal">Print HintDb foo.</tt> says</p>
+<pre class="literal-block">
+Unfoldable variable definitions: all
+Unfoldable constant definitions: all
+</pre>
+<p>I constructed the following simplified version of your example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">sentence</span> := list nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk14"><span class="kn">Variable</span> <span class="nv">pred1</span> : sentence -&gt; <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk15"><span class="kn">Variable</span> <span class="nv">pred2</span> : sentence -&gt; <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk16"><span class="kn">Hypothesis</span> <span class="nv">H1</span> : <span class="kr">forall</span> (<span class="nv">X</span> : sentence),
+    pred1 X -&gt; pred2 (X ++ X).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Create HintDb</span> foo.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk17"><span class="kn">Hint Resolve</span> H1 : foo.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk18"><span class="kn">Hint Resolve</span> H1 : bar.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk19"><span class="kn">Hint Resolve</span> H1.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1a"><span class="kn">Example</span> <span class="nf">ex1</span> : pred1 [<span class="mi">0</span>] -&gt; <span class="kr">exists</span> <span class="nv">X</span>, pred2 X.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [<span class="mi">0</span>] -&gt; <span class="kr">exists</span> <span class="nv">X</span> : sentence, pred2 X</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1b"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [<span class="mi">0</span>]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred2 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1c"><span class="kn">debug</span> <span class="nb">eauto</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="c">(* debug eauto: *)</span></blockquote><blockquote class="alectryon-message"><span class="mi">1</span> depth=<span class="mi">5</span> </blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>pred1 [<span class="mi">0</span>]</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">pred2 <span class="nl">?X</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>Here, we have that <tt class="docutils literal">eauto</tt> and <tt class="docutils literal">eauto with bar</tt> (and <tt class="docutils literal">eauto with
+bar nocore</tt>, which removes the core database from <tt class="docutils literal">eauto</tt>'s
+consideration) both fail, but <tt class="docutils literal">eauto with foo</tt> (and <tt class="docutils literal">eauto with foo
+nocore</tt>) succeeds. This suggests that the issue is transparency. A
+bit of playing around resulted in me discovering that <tt class="docutils literal">eauto</tt> will
+work if we write</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1d"><span class="kn">Hint Transparent</span> sentence.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
+implicitly <span class="kr">is</span> deprecated. Please specify a hint
+database. [implicit-core-hint-db,deprecated]</blockquote><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><p>Additionally, even without this, <tt class="docutils literal">eauto</tt> works fine if we explicitly
+give the <tt class="docutils literal">X</tt> variable the unfolded type:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1e"><span class="kn">Example</span> <span class="nf">ex2</span> : pred1 [<span class="mi">0</span>] -&gt; <span class="kr">exists</span> <span class="nv">X</span> : list nat, pred2 X.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [<span class="mi">0</span>] -&gt; <span class="kr">exists</span> <span class="nv">X</span> : list nat, pred2 X</div></blockquote></div></div></small></span></pre><p>I am not entirely sure why Coq behaves this way... perhaps it is
+refusing to unify evars with terms which are of different types (if
+<tt class="docutils literal"><span class="pre">?X</span></tt> has type <tt class="docutils literal">sentence</tt> when <tt class="docutils literal">X ++ X</tt> has type <tt class="docutils literal">list</tt>), or
+perhaps it is a holdover of meta-based unification... I've opened an
+<a class="reference external" href="https://github.com/coq/coq/issues/6862">issue on the bugtracker about this lack of documentation / bad
+behavior</a>.</p>
+</div>
+<div class="section" id="answer-anton-trunov">
+<h1>Answer (Anton Trunov)</h1>
+<p>A possible workaround here is to add the hints to a new user-defined
+database:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Create HintDb</span> my_hints.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk1f"><span class="kn">Hint Resolve</span> H1 H2 : my_hints.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
+<span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
+scheduled to <span class="nb">change</span> <span class="kr">in</span> a future release. For the <span class="kp">time</span>
+being, adding hints <span class="kn">outside</span> of sections without
+specifying an explicit locality <span class="kr">is</span> therefore
+deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
+possible.
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><p>Now we can finish the proof:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="cant-automate-a-lemma-that-works-manually-in-coq-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="cant-automate-a-lemma-that-works-manually-in-coq-v-chk20"><span class="kn">Example</span> <span class="nf">auto</span> : pred1 [A] -&gt; conclusion.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">pred1 [A] -&gt; conclusion</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eauto with</span> my_hints.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>One more thing: Coq's reference manual tells (<a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#sec402">§8.9.1</a>) us
+that</p>
+<blockquote>
+One can optionally declare a hint database using the command
+<tt class="docutils literal">Create HintDb</tt>. If a hint is added to an unknown database, it
+will be automatically created.</blockquote>
+<p>But if we omit the <tt class="docutils literal">Create HintDb my_hints.</tt> part, the <tt class="docutils literal">eauto</tt>
+tactic won't work. It looks like the same thing is going on when the
+hints are being added to the default <tt class="docutils literal">core</tt> hint database.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

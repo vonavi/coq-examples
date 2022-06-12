@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Definition by property in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="definition-by-property-in-coq">
+<h1 class="title">Definition by property in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/30171995">https://stackoverflow.com/q/30171995</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am having trouble with formalizing definitions of the following
+form: define an integer such that some property holds.</p>
+<p>Let's say that I formalized the definition of the property:</p>
+<pre class="code coq literal-block">
+<span class="kn">Definition</span> <span class="nf">IsGood</span> <span class="o">(</span><span class="nv">x</span> <span class="o">:</span> <span class="n">Z</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span> <span class="o">:=</span> <span class="o">...</span>
+</pre>
+<p>Now I need a definition of the form:</p>
+<pre class="code coq literal-block">
+<span class="kn">Definition</span> <span class="nf">Good</span> <span class="o">:</span> <span class="n">Z</span> <span class="o">:=</span> <span class="o">...</span>
+</pre>
+<p>assuming that I proved that an integer with the property exists and is
+unique:</p>
+<pre class="code coq literal-block">
+<span class="kn">Lemma</span> <span class="nf">Lemma_GoodExistsUnique</span> <span class="o">:</span> <span class="kr">exists</span><span class="o">!</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="n">Z</span><span class="o">),</span> <span class="n">IsGood</span> <span class="n">x</span><span class="o">.</span>
+</pre>
+<p>Is there an easy way of defining <tt class="docutils literal">Good</tt> using <tt class="docutils literal">IsGood</tt> and
+<tt class="docutils literal">Lemma_GoodExistsUnique</tt>?</p>
+<p>Since, the property is defined on integer numbers, it seems that no
+additional axioms should be necessary. In any event, I don't see how
+adding something like the axiom of choice can help with the
+definition.</p>
+<p>Also, I am having trouble with formalizing definitions of the
+following form (I suspect this is related to the problem I described
+above, but please indicate if that is not the case): for every <tt class="docutils literal">x</tt>,
+there exists <tt class="docutils literal">y</tt>, and these <tt class="docutils literal">y</tt> are different for different <tt class="docutils literal">x</tt>.
+Like, for example, how to define that there are <tt class="docutils literal">N</tt> distinct good
+integer numbers using <tt class="docutils literal">IsGood</tt>:</p>
+<pre class="code coq literal-block">
+<span class="kn">Definition</span> <span class="nf">ThereAreNGoodIntegers</span> <span class="o">(</span><span class="nv">N</span> <span class="o">:</span> <span class="n">Z</span><span class="o">)</span> <span class="o">(</span><span class="nv">IsGood</span> <span class="o">:</span> <span class="n">Z</span> <span class="o">-&gt;</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:=</span> <span class="o">...?</span>
+</pre>
+<p>In real-world mathematics, definitions like that occur every now and
+again, so this should not be difficult to formalize if Coq is intended
+to be suitable for practical mathematics.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The short answer to your first question is: in general, it is not
+possible, but in your particular case, yes.</p>
+<p>In Coq's theory, propositions (i.e., <tt class="docutils literal">Prop</tt>s) and their proofs
+have a very special status. In particular, it is in general not
+possible to write a choice operator that extracts the witness of an
+existence proof. This is done to make the theory compatible with
+certain axioms and principles, such as proof irrelevance, which says
+that all proofs of a given proposition are equal to each other. If you
+want to be able to do this, you need to add this choice operator as an
+additional axiom to your theory, as in the <a class="reference external" href="https://coq.inria.fr/distrib/current/stdlib/Coq.Logic.Epsilon.html">standard library</a>.</p>
+<p>However, in certain particular cases, it <em>is</em> possible to extract a
+witness out of an abstract existence proof without recurring to any
+additional axioms. In particular, it is possible to do this for
+countable types (such as <tt class="docutils literal">Z</tt>) when the property in question is
+decidable. You can for instance use the <tt class="docutils literal">choiceType</tt> interface in
+the <a class="reference external" href="http://ssr.msr-inria.inria.fr/~jenkins/current/mathcomp.ssreflect.choice.html">Ssreflect</a>
+library to get exactly what you want (look for the <tt class="docutils literal">xchoose</tt>
+function).</p>
+<p>That being said, I would usually advice <em>against</em> doing things in this
+style, because it leads to unnecessary complexity. It is probably
+easier to define <tt class="docutils literal">Good</tt> directly, without resorting to the existence
+proof, and then prove separately that <tt class="docutils literal">Good</tt> has the sought
+property.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">Good</span> : Z. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">Z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk1"><span class="kn">Definition</span> <span class="nf">IsGood</span> (<span class="nv">z</span> : Z) : <span class="kt">Prop</span>. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">Prop</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk2"><span class="kn">Lemma</span> <span class="nf">GoodIsGood</span> : IsGood Good.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">IsGood Good</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk3"><span class="kn">Proof</span>. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">IsGood Good</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk4"><span class="kn">Lemma</span> <span class="nf">GoodUnique</span> : <span class="kr">forall</span> <span class="nv">z</span> : Z, IsGood z -&gt; z = Good.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">z</span> : Z, IsGood z -&gt; z = Good</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk5"><span class="kn">Proof</span>. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">z</span> : Z, IsGood z -&gt; z = Good</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>If you absolutely want to define <tt class="docutils literal">Good</tt> with an existence proof, you
+can also change the proof of <tt class="docutils literal">Lemma_GoodExistsUnique</tt> to use a
+connective in <tt class="docutils literal">Type</tt> instead of <tt class="docutils literal">Prop</tt>, since it allows you to
+extract the witness directly using the <tt class="docutils literal">proj1_sig</tt> function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk6"><span class="kn">Lemma</span> <span class="nf">Lemma_GoodExistsUnique</span> :
+  {z : Z | IsGood z /\ <span class="kr">forall</span> <span class="nv">z&#39;</span>, IsGood z&#39; -&gt; z&#39; = z}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">{z : Z
+| IsGood z /\ (<span class="kr">forall</span> <span class="nv">z&#39;</span> : Z, IsGood z&#39; -&gt; z&#39; = z)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="definition-by-property-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="definition-by-property-in-coq-v-chk7"><span class="kn">Proof</span>. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">{z : Z
+| IsGood z /\ (<span class="kr">forall</span> <span class="nv">z&#39;</span> : Z, IsGood z&#39; -&gt; z&#39; = z)}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>As for your second question, yes, it is a bit related to the first
+point. Once again, I would recommend that you write down a function
+<tt class="docutils literal">y_from_x</tt> with type <tt class="docutils literal">Z <span class="pre">-&gt;</span> Z</tt> that will compute <tt class="docutils literal">y</tt> given <tt class="docutils literal">x</tt>,
+and then prove separately that this function relates inputs and
+outputs in a particular way. Then, you can say that the <tt class="docutils literal">y</tt>s are
+different for different <tt class="docutils literal">x</tt>s by proving that <tt class="docutils literal">y_from_x</tt> is
+injective.</p>
+<p>On the other hand, I'm not sure how your last example relates to this
+second question. If I understand what you want to do correctly, you
+can write something like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">ThereAreNGoodIntegers</span> (<span class="nv">N</span> : Z) (<span class="nv">IsGood</span> : Z -&gt; <span class="kt">Prop</span>) :=
+  <span class="kr">exists</span> <span class="nv">zs</span> : list Z,
+    Z.of_nat (length zs) = N
+    /\ NoDup zs
+    /\ Forall IsGood zs.</span></span></pre><p>Here, <tt class="docutils literal">Z.of_nat : nat <span class="pre">-&gt;</span> Z</tt> is the canonical injection from naturals
+to integers, <tt class="docutils literal">NoDup</tt> is a predicate asserting that a list doesn't
+contain repeated elements, and <tt class="docutils literal">Forall</tt> is a higher-order predicate
+asserting that a given predicate (in this case, <tt class="docutils literal">IsGood</tt>) holds of
+all elements of a list.</p>
+<p>As a final note, I would advice against using <tt class="docutils literal">Z</tt> for things that
+can only involve natural numbers. In your example, your using an
+integer to talk about the cardinality of a set, and this number is
+always a natural number.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

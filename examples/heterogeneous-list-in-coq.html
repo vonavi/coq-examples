@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Heterogeneous list in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="heterogeneous-list-in-coq">
+<h1 class="title">Heterogeneous list in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29404082">https://stackoverflow.com/q/29404082</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm considering writing a Coq program to verify certain properties of
+<a class="reference external" href="http://en.wikipedia.org/wiki/Relational_algebra">relational algebra</a>. I've got some of
+the basic data types working, but concatenating tuples is giving me
+some trouble.</p>
+<p>Here's the relevant section of code:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* An enum representing SQL types *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">sqlType</span> : <span class="kt">Set</span> := Nat | Bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Defines a map from SQL types (which are just enum values) to Coq types. *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="heterogeneous-list-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="heterogeneous-list-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">toType</span> (<span class="nv">t</span> : sqlType) : <span class="kt">Set</span> :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+  | Nat =&gt; nat
+  | Bool =&gt; bool
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Not a truly recursive fixpoint.
+[non-recursive,fixpoints]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* A column consists of a name and a type. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">column</span> : <span class="kt">Set</span> :=
+| Col : string -&gt; sqlType -&gt; column.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* A schema is a list of columns. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">schema</span> : <span class="kt">Set</span> := list column.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Concatenates two schema together. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">concatSchema</span> (<span class="nv">r</span> : schema) (<span class="nv">s</span> : schema) : schema := app r s.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Sends a schema to the corresponding Coq type. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">tuple</span> (<span class="nv">s</span> : schema) : <span class="kt">Set</span> :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | nil =&gt; unit
+  | cons (Col str t) sch =&gt; prod (toType t) (tuple sch)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="heterogeneous-list-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="heterogeneous-list-in-coq-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">concatTuples</span> {<span class="nv">r</span> : schema} {<span class="nv">s</span> : schema}
+         (<span class="nv">a</span> : tuple r) (<span class="nv">b</span> : tuple s) : tuple (concatSchema r s) :=
+  <span class="kr">match</span> r <span class="kr">with</span>
+  | nil =&gt; b
+  | cons _ _ =&gt; (fst a , concatTuples (snd a) b)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+concatTuples : <span class="kr">forall</span> <span class="nv">r</span> <span class="nv">s</span> : schema,
+               tuple r -&gt;
+               tuple s -&gt; tuple (concatSchema r s)
+r : schema
+s : schema
+a : tuple r
+b : tuple s
+The term <span class="s2">&quot;b&quot;</span> has type <span class="s2">&quot;tuple s&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type
+ <span class="s2">&quot;tuple (concatSchema ?s@{r1:=nil} s)&quot;</span>.</blockquote></div></div></small></span></pre><p>I think I understand what's happening there; the type checker can't
+figure out that <tt class="docutils literal">s</tt> and <tt class="docutils literal">concatSchema nil s</tt> are equal. But what I
+find weirder is that when I add the following line:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">stupid</span> {<span class="nv">s</span> : schema} (<span class="nv">b</span> : tuple s) : tuple (concatSchema nil s) := b .</span></span></pre><p>and change the case to <tt class="docutils literal">nil =&gt; stupid b</tt>, it works. (Well, it still
+complains at the cons case, but I think that means it's accepting the
+<tt class="docutils literal">nil</tt> case.)</p>
+<p>I have three questions about this:</p>
+<ol class="arabic simple">
+<li>Is there a way to eliminate <tt class="docutils literal">stupid</tt>? It seems like Coq knows the
+types are equal, it just needs some kind of hint.</li>
+<li>How on earth can I do the cons case? I'm having lots of trouble
+writing a <tt class="docutils literal">stupid</tt>-like function.</li>
+<li>Is this even the right approach to heterogeneous lists? It seems
+like the most straightforward one to me, but I have a very loose
+grasp of Curry-Howard, and what Coq code actually means.</li>
+</ol>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This is one of the most recurrent problems for newcomers in Coq: not
+being able to show Coq how to use the additional information one gains
+in the branches of a <tt class="docutils literal">match</tt> statement.</p>
+<p>The solution is to use the so-called <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">convoy pattern</a>, re-abstracting
+the arguments that depend on your scrutinee and making your <tt class="docutils literal">match</tt>
+return a function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">concatTuples</span> {<span class="nv">r</span> : schema} {<span class="nv">s</span> : schema} :
+  tuple r -&gt; tuple s -&gt; tuple (concatSchema r s) :=
+  <span class="kr">match</span> r <span class="kr">return</span> tuple r -&gt; tuple s -&gt; tuple (concatSchema r s) <span class="kr">with</span>
+  | nil =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; b
+  | cons (Col _ t) _ =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; (fst a, concatTuples (snd a) b)
+  <span class="kr">end</span>.</span></span></pre><p>In this particular case, the <tt class="docutils literal">return</tt> annotation is not actually
+needed, as Coq can infer it. However, omitting it can often lead to
+incomprehensible error messages when things go a bit wrong, so it's a
+nice idea to leave them in. Notice that we had to also include a
+nested match on the first element of our list (the <tt class="docutils literal">Col _ t</tt>
+pattern), in order to mimic the pattern in the definition of
+<tt class="docutils literal">tuple</tt>. Once again, <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">CPDT</a> explains in great
+detail what is going on here and how to write this sort of function in
+Coq.</p>
+<p>To answer your last question, many developments to heterogeneous lists
+more or less in the same way you're doing here (I for instance have
+<a class="reference external" href="https://github.com/arthuraa/coq-utils/blob/master/theories/hseq.v">one development</a>
+that is pretty similar to this one). If I had to change anything, I
+would remove the nested pattern in the definition of <tt class="docutils literal">tuple</tt>, which
+allows you do write this sort of code while using less <tt class="docutils literal">match</tt>es
+and annotations. Compare:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">typeOfCol</span> <span class="nv">c</span> :=
+  <span class="kr">match</span> c <span class="kr">with</span>
+  | Col _ t =&gt; t
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Sends a schema to the corresponding Coq type. *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">tuple</span> (<span class="nv">s</span> : schema) : <span class="kt">Set</span> :=
+  <span class="kr">match</span> s <span class="kr">with</span>
+  | nil =&gt; unit
+  | cons col sch =&gt; prod (toType (typeOfCol col)) (tuple sch)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">concatTuples</span> {<span class="nv">r</span> : schema} {<span class="nv">s</span> : schema} :
+  tuple r -&gt; tuple s -&gt; tuple (concatSchema r s) :=
+  <span class="kr">match</span> r <span class="kr">return</span> tuple r -&gt; tuple s -&gt; tuple (concatSchema r s) <span class="kr">with</span>
+  | nil =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; b
+  | cons _ _ =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; (fst a, concatTuples (snd a) b)
+  <span class="kr">end</span>.</span></span></pre><p>You can find other examples of this issue <a class="reference external" href="https://stackoverflow.com/questions/16952524/structural-recursion-on-a-dependent-parameter">here</a>
+and <a class="reference external" href="https://stackoverflow.com/questions/28487158/implementing-vector-addition-in-coq">here</a>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

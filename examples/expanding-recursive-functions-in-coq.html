@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Expanding Recursive Functions In Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="expanding-recursive-functions-in-coq">
+<h1 class="title">Expanding Recursive Functions In Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29825609">https://stackoverflow.com/q/29825609</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<div class="section" id="background">
+<h2>Background</h2>
+<p>I understand that Iota reduction is used to reduce/expand recursive
+functions. For instance, given the following application of a simple
+recursive function (factorial over natural numbers):</p>
+<pre class="code coq literal-block">
+<span class="o">((</span><span class="kr">fix</span> <span class="n">fact</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span>
+    <span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
+    <span class="o">|</span> <span class="n">O</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+    <span class="o">|</span> <span class="n">S</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fact</span> <span class="n">m</span> <span class="kr">end</span><span class="o">)</span> <span class="mi">2</span><span class="o">)</span>
+</pre>
+<p>Iota reduction expands the recursive call, effectively iterating over
+the recursive function once:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk0"><span class="kn">Eval</span> <span class="nb">lazy</span> iota <span class="kr">in</span> ((<span class="kr">fix</span> fact (n : nat) : nat :=
+                      <span class="kr">match</span> n <span class="kr">with</span>
+                      | O =&gt; <span class="mi">1</span>
+                      | S m =&gt; n * fact m <span class="kr">end</span>) <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt;
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="mi">1</span>
+   | S m =&gt;
+       n *
+       (<span class="kr">fix</span> fact (n0 : nat) : nat :=
+          <span class="kr">match</span> n0 <span class="kr">with</span>
+          | <span class="mi">0</span> =&gt; <span class="mi">1</span>
+          | S m0 =&gt; n0 * fact m0
+          <span class="kr">end</span>) m
+   <span class="kr">end</span>) <span class="mi">2</span>
+: nat</blockquote></div></div></small></span></pre><p>This behaviour generalizes nicely to mutually recursive functions. For
+example, given the following mutually recursive function definitions:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">even</span> (<span class="nv">n</span> : nat) : <span class="kt">Prop</span> := <span class="kr">match</span> n <span class="kr">with</span> | O =&gt; <span class="kt">True</span> | S m =&gt; odd m <span class="kr">end</span>
+<span class="kr">with</span> odd (n : nat) : <span class="kt">Prop</span> := <span class="kr">match</span> n <span class="kr">with</span> | O =&gt; <span class="kt">False</span> | S m =&gt; even m <span class="kr">end</span>.</span></span></pre><p>Iota reduction will correctly expand over recursive calls to even or
+odd respectively. To see this consider:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk1"><span class="kn">Theorem</span> <span class="nf">even_2</span> : even <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">even <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk2"><span class="nb">lazy</span> delta.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">with</span> even (n : nat) : <span class="kt">Prop</span> :=
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="kt">True</span>
+   | S m =&gt; odd m
+   <span class="kr">end</span>
+ <span class="kr">with</span> odd (n : nat) : <span class="kt">Prop</span> :=
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="kt">False</span>
+   | S m =&gt; even m
+   <span class="kr">end</span>
+ <span class="kr">for</span>
+ even) <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk3"><span class="nb">lazy</span> iota.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt;
+ <span class="kr">match</span> n <span class="kr">with</span>
+ | <span class="mi">0</span> =&gt; <span class="kt">True</span>
+ | S m =&gt;
+     (<span class="kr">with</span> even (n0 : nat) : <span class="kt">Prop</span> :=
+        <span class="kr">match</span> n0 <span class="kr">with</span>
+        | <span class="mi">0</span> =&gt; <span class="kt">True</span>
+        | S m0 =&gt; odd m0
+        <span class="kr">end</span>
+      <span class="kr">with</span> odd (n0 : nat) : <span class="kt">Prop</span> :=
+        <span class="kr">match</span> n0 <span class="kr">with</span>
+        | <span class="mi">0</span> =&gt; <span class="kt">False</span>
+        | S m0 =&gt; even m0
+        <span class="kr">end</span>
+      <span class="kr">for</span>
+      odd) m
+ <span class="kr">end</span>) <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre></div>
+<div class="section" id="problem">
+<h2>Problem</h2>
+<p>This is obviously the correct behaviour. <strong>Unfortunately</strong>, and
+apparently inexplicably, Coq wont apply Iota reduction in cases where
+a recursive function is either not applied to an argument or the
+argument is universally quantified. For example the following does not
+work:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk4"><span class="kn">Theorem</span> <span class="nf">even_n</span> : <span class="kr">forall</span> <span class="nv">n</span> : nat, even n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, even n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk5"><span class="nb">intro</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">even n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk6"><span class="nb">lazy</span> delta.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">with</span> even (n : nat) : <span class="kt">Prop</span> :=
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="kt">True</span>
+   | S m =&gt; odd m
+   <span class="kr">end</span>
+ <span class="kr">with</span> odd (n : nat) : <span class="kt">Prop</span> :=
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="kt">False</span>
+   | S m =&gt; even m
+   <span class="kr">end</span>
+ <span class="kr">for</span>
+ even) n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk7"><span class="nb">lazy</span> iota. <span class="c">(* FAILS TO REDUCE! *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">with</span> even (n : nat) : <span class="kt">Prop</span> :=
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="kt">True</span>
+   | S m =&gt; odd m
+   <span class="kr">end</span>
+ <span class="kr">with</span> odd (n : nat) : <span class="kt">Prop</span> :=
+   <span class="kr">match</span> n <span class="kr">with</span>
+   | <span class="mi">0</span> =&gt; <span class="kt">False</span>
+   | S m =&gt; even m
+   <span class="kr">end</span>
+ <span class="kr">for</span>
+ even) n</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>I do not see any reason why Iota reduction should depend on the
+surrounding context and have tried multiple variations to the above
+trying to get Coq to Iota reduce recursive functions. Unfortunately
+nothing worked.</p>
+<p>How do I get Coq to apply Iota reduction to recursive functions that
+are either not applied to any arguments or that are applied to
+universally quantified arguments?</p>
+</div>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The problem here is that the iota rule is restricted for fixpoints:
+the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual006.html#sec217">Coq manual</a>
+explicitly states that iota can only be applied to a fixpoint if the
+decreasing argument starts with a constructor.</p>
+<p>This is done to ensure that the calculus of inductive constructions is
+strongly normalizing as a rewriting system: if we could always apply
+iota, then it would be possible to expand the recursive occurrences of
+the function being defined infinitely.</p>
+<p>In practice, if you want to simplify such a fixpoint, there are two
+things you can do:</p>
+<ol class="arabic">
+<li><p class="first">Destruct the recursive argument (<tt class="docutils literal">n</tt>, in your case) manually and
+then reduce. This is simpler to do in some cases, but requires you
+to consider many cases.</p>
+</li>
+<li><p class="first">Prove a simplification lemma and do a rewrite instead of a
+reduction. For instance, you could have proved a lemma of the form
+<tt class="docutils literal">odd n <span class="pre">&lt;-&gt;</span> ~ even n</tt>, which might help you in some cases. You can
+also prove the unfolding explicitly as a lemma (this time, using
+your original definition of <tt class="docutils literal">even</tt>):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk8"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span>, even n = <span class="kr">match</span> n <span class="kr">with</span> | O =&gt; <span class="kt">True</span> | S m =&gt; odd m <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat,
+even n = <span class="kr">match</span> n <span class="kr">with</span>
+         | <span class="mi">0</span> =&gt; <span class="kt">True</span>
+         | S m =&gt; odd m
+         <span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
+</ol>
+</div>
+</div>
+</div>
+</div></body>
+</html>
