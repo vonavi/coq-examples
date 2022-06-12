@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Why are logical connectives and booleans separate in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-are-logical-connectives-and-booleans-separate-in-coq">
+<h1 class="title">Why are logical connectives and booleans separate in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/31554453">https://stackoverflow.com/q/31554453</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I come from a JavaScript/Ruby programming background and am used to
+this being how true/false works (in JS):</p>
+<pre class="code javascript literal-block">
+<span class="o">!</span><span class="kc">true</span><span class="w">
+</span><span class="c1">// false</span><span class="w">
+</span><span class="o">!</span><span class="kc">false</span><span class="w">
+</span><span class="c1">// true</span>
+</pre>
+<p>Then you can use those true/false values with <tt class="docutils literal">&amp;&amp;</tt> like</p>
+<pre class="code javascript literal-block">
+<span class="kd">var</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span><span class="nx">a</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nx">b</span><span class="p">;</span>
+</pre>
+<p>So <em>and</em> and <em>not</em> (and other logical/boolean operators) are part of a
+single system; it seems like the &quot;logical&quot; system and the &quot;boolean&quot;
+system are one and the same.</p>
+<p>However, in Coq, logics and booleans are two separate things. Why is
+this? The quote/link below demonstrates how a theorem is necessary to
+relate them.</p>
+<blockquote>
+<p>We've already seen several places where analogous structures can
+be found in Coq's computational (<tt class="docutils literal">Type</tt>) and logical (<tt class="docutils literal">Prop</tt>)
+worlds. Here is one more: the boolean operators andb and orb are
+clearly analogs of the logical connectives <tt class="docutils literal">/\</tt> and <tt class="docutils literal">\/</tt>. This
+analogy can be made more precise by the following theorems, which
+show how to translate knowledge about <tt class="docutils literal">andb</tt> and <tt class="docutils literal">orb</tt>'s
+behaviors on certain inputs into propositional facts about those
+inputs.</p>
+<pre class="code coq literal-block">
+<span class="kn">Theorem</span> <span class="nf">andb_prop</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">b</span> <span class="nv">c</span><span class="o">,</span>
+  <span class="n">andb</span> <span class="n">b</span> <span class="n">c</span> <span class="o">=</span> <span class="n">true</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">true</span> <span class="o">/\</span> <span class="n">c</span> <span class="o">=</span> <span class="n">true</span><span class="o">.</span>
+</pre>
+</blockquote>
+<p><a class="reference external" href="http://www.seas.upenn.edu/~cis500/current/sf/Logic.html#lab211">http://www.seas.upenn.edu/~cis500/current/sf/Logic.html#lab211</a></p>
+<hr class="docutils" />
+<p><strong>A (Vinz):</strong> Short answer: not everything you can state in Coq is
+provable (for example, take the halt problem. Could you prove it
+(<tt class="docutils literal">True</tt>) or refute it (<tt class="docutils literal">False</tt>) or do you need a &quot;gray&quot; state for
+this one ?). That's just a tiny part of the explanation, but it should
+jump start your thoughts :)</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><em>Essentially, Coq has both because they are useful for different
+things: booleans correspond to facts that can be checked mechanically
+(i.e., with an algorithm), whereas propositions can express more
+concepts.</em></p>
+<p>Strictly speaking, the logical and boolean worlds are not separate in
+Coq: the boolean world is a subset of the logical world. In other
+words, every statement that you can phrase as a boolean computation
+can be viewed as a logical proposition (i.e., something of type
+<tt class="docutils literal">Prop</tt>): if <tt class="docutils literal">b : bool</tt> represents a statement, we can assert that
+this statement is true by saying <tt class="docutils literal">b = true</tt>, which is of type
+<tt class="docutils literal">Prop</tt>.</p>
+<p>The reason there's more in Coq to logic than just booleans is that the
+converse of the previous statement does not hold: <em>not all logical
+facts can be viewed as boolean computations</em>. Put in a different way,
+it is not the case that booleans in normal programming languages such
+as Ruby and JavaScript subsume both <tt class="docutils literal">bool</tt> and <tt class="docutils literal">Prop</tt> in Coq,
+because <tt class="docutils literal">Prop</tt>s can express things that booleans in these
+languages cannot.</p>
+<p>To illustrate this, consider the following Coq predicate:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">commutative</span> {<span class="nv">T</span>} (<span class="nv">op</span> : T -&gt; T -&gt; T) : <span class="kt">Prop</span> :=
+  <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span>, op x y = op y x.</span></span></pre><p>As the name suggests, this predicate asserts that an operator <tt class="docutils literal">op</tt>
+is commutative. Many operators in programming languages are
+commutative: take multiplication and addition over integers, for
+instance. Indeed, in Coq we can prove the following statements (and I
+believe those are examples in the Software Foundations book):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">plus_comm</span> : commutative plus.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">commutative Nat.add</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk1"><span class="kn">Proof</span>. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">commutative Nat.add</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk2"><span class="kn">Lemma</span> <span class="nf">mult_comm</span> : commutative mult.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">commutative Nat.mul</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk3"><span class="kn">Proof</span>. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">commutative Nat.mul</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>Now, try to think how you would translate a predicate like
+<tt class="docutils literal">commutative</tt> in a more conventional language. If this seems
+difficult, it is not by chance: it is possible to prove that we can't
+write a program returning a boolean in these languages to test whether
+an operation is commutative or not. You can certainly write <em>unit
+tests</em> for checking whether this fact is true for particular inputs,
+e.g.:</p>
+<pre class="code coq literal-block">
+<span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="mi">4</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span>
+</pre>
+<p>However, if your operator works with an infinite number of inputs,
+these unit tests can only cover a fraction of all possible cases.
+Therefore, testing is always necessarily weaker than a complete formal
+proof.</p>
+<p>You could wonder why we bother having booleans in Coq if <tt class="docutils literal">Prop</tt>s
+can express everything that booleans can. The reason for that is that
+Coq is a <em>constructive logic</em>, which is what Vinz was alluding to in
+his comment. The most well-known consequence of this fact is that in
+Coq we cannot prove the following intuitive principle:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">excluded_middle</span> := <span class="kr">forall</span> <span class="nv">P</span> : <span class="kt">Prop</span>, P \/ ~ P.</span></span></pre><p>which essentially says that every proposition is either true or false.
+&quot;How could this possibly fail?&quot;, you might ask yourself. Roughly
+speaking, in constructive logics (and Coq in particular), every proof
+corresponds to an algorithm we can execute. In particular, when you
+prove a statement of the form <tt class="docutils literal">A \/ B</tt> in a constructive logic, you
+can extract an (always terminating) algorithm from that proof that
+answers whether <tt class="docutils literal">A</tt> or <tt class="docutils literal">B</tt> holds. Hence, if we were able to prove
+the above principle, we would have an algorithm that, given some
+proposition, tells us whether that proposition is valid or not.
+Computability theory shows, however, that this is not possible in
+general because of undecidability: if we take P to mean &quot;program <tt class="docutils literal">p</tt>
+halts on input <tt class="docutils literal">x</tt>&quot;, the excluded middle would yield a decider for
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Halting_problem">halting problem</a>, which cannot
+exist.</p>
+<p>Now, what's interesting about booleans in Coq is that by construction
+they allow the use of the excluded middle, because they <em>do</em>
+correspond to an algorithm we can run. Specifically, we can prove the
+following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk4"><span class="kn">Lemma</span> <span class="nf">excluded_middle_bool</span> :
+  <span class="kr">forall</span> <span class="nv">b</span> : bool, b = true \/ negb b = true.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b</span> : bool, b = true \/ negb b = true</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b</span> : bool, b = true \/ negb b = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="why-are-logical-connectives-and-booleans-separate-in-coq-v-chk6"><span class="nb">intros</span> b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b = true \/ negb b = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> b; <span class="nb">auto</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Thus, in Coq it is useful to consider booleans as a special case of
+propositions because they allow forms of reasoning that other
+propositions do not, namely, case analysis.</p>
+<p>Of course, you can think that requiring that every proof correspond to
+an algorithm is silly, and indeed most logics allow the principle of
+the excluded middle. Examples of proof assistants that follow this
+approach by default include <a class="reference external" href="https://isabelle.in.tum.de/">Isabelle/HOL</a> and the <a class="reference external" href="http://mizar.org/">Mizar</a>
+system. In these systems, we don't have to have a distinction between
+booleans and propositions, and they are treated as the same thing.
+Isabelle, for instance, has just <tt class="docutils literal">bool</tt>, and no <tt class="docutils literal">Prop</tt>. Coq also
+allows you to blur the distinction between booleans and propostions,
+by assuming axioms that allow you to perform case analysis on general
+propositions. On the other hand, in such a setting, when you write a
+function that returns a boolean, you might not obtain something that
+you can execute as an algorithm, whereas this is always the case by
+default in Coq.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

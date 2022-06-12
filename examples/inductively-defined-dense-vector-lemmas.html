@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Inductively defined dense vector lemmas</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="inductively-defined-dense-vector-lemmas">
+<h1 class="title">Inductively defined dense vector lemmas</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/31111114">https://stackoverflow.com/q/31111114</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Inspired by another question on StackOverflow, I defined a <em>dense
+vector</em> to be a vector with <tt class="docutils literal">option A</tt> type elements that only
+contains <tt class="docutils literal">Some _</tt> elements, and no <tt class="docutils literal">None</tt> elements.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Vector.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Dense</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Is_dense</span> : <span class="kr">forall</span> <span class="nv">n</span>, t (option A) n -&gt; <span class="kt">Prop</span> :=
+  | snil : Is_dense <span class="mi">0</span> (nil _)
+  | scons: <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">s</span>, Is_dense n s -&gt;
+                       <span class="kr">forall</span> <span class="nv">a</span>, Is_dense (S n) (cons _ (Some a) _ s).</span></span></pre><p>How can I prove the following two lemmas?</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk0"><span class="kn">Lemma</span> <span class="nf">Is_dense_tl</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">s</span> : t (option A) (S n)),
+      Is_dense (S n) s -&gt; Is_dense n (tl s).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">s</span> : t (option A) (S n)),
+Is_dense (S n) s -&gt; Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>and</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk1"><span class="kn">Lemma</span> <span class="nf">dense_hd</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">s</span> : t (option A) (S n)), Is_dense (S n) s -&gt; A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">s</span> : t (option A) (S n)),
+Is_dense (S n) s -&gt; A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>And also, in the first lemma, when I do <tt class="docutils literal">inversion s.</tt> I get the
+elements <tt class="docutils literal">h n' X</tt> that were used by <tt class="docutils literal">s</tt>'s constructor, but how can
+I get an equality stating <tt class="docutils literal">s = cons (option A) h n' X</tt>?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Because of type dependency, <tt class="docutils literal">inversion</tt> can't directly generate what
+you expect, because it is not true in general. However, it is true for
+a large family of types, whose equality is <em>decidable</em>. In your case,
+you can apply <tt class="docutils literal">Eqdep_dec.inj_pair2_eq_dec</tt> to get the equality you
+want, if you provide the fact that equality upon <tt class="docutils literal">nat</tt> is decidable
+(and it is).</p>
+<p>Here is the proof for the first lemma:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk2"><span class="kn">Lemma</span> <span class="nf">Is_dense_tl</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">s</span> : t (option A) (S n)),
+      Is_dense (S n) s -&gt; Is_dense n (tl s).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">s</span> : t (option A) (S n)),
+Is_dense (S n) s -&gt; Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">s</span> : t (option A) (S n)),
+Is_dense (S n) s -&gt; Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk4"><span class="nb">intros</span> n s hs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>hs</var><span class="hyp-type"><b>: </b><span>Is_dense (S n) s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk5"><span class="nb">inversion</span> hs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>hs</var><span class="hyp-type"><b>: </b><span>Is_dense (S n) s</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n0 = n</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n)
+  (cons (option A) (Some a) n s0) =
+existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n) s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk6"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>hs</var><span class="hyp-type"><b>: </b><span>Is_dense (S n) s</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n)
+  (cons (option A) (Some a) n s0) =
+existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n) s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk7"><span class="nb">clear</span> hs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n)
+  (cons (option A) (Some a) n s0) =
+existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n) s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk8"><span class="nb">apply</span> Eqdep_dec.inj_pair2_eq_dec <span class="kr">in</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>cons (option A) (Some a) n s0 = s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Is_dense n (tl s)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="inductively-defined-dense-vector-lemmas-v-chk9" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n)
+  (cons (option A) (Some a) n s0) =
+existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n) s</span></span></span><br></div><label class="goal-separator" for="inductively-defined-dense-vector-lemmas-v-chk9"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chka">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>cons (option A) (Some a) n s0 = s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Is_dense n (tl s)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> &lt;- H0.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chkb">- <span class="c">(* insert proof of decidablity *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t (option A) (S n)</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>t (option A) n</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Is_dense n s0</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n)
+  (cons (option A) (Some a) n s0) =
+existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n) s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">admit</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>EDIT: About your comment about the second lemma.</p>
+<p>The main difference between your two lemmas is that the first one
+tries to prove the property <tt class="docutils literal">Is_dense n (tl s)</tt> which lives in
+<tt class="docutils literal">Prop</tt>, whereas the second one tries to exhibit a term of type
+<tt class="docutils literal">A</tt>. In short, the former creates a term of sort <tt class="docutils literal">Prop</tt>, the
+latter a term of sort <tt class="docutils literal">Type</tt>.</p>
+<p>To avoid inconsistency in Coq's logic, there is a <em>hierarchy</em> to
+organize the sorts, which is (not exactly, but to give you the rough
+idea) <tt class="docutils literal">Prop : Set</tt> <tt class="docutils literal">Set : Type_0</tt> and <tt class="docutils literal">Type_n : Type_n+1</tt>. On
+top of this hierarchy is built a type system where the dependent pair
+(e.g. the type <tt class="docutils literal">{n : nat | even n}</tt> is the type of even natural
+numbers) is restricted. You can build a <tt class="docutils literal">Prop</tt> from other <tt class="docutils literal">Prop</tt>
+(e.g. <tt class="docutils literal">forall p : Prop, p <span class="pre">-&gt;</span> p</tt> lives in <tt class="docutils literal">Prop</tt>). However you need
+to be careful when <tt class="docutils literal">Type</tt> is involved. For example, (again, please
+refer to Coq's documentation for the exact statement) <tt class="docutils literal">forall n :
+Type_i, Type_j</tt> is of type <tt class="docutils literal">Type_max(i, j)</tt>.</p>
+<p>This restriction is here to avoid inconsistency (like Russel's
+paradox) in Coq's type system.</p>
+<p>In your case, you are trying to inspect (using <tt class="docutils literal">inversion</tt>) a term
+of sort <tt class="docutils literal">Prop</tt> (<tt class="docutils literal">Is_dense (S n) s</tt>) to build a term of type <tt class="docutils literal">A</tt>,
+of sort <tt class="docutils literal">Type</tt>. This is forbidden by the type system. To build a
+term of sort <tt class="docutils literal">Type</tt>, you need to inspect terms of at least the sort
+<tt class="docutils literal">Set</tt>. In your example, all you have to do is change the definition
+of <tt class="docutils literal">Is_dense</tt> to land in <tt class="docutils literal">Type</tt> instead of <tt class="docutils literal">Prop</tt>, and you're
+good to go.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> It needed a decidability proof for <tt class="docutils literal">nat</tt>, rather than for
+<tt class="docutils literal">A</tt>, so that was easy, using <tt class="docutils literal">Arith.Peano_dec.eq_nat_dec</tt>.
+However, when I try to use <tt class="docutils literal">inversion hs.</tt> for the second lemma, I
+get the error <tt class="docutils literal">Error: Inversion would require case analysis on sort
+Type which is not allowed for inductive definition Is_dense.</tt> Why is
+it possible to use inversion in the first lemma but not in the second?</p>
+<p><strong>Q:</strong> After changing <tt class="docutils literal">A</tt> from <tt class="docutils literal">Type</tt> to <tt class="docutils literal">Set</tt>, and chaning
+<tt class="docutils literal">Is_dense ...</tt> from <tt class="docutils literal">Prop</tt> to <tt class="docutils literal">Set</tt> I was able to do <tt class="docutils literal">inversion
+hs.</tt> in the second lemma. What happened? Is there a less drastic
+solution (than changing the definitions)?</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

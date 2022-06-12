@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Why does use of Coq's setoid_replace ... by clause need an extra idtac?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-does-use-of-coq-s-setoid-replace-by-clause-need-an-extra-idtac">
+<h1 class="title">Why does use of Coq's <tt class="docutils literal">setoid_replace ... by</tt> clause need an extra <tt class="docutils literal">idtac</tt>?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/31279517">https://stackoverflow.com/q/31279517</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I encountered a strange situation using <tt class="docutils literal">setoid_replace</tt> where a
+proof step of the form:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk0"><span class="kn">Fail</span> <span class="nb">setoid_replace</span> (a - c + d) <span class="kr">with</span> b <span class="bp">by</span> rearrange.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+No matching clauses <span class="kr">for</span> <span class="kr">match</span>.</blockquote></div></div></small></span></pre><p>but after appending an extra <tt class="docutils literal">idtac</tt> to the tactic:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk1"><span class="nb">setoid_replace</span> (a - c + d) <span class="kr">with</span> b <span class="bp">by</span> (rearrange; <span class="kp">idtac</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>e &lt; b</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>b + c == a + d</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">e &lt; b</div></blockquote></div></div></small></span></pre><p>the proof succeeds. My understanding of <tt class="docutils literal">idtac</tt> was that it was
+essentially a no-op. Why does the presence of <tt class="docutils literal">idtac</tt> make a
+difference here?</p>
+<p>Here's the full code. I'm using Coq 8.4pl6 through Proof General.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> QArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> Q.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk2"><span class="kn">Lemma</span> <span class="nf">rearrange_eq_r</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span> <span class="nv">d</span> :
+  a == b -&gt; b + d == a + c -&gt; c == d.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a == b -&gt; b + d == a + c -&gt; c == d</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a == b -&gt; b + d == a + c -&gt; c == d</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk4"><span class="nb">intro</span> a_eq_b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>a_eq_b</var><span class="hyp-type"><b>: </b><span>a == b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b + d == a + c -&gt; c == d</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk5"><span class="nb">rewrite</span> a_eq_b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>a_eq_b</var><span class="hyp-type"><b>: </b><span>a == b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">b + d == b + c -&gt; c == d</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk6"><span class="nb">symmetry</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>a_eq_b</var><span class="hyp-type"><b>: </b><span>a == b</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>b + d == b + c</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">d == c</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> Qplus_inj_l <span class="kr">with</span> (z := b).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">rearrange</span> :=
+  <span class="kr">match goal with</span>
+  | [ H : _ == _ |- _ == _ ] =&gt; <span class="nb">apply</span> rearrange_eq_r <span class="kr">with</span> (<span class="mi">1</span> := H); <span class="bp">ring</span>
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk7"><span class="kn">Lemma</span> <span class="nf">test_rearrange</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span> <span class="nv">d</span> <span class="nv">e</span> (<span class="nv">H0</span> : e &lt; b) (<span class="nv">H1</span> : b + c == a + d) :
+  e &lt; a - c + d.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>e &lt; b</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>b + c == a + d</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">e &lt; a - c + d</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>e &lt; b</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>b + c == a + d</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">e &lt; a - c + d</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Why is the extra &#39;idtac&#39; required in the line below? *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-use-of-coqs-setoid-replace-by-clause-need-an-extra-idtac-v-chk9"><span class="nb">setoid_replace</span> (a - c + d) <span class="kr">with</span> b <span class="bp">by</span> (rearrange; <span class="kp">idtac</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>Q</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>e &lt; b</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>b + c == a + d</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">e &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Note: as Matt observes, <tt class="docutils literal">idtac</tt> doesn't seem to be special here: it
+seems that any tactic (including <tt class="docutils literal">fail</tt>!) can be used in place of
+<tt class="docutils literal">idtac</tt> to make the proof succeed.</p>
+<hr class="docutils" />
+<p><strong>A (Matt):</strong> Strangely enough sequencing <tt class="docutils literal">rearrange</tt> with anything
+seems to work. For example, I get the same result when I do
+<tt class="docutils literal">setoid_replace (a - c + d) with b by (rearrange; fail).</tt> or
+<tt class="docutils literal">setoid_replace (a - c + d) with b by (rearrange; exfalso).</tt> or
+<tt class="docutils literal">setoid_replace (a - c + d) with b by (rearrange; auto).</tt> Very
+odd...</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Thanks to Jason Gross on the Coq bug tracker for explaining this. This
+has to do with order of evaluation in the Ltac tactic language. In the
+failing case, the match in <tt class="docutils literal">rearrange</tt> is being applied to the
+inequality in the immediate goal rather than to the equality generated
+by <tt class="docutils literal">setoid_replace</tt>. Here's Jason's response on the bug report:</p>
+<blockquote>
+This is because the <tt class="docutils literal">match</tt> is evaluated before the
+<tt class="docutils literal">setoid_replace</tt> is run. It is one of the unfortunate trip-ups
+of Ltac that things like <tt class="docutils literal">match</tt> and <tt class="docutils literal">let ... in ...</tt> are
+evaluated eagerly until a statement with semicolons, or other
+non-match non-let-in statement is reached. If you add <tt class="docutils literal">idtac;</tt>
+before the <tt class="docutils literal">match</tt> in <tt class="docutils literal">rearrange</tt>, your problem will go away.</blockquote>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to disable my custom notation in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-disable-my-custom-notation-in-coq">
+<h1 class="title">How to disable my custom notation in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/30294602">https://stackoverflow.com/q/30294602</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I've defined a notation to simulate imperative style programming by</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;a &gt;&gt; b&quot;</span> := (b a) (<span class="kn">at level</span> <span class="mi">50</span>).</span></span></pre><p>However after that, all function-application expression are
+represented as <tt class="docutils literal">&gt;&gt;</tt> style. For example, in proof mode of Coq
+Toplevel, I can see</p>
+<pre class="code coq literal-block">
+<span class="n">bs'</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">&gt;&gt;</span> <span class="n">list</span>
+</pre>
+<p>while actually it should be</p>
+<pre class="code coq literal-block">
+<span class="n">bs'</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span>
+</pre>
+<p><strong>Why does Coq aggressively rewrite all function application styled
+expression into my customized</strong> <tt class="docutils literal">&gt;&gt;</tt> <strong>representation?</strong> How can I
+restore everything back to normal, I mean I want to see <tt class="docutils literal">a &gt;&gt; b</tt> be
+interpreted as <tt class="docutils literal">b a</tt> and <tt class="docutils literal">list nat</tt> will not be represented as
+<tt class="docutils literal">nat &gt;&gt; list</tt>?</p>
+</div>
+<div class="section" id="answer-gilles-so-stop-being-evil">
+<h1>Answer (Gilles 'SO- stop being evil')</h1>
+<p>By default, Coq assumes that if you define a notation, you want to it
+for pretty-printing. If you want the notation to never appear in
+pretty-printing, declare it as <tt class="docutils literal">only parsing</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;a &gt;&gt; b&quot;</span> := (b a) (<span class="kn">at level</span> <span class="mi">50</span>, <span class="kn">only parsing</span>).</span></span></pre><p>If you want <tt class="docutils literal">a &gt;&gt; b</tt> to be displayed sometimes, you can restrict it
+to a scope and associate a type to this scope; then the notation will
+only be applied when the result type is that type.</p>
+<p>There's no way to tell Coq &quot;use the notation only where I used it in
+my source code&quot;, because a term written with a notation is exactly the
+same as the term written in any other way: the notation used
+originally is not part of the term.</p>
+</div>
+<div class="section" id="answer-gallais">
+<h1>Answer (gallais)</h1>
+<p>You could use a definition instead. This way only things you tag as
+<tt class="docutils literal">followedBy</tt> would be reified this way. Otherwise there's no way for
+the machine to know when to use a space vs. <tt class="docutils literal">&gt;&gt;</tt>...</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">followedBy</span> {<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>} (<span class="nv">a</span> : A) (<span class="nv">b</span> : A -&gt; B) := b a.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;a &gt;&gt; b&quot;</span> := (followedBy a b) (<span class="kn">at level</span> <span class="mi">50</span>).</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

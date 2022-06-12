@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Using local notation inside a Coq theorem</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="using-local-notation-inside-a-coq-theorem">
+<h1 class="title">Using local notation inside a Coq theorem</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/30270240">https://stackoverflow.com/q/30270240</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Suppose I want to prove a theorem about an object that is verbose to
+spell out, say <tt class="docutils literal">ABCDEFGHIJKLMNOPQRSTUVWXYZ</tt>, such that the
+unabbreviated theorem is</p>
+<pre class="code coq literal-block">
+<span class="kn">Theorem</span> <span class="nf">verbose</span> <span class="o">:</span>
+  <span class="n">prop_1</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+  <span class="o">-&gt;</span> <span class="n">prop_2</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+  <span class="o">-&gt;</span> <span class="n">prop_3</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+  <span class="o">-&gt;</span> <span class="n">prop_4</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+  <span class="o">-&gt;</span> <span class="n">prop_5</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><span class="o">.</span>
+</pre>
+<p>Is there a way to use local notation inside a theorem, so I can
+compress it to something like the following?</p>
+<pre class="code coq literal-block">
+<span class="kn">Theorem</span> <span class="nf">succinct</span> <span class="o">:</span>
+  <span class="n">prop_1</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">prop_2</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">prop_3</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">prop_4</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">prop_5</span> <span class="n">X</span>
+<span class="kn">where</span> <span class="s2">&quot;X&quot;</span> <span class="o">:=</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><span class="o">.</span>
+</pre>
+<p>I'd use regular notations if I'm using the verbose term repeatedly,
+but for one-off cases it'd be nice if there were something like
+<tt class="docutils literal">where</tt> for theorems, so I can reuse good names.</p>
+</div>
+<div class="section" id="answer-andrew-swann">
+<h1>Answer (Andrew Swann)</h1>
+<p>You can use <tt class="docutils literal">Section</tt>s and <tt class="docutils literal">Let</tt> for local definitions.</p>
+<pre class="code coq literal-block">
+<span class="kn">Section</span> <span class="nf">thm</span><span class="o">.</span>
+
+<span class="kn">Let</span> <span class="nf">X</span> <span class="o">:=</span> <span class="n">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><span class="o">.</span>
+
+<span class="kn">Theorem</span> <span class="nf">succinct</span> <span class="o">:</span> <span class="n">prop_1</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">prop_2</span> <span class="n">X</span><span class="o">.</span>
+
+<span class="o">....</span>
+
+<span class="kn">End</span> <span class="nf">thm</span><span class="o">.</span>
+</pre>
+</div>
+<div class="section" id="answer-larsr">
+<h1>Answer (larsr)</h1>
+<p>You can use <tt class="docutils literal">Definition myobj := ABCDEFGHIJKLMNOPQRSTUVWXYZ.</tt> to
+define a name for the object. Later, you can use <tt class="docutils literal">unfold myobj.</tt> to
+expand the name to its value.</p>
+<p>To introduce it into a local proof environment, use <tt class="docutils literal">remember</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-local-notation-inside-a-coq-theorem-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-local-notation-inside-a-coq-theorem-v-chk0"><span class="kn">Theorem</span> <span class="nf">foo</span> :
+  <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : Z, x + y - z = x + (y - z).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : Z, x + y - z = x + (y - z)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-local-notation-inside-a-coq-theorem-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="using-local-notation-inside-a-coq-theorem-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : Z, x + y - z = x + (y - z)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-local-notation-inside-a-coq-theorem-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="using-local-notation-inside-a-coq-theorem-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y, z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x + y - z = x + (y - z)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-local-notation-inside-a-coq-theorem-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="using-local-notation-inside-a-coq-theorem-v-chk3"><span class="nb">remember</span> (x + y) <span class="kr">as</span> bar.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y, z, bar</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>Heqbar</var><span class="hyp-type"><b>: </b><span>bar = x + y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bar - z = x + (y - z)</div></blockquote></div></div></small></span></pre><p>Now the environment is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="using-local-notation-inside-a-coq-theorem-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  x, y, z, bar : Z
+  Heqbar : bar = x + y
+  ============================
+  bar - z = x + (y - z)</blockquote></div></div></small></span></pre><hr class="docutils" />
+<p><strong>Q:</strong> Maybe the question didn't make it clear, but what I'm looking
+for is a notation local to a theorem, so that simple variable names
+like <tt class="docutils literal">X</tt> can be reused without overloading. Your suggestion would
+indeed be the best way if the object was used repeatedly across
+multiple theorems.</p>
+<p><strong>A:</strong> Inside a proof you can do <tt class="docutils literal">remember (foo + bar + ABDE) as Q.</tt></p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

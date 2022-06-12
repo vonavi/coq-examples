@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Incorrect elimination of X in the inductive type or</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="incorrect-elimination-of-x-in-the-inductive-type-or">
+<h1 class="title">Incorrect elimination of <tt class="docutils literal">X</tt> in the inductive type <tt class="docutils literal">or</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/32261254">https://stackoverflow.com/q/32261254</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am trying to define a relatively simple function on Coq:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Preliminaries *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Vector.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk0"><span class="kn">Definition</span> <span class="nf">Vnth</span> {<span class="nv">A</span> : <span class="kt">Type</span>} {<span class="nv">n</span>} (<span class="nv">v</span> : Vector.t A n) : <span class="kr">forall</span> <span class="nv">i</span>, i &lt; n -&gt; A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>t A n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">i</span> : nat, i &lt; n -&gt; A</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Problematic definition below *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk1"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">VnthIndexMapped</span> {<span class="nv">A</span> : <span class="kt">Type</span>}
+           {<span class="nv">i</span> <span class="nv">o</span> : nat}
+           (<span class="nv">x</span> : Vector.t (option A) i)
+           (<span class="nv">f&#39;</span> : nat -&gt; option nat)
+           (<span class="nv">f&#39;_spec</span> : <span class="kr">forall</span> <span class="nv">x</span>,
+               x &lt; o -&gt; (<span class="kr">forall</span> <span class="nv">z</span>, f&#39; x = Some z -&gt; z &lt; i) \/ f&#39; x = None)
+           (<span class="nv">n</span> : nat)
+           (<span class="nv">np</span> : n &lt; o) : option A :=
+  <span class="kr">match</span> f&#39; n <span class="kr">as</span> fn, f&#39;_spec n np <span class="kr">return</span> f&#39; n = fn -&gt; option A <span class="kr">with</span>
+  | None, _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; None
+  | Some z, or_introl zc1 =&gt; <span class="kr">fun</span> <span class="nv">p</span> =&gt; Vnth x z (zc1 z p)
+  | Some z, or_intror _ =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; None <span class="c">(* impossible case *)</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+A : <span class="kt">Type</span>
+i : nat
+o : nat
+x : t (option A) i
+f&#39; : nat -&gt; option nat
+f&#39;_spec :
+<span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt;
+(<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+f&#39; x = None
+n : nat
+np : n &lt; o
+fn : option nat
+o0 :
+(<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; n = Some z -&gt; z &lt; i) \/
+f&#39; n = None
+The term <span class="s2">&quot;f&#39; n = fn -&gt; option A&quot;</span> has type <span class="s2">&quot;Type&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Prop&quot;</span>
+(universe inconsistency: Cannot enforce <span class="kt">Set</span> = <span class="kt">Prop</span>).</blockquote></div></div></small></span></pre><p>I think I understand the reason for this limitation, but I am having
+difficulty coming up with a workaround. How something like this could
+be implemented? Basically I have a function <tt class="docutils literal">f'</tt> for which I have a
+separate proof that values less than <tt class="docutils literal">o</tt> it either returns <tt class="docutils literal">None</tt>
+or a <tt class="docutils literal">Some z</tt> where <tt class="docutils literal">z</tt> is less than <tt class="docutils literal">i</tt> and I am trying to use
+it in my definition.</p>
+</div>
+<div class="section" id="answer-vinz">
+<h1>Answer (Vinz)</h1>
+<p>The issue is that you want to build a term by inspecting the content
+of <tt class="docutils literal">f'_spec</tt>. This disjunction lives in <tt class="docutils literal">Prop</tt>, so it can only
+build other <tt class="docutils literal">Prop</tt>. You want to build more, something in <tt class="docutils literal">Type</tt>.
+Therefore you need a version of disjunction that lives at least in
+<tt class="docutils literal">Set</tt> (more generally in <tt class="docutils literal">Type</tt>). I advise you replace your <tt class="docutils literal">Foo
+\/ Bar</tt> statement with the usage of <tt class="docutils literal">sumbool</tt>, which uses the
+notation <tt class="docutils literal">{Foo} + {Bar}</tt>.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> What would be the other implications of using <tt class="docutils literal">sumbool</tt>
+instead of <tt class="docutils literal">\/</tt>? Any potential problems?</p>
+<p><strong>A:</strong> Basically if I give you <tt class="docutils literal">P : A \/ B</tt>, you can't tell if it
+<tt class="docutils literal">A</tt> or <tt class="docutils literal">B</tt> that its true. You just know one of them is. With <tt class="docutils literal">{A}
++ {B}</tt>, you also get to know which one is true (because you can
+destruct the term).</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>There are two approaches to a problem like this: the <em>easy way</em> and
+the <em>hard way</em>.</p>
+<p>The easy way is to think whether you're doing anything more
+complicated than you have to. In this case, if you look carefully, you
+will see that your <tt class="docutils literal">f'_spec</tt> is equivalent to the following
+statement, which avoids <tt class="docutils literal">\/</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk2"><span class="kn">Lemma</span> <span class="nf">f&#39;_spec_equiv</span> <span class="nv">i</span> <span class="nv">o</span> (<span class="nv">f&#39;</span> : nat -&gt; option nat) :
+  (<span class="kr">forall</span> <span class="nv">x</span>, x &lt; o -&gt; (<span class="kr">forall</span> <span class="nv">z</span>, f&#39; x = Some z -&gt; z &lt; i) \/ f&#39; x = None)
+  &lt;-&gt; (<span class="kr">forall</span> <span class="nv">x</span>, x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span>, f&#39; x = Some z -&gt; z &lt; i).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt;
+ (<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+ f&#39; x = None) &lt;-&gt;
+(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt;
+ (<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+ f&#39; x = None) &lt;-&gt;
+(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk4"><span class="nb">split</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt;
+ (<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+ f&#39; x = None) -&gt;
+<span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><label class="goal-separator" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk5"><hr></label><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) -&gt;
+<span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt;
+(<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+f&#39; x = None</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt;
+ (<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+ f&#39; x = None) -&gt;
+<span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk7"><span class="nb">intros</span> f&#39;_spec x Hx z Hf.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br><span><var>f'_spec</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt;
+(<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+f&#39; x = None</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Hx</var><span class="hyp-type"><b>: </b><span>x &lt; o</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Hf</var><span class="hyp-type"><b>: </b><span>f&#39; x = Some z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">z &lt; i</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> (f&#39;_spec _ Hx); <span class="nb">eauto</span>; <span class="bp">congruence</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk8">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
+ x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) -&gt;
+<span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt;
+(<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+f&#39; x = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk9"><span class="nb">intros</span> f&#39;_spec x Hx.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br><span><var>f'_spec</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt;
+<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Hx</var><span class="hyp-type"><b>: </b><span>x &lt; o</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i) \/
+f&#39; x = None</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chka"><span class="nb">left</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br><span><var>f'_spec</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : nat,
+x &lt; o -&gt;
+<span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Hx</var><span class="hyp-type"><b>: </b><span>x &lt; o</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eauto</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Thus, you could have rephrased the type of <tt class="docutils literal">f'_spec</tt> in
+<tt class="docutils literal">VnthIndexedMapped</tt> and used the proof directly.</p>
+<p>Of course, sometimes there's no way of making things simpler. Then you
+need to follow the hard way, and try to understand the nitty-gritty
+details of Coq to make it accept what you want.</p>
+<p>As Vinz pointed out, you <em>usually</em> (there are exceptions) can't
+eliminate the proof of proposition to construct something
+computational. However, you <em>can</em> eliminate a proof to construct
+<em>another proof</em>, and maybe that proof gives you what need. For
+instance, you can write this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">VnthIndexMapped</span> {<span class="nv">A</span> : <span class="kt">Type</span>}
+           {<span class="nv">i</span> <span class="nv">o</span> : nat}
+           (<span class="nv">x</span> : Vector.t (option A) i)
+           (<span class="nv">f&#39;</span> : nat -&gt; option nat)
+           (<span class="nv">f&#39;_spec</span> : <span class="kr">forall</span> <span class="nv">x</span>,
+               x &lt; o -&gt; (<span class="kr">forall</span> <span class="nv">z</span>, f&#39; x = Some z -&gt; z &lt; i) \/ f&#39; x = None)
+           (<span class="nv">n</span> : nat)
+           (<span class="nv">np</span> : n &lt; o) : option A :=
+  <span class="kr">match</span> f&#39; n <span class="kr">as</span> fn <span class="kr">return</span> f&#39; n = fn -&gt; option A <span class="kr">with</span>
+  | None =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; None
+  | Some z =&gt; <span class="kr">fun</span> <span class="nv">p</span> =&gt;
+                <span class="kr">let</span> <span class="nv">p&#39;</span> := proj1 (f&#39;_spec_equiv i o f&#39;) f&#39;_spec n np z p <span class="kr">in</span>
+                Vnth x z p&#39;
+  <span class="kr">end</span> eq_refl.</span></span></pre><p>This definition uses the proof that both formulations of <tt class="docutils literal">f'_spec</tt>
+are equivalent, but the same idea would apply if they weren't, and you
+had some lemma allowing you to go from one to the other.</p>
+<p>I personally don't like this style very much, as it is hard to use and
+lends itself to programs that are complicated to read. But it can have
+its uses...</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
