@@ -16,9 +16,9 @@ For example, if I define a function from nat to nat, it would be
 Definition plusfive (a : nat) : nat := a + 5.
 
 (*|
-However, I would like to define a function whose arguments are nats
-constructed using the ``S`` constructor (i.e. nonzero) is that
-possible to directly specify as a type? something like
+However, I would like to define a function whose arguments are
+``nat``\ s constructed using the ``S`` constructor (i.e. nonzero) is
+that possible to directly specify as a type? something like
 
 .. code-block:: coq
 

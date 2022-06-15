@@ -1,6 +1,6 @@
 (*|
 #########################################
-deriving facts on pattern matching in coq
+Deriving facts on pattern matching in Coq
 #########################################
 
 :Link: https://stackoverflow.com/q/48276348

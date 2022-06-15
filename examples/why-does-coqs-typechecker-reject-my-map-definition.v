@@ -1,6 +1,6 @@
 (*|
 ####################################################
-Why does coq's typechecker reject my map definition?
+Why does Coq's typechecker reject my map definition?
 ####################################################
 
 :Link: https://stackoverflow.com/q/55969021

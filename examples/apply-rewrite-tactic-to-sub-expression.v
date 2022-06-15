@@ -1,6 +1,6 @@
 (*|
 ######################################
-apply rewrite tactic to sub-expression
+Apply rewrite tactic to sub-expression
 ######################################
 
 :Link: https://stackoverflow.com/q/55786746

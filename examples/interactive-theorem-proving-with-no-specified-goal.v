@@ -1,6 +1,6 @@
 (*|
 ##################################################
-interactive theorem proving with no specified goal
+Interactive theorem proving with no specified goal
 ##################################################
 
 :Link: https://stackoverflow.com/q/49569621

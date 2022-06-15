@@ -1,6 +1,6 @@
 (*|
 ################################################
-Destructing equality of dependent records in coq
+Destructing equality of dependent records in Coq
 ################################################
 
 :Link: https://stackoverflow.com/q/54569749

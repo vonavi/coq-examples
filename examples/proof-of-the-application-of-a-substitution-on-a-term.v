@@ -1,6 +1,6 @@
 (*|
 ####################################################
-Proof of the application of a Substitution on a term
+Proof of the application of a substitution on a term
 ####################################################
 
 :Link: https://stackoverflow.com/q/45966001
@@ -10,7 +10,7 @@ Proof of the application of a Substitution on a term
 Question
 ********
 
-I am trying to proof that the application of an empty Substitution on
+I am trying to proof that the application of an empty substitution on
 a term is equal to the given term. Here is the code:
 |*)
 

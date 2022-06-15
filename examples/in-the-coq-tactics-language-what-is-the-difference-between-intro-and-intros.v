@@ -1,6 +1,6 @@
 (*|
 ####################################################################################
-In the coq tactics language, what is the difference between ``intro`` and ``intros``
+In the Coq tactics language, what is the difference between ``intro`` and ``intros``
 ####################################################################################
 
 :Link: https://stackoverflow.com/q/50033343

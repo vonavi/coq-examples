@@ -10,7 +10,7 @@ How to prove equality from equality of ``Some``
 Question
 ********
 
-I want to prove equality of two nat numbers in Coq:
+I want to prove equality of two ``nat`` numbers in Coq:
 |*)
 
 Goal forall (a b : nat), Some a = Some b -> a = b.

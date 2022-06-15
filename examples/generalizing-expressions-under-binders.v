@@ -1,6 +1,6 @@
 (*|
 ######################################
-generalizing expressions under binders
+Generalizing expressions under binders
 ######################################
 
 :Link: https://stackoverflow.com/q/46458710

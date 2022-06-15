@@ -1,6 +1,6 @@
 (*|
 #############################################
-Destruct if condition in program fixpoint coq
+Destruct if condition in program fixpoint Coq
 #############################################
 
 :Link: https://stackoverflow.com/q/51017689

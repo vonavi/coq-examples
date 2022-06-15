@@ -1,6 +1,6 @@
 (*|
 ########################################################
-use module signature definition in module implementation
+Use module signature definition in module implementation
 ########################################################
 
 :Link: https://stackoverflow.com/q/49310103

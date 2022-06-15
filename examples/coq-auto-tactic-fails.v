@@ -1,7 +1,7 @@
 (*|
-#####################
-Coq auto tactic fails
-#####################
+#########################
+Coq ``auto`` tactic fails
+#########################
 
 :Link: https://stackoverflow.com/q/61677391
 |*)

@@ -1,6 +1,6 @@
 (*|
 ####################################################
-Can any one help me how to prove this theorem in coq
+Can any one help me how to prove this theorem in Coq
 ####################################################
 
 :Link: https://stackoverflow.com/q/69540976

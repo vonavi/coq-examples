@@ -1,6 +1,6 @@
 (*|
 ########################################################################
-reasoning about typeclass instance that has been picked up in a theorem?
+Reasoning about typeclass instance that has been picked up in a theorem?
 ########################################################################
 
 :Link: https://stackoverflow.com/q/50889650

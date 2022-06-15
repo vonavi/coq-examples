@@ -1,6 +1,6 @@
 (*|
 ######################
-Record equality in coq
+Record equality in Coq
 ######################
 
 :Link: https://stackoverflow.com/q/50924127

@@ -16,8 +16,8 @@ to proceed.
 The function ``sumoneseq`` adds to and returns list of repetitions of
 ``true``, in reverse order. Given [\ **true**;false;\ **true**;\
 **true**;false;\ **true**;\ **true**;\ **true**], it returns [3;2;1].
-The function ``sumones`` adds values in the nat list. Given [3;2;1],
-it returns 6.
+The function ``sumones`` adds values in the ``nat`` list. Given
+[3;2;1], it returns 6.
 |*)
 
 Notation "x :: l" := (cons x l) (at level 60, right associativity).

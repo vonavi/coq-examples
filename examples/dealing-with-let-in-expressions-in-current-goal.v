@@ -32,7 +32,7 @@ Abort. (* .none *)
 If I'm not wrong, both sides of the equality should be exactly the
 same, but I don't know how to show it from here. Any help?
 
---
+----
 
 As a side note, I've seen that coq automatically applies the
 simplification when no product types are involved in the result of the

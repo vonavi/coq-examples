@@ -1,6 +1,6 @@
 (*|
 ###############################
-Generic equality lifting in coq
+Generic equality lifting in Coq
 ###############################
 
 :Link: https://stackoverflow.com/q/60616818

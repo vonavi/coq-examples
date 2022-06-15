@@ -1,7 +1,7 @@
 (*|
-##########################################################################
-can coq intros pattern split at the rightmost opportunity for conjunction?
-##########################################################################
+##############################################################################
+Can Coq ``intros`` pattern split at the rightmost opportunity for conjunction?
+##############################################################################
 
 :Link: https://stackoverflow.com/q/63381511
 |*)

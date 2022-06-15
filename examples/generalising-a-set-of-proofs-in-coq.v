@@ -1,6 +1,6 @@
 (*|
 ###################################
-Generalising a set of proofs in coq
+Generalising a set of proofs in Coq
 ###################################
 
 :Link: https://stackoverflow.com/q/53204593

@@ -50,7 +50,8 @@ But that needs a Line and a Point object.
 Answer
 ******
 
-Here is a possibility. The exists! connective means unique existence.
+Here is a possibility. The ``exists!`` connective means unique
+existence.
 |*)
 
 Axiom point : Type.

@@ -1,6 +1,6 @@
 (*|
 ##############################
-Teach coq to check termination
+Teach Coq to check termination
 ##############################
 
 :Link: https://stackoverflow.com/q/48173854
@@ -45,7 +45,7 @@ length l2``? Then this measure clearly decreases every recursion.
 
 So my question is, in the case of sophisticated situation, where code
 is not straightforward to be organized in a termination checkable way,
-how do you educate coq and convince it to accept the fixpoint
+how do you educate Coq and convince it to accept the fixpoint
 definition?
 |*)
 

@@ -16,7 +16,7 @@ recognize as a decreasing argument automatically and I'm trying prove
 that my fixpoint will terminate.
 
 I have been copying (what I believe is) an example of a
-well-foundedness proof for a step function on Z from the standard
+well-foundedness proof for a step function on ``Z`` from the standard
 library. `(Here) <https://coq.inria.fr/library/Coq.ZArith.Zwf.html>`__
 |*)
 

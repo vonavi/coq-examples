@@ -1,6 +1,6 @@
 (*|
 #####################################
-Explanation transitivity of equal coq
+Explanation transitivity of equal Coq
 #####################################
 
 :Link: https://stackoverflow.com/q/54731299

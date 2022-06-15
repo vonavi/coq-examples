@@ -40,7 +40,7 @@ Inductive array :
 (*|
 I define type families for rectangular index-spaces, for indices and
 for an index that is bounded by a rectangular index-space. The array
-type is a function from a restricted index-space to nat.
+type is a function from a restricted index-space to ``nat``.
 
 Now, I am trying to construct an array from such a function, and Coq
 tells me:

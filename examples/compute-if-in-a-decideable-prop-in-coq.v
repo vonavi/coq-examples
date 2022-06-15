@@ -1,6 +1,6 @@
 (*|
 ##########################################
-Compute ``if`` in a decideable prop in coq
+Compute ``if`` in a decideable prop in Coq
 ##########################################
 
 :Link: https://stackoverflow.com/q/50733129

@@ -1,6 +1,6 @@
 (*|
 ##################################
-Transitivity of subsequence in COQ
+Transitivity of subsequence in Coq
 ##################################
 
 :Link: https://stackoverflow.com/q/69797654

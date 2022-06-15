@@ -1,6 +1,6 @@
 (*|
 #######################
-unfold notation in ltac
+Unfold notation in ltac
 #######################
 
 :Link: https://stackoverflow.com/q/48594507
