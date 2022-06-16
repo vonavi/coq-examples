@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq QArith division by zero is zero, why?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-qarith-division-by-zero-is-zero-why">
+<h1 class="title">Coq QArith division by zero is zero, why?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29282819">https://stackoverflow.com/q/29282819</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I noticed that in Coq's definition of rationals the inverse of zero is
+defined to zero. (Usually, division by zero is not
+well-defined/legal/allowed.)</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> QArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-qarith-division-by-zero-is-zero-why-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-qarith-division-by-zero-is-zero-why-v-chk0"><span class="kn">Lemma</span> <span class="nf">inv_zero_is_zero</span>: (/ <span class="mi">0</span>) == <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">/ <span class="mi">0</span> == <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-qarith-division-by-zero-is-zero-why-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-qarith-division-by-zero-is-zero-why-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">/ <span class="mi">0</span> == <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-qarith-division-by-zero-is-zero-why-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-qarith-division-by-zero-is-zero-why-v-chk2"><span class="nb">unfold</span> Qeq.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(Qnum (/ <span class="mi">0</span>) * QDen <span class="mi">0</span>)%Z = (Qnum <span class="mi">0</span> * QDen (/ <span class="mi">0</span>))%Z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Why is it so?</p>
+<p>Could it cause problems in calculations with rationals, or is it safe?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The short answer is: yes, it is absolutely safe.</p>
+<p>When we say that division by zero is not well-defined, what we
+actually mean is that zero doesn't have a multiplicative inverse. In
+particular, we can't have a function that computes a multiplicative
+inverse for zero. However, it is possible to write a function that
+computes the multiplicative inverse for all other elements, and
+returns some arbitrary value when such an inverse doesn't exists (e.g.
+for zero). This is exactly what this function is doing.</p>
+<p>Having this inverse operator be defined everywhere means that we'll be
+able to define other functions that compute with it without having to
+argue explicitly that its argument is different from zero, making it
+more convenient to use. Indeed, imagine what a pain it would be if we
+made this function return an <tt class="docutils literal">option</tt> instead, failing when we pass
+it zero: we would have to make our entire code monadic, making it
+harder to understand and reason about. We would have a similar problem
+if writing a function that requires a proof that its argument is
+non-zero.</p>
+<p>So, what's the catch? Well, when trying to prove anything about a
+function that uses the inverse operator, we will have to add explicit
+hypotheses saying that we're passing it an argument that is different
+from zero, or argue that its argument can never be zero. The lemmas
+about this function then get additional preconditions, e.g.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-qarith-division-by-zero-is-zero-why-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Qmult_inv_r
+     : <span class="kr">forall</span> <span class="nv">x</span> : Q, ~ x == <span class="mi">0</span> -&gt; x * / x == <span class="mi">1</span></blockquote></div></div></small></span></pre><p>Many other libraries are structured like that, cf. for instance the
+definition of the <a class="reference external" href="http://ssr.msr-inria.inria.fr/~jenkins/current/Ssreflect.ssralg.html">field axioms</a>
+in the algebra library of MathComp.</p>
+<p>There <em>are</em> some cases where we want to internalize the additional
+preconditions required by certain functions as type-level constraints.
+This is what we do for instance when we use <em>length-indexed vectors</em>
+and a safe <tt class="docutils literal">get</tt> function that can only be called on numbers that
+are in bounds. So how do we decide which one to go for when designing
+a library, i.e. whether to use a rich type with a lot of extra
+information and prevent bogus calls to certain functions (as in the
+length-indexed case) or to leave this information out and require it
+as explicit lemmas (as in the multiplicative inverse case)? Well,
+there's no definite answer here, and one really needs to analyze each
+case individually and decide which alternative will be better for that
+particular case.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Eval compute is incomplete when own decidability is used in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq">
+<h1 class="title"><tt class="docutils literal">Eval compute</tt> is incomplete when own decidability is used in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28478445">https://stackoverflow.com/q/28478445</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>The <tt class="docutils literal">Eval compute</tt> command does not always evaluate to a simple
+expression. Consider the code:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Peano_dec.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">I</span> : <span class="kt">Set</span> := a : nat -&gt; I | b : nat -&gt; nat -&gt; I.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">I_eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : I, {x = y} + {x &lt;&gt; y}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : I, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : I, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="bp">decide equality</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>And, if I execute the following command:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk2"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (<span class="kr">if</span> In_dec eq_nat_dec <span class="mi">10</span> [<span class="mi">3</span>;<span class="mi">4</span>;<span class="mi">5</span>] <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">2</span>
+: nat</blockquote></div></div></small></span></pre><p>Coq tells me that the result is <tt class="docutils literal">2</tt>. However, when I execute the
+following expression:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk3"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (<span class="kr">if</span> In_dec I_eq_dec (a <span class="mi">2</span>) [(a <span class="mi">1</span>); (a <span class="mi">2</span>)] <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="kr">if</span>
+   <span class="kr">match</span> I_eq_dec (a <span class="mi">1</span>) (a <span class="mi">2</span>) <span class="kr">with</span>
+   | <span class="nb">left</span> e =&gt; <span class="nb">left</span> (or_introl e)
+   | <span class="nb">right</span> n =&gt;
+       <span class="kr">match</span>
+         <span class="kr">match</span> I_eq_dec (a <span class="mi">2</span>) (a <span class="mi">2</span>) <span class="kr">with</span>
+         | <span class="nb">left</span> e =&gt; <span class="nb">left</span> (or_introl e)
+         | <span class="nb">right</span> n0 =&gt;
+             <span class="nb">right</span>
+               (<span class="kr">fun</span> <span class="nv">H0</span> : a <span class="mi">2</span> = a <span class="mi">2</span> \/ <span class="kt">False</span> =&gt;
+                <span class="kr">match</span> H0 <span class="kr">with</span>
+                | or_introl Hc1 =&gt; n0 Hc1
+                | or_intror Hc2 =&gt; in_nil Hc2
+                <span class="kr">end</span>)
+         <span class="kr">end</span>
+       <span class="kr">with</span>
+       | <span class="nb">left</span> i =&gt; <span class="nb">left</span> (or_intror i)
+       | <span class="nb">right</span> n0 =&gt;
+           <span class="nb">right</span>
+             (<span class="kr">fun</span>
+                <span class="nv">H0</span> : a <span class="mi">1</span> = a <span class="mi">2</span> \/
+                     a <span class="mi">2</span> = a <span class="mi">2</span> \/ <span class="kt">False</span> =&gt;
+              <span class="kr">match</span> H0 <span class="kr">with</span>
+              | or_introl Hc1 =&gt; n Hc1
+              | or_intror Hc2 =&gt; n0 Hc2
+              <span class="kr">end</span>)
+       <span class="kr">end</span>
+   <span class="kr">end</span>
+  <span class="kr">then</span> <span class="mi">1</span>
+  <span class="kr">else</span> <span class="mi">2</span>
+: nat</blockquote></div></div></small></span></pre><p>I get a long expression where the In-predicate seems to be unfolded,
+but no result is given.</p>
+<p>What do I have to change to obtain the answer <tt class="docutils literal">1</tt> in the last <tt class="docutils literal">Eval
+compute</tt> line?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>In Coq there are two terminator commands for proof scripts: <tt class="docutils literal">Qed</tt>
+and <tt class="docutils literal">Defined</tt>. The difference between them is that the former
+creates <em>opaque</em> terms, which cannot be unfolded, even by <tt class="docutils literal">Eval
+compute</tt>. The latter creates transparent terms, which can then be
+unfolded as usual. Thus, you just have to put <tt class="docutils literal">Defined</tt> in the place
+of <tt class="docutils literal">Qed.</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Peano_dec.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">I</span> : <span class="kt">Set</span> := a : nat -&gt; I | b : nat -&gt; nat -&gt; I.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk4"><span class="kn">Lemma</span> <span class="nf">I_eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : I, {x = y} + {x &lt;&gt; y}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : I, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : I, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="bp">decide equality</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk6"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (<span class="kr">if</span> In_dec I_eq_dec (a <span class="mi">2</span>) [(a <span class="mi">1</span>); (a <span class="mi">2</span>)] <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">1</span>
+: nat</blockquote></div></div></small></span></pre><p>I personally find the sumbool type <tt class="docutils literal">{A} + {B}</tt> not very nice for
+expressing decidable propositions, precisely because proofs and
+computation are too tangled together; in particular, proofs affect how
+terms reduce. I find it better to follow the <a class="reference external" href="http://ssr.msr-inria.inria.fr/">Ssreflect</a> style, separate proofs and
+computation and relate them via a special predicate:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">reflect</span> (<span class="nv">P</span> : <span class="kt">Prop</span>) : bool -&gt; <span class="kt">Set</span> :=
+| ReflectT of P : reflect P true
+| ReflectF of ~ P : reflect P false.</span></span></pre><p>this gives a convenient way for saying that a boolean computation
+returns true iff some property is true. Ssreflect provides support for
+conveniently switching between the computational boolean view and the
+logical view.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

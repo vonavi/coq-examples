@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Implementing vector addition in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="implementing-vector-addition-in-coq">
+<h1 class="title">Implementing vector addition in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28487158">https://stackoverflow.com/q/28487158</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Implementing vector addition in some of the dependently typed
+languages (such as Idris) is fairly straightforward. As per the
+<a class="reference external" href="http://en.wikipedia.org/wiki/Idris_%28programming_language%29#Dependent_types">example on Wikipedia</a>:</p>
+<pre class="code idris literal-block">
+<span class="kr">import</span><span class="w"> </span><span class="nn">Data.Vect</span><span class="w">
+
+</span><span class="kr">%default</span><span class="w"> </span><span class="kr">total</span><span class="w">
+
+</span><span class="nf">pairAdd</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span>a<span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>n<span class="w"> </span>a<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>n<span class="w"> </span>a<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>n<span class="w"> </span>a<span class="w">
+</span>pairAdd<span class="w"> </span><span class="kt">Nil</span><span class="w">       </span><span class="kt">Nil</span><span class="w">       </span><span class="ow">=</span><span class="w"> </span><span class="kt">Nil</span><span class="w">
+</span>pairAdd<span class="w"> </span><span class="ow">(</span>x<span class="w"> </span><span class="ow">::</span><span class="w"> </span>xs<span class="ow">)</span><span class="w"> </span><span class="ow">(</span>y<span class="w"> </span><span class="ow">::</span><span class="w"> </span>ys<span class="ow">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>x<span class="w"> </span><span class="ow">+</span><span class="w"> </span>y<span class="w"> </span><span class="ow">::</span><span class="w"> </span>pairAdd<span class="w"> </span>xs<span class="w"> </span>ys
+</pre>
+<p>(Note how Idris' totality checker automatically infers that addition
+of <tt class="docutils literal">Nil</tt> and non-<tt class="docutils literal">Nil</tt> vectors is a logical impossibility.)</p>
+<p>I am trying to implement the equivalent functionality in Coq, using a
+custom vector implementation, albeit very similar to the one provided
+in the official <a class="reference external" href="https://coq.inria.fr/library/Coq.Vectors.VectorDef.html">Coq libraries</a>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">vector</span> (<span class="nv">X</span> : <span class="kt">Type</span>) : nat -&gt; <span class="kt">Type</span> :=
+| vnul : vector X <span class="mi">0</span>
+| vcons {n : nat} (h : X) (v : vector X n) : vector X (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> vnul {X}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="implementing-vector-addition-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="implementing-vector-addition-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">vpadd</span> {<span class="nv">n</span> : nat} (<span class="nv">v1</span> <span class="nv">v2</span> : vector nat n) : vector nat n :=
+  <span class="kr">match</span> v1 <span class="kr">with</span>
+  | vnul =&gt; vnul
+  | vcons x1 v1&#39; =&gt;
+      <span class="kr">match</span> v2 <span class="kr">with</span>
+      | vnul =&gt; False_rect _ _
+      | vcons x2 v2&#39; =&gt; vcons (x1 + x2) (vpadd v1&#39; v2&#39;)
+      <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+vpadd : <span class="kr">forall</span> <span class="nv">n</span> : nat,
+        vector nat n -&gt; vector nat n -&gt; vector nat n
+n : nat
+v1 : vector nat n
+v2 : vector nat n
+n0 : nat
+x1 : nat
+v1&#39; : vector nat n0
+n1 : nat
+x2 : nat
+v2&#39; : vector nat n1
+The term <span class="s2">&quot;v2&#39;&quot;</span> has type <span class="s2">&quot;vector nat n1&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;vector nat n0&quot;</span>.</blockquote></div></div></small></span></pre><p>Note that, I use <tt class="docutils literal">False_rect</tt> to specify the impossible case,
+otherwise the totality check wouldn't pass. However, for some reason
+the type checker doesn't manage to unify <tt class="docutils literal">n0</tt> with <tt class="docutils literal">n1</tt>.</p>
+<p>What am I doing wrong?</p>
+<hr class="docutils" />
+<p><strong>A:</strong> This development contains a complete example:
+<a class="reference external" href="http://www.cs.nott.ac.uk/~pszvc/g54dtp/vectors.v">http://www.cs.nott.ac.uk/~pszvc/g54dtp/vectors.v</a></p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>It's not possible to implement this function so easily in plain Coq:
+you need to rewrite your function using the <em>convoy pattern</em>. There
+was a <a class="reference external" href="https://stackoverflow.com/questions/16952524/structural-recursion-on-a-dependent-parameter">similar question</a>
+posted a while ago about this. The idea is that you need to make your
+<tt class="docutils literal">match</tt> return a function in order to propagate the relation between
+the indices:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">vector</span> (<span class="nv">X</span> : <span class="kt">Type</span>) : nat -&gt; <span class="kt">Type</span> :=
+| vnul : vector X <span class="mi">0</span>
+| vcons {n : nat} (h : X) (v : vector X n) : vector X (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> vnul {X}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">vhd</span> (<span class="nv">X</span> : <span class="kt">Type</span>) <span class="nv">n</span> (<span class="nv">v</span> : vector X (S n)) : X :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | vcons h _ =&gt; h
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">vtl</span> (<span class="nv">X</span> : <span class="kt">Type</span>) <span class="nv">n</span> (<span class="nv">v</span> : vector X (S n)) : vector X n :=
+  <span class="kr">match</span> v <span class="kr">with</span>
+  | vcons _ tl =&gt; tl
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">vpadd</span> {<span class="nv">n</span> : nat} (<span class="nv">v1</span> <span class="nv">v2</span> : vector nat n) : vector nat n :=
+  <span class="kr">match</span> v1 <span class="kr">in</span> vector _ n <span class="kr">return</span> vector nat n -&gt; vector nat n <span class="kr">with</span>
+  | vnul         =&gt; <span class="kr">fun</span> <span class="nv">_</span>  =&gt; vnul
+  | vcons x1 v1&#39; =&gt; <span class="kr">fun</span> <span class="nv">v2</span> =&gt; vcons (x1 + vhd v2) (vpadd v1&#39; (vtl v2))
+  <span class="kr">end</span> v2.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

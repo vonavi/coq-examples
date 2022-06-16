@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to do &quot;negative&quot; match in Ltac?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-do-negative-match-in-ltac">
+<h1 class="title">How to do &quot;negative&quot; match in Ltac?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28412816">https://stackoverflow.com/q/28412816</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to apply a rule in a case when some hypothesis present, and
+another is not. How can I check for this condition?</p>
+<p>For example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk0"><span class="kn">Variables</span> <span class="nv">X</span> <span class="nv">Y</span> <span class="nv">Z</span> : <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">A</span> : X -&gt; Y.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">B</span> : X -&gt; Z.</span><span class="alectryon-wsp">
+</span></span></pre><pre class="code coq literal-block">
+<span class="kn">Ltac</span> <span class="nf">more_detail</span> <span class="o">:=</span>
+  <span class="kr">match goal with</span>
+  <span class="o">|</span> <span class="o">[</span><span class="n">H1</span> <span class="o">:</span> <span class="n">X</span><span class="o">,</span> <span class="o">&lt;</span><span class="n">not</span> <span class="n">H2</span> <span class="o">:</span> <span class="n">Y</span><span class="o">&gt;</span> <span class="o">|-</span> <span class="n">_</span><span class="o">]</span>  <span class="o">=&gt;</span>
+      <span class="kr">let</span> <span class="nv">H'</span> <span class="o">:=</span> <span class="kp">fresh</span> <span class="s2">&quot;DET&quot;</span> <span class="kr">in</span> <span class="nb">assert</span> <span class="n">Y</span> <span class="kr">as</span> <span class="n">H'</span>
+          <span class="bp">by</span> <span class="o">(</span><span class="nb">apply</span> <span class="n">A</span><span class="o">;</span> <span class="bp">assumption</span><span class="o">)</span>
+  <span class="o">|</span> <span class="o">[</span><span class="n">H1</span> <span class="o">:</span> <span class="n">X</span><span class="o">,</span> <span class="o">&lt;</span><span class="n">not</span> <span class="n">H2</span> <span class="o">:</span> <span class="n">Z</span><span class="o">&gt;</span> <span class="o">|-</span> <span class="n">_</span><span class="o">]</span>  <span class="o">=&gt;</span>
+      <span class="kr">let</span> <span class="nv">H'</span> <span class="o">:=</span> <span class="kp">fresh</span> <span class="s2">&quot;DET&quot;</span> <span class="kr">in</span> <span class="nb">assert</span> <span class="n">Z</span> <span class="kr">as</span> <span class="n">H'</span>
+          <span class="bp">by</span> <span class="o">(</span><span class="nb">apply</span> <span class="n">B</span><span class="o">;</span> <span class="bp">assumption</span><span class="o">)</span>
+  <span class="kr">end</span><span class="o">.</span>
+</pre>
+<p>Such that, for this goal:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk1"><span class="kn">Goal</span> X -&gt; <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">X -&gt; <span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : X
+  ============================
+  <span class="kt">True</span></blockquote></div></div></small></span></pre><p><tt class="docutils literal">more_detail.</tt> would introduce a second hypothesis <tt class="docutils literal">DET</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : X
+  DET : Y
+  DET0 : Z
+  ============================
+  <span class="kt">True</span></blockquote></div></div></small></span></pre><p>And a successive invocation <tt class="docutils literal">more_detail.</tt> would fail.</p>
+<p>However <tt class="docutils literal">more_detail.</tt> should always ensure, that both <tt class="docutils literal">Y</tt> and
+<tt class="docutils literal">Z</tt> are there, i.e. if only one of them present, it should run a
+rule for another:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk5"><span class="kn">Goal</span> X -&gt; Y -&gt; <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">X -&gt; Y -&gt; <span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk6"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : X
+  H0 : Y
+  ============================
+  <span class="kt">True</span></blockquote></div></div></small></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk8">more_detail.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Y</span></span></span><br><span><var>DET</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk9" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : X
+  H0 : Y
+  DET : Z
+  ============================
+  <span class="kt">True</span></blockquote></div></div></small></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chka"><span class="kn">Goal</span> X -&gt; Z -&gt; <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">X -&gt; Z -&gt; <span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chkb"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chkc" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : X
+  H0 : Z
+  ============================
+  <span class="kt">True</span></blockquote></div></div></small></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chkd">more_detail.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>DET</var><span class="hyp-type"><b>: </b><span>Y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  H : X
+  H0 : Z
+  DET : Y
+  ============================
+  <span class="kt">True</span></blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This is a common Ltac pattern. You can use the <tt class="docutils literal">fail</tt> tactic to
+avoid executing a branch when some condition matches:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chkf"><span class="kn">Variables</span> <span class="nv">X</span> <span class="nv">Y</span> <span class="nv">Z</span> : <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk10"><span class="kn">Hypothesis</span> <span class="nv">A</span> : X -&gt; Y.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk11"><span class="kn">Hypothesis</span> <span class="nv">B</span> : X -&gt; Z.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">does_not_have</span> Z :=
+  <span class="kr">match goal with</span>
+  | _ : Z |- _ =&gt; <span class="kp">fail</span> <span class="mi">1</span>
+  | |- _ =&gt; <span class="kp">idtac</span>
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">more_detail</span> :=
+  <span class="kr">match goal with</span>
+  | H : X |- _ =&gt;
+      <span class="kp">first</span> [ does_not_have Y;
+              <span class="kr">let</span> <span class="nv">DET</span> := <span class="kp">fresh</span> <span class="s2">&quot;DET&quot;</span> <span class="kr">in</span>
+              <span class="nb">assert</span> (DET := A H)
+            | does_not_have Z;
+              <span class="kr">let</span> <span class="nv">DET</span> := <span class="kp">fresh</span> <span class="s2">&quot;DET&quot;</span> <span class="kr">in</span>
+              <span class="nb">assert</span> (DET := B H) ]
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk12"><span class="kn">Goal</span> X -&gt; <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">X -&gt; <span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk13"><span class="nb">intros</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk14">more_detail.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>DET</var><span class="hyp-type"><b>: </b><span>Y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-negative-match-in-ltac-v-chk15">more_detail.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>DET</var><span class="hyp-type"><b>: </b><span>Y</span></span></span><br><span><var>DET0</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* This fails *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-negative-match-in-ltac-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-do-negative-match-in-ltac-v-chk16">more_detail.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">No applicable tactic.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>X</span></span></span><br><span><var>DET</var><span class="hyp-type"><b>: </b><span>Y</span></span></span><br><span><var>DET0</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>The <tt class="docutils literal">does_not_have</tt> tactic acts as a negative match: it only
+succeeds if its argument is not present in the context. Here's how it
+works: if <tt class="docutils literal">H : Z</tt> is present in the context, the first branch will
+match. Calling simply <tt class="docutils literal">fail</tt> or <tt class="docutils literal">fail 0</tt> would cause that branch
+to fail, but would allow Ltac to try other branches of the same
+<tt class="docutils literal">match</tt>. Using <tt class="docutils literal">fail 1</tt> causes the current branch and the entire
+match to fail. If <tt class="docutils literal">H : Z</tt> is not present in the context, the first
+branch will never match, and Coq will skip it and try the second
+branch. Since this branch doesn't do anything, execution will proceed
+with whichever tactics come after the <tt class="docutils literal">match</tt>.</p>
+<p>In <tt class="docutils literal">more_detail</tt>, the <tt class="docutils literal">first</tt> tactical can be used to combine
+several invocations of <tt class="docutils literal">does_not_have</tt>; since each branch of
+<tt class="docutils literal">first</tt> will fail if the context contains the corresponding
+hypothesis, the construction as a whole will have the effect of your
+<tt class="docutils literal">match</tt> with negative patterns.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
