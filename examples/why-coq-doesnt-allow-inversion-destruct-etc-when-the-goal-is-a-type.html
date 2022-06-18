@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Why Coq doesn't allow inversion, destruct, etc. when the goal is a Type?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-coq-doesn-t-allow-inversion-destruct-etc-when-the-goal-is-a-type">
+<h1 class="title">Why Coq doesn't allow inversion, destruct, etc. when the goal is a <tt class="docutils literal">Type</tt>?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/27322979">https://stackoverflow.com/q/27322979</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>When <tt class="docutils literal">refine</tt>ing a program, I tried to end proof by <tt class="docutils literal">inversion</tt>
+on a <tt class="docutils literal">False</tt> hypothesis when <strong>the goal was a</strong> <tt class="docutils literal">Type</tt>. Here is a
+reduced version of the proof I tried to do.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk0"><span class="kn">Lemma</span> <span class="nf">strange1</span> : <span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="mi">0</span> &gt; <span class="mi">0</span> -&gt; T.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="mi">0</span> &gt; <span class="mi">0</span> -&gt; T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk1"><span class="nb">intros</span> T H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk2"><span class="nb">inversion</span> H. <span class="c">(* Coq refuses inversion on &#39;H : 0 &gt; 0&#39; *)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Inversion would require <span class="nb">case</span> analysis on sort <span class="kt">Type</span>
+which <span class="kr">is</span> not allowed <span class="kr">for</span> inductive definition le.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small></span></pre><p>Coq complained</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Inversion would require <span class="nb">case</span> analysis on sort <span class="kt">Type</span>
+which <span class="kr">is</span> not allowed <span class="kr">for</span> inductive definition le.</blockquote></div></div></small></span></pre><p>However, since I do nothing with <tt class="docutils literal">T</tt>, it shouldn't matter, ... or?</p>
+<p>I got rid of the <tt class="docutils literal">T</tt> like this, and the proof went through:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk4"><span class="kn">Lemma</span> <span class="nf">ex_falso</span> : <span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="kt">False</span> -&gt; T.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="kt">False</span> -&gt; T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">inversion</span> <span class="mi">1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk5"><span class="kn">Lemma</span> <span class="nf">strange2</span> : <span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="mi">0</span> &gt; <span class="mi">0</span> -&gt; T.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="mi">0</span> &gt; <span class="mi">0</span> -&gt; T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk6"><span class="nb">intros</span> T H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk7"><span class="nb">apply</span> ex_falso. <span class="c">(* this changes the goal to &#39;False&#39; *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">inversion</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>What is the reason Coq complained? Is it just a deficiency in
+<tt class="docutils literal">inversion</tt>, <tt class="docutils literal">destruct</tt>, etc.?</p>
+<hr class="docutils" />
+<p><strong>A:</strong> An enlightening discussion at the coq-club mailing list:
+<a class="reference external" href="https://sympa.inria.fr/sympa/arc/coq-club/2014-12/msg00036.html">https://sympa.inria.fr/sympa/arc/coq-club/2014-12/msg00036.html</a></p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>I had never seen this issue before, but it makes sense, although one
+could probably argue that it is a bug in <tt class="docutils literal">inversion</tt>.</p>
+<p>This problem is due to the fact that <tt class="docutils literal">inversion</tt> is implemented by
+case analysis. In Coq's logic, one cannot <em>in general</em> perform case
+analysis on a <em>logical</em> hypothesis (i.e., something whose type is a
+<tt class="docutils literal">Prop</tt>) if the result is something of computational nature (i.e., if
+the sort of the type of the thing being returned is a <tt class="docutils literal">Type</tt>). One
+reason for this is that the designers of Coq wanted to make it
+possible to erase proof arguments from programs when extracting them
+into code in a sound way: thus, one is only allowed to do case
+analysis on a hypothesis to produce something computational if the
+thing being destructed cannot alter the result. This includes:</p>
+<ol class="arabic simple">
+<li>Propositions with no constructors, such as <tt class="docutils literal">False</tt>.</li>
+<li>Propositions with only one constructor, as long as that constructor
+takes no arguments of computational nature. This includes <tt class="docutils literal">True</tt>,
+<tt class="docutils literal">Acc</tt> (the accessibility predicated used for doing well-founded
+recursion), but excludes the existential quantifier <tt class="docutils literal">ex</tt>.</li>
+</ol>
+<p>As you noticed, however, it is possible to circumvent that rule by
+converting some proposition you want to use for producing your result
+to another one you can do case analysis on directly. Thus, if you have
+a contradictory assumption, like in your case, you can first use it to
+prove <tt class="docutils literal">False</tt> (which is allowed, since <tt class="docutils literal">False</tt> is a <tt class="docutils literal">Prop</tt>), and
+<em>then</em> eliminating <tt class="docutils literal">False</tt> to produce your result (which is allowed
+by the above rules).</p>
+<p>In your example, <tt class="docutils literal">inversion</tt> is being too conservative by giving up
+just because it cannot do case analysis on something of type <tt class="docutils literal">0 &lt; 0</tt>
+in that context. It is true that it can't do case analysis on it
+directly by the rules of the logic, as explained above; however, one
+could think of making a slightly smarter implementation of
+<tt class="docutils literal">inversion</tt> that recognizes that we are eliminating a contradictory
+hypothesis and adds <tt class="docutils literal">False</tt> as an intermediate step, just like you
+did. Unfortunately, it seems that we need to do this trick by hand to
+make it work.</p>
+</div>
+<div class="section" id="answer-stop-cran">
+<h1>Answer (stop-cran)</h1>
+<p>In addition to Arthur's answer, there is a workaround using
+<a class="reference external" href="https://coq.github.io/doc/master/stdlib/Coq.Logic.Description.html#constructive_definite_description">constructive_definite_description</a>
+axiom. Using this axiom in a function would not allow to perform
+calculations and extract code from it, but it still could be used in
+other proofs:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Description.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk8"><span class="kn">Definition</span> <span class="nf">strange1</span> : <span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="mi">0</span> &gt; <span class="mi">0</span> -&gt; T.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, <span class="mi">0</span> &gt; <span class="mi">0</span> -&gt; T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chk9"><span class="nb">intros</span> T H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chka"><span class="nb">assert</span> (<span class="kr">exists</span>! t : T, <span class="kt">True</span>) <span class="kr">as</span> H0 <span class="bp">by</span> <span class="nb">inversion</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kr">exists</span> ! _ : T, <span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chkb"><span class="nb">apply</span> constructive_definite_description <span class="kr">in</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>{_ : T | <span class="kt">True</span>}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="why-coq-doesnt-allow-inversion-destruct-etc-when-the-goal-is-a-type-v-chkc"><span class="nb">destruct</span> H0 <span class="kr">as</span> [x ?].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> x.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>Or same function without proof editing mode:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">strange2</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">H</span> : <span class="mi">0</span> &gt; <span class="mi">0</span>) : T :=
+  proj1_sig (constructive_definite_description (<span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="kt">True</span>) <span class="kp">ltac</span>:(<span class="nb">inversion</span> H)).</span></span></pre><p>Also there's a stronger axiom <a class="reference external" href="https://coq.github.io/doc/master/stdlib/Coq.Logic.IndefiniteDescription.html#constructive_indefinite_description">constructive_indefinite_description</a>
+that converts a proposition <tt class="docutils literal">exists x : T, P x</tt> (without uniqueness)
+into a corresponding sigma-type <tt class="docutils literal">{x : T | P x}</tt>.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

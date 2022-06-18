@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to &quot;extract&quot; Z from subset type {z : Z | z &gt; 0}</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-extract-z-from-subset-type-z-z-z-0">
+<h1 class="title">How to &quot;extract&quot; <tt class="docutils literal">Z</tt> from subset type <tt class="docutils literal">{z : Z | z &gt; 0}</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26493911">https://stackoverflow.com/q/26493911</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>If a function take <tt class="docutils literal">Z</tt> as arguments, it should also be possible to
+take any subset of <tt class="docutils literal">Z</tt>, right? For example, <tt class="docutils literal">Zmod</tt> takes two <tt class="docutils literal">Z</tt>
+and return <tt class="docutils literal">Z</tt>. Can I improve on this method with subset types
+without reimplementing it?</p>
+<p>I want this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> Z_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Z_gt0</span> := {z | z &gt; <span class="mi">0</span>}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-extract-z-from-subset-type-z-z-z-0-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-extract-z-from-subset-type-z-z-z-0-v-chk0"><span class="kn">Definition</span> <span class="nf">mymod</span> (<span class="nv">n1</span> <span class="nv">n2</span> : Z_gt0) := Zmod n1 n2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+n1 : Z_gt0
+n2 : Z_gt0
+The term <span class="s2">&quot;n1&quot;</span> has type <span class="s2">&quot;Z_gt0&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Z&quot;</span>.</blockquote></div></div></small></span></pre><p>But Coq complains that <tt class="docutils literal">n1 is expected to have type Z</tt>, of course.
+How can I make it work with <tt class="docutils literal">Z_gt0</tt>? Coerce?</p>
+<p>This question is related to my other one here: <a class="reference external" href="https://stackoverflow.com/questions/26475258/random-nat-stream-and-subset-types-in-coq">Random nat stream and
+subset types in Coq</a></p>
+<p><strong>Edit:</strong> <tt class="docutils literal">proj1_sig</tt> might do the trick, thanks Coq IRC channel!</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><tt class="docutils literal">proj1_sig</tt> is the usual way to go. Another solution is to pattern
+match:</p>
+<pre class="code coq literal-block">
+<span class="kr">match</span> <span class="n">z1</span> <span class="kr">with</span>
+  <span class="n">exist</span> <span class="n">_</span> <span class="n">z</span> <span class="n">hz</span> <span class="o">=&gt;</span> <span class="o">...</span>
+<span class="kr">end</span>
+</pre>
+<p><tt class="docutils literal">z</tt> will be your projection, and <tt class="docutils literal">hz</tt> will be a proof that <tt class="docutils literal">z &gt;
+0</tt>. I usually leave the first parameter anonymous since I know that
+<tt class="docutils literal">z : Z</tt>.</p>
+<p>I recent version of Coq, there is another way to do it, using <tt class="docutils literal">let</tt>
+(because <tt class="docutils literal">sig</tt> is an inductive with only one constructor):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Zmod_gt0</span> (<span class="nv">z1</span> <span class="nv">z2</span> : Z_gt0) : Z :=
+  <span class="kr">let</span> (<span class="nv">a</span>, _) := z1 <span class="kr">in</span>
+  <span class="kr">let</span> (<span class="nv">b</span>, _) := z2 <span class="kr">in</span>
+  Zmod a b.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

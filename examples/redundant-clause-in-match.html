@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Redundant clause in match</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="redundant-clause-in-match">
+<h1 class="title">Redundant clause in <tt class="docutils literal">match</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/27028360">https://stackoverflow.com/q/27028360</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>When I run the following script:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="redundant-clause-in-match-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="redundant-clause-in-match-v-chk0"><span class="kn">Definition</span> <span class="nf">inv</span> (<span class="nv">a</span> : <span class="kt">Prop</span>) : <span class="kt">Prop</span> :=
+  <span class="kr">match</span> a <span class="kr">with</span>
+  | <span class="kt">False</span> =&gt; <span class="kt">True</span>
+  | <span class="kt">True</span> =&gt; <span class="kt">False</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Pattern <span class="s2">&quot;True&quot;</span> <span class="kr">is</span> redundant <span class="kr">in</span> this clause.</blockquote></div></div></small></span></pre><p>Any idea why this happens?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>There are quite a few wrong things about this.</p>
+<p><tt class="docutils literal">False</tt> is not a data constructor, and since there is no syntactic
+difference between data constructors and variable names in Coq, it
+understands your <tt class="docutils literal">| False =&gt;</tt> as a pattern matching anything and
+giving it the name <tt class="docutils literal">False</tt>, in the same way as you could have
+written:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="redundant-clause-in-match-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="redundant-clause-in-match-v-chk1"><span class="kn">Definition</span> <span class="nf">inv</span> (<span class="nv">a</span> : <span class="kt">Prop</span>) : <span class="kt">Prop</span> :=
+  <span class="kr">match</span> a <span class="kr">with</span>
+  | x =&gt; <span class="kt">True</span>
+  | y =&gt; <span class="kt">False</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Pattern <span class="s2">&quot;y&quot;</span> <span class="kr">is</span> redundant <span class="kr">in</span> this clause.</blockquote></div></div></small></span></pre><p>This is why it tells you that the second clause is redundant (since
+the first pattern matches everything).</p>
+<p>Now another thing you should know is that the type <tt class="docutils literal">Prop</tt> is not
+inductively-defined, and therefore values of type <tt class="docutils literal">Prop</tt> cannot be
+matched against anything: in fact it would not make sense, since it is
+an open type that you keep expanding everytime you define a new
+inductive property.</p>
+<p>So there is no way to write a function <tt class="docutils literal">inv</tt> the way you write it.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> You can, however, write</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">inv</span> (<span class="nv">a</span> : <span class="kt">Prop</span>) : <span class="kt">Prop</span> := a -&gt; <span class="kt">False</span>.</span></span></pre><p>which has a similar meaning.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

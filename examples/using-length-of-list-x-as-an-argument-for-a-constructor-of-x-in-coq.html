@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Using length of list X as an argument for a constructor of X in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq">
+<h1 class="title">Using length of list <tt class="docutils literal">X</tt> as an argument for a constructor of <tt class="docutils literal">X</tt> in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26835278">https://stackoverflow.com/q/26835278</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>The title is not very informative, so let me explain.</p>
+<p>I'm trying to formalize what it means to be a term in first-order
+logic. Here is the textbook definition of terms of an arbitrary
+language <tt class="docutils literal">L</tt>:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Each variable or constant is a term.</li>
+<li>If <tt class="docutils literal">n &gt;= 1</tt>, <tt class="docutils literal">f</tt> is an <tt class="docutils literal">n</tt>-ary function of <tt class="docutils literal">L</tt>, and
+<tt class="docutils literal">t1 ... tn</tt> are terms of <tt class="docutils literal">L</tt>, then <tt class="docutils literal">f t1 ... tn</tt> is a
+term of <tt class="docutils literal">L</tt>.</li>
+</ol>
+</blockquote>
+<p>I have already defined variables, constants, functions, and languages
+as <tt class="docutils literal">var</tt>, <tt class="docutils literal">const</tt>, <tt class="docutils literal">func</tt>, and <tt class="docutils literal">lang</tt>. I also have functions
+<tt class="docutils literal">f_arity</tt> and <tt class="docutils literal">L_funcs</tt> that returns the arity of a function and
+the ensemble of all functions in a language, respectively. So giving
+an inductive definition of terms should be pretty straightforward:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk0"><span class="kn">Inductive</span> <span class="nf">term</span> (<span class="nv">L</span> : lang) : <span class="kt">Type</span> :=
+| t_v : var -&gt; term L
+| t_c : const -&gt; term L
+| t_f : <span class="kr">forall</span> (<span class="nv">f</span> : func) (<span class="nv">l</span> : list (term L)),
+    length l = f_arity f -&gt;
+    In f (L_funcs L) -&gt; term L.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non strictly positive occurrence of <span class="s2">&quot;term&quot;</span> <span class="kr">in</span>
+ <span class="s2">&quot;forall (f : func) (l : list (term L)),</span>
+<span class="s2">  length l = f_arity f -&gt; In f (L_funcs L) -&gt; term L&quot;</span>.</blockquote></div></div></small></span></pre><p>But it doesn't work. Instead, I get this error message.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Non strictly positive occurrence of <span class="s2">&quot;term&quot;</span> <span class="kr">in</span>
+ <span class="s2">&quot;forall (f : func) (l : list (term L)),</span>
+<span class="s2">  length l = f_arity f -&gt; In f (L_funcs L) -&gt; term L&quot;</span>.</blockquote></div></div></small></span></pre><p>I have a vague idea of what's going on here. The constructor <tt class="docutils literal">t_f</tt>
+has an argument <tt class="docutils literal">length l = f_arity</tt>, which Coq doesn't like because
+it has <tt class="docutils literal">term L</tt> on the left side of an arrow. But I think Coq is
+being overly cautious here, because it lets me do pretty much the same
+thing if I tweak the types a bit. I could, for instance, define a
+custom list type <tt class="docutils literal">listN</tt> indexed by its size, so that <tt class="docutils literal">list X n</tt>
+would be a list of <tt class="docutils literal">X</tt> with <tt class="docutils literal">n</tt> elements. Then I would have</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk2"><span class="kn">Inductive</span> <span class="nf">term</span> (<span class="nv">L</span> : lang) : <span class="kt">Type</span> :=
+| t_v : var -&gt; term L
+| t_c : const -&gt; term L
+| t_f : <span class="kr">forall</span> (<span class="nv">f</span> : func) (<span class="nv">l</span> : listN (term L) (f_arity f)),
+    In f (L_funcs L) -&gt; term L.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non strictly positive occurrence of <span class="s2">&quot;term&quot;</span> <span class="kr">in</span>
+ <span class="s2">&quot;forall f : func,</span>
+<span class="s2">  listN (term L) (f_arity f) -&gt;</span>
+<span class="s2">  In f (L_funcs L) -&gt; term L&quot;</span>.</blockquote></div></div></small></span></pre><p>But I don't want to go this way, because it is ad-hoc, and makes all
+the useful list libraries unusable. So I'm looking for a way to
+convince Coq that what I'm trying to do is perfectly safe, so it will
+accept <tt class="docutils literal">length l = f_arity f</tt> as a constructor argument. Is there a
+way to do this?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>This is a nice problem indeed, I hadn't encountered it in this form
+before.</p>
+<p>Quite frankly, unfortunately, I don't see a way of getting Coq to
+accept your definition as is. Here are some options for mitigating
+this problem:</p>
+<ol class="arabic">
+<li><p class="first">Use a separate inductive predicate for term well-formedness.
+Manipulating terms will be much more convenient, because you won't
+have to worry about the length constraints when writing your
+functions. On the other hand, you will have to reason about
+well-formedness separately when proving anything about it. Thus,
+you would have something like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> (<span class="nv">L</span> : lang) :=
+| t_v : var -&gt; term L
+| t_c : const -&gt; term L
+| t_f (f : func) (ts : list (term L)) : term L.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">wf_term</span> (<span class="nv">L</span> : lang) : term L -&gt; <span class="kt">Prop</span> :=
+| wf_v v : wf_term L (t_v L v)
+| wf_c c : wf_term L (t_c L c)
+| wf_f f ts :
+  In f (L_funcs L) -&gt; Forall (wf_term L) ts -&gt;
+  length ts = f_arity f -&gt; wf_term L (t_f L f ts).</span></span></pre></li>
+<li><p class="first">Use a dependently typed encoding for term. You can add e.g. a
+<tt class="docutils literal">nat</tt> parameter to <tt class="docutils literal">term</tt> for expressing how many arguments are
+&quot;missing&quot;, which would give you something like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> <span class="nv">L</span> : nat -&gt; <span class="kt">Type</span> :=
+| t_v : var -&gt; term L <span class="mi">0</span>
+| t_c : const -&gt; term L <span class="mi">0</span>
+| t_f f : In f (L_funcs L) -&gt; term L (f_arity f)
+| t_a n (t : term L (S n)) (t : term L <span class="mi">0</span>) : term L n.</span></span></pre><p>This might not be what you want, since you don't get the list of
+arguments to manipulate, but it might be helpful.</p>
+</li>
+<li><p class="first">Use a &quot;bad&quot; encoding with a length-indexed list, and use auxiliary
+types (&quot;views&quot;) and functions to make this &quot;bad&quot; definition more
+convenient to use. You define <tt class="docutils literal">term</tt> like in your second
+definition, but then define a new <tt class="docutils literal">term'</tt> on top of it, like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term&#39;</span> <span class="nv">L</span> : <span class="kt">Type</span> :=
+| t_v&#39; : var -&gt; term&#39; L
+| t_c&#39; : const -&gt; term&#39; L
+| t_f&#39; f (ts : list (term L)) :
+  In f (L_funcs L) -&gt; length ts = f_arity f -&gt; term&#39; L.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk3"><span class="kn">Definition</span> <span class="nf">term_view</span> <span class="nv">L</span> (<span class="nv">t</span> : term L) : term&#39; L. <span class="c">(* ... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>L</var><span class="hyp-type"><b>: </b><span>lang</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>term L</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">term&#39; L</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Wrapper around the original constructor *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk4"><span class="kn">Definition</span> <span class="nf">t_f&#39;&#39;</span> <span class="nv">L</span> <span class="nv">f</span> <span class="nv">ts</span> :
+  In f (L_funcs L) -&gt; @length lang ts = f_arity f -&gt; term L.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>L</var><span class="hyp-type"><b>: </b><span>lang</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>func</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list lang</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In f (L_funcs L) -&gt; length ts = f_arity f -&gt; term L</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></li>
+</ol>
+<p>You can even define custom induction/recursion principles that work
+directly with <tt class="docutils literal">t_f''</tt> instead of <tt class="docutils literal">t_f</tt>, effectively hiding the
+annoying details of your original definition.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

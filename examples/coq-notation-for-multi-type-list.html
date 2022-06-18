@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Coq notation for multi type list</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-notation-for-multi-type-list">
+<h1 class="title">Coq notation for multi type list</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26755507">https://stackoverflow.com/q/26755507</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Here is a contrived multi type list:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Apple</span> : <span class="kt">Set</span> :=.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Pear</span> : <span class="kt">Set</span> :=.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">FruitList</span> : <span class="kt">Set</span> :=
+| Empty
+| Cons_apple (a : Apple) (p : FruitList)
+| Cons_pear (p : Pear) (p: FruitList).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-notation-for-multi-type-list-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-notation-for-multi-type-list-v-chk0"><span class="kn">Variable</span> <span class="nv">a</span> : Apple.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-notation-for-multi-type-list-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-notation-for-multi-type-list-v-chk1"><span class="kn">Variable</span> <span class="nv">p</span> : Pear.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
+declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
+declaration which shall not be available without
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">a_fruitList</span> := Cons_apple a (Cons_pear p Empty).</span></span></pre><p>Is there a way to define a list notation for this so that, for
+example, <tt class="docutils literal">a_fruitList</tt> could have been defined by <tt class="docutils literal">[p,a]</tt> instead?</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>The problem is that your list has two cons constructors, whereas the
+usual notation mechanism for recursive notations requires you to use
+always the same constructors. Coercions can help you overcome part of
+this problem:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">ApplesAndPears</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">Apple</span> <span class="nv">Pear</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">FruitList</span> : <span class="kt">Set</span> :=
+  | Nil
+  | ConsApple (a : Apple) (l : FruitList)
+  | ConsPear (p : Pear) (l : FruitList).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Fruit</span> : <span class="kt">Set</span> :=
+  | IsApple (a : Apple)
+  | IsPear (p : Pear).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">IsApple</span> : Apple &gt;-&gt; Fruit.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">IsPear</span> : Pear &gt;-&gt; Fruit.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">ConsFruit</span> (<span class="nv">f</span> : Fruit) (<span class="nv">l</span> : FruitList) : FruitList :=
+    <span class="kr">match</span> f <span class="kr">with</span>
+    | IsApple a =&gt; ConsApple a l
+    | IsPear p =&gt; ConsPear p l
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ ]&quot;</span> := (Nil) (<span class="kn">at level</span> <span class="mi">0</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ x ; .. ; y ]&quot;</span> := (ConsFruit x .. (ConsFruit y Nil) ..) (<span class="kn">at level</span> <span class="mi">0</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">a</span> : Apple.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">p</span> : Pear.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">a_fruitList</span> := [ a ; p ].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ApplesAndPears</span>.</span></span></pre><p>(By the way, I'm assuming that you really meant to write <tt class="docutils literal">[ a ; p
+]</tt>, and not <tt class="docutils literal">[ p ; a ]</tt>. If you did mean to write <tt class="docutils literal">[ p ; a ]</tt>,
+then you just have to use a <tt class="docutils literal">SnocFruit</tt> function instead, that adds
+the element to the end of the list. However, this would make the
+problems explained later even worse.)</p>
+<p>Now, we've defined a new function to replace the constructors, and can
+use that function instead, by declaring the constructors of <tt class="docutils literal">Fruit</tt>
+to be coercions.</p>
+<p>This solution is not entirely satisfactory, of course, because the
+term your notation produces makes reference to <tt class="docutils literal">ConsFruit</tt>, while
+ideally it would be nice to have something that picks <tt class="docutils literal">ConsApple</tt> or
+<tt class="docutils literal">ConsFruit</tt> depending on the argument you give. I suspect there
+isn't a way of doing this with the notation mechanism, but I could be
+wrong.</p>
+<p>This is one of the reasons why I would recommend you to use just the
+<tt class="docutils literal">list</tt> type and declare another type such as <tt class="docutils literal">Fruit</tt> to hold
+<tt class="docutils literal">Apple</tt> and <tt class="docutils literal">Pear</tt> instead of using two cons constructors, unless
+you have a very good reason not to.</p>
+</div>
+<div class="section" id="answer-virgile">
+<h1>Answer (Virgile)</h1>
+<p>As mentioned by <a class="reference external" href="https://stackoverflow.com/a/26759446/1633665">Arthur Azevedo De Amorim</a>, the issue is that
+the <tt class="docutils literal">Notation</tt> mechanism of Coq does not take the types of the
+sub-expressions into account to discriminate between <tt class="docutils literal">Cons_apple</tt>
+and <tt class="docutils literal">Cons_pear</tt>. However, you can use <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual022.html">Type Classes</a>
+to do that:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Cons_fruit</span> (<span class="nv">A</span> : <span class="kt">Set</span>) := {
+    CONS: A -&gt; FruitList -&gt; FruitList }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">Cons_fruit_apple</span> : Cons_fruit Apple := { CONS := Cons_apple }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">Cons_fruit_pear</span> : Cons_fruit Pear := { CONS := Cons_pear }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot; [ x ; .. ; y ] &quot;</span> := (CONS x .. (CONS y Empty) .. ).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> := [a; p; p; a].</span></span></pre><p>We define here a type class <tt class="docutils literal">Cons_fruit</tt> containing a single
+function, and two instances, one for consing apples and one for
+consing pears. We can then use the templated <tt class="docutils literal">CONS</tt> function in the
+notation, and Coq will select the appropriate instance when needed.</p>
+<p>Note that this may result in less understandable error messages. For
+instance, with</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-notation-for-multi-type-list-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-notation-for-multi-type-list-v-chk2"><span class="kn">Definition</span> <span class="nf">bad</span> := [<span class="mi">0</span>; p].</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The following term contains unresolved implicit arguments:
+  [<span class="mi">0</span>; p]
+More precisely: 
+- <span class="nl">?Cons_fruit</span>: Cannot infer the implicit parameter
+  Cons_fruit of CONS whose type <span class="kr">is</span> <span class="s2">&quot;Cons_fruit nat&quot;</span>
+  (no type class instance found).</blockquote></div></div></small></span></pre><p>You will get</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-notation-for-multi-type-list-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+The following term contains unresolved implicit arguments:
+  [<span class="mi">0</span>; p]
+More precisely: 
+- <span class="nl">?Cons_fruit</span>: Cannot infer the implicit parameter
+  Cons_fruit of CONS whose type <span class="kr">is</span> <span class="s2">&quot;Cons_fruit nat&quot;</span>
+  (no type class instance found).</blockquote></div></div></small></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
