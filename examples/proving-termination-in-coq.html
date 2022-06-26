@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Proving termination in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="proving-termination-in-coq">
+<h1 class="title">Proving termination in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/19507311">https://stackoverflow.com/q/19507311</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>How can I prove termination for <tt class="docutils literal">size_prgm</tt>? I tried, but can't come
+up with a well founded relation to pass to <tt class="docutils literal">Fix</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Stmt</span> : <span class="kt">Set</span> :=
+| assign : Stmt
+| if&#39; : list Stmt -&gt; list Stmt -&gt; Stmt.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-termination-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="proving-termination-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">size_prgm</span> (<span class="nv">p</span> : list Stmt) : nat :=
+  <span class="kr">match</span> p <span class="kr">with</span>
+  | nil    =&gt; <span class="mi">0</span>
+  | s :: t =&gt; size_prgm t +
+                <span class="kr">match</span> s <span class="kr">with</span>
+                | assign  =&gt; <span class="mi">1</span>
+                | if&#39; b0 b1 =&gt; S (size_prgm b0 + size_prgm b1)
+                <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of size_prgm <span class="kr">is</span> ill-formed.
+In environment
+size_prgm : list Stmt -&gt; nat
+p : list Stmt
+s : Stmt
+t : list Stmt
+b0 : list Stmt
+b1 : list Stmt
+Recursive call to size_prgm has principal argument
+equal to <span class="s2">&quot;b0&quot;</span> instead of <span class="s2">&quot;t&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun p : list Stmt =&gt;</span>
+<span class="s2"> match p with</span>
+<span class="s2"> | nil =&gt; 0</span>
+<span class="s2"> | s :: t =&gt;</span>
+<span class="s2">     size_prgm t +</span>
+<span class="s2">     match s with</span>
+<span class="s2">     | assign =&gt; 1</span>
+<span class="s2">     | if&#39; b0 b1 =&gt; S (size_prgm b0 + size_prgm b1)</span>
+<span class="s2">     end</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer-gallais">
+<h1>Answer (gallais)</h1>
+<p>The termination oracle is quite better than what it used to be.
+Defining a function <tt class="docutils literal">sum_with</tt> using <tt class="docutils literal">fold_left</tt> and feeding it
+the recursive call to <tt class="docutils literal">size_prgm</tt> works perfectly well.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Stmt</span> : <span class="kt">Set</span> :=
+| assign : Stmt
+| if&#39; : list Stmt -&gt; list Stmt -&gt; Stmt.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">sum_with</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">f</span> : A -&gt; nat) (<span class="nv">xs</span> : list A) : nat :=
+  fold_left (<span class="kr">fun</span> <span class="nv">n</span> <span class="nv">a</span> =&gt; n + f a) xs <span class="mi">0</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">size_prgm</span> (<span class="nv">p</span> : Stmt) : nat :=
+  <span class="kr">match</span> p <span class="kr">with</span>
+  | assign    =&gt; <span class="mi">1</span>
+  | if&#39; b0 b1 =&gt; sum_with size_prgm b1 + sum_with size_prgm b0
+  <span class="kr">end</span>.</span></span></pre></div>
+<div class="section" id="answer-vinz">
+<h1>Answer (Vinz)</h1>
+<p>Short answer, since I don't have much time right now (I'll try to get
+back to you later): this is a really usual (and silly) problem that
+every Coq user has to experience one day.</p>
+<p>If I recall correctly, there is two &quot;general&quot; solutions to this
+problem and lots of very specific ones. For the two former:</p>
+<ol class="arabic">
+<li><p class="first">build a inner fixpoint: I don't really remember how to do this
+properly.</p>
+</li>
+<li><p class="first">use a mutual recursive type: The issue with your code is that you
+use <tt class="docutils literal">list Stmt</tt> in your <tt class="docutils literal">Stmt</tt> type, and Coq is not able to
+compute the induction principle you have in mind. But you could use
+a time like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Stmt</span> : <span class="kt">Set</span> :=
+| assign : Stmt
+| if&#39; : list_Stmt -&gt; list_Stmt -&gt; Stmt
+<span class="kr">with</span> list_Stmt : <span class="kt">Set</span> :=
+| Nil_Stmt : list_Stmt
+| Cons_Stmt : Stmt -&gt; list_Stmt -&gt; list_Stmt.</span></span></pre></li>
+</ol>
+<p>Now write your function over this type and a bijection between this
+type and your original <tt class="docutils literal">Stmt</tt> type.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Explain a simple operation in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="explain-a-simple-operation-in-coq">
+<h1 class="title">Explain a simple operation in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/24177371">https://stackoverflow.com/q/24177371</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have the following code, Here <tt class="docutils literal">O</tt> is the charater <tt class="docutils literal">O</tt> not zero
+<tt class="docutils literal">0</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Playground1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">nat</span> : <span class="kt">Type</span> :=
+| O : nat
+| S : nat -&gt; nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">pred</span> (<span class="nv">n</span> : nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | O =&gt; O
+  | S n&#39; =&gt; n&#39;
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Playground1</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">minustwo</span> (<span class="nv">n</span> : nat) : nat :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | O =&gt; O
+  | S O =&gt; O
+  | S (S n&#39;) =&gt; n&#39;
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk0"><span class="kn">Check</span> (S (S (S (S O)))).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">4</span>
+     : nat</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk1"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (minustwo <span class="mi">4</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">2</span>
+: nat</blockquote></div></div></small></span></pre><p>I just want to know how it evaluates to <tt class="docutils literal">2</tt>? I mean how it is
+actually checking with a numeral and subtracting? I am not subtracting
+anything here, still it is working? I want to know what is the basic
+idea here? When I call <tt class="docutils literal">minustwo 4</tt> how Coq know it is a numeral and
+how it is returning the result? How the matching is working here?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>It is quite easy with Coq to follow step by step what is going on. But
+before we can do that, we need to know what your program looks like to
+Coq without all the syntactic sugar. To do that, type the following in
+your program:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Printing All</span>.</span></span></pre><p>If you now print <tt class="docutils literal">minustwo</tt>, you will see that</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk2"><span class="kn">Print</span> minustwo.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">minustwo = 
+<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt;
+<span class="kr">match</span> n <span class="kr">return</span> nat <span class="kr">with</span>
+| O =&gt; O
+| S n0 =&gt;
+    <span class="kr">match</span> n0 <span class="kr">return</span> nat <span class="kr">with</span>
+    | O =&gt; O
+    | S n&#39; =&gt; n&#39;
+    <span class="kr">end</span>
+<span class="kr">end</span>
+     : <span class="kr">forall</span> <span class="nv">_</span> : nat, nat
+
+<span class="kn">Arguments</span> minustwo _%nat_scope</blockquote></div></div></small></span></pre><p>your pattern match is actually broken up into two pattern matches.</p>
+<p>Not let us see step by step how Coq evaluates <tt class="docutils literal">minustwo 4</tt>. To do
+so, create the following theorem:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk3"><span class="kn">Goal</span> (minustwo <span class="mi">4</span> = <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">@eq nat (minustwo (S (S (S (S O))))) (S (S O))</div></blockquote></div></div></small></span></pre><p>We don't care that much about the theorem itself, we care more about
+the fact that it contains the term <tt class="docutils literal">minustwo 4</tt>. We can now simplify
+the expression step by step (you should run this in an ide to actually
+see what is going on).</p>
+<p>First, we unfold the definition of <tt class="docutils literal">minustwo</tt>, using a tactic called
+<tt class="docutils literal">cbv delta</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk4"><span class="nb">cbv</span> delta. <span class="c">(* unfold the definition of minustwo *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">@eq nat
+  ((<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt;
+    <span class="kr">match</span> n <span class="kr">return</span> nat <span class="kr">with</span>
+    | O =&gt; O
+    | S n0 =&gt;
+        <span class="kr">match</span> n0 <span class="kr">return</span> nat <span class="kr">with</span>
+        | O =&gt; O
+        | S n&#39; =&gt; n&#39;
+        <span class="kr">end</span>
+    <span class="kr">end</span>) (S (S (S (S O))))) (S (S O))</div></blockquote></div></div></small></span></pre><p>We can now call the function, using the tactic <tt class="docutils literal">cbv beta</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk5"><span class="nb">cbv</span> beta. <span class="c">(* do the function call *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">@eq nat
+  <span class="kr">match</span> S (S (S (S O))) <span class="kr">return</span> nat <span class="kr">with</span>
+  | O =&gt; O
+  | S n0 =&gt;
+      <span class="kr">match</span> n0 <span class="kr">return</span> nat <span class="kr">with</span>
+      | O =&gt; O
+      | S n&#39; =&gt; n&#39;
+      <span class="kr">end</span>
+  <span class="kr">end</span> (S (S O))</div></blockquote></div></div></small></span></pre><p>We can now do the pattern match with</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk6"><span class="nb">cbv</span> iota; <span class="nb">cbv</span> beta. <span class="c">(* pattern match *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">@eq nat
+  <span class="kr">match</span> S (S (S O)) <span class="kr">return</span> nat <span class="kr">with</span>
+  | O =&gt; O
+  | S n&#39; =&gt; n&#39;
+  <span class="kr">end</span> (S (S O))</div></blockquote></div></div></small></span></pre><p>And because Coq broke up the match into two, we get to do it again</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="explain-a-simple-operation-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="explain-a-simple-operation-in-coq-v-chk7"><span class="nb">cbv</span> iota; <span class="nb">cbv</span> beta. <span class="c">(* pattern match *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">@eq nat (S (S O)) (S (S O))</div></blockquote></div></div></small></span></pre><p>And that is why <tt class="docutils literal">minustwo 4</tt> is <tt class="docutils literal">2</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
