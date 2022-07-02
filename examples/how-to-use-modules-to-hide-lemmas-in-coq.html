@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>how to use modules to hide lemmas in coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-use-modules-to-hide-lemmas-in-coq">
+<h1 class="title">how to use modules to hide lemmas in coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/11451536">https://stackoverflow.com/q/11451536</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have a theorem <tt class="docutils literal">T</tt>, its proof, and the zillion lemmas used in
+proving it.</p>
+<p>I would like to hide the lemmas, and make available only the theorem
+-- mainly because I don't want to have to think of good, global names
+for the Lemmas.</p>
+<p>Can I place the theorem, its proof, and the lemmas in a module,
+restricted with a module type, and make only the theorem available?</p>
+<p>Something like:</p>
+<pre class="code coq literal-block">
+<span class="kn">Module Type</span> <span class="nf">T_MY_T</span><span class="o">.</span>
+<span class="kn">End</span> <span class="nf">T_MY_T</span><span class="o">.</span>
+
+<span class="kn">Module</span> <span class="nf">T_My_theorem</span> <span class="o">:</span> <span class="n">T_MY_T</span><span class="o">.</span>
+  <span class="kn">Lemma</span> <span class="nf">L1</span> <span class="o">:</span> <span class="o">...</span>
+  <span class="kn">Proof</span><span class="o">.</span> <span class="kn">Admitted</span><span class="o">.</span>
+  <span class="kn">Lemma</span> <span class="nf">L2</span> <span class="o">:</span> <span class="o">...</span>
+  <span class="kn">Proof</span><span class="o">.</span> <span class="kn">Admitted</span><span class="o">.</span>
+  <span class="kn">Theorem</span> <span class="nf">My_Great_Theorem</span> <span class="o">:</span> <span class="o">...</span>
+  <span class="kn">Proof</span><span class="o">.</span> <span class="nb">apply</span> <span class="n">L1</span><span class="o">;</span> <span class="nb">apply</span> <span class="n">L2</span><span class="o">.</span> <span class="kn">Qed</span><span class="o">.</span>
+<span class="kn">End</span> <span class="nf">T_My_theorem</span><span class="o">.</span>
+</pre>
+<p>If so, can someone please post or point me to a simple example?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The <tt class="docutils literal">Module Type A</tt> should contain Axioms for the theorems you wish
+to export. The <tt class="docutils literal">Module B : A</tt> contains these axioms as theorems that
+need to be proven. It can also contain whatever lemmas and other
+machinery needed to prove the theorems. To access a theorem from
+outside the module, you can <tt class="docutils literal">apply B.Theorem1</tt>, etc.</p>
+</div>
+</div>
+</div></body>
+</html>

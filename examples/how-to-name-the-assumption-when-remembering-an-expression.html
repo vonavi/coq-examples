@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How to name the assumption when remembering an expression?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-name-the-assumption-when-remembering-an-expression">
+<h1 class="title">How to name the assumption when remembering an expression?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/11504064">https://stackoverflow.com/q/11504064</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>The documentation for Coq carries the general admonition <em>not</em> to rely
+on the builtin naming mechanism, but select one's own names, lest the
+changes in the naming mechanism render past proofs invalid.</p>
+<p>When considering expressions of the form <tt class="docutils literal">remember Expr as v</tt>, we
+set the variable <tt class="docutils literal">v</tt> to the expression <tt class="docutils literal">Expr</tt>. But the name of the
+assumption is selected automatically, and is something like <tt class="docutils literal">Heqv</tt>,
+so we have:</p>
+<pre class="code coq literal-block">
+<span class="n">Heqv</span><span class="o">:</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Expr</span>
+</pre>
+<p>How can I select my own name instead of <tt class="docutils literal">Heqv</tt>? I can always rename
+it to whatever I like using the <tt class="docutils literal">rename</tt> command, but that doesn't
+keep my proofs independent of the hypothetical future changes in the
+builtin naming mechanism in Coq.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>If you may get rid of the separate equality, try <tt class="docutils literal">set (name :=
+val)</tt>. Use <tt class="docutils literal">unfold</tt> instead of <tt class="docutils literal">rewrite</tt> to get the value back in
+place.</p>
+<p>If you need the equality for more than the <tt class="docutils literal">rewrite &lt;-</tt>, I know of
+no built in tactic that does this. You can do it manually, though, or
+build a tactic / notation. I just threw this together. (Note: I'm not
+an expert, this might be done more easily.)</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Tactic Notation</span> <span class="s2">&quot;remember_as_eq&quot;</span> <span class="kp">constr</span>(expr) <span class="kn">ident</span>(vname) <span class="kn">ident</span>(eqname) :=
+  <span class="kr">let</span> <span class="nv">v</span>     := <span class="kp">fresh</span> <span class="kr">in</span>
+  <span class="kr">let</span> <span class="nv">HHelp</span> := <span class="kp">fresh</span> <span class="kr">in</span>
+  <span class="nb">set</span> (v := expr);
+  <span class="nb">assert</span> (HHelp : sigT (<span class="kr">fun</span> <span class="nv">x</span> =&gt; x = v)) <span class="bp">by</span> (<span class="nb">apply</span> (existT _ v); <span class="bp">reflexivity</span>);
+  <span class="nb">inversion</span> HHelp <span class="kr">as</span> [vname eqname];
+  <span class="nb">unfold</span> v <span class="kr">in</span> *; <span class="nb">clear</span> v HHelp;
+  <span class="nb">rewrite</span> &lt;- eqname <span class="kr">in</span> *.</span></span></pre><p>Use as <tt class="docutils literal">remember_as_eq (2 + 2) four Heqfour</tt> to get the same result
+as with <tt class="docutils literal">remember (2 + 2) as four</tt>.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Note that you can also define it as <tt class="docutils literal">Tactic Notation
+&quot;remember&quot; constr(expr) &quot;as&quot; ident(vname) &quot;withEq&quot; ident(eqname)</tt> if
+you prefer using it as <tt class="docutils literal">remember (2 + 2) as four withEq Heqfour</tt>,
+but this will bork the parser and shadow the builtin <tt class="docutils literal">remember _ as
+_.</tt>. If you use <tt class="docutils literal">Tactic Notation &quot;remember&quot; constr(expr) &quot;with&quot;
+ident(eqname) &quot;as&quot; ident(vname)</tt> (or <tt class="docutils literal">withEq</tt> instead of <tt class="docutils literal">with</tt>
+or ...), the ordering is weird but the old <tt class="docutils literal">remember</tt> will still be
+accessible.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

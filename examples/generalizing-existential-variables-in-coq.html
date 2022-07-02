@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Generalizing existential variables in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="generalizing-existential-variables-in-coq">
+<h1 class="title">Generalizing existential variables in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/12199271">https://stackoverflow.com/q/12199271</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm trying to prove <tt class="docutils literal">P <span class="pre">?x</span></tt>, where <tt class="docutils literal">P : A <span class="pre">-&gt;</span> Prop</tt> and <tt class="docutils literal"><span class="pre">?x</span> : A</tt>
+is an existential variable. I can prove <tt class="docutils literal">forall a : A, P a</tt>, so I
+need to generalize <tt class="docutils literal">P <span class="pre">?x</span></tt> to <tt class="docutils literal">forall a : A, P a</tt>.</p>
+<p>If ?x was an instantiated variable, x, I could simply use <tt class="docutils literal">generalize
+x</tt> to produce <tt class="docutils literal">forall x : A, P x</tt>. When I try <tt class="docutils literal">generalize <span class="pre">?x</span></tt>,
+however, Coq returns a syntax error.</p>
+<p>Is this possible? I've checked and Coq does not seem to provide an
+intuitive way to generalize statements about existential variables.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p><tt class="docutils literal">P <span class="pre">?x</span></tt> is not equivalent to <tt class="docutils literal">forall x, P x</tt>, nor even implied by
+it. To prove <tt class="docutils literal">P <span class="pre">?x</span></tt>, you need to find some <tt class="docutils literal">a</tt> such that <tt class="docutils literal">P a</tt>
+holds. With your hypothesis, it suffices to find some <tt class="docutils literal">a : A</tt>. In
+other words, you need to prove that the domain is not empty (or more
+precisely, you need to prove the existence of an element in the
+domain).</p>
+<p>Here, if you have some <tt class="docutils literal">a : A</tt>, you can use <tt class="docutils literal">instantiate (1 :=
+A)</tt>. Silly example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">A</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-existential-variables-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-existential-variables-in-coq-v-chk0"><span class="kn">Goal</span> (<span class="kr">forall</span> <span class="nv">a</span>, P a) -&gt; A -&gt; <span class="kr">exists</span> <span class="nv">x</span>, P x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt; A -&gt; <span class="kr">exists</span> <span class="nv">x</span> : A, P x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-existential-variables-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-existential-variables-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">a</span> : A, P a) -&gt; A -&gt; <span class="kr">exists</span> <span class="nv">x</span> : A, P x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-existential-variables-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-existential-variables-in-coq-v-chk2"><span class="nb">intros</span> H a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, P a</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : A, P x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-existential-variables-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-existential-variables-in-coq-v-chk3"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, P a</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P <span class="nl">?x</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-existential-variables-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-existential-variables-in-coq-v-chk4"><span class="nb">instantiate</span> (<span class="mi">1</span> := a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, P a</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

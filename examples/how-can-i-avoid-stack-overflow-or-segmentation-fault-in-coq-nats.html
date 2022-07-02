@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>How can I avoid stack overflow or segmentation fault in Coq nats?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-avoid-stack-overflow-or-segmentation-fault-in-coq-nats">
+<h1 class="title">How can I avoid stack overflow or segmentation fault in Coq <tt class="docutils literal">nat</tt>s?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/13662274">https://stackoverflow.com/q/13662274</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm currently working with <a class="reference external" href="http://www.cis.upenn.edu/~jianzhou/Vellvm/">vellvm</a>, developing a
+transformation on it. I'm a Coq newbie.</p>
+<p>While programming, I faced the following warning:</p>
+<blockquote>
+Warning: Stack overflow or segmentation fault happens when working
+with large numbers in nat (observed threshold may vary from 5000
+to 70000 depending on your system limits and on the command
+executed).</blockquote>
+<p>My function that generates this warning calculates a signature. The
+signature is divided in superior and inferior bits. Given two <tt class="docutils literal">nat</tt>s <tt class="docutils literal">n1</tt> and <tt class="docutils literal">n2</tt> representing the superior bits and the inferior
+bits, it calculates <tt class="docutils literal">(n1 * 65536) + n2</tt> - this is an abstraction for
+put two binary numbers of 16 bits side-by-side.</p>
+<p>I was quite surprised because Coq <tt class="docutils literal">nat</tt> definition appears to handle
+big ints from outside, thanks to the <tt class="docutils literal">S</tt> constructor.</p>
+<p>How should I avoid this warning/use big numbers in Coq? I'm open to
+change the implementation from <tt class="docutils literal">nat</tt> to some kind of binary
+construction.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Instead of using the <tt class="docutils literal">nat</tt> type in Coq, it's sometimes (when you
+have to manipulate big numbers) better to use the <a class="reference external" href="http://coq.inria.fr/distrib/8.4/stdlib/Coq.Numbers.BinNums.html#Z">Z</a>
+type, which is a formalization of integers using a sign magnitude pair
+representation. The tradeoff is that your proofs might get slightly
+more complex; <tt class="docutils literal">nat</tt> is very simple, and so admits simple proof
+principles.</p>
+<p>However, in Coq there's an extensive use of notation to make it
+simpler to write definitions, theorems, and proofs. Coq has an
+extremely small kernel (we want this because we want to be able to
+believe the proof checker is correct, and we can read that) with a lot
+of notation on top of it. However, as there are different
+representations of things, and only a few good symbols, our symbols
+typically clash. To get past this, Coq uses <a class="reference external" href="http://coq.inria.fr/doc/Reference-Manual015.html">interpretation scopes</a> to disambiguate
+symbols, and resolve them into names (because <tt class="docutils literal">+</tt> means <tt class="docutils literal">add</tt>,
+<tt class="docutils literal">plus</tt>, etc...).</p>
+<p>You are correct, using <tt class="docutils literal">Z_scope</tt> is where, <tt class="docutils literal">+</tt> for <tt class="docutils literal">plus</tt> within
+<tt class="docutils literal">Z</tt>.</p>
+</div>
+</div>
+</div></body>
+</html>
