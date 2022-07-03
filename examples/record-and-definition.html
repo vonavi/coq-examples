@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Record and Definition</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="record-and-definition">
+<h1 class="title"><tt class="docutils literal">Record</tt> and <tt class="docutils literal">Definition</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/9577000">https://stackoverflow.com/q/9577000</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have a question about the: <tt class="docutils literal">Record</tt> and <tt class="docutils literal">Definition</tt></p>
+<p>I have this definition:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">rule</span> := term -&gt; term.</span></span></pre><p>and I write a boolean function for it.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">beq_rule</span> <span class="nv">a</span> <span class="nv">b</span> := beq_term a &amp;&amp; beq_term b.</span></span></pre><p>where <tt class="docutils literal">beq_term : term <span class="pre">-&gt;</span> term <span class="pre">-&gt;</span> bool</tt>.</p>
+<p>So my definition of <tt class="docutils literal">beq_rule</tt> actually return exactly type of
+<tt class="docutils literal">beq_term</tt> which is not what I want here. I want it return for me a
+type: <tt class="docutils literal">rule <span class="pre">-&gt;</span> rule <span class="pre">-&gt;</span> bool</tt>.</p>
+<p>So I changed a definition of rule by Record:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">rule</span> := mkRule {lhs : term; rhs : term}.</span></span></pre><p>and</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">beq_rule</span> (<span class="nv">a</span> <span class="nv">b</span> : rule) : bool :=
+  beq_term (lhs a) (lhs b) &amp;&amp; beq_term (rhs a) (rhs b).</span></span></pre><p>My question is that:</p>
+<ol class="arabic simple">
+<li>What is the different between my first defined <tt class="docutils literal">rule</tt> used
+<tt class="docutils literal">Definition</tt> and another used <tt class="docutils literal">Record</tt>?</li>
+<li>If I want to define rule by <tt class="docutils literal">Definition</tt> can I give an alias
+<tt class="docutils literal">lhs</tt> and <tt class="docutils literal">rhs</tt> likes in <tt class="docutils literal">Record</tt> definition?</li>
+</ol>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Your two definitions of <tt class="docutils literal">rule</tt> are saying totally different things</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">rule</span> := term -&gt; term.</span></span></pre><p>is defining rule as a type (or <tt class="docutils literal">Prop</tt>) alias of the function type
+<tt class="docutils literal">term <span class="pre">-&gt;</span> term</tt>. Hence</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">not_what_you_meant</span> : rule := <span class="kr">fun</span> <span class="nv">t</span> =&gt; t.</span></span></pre><p>will happily compile.</p>
+<p>As to the relation between <tt class="docutils literal">Record</tt> and <tt class="docutils literal">Definition</tt>. <tt class="docutils literal">Record</tt>
+is just a macro that converts into an <tt class="docutils literal">Inductive</tt>. So</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">rule</span> := mkRule {lhs : term; rhs : term}.</span></span></pre><p>is the same as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="record-and-definition-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Record</span> <span class="nf">rule</span> : <span class="kt">Type</span> := mkRule
+  { lhs : term;  rhs : term }</blockquote></div></div></small></span></pre><p>plus accessor functions</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="record-and-definition-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">lhs = 
+<span class="kr">fun</span> <span class="nv">r</span> : rule =&gt; <span class="kr">let</span> (<span class="nv">lhs</span>, _) := r <span class="kr">in</span> lhs
+     : rule -&gt; term</blockquote></div></div></small></span></pre><p>You should think of <tt class="docutils literal">Inductive</tt> as being fundamentally different
+from <tt class="docutils literal">Definition</tt>. <tt class="docutils literal">Definition</tt> defines an <em>alias</em>. Another way of
+saying this is <tt class="docutils literal">Definition</tt>s are &quot;referentially transparent&quot;, you
+can (up to variable renaming) always substitute the right hand side of
+a definition for any occurrence of its name.</p>
+<p><tt class="docutils literal">Inductive</tt> on the other hand defines type (elements of Coqs
+universes) by listing off a set of constructors. In more logical way
+of thinking, <tt class="docutils literal">Inductive</tt> defines a logical proposition in terms of
+its elimination/introduction rules in a way that ensures &quot;harmony&quot;.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

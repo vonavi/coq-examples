@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Subset parameter</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="subset-parameter">
+<h1 class="title">Subset parameter</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/5194117">https://stackoverflow.com/q/5194117</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I have a set as a parameter:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">Q</span> : <span class="kt">Set</span>.</span></span></pre><p>Now I want to define another parameter that is a subset of <tt class="docutils literal">Q</tt>.
+Something like:</p>
+<pre class="code coq literal-block">
+<span class="kn">Parameter</span> <span class="nv">F</span> <span class="o">:</span> <span class="n">subset</span> <span class="n">Q</span><span class="o">.</span>
+</pre>
+<p>How I can define that? I guess I can add the restriction later as an
+axiom, but seems more natural to express it directly in the type of
+<tt class="docutils literal">F</tt>.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>You can't express it directly.</p>
+<p>It's misleading to think of objects in <tt class="docutils literal">Set</tt> as mathematical sets.
+<tt class="docutils literal">Set</tt> is the sort of datatypes, the same kinds of types that you
+find in programming languages (except that Coq's types are very
+powerful).</p>
+<p>Coq doesn't have subtyping <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>. If the two types <tt class="docutils literal">F</tt> and <tt class="docutils literal">Q</tt> are
+distinct, then they are disjoint, as far as the mathematical model is
+concerned.</p>
+<p>The usual approach is to declare <tt class="docutils literal">F</tt> as a completely related set,
+and declare a canonical injection from <tt class="docutils literal">F</tt> to <tt class="docutils literal">Q</tt>. You'll want to
+specify any interesting property of that injection, beyond the
+obvious.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">Q</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">F</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">inj_F_Q</span> : F -&gt; Q.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">inj_F_Q_inj</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : F, inj_F_Q x = inj_F_Q y -&gt; x = y.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">inj_F_Q</span> : F &gt;-&gt; Q.</span></span></pre><p>That last line declares a coercion from <tt class="docutils literal">F</tt> to <tt class="docutils literal">Q</tt>. That lets you
+put an object of type <tt class="docutils literal">F</tt> wherever the context requires the type
+<tt class="docutils literal">Q</tt>. The type inference engine will insert a call to <tt class="docutils literal">inj_F_Q</tt>.
+You will need to write the coercion explicitly occasionally, since the
+type inference engine, while very good, is not perfect (perfection
+would be mathematically impossible). There is a chapter on coercions
+in the Coq reference manual; you should at least skim through it.</p>
+<p>Another approach is to define your subset with an extensional
+property, i.e. declare a predicate <tt class="docutils literal">P</tt> on the set (the type) <tt class="docutils literal">Q</tt>
+and define <tt class="docutils literal">F</tt> from <tt class="docutils literal">P</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">Q</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">P</span> : Q -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">G</span> := sig P.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">inj_G_Q</span> : G -&gt; Q := @proj1_sig Q P.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">inj_G_Q</span> : G &gt;-&gt; Q.</span></span></pre><p><tt class="docutils literal">sig</tt> is a specification, i.e. a weak sum type, i.e. a pair
+consisting of an object and a proof that said object has a certain
+property. <tt class="docutils literal">sig P</tt> is eta-equivalent to <tt class="docutils literal">{x | P x}</tt> (which is
+syntactic sugar <tt class="docutils literal">sig (fun x =&gt; P x)</tt>). You have to decide whether
+you prefer the short or the long form (you need to be consistent). The
+<tt class="docutils literal">Program</tt> vernacular is often useful when working with weak sums.</p>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>There is subtyping in the module language, but that's not
+relevant here. And coercions fake subtyping well enough for many
+uses, but they're not the real thing.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div></body>
+</html>

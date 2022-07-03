@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<title>Building a class hierarchy in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="building-a-class-hierarchy-in-coq">
+<h1 class="title">Building a class hierarchy in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/7990301">https://stackoverflow.com/q/7990301</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I can naively construct a hierarchy of algebraic structures in Coq
+using type classes. I'm having some trouble finding resources on Coq's
+syntax and semantics for type classes. However, I believe the
+following is a correct implementation of semigroups, monoids and
+commutative monoids:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Semigroup</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">op</span> : A -&gt; A -&gt; A) : <span class="kt">Type</span> := {
+    op_associative : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : A, op x (op y z) = op (op x y) z
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Monoid</span> `(M : Semigroup) (id : A) : <span class="kt">Type</span> := {
+    id_ident_left  : <span class="kr">forall</span> <span class="nv">x</span> : A, op id x = x;
+    id_ident_right : <span class="kr">forall</span> <span class="nv">x</span> : A, op x id = x
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">AbelianMonoid</span> `(M : Monoid) : <span class="kt">Type</span> := {
+    op_commutative : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, op x y = op y x
+  }.</span></span></pre><p>If I understand correctly, additional parameters (e.g., the identity
+element of a monoid) can be added by first declaring <tt class="docutils literal">Monoid</tt> an
+instance of <tt class="docutils literal">Semigroup</tt>, then parameterizing on <tt class="docutils literal">id : A</tt>. However,
+something odd is occurring in the record constructed for
+<tt class="docutils literal">AbelianMonoid</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="building-a-class-hierarchy-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="building-a-class-hierarchy-in-coq-v-chk0"><span class="kn">Print</span> Monoid.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Record</span> <span class="nf">Monoid</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">op</span> : A -&gt; A -&gt; A)
+(<span class="nv">M</span> : Semigroup op) (<span class="nv">id</span> : A) : <span class="kt">Prop</span> := Build_Monoid
+  { id_ident_left : <span class="kr">forall</span> <span class="nv">x</span> : A, op id x = x;
+    id_ident_right : <span class="kr">forall</span> <span class="nv">x</span> : A, op x id = x }
+
+<span class="kn">Arguments</span> Monoid {A}%type_scope {op}%function_scope _
+  _
+<span class="kn">Arguments</span> Build_Monoid _%type_scope _%function_scope _
+  _ (_ _)%function_scope</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="building-a-class-hierarchy-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="building-a-class-hierarchy-in-coq-v-chk1"><span class="kn">Print</span> AbelianMonoid.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Record</span> <span class="nf">AbelianMonoid</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">op</span> : A -&gt; A -&gt; A)
+(<span class="nv">M0</span> : Semigroup op) (<span class="nv">id0</span> : A) (<span class="nv">M</span> : Monoid M0 id0)
+  : <span class="kt">Prop</span> := Build_AbelianMonoid
+  { op_commutative : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, op x y = op y x }
+
+<span class="kn">Arguments</span> AbelianMonoid {A}%type_scope
+  {op}%function_scope {M0 id0} _
+<span class="kn">Arguments</span> Build_AbelianMonoid _%type_scope
+  _%function_scope _ _ _ _%function_scope</blockquote></div></div></small></span></pre><p>This occurred when I was trying to build a class for semigroups. I
+thought that the following syntax was correct:</p>
+<pre class="code coq literal-block">
+<span class="kn">Class</span> <span class="nf">Semiring</span> <span class="o">`(</span><span class="n">P</span> <span class="o">:</span> <span class="n">AbelianMonoid</span><span class="o">)</span> <span class="o">`(</span><span class="n">M</span> <span class="o">:</span> <span class="n">Monoid</span><span class="o">)</span> <span class="o">:=</span> <span class="o">{</span>
+    <span class="o">...</span>
+  <span class="o">}.</span>
+</pre>
+<p>However, I couldn't disambigutate the correct operators and identity
+elements. Printing the records revealed the problems outlined above.
+So I have two questions: first, how do I correctly declare the class
+<tt class="docutils literal">Monoid</tt>; second, how do I disambiguate functions in superclasses?</p>
+<p>What I'd really like is a good resources that clearly explains Coq's
+type classes without antiquated syntax. For example, I thought
+Hutton's book explained type classes in Haskell clearly.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<div class="section" id="references">
+<h2>References:</h2>
+<p>The canonical references for type classes in Coq - beyond <a class="reference external" href="http://coq.inria.fr/refman/Reference-Manual024.html">the manual</a> - are <a class="reference external" href="http://mattam.org/research/publications/First-Class_Type_Classes.pdf">this
+paper</a>,
+and <a class="reference external" href="http://mattam.org/research/PhD.en.html">the thesis</a> (in
+french) of <a class="reference external" href="http://mattam.org/">Matthieu Sozeau</a>. There are less
+canonical references (with different points of view) at the research
+level in <a class="reference external" href="http://arxiv.org/abs/1102.1323">a recent paper</a>, and in
+<a class="reference external" href="http://pastel.archives-ouvertes.fr/pastel-00649586">my thesis</a>.
+You should also spend some time on the #coq channel on Freenode, and
+subscribe to <a class="reference external" href="https://sympa-roc.inria.fr/wws/arc/coq-club">the mailing list</a>.</p>
+</div>
+<div class="section" id="your-problem">
+<h2>Your problem:</h2>
+<p>The syntax issue is not with <tt class="docutils literal">Classes</tt> per se, but with <a class="reference external" href="http://coq.inria.fr/refman/Reference-Manual004.html#htoc53">maximally
+inserted implicit arguments</a>. The
+<tt class="docutils literal">Monoid</tt> and <tt class="docutils literal">AbelianMonoid</tt> <em>types</em> have in your definition
+(implicit) parametric arguments that are, in this order, the domain
+type, the operation, and the identity - as indexed by the dependent
+product that you see fully expanded when you print those record types.
+They are filled automatically when you mention the dependent product
+without its arguments in a position where it would need them.</p>
+<p>Indeed, implicit argument resolution will automatically insert the
+required parametric arguments to be identical (for both products that
+depend on them: <tt class="docutils literal">P</tt> and <tt class="docutils literal">M</tt>'s types) if left to its own devices.
+You just need to specify constraints between those identifiers by
+specifying variables for the various identifiers, distinct when
+appropriate:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Semiring</span> <span class="nv">A</span> <span class="nv">mul</span> <span class="nv">add</span> `(P : AbelianMonoid A mul) `(M : Monoid A add) := {
+  }.</span></span></pre><p>The result:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="building-a-class-hierarchy-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="building-a-class-hierarchy-in-coq-v-chk2"><span class="kn">Print</span> Semiring.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Record</span> <span class="nf">Semiring</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">mul</span> <span class="nv">add</span> : A -&gt; A -&gt; A)
+(<span class="nv">M0</span> : Semigroup mul) (<span class="nv">id0</span> : A) (<span class="nv">M</span> : Monoid M0 id0)
+(<span class="nv">P</span> : AbelianMonoid M) (<span class="nv">M1</span> : Semigroup add) (<span class="nv">id1</span> : A)
+(<span class="nv">M</span> : Monoid M1 id1) : <span class="kt">Prop</span> := Build_Semiring {  }
+
+<span class="kn">Arguments</span> Semiring _%type_scope (_ _)%function_scope
+  {M0 id0 M} _ {M1 id1} _
+<span class="kn">Arguments</span> Build_Semiring _%type_scope (_
+  _)%function_scope _ _ _ _ _ _ _</blockquote></div></div></small></span></pre><p>Note the identities for the abelian monoid and monoid are this time
+distinct. It's a good exercise (even if it makes little mathematical
+sense) to train yourself to write the record type (aka the <tt class="docutils literal">Class</tt>)
+you would want if you had the same identity element for the additive
+and multiplicative structures.</p>
+</div>
+</div>
+</div>
+</div>
+</div></body>
+</html>
