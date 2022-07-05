@@ -1,6 +1,6 @@
 (*|
 #########################################
-how to use modules to hide lemmas in coq?
+How to use modules to hide lemmas in Coq?
 #########################################
 
 :Link: https://stackoverflow.com/q/11451536

@@ -1,6 +1,6 @@
 (*|
 ################################
-how to write to a file, from coq
+How to write to a file, from Coq
 ################################
 
 :Link: https://stackoverflow.com/q/49746424

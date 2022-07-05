@@ -113,7 +113,7 @@ though, because to show such a thing exhaustive goes like this:
 
 .. code::
 
-    Exhaustive (f : A -> bool)(mylist : DListBody f) = forall x : A, is_false (f x)
+    Exhaustive (f : A -> bool) (mylist : DListBody f) = forall x : A, is_false (f x)
 
 So if you can write down a ``DListBody`` for a finite enumeration, you
 can prove it exhaustive just by a case analysis with trivial subgoals.
@@ -178,7 +178,7 @@ Here the cost is that ``U`` is inevitably large.
 
     U : Set -> Type
     NAT : U nat
-    PI : forall (A : Set)(B : A -> Set),
+    PI : forall (A : Set) (B : A -> Set),
            U A -> (forall a, U (B a)) -> U (forall a, B a)
 
 But you can still get a lot of stuff done with a universe built that
