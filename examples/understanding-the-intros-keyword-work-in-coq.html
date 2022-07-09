@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Understanding the intros keyword work in Coq</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="understanding-the-intros-keyword-work-in-coq">
+<h1 class="title">Understanding the <tt class="docutils literal">intros</tt> keyword work in Coq</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70482977">https://stackoverflow.com/q/70482977</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk0"><span class="kn">Theorem</span> <span class="nf">law_of_contradiction</span> : <span class="kr">forall</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>), P /\ ~P -&gt; Q.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ ~ P -&gt; Q</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ ~ P -&gt; Q</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk2"><span class="nb">intros</span> P Q P_and_not_P.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P, Q</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>P_and_not_P</var><span class="hyp-type"><b>: </b><span>P /\ ~ P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Q</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk3"><span class="nb">destruct</span> P_and_not_P <span class="kr">as</span> [P_holds not_P].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P, Q</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>P_holds</var><span class="hyp-type"><b>: </b><span>P</span></span></span><br><span><var>not_P</var><span class="hyp-type"><b>: </b><span>~ P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Q</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>I'm trying to reaaaally understand the <tt class="docutils literal">intros</tt> keyword. Let's say
+that we want to prove <tt class="docutils literal">P /\ ~P <span class="pre">-&gt;</span> Q</tt>. Ok, somehow <tt class="docutils literal">intros P Q</tt>
+introduce <tt class="docutils literal">P</tt> and <tt class="docutils literal">Q</tt>. But what does it mean? Does it recognize
+the <tt class="docutils literal">P</tt> and <tt class="docutils literal">Q</tt> from the thing to be proven? What about
+<tt class="docutils literal">P_and_not_P</tt>? What is it? Why for <tt class="docutils literal">P</tt> and <tt class="docutils literal">Q</tt> it uses the same
+name, but for <tt class="docutils literal">P_and_not_P</tt> is defining a name?</p>
+<div class="section" id="update">
+<h2>UPDATE:</h2>
+<p>It looks like it's matching term by term:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk4"><span class="kn">Theorem</span> <span class="nf">modus_tollens</span> : <span class="kr">forall</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>), (P -&gt; Q) -&gt; ~Q -&gt; ~P.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, (P -&gt; Q) -&gt; ~ Q -&gt; ~ P</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, (P -&gt; Q) -&gt; ~ Q -&gt; ~ P</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk6"><span class="nb">intro</span> P.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, (P -&gt; Q) -&gt; ~ Q -&gt; ~ P</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk7"><span class="nb">intro</span> Q.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P, Q</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(P -&gt; Q) -&gt; ~ Q -&gt; ~ P</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk8"><span class="nb">intro</span> P_implies_Q.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P, Q</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>P_implies_Q</var><span class="hyp-type"><b>: </b><span>P -&gt; Q</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ Q -&gt; ~ P</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chk9"><span class="nb">intro</span> not_q.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P, Q</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>P_implies_Q</var><span class="hyp-type"><b>: </b><span>P -&gt; Q</span></span></span><br><span><var>not_q</var><span class="hyp-type"><b>: </b><span>~ Q</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ P</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-the-intros-keyword-work-in-coq-v-chka"><span class="nb">intro</span> not_p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P, Q</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>P_implies_Q</var><span class="hyp-type"><b>: </b><span>P -&gt; Q</span></span></span><br><span><var>not_q</var><span class="hyp-type"><b>: </b><span>~ Q</span></span></span><br><span><var>not_p</var><span class="hyp-type"><b>: </b><span>P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small></span></pre><p>gives</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chkb" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  P, Q : <span class="kt">Prop</span>
+  P_implies_Q : P -&gt; Q
+  not_q : ~ Q
+  not_p : P
+  ============================
+  <span class="kt">False</span></blockquote></div></div></small></span></pre></div>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>What <tt class="docutils literal">intro A</tt> (equivalent to <tt class="docutils literal">intros A</tt>) does: if you have a goal
+of the form <tt class="docutils literal">forall (P : _), ...</tt>, it renames <tt class="docutils literal">P</tt> to <tt class="docutils literal">A</tt>,
+removes the <tt class="docutils literal">forall</tt> from the beginning of the goal and puts an
+assumption <tt class="docutils literal">A</tt> into the goal.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  <span class="c">(* Starting goal *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chkc" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  <span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ ~ P -&gt; Q</blockquote></div></div></small></span><span class="alectryon-wsp">  <span class="c">(* Goal after [intros A] *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chkd" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  A : <span class="kt">Prop</span>
+  ============================
+  <span class="kr">forall</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, A /\ ~ A -&gt; Q</blockquote></div></div></small></span></pre><p>If you do <tt class="docutils literal">intros P Q</tt>, by picking the names already in the goal, no
+renaming is necessary so there is no change in names.</p>
+<p>The other cases of <tt class="docutils literal">intros</tt> you mention are special cases of that
+one behavior.</p>
+<p><strong>Implications</strong> in Coq are quantifications where the assumption is
+not named: <tt class="docutils literal">P /\ ~ P <span class="pre">-&gt;</span> Q</tt> is equivalent to <tt class="docutils literal">forall (H : P /\ ~P),
+Q</tt>, noting that <tt class="docutils literal">H</tt> is not used in the body <tt class="docutils literal">Q</tt>. Hence, when you
+do <tt class="docutils literal">intros P_and_not_P</tt>, you are renaming <tt class="docutils literal">H</tt>, which is not used
+so you don't see a change in the goal. You can disable pretty printing
+to see that.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Unset Printing Notations</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Starting goal; a name that is not used becomes &quot;_&quot; *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  <span class="kr">forall</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>) (<span class="nv">_</span> : and P (not P)), Q</blockquote></div></div></small></span><span class="alectryon-wsp">  <span class="c">(* After [intros P Q R] *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chkf" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  P, Q : <span class="kt">Prop</span>
+  R : <span class="kn">and</span> P (not P)
+  ============================
+  Q</blockquote></div></div></small></span></pre><p>The <strong>negation</strong> of <tt class="docutils literal">P</tt>, denoted <tt class="docutils literal">~P</tt>, is defined as <tt class="docutils literal">P <span class="pre">-&gt;</span>
+False</tt> in Coq (this is typical in intuitionistic logic, other logics
+might differ). You can see that in action with the tactic <tt class="docutils literal">unfold
+not</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  <span class="c">(* Starting goal *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk10" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  <span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, (P -&gt; Q) -&gt; ~ Q -&gt; ~ P</blockquote></div></div></small></span><span class="alectryon-wsp">  <span class="c">(* After [unfold not] *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk11" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  ============================
+  <span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>,
+  (P -&gt; Q) -&gt; (Q -&gt; <span class="kt">False</span>) -&gt; P -&gt; <span class="kt">False</span></blockquote></div></div></small></span><span class="alectryon-wsp">  <span class="c">(* After [intros P Q R S T] *)</span>
+</span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="understanding-the-intros-keyword-work-in-coq-v-chk12" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  P, Q : <span class="kt">Prop</span>
+  R : P -&gt; Q
+  S : Q -&gt; <span class="kt">False</span>
+  T : P
+  ============================
+  <span class="kt">False</span></blockquote></div></div></small></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Is it possible to declare type-dependent Notation in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="is-it-possible-to-declare-type-dependent-notation-in-coq">
+<h1 class="title">Is it possible to declare type-dependent <tt class="docutils literal">Notation</tt> in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69944163">https://stackoverflow.com/q/69944163</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>As Coq has a powerful type inference algorithm, I am wondering whether
+we can &quot;overload&quot; notations for different rewriting based on the
+<tt class="docutils literal">Notation</tt>'s variables.</p>
+<p>As an example, I will borrow a piece of my work on formalizing a typed
+language's semantics in Coq. In this formalization, I have both pairs
+of types and pairs of expressions, and I would like to use the same
+symbol for their respective constructor: <tt class="docutils literal">{ _ , _ }</tt>.</p>
+<pre class="code coq literal-block">
+<span class="kn">Inductive</span> <span class="nf">type</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="o">...</span> <span class="o">|</span> <span class="n">tpair</span><span class="o">:</span> <span class="n">type</span> <span class="o">-&gt;</span> <span class="n">type</span> <span class="o">-&gt;</span> <span class="n">type</span> <span class="o">|</span> <span class="o">...</span>
+<span class="kn">Inductive</span> <span class="nf">expr</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="o">...</span> <span class="o">|</span> <span class="n">epair</span><span class="o">:</span> <span class="n">expr</span> <span class="o">-&gt;</span> <span class="n">expr</span> <span class="o">-&gt;</span> <span class="n">expr</span> <span class="o">|</span> <span class="o">...</span>
+
+<span class="kn">Notation</span> <span class="s2">&quot;{ t1 , t2 }&quot;</span> <span class="o">:=</span> <span class="n">tpair</span> <span class="n">t1</span> <span class="n">t2</span>
+<span class="kn">Notation</span> <span class="s2">&quot;{ e1 , e2 }&quot;</span> <span class="o">:=</span> <span class="n">epair</span> <span class="n">e1</span> <span class="n">e2</span>
+</pre>
+<p>I know the last statement will raise an error because of the notation
+being already defined; I would appreciate if somebody has thought
+about trickery around it, or if there is another &quot;official&quot; way of
+doing this.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>One easy way to overload notations is by using scopes. In fact you
+should use scopes most of the time so that your notations don't mix
+with notations from other work that you might include or that might
+include yours.</p>
+<p>Using scope delimiters, you could have <tt class="docutils literal">{ t1 , t2 }%ty</tt> and <tt class="docutils literal">{ e1 ,
+e2 }%exp</tt> for instance (with the delimiters <tt class="docutils literal">ty</tt> and <tt class="docutils literal">exp</tt> to
+disambiguate).</p>
+<p>That said, in order to leverage typing information, there is one trick
+involving typeclasses which is to have a generic notion of pairs which
+comes with its own notation, and then declaring instances of that. See
+example below:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">PairNotation</span> (<span class="nv">A</span> : <span class="kt">Type</span>) := __pair : A -&gt; A -&gt; A.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;{ x , y }&quot;</span> := (__pair x y).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">PairNotationNat</span> : PairNotation nat := {
+    __pair n m := n + m
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">term</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">tpair</span> : term -&gt; term -&gt; term.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> <span class="nf">PairNotationTerm</span> : PairNotation term := {
+    __pair := tpair
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">foo</span> (<span class="nv">n</span> <span class="nv">m</span> : nat) : nat := { n , m }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">bar</span> (<span class="nv">u</span> <span class="nv">v</span> : term) := { u , v }.</span></span></pre><hr class="docutils" />
+<p><strong>A:</strong> For instance, <a class="reference external" href="https://gitlab.mpi-sws.org/iris/stdpp">the stdpp library</a> makes pervasive use of
+for-notation-only typeclasses to provide overloaded notations like <a class="reference external" href="https://gitlab.mpi-sws.org/iris/stdpp/-/blob/0939f35/theories/base.v#L245-268">≡
+(Equiv)</a>,
+<tt class="docutils literal">∅</tt> (<tt class="docutils literal">Empty</tt>), <tt class="docutils literal">_ !! _</tt> (<tt class="docutils literal">Lookup</tt>), etc. A minor naming issue
+(this answer does it better than stdpp) is that with a typeclass named
+<tt class="docutils literal">Equiv</tt> you might think you have the mathematical properties of an
+equivalence relation, whereas all you get is a notation
+(well-formedness properties are stated by another typeclass,
+<tt class="docutils literal">Equivalence</tt>).</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

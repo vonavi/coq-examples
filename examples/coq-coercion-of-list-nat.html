@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Coq - Coercion of list nat</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-coercion-of-list-nat">
+<h1 class="title">Coq - Coercion of <tt class="docutils literal">list nat</tt></h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70726083">https://stackoverflow.com/q/70726083</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I would like to do a coercion from the type <tt class="docutils literal">list nat</tt> to the type
+<tt class="docutils literal">list bool</tt>. I would think that this could be done in the following
+way:</p>
+<pre class="code coq literal-block">
+<span class="kn">From</span> <span class="n">Coq</span> <span class="kn">Require Import</span> <span class="n">Lists</span><span class="o">.</span><span class="n">List</span><span class="o">.</span>
+
+<span class="kn">Definition</span> <span class="nf">nat_to_bool</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">bool</span> <span class="o">:=</span>
+  <span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
+  <span class="o">|</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="n">true</span>
+  <span class="o">|</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">false</span>
+  <span class="kr">end</span><span class="o">.</span>
+
+<span class="kn">Definition</span> <span class="nf">list_nat_to_list_bool</span> <span class="o">(</span><span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">bool</span> <span class="o">:=</span>
+  <span class="n">map</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">n</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">nat_to_bool</span> <span class="n">n</span><span class="o">))</span> <span class="n">l</span><span class="o">.</span>
+
+<span class="kn">Coercion</span> <span class="nf">list_nat_to_list_bool</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span> <span class="o">&gt;-&gt;</span> <span class="n">list</span> <span class="n">bool</span><span class="o">.</span>
+</pre>
+<p>However, this doesn't work. It seems like there is a fundamental issue
+with using coercion on something of the form <tt class="docutils literal">list nat</tt>. Why does
+this not work?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>The <a class="reference external" href="https://coq.inria.fr/refman/addendum/implicit-coercions.html#classes">documentation</a>
+states that a class name must be a defined name. Neither <tt class="docutils literal">list nat</tt>
+nor <tt class="docutils literal">list bool</tt> are defined names - they are both applications. You
+must give the types between you want to define coercions a name as in:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">nat_to_bool</span> (<span class="nv">n</span> : nat) : bool :=
+  <span class="kr">match</span> n <span class="kr">with</span>
+  | <span class="mi">0</span> =&gt; true
+  | _ =&gt; false
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">list_nat</span> := list nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">list_bool</span> := list bool.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">list_nat_to_list_bool</span> (<span class="nv">l</span> : list_nat) : list_bool :=
+  map (<span class="kr">fun</span> <span class="nv">n</span> =&gt; (nat_to_bool n)) l.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">list_nat_to_list_bool</span> : list_nat &gt;-&gt; list_bool.</span></span></pre><p>Please note that the coercion function must use these names - you
+can't write <tt class="docutils literal">list nat</tt> instead of <tt class="docutils literal">list_nat</tt>. Also the
+applications of the coercion must use the defined names as in:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> : list_bool := (<span class="mi">1</span> :: nil) : list_nat.</span></span></pre><p>I <em>guess</em> this is so because coercions might be done at the syntactic
+level where type unifications would be difficult.</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> So, if I have a function <tt class="docutils literal">f</tt> whose inputs are of type <tt class="docutils literal">list
+bool</tt>, and I want to use coercion to pass objects of type <tt class="docutils literal">list
+nat</tt> to it, I'd have to edit <tt class="docutils literal">f</tt> so that its input type is
+<tt class="docutils literal">list_bool</tt> instead? There isn't a way around this?</p>
+<p><strong>A:</strong> I am not an expert for coercions, but as far as I know and
+understand the documentation, that's how it is, yes.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

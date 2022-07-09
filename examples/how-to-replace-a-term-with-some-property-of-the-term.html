@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>How to replace a term with some property of the term?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-replace-a-term-with-some-property-of-the-term">
+<h1 class="title">How to replace a term with some property of the term?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69949496">https://stackoverflow.com/q/69949496</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I apologize if this example is contrived, I am attempting to prove a
+similar Lemma with a more complex function than <tt class="docutils literal">list_even</tt>. I wish
+to prove some property about a translation of a list.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">list_even</span> (<span class="nv">c</span> : list nat) := map Nat.even c.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk0"><span class="kn">Lemma</span> <span class="nf">list_even_split</span> : <span class="kr">forall</span> (<span class="nv">c</span> : list nat),
+    c = nil \/
+      <span class="kr">exists</span> <span class="nv">c1</span> <span class="nv">c2</span> <span class="nv">b</span>,
+        c = c1 ++ c2
+        /\ list_even c1 = b :: nil
+        /\ list_even c = b :: list_even c2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">c</span> : list nat,
+c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even c = b :: list_even c2)</div></blockquote></div></div></small></span></pre><p>The proof I came up with is as follows.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">c</span> : list nat,
+c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even c = b :: list_even c2)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk2"><span class="nb">induction</span> c.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[] = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   [] = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even [] = b :: list_even c2)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHc</var><span class="hyp-type"><b>: </b><span>c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+c = c1 ++ c2 /\ list_even c1 = [b] /\ list_even c = b :: list_even c2)</span></span></span><br></div><label class="goal-separator" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk3"><hr></label><div class="goal-conclusion">a :: c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   a :: c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even (a :: c) = b :: list_even c2)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk4">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[] = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   [] = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even [] = b :: list_even c2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk5"><span class="nb">left</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">[] = []</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHc</var><span class="hyp-type"><b>: </b><span>c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+c = c1 ++ c2 /\ list_even c1 = [b] /\ list_even c = b :: list_even c2)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a :: c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   a :: c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even (a :: c) = b :: list_even c2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk7"><span class="nb">right</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHc</var><span class="hyp-type"><b>: </b><span>c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+c = c1 ++ c2 /\ list_even c1 = [b] /\ list_even c = b :: list_even c2)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+  a :: c = c1 ++ c2 /\
+  list_even c1 = [b] /\
+  list_even (a :: c) = b :: list_even c2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk8"><span class="kr">exists</span> [a], c.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHc</var><span class="hyp-type"><b>: </b><span>c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+c = c1 ++ c2 /\ list_even c1 = [b] /\ list_even c = b :: list_even c2)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">b</span> : bool,
+  a :: c = [a] ++ c /\
+  list_even [a] = [b] /\
+  list_even (a :: c) = b :: list_even c</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    <span class="c">(* I am stuck here. *)</span>
+</span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chk9"><span class="nb">assert</span> (e := Nat.even a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHc</var><span class="hyp-type"><b>: </b><span>c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+c = c1 ++ c2 /\ list_even c1 = [b] /\ list_even c = b :: list_even c2)</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>bool</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">b</span> : bool,
+  a :: c = [a] ++ c /\
+  list_even [a] = [b] /\
+  list_even (a :: c) = b :: list_even c</div></blockquote></div></div></small></span></pre><p>If I were to prove this by hand, my argument goes as follows.</p>
+<p>Let <tt class="docutils literal">c = [a] :: c2</tt>, so <tt class="docutils literal">c1 = [a]</tt>. By <tt class="docutils literal">Nat.Even_or_Odd</tt>, <tt class="docutils literal">a</tt>
+is even or it is odd. If <tt class="docutils literal">a</tt> is even, then <tt class="docutils literal">b = true</tt> and so</p>
+<pre class="code coq literal-block">
+<span class="n">c</span> <span class="o">=</span> <span class="o">[</span><span class="n">a</span><span class="o">]</span> <span class="o">++</span> <span class="n">c2</span> <span class="o">/\</span>
+    <span class="n">list_even</span> <span class="o">[</span><span class="n">a</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">true</span><span class="o">]</span> <span class="o">/\</span>
+    <span class="n">list_even</span> <span class="n">c</span> <span class="o">=</span> <span class="n">true</span> <span class="o">::</span> <span class="n">list_even</span> <span class="n">c2</span>
+</pre>
+<p>If <tt class="docutils literal">a</tt> is odd, then <tt class="docutils literal">b = false</tt> and so</p>
+<pre class="code coq literal-block">
+<span class="n">c</span> <span class="o">=</span> <span class="o">[</span><span class="n">a</span><span class="o">]</span> <span class="o">++</span> <span class="n">c2</span> <span class="o">/\</span>
+    <span class="n">list_even</span> <span class="o">[</span><span class="n">a</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">false</span><span class="o">]</span> <span class="o">/\</span>
+    <span class="n">list_even</span> <span class="n">c</span> <span class="o">=</span> <span class="n">false</span> <span class="o">::</span> <span class="n">list_even</span> <span class="n">c2</span>
+</pre>
+<p>which hold by simplification and reflexivity.</p>
+<p>However, I do not know how to translate the proof state of</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chka" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  a : nat
+  c : list nat
+  IHc : c = [] \/
+        (<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+           c = c1 ++ c2 /\
+           list_even c1 = [b] /\
+           list_even c = b :: list_even c2)
+  e : bool
+  ============================
+  <span class="kr">exists</span> <span class="nv">b</span> : bool,
+    a :: c = [a] ++ c /\
+    list_even [a] = [b] /\
+    list_even (a :: c) = b :: list_even c</blockquote></div></div></small></span></pre><p>into one which proceeds with the evenness of <tt class="docutils literal">a</tt>.</p>
+<p>I also do not believe I need induction for this.</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Even-ness isn't actually important to this goal, as it is just a fact
+about mapping. Either <tt class="docutils literal">c</tt> is the empty list, or <tt class="docutils literal">c</tt> is of the form
+<tt class="docutils literal">c = x :: xs = [x] ++ xs</tt> so <tt class="docutils literal">map Nat.even c = Nat.even x ++ map
+Nat.even xs</tt>. As such, you could have a proof like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chkb"><span class="kn">Lemma</span> <span class="nf">list_even_split</span> : <span class="kr">forall</span> (<span class="nv">c</span> : list nat),
+    c = nil \/
+      <span class="kr">exists</span> <span class="nv">c1</span> <span class="nv">c2</span> <span class="nv">b</span>,
+        c = c1 ++ c2
+        /\ list_even c1 = b :: nil
+        /\ list_even c = b :: list_even c2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">c</span> : list nat,
+c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even c = b :: list_even c2)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chkc"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">c</span> : list nat,
+c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even c = b :: list_even c2)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-replace-a-term-with-some-property-of-the-term-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-replace-a-term-with-some-property-of-the-term-v-chkd"><span class="nb">intros</span> c.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">c = [] \/
+(<span class="kr">exists</span> (<span class="nv">c1</span> <span class="nv">c2</span> : list nat) (<span class="nv">b</span> : bool),
+   c = c1 ++ c2 /\
+   list_even c1 = [b] /\
+   list_even c = b :: list_even c2)</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> c <span class="kr">as</span> [|x xs];
+    [ <span class="nb">left</span>; <span class="nb">auto</span>
+    | <span class="nb">right</span>; <span class="kr">exists</span> (<span class="nv">x</span> :: nil); <span class="kp">do</span> <span class="mi">2</span> <span class="nb">eexists</span>; <span class="kp">repeat</span> <span class="nb">split</span>; <span class="nb">eauto</span> ].</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>However, in other cases where one needs evenness of a variable you can
+record it via</p>
+<pre class="code coq literal-block">
+<span class="nb">destruct</span> <span class="o">(</span><span class="n">Nat</span><span class="o">.</span><span class="n">even</span> <span class="n">x</span><span class="o">)</span> <span class="nb">eqn</span> <span class="o">:</span> <span class="n">NAT_IS_EVEN</span>
+</pre>
+</div>
+</div>
+</div>
+</div></body>
+</html>

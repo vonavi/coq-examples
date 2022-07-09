@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Coq - Rewriting a FMap Within a Relation</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="coq-rewriting-a-fmap-within-a-relation">
+<h1 class="title">Coq - Rewriting a <tt class="docutils literal">FMap</tt> Within a Relation</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70998788">https://stackoverflow.com/q/70998788</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am new to Coq, and was hoping that someone with more experience
+could help me with a problem I am facing.</p>
+<p>I have defined a relation to represent the evaluation of a program in
+an imaginary programming language. The goal of the language is unify
+function calls and a constrained subset of macro invocations under a
+single semantics. Here is the definition of the relation, with its
+first constructor (I am omitting the rest to save space and avoid
+unnecessary details).</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">EvalExpr</span> :
+  store -&gt;         <span class="c">(* Store, mapping L-values to R-values *)</span>
+  environment -&gt;   <span class="c">(* Local environment, mapping function-local variables names to L-values *)</span>
+  environment -&gt;   <span class="c">(* Global environment, mapping global variables names to L-values *)</span>
+  function_table -&gt;<span class="c">(* Mapping function names to function definitions *)</span>
+  macro_table -&gt;   <span class="c">(* Mapping macro names to macro definitions *)</span>
+  expr -&gt;          <span class="c">(* The expression to evaluate *)</span>
+  Z -&gt;             <span class="c">(* The value the expression terminates to *)</span>
+  store -&gt;         <span class="c">(* The final state of the program store after evaluation *)</span>
+  <span class="kt">Prop</span> :=
+  <span class="c">(* Numerals evaluate to their integer representation and do not</span>
+<span class="c">     change the store *)</span>
+| E_Num : <span class="kr">forall</span> <span class="nv">S</span> <span class="nv">E</span> <span class="nv">G</span> <span class="nv">F</span> <span class="nv">M</span> <span class="nv">z</span>,
+    EvalExpr S E G F M (Num z) z S.</span></span></pre><p>The mappings are defined as follows:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Import</span> NatMap := FMapList.Make(OrderedTypeEx.Nat_as_OT).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Import</span> StringMap := FMapList.Make(OrderedTypeEx.String_as_OT).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">store</span> : <span class="kt">Type</span> := NatMap.t Z.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">environment</span> : <span class="kt">Type</span> := StringMap.t nat.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">function_table</span> : <span class="kt">Type</span> := StringMap.t function_definition.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">macro_table</span> : <span class="kt">Type</span> := StringMap.t macro_definition.</span></span></pre><p>I do not think the definitions of the other types are relevant to this
+question, but I can add them if needed.</p>
+<p>Now when trying to prove the following lemma, which seems intuitively
+obvious, I get stuck:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk0"><span class="kn">Lemma</span> <span class="nf">S_Equal_EvalExpr_EvalExpr</span> : <span class="kr">forall</span> <span class="nv">S1</span> <span class="nv">S2</span>,
+    NatMap.Equal S1 S2 -&gt;
+    <span class="kr">forall</span> <span class="nv">E</span> <span class="nv">G</span> <span class="nv">F</span> <span class="nv">M</span> <span class="nv">e</span> <span class="nv">v</span> <span class="nv">S&#39;</span>,
+      EvalExpr S1 E G F M e v S&#39; &lt;-&gt; EvalExpr S2 E G F M e v S&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">S1</span> <span class="nv">S2</span> : NatMap.t Z,
+NatMap.Equal (elt:=Z) S1 S2 -&gt;
+<span class="kr">forall</span> (<span class="nv">E</span> <span class="nv">G</span> : environment) (<span class="nv">F</span> : function_table)
+  (<span class="nv">M</span> : macro_table) (<span class="nv">e</span> : expr) (<span class="nv">v</span> : Z) (<span class="nv">S&#39;</span> : store),
+EvalExpr S1 E G F M e v S&#39; &lt;-&gt;
+EvalExpr S2 E G F M e v S&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">S1</span> <span class="nv">S2</span> : NatMap.t Z,
+NatMap.Equal (elt:=Z) S1 S2 -&gt;
+<span class="kr">forall</span> (<span class="nv">E</span> <span class="nv">G</span> : environment) (<span class="nv">F</span> : function_table)
+  (<span class="nv">M</span> : macro_table) (<span class="nv">e</span> : expr) (<span class="nv">v</span> : Z) (<span class="nv">S&#39;</span> : store),
+EvalExpr S1 E G F M e v S&#39; &lt;-&gt;
+EvalExpr S2 E G F M e v S&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S1, S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S1 S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>expr</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>S'</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S1 E G F M e v S&#39; &lt;-&gt;
+EvalExpr S2 E G F M e v S&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk3"><span class="nb">split</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S1, S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S1 S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>expr</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>S'</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S1 E G F M e v S&#39; -&gt;
+EvalExpr S2 E G F M e v S&#39;</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S1, S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S1 S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>expr</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>S'</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br></div><label class="goal-separator" for="coq-rewriting-a-fmap-within-a-relation-v-chk4"><hr></label><div class="goal-conclusion">EvalExpr S2 E G F M e v S&#39; -&gt;
+EvalExpr S1 E G F M e v S&#39;</div></blockquote></div></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* -&gt; *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S1, S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S1 S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>expr</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>S'</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S1 E G F M e v S&#39; -&gt;
+EvalExpr S2 E G F M e v S&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk6"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S1, S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S1 S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>expr</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>S'</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>EvalExpr S1 E G F M e v S&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S2 E G F M e v S&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk7"><span class="nb">induction</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>S</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S2 E G F M (Num z) z S</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk8">+ <span class="c">(* Num *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>S</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S2 E G F M (Num z) z S</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chk9"><span class="kn">Fail</span> <span class="nb">constructor</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+S2 : NatMap.t Z
+S : store
+H : NatMap.Equal (elt:=Z) S S2
+E, G : environment
+F : function_table
+M : macro_table
+z : Z
+Unable to <span class="nb">unify</span> <span class="s2">&quot;S&quot;</span> <span class="kr">with</span> <span class="s2">&quot;S2&quot;</span>.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>S2</var><span class="hyp-type"><b>: </b><span>NatMap.t Z</span></span></span><br><span><var>S</var><span class="hyp-type"><b>: </b><span>store</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>NatMap.Equal (elt:=Z) S S2</span></span></span><br><span><var>E, G</var><span class="hyp-type"><b>: </b><span>environment</span></span></span><br><span><var>F</var><span class="hyp-type"><b>: </b><span>function_table</span></span></span><br><span><var>M</var><span class="hyp-type"><b>: </b><span>macro_table</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">EvalExpr S2 E G F M (Num z) z S</div></blockquote></div></div></small></span></pre><p>If I were able to rewrite <tt class="docutils literal">S2</tt> for <tt class="docutils literal">S1</tt> in the goal, the proof
+would be trivial; however, if I try to do this, I get the following
+error:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chka" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
+
+  S2 : NatMap.t Z
+  S : store
+  H : NatMap.Equal (elt:=Z) S S2
+  E, G : environment
+  F : function_table
+  M : macro_table
+  z : Z
+  ============================
+  EvalExpr S2 E G F M (Num z) z S</blockquote></div></div></small></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-rewriting-a-fmap-within-a-relation-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-a-fmap-within-a-relation-v-chkb"><span class="kn">Fail</span> <span class="nb">rewrite</span> &lt;- H.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Found no subterm matching <span class="s2">&quot;NatMap.find (elt:=Z) ?M2110</span>
+<span class="s2">                             S2&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>I think this has to do with finite mappings being abstract types, and
+thus not being rewritable like concrete types are. However, I noticed
+that I <em>can</em> rewrite mappings within other equations/relations found
+in <tt class="docutils literal">Coq.FSets.FMapFacts</tt>. How would I tell Coq to let me rewrite
+mapping types inside my <tt class="docutils literal">EvalExpr</tt> relation?</p>
+<p>Update: <a class="reference external" href="https://gist.github.com/PappasBrent/140de54b8dbf9bf25214852c6e99daf5">Here is a gist</a>
+containing a minimal working example of my problem. The definitions of
+some of the mapping types have been altered for brevity, but the
+problem is the same.</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>The issue here is that the relation <tt class="docutils literal">NatMap.Equal</tt>, which says that
+two maps have the same bindings, is <em>not</em> the same as the notion of
+equality in Coq's logic, <tt class="docutils literal">=</tt>. While it is always possible to rewrite
+with <tt class="docutils literal">=</tt>, rewriting with some other relation <tt class="docutils literal">R</tt> is only possible
+if you can prove that the property you are trying to show is
+compatible with it. This is already done for the relations in
+<tt class="docutils literal">FMap</tt>, which is why rewriting there works.</p>
+<p>You have two options:</p>
+<ol class="arabic">
+<li><p class="first">Replace <tt class="docutils literal">FMap</tt> with an implementation for which the intended map
+equality coincides with <tt class="docutils literal">=</tt>, a property usually known as
+<em>extensionality</em>. There are many libraries that provide such data
+structures, including my own <a class="reference external" href="https://github.com/arthuraa/extructures">extructures</a>, but also <a class="reference external" href="https://github.com/math-comp/finmap">finmap</a> and <a class="reference external" href="https://gitlab.mpi-sws.org/iris/stdpp">std++</a>. Then, you never need to
+worry about a custom equality relation; all the important
+properties of maps work with <tt class="docutils literal">=</tt>.</p>
+</li>
+<li><p class="first">Keep <tt class="docutils literal">FMap</tt>, but use the <a class="reference external" href="https://coq.inria.fr/refman/addendum/generalized-rewriting.html">generalized rewriting</a>
+mechanism to allow rewriting with <tt class="docutils literal">FMap.Equal</tt>. To do this, you
+probably need to modify the definition of your execution relation
+so that it is compatible with <tt class="docutils literal">FMap.Equal</tt>. Unfortunately, I
+believe the only way to do this is by explicitly adding equality
+hypotheses everywhere, e.g.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">EvalExpr&#39;</span> <span class="nv">S</span> <span class="nv">E</span> <span class="nv">G</span> <span class="nv">F</span> <span class="nv">M</span> <span class="nv">e</span> <span class="nv">v</span> <span class="nv">S&#39;</span> :=
+  <span class="kr">exists</span> <span class="nv">S0</span> <span class="nv">S0&#39;</span>, NatMap.Equal S S0 /\
+                   NatMap.Equal S&#39; S0&#39; /\
+                   EvalExpr S0 E G F M e v S0&#39;.</span></span></pre><p>Since this will pollute your definitions, I would not recommend
+this approach.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="answer-larsr">
+<h1>Answer (larsr)</h1>
+<p>Arthur's answer explains the problem very well.</p>
+<p>One other (?) way to do it could be to modify your <tt class="docutils literal">Inductive</tt>
+definition of <tt class="docutils literal">EvalExpr</tt> to explicitly use the equality that you
+care about (<tt class="docutils literal">NatMap.Equal</tt> instead of <tt class="docutils literal">Eq</tt>). You will have to say
+in each rule that it is enough for two maps to be <tt class="docutils literal">Equal</tt>.</p>
+<p>For example:</p>
+<pre class="code coq literal-block">
+<span class="o">|</span> <span class="n">E_Num</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">S</span> <span class="nv">E</span> <span class="nv">G</span> <span class="nv">F</span> <span class="nv">M</span> <span class="nv">z</span><span class="o">,</span>
+    <span class="n">EvalExpr</span> <span class="n">S</span> <span class="n">E</span> <span class="n">G</span> <span class="n">F</span> <span class="n">M</span> <span class="o">(</span><span class="n">Num</span> <span class="n">z</span><span class="o">)</span> <span class="n">z</span> <span class="n">S</span>
+</pre>
+<p>becomes</p>
+<pre class="code coq literal-block">
+<span class="o">|</span> <span class="n">E_Num</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">S1</span> <span class="nv">S2</span> <span class="nv">E</span> <span class="nv">G</span> <span class="nv">F</span> <span class="nv">M</span> <span class="nv">z</span><span class="o">,</span>
+    <span class="n">NatMap</span><span class="o">.</span><span class="n">Equal</span> <span class="n">S1</span> <span class="n">S2</span> <span class="o">-&gt;</span>
+    <span class="n">EvalExpr</span> <span class="n">S1</span> <span class="n">E</span> <span class="n">G</span> <span class="n">F</span> <span class="n">M</span> <span class="o">(</span><span class="n">Num</span> <span class="n">z</span><span class="o">)</span> <span class="n">z</span> <span class="n">S2</span>
+</pre>
+<p>Then when you want to prove your <tt class="docutils literal">Lemma</tt> and apply the constructor,
+you will have to provide a proof that <tt class="docutils literal">S1</tt> and <tt class="docutils literal">S2</tt> are equal.
+(you'll have to reason a little using that <tt class="docutils literal">NatMap.Equal</tt> is an
+equivalence relation).</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

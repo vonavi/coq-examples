@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Difference between parameters and members of a class</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="difference-between-parameters-and-members-of-a-class">
+<h1 class="title">Difference between parameters and members of a class</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70112873">https://stackoverflow.com/q/70112873</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I am new to Coq and was wondering what is the difference between the
+following things:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">test</span> (<span class="nv">f</span> <span class="nv">g</span> : nat -&gt; nat) := {
+    init : f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
+  }.</span></span></pre><p>and</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">test</span> := {
+    f : nat -&gt; nat;
+    g : nat -&gt; nat;
+    init : f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
+  }.</span></span></pre><p>Could anyone provide an explanation?</p>
+</div>
+<div class="section" id="answer-ana-borges">
+<h1>Answer (Ana Borges)</h1>
+<p>The difference between them is referred to as bundling.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">test</span> (<span class="nv">f</span> <span class="nv">g</span> : nat -&gt; nat) := {
+    init:   f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
+  }.</span></span></pre><p>is unbundled, and</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">test</span> := {
+    f : nat -&gt; nat;
+    g : nat -&gt; nat;
+    init : f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
+  }.</span></span></pre><p>is bundled.</p>
+<p>The advantage of bundling is that you don't need to always provide
+<tt class="docutils literal">f</tt> and <tt class="docutils literal">g</tt>. The advantage of unbundling is that you can have
+different instances of the same class sharing the same <tt class="docutils literal">f</tt> and
+<tt class="docutils literal">g</tt>. If you bundle them, Coq will not be easily convinced that
+different instances share parameters.</p>
+<p>You can read more about this in <a class="reference external" href="https://www.researchgate.net/publication/48202776_Type_Classes_for_Mathematics_in_Type_Theory">Type Classes for Mathematics in Type
+Theory</a>.</p>
+</div>
+<div class="section" id="answer-maelan">
+<h1>Answer (Maëlan)</h1>
+<p>To complement Ana's excellent answer, here is a practical difference:</p>
+<ul class="simple">
+<li>the unbundled version (call it <tt class="docutils literal">utest</tt>) allows you to write the
+logical statement <tt class="docutils literal">utest f g</tt> about a specific pair of functions
+<tt class="docutils literal">f</tt> and <tt class="docutils literal">g</tt>,</li>
+<li>whereas the bundled version (call it <tt class="docutils literal">btest</tt>) allows you to state
+that there exists a pair of functions which satisfies the
+properties; you can later refer to these functions by the projection
+names <tt class="docutils literal">f</tt> and <tt class="docutils literal">g</tt>.</li>
+</ul>
+<p>So, roughly speaking:</p>
+<ul class="simple">
+<li><tt class="docutils literal">btest</tt> is &quot;equivalent&quot; to <tt class="docutils literal">∃ f g, utest f g</tt>;</li>
+<li><tt class="docutils literal">utest f' g'</tt> is &quot;equivalent&quot; to <tt class="docutils literal">btest</tt> ∧ &quot;the <tt class="docutils literal">f</tt> (resp.
+<tt class="docutils literal">g</tt>) in the aforementioned proof of btest is equal to <tt class="docutils literal">f'</tt>
+(resp. <tt class="docutils literal">g'</tt>)&quot;.</li>
+</ul>
+<p>More formally, here are the equivalences for a minimal example (in
+this code, the notation <tt class="docutils literal">{ x : A | B }</tt> is a <strong>dependent pair</strong>
+type, i.e. the type of <tt class="docutils literal">(x, y)</tt> where <tt class="docutils literal">x : A</tt> and <tt class="docutils literal">y : B</tt> and
+the type <tt class="docutils literal">B</tt> depends on the value <tt class="docutils literal">x</tt>):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* unbundled: *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">utest</span> (<span class="nv">x</span> : nat) : <span class="kt">Prop</span> := {
+    uprop : x = <span class="mi">0</span>;
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* bundled: *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">btest</span> : <span class="kt">Type</span> := {
+    bx : nat;
+    bprop : bx = <span class="mi">0</span>;
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* [btest] is equivalent to: *)</span>
+
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk0"><span class="kn">Goal</span> { x : nat | utest x } -&gt; btest.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">{x : nat | utest x} -&gt; btest</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">{x : nat | utest x} -&gt; btest</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk2"><span class="nb">intros</span> [x u].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>u</var><span class="hyp-type"><b>: </b><span>utest x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">btest</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk3"><span class="nb">econstructor</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>u</var><span class="hyp-type"><b>: </b><span>utest x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="nl">?bx</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (@uprop x u).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk4"><span class="kn">Goal</span> btest -&gt; { x : nat | utest x }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">btest -&gt; {x : nat | utest x}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">btest -&gt; {x : nat | utest x}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk6"><span class="nb">intros</span> b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>btest</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{x : nat | utest x}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk7"><span class="kr">exists</span> (@bx b).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>btest</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">utest bx</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk8"><span class="nb">constructor</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>btest</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bx = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (@bprop b).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* [utest x] is equivalent to: *)</span>
+
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk9"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">x</span>, { b : btest | @bx b = x } -&gt; utest x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat, {b : btest | bx = x} -&gt; utest x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat, {b : btest | bx = x} -&gt; utest x</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chkb"><span class="nb">intros</span> x [b &lt;-].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>btest</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">utest bx</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chkc"><span class="nb">constructor</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>b</var><span class="hyp-type"><b>: </b><span>btest</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bx = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (@bprop b).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chkd"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">x</span>, utest x -&gt; { b : btest | @bx b = x }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat, utest x -&gt; {b : btest | bx = x}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chke"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat, utest x -&gt; {b : btest | bx = x}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chkf"><span class="nb">intros</span> x u.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>u</var><span class="hyp-type"><b>: </b><span>utest x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{b : btest | bx = x}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk10"><span class="kr">exists</span> {| bx := x ; bprop := @uprop x u |}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>u</var><span class="hyp-type"><b>: </b><span>utest x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bx = x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* NOTE: Here I&#39;ve explicited all implicit arguments; in fact, you</span>
+<span class="c">   can let Coq infer them, and write just [bx], [bprop], [uprop]</span>
+<span class="c">   instead of [@bx b], [@bprop b], [@uprop x u]. *)</span></span></pre><p>In this example, we can also observe a difference with respect to
+computational relevance: <tt class="docutils literal">utest</tt> can live in <tt class="docutils literal">Prop</tt>, because its
+only member, <tt class="docutils literal">uprop</tt>, is a proposition. On the other hand, I cannot
+really put <tt class="docutils literal">btest</tt> in <tt class="docutils literal">Prop</tt>, because that would mean that <em>both</em>
+<tt class="docutils literal">bx</tt> and <tt class="docutils literal">bprop</tt> would live in <tt class="docutils literal">Prop</tt> but <tt class="docutils literal">bf</tt> is
+computationally relevant. In other words, Coq gives you this warning:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk11"><span class="kn">Class</span> <span class="nf">btest</span> : <span class="kt">Prop</span> := {
+    bx : nat;
+    bprop : bx = <span class="mi">0</span>;
+  }.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">bx cannot be defined because it <span class="kr">is</span> informative <span class="kn">and</span>
+btest <span class="kr">is</span> not. [cannot-define-projection,records]</blockquote><blockquote class="alectryon-message">bprop cannot be defined because the projection bx was
+not defined. [cannot-define-projection,records]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* WARNING:</span>
+<span class="c">   bx cannot be defined because it is informative and btest is not.</span>
+<span class="c">   bprop cannot be defined because the projection bx was not defined.</span>
+<span class="c">*)</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>
