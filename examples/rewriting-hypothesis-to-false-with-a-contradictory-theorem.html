@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Rewriting hypothesis to false with a contradictory theorem</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="rewriting-hypothesis-to-false-with-a-contradictory-theorem">
+<h1 class="title">Rewriting hypothesis to false with a contradictory theorem</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71834647">https://stackoverflow.com/q/71834647</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to show that</p>
+<pre class="code coq literal-block">
+<span class="o">[</span><span class="n">seq</span> <span class="n">q</span> <span class="n">x</span> <span class="n">t</span> <span class="o">|</span> <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">iota</span> <span class="mi">0</span> <span class="o">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)]</span> <span class="o">!=</span> <span class="o">[::]</span>
+</pre>
+<p>I decided to destruct <tt class="docutils literal">iota 0 (t + 1)</tt> because I have a lemma that
+says:</p>
+<pre class="code coq literal-block">
+<span class="n">iota</span> <span class="mi">0</span> <span class="o">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">!=</span> <span class="o">[::]</span>
+</pre>
+<p>So the first case of destruct should have <tt class="docutils literal">iota 0 (t + 1) = <span class="pre">[::]</span></tt>
+which by the theorem mentioned is false, and I can discriminate. How
+can I rewrite the equation in the first destruct case using the lemma?
+I cannot figure it out.</p>
+</div>
+<div class="section" id="answer-arthur-azevedo-de-amorim">
+<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p>You do not need to destruct. Note that <tt class="docutils literal">iota</tt> is defined by
+recursion on its second variable. Your current goal cannot be
+simplified because <tt class="docutils literal">t + 1</tt> does not start with a constructor.
+However, you can do <tt class="docutils literal">by rewrite addn1</tt> to put it in a form where it
+can be solved.</p>
+</div>
+<div class="section" id="answer-pierre-jouvelot">
+<h1>Answer (Pierre Jouvelot)</h1>
+<p>In addition to computation, as Arthur suggests, you can sometimes use
+contraposition to deal with non-equalities (do <tt class="docutils literal">Search &quot;contra&quot;</tt> for
+variant versions).</p>
+<p>For instance, in your case, you can show, if you add some injectivity
+constraint:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk0"><span class="kn">Lemma</span> <span class="nf">foo</span> (<span class="nv">q</span> : nat -&gt; nat -&gt; nat) <span class="nv">t</span> (<span class="nv">injq</span> : injective (q ^~ t)) :
+  iota <span class="mi">0</span> (t + <span class="mi">1</span>) != [::] -&gt; [seq q x t | x &lt;- iota <span class="mi">0</span> (t + <span class="mi">1</span>)] != [::].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>q</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>injq</var><span class="hyp-type"><b>: </b><span>injective (q^~ t)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">iota <span class="mi">0</span> (t + <span class="mi">1</span>) != [::] -&gt;
+[seq q x t | x &lt;- iota <span class="mi">0</span> (t + <span class="mi">1</span>)] != [::]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>q</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>injq</var><span class="hyp-type"><b>: </b><span>injective (q^~ t)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">iota <span class="mi">0</span> (t + <span class="mi">1</span>) != [::] -&gt;
+[seq q x t | x &lt;- iota <span class="mi">0</span> (t + <span class="mi">1</span>)] != [::]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk2"><span class="nb">apply</span>: contra_neq.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>q</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>injq</var><span class="hyp-type"><b>: </b><span>injective (q^~ t)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">[seq q x t | x &lt;- iota <span class="mi">0</span> (t + <span class="mi">1</span>)] = [::] -&gt;
+iota <span class="mi">0</span> (t + <span class="mi">1</span>) = [::]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="rewriting-hypothesis-to-false-with-a-contradictory-theorem-v-chk3"><span class="nb">rewrite</span> [RHS](_ : [::] = [seq q x t | x &lt;- [::]]) //.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>q</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>injq</var><span class="hyp-type"><b>: </b><span>injective (q^~ t)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">[seq q x t | x &lt;- iota <span class="mi">0</span> (t + <span class="mi">1</span>)] =
+[seq q x t | x &lt;- [::]] -&gt; 
+iota <span class="mi">0</span> (t + <span class="mi">1</span>) = [::]</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span>: inj_map.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

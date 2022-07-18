@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Best practices for parametrized Coq libraries</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="best-practices-for-parametrized-coq-libraries">
+<h1 class="title">Best practices for parametrized Coq libraries</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71143362">https://stackoverflow.com/q/71143362</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm writing a library in Coq that depends on user-supplied type
+parameters. One central part is a construction along the lines of</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Ascii.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">UserType</span> : <span class="kt">Set</span>. <span class="c">(* &lt;&lt;- placeholder for this example *)</span></span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">UserToString</span> : UserType -&gt; string.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Tag</span> : <span class="kt">Set</span> :=
+| TBool
+| TNat
+| TUser
+| TList : Tag -&gt; Tag
+| TSum : Tag -&gt; Tag -&gt; Tag.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">decodeT</span> (<span class="nv">t</span> : Tag) : <span class="kt">Set</span> :=
+  <span class="kr">match</span> t <span class="kr">with</span>
+  | TBool =&gt; bool
+  | TNat =&gt; nat
+  | TUser =&gt; UserType <span class="c">(* &lt;&lt;- needed here *)</span>
+  | TList t&#39; =&gt; list (decodeT t&#39;)
+  | TSum l r =&gt; sum (decodeT l) (decodeT r)
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* ...etc..., including: *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">tostring</span> (<span class="nv">t</span> : Tag) (<span class="nv">v</span> : decodeT t) : string :=
+  <span class="c">(* match t with ... end *)</span> <span class="s2">&quot;dummy&quot;</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* and other stuff *)</span></span></pre><p>so I can't avoid those <tt class="docutils literal">Parameter</tt>s in some form. The whole
+library is split across multiple files, and because of the size it
+would be pretty uncomfortable to put everything in one file.</p>
+<p>There's a top-level wrapper that exports all sub-modules. Ideally, I'd
+like to pass the parameters <em>once</em> when importing the library, and
+then this wrapper can do some magic to propagate them to all
+sub-modules, so that afterwards I don't have to worry about it
+anymore.</p>
+<p>I've looked into various approaches, but nothing worked so far.</p>
+<p>If I wrap the file contents in <tt class="docutils literal">Section</tt>s, then the <tt class="docutils literal">Parameter</tt>s become extra arguments only on the definitions that use them, and
+then I have to manually splice them in everywhere when using the
+library's functions from outside.</p>
+<p>If I don't wrap them in a <tt class="docutils literal">Section</tt>, they are module parameters but
+I can't find a way to actually provide the value. (All forms of <tt class="docutils literal">with
+Definition</tt> seem to require a module signature / <tt class="docutils literal">Module Type</tt>?
+Duplicating all names &amp; types to make an explicit signature would be
+prohibitively redundant, so maybe there is a way to make it work, but
+I couldn't find it. The documentation is also rather unhelpful...)
+Variations like using <tt class="docutils literal">Context</tt> instead seem to have the same
+problem, as far as I tested things.</p>
+<p>I'm happy to make a <tt class="docutils literal">Module Type UserDefs</tt> (or typeclass, or
+whatever) that combines all the user definitions in a single value. I
+just don't know how to actually get it into the submodules.</p>
+<p>So how do I do it? What needs to happen inside that sample file above,
+and what needs to happen on the outside, so that I can pass the
+definitions in <em>once</em> and then get a fully configured library to
+<tt class="docutils literal">Import</tt>?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<blockquote>
+then I have to manually splice them in everywhere when using the
+library's functions from outside.</blockquote>
+<p>This is typically addressed by a mix of implicit parameters and type
+classes.</p>
+<p>Declare a class for user-provided parameters.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">UserParams</span> : <span class="kt">Type</span> :=
+  { UserType : <span class="kt">Set</span>
+  ; UserToString : UserType -&gt; string
+  }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Make sure UserType and UserToString have UserParams as a maximally</span>
+<span class="c">   inserted implicit *)</span></span></pre><p>Then in your library open sections parameterized by instances of that
+class:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Ascii.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> String.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">MyLib</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">userParams</span> : UserParams}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* Context generalizes Variable and allows you to set implicitness *)</span>
+
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Tag</span> : <span class="kt">Set</span> :=
+  | TBool
+  | TNat
+  | TUser
+  | TList : Tag -&gt; Tag
+  | TSum : Tag -&gt; Tag -&gt; Tag.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">decodeT</span> (<span class="nv">t</span> : Tag) : <span class="kt">Set</span> :=
+    <span class="kr">match</span> t <span class="kr">with</span>
+    | TBool =&gt; bool
+    | TNat =&gt; nat
+    | TUser =&gt; UserType <span class="c">(* &lt;&lt;- needed here *)</span>
+    | TList t&#39; =&gt; list (decodeT t&#39;)
+    | TSum l r =&gt; sum (decodeT l) (decodeT r)
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* ...etc..., including: *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">tostring</span> (<span class="nv">t</span> : Tag) (<span class="nv">v</span> : decodeT t) : string :=
+    <span class="c">(* match t with ... end *)</span> <span class="s2">&quot;dummy&quot;</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* and other stuff *)</span>
+
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">MyLib</span>.</span></span></pre><p>Then users instantiate the class</p>
+<pre class="code coq literal-block">
+<span class="kn">Require Import</span> <span class="n">MyLib</span><span class="o">.</span>
+
+<span class="kn">Instance</span> <span class="nf">myParams</span> <span class="o">:</span> <span class="n">UserParams</span> <span class="o">:=</span>
+  <span class="o">{|</span> <span class="n">UserType</span> <span class="o">:=</span> <span class="o">...</span>
+   <span class="o">;</span> <span class="n">UserToString</span> <span class="o">:=</span> <span class="o">...</span> <span class="o">|}.</span>
+</pre>
+<p>And then your library functions will automatically be instantiated
+when you use them.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

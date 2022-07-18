@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>How does one define dependent type with named arguments in Coq without issues in unification in the constructors?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-unification-in-the-constructors">
+<h1 class="title">How does one define dependent type with named arguments in Coq without issues in unification in the constructors?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71518005">https://stackoverflow.com/q/71518005</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to defined a lenghted list but I like arguments with names at
+the top of the inductive definition. Whenever I try that I get
+unification errors with things I hoped worked and was forced to do a
+definition that obviously has bugs e.g. allows a list where everything
+is length <tt class="docutils literal">0</tt> but has <tt class="docutils literal">1</tt> element. How do I fix this?</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">n</span> : nat) : <span class="kt">Type</span> :=
+| vnil <span class="c">(* not quite right... *)</span>
+| vcons (hd : A) (tail : Vector (n - <span class="mi">1</span>)).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk0"><span class="kn">Check</span> vnil <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vnil <span class="mi">0</span>
+     : Vector <span class="mi">0</span>
+<span class="kn">where</span>
+<span class="nl">?A</span> : [ |- <span class="kt">Type</span>]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk1"><span class="kn">Check</span> vcons <span class="mi">1</span> true (vnil <span class="mi">0</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vcons <span class="mi">1</span> true (vnil <span class="mi">0</span>)
+     : Vector <span class="mi">1</span></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector&#39;</span> {<span class="nv">A</span>: <span class="kt">Type</span>} : nat -&gt; <span class="kt">Type</span> :=
+| vnil&#39; : Vector&#39; <span class="mi">0</span>
+| vcons&#39; : <span class="kr">forall</span> <span class="nv">n</span> : nat, A -&gt; Vector&#39; n -&gt; Vector&#39; (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk2"><span class="kn">Check</span> vnil&#39;.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vnil&#39;
+     : Vector&#39; <span class="mi">0</span>
+<span class="kn">where</span>
+<span class="nl">?A</span> : [ |- <span class="kt">Type</span>]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk3"><span class="kn">Check</span> vcons&#39; <span class="mi">0</span> true (vnil&#39;).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vcons&#39; <span class="mi">0</span> true vnil&#39;
+     : Vector&#39; <span class="mi">1</span></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector&#39;&#39;</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">n</span> : nat) : <span class="kt">Type</span> :=
+| vnil&#39;&#39; : Vector&#39;&#39; n <span class="c">(* seems weird, wants to unify with n, argh! *)</span>
+| vcons&#39;&#39; : A -&gt; Vector&#39;&#39; (n - <span class="mi">1</span>) -&gt; Vector&#39;&#39; n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk4"><span class="kn">Check</span> vnil&#39;&#39; <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vnil&#39;&#39; <span class="mi">0</span>
+     : Vector&#39;&#39; <span class="mi">0</span>
+<span class="kn">where</span>
+<span class="nl">?A</span> : [ |- <span class="kt">Type</span>]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-define-dependent-type-with-named-arguments-in-coq-without-issues-in-v-chk5"><span class="kn">Check</span> vcons&#39;&#39; <span class="mi">1</span> true (vnil&#39;&#39; <span class="mi">0</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">vcons&#39;&#39; <span class="mi">1</span> true (vnil&#39;&#39; <span class="mi">0</span>)
+     : Vector&#39;&#39; <span class="mi">1</span></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* Check vcons&#39;&#39; 0 true (vnil&#39;&#39; 0). *)</span>
+<span class="c">(* it also worked! nooooo! hope the -1 did the trick but not *)</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Named arguments to the left of <tt class="docutils literal">:</tt> (they are called parameters) are
+implicitly <tt class="docutils literal">forall</tt>'d in each constructor and must appear as the
+same variable in the return type of each constructor. Arguments to the
+right (they are called indices) are not implicitly <tt class="docutils literal">forall</tt>'d and
+may appear as anything. Part of the issue with your definitions is
+that <tt class="docutils literal">n</tt> is already introduced by the time you're writing the type
+of each constructor, so you can't quite restrict it to be <tt class="docutils literal">Z</tt> or <tt class="docutils literal">S
+m</tt> at that point.</p>
+<p>The idea is that parameters are supposed to be parameters to the whole
+inductive definition. <tt class="docutils literal">Vector A n</tt> and <tt class="docutils literal">Vector B m</tt> do not depend
+on each other; it would make sense to consider <tt class="docutils literal">Vector A</tt> and
+<tt class="docutils literal">Vector B</tt> to be different inductive definitions, and <tt class="docutils literal">Vector</tt> as
+a family of inductives parameterized by a <tt class="docutils literal">Type</tt>. On the other hand,
+<tt class="docutils literal">Vector A (S n)</tt> refers to <tt class="docutils literal">Vector A n</tt>; you cannot construct the
+type <tt class="docutils literal">Vector A (S n)</tt> without first constructing <tt class="docutils literal">Vector A n</tt>, so
+they should be considered parts of one inductive construction <tt class="docutils literal">Vector
+A : nat <span class="pre">-&gt;</span> Type</tt>.</p>
+<p>This interpretation is not strictly enforced---you can poke a hole in
+it with <tt class="docutils literal">Inductive E (n : nat) : Set := | mk_E : E (S n) <span class="pre">-&gt;</span> E
+n.</tt>---but the rule about parameters vs. indices in constructor return
+types is enforced. It is the <em>intent of the design</em> of Coq that the
+&quot;most natural&quot; way to define <tt class="docutils literal">Vector</tt> is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* making A an implicit argument to Vector seems a bad idea... *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : nat -&gt; <span class="kt">Type</span> :=
+| vnil  : Vector A O
+| vcons : <span class="kr">forall</span> <span class="nv">n</span>, A -&gt; Vector A n -&gt; Vector A (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* if you want to clean up vnil and vcons afterwards you can issue</span>
+<span class="c">   something like *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> vnil {A}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> vcons {A n}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp"><span class="c">(* it would also work to define Vector with A implicit and then just</span>
+<span class="c">   use Arguments on Vector to make A explicit (it would leave n</span>
+<span class="c">   explicit in vcons), but that&#39;s just weird *)</span></span></pre><p>If you want to clarify what the <tt class="docutils literal">nat</tt> is doing, you could just leave
+a comment like</p>
+<pre class="code coq literal-block">
+<span class="c">(* A [Vector A n] is a list of [n] elements of type [A]. *)</span>
+</pre>
+<p>or</p>
+<pre class="code coq literal-block">
+<span class="kn">Inductive</span> <span class="nf">Vector</span> <span class="o">(</span><span class="nv">A</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="c">(* n *)</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="kt">Type</span> <span class="o">:=</span>
+</pre>
+<p>If you <em>really</em> want <tt class="docutils literal">Inductive Vector (A : Type) (n : nat) : Type</tt>,
+then you have to resort to something like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat) : <span class="kt">Type</span> :=
+| vnil  (prf : n = O)
+| vcons (m : nat) (prf : n = S m) (x : A) (xs : Vector A m).</span></span></pre><p>Which makes everything messy.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

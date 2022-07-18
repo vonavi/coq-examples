@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Creating Coq tactic: how to use a newly generated name?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="creating-coq-tactic-how-to-use-a-newly-generated-name">
+<h1 class="title">Creating Coq tactic: how to use a newly generated name?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71443387">https://stackoverflow.com/q/71443387</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I want to create a Coq tactic that looks something like the following.
+I assert a proposition named <tt class="docutils literal">H</tt>, I prove that proposition, and then
+I use <tt class="docutils literal">simpl</tt> within that proposition. The tactic would look
+something like this:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Tactic Notation</span> <span class="s2">&quot;foo&quot;</span> :=
+  <span class="nb">assert</span> (<span class="kt">True</span>) <span class="kr">as</span> H; <span class="kp">try</span> <span class="nb">apply</span> I;
+  <span class="nb">simpl</span> <span class="kr">in</span> H.</span></span></pre><p>However, instead of using the name <tt class="docutils literal">H</tt> for this hypothesis, I want
+Coq to generate a new name for me. The problem is, how can I then use
+<tt class="docutils literal">simpl</tt> in this hypothesis?</p>
+<pre class="code coq literal-block">
+<span class="kn">Tactic Notation</span> <span class="s2">&quot;foo&quot;</span> <span class="o">:=</span>
+  <span class="nb">assert</span> <span class="o">(</span><span class="kt">True</span><span class="o">)</span> <span class="kr">as</span> <span class="o">?;</span> <span class="kp">try</span> <span class="nb">apply</span> <span class="n">I</span><span class="o">;</span>
+  <span class="nb">simpl</span> <span class="kr">in</span> <span class="c">(* what? *)</span><span class="o">.</span>
+</pre>
+<p>Is there a way that I can generate a hypothesis name, and then refer
+back to it within the same tactic?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>You can use the <tt class="docutils literal">fresh</tt> tactic for this. Here is an example:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Tactic Notation</span> <span class="s2">&quot;foo&quot;</span> :=
+  <span class="kr">let</span> <span class="nv">H</span> := <span class="kp">fresh</span> <span class="s2">&quot;H&quot;</span> <span class="kr">in</span>
+  <span class="nb">assert</span> <span class="kt">True</span> <span class="kr">as</span> H; <span class="kp">try</span> <span class="nb">apply</span> I; <span class="nb">simpl</span> <span class="kr">in</span> H.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="creating-coq-tactic-how-to-use-a-newly-generated-name-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="creating-coq-tactic-how-to-use-a-newly-generated-name-v-chk0"><span class="kn">Goal</span> <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="creating-coq-tactic-how-to-use-a-newly-generated-name-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="creating-coq-tactic-how-to-use-a-newly-generated-name-v-chk1">foo. <span class="c">(* H : True *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="creating-coq-tactic-how-to-use-a-newly-generated-name-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="creating-coq-tactic-how-to-use-a-newly-generated-name-v-chk2">foo. <span class="c">(* H, H0 : True *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H, H0</var><span class="hyp-type"><b>: </b><span><span class="kt">True</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
+</div>
+</div>
+</div></body>
+</html>

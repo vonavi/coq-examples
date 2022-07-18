@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>How does one build the list of only true elements in Coq using dependent types?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types">
+<h1 class="title">How does one build the list of only true elements in Coq using dependent types?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71518511">https://stackoverflow.com/q/71518511</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I was going through the Coq book <a class="reference external" href="https://math-comp.github.io/mcb/">from the maths perspective</a>. I was trying to define a
+dependently typed function that returned a length list with <tt class="docutils literal">n</tt>
+trues depending on the number trues we want. Coq complains that things
+don't have the right type but when I see it if it were to unfold my
+definitions when doing the type comparison it should have worked but
+it doesn't. Why?</p>
+<p>Code:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">playing_with_types2</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector</span> {<span class="nv">A</span> : <span class="kt">Type</span>} : nat -&gt; <span class="kt">Type</span> :=
+  | vnil : Vector <span class="mi">0</span>
+  | vcons: <span class="kr">forall</span> <span class="nv">n</span> : nat, A -&gt; Vector n -&gt; Vector (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">t</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">n</span> : nat) : <span class="kt">Type</span> :=
+    <span class="kr">match</span> n <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; @Vector A <span class="mi">0</span>
+    | S n&#39; =&gt; @Vector A (S n&#39;)
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk0"><span class="kn">Check</span> t. <span class="c">(* nat -&gt; Type *)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">t
+     : nat -&gt; <span class="kt">Type</span>
+<span class="kn">where</span>
+<span class="nl">?A</span> : [ |- <span class="kt">Type</span>]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk1"><span class="kn">Check</span> @t. <span class="c">(* Type -&gt; nat -&gt; Type *)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">@t
+     : <span class="kt">Type</span> -&gt; nat -&gt; <span class="kt">Type</span></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* meant to mimic Definition g : forall n: nat, t n. *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk2"><span class="kn">Fixpoint</span> <span class="nf">g</span> (<span class="nv">n</span> : nat) : t n :=
+    <span class="kr">match</span> n <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; vnil
+    | S n&#39; =&gt; vcons n&#39; true (g n&#39;)
+    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
+n : nat
+The term <span class="s2">&quot;vnil&quot;</span> has type <span class="s2">&quot;Vector 0&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;t ?n@{n1:=0}&quot;</span>.</blockquote></div></div></small></span></pre><p>Coq's error:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
+n : nat
+The term <span class="s2">&quot;vnil&quot;</span> has type <span class="s2">&quot;Vector 0&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;t ?n@{n1:=0}&quot;</span>.</blockquote></div></div></small></span></pre><p>i.e. <tt class="docutils literal">t <span class="pre">?n&#64;{n1:=0}</span></tt> is <tt class="docutils literal">Vector 0</tt>... no?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>In this case, it looks like Coq does not manage to infer the return
+type of the <tt class="docutils literal">match</tt> expression, so the best thing to do is to give
+it explicitly:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk4"><span class="kn">Fixpoint</span> <span class="nf">g</span> (<span class="nv">n</span> : nat) : t n :=
+    <span class="kr">match</span> n <span class="kr">return</span> t n <span class="kr">with</span>
+    | <span class="mi">0</span> =&gt; vnil
+    | S n&#39; =&gt; vcons n&#39; true (g n&#39;)
+    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
+g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
+n : nat
+n&#39; : nat
+The term <span class="s2">&quot;g n&#39;&quot;</span> has type <span class="s2">&quot;t n&#39;&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Vector n&#39;&quot;</span>.</blockquote></div></div></small></span></pre><p>Note the added <tt class="docutils literal">return</tt> clause.</p>
+<p>Then the real error message appears:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+In environment
+g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
+n : nat
+n&#39; : nat
+The term <span class="s2">&quot;g n&#39;&quot;</span> has type <span class="s2">&quot;t n&#39;&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Vector n&#39;&quot;</span>.</blockquote></div></div></small></span></pre><p>And this time it is true that in general <tt class="docutils literal">t n'</tt> is not the same as
+<tt class="docutils literal">Vector n'</tt> because <tt class="docutils literal">t n'</tt> is stuck (it does not know yet whether
+<tt class="docutils literal">n'</tt> is <tt class="docutils literal">0</tt> or some <tt class="docutils literal">S n''</tt>).</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
