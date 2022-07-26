@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Why can I not apply f_equal to a hypothesis?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-can-i-not-apply-f-equal-to-a-hypothesis">
+<h1 class="title">Why can I not apply <tt class="docutils literal">f_equal</tt> to a hypothesis?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/72091301">https://stackoverflow.com/q/72091301</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>In my list of hypothesis, I have:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-can-i-not-apply-f-equal-to-a-hypothesis-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>S (length l&#39;) = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>My goal is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-can-i-not-apply-f-equal-to-a-hypothesis-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>S (length l&#39;) = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l&#39; = n&#39;</div></blockquote></div></div></small></span></pre><p>So I tried <tt class="docutils literal">f_equal in H</tt>. But I get the following error:</p>
+<pre class="code literal-block">
+Syntax error: [tactic:ltac_use_default] expected after
+[tactic:tactic] (in [vernac:tactic_command]).
+</pre>
+<p>Am I wrong in thinking I should be able to apply <tt class="docutils literal">f_equal</tt> to <tt class="docutils literal">H</tt>
+in order to remove the <tt class="docutils literal">S</tt> on both sides?</p>
+</div>
+<div class="section" id="answer-theo-winterhalter">
+<h1>Answer (Théo Winterhalter)</h1>
+<p><tt class="docutils literal">f_equal</tt> is about congruence of equality. It can be used to prove
+<tt class="docutils literal">f x = f y</tt> from <tt class="docutils literal">x = y</tt>. However, it cannot be used to deduce <tt class="docutils literal">x
+= y</tt> from <tt class="docutils literal">f x = f y</tt> because that is not true in general, only
+when <tt class="docutils literal">f</tt> is injective.</p>
+<p>Here it is a particular case as <tt class="docutils literal">S</tt> is a constructor of an inductive
+type, and constructors are indeed injective. You could for instance
+use tactics like <tt class="docutils literal">inversion H</tt> to obtain the desired equality.</p>
+<p>Another solution involving <tt class="docutils literal">f_equal</tt> would be to apply a function
+that removes the <tt class="docutils literal">S</tt> like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-can-i-not-apply-f-equal-to-a-hypothesis-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-can-i-not-apply-f-equal-to-a-hypothesis-v-chk2"><span class="kn">Definition</span> <span class="nf">removeS</span> <span class="nv">n</span> :=
+    <span class="kr">match</span> n <span class="kr">with</span>
+    | S m =&gt; m
+    | <span class="mi">0</span> =&gt; <span class="mi">0</span>
+    <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>S (length l&#39;) = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l&#39; = n&#39;</div></blockquote></div></div></small></span></pre><p>and then use</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-can-i-not-apply-f-equal-to-a-hypothesis-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-can-i-not-apply-f-equal-to-a-hypothesis-v-chk3"><span class="nb">apply</span> (<span class="nb">f_equal</span> removeS) <span class="kr">in</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>removeS (S (length l&#39;)) = removeS (S n&#39;)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l&#39; = n&#39;</div></blockquote></div></div></small></span></pre></div>
+<div class="section" id="answer-jbapple">
+<h1>Answer (jbapple)</h1>
+<p><tt class="docutils literal">f_equal</tt> tells you that if <tt class="docutils literal">x = y</tt>, then <tt class="docutils literal">f x = f y</tt>. In other
+words, when you <em>have</em> <tt class="docutils literal">x = y</tt> and <em>need</em> <tt class="docutils literal">f x = f y</tt>, you can use
+<tt class="docutils literal">f_equal</tt>.</p>
+<p>Your situation is the reverse. You <em>have</em> <tt class="docutils literal">f x = f y</tt> and you <em>need</em>
+<tt class="docutils literal">x = y</tt>, so you can't use <tt class="docutils literal">f_equal</tt>.</p>
+<p>If you think about your conclusion, it is only true when <tt class="docutils literal">S</tt> is an
+injection. You need a different tactic.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Since <tt class="docutils literal">S</tt> is a constructor, the tactic <tt class="docutils literal">injection H</tt> will
+work.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

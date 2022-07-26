@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>How to dependent match on a list with two elements?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-dependent-match-on-a-list-with-two-elements">
+<h1 class="title">How to dependent match on a list with two elements?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71919638">https://stackoverflow.com/q/71919638</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm trying to understand dependent types and dependent match in Coq, I
+have the code below, at the bottom I have the <tt class="docutils literal">add_pair</tt> function,
+the idea is that I want to receive a (dependent) list with exactly two
+elements and return the sum of the two elements in the list. Since the
+size of the list is encoded in the type, I should be able to define it
+as a total function, but I got an error saying that the <tt class="docutils literal">match</tt> is
+not <tt class="docutils literal">exaustive</tt></p>
+<p>Here is the code</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">IList</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Lists</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  <span class="c">(* o tipo generico dos elementos da lista *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Set</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* data type da lista, recebe um nat que é</span>
+<span class="c">       o tamanho da lista *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">t</span> : nat -&gt; <span class="kt">Set</span> :=
+  | nil : t <span class="mi">0</span>                 <span class="c">(* lista vazia, n = 0 *)</span>
+  | cons : <span class="kr">forall</span> (<span class="nv">n</span> : nat), A -&gt; t n -&gt; t (S n).</span></span><span class="alectryon-wsp"> <span class="c">(* cons de uma lista</span>
+<span class="c">                                              n = n + 1 *)</span>
+  <span class="c">(* concatena duas listas, n = n1 + n2 *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">concat</span> <span class="nv">n1</span> (<span class="nv">ls1</span> : t n1) <span class="nv">n2</span> (<span class="nv">ls2</span> : t n2) : t (n1 + n2) :=
+    <span class="kr">match</span> ls1 <span class="kr">in</span> t n1 <span class="kr">return</span> t (n1 + n2) <span class="kr">with</span>
+    | nil =&gt; ls2
+    | cons x ls1&#39; =&gt; cons x (concat ls1&#39; ls2)
+    <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+  <span class="c">(* computar o tamanho da lista é O(1) *)</span>
+</span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">length</span> <span class="nv">n</span> (<span class="nv">l</span> : t n) : nat := n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Lists</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> nil {_}.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Isso aqui serve pra introduzir notações pra gente poder</span>
+<span class="c">     falar [1;2;3] em vez de (cons 1 (cons 2 (cons 3 nil))) *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Notations</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-dependent-match-on-a-list-with-two-elements-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-dependent-match-on-a-list-with-two-elements-v-chk0"><span class="kn">Notation</span> <span class="s2">&quot;a :: b&quot;</span> := (cons a b) (<span class="kn">right associativity</span>, <span class="kn">at level</span> <span class="mi">60</span>) : list_scope.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ :: _&quot;</span> was already used <span class="kr">in</span> scope
+list_scope. [notation-overridden,parsing]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ ]&quot;</span> := nil : list_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ x ]&quot;</span> := (cons x nil) : list_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ x ; y ; .. ; z ]&quot;</span> := (cons x (cons y .. (cons z nil) ..)) : list_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> list_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Notations</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-dependent-match-on-a-list-with-two-elements-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-dependent-match-on-a-list-with-two-elements-v-chk1"><span class="kn">Import</span> Notations.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ :: _&quot;</span> was already used <span class="kr">in</span> scope
+list_scope. [notation-overridden,parsing]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+<span class="c">(* Error: Non exhaustive pattern-matching: no clause found for pattern [_] *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-dependent-match-on-a-list-with-two-elements-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-dependent-match-on-a-list-with-two-elements-v-chk2"><span class="kn">Definition</span> <span class="nf">add_pair</span> (<span class="nv">l</span> : t nat <span class="mi">2</span>) : nat :=
+  <span class="kr">match</span> l <span class="kr">in</span> (t _ <span class="mi">2</span>) <span class="kr">return</span> nat <span class="kr">with</span>
+  | (cons x (cons y nil)) =&gt; x + y
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
+[_]</blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">IList</span>.</span></span></pre></div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>Indeed, it is true that the match you provided is exhaustive, but the
+pattern-matching algorithm of Coq is limited, and not able to detect
+it. The issue, I think, is that it compiles a nested pattern-matching
+such as yours (you have two imbricated <tt class="docutils literal">cons</tt>) down to a successions
+of elementary pattern-matching (which have patterns of depth at most
+one). But in the <tt class="docutils literal">cons</tt> branch of the outer <tt class="docutils literal">match</tt>, the
+information that the index should be <tt class="docutils literal">1</tt> is lost if you do not
+record it explicitly with an equality --- something the current
+algorithm is not smart enough to do.</p>
+<p>As a possible solution that avoids fiddling with impossible branches,
+equalities, and the like, I propose the following:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">head</span> {<span class="nv">A</span> <span class="nv">n</span>} (<span class="nv">l</span> : t A (S n)) : A :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | cons x _ =&gt; x
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">tail</span> {<span class="nv">A</span> <span class="nv">n</span>} (<span class="nv">l</span> : t A (S n)) : t A n :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | cons _ l&#39; =&gt; l&#39;
+  <span class="kr">end</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">add_pair</span> (<span class="nv">l</span> : t nat <span class="mi">2</span>) : nat :=
+  head l + (head (tail l)).</span></span></pre><hr class="docutils" />
+<p>For the record, a solution that <em>does</em> fiddle with the impossible
+branches and records the information of the index using equalities
+(there's probably a nicer version):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">add_pair</span> (<span class="nv">l</span> : t nat <span class="mi">2</span>) : nat :=
+  <span class="kr">match</span> l <span class="kr">in</span> t _ m <span class="kr">return</span> m = <span class="mi">2</span> -&gt; nat <span class="kr">with</span>
+  | [] =&gt; <span class="kr">fun</span> <span class="nv">e</span> =&gt; <span class="kp">ltac</span>:(<span class="bp">lia</span>)
+  | x :: l&#39; =&gt; <span class="kr">fun</span> <span class="nv">e</span> =&gt;
+                 <span class="kr">match</span> l&#39; <span class="kr">in</span> t _ m&#39; <span class="kr">return</span> m&#39; = <span class="mi">1</span> -&gt; nat <span class="kr">with</span>
+                 | [] =&gt; <span class="kr">fun</span> <span class="nv">e&#39;</span> =&gt; <span class="kp">ltac</span>:(<span class="bp">lia</span>)
+                 | x&#39; :: l&#39;&#39; =&gt; <span class="kr">fun</span> <span class="nv">e&#39;</span> =&gt;
+                                  <span class="kr">match</span> l&#39;&#39; <span class="kr">in</span> t _ m&#39;&#39; <span class="kr">return</span> m&#39;&#39; = <span class="mi">0</span> -&gt; nat <span class="kr">with</span>
+                                  | [] =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; x + x&#39;
+                                  | _ =&gt; <span class="kr">fun</span> <span class="nv">e&#39;&#39;</span> =&gt; <span class="kp">ltac</span>:(<span class="bp">lia</span>)
+                                  <span class="kr">end</span> <span class="kp">ltac</span>:(<span class="bp">lia</span>)
+                 <span class="kr">end</span> <span class="kp">ltac</span>:(<span class="bp">lia</span>)
+  <span class="kr">end</span> eq_refl.</span></span></pre><p>The interesting part is the use of explicit equalities to record the
+value of the index (these are used by the <tt class="docutils literal">lia</tt> tactic to discard
+impossible branches).</p>
+<hr class="docutils" />
+<p><strong>Q:</strong> Thank you, this is so cool! I didn't know that you can discard
+impossible branches using ltac and never saw this <tt class="docutils literal"><span class="pre">ltac:...</span></tt>, thank
+you so much!</p>
+<p><strong>Q:</strong> The <tt class="docutils literal"><span class="pre">ltac:(lia)</span></tt> after <tt class="docutils literal">end</tt> are the application of the
+<tt class="docutils literal">fun e =&gt; ...</tt> functions returned by the match?</p>
+<p><strong>A:</strong> Yes! They are used to generate the right equalities from the
+one available in context. For instance the lowest one constructs a
+proof of <tt class="docutils literal">m = 1</tt> from the proof of <tt class="docutils literal">S m = 2</tt> available in context
+(<tt class="docutils literal">e</tt>).</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
