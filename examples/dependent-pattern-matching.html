@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Dependent pattern matching</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="dependent-pattern-matching">
+<h1 class="title">Dependent pattern matching</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1549">https://proofassistants.stackexchange.com/q/1549</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>upd. What I would like to do is to put <tt class="docutils literal">a = RedNode' ..</tt> into
+current context (when using <tt class="docutils literal">refine</tt>). I found this technique here
+<a class="reference external" href="https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement">https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement</a>
+.</p>
+<p>This code works:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">color</span> : <span class="kt">Set</span> := Red | Black.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">rbtree</span> : color -&gt; nat -&gt; <span class="kt">Set</span> :=
+| Leaf : rbtree Black <span class="mi">0</span>
+| RedNode : <span class="kr">forall</span> <span class="nv">n</span>, rbtree Black n -&gt; nat -&gt; rbtree Black n -&gt; rbtree Red n
+| BlackNode : <span class="kr">forall</span> <span class="nv">c1</span> <span class="nv">c2</span> <span class="nv">n</span>,
+    rbtree c1 n -&gt; nat -&gt; rbtree c2 n -&gt; rbtree Black (S n).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">rtree</span> : nat -&gt; <span class="kt">Set</span> :=
+| RedNode&#39; : <span class="kr">forall</span> <span class="nv">c1</span> <span class="nv">c2</span> <span class="nv">n</span>, rbtree c1 n -&gt; nat -&gt; rbtree c2 n -&gt; rtree n.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk0"><span class="kn">Definition</span> <span class="nf">balance1</span> <span class="nv">n</span> (<span class="nv">a</span> : rtree n) (<span class="nv">data</span> : nat) <span class="nv">c2</span> (<span class="nv">t</span> : rbtree c2 n)
+  : { c : color &amp; rbtree c (S n) }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk1"><span class="nb">refine</span> (
+      <span class="kr">match</span> a <span class="kr">with</span>
+      | RedNode&#39; _ c0 _ t1 y t2 =&gt; <span class="kr">fun</span> <span class="nv">Heqa</span> =&gt; _
+      <span class="kr">end</span> (eq_refl a)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br><span><var>c, c0</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t1</var><span class="hyp-type"><b>: </b><span>rbtree c n0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t2</var><span class="hyp-type"><b>: </b><span>rbtree c0 n0</span></span></span><br><span><var>Heqa</var><span class="hyp-type"><b>: </b><span>RedNode&#39; c c0 n0 t1 y t2 =
+RedNode&#39; c c0 n0 t1 y t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n0)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>My question is in next (slightly modified definition) of <tt class="docutils literal">balance1</tt>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk2"><span class="kn">Definition</span> <span class="nf">balance1</span> <span class="nv">n</span> (<span class="nv">a</span> : rtree n) (<span class="nv">data</span> : nat) <span class="nv">c2</span> (<span class="nv">t</span> : rbtree c2 n)
+  : { c : color &amp; rbtree c (S n) }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="dependent-pattern-matching-v-chk3"><span class="nb">refine</span> (
+      <span class="kr">match</span> a <span class="kr">as</span> ax <span class="kr">in</span> rtreen nx <span class="kr">return</span> a = ax -&gt; _ <span class="kr">with</span>
+      | RedNode&#39; _ c0 _ t1 y t2 =&gt; <span class="kr">fun</span> <span class="nv">Heqa</span> =&gt; _
+      <span class="kr">end</span> (eq_refl a)).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">This should be an inductive type applied to patterns.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span></pre><p>And now Coq does not see that <tt class="docutils literal">a</tt> and <tt class="docutils literal">ax</tt> the same because it is
+not able to see that <tt class="docutils literal">n</tt> and <tt class="docutils literal">nx</tt> are the same.</p>
+<p>What is going on and how to express equality between <tt class="docutils literal">n</tt> and <tt class="docutils literal">nx</tt>
+(so, Coq will see I can have <tt class="docutils literal">a = ax</tt>)?</p>
+<p>(an example is taken from CPDT).</p>
+<hr class="docutils" />
+<p><strong>A:</strong> What I would like to do is to put <tt class="docutils literal">RedNode'</tt> into current
+context (which I see in proof mode when using refine). I found this
+here
+<a class="reference external" href="https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement">https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement</a></p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>As mentioned by Pierre Castèran, the first definition works because
+Coq infers a (useless) return type <tt class="docutils literal">ax = ax <span class="pre">-&gt;</span> _</tt>. If you really
+want to maintain an equality like <tt class="docutils literal">a = ax</tt> you need to work a bit
+more to have (a modification of) <tt class="docutils literal">a</tt> and <tt class="docutils literal">ax</tt> at the same type.
+The first possibility is to make explicit the equality between the
+natural number indices and rewrite along it in the return clause:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* First possibility: take an equation between the indices as argument</span>
+<span class="c">   and transport along that equation *)</span>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk4"><span class="kn">Definition</span> <span class="nf">balance1</span> <span class="nv">n</span> (<span class="nv">a</span> : rtree n) (<span class="nv">data</span> : nat) <span class="nv">c2</span> (<span class="nv">t</span> : rbtree c2 n)
+  : { c : color &amp; rbtree c (S n) }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk5"><span class="nb">refine</span> (
+      <span class="kr">match</span> a <span class="kr">as</span> ax <span class="kr">in</span> rtree nx <span class="kr">return</span>
+            <span class="kr">forall</span> (<span class="nv">en</span> : n = nx) (<span class="nv">ea</span> : eq_rect n rtree a nx en = ax), _
+      <span class="kr">with</span>
+      | RedNode&#39; _ c0 _ t1 y t2 =&gt; <span class="kr">fun</span> <span class="nv">Heqn</span> <span class="nv">Heqa</span> =&gt; _
+      <span class="kr">end</span> eq_refl eq_refl).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br><span><var>c, c0</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t1</var><span class="hyp-type"><b>: </b><span>rbtree c n0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t2</var><span class="hyp-type"><b>: </b><span>rbtree c0 n0</span></span></span><br><span><var>Heqn</var><span class="hyp-type"><b>: </b><span>n = n0</span></span></span><br><span><var>Heqa</var><span class="hyp-type"><b>: </b><span>eq_rect n rtree a n0 Heqn =
+RedNode&#39; c c0 n0 t1 y t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n0)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>The second possibility, which is a variant on the first used a lot by
+the <a class="reference external" href="https://github.com/mattam82/Coq-Equations">Equations</a> library,
+packs together a natural number with an rtree in a dependent sum, so
+that the resulting pair has no dependence and equality can be used
+directly on the pairs:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Variant: pack the index n together with the element a : rtree n and</span>
+<span class="c">   take an equation between the packed arguments *)</span>
+
+<span class="c">(* Definition and notation for dependent sum *)</span>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Primitive Projections</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">sigma</span> <span class="nv">A</span> (<span class="nv">B</span> : A -&gt; <span class="kt">Type</span>) := mkSig { pr1 : A; pr2 : B pr1 }.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Unset Primitive Projections</span>.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> sigma {A} B.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> mkSig {A} B pr1 pr2.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;&#39;Σ&#39; x .. y , P&quot;</span> :=
+  (sigma (<span class="kr">fun</span> <span class="nv">x</span> =&gt; .. (sigma (<span class="kr">fun</span> <span class="nv">y</span> =&gt; P)) ..))
+    (<span class="kn">at level</span> <span class="mi">200</span>, x <span class="kn">binder</span>, y <span class="kn">binder</span>, <span class="kn">right associativity</span>,
+      <span class="kn">format</span> <span class="s2">&quot;&#39;[  &#39; &#39;[  &#39; Σ  x  ..  y &#39;]&#39; ,  &#39;/&#39; P &#39;]&#39;&quot;</span>) : type_scope.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;( x , .. , y , z )&quot;</span> :=
+  (@mkSig _ _ x .. (@mkSig _ _ y z) ..)
+    (<span class="kn">right associativity</span>, <span class="kn">at level</span> <span class="mi">0</span>,
+      <span class="kn">format</span> <span class="s2">&quot;( x ,  .. ,  y ,  z )&quot;</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot; x .1 &quot;</span> := (pr1 x) (<span class="kn">at level</span> <span class="mi">3</span>, <span class="kn">format</span> <span class="s2">&quot;x .1&quot;</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot; x .2 &quot;</span> := (pr2 x) (<span class="kn">at level</span> <span class="mi">3</span>, <span class="kn">format</span> <span class="s2">&quot;x .2&quot;</span>).</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk6"><span class="kn">Definition</span> <span class="nf">balance2</span> <span class="nv">n</span> (<span class="nv">a</span> : rtree n) (<span class="nv">data</span> : nat) <span class="nv">c2</span> (<span class="nv">t</span> : rbtree c2 n)
+  : { c : color &amp; rbtree c (S n) }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk7"><span class="nb">refine</span> (
+      <span class="kr">match</span> a <span class="kr">as</span> ax <span class="kr">in</span> rtree nx <span class="kr">return</span>
+            (n, a) = (nx, ax) -&gt; _
+      <span class="kr">with</span>
+      | RedNode&#39; _ c0 _ t1 y t2 =&gt; <span class="kr">fun</span> <span class="nv">Heqa</span> =&gt; _
+      <span class="kr">end</span> eq_refl).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br><span><var>c, c0</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t1</var><span class="hyp-type"><b>: </b><span>rbtree c n0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t2</var><span class="hyp-type"><b>: </b><span>rbtree c0 n0</span></span></span><br><span><var>Heqa</var><span class="hyp-type"><b>: </b><span>(n, a) = (n0, RedNode&#39; c c0 n0 t1 y t2)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n0)}</div></blockquote></div></div></small><span class="alectryon-wsp">
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>In both cases, actually using these equalities afterwards will be
+somewhat painful: you might be able to use them thanks to decidable
+equality on natural numbers and its consequences (in particular
+<tt class="docutils literal">UIP_nat</tt> in <tt class="docutils literal">Coq.Arith.Peano_dec</tt> if you use the stdlib).</p>
+<p>But more globally, you should consider whether maintining such an
+equality will be really useful for proving your goal: <tt class="docutils literal">a</tt> does not
+appear in the conclusion, nor in any other premise so you should not
+need to know anything about it beyond its content once
+pattern-matched.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

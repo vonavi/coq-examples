@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Why not have Prop : Set in Coq?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-not-have-prop-set-in-coq">
+<h1 class="title">Why not have <tt class="docutils literal">Prop : Set</tt> in Coq?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1551">https://proofassistants.stackexchange.com/q/1551</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="question">
+<h1>Question</h1>
+<p>My understanding of Coq is that <tt class="docutils literal">Prop : Type_1</tt>, <tt class="docutils literal">Set : Type_1</tt>,
+and then <tt class="docutils literal">Type_1 : Type_2</tt>, <tt class="docutils literal">Type_2 : Type_3</tt>, etc.</p>
+<p>So, at the bottom level, the world splits into two universes: <tt class="docutils literal">Prop</tt>
+(impredicative) and <tt class="docutils literal">Set</tt> (predicative, like all the other
+<tt class="docutils literal">Type_i</tt> universes). My question is: why not just have <tt class="docutils literal">Prop :
+Type_0 : Type_1 : Type_2 : ...</tt>, with <tt class="docutils literal">Prop</tt> being impredicative as
+it is today, and all the other levels would be predicative, also as is
+the case today? Wouldn't that be simpler? Would cumulatively still
+work?</p>
+</div>
+<div class="section" id="answer">
+<h1>Answer</h1>
+<p>As it often happens with Coq, the answer is <em>historical reasons</em>.</p>
+<p>In the original version dating back from 1984, Coq was based on the
+Calculus of Constructions, a barebone dependent type theory. In
+particular, it did not feature inductive types. Instead, following the
+PTS tradition, it had impredicative universes.</p>
+<p>The introduction of inductive types did not change this state of
+affair, and for a long time Coq had <em>two</em> impredicative universes,
+<tt class="docutils literal">Prop</tt> and <tt class="docutils literal">Set</tt>. The difference between both lied in the fact
+that the former was erased by extraction, but not the latter. This
+phase separation had been around for a long time already.</p>
+<p>When dealing with several impredicative universes, one has to be
+extremely careful because proofs of <tt class="docutils literal">False</tt> lurk around the corner.
+In particular, <tt class="docutils literal">Prop : Set</tt> when both are impredicative is enough be
+a variant of Girard's system U⁻ and thus inconsistent. The Coq
+developers of yore were well aware of this issue and relied on an
+alternative hierarchy, so that <tt class="docutils literal">Prop : Type</tt> and <tt class="docutils literal">Set : Type</tt>.</p>
+<p>Now, at some point it was decided to make <tt class="docutils literal">Set</tt> predicative by
+default, for other somewhat related reasons. Indeed, impredicative
+proof-relevant universes are very much inconsistent with many slightly
+classical principles like excluded middle in <tt class="docutils literal">Type</tt> or some forms of
+choice. In particular and ironically, with an impredicative <tt class="docutils literal">Set</tt>,
+Coq has no set-theoretical model (as in <a class="reference external" href="https://hal.inria.fr/inria-00076261/document">Polymorphism is not
+set-theoretic</a>).
+Nowadays, <tt class="docutils literal">Set</tt> is thus predicative except if the user opts in
+impredicativity with a specific flag.</p>
+<p>Impredicative set is essentially not used as of today, and really not
+tested so it has fallen to bitrot. It is extremely likely that it is
+not usable anymore, and there is an <a class="reference external" href="https://github.com/coq/coq/issues/9458">evergreen discussion about its
+removal</a>. Yet, since the
+flag still exists Coq needs to at least pretend to avoid
+inconsistencies when the user sets it, and therefore one cannot have
+<tt class="docutils literal">Prop : Set</tt>.</p>
+<p>If the flag ever gets removed, maybe we can consider adding this rule,
+but then there might be weird backwards incompatibilities. Therefore,
+it is not even clear we will ever perform this change even in a
+situation where it is perfectly sound.</p>
+</div>
+</div>
+</div></body>
+</html>

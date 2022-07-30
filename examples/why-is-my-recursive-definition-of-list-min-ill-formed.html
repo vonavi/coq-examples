@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Why is my recursive definition of list_min ill-formed?</title>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="why-is-my-recursive-definition-of-list-min-ill-formed">
+<h1 class="title">Why is my recursive definition of <tt class="docutils literal">list_min</tt> ill-formed?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1465">https://proofassistants.stackexchange.com/q/1465</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>I'm new to Coq and I'm on my own (self-learning).</p>
+<div class="section" id="question-1">
+<h2>Question:</h2>
+<blockquote>
+Define a function <tt class="docutils literal">list_min</tt> that takes a list of natural
+numbers and returns the least element of the list.</blockquote>
+<p><a class="reference external" href="https://cs.pomona.edu/classes/cs54/book/Structures.html#lab71">Source</a></p>
+</div>
+<div class="section" id="my-solution">
+<h2>My solution:</h2>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-my-recursive-definition-of-list-min-ill-formed-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="why-is-my-recursive-definition-of-list-min-ill-formed-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">list_min</span> (<span class="nv">l</span> : list nat) : option nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; None
+  | cons h nil =&gt; Some h
+  | cons h (cons h&#39; t&#39;) =&gt; list_min (cons (min h h&#39;) t&#39;)
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of list_min <span class="kr">is</span> ill-formed.
+In environment
+list_min : list nat -&gt; option nat
+l : list nat
+h : nat
+l0 : list nat
+h&#39; : nat
+t&#39; : list nat
+Recursive call to list_min has principal argument
+equal to <span class="s2">&quot;(Nat.min h h&#39; :: t&#39;)%list&quot;</span> instead of
+one of the following variables: <span class="s2">&quot;l0&quot;</span>
+<span class="s2">&quot;t&#39;&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun l : list nat =&gt;</span>
+<span class="s2"> match l with</span>
+<span class="s2"> | nil =&gt; None</span>
+<span class="s2"> | (h :: nil)%list =&gt; Some h</span>
+<span class="s2"> | (h :: h&#39; :: t&#39;)%list =&gt;</span>
+<span class="s2">     list_min (Nat.min h h&#39; :: t&#39;)%list</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></div>
+<div class="section" id="coq-s-complain">
+<h2>Coq's complain:</h2>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-is-my-recursive-definition-of-list-min-ill-formed-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
+Recursive definition of list_min <span class="kr">is</span> ill-formed.
+In environment
+list_min : list nat -&gt; option nat
+l : list nat
+h : nat
+l0 : list nat
+h&#39; : nat
+t&#39; : list nat
+Recursive call to list_min has principal argument
+equal to <span class="s2">&quot;(Nat.min h h&#39; :: t&#39;)%list&quot;</span> instead of
+one of the following variables: <span class="s2">&quot;l0&quot;</span>
+<span class="s2">&quot;t&#39;&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun l : list nat =&gt;</span>
+<span class="s2"> match l with</span>
+<span class="s2"> | nil =&gt; None</span>
+<span class="s2"> | (h :: nil)%list =&gt; Some h</span>
+<span class="s2"> | (h :: h&#39; :: t&#39;)%list =&gt;</span>
+<span class="s2">     list_min (Nat.min h h&#39; :: t&#39;)%list</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></div>
+<div class="section" id="questions">
+<h2>Questions</h2>
+<ol class="arabic simple">
+<li>Where does <tt class="docutils literal">l0</tt> come from?</li>
+<li>Is there a way to inform Coq such that <tt class="docutils literal">(cons x y)</tt> is shorter
+than <tt class="docutils literal">(cons (cons x y))</tt> and thus my <tt class="docutils literal">list_nat</tt> will always
+terminate?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="answer-meven-lennon-bertrand">
+<h1>Answer (Meven Lennon-Bertrand)</h1>
+<ol class="arabic">
+<li><p class="first"><tt class="docutils literal">l0</tt> comes from the fact that deep pattern-matching such as yours
+(where you have two constructors) get elaborated to a succession of
+one-level pattern-matching. So your pattern-matching actually
+elaborates to something like</p>
+<pre class="code coq literal-block">
+<span class="kr">match</span> <span class="n">l</span> <span class="kr">with</span>
+<span class="o">|</span> <span class="n">nil</span> <span class="o">=&gt;</span> <span class="n">None</span>
+<span class="o">|</span> <span class="n">cons</span> <span class="n">h</span> <span class="n">l0</span> <span class="o">=&gt;</span>
+    <span class="kr">match</span> <span class="n">l0</span> <span class="kr">with</span>
+    <span class="o">|</span> <span class="n">nil</span> <span class="o">=&gt;</span> <span class="n">Some</span> <span class="n">h</span>
+    <span class="o">|</span> <span class="n">cons</span> <span class="n">h'</span> <span class="n">t'</span> <span class="o">=&gt;</span> <span class="n">list_min</span> <span class="o">(</span><span class="n">cons</span> <span class="o">(</span><span class="n">min</span> <span class="n">h</span> <span class="n">h'</span><span class="o">)</span> <span class="n">t'</span><span class="o">)</span>
+    <span class="kr">end</span>
+<span class="kr">end</span><span class="o">.</span>
+</pre>
+</li>
+<li><p class="first">There are two possibilities here: the first is to rely on tools
+such as <a class="reference external" href="https://coq.inria.fr/refman/addendum/program.html">Program</a> to give you
+the possibility to specify a measure showing termination. In your
+case, this would give something like</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
+</span></span><span class="alectryon-wsp">
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">list_min</span> (<span class="nv">l</span> : list nat) {<span class="nv">measure</span> (length l)} : option nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; None
+  | cons h nil =&gt; Some h
+  | cons h (cons h&#39; t&#39;) =&gt; list_min (cons (min h h&#39;) t&#39;)
+  <span class="kr">end</span>.</span></span></pre><p>In general, <tt class="docutils literal">Program</tt> generates <em>obligations</em>, corresponding to
+each case of your pattern-matching, where you have to show that the
+measure indeed decreases. But in your simple example, it is able to
+solve them automatically, so you do not have to do anything. If you
+want to look at those obligations, you can use <tt class="docutils literal">Obligation Tactic
+:= idtac.</tt> before your definition to remove the automation, and
+<tt class="docutils literal">Next Obligation</tt> after it to look at these obligations.</p>
+</li>
+<li><p class="first">If you do not want to drag in <tt class="docutils literal">Program</tt> and all its complexity,
+another solution is to rewrite your program in order to perform
+structural induction. Here is a possible solution:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">list_min</span> (<span class="nv">l</span> : list nat) : option nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; None
+  | cons h l =&gt; <span class="kr">match</span> list_min l <span class="kr">with</span>
+                | None =&gt; Some h
+                | Some m =&gt; Some (min h m)
+                <span class="kr">end</span>
+  <span class="kr">end</span>.</span></span></pre></li>
+</ol>
+</div>
+<div class="section" id="answer-kyo-dralliam">
+<h1>Answer (kyo dralliam)</h1>
+<p>For the first question, it is important to know that Coq does not
+support nested pattern matching primitively at the level of its kernel
+(it would be too complicated). On a definition where you match at
+depth 2 of a list (in the 2nd and 3rd branches) as in you question,
+Coq desugars the nested pattern match into a pair of pattern matches:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-is-my-recursive-definition-of-list-min-ill-formed-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="why-is-my-recursive-definition-of-list-min-ill-formed-v-chk2"><span class="kn">Fixpoint</span> <span class="nf">list_min</span> (<span class="nv">l</span> : list nat) : option nat :=
+  <span class="kr">match</span> l <span class="kr">with</span>
+  | nil =&gt; None
+  | cons h l0 =&gt;
+      <span class="kr">match</span> l0 <span class="kr">with</span>
+      | nil =&gt; Some h
+      | cons h&#39; t&#39; =&gt; list_min (cons (min h h&#39;) t&#39;)
+      <span class="kr">end</span>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Recursive definition of list_min <span class="kr">is</span> ill-formed.
+In environment
+list_min : list nat -&gt; option nat
+l : list nat
+h : nat
+l0 : list nat
+h&#39; : nat
+t&#39; : list nat
+Recursive call to list_min has principal argument
+equal to <span class="s2">&quot;(Nat.min h h&#39; :: t&#39;)%list&quot;</span> instead of
+one of the following variables: <span class="s2">&quot;l0&quot;</span>
+<span class="s2">&quot;t&#39;&quot;</span>.
+Recursive definition <span class="kr">is</span>:
+<span class="s2">&quot;fun l : list nat =&gt;</span>
+<span class="s2"> match l with</span>
+<span class="s2"> | nil =&gt; None</span>
+<span class="s2"> | (h :: nil)%list =&gt; Some h</span>
+<span class="s2"> | (h :: h&#39; :: t&#39;)%list =&gt;</span>
+<span class="s2">     list_min (Nat.min h h&#39; :: t&#39;)%list</span>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre><p>So the <tt class="docutils literal">l0</tt> that appear in the error is a trace of that desugaring
+operation corresponding to the intermediary list.</p>
+<p>Now, for the second question, Coq only allows structurally decreasing
+fixpoints, which means that recursive calls have to happen on
+syntactical subterms of the main argument of your fixpoint (as
+precised by a <tt class="docutils literal">{struct t}</tt> instruction or inferred by Coq -- in your
+case <tt class="docutils literal">l</tt> is the main argument inferred by Coq). <tt class="docutils literal">cons (min h h')
+t'</tt> is <em>not</em> a subterm of <tt class="docutils literal">l</tt> so Coq cannot accept this recursive
+call.</p>
+<p>The solutions you can consider are:</p>
+<ul class="simple">
+<li>use well founded induction on the length of your list rather than
+structural induction on the list (this is a generic solution, but a
+bit involved and it might not compute exactly the way you could
+expect); or</li>
+<li>modify your function (for instance using an accumulator for
+additional data) so that it is actually structurally decreasing.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></body>
+</html>

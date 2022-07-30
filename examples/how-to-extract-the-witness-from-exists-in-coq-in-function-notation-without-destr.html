@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>How to extract the witness from exists in Coq in function notation/without destructing?</title>
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.min.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="alectryon.css" type="text/css" />
+<link rel="stylesheet" href="docutils_basic.css" type="text/css" />
+<link rel="stylesheet" href="pygments.css" type="text/css" />
+<script type="text/javascript" src="alectryon.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-type/0.5.4/css/ibm-type.min.css" integrity="sha512-sky5cf9Ts6FY1kstGOBHSybfKqdHR41M0Ldb0BjNiv3ifltoQIsg0zIaQ+wwdwgQ0w9vKFW7Js50lxH9vqNSSw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/fira_code.min.css" integrity="sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==" crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destructing">
+<h1 class="title">How to extract the witness from <tt class="docutils literal">exists</tt> in Coq in function notation/without destructing?</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1331">https://proofassistants.stackexchange.com/q/1331</a></td>
+</tr>
+</tbody>
+</table>
+<input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
+<div class="section" id="question">
+<h1>Question</h1>
+<p>Assuming I have some definition with a <tt class="docutils literal">forall</tt> and an <tt class="docutils literal">exists</tt>
+like so:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">fooable</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">P</span> := <span class="kr">forall</span> <span class="nv">a</span> : A, <span class="kr">exists</span> <span class="nv">b</span> : B, P a b.</span></span></pre><p>Then on an intuitive level, I can for each <tt class="docutils literal">(a : A)</tt> find a <tt class="docutils literal">(b :
+B)</tt> such that <tt class="docutils literal">(P a b)</tt> holds, so it stands to reason that I can
+build a function that generates the <tt class="docutils literal">b</tt> from the <tt class="docutils literal">a</tt>. As Coq is
+constructive, there has to be a witness for the <tt class="docutils literal">b</tt> if I have
+evidence for <tt class="docutils literal">fooable</tt>, so I am trying to define this function:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk0"><span class="kn">Definition</span> <span class="nf">fooify</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">P</span> (<span class="nv">H</span> : fooable A B P) : A -&gt; B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; B -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>fooable A B P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A -&gt; B</div></blockquote></div></div></small></span></pre><p>Using <tt class="docutils literal">fun a =&gt; H a</tt> to get rid of the <tt class="docutils literal">forall</tt> is easy enough,
+but how can I extract the witness from the <tt class="docutils literal">exists</tt> here? I've also
+tried writing it as a proof and <tt class="docutils literal">destruct</tt>ing the <tt class="docutils literal">exists</tt>, but
+as the goal is a <tt class="docutils literal">Type</tt>, not a <tt class="docutils literal">Prop</tt>, <tt class="docutils literal">destruct</tt> errors.</p>
+</div>
+<div class="section" id="answer-andrej-bauer">
+<h1>Answer (Andrej Bauer)</h1>
+<p>In mathematics there are <em>two</em> kinds of existence:</p>
+<ol class="arabic simple">
+<li>The <strong>concrete</strong> or <strong>informative existence</strong> happens when we show
+that something exists by constructing a specific instance, which is
+then available.</li>
+<li>The <strong>abstract</strong> or <strong>non-informative existence</strong> happens when we
+know that something exists by indirect means, or because the
+constucted witness has been hidden away from us by some mechanism.</li>
+</ol>
+<p>An example that students come accross is this:</p>
+<blockquote>
+<strong>Theorem:</strong> <em>There is a non-computable function</em>
+<span class="math">\(f:\mathbb{N} \rightarrow \mathbb{N}\)</span>.</blockquote>
+<p><em>Abstract existence proof:</em> there are uncountably many function
+<span class="math">\(\mathbb{N} \rightarrow \mathbb{N}\)</span> but only countably many
+Turing machines, therefore some functions must be non-computable.
+<span class="math">\(\square\)</span></p>
+<p><em>Concrete existence proof:</em> we claim that the function
+<span class="math">\(h:\mathbb{N} \rightarrow \mathbb{N}\)</span> defined by</p>
+<div class="math">
+\begin{equation*}
+h(n) = \begin{cases}
+  1, \mbox{ if $n$-th Turing machine halts on input $n$}
+  \\
+  0, \mbox{ otherwise}.
+\end{cases}
+\end{equation*}
+</div>
+<p>is not computable. (Insert here the standard proof that <span class="math">\(h\)</span> is
+not-computable.) <span class="math">\(\square\)</span></p>
+<p>I hope this conveys the idea clearly enough. First-order logic only
+expresses the abstract existence. Martin-Löf type theory only
+expresses the concrete existence.</p>
+<p>Coq can express <em>both</em> kinds of existence. The abstract one is
+<tt class="docutils literal">exists</tt> and the concrete one is <tt class="docutils literal">sig</tt>. So if you want to actually
+extract witnesses, then you should be using <tt class="docutils literal">sig</tt>, not <tt class="docutils literal">exists</tt>.</p>
+<p>In Coq <tt class="docutils literal">sig (fun (x : A) =&gt; P x)</tt> is written in the more readable
+notation <tt class="docutils literal">{x : A | P x}</tt>. Here is the extraction function you asked
+for:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk1"><span class="kn">Definition</span> <span class="nf">extract</span> {<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>} (<span class="nv">P</span> : A -&gt; B -&gt; <span class="kt">Prop</span>) :
+  (<span class="kr">forall</span> <span class="nv">a</span>, { b : B | P a b }) -&gt; { f : A -&gt; B | <span class="kr">forall</span> <span class="nv">a</span>, P a (f a) } :=
+  <span class="kr">fun</span> <span class="nv">g</span> =&gt; exist (<span class="kr">fun</span> <span class="nv">f</span> =&gt; <span class="kr">forall</span> <span class="nv">a</span>, P a (f a))
+                 (<span class="kr">fun</span> <span class="nv">a</span> =&gt; proj1_sig (g a))
+                 (<span class="kr">fun</span> <span class="nv">a</span> =&gt; proj2_sig (g a)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; B -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>fooable A B P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A -&gt; B</div></blockquote></div></div></small></span></pre><p>It is possible to do violence to Coq and extract functions from the
+wrong existence by postulating various choice principles (as in
+<a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.ChoiceFacts.html">Coq.Logic.ChoiceFacts</a>), but
+it's just better to use the correct form of existence.</p>
+<p>P.S. The difference between informative and non-informative facts
+extends to all of logic and is not specific to existence. We may
+distinguish between <em>informative</em> facts, where knowing a fact also
+gives us the ability to inspect the <em>reason</em> for knowing it, and the
+<em>non-informative</em> facts, where we simply know a fact, but have no
+access to any reason as to why the fact holds. In Coq the
+non-informative facts are in <tt class="docutils literal">Prop</tt>, whereas the informative ones
+are in <tt class="docutils literal">Type</tt>.</p>
+</div>
+<div class="section" id="answer-kyo-dralliam">
+<h1>Answer (kyo dralliam)</h1>
+<p>Extracting a function from a <tt class="docutils literal">forall</tt>/<tt class="docutils literal">exists</tt> statement is a
+choice principle not derivable in Coq (at least not without axioms).
+More precisely, this extraction could be derived out of
+<tt class="docutils literal">FunctionalChoice_on</tt> (to get the existence of a function out of the
+<tt class="docutils literal">forall</tt>/<tt class="docutils literal">exists</tt>) and <tt class="docutils literal">ConstructiveIndefiniteDescription_on</tt>
+(to actually extract a function witnessing the existential) from the
+module <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.ChoiceFacts.html">Coq.Logic.ChoiceFacts</a> in the
+&quot;standard&quot; library. That file also discuss in length the subtle
+relationship between many different types of choice axioms.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Alternatively, you could replace the propositional existential
+(<tt class="docutils literal">ex</tt>) with one in <tt class="docutils literal">Type</tt> (<tt class="docutils literal">sig</tt>), from which you can extract a
+function without any axiom.</p>
+</div>
+<div class="section" id="answer-molossus-spondee">
+<h1>Answer (Molossus Spondee)</h1>
+<p>As previously mentioned extracting a value from an existential is a
+choice principle.</p>
+<p>You can however extract a <tt class="docutils literal">Prop</tt> or type squashed to <tt class="docutils literal">Prop</tt>.</p>
+<p>The usual impredicative encoding of squashing is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk2"><span class="kn">Definition</span> <span class="nf">squash</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Prop</span> := <span class="kr">forall</span> <span class="nv">B</span> : <span class="kt">Prop</span>, (A -&gt; B) -&gt; B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; B -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>fooable A B P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A -&gt; B</div></blockquote></div></div></small></span></pre><p>But this can be a little awkward</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variant</span> <span class="nf">squash</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Prop</span> :=
+  | squash_intro : A -&gt; squash A.</span></span></pre><p>Is also awkward.</p>
+<p>Writing the function</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk3"><span class="kn">Definition</span> <span class="nf">proj_ex1</span> {<span class="nv">A</span>} {<span class="nv">P</span> : A -&gt; _} : (<span class="kr">exists</span> <span class="nv">x</span> : A, P x) -&gt; squash A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">exists</span> <span class="nv">x</span> : A, P x) -&gt; squash A</div></blockquote></div></div></small></span></pre><p>Is then pretty simple.</p>
+<p>Coq is pretty bare bones in terms of standard library and as far as I
+know doesn't offer a version of <tt class="docutils literal">squash</tt> or ergonomic tools for
+working with it. (Edit: use <tt class="docutils literal">inhabited</tt>.) <tt class="docutils literal">squash</tt> is
+straightforwardly a monad and an applicative functor.</p>
+<p>I generally find it easier to rework things to be in <tt class="docutils literal">Set</tt> or
+<tt class="docutils literal">Type</tt> instead of working around <tt class="docutils literal">Prop</tt> though myself.</p>
+<hr class="docutils" />
+<p><strong>A:</strong> Coq does have a <tt class="docutils literal">squash</tt>. It is</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-extract-the-witness-from-exists-in-coq-in-function-notation-without-destr-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">inhabited</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Prop</span> :=
+    inhabits : A -&gt; inhabited A
+
+<span class="kn">Arguments</span> inhabited _%type_scope
+<span class="kn">Arguments</span> inhabits [A]%type_scope _</blockquote></div></div></small></span></pre><p>and should be imported by default.</p>
+</div>
+</div>
+</div>
+</div></body>
+</html>
