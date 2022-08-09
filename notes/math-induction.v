@@ -17,7 +17,7 @@ Inductive subseq {X : Type} : list X -> list X -> Prop :=
 | subseq_intro : forall (l1 l2 : list X) (x : X),
     subseq l1 l2 -> subseq (x :: l1) (x :: l2).
 
-Notation "l <<< k" := (subseq l k) (at level 10).
+Notation "l <<< k" := (subseq l k) (at level 10, only parsing).
 
 (*|
 The above function ``subseq`` postulates that the first argument is a
@@ -62,6 +62,7 @@ Inductive subseq' {X : Type} : list X -> list X -> Prop :=
 | subseq_empty : subseq' [] []
 | subseq_drop_right l1 l2 x : subseq' l1 l2 -> subseq' l1 (x :: l2)
 | subseq_drop_both l1 l2 x : subseq' l1 l2 -> subseq' (x :: l1) (x :: l2).
+#[local] Hint Constructors subseq' : core.
 
 (*|
 Here, we just changed the second property: an addition of element into
@@ -83,3 +84,43 @@ I hope that the attentive reader has already noted the difference: the
 size of outer set decreases on every step. That is a good mark to
 apply for the induction principle.
 |*)
+
+Lemma subseq_equiv' : forall {X : Type} (l1 l2 : list X),
+    subseq' l1 l2 -> subseq l1 l2.
+Proof.
+  intros X l1 l2 H. induction H.
+  - constructor.
+  - apply (subseq_left_elim _ _ x).
+    now apply (subseq_intro _ _ x) in IHsubseq'.
+  - now apply (subseq_intro _ _ x) in IHsubseq'.
+Qed.
+
+
+Lemma subseq_remove : forall {X : Type} (x : X) (l1 l2 : list X),
+    subseq' (x :: l1) l2 -> subseq' l1 l2.
+Proof.
+  intros * H.
+  remember (x :: l1) as l; revert l1 Heql.
+  induction H; intros l [=].
+  - constructor. now apply IHsubseq'.
+  - subst l. auto.
+Qed.
+
+Lemma subseq_equiv : forall {X : Type} (l1 l2 : list X),
+    subseq l1 l2 -> subseq' l1 l2.
+Proof.
+  intros * H. induction H; auto.
+  now apply subseq_remove in IHsubseq.
+Qed.
+
+
+Lemma subseq_trans' : forall {X : Type} (l1 l2 l3 : list X),
+    subseq' l1 l2 -> subseq' l2 l3 -> subseq' l1 l3.
+Proof.
+  intros * H H0; revert l1 H. induction H0; intros l H.
+  - inversion H. auto.
+  - apply IHsubseq' in H. auto.
+  - inversion H.
+    + apply IHsubseq' in H3. auto.
+    + apply IHsubseq' in H3. auto.
+Qed.
