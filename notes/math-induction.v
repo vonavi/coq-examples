@@ -124,3 +124,111 @@ Proof.
     + apply IHsubseq' in H3. auto.
     + apply IHsubseq' in H3. auto.
 Qed.
+
+
+Reset Initial. (* .none *)
+
+Require Import Arith.
+
+Inductive dfa_states := Lt | Eq | Gt.
+
+Inductive dfa : nat -> nat -> dfa_states -> Type :=
+| eq_zero : dfa O O Eq
+| lt_zero : forall n, dfa O (S n) Lt
+| gt_zero : forall n, dfa (S n) O Gt
+| st_succ : forall n m c, dfa n m c -> dfa (S n) (S m) c.
+#[local] Hint Constructors dfa : core.
+
+Inductive dfa' : nat -> nat -> dfa_states -> Type :=
+| eq_n  : forall n, dfa' n n Eq
+| lt_n  : forall n, dfa' n (S n) Lt
+| gt_n  : forall n, dfa' (S n) n Gt
+| lt_Sm : forall n m, dfa' n m Lt -> dfa' n (S m) Lt
+| gt_Sn : forall n m, dfa' n m Gt -> dfa' (S n) m Gt.
+#[local] Hint Constructors dfa' : core.
+
+Lemma dfa_equiv : forall n m c, dfa n m c -> dfa' n m c.
+Proof.
+  intros n m c H. induction H.
+  - auto.
+  - induction n; auto.
+  - induction n; auto.
+  - clear H. induction IHdfa; auto.
+Qed.
+
+Lemma dfa_equiv' : forall n m c, dfa' n m c -> dfa n m c.
+Proof.
+  intros n m c H. induction H.
+  - induction n; auto.
+  - induction n; auto.
+  - induction n; auto.
+  - clear H. revert n IHdfa'.
+    induction m; intros n H; inversion H.
+    + auto.
+    + constructor. now apply IHm.
+  - clear H. revert m IHdfa'.
+    induction n; intros m H; inversion H.
+    + auto.
+    + constructor. now apply IHn.
+Qed.
+
+
+Lemma dfa_st_eq : forall n m c c', dfa n m c -> dfa n m c' -> c = c'.
+Proof.
+  induction n; destruct m.
+  all: intros c c' H H0; inversion H; inversion H0.
+  all: try reflexivity. now apply (IHn m).
+Qed.
+
+Lemma dfa_st_eq' : forall n m c c', dfa' n m c -> dfa' n m c' -> c = c'.
+Proof.
+  intros n m c c' H H0. apply dfa_equiv' in H. apply dfa_equiv' in H0.
+  now apply (dfa_st_eq n m).
+Qed.
+
+
+Lemma dfa_eq_spec : forall n, dfa n n Eq.
+Proof.
+  induction n; auto.
+Qed.
+
+Lemma dfa_eq_spec' : forall n, dfa' n n Eq.
+Proof.
+  auto.
+Qed.
+
+Lemma dfa_lt_spec : forall n m, n < m -> dfa n m Lt.
+Proof.
+  induction n; destruct m; intro H.
+  - contradiction (Nat.nlt_0_r 0).
+  - auto.
+  - contradiction (Nat.nlt_0_r (S n)).
+  - apply lt_S_n, IHn in H. auto.
+Qed.
+
+Lemma dfa_lt_spec' : forall n m, n < m -> dfa' n m Lt.
+Proof.
+  induction m; intro H.
+  - contradiction (Nat.nlt_0_r n).
+  - apply lt_n_Sm_le, le_lt_eq_dec in H. destruct H as [H | H].
+    + apply IHm in H. auto.
+    + now subst n.
+Qed.
+
+Lemma dfa_gt_spec : forall n m, n > m -> dfa n m Gt.
+Proof.
+  induction n; destruct m; intro H.
+  - contradiction (Nat.nlt_0_r 0).
+  - contradiction (Nat.nlt_0_r (S m)).
+  - auto.
+  - apply lt_S_n, IHn in H. auto.
+Qed.
+
+Lemma dfa_gt_spec' : forall n m, n > m -> dfa' n m Gt.
+Proof.
+  intros n m. induction n; intro H.
+  - contradiction (Nat.nlt_0_r m).
+  - apply lt_n_Sm_le, le_lt_eq_dec in H. destruct H as [H | H].
+    + apply IHn in H. auto.
+    + now subst n.
+Qed.
