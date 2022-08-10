@@ -60,12 +60,21 @@ variable <tt class="docutils literal">X</tt> is <tt class="docutils literal">boo
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="all-quantified-type-variable-in-value-constructor-cannot-be-explicitly-typed-a-v-chk1"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">wrappedGADT</span> {<span class="nv">A</span>} (<span class="nv">xs</span> : Wrap A) : option (GADT A) :=
   <span class="kr">match</span> xs <span class="kr">with</span>
   | wrap _ x =&gt; Some x
-  | @nwrap _ bool fx k =&gt; <span class="kr">match</span> fx <span class="kr">with</span>
-                          | A _ =&gt; None
-                          | B =&gt; wrappedGADT (k true)
-                          <span class="kr">end</span>
+  | @unwrap _ bool fx k =&gt; <span class="kr">match</span> fx <span class="kr">with</span>
+                           | A _ =&gt; None
+                           | B =&gt; wrappedGADT (k true)
+                           <span class="kr">end</span>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-Unknown <span class="nb">constructor</span>: nwrap.</blockquote></div></div></small></span></pre><p>Can anybody give any pointers to the origin of this problem?</p>
+In environment
+wrappedGADT : <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>,
+              Wrap A -&gt; option (GADT A)
+A : <span class="kt">Type</span>
+xs : Wrap A
+bool : <span class="kt">Type</span>
+fx : GADT bool
+k : bool -&gt; Wrap A
+The term <span class="s2">&quot;true&quot;</span> has type <span class="s2">&quot;Datatypes.bool&quot;</span>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;bool&quot;</span>.</blockquote></div></div></small></span></pre><p>Can anybody give any pointers to the origin of this problem?</p>
 </div>
 <div class="section" id="answer-daniel-schepler">
 <h1>Answer (Daniel Schepler)</h1>
