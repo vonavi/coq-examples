@@ -1,6 +1,6 @@
 (*|
 ############################################
-Cow: Associativity of relational composition
+Coq: Associativity of relational composition
 ############################################
 
 :Link: https://stackoverflow.com/q/70377028

@@ -51,10 +51,10 @@ Next, I tried to explicitly type ``unwrap`` as follows.
 Fail Fixpoint wrappedGADT {A} (xs : Wrap A) : option (GADT A) :=
   match xs with
   | wrap _ x => Some x
-  | @nwrap _ bool fx k => match fx with
-                          | A _ => None
-                          | B => wrappedGADT (k true)
-                          end
+  | @unwrap _ bool fx k => match fx with
+                           | A _ => None
+                           | B => wrappedGADT (k true)
+                           end
   end. (* .unfold *)
 
 (*| Can anybody give any pointers to the origin of this problem? |*)
