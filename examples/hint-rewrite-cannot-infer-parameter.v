@@ -10,8 +10,8 @@
 Question
 ********
 
-I'm trying to create a Hint Rewrite database for a matrix library I've
-written. However when I write
+I'm trying to create a ``Hint Rewrite`` database for a matrix library
+I've written. However when I write
 
 .. code-block:: coq
 
@@ -24,7 +24,7 @@ I get the following error:
 
 ``kron_1_r`` has the type ``forall {m n : nat} (A : Matrix m n), A ⊗
 Id 1 = A``, so ``m`` and ``n`` should be inferred based on the context
-when autorewrite is called. I'm not sure why it wants a parameter
+when ``autorewrite`` is called. I'm not sure why it wants a parameter
 here, or how to tell it to hold off.
 
 ----

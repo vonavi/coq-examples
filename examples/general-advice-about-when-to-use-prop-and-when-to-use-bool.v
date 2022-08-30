@@ -11,8 +11,8 @@ Question
 ********
 
 I am formalizing a grammar which is essentially one over boolean
-expressions. In Coq, you can get boolean-like things in Prop or more
-explicitly in bool.
+expressions. In Coq, you can get boolean-like things in ``Prop`` or
+more explicitly in ``bool``.
 
 So for example, I could write:
 
@@ -27,15 +27,15 @@ Or
     True /\ True
 
 The problem is that in proofs (which is what I really care about) I
-can do a case analysis in domain bool, but in Prop this is not
+can do a case analysis in domain ``bool``, but in ``Prop`` this is not
 possible (since all members are not enumerable, I suppose). Giving up
 this tactic and similar rewriting tactics seems like a huge drawback
 even for very simple proofs.
 
-In general, what situations would one choose Prop over bool for
-formalizing? I realize this is a broad question, but I feel like this
-is not addressed in the Coq manual sufficiently. I am interested in
-real world experience people have had going down both routes.
+In general, what situations would one choose ``Prop`` over ``bool``
+for formalizing? I realize this is a broad question, but I feel like
+this is not addressed in the Coq manual sufficiently. I am interested
+in real world experience people have had going down both routes.
 |*)
 
 (*|

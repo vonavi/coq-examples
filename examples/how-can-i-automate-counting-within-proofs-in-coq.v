@@ -87,11 +87,11 @@ Qed.
 
 (*|
 I realize that your definition of ``count`` was taking a propositional
-predicate on type T (but with the assumption that all predicates on
-type T are decidable) and instead I propose to define ``count`` to
-take a boolean predicate. But you may realize that having a decidable
-propositional predicate or having a boolean predicate is actually
-equivalent.
+predicate on type ``T`` (but with the assumption that all predicates
+on type ``T`` are decidable) and instead I propose to define ``count``
+to take a boolean predicate. But you may realize that having a
+decidable propositional predicate or having a boolean predicate is
+actually equivalent.
 
 E.g. from your axioms, I can define a function which transform any
 propositional predicate into a boolean one:

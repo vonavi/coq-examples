@@ -128,10 +128,10 @@ I'd like to contribute a shorter proof using the mathcomp lib:
 From mathcomp Require Import all_ssreflect.
 
 Lemma P n : ~~ odd (n * n.+1).
-Proof. by rewrite odd_mul andbN. Qed.
+Proof. by rewrite oddM andbN. Qed.
 
 (*|
-``odd_mul`` is proved by simple induction, as well as ``odd_add``.
+``oddM`` is proved by simple induction, as well as ``oddD``.
 
 ----
 
