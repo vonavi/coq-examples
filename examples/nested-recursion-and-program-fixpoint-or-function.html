@@ -64,33 +64,33 @@ definition of <tt class="docutils literal">map</tt> here, for example – I'd li
 same in Isabelle, using the <tt class="docutils literal">function</tt> command, which is (AFAIK)
 related to Coq's <tt class="docutils literal">Function</tt> command:</p>
 <pre class="code isabelle literal-block">
-<span class="k">theory</span> <span class="n">Tree</span> <span class="kp">imports</span> <span class="n">Main</span> <span class="k">begin</span>
+<span class="k">theory</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="kp">imports</span><span class="w"> </span><span class="n">Main</span><span class="w"> </span><span class="k">begin</span><span class="w">
 
-<span class="k">datatype</span> <span class="n">Tree</span> <span class="o">=</span> <span class="n">Node</span> <span class="n">nat</span> <span class="s">&quot;Tree list&quot;</span>
+</span><span class="k">datatype</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="s">&quot;Tree list&quot;</span><span class="w">
 
-<span class="k">fun</span> <span class="n">height</span> <span class="kp">where</span>
-  <span class="s">&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</span>
+</span><span class="k">fun</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="kp">where</span><span class="w">
+  </span><span class="s">&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</span><span class="w">
 
-<span class="kn">function</span> <span class="n">mapTree</span> <span class="kp">where</span>
-  <span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span>
-<span class="k">by</span> <span class="n">pat_completeness</span> <span class="n">auto</span>
+</span><span class="kn">function</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
+  </span><span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span><span class="w">
+</span><span class="k">by</span><span class="w"> </span><span class="n">pat_completeness</span><span class="w"> </span><span class="n">auto</span><span class="w">
 
-<span class="kn">termination</span>
-<span class="k">proof</span> <span class="o">(</span><span class="n">relation</span> <span class="s">&quot;measure (λ(f, t). height t)&quot;</span><span class="o">)</span>
-  <span class="k">show</span> <span class="s">&quot;wf (measure (λ(f, t). height t))&quot;</span> <span class="k">by</span> <span class="n">auto</span>
-<span class="k">next</span>
-  <span class="k">fix</span> <span class="n">f</span> <span class="o">::</span> <span class="s">&quot;nat ⇒ nat&quot;</span> <span class="kp">and</span> <span class="n">x</span> <span class="o">::</span> <span class="n">nat</span> <span class="kp">and</span> <span class="n">ts</span> <span class="o">::</span> <span class="s">&quot;Tree list&quot;</span> <span class="kp">and</span> <span class="n">t</span>
-  <span class="k">assume</span> <span class="s">&quot;t ∈ set ts&quot;</span>
-  <span class="k">thus</span> <span class="s">&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</span>
-    <span class="k">by</span> <span class="o">(</span><span class="n">induction</span> <span class="n">ts</span><span class="o">)</span> <span class="n">auto</span>
-<span class="k">qed</span>
+</span><span class="kn">termination</span><span class="w">
+</span><span class="k">proof</span><span class="w"> </span><span class="o">(</span><span class="n">relation</span><span class="w"> </span><span class="s">&quot;measure (λ(f, t). height t)&quot;</span><span class="o">)</span><span class="w">
+  </span><span class="k">show</span><span class="w"> </span><span class="s">&quot;wf (measure (λ(f, t). height t))&quot;</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">auto</span><span class="w">
+</span><span class="k">next</span><span class="w">
+  </span><span class="k">fix</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="s">&quot;nat ⇒ nat&quot;</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="s">&quot;Tree list&quot;</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">t</span><span class="w">
+  </span><span class="k">assume</span><span class="w"> </span><span class="s">&quot;t ∈ set ts&quot;</span><span class="w">
+  </span><span class="k">thus</span><span class="w"> </span><span class="s">&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</span><span class="w">
+    </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="n">induction</span><span class="w"> </span><span class="n">ts</span><span class="o">)</span><span class="w"> </span><span class="n">auto</span><span class="w">
+</span><span class="k">qed</span>
 </pre>
 <p>In the termination proof, I get the assumption <tt class="docutils literal">t ∈ set ts</tt>.</p>
 <p>Note that Isabelle does not require a manual termination proof here,
 and the following definition works just fine:</p>
 <pre class="code isabelle literal-block">
-<span class="k">fun</span> <span class="n">mapTree</span> <span class="kp">where</span>
-  <span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span>
+<span class="k">fun</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
+  </span><span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span>
 </pre>
 <p>This works because the <tt class="docutils literal">map</tt> function has a &quot;congruence lemma&quot; of
 the form</p>
@@ -101,13 +101,13 @@ the form</p>
 proof only needs to consider <tt class="docutils literal">t ∈ set ts</tt>.</p>
 <p>If such a lemma is not available, e.g. because I define</p>
 <pre class="code isabelle literal-block">
-<span class="k">definition</span> <span class="s">&quot;map' = map&quot;</span>
+<span class="k">definition</span><span class="w"> </span><span class="s">&quot;map' = map&quot;</span>
 </pre>
 <p>and use that in <tt class="docutils literal">mapTree</tt>, I get the same unprovable proof
 obligation as in Coq. I can make it work again by declaring a
 congruence lemma for <tt class="docutils literal">map'</tt>, e.g. using</p>
 <pre class="code isabelle literal-block">
-<span class="k">declare</span> <span class="n">map_cong</span><span class="o">[</span><span class="n">folded</span> <span class="n">map'_def</span><span class="o">,</span><span class="n">fundef_cong</span><span class="o">]</span>
+<span class="k">declare</span><span class="w"> </span><span class="n">map_cong</span><span class="o">[</span><span class="n">folded</span><span class="w"> </span><span class="n">map'_def</span><span class="o">,</span><span class="n">fundef_cong</span><span class="o">]</span>
 </pre>
 </div>
 </div>
