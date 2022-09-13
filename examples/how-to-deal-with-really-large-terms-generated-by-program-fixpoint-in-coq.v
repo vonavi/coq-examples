@@ -13,8 +13,8 @@ Question
 I'm attempting to define and prove correct in Coq a function that
 efficiently diffs two sorted lists. As it does not always recurse on a
 structurally smaller term (either the first or second list is
-smaller), Fixpoint won't accept it, so I'm attempting to use ``Program
-Fixpoint`` instead.
+smaller), ``Fixpoint`` won't accept it, so I'm attempting to use
+``Program Fixpoint`` instead.
 
 When attempting to prove a property of the function using the tactic
 ``simpl`` or ``program_simpl``, Coq spends minutes computing and then

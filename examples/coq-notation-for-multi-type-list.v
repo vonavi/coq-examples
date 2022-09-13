@@ -19,7 +19,7 @@ Inductive Pear : Set :=.
 Inductive FruitList : Set :=
 | Empty
 | Cons_apple (a : Apple) (p : FruitList)
-| Cons_pear (p : Pear) (p: FruitList).
+| Cons_pear (p : Pear) (p : FruitList).
 
 Variable a : Apple.
 Variable p : Pear.
@@ -129,7 +129,7 @@ Variable p : Pear.
 (*||*)
 
 Class Cons_fruit (A : Set) := {
-    CONS: A -> FruitList -> FruitList }.
+    CONS : A -> FruitList -> FruitList }.
 
 Instance Cons_fruit_apple : Cons_fruit Apple := { CONS := Cons_apple }.
 Instance Cons_fruit_pear : Cons_fruit Pear := { CONS := Cons_pear }.

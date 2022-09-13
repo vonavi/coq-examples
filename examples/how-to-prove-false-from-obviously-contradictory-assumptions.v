@@ -1,7 +1,7 @@
 (*|
-###########################################################
-How to prove False from obviously contradictory assumptions
-###########################################################
+###############################################################
+How to prove ``False`` from obviously contradictory assumptions
+###############################################################
 
 :Link: https://stackoverflow.com/q/29286679
 |*)

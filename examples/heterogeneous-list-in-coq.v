@@ -62,7 +62,7 @@ figure out that ``s`` and ``concatSchema nil s`` are equal. But what I
 find weirder is that when I add the following line:
 |*)
 
-Definition stupid {s : schema} (b : tuple s) : tuple (concatSchema nil s) := b .
+Definition stupid {s : schema} (b : tuple s) : tuple (concatSchema nil s) := b.
 
 (*|
 and change the case to ``nil => stupid b``, it works. (Well, it still

@@ -1,6 +1,6 @@
 (*|
 #######################################################################################################
-How to prove non-equality of terms produced by two different constructors of the same inductive in coq?
+How to prove non-equality of terms produced by two different constructors of the same inductive in Coq?
 #######################################################################################################
 
 :Link: https://stackoverflow.com/q/60616748

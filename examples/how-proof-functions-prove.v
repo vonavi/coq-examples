@@ -35,8 +35,8 @@ n``?
 Answer
 ******
 
-    Is it correct to say that the return value of ex1 is an instance
-    of the type ``forall n : nat, 7 * 5 < n -> 6 * 6 <= n``?
+    Is it correct to say that the return value of ``ex1`` is an
+    instance of the type ``forall n : nat, 7 * 5 < n -> 6 * 6 <= n``?
 
 Not quite. It would be more correct to say that the return type of
 ``ex1`` is ``6 * 6 <= n``, where ``n`` is the first argument passed to

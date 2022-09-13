@@ -11,7 +11,7 @@ Question
 ********
 
 I'm new with Coq and I really have difficulty in applying the
-induction. as long as I can use theorems from the library, or tactics
+induction. As long as I can use theorems from the library, or tactics
 such as ``lia``, all this is "not a problem". But as soon as these do
 not work, I'm always stuck.
 

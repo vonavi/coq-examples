@@ -65,7 +65,7 @@ equation?
 Answer (Anton Trunov)
 *********************
 
-Building on @gallais' suggestion on using f_equal. We start in the
+Building on @gallais' suggestion on using ``f_equal``. We start in the
 following state:
 |*)
 

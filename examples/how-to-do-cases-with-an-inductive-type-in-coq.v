@@ -96,13 +96,13 @@ or the hypotheses are contradictory.
 If you think the hypotheses are contradictory, you can set the goal to
 ``False``, to get a little complexity out of the way. ``elimtype
 False`` achieves this. Often, you prove ``False`` by proving a
-proposition ``P`` and its negation ``~ P``; the tactic absurd P
-deduces any goal from P and ~P. If there's a particular hypothesis
-which is contradictory, ``contradict H`` will set the goal to ``~ H``,
-or if the hypothesis is a negation ``~ A`` then the goal will be ``A``
-(stronger than ``~ ~ A`` but usually more convenient). If one
-particular hypothesis is obviously contradictory, ``contradiction H``
-or just ``contradiction`` will prove any goal.
+proposition ``P`` and its negation ``~ P``; the tactic ``absurd P``
+deduces any goal from ``P`` and ``~ P``. If there's a particular
+hypothesis which is contradictory, ``contradict H`` will set the goal
+to ``~ H``, or if the hypothesis is a negation ``~ A`` then the goal
+will be ``A`` (stronger than ``~ ~ A`` but usually more convenient).
+If one particular hypothesis is obviously contradictory,
+``contradiction H`` or just ``contradiction`` will prove any goal.
 
 There are many tactics involving hypotheses of inductive types.
 Figuring out which one to use is mostly a matter of experience. Here

@@ -191,7 +191,7 @@ the info back into the context.
 
 .. code-block:: coq
 
-    match i in Fin (S n0) return n0 = m  -> A with
+    match i in Fin (S n0) return n0 = m -> A with
       ... => fun H : n0 = m => ...
     end eq_refl
 
