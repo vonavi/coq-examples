@@ -245,7 +245,7 @@ From ``False`` you can derive a value of any type that you need.
 Useful in impossible branches in a match statement.
 |*)
 
-Definition IMPOSSIBLE {T} (f : False) :T := match f with end.
+Definition IMPOSSIBLE {T} (f : False) : T := match f with end.
 
 Program Fixpoint maxval (l : list nat) (H : l <> nil) {measure (length l)} : nat
   := match l with
@@ -256,8 +256,8 @@ Program Fixpoint maxval (l : list nat) (H : l <> nil) {measure (length l)} : nat
 
 (*|
 EDIT: As ``eponier`` points out, if we include ``Require Import
-Arith.`` before we define maxval, we will be done here. Otherwise we
-will have to prove the remaining obligations, like this: (END EDIT)
+Arith.`` before we define ``maxval``, we will be done here. Otherwise
+we will have to prove the remaining obligations, like this: (END EDIT)
 |*)
 
 Next Obligation.

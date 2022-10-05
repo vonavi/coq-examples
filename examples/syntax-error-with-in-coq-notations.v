@@ -80,7 +80,7 @@ than a higher level and the fact that the level of ``<`` is 70 (see
 `Coq.Init.Notations
 <https://coq.inria.fr/library/Coq.Init.Notations.html>`__), we can
 deduce that Coq is trying to parse the ``x < y`` part as a
-subexpression for ``x``, consuming the < token, hence the error
+subexpression for ``x``, consuming the ``<`` token, hence the error
 message.
 
 To remedy the situation we can explicitly disallow parsing the third

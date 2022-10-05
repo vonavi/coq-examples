@@ -105,9 +105,9 @@ sums.
 
 ----
 
-**A:**
-I much support @jbapple's definition of natlist as a dependent record
-instead of the original one, however I'd suggest using
+**A:** I much support @jbapple's definition of ``natlist`` as a
+dependent record instead of the original one, however I'd suggest
+using
 |*)
 
 Reset Initial. (* .none *)

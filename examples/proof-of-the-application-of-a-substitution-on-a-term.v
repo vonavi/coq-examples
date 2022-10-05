@@ -24,7 +24,7 @@ Set Implicit Arguments.
 
 Inductive Term : Type :=
 | Var : nat -> Term
-| Fun : string  -> list Term -> Term.
+| Fun : string -> list Term -> Term.
 
 Definition Subst : Type := list (nat * Term).
 

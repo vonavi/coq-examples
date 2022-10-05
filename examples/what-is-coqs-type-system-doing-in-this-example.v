@@ -11,7 +11,7 @@ Question
 ********
 
 I'm confused about the behavior of Coq's type system on the match
-portion of the proof term in the definition of h below:
+portion of the proof term in the definition of ``h`` below:
 |*)
 
 Set Implicit Arguments.

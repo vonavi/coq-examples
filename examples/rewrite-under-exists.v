@@ -14,7 +14,7 @@ Say I have the following relation:
 |*)
 
 Inductive my_relation: nat -> Prop :=
-  constr n: my_relation n.
+  constr n : my_relation n.
 
 (*| and I want to prove the following: |*)
 

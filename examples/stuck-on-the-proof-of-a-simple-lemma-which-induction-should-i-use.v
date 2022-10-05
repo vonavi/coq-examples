@@ -258,10 +258,10 @@ Qed.
      tactic call that appears in the middle of the script.
 
    - Everytime that there is a recursive call in your function, the
-     result is later analyized by a ``match`` construct. To account
-     for this, the proof perform case analysis on the results of
-     recursive calls and uses the ``destruct ... eqn:...`` variant of
-     the ``destruct`` tactic to perform this analysis.
+     result is later analyzed by a ``match`` construct. To account for
+     this, the proof perform case analysis on the results of recursive
+     calls and uses the ``destruct ... eqn:...`` variant of the
+     ``destruct`` tactic to perform this analysis.
 
    - Aside from these advanced techniques, the proof is just guided by
      the interaction with Coq.

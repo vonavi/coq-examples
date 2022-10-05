@@ -1,7 +1,7 @@
 (*|
-####################################
-How to enumerate set in Coq Ensemble
-####################################
+########################################
+How to enumerate set in Coq ``Ensemble``
+########################################
 
 :Link: https://stackoverflow.com/q/68789154
 |*)
@@ -28,9 +28,9 @@ Conceptually, it seems simple to just say I have ``{{}}`` so the
 powerset is ``{{}, {{}}}`` and that's it. But, it's not clear how to
 say anything like that with these primitives on their own.
 
-I'd be tempted to try destructing on if empty set was in the set s.
-But, since Emsemble is propositional, checking set membership is not
-generally decidable. A first thought is
+I'd be tempted to try destructing on if empty set was in the set
+``s``. But, since ``Ensemble`` is propositional, checking set
+membership is not generally decidable. A first thought is
 |*)
 
 Axiom In_dec : forall A a e, In A e a \/ ~In A e a.
@@ -42,9 +42,10 @@ Qed.
 (*|
 But, that is too powerful and immediately puts me into classical
 logic. The finite case is easy, but I plan on dealing with larger sets
-(e.g. Reals), so In and Included would not generally be computable.
-Are there axioms I could add that could allow In and Included to
-pretend to be decidable without making everything else decidable too?
+(e.g. ``Reals``), so ``In`` and ``Included`` would not generally be
+computable. Are there axioms I could add that could allow ``In`` and
+``Included`` to pretend to be decidable without making everything else
+decidable too?
 
 Edit: Changed from pair to singleton since quantity isn't important.
 |*)

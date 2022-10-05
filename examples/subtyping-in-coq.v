@@ -16,10 +16,10 @@ I defined Subtype as follows
 Record Subtype {T : Type} (P : T -> Prop) := {
     subtype       :> Type;
     subtype_inj   :> subtype -> T;
-    subtype_isinj : forall (s t : subtype),
+    subtype_isinj : forall s t : subtype,
       (subtype_inj s = subtype_inj t) -> s = t;
-    subtype_h     : forall (x : T), P x -> (exists s:subtype,x = subtype_inj s);
-    subtype_h0    : forall (s : subtype), P (subtype_inj s)
+    subtype_h     : forall x : T, P x -> (exists s : subtype,x = subtype_inj s);
+    subtype_h0    : forall s : subtype, P (subtype_inj s)
   }.
 
 (*| Can the following theorem be proven? |*)

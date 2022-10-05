@@ -38,10 +38,10 @@ Proof.
 Abort. (* .none *)
 
 (*|
-In the above context, if I do destruct ``M.find n m`` it breaks H into
-true and false whereas ``case_eq (M.find n m)`` leaves ``H`` intact
-and adds separate proposition ``M.find (elt:=nat) n m = Some v``,
-which I can rewrite to get same effect as destruct.
+In the above context, if I do destruct ``M.find n m`` it breaks ``H``
+into true and false whereas ``case_eq (M.find n m)`` leaves ``H``
+intact and adds separate proposition ``M.find (elt:=nat) n m = Some
+v``, which I can rewrite to get same effect as destruct.
 
 Can someone please explain me the difference between the two tactics
 and when which one should be used?
@@ -72,7 +72,7 @@ Loosing the link between information in the hypotheses and instances
 of ``A`` in the conclusion is a big problem in practice, so developers
 came up with two solutions: ``case_eq`` and ``destruct``.
 
-Personnally, when writing the Coq'Art book, I proposed that we write a
+Personally, when writing the Coq'Art book, I proposed that we write a
 simple tactic on top of ``case`` that keeps a link between ``A`` and
 the various constructor instances in the form of an equality. This is
 the tactic now called ``case_eq``. It does the same thing as ``case``

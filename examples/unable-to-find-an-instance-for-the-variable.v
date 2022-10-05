@@ -68,7 +68,7 @@ to instantiate ``y``. Indeed, when you do ``rewrite -> neg_move``, you
 ask it to replace some ``negb x`` by a ``y``. Now, what ``y`` is Coq
 supposed to use here? It cannot figure it out.
 
-One option is to instantiate y explicitly upon rewriting:
+One option is to instantiate ``y`` explicitly upon rewriting:
 
 .. code-block:: coq
 
@@ -88,7 +88,7 @@ wildcards for the ``x`` and the ``y`` parameters of ``neg_move`` since
 Coq is able to infer them from ``H`` as being ``some_x`` and
 ``some_y`` respectively. Coq will then try to rewrite an occurence of
 ``negb some_x`` in your goal with ``some_y``. But you first need to
-get this H term in your hypotheses, which might be some additional
+get this ``H`` term in your hypotheses, which might be some additional
 burden...
 
 (Note that the first option I gave you should be equivalent to

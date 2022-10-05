@@ -98,7 +98,7 @@ of the day they will still generate code that is equivalent to
 In general, one is better off avoiding dependent types in Coq, unless
 there is a strong argument that justifies the additional complexity.
 For instance, in the case of ``zip``, suppose that you have some code
-that uses a lot of different lists of the same length n. You might
+that uses a lot of different lists of the same length ``n``. You might
 want to argue that ``zip`` has an inverse:
 
 .. code-block:: coq

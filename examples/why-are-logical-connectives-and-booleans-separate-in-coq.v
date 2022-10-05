@@ -37,18 +37,19 @@ relate them.
 
     We've already seen several places where analogous structures can
     be found in Coq's computational (``Type``) and logical (``Prop``)
-    worlds. Here is one more: the boolean operators andb and orb are
-    clearly analogs of the logical connectives ``/\`` and ``\/``. This
-    analogy can be made more precise by the following theorems, which
-    show how to translate knowledge about ``andb`` and ``orb``'s
-    behaviors on certain inputs into propositional facts about those
-    inputs.
+    worlds. Here is one more: the boolean operators ``andb`` and
+    ``orb`` are clearly analogs of the logical connectives ``/\`` and
+    ``\/``. This analogy can be made more precise by the following
+    theorems, which show how to translate knowledge about ``andb`` and
+    ``orb``'s behaviors on certain inputs into propositional facts
+    about those inputs.
+|*)
 
-    .. code-block:: coq
+Theorem andb_prop : forall b c,
+    andb b c = true -> b = true /\ c = true.
+Admitted. (* .none *)
 
-        Theorem andb_prop : forall b c,
-          andb b c = true -> b = true /\ c = true.
-
+(*|
 http://www.seas.upenn.edu/~cis500/current/sf/Logic.html#lab211
 
 ----
@@ -141,9 +142,9 @@ answers whether ``A`` or ``B`` holds. Hence, if we were able to prove
 the above principle, we would have an algorithm that, given some
 proposition, tells us whether that proposition is valid or not.
 Computability theory shows, however, that this is not possible in
-general because of undecidability: if we take P to mean "program ``p``
-halts on input ``x``", the excluded middle would yield a decider for
-the `halting problem
+general because of undecidability: if we take ``P`` to mean "program
+``p`` halts on input ``x``", the excluded middle would yield a decider
+for the `halting problem
 <https://en.wikipedia.org/wiki/Halting_problem>`__, which cannot
 exist.
 

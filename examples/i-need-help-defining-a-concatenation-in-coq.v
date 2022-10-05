@@ -21,8 +21,8 @@ Inductive accepts : Set :=
 
 (*|
 Then I need to be able to manipulate a very specific subset of
-accepts: the first and last ones on the list, so True and n_fun only.
-I do it with a mix of inductive and record like this:
+accepts: the first and last ones on the list, so ``True`` and
+``n_fun`` only. I do it with a mix of inductive and record like this:
 |*)
 
 Inductive n_sub : accepts -> Prop :=

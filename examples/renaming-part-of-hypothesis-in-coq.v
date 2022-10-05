@@ -1,6 +1,6 @@
 (*|
 ##################################
-renaming part of hypothesis in Coq
+Renaming part of hypothesis in Coq
 ##################################
 
 :Link: https://stackoverflow.com/q/52350119

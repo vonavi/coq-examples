@@ -72,7 +72,7 @@ Qed.
 (*|
 Both proofs are finished with ``auto`` tactic, with the first proof
 crucially relying on ``Hint Constructors`` and the second one
-additionally on ``Hint Resolve AOrd_reflexive being`` added to hint
+additionally on ``Hint Resolve AOrd_reflexive`` being added to hint
 database.
 
 An ugly thing about the code above is having a separate notation for

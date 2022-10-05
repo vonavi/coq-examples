@@ -100,7 +100,7 @@ https://homes.cs.washington.edu/~jrw12/dep-destruct.html
 A less extreme solution is to give up on other "dependently-typed"
 aspects of this program. The next candidate on the chopping block here
 is ``sumbool ({ _ } + { _ })``. If the functions (and parameters)
-return bool instead, this makes them reasonably easy to define (\
+return ``bool`` instead, this makes them reasonably easy to define (\
 *cough*, see next section). Proving their correctness is still a
 problem but at least you have something to compute with.
 
