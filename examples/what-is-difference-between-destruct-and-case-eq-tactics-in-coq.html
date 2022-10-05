@@ -33,10 +33,10 @@ what it does differently?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, k</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>M.t nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> M.find (elt:=nat) n m <span class="kr">with</span>
 | Some _ =&gt; true
 | None =&gt; false
-<span class="kr">end</span> = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">cc n (M.add k k m) = true</div></blockquote></div></div></small></span></pre><p>In the above context, if I do destruct <tt class="docutils literal">M.find n m</tt> it breaks H into
-true and false whereas <tt class="docutils literal">case_eq (M.find n m)</tt> leaves <tt class="docutils literal">H</tt> intact
-and adds separate proposition <tt class="docutils literal">M.find <span class="pre">(elt:=nat)</span> n m = Some v</tt>,
-which I can rewrite to get same effect as destruct.</p>
+<span class="kr">end</span> = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">cc n (M.add k k m) = true</div></blockquote></div></div></small></span></pre><p>In the above context, if I do destruct <tt class="docutils literal">M.find n m</tt> it breaks <tt class="docutils literal">H</tt>
+into true and false whereas <tt class="docutils literal">case_eq (M.find n m)</tt> leaves <tt class="docutils literal">H</tt>
+intact and adds separate proposition <tt class="docutils literal">M.find <span class="pre">(elt:=nat)</span> n m = Some
+v</tt>, which I can rewrite to get same effect as destruct.</p>
 <p>Can someone please explain me the difference between the two tactics
 and when which one should be used?</p>
 <hr class="docutils" />
@@ -59,7 +59,7 @@ this, <tt class="docutils literal">case</tt> is an important primitive tactic.</
 <p>Loosing the link between information in the hypotheses and instances
 of <tt class="docutils literal">A</tt> in the conclusion is a big problem in practice, so developers
 came up with two solutions: <tt class="docutils literal">case_eq</tt> and <tt class="docutils literal">destruct</tt>.</p>
-<p>Personnally, when writing the Coq'Art book, I proposed that we write a
+<p>Personally, when writing the Coq'Art book, I proposed that we write a
 simple tactic on top of <tt class="docutils literal">case</tt> that keeps a link between <tt class="docutils literal">A</tt> and
 the various constructor instances in the form of an equality. This is
 the tactic now called <tt class="docutils literal">case_eq</tt>. It does the same thing as <tt class="docutils literal">case</tt>

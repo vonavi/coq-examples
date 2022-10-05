@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="alectryon-root alectryon-centered"><div class="document" id="how-to-enumerate-set-in-coq-ensemble">
-<h1 class="title">How to enumerate set in Coq Ensemble</h1>
+<h1 class="title">How to enumerate set in Coq <tt class="docutils literal">Ensemble</tt></h1>
 <table class="docinfo" frame="void" rules="none">
 <col class="docinfo-name" />
 <col class="docinfo-content" />
@@ -39,18 +39,19 @@ Same_set (Ensemble A) s (emptyOnly A)</div></blockquote></div></div></small><spa
 <p>Conceptually, it seems simple to just say I have <tt class="docutils literal"><span class="pre">{{}}</span></tt> so the
 powerset is <tt class="docutils literal"><span class="pre">{{},</span> <span class="pre">{{}}}</span></tt> and that's it. But, it's not clear how to
 say anything like that with these primitives on their own.</p>
-<p>I'd be tempted to try destructing on if empty set was in the set s.
-But, since Emsemble is propositional, checking set membership is not
-generally decidable. A first thought is</p>
+<p>I'd be tempted to try destructing on if empty set was in the set
+<tt class="docutils literal">s</tt>. But, since <tt class="docutils literal">Ensemble</tt> is propositional, checking set
+membership is not generally decidable. A first thought is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">In_dec</span> : <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">a</span> <span class="nv">e</span>, In A e a \/ ~In A e a.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-enumerate-set-in-coq-ensemble-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-enumerate-set-in-coq-ensemble-v-chk1"><span class="kn">Theorem</span> <span class="nf">ExcludedMiddle</span> <span class="nv">P</span> : P \/ ~P.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P \/ ~ P</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> (In_dec _ tt (<span class="kr">fun</span> <span class="nv">_</span> =&gt; P)).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>But, that is too powerful and immediately puts me into classical
 logic. The finite case is easy, but I plan on dealing with larger sets
-(e.g. Reals), so In and Included would not generally be computable.
-Are there axioms I could add that could allow In and Included to
-pretend to be decidable without making everything else decidable too?</p>
+(e.g. <tt class="docutils literal">Reals</tt>), so <tt class="docutils literal">In</tt> and <tt class="docutils literal">Included</tt> would not generally be
+computable. Are there axioms I could add that could allow <tt class="docutils literal">In</tt> and
+<tt class="docutils literal">Included</tt> to pretend to be decidable without making everything else
+decidable too?</p>
 <p>Edit: Changed from pair to singleton since quantity isn't important.</p>
 </div>
 <div class="section" id="answer">

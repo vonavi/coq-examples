@@ -193,7 +193,7 @@ this chance to try it.</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Wf.</span></span></pre><p>From <tt class="docutils literal">False</tt> you can derive a value of any type that you need.
 Useful in impossible branches in a match statement.</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IMPOSSIBLE</span> {<span class="nv">T</span>} (<span class="nv">f</span> : <span class="kt">False</span>) :T := <span class="kr">match</span> f <span class="kr">with</span> <span class="kr">end</span>.</span><span class="alectryon-wsp">
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IMPOSSIBLE</span> {<span class="nv">T</span>} (<span class="nv">f</span> : <span class="kt">False</span>) : T := <span class="kr">match</span> f <span class="kr">with</span> <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">maxval</span> (<span class="nv">l</span> : list nat) (<span class="nv">H</span> : l &lt;&gt; nil) {<span class="nv">measure</span> (length l)} : nat
   := <span class="kr">match</span> l <span class="kr">with</span>
@@ -201,8 +201,8 @@ Useful in impossible branches in a match statement.</p>
      | [a]          =&gt; a
      | a :: b :: l&#39; =&gt; max a (maxval (b :: l&#39;) _)
      <span class="kr">end</span>.</span></span></pre><p>EDIT: As <tt class="docutils literal">eponier</tt> points out, if we include <tt class="docutils literal">Require Import
-Arith.</tt> before we define maxval, we will be done here. Otherwise we
-will have to prove the remaining obligations, like this: (END EDIT)</p>
+Arith.</tt> before we define <tt class="docutils literal">maxval</tt>, we will be done here. Otherwise
+we will have to prove the remaining obligations, like this: (END EDIT)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk5"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded
   (MR lt
      (<span class="kr">fun</span> <span class="nv">recarg</span> : {l : list nat | l &lt;&gt; []} =&gt;
