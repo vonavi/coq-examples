@@ -6,27 +6,70 @@
   <head>
     <meta charset="utf-8">
     <title>Coq examples</title>
+    <style>
+      .collapsible {
+        display: block;
+        cursor: pointer;
+        color: #0f5298;
+        background-color: #d5f3fe;
+        border: 1px solid #3c99dc;
+      }
+      .active, .collapsible:hover {
+        background-color: #66d3fa;
+      }
+      .content {
+        display: none;
+      }
+    </style>
   </head>
 
   <body>
     {% for tag in site.all_tags %}
-    <tt>{{ tag }}</tt>:
     {% assign tagged = site.data.examples | where_exp: 'ex', 'ex.tags contains tag' %}
-    <ol>
-      {% for example in tagged %}
-      <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
-      {% endfor %}
-    </ol>
+    <button type="button" class="collapsible">
+      <strong>{{ tag }} ({{ tagged.size }})</strong>
+    </button>
+    <div class="content">
+      <ol>
+        {% for example in tagged %}
+        <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
     {% endfor %}
 
-    <em>others</em>:
-    <ol>
-      {% for example in site.data.examples %}
-      {% assign tags = example.tags | where_exp: 'tag', 'site.all_tags contains tag' %}
-      {% if tags == nil or tags == empty %}
-      <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
-      {% endif %}
-      {% endfor %}
-    </ol>
+    {% assign others = "" | split: ',' %}
+    {% for example in site.data.examples %}
+    {% assign tags = example.tags | where_exp: 'tag', 'site.all_tags contains tag' %}
+    {% if tags == nil or tags == empty %}
+    {% assign others = others | push: example %}
+    {% endif %}
+    {% endfor %}
+
+    <button type="button" class="collapsible">
+      <strong>others ({{ others.size }})</strong>
+    </button>
+    <div class="content">
+      <ol>
+        {% for example in others %}
+        <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        });
+      }
+    </script>
   </body>
 </html>
