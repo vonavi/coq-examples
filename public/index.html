@@ -7,15 +7,28 @@
     <meta charset="utf-8">
     <title>Coq examples</title>
     <style>
+      /*
+         Color scheme: https://www.schemecolor.com/blue-orange-mix.php
+     */
       .collapsible {
         display: block;
+        width: 12em;
+        text-align: left;
         cursor: pointer;
-        color: #0f5298;
-        background-color: #d5f3fe;
-        border: 1px solid #3c99dc;
+        color: #2438bb;
+        background-color: #08c9c3;
+        border: 1px solid #028ed0;
+      }
+      .collapsible#examples {
+        color: #ec5700;
+        background-color: #ffa500;
+        border-color: #ff7300;
       }
       .active, .collapsible:hover {
-        background-color: #66d3fa;
+        background-color: #028ed0;
+      }
+      .active#examples, .collapsible#examples:hover {
+        background-color: #ff7300;
       }
       .content {
         display: none;
@@ -24,8 +37,10 @@
   </head>
 
   <body>
+    {% assign examples = site.data.examples %}
+
     {% for tag in site.all_tags %}
-    {% assign tagged = site.data.examples | where_exp: 'ex', 'ex.tags contains tag' %}
+    {% assign tagged = examples | where_exp: 'ex', 'ex.tags contains tag' %}
     <button type="button" class="collapsible">
       <strong>{{ tag }} ({{ tagged.size }})</strong>
     </button>
@@ -39,7 +54,7 @@
     {% endfor %}
 
     {% assign others = '' | split: ',' %}
-    {% for example in site.data.examples %}
+    {% for example in examples %}
     {% assign tags = example.tags | where_exp: 'tag', 'site.all_tags contains tag' %}
     {% if tags == nil or tags == empty %}
     {% assign others = others | push: example %}
@@ -52,6 +67,17 @@
     <div class="content">
       <ol>
         {% for example in others %}
+        <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <button type="button" class="collapsible" id="examples">
+      <strong>examples ({{ examples.size }})</strong>
+    </button>
+    <div class="content">
+      <ol>
+        {% for example in examples %}
         <li><a href="{{ example.path | relative_url }}">{{ example.title }}</a></li>
         {% endfor %}
       </ol>
