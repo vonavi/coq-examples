@@ -138,8 +138,8 @@ Module Sol2.
   | orp : propForm -> propForm -> propForm
   | andp : propForm -> propForm -> propForm.
 
-  Fixpoint distribute (f:propForm) : propForm -> propForm :=
-    fix distribute1 (g:propForm) : propForm :=
+  Fixpoint distribute (f : propForm) : propForm -> propForm :=
+    fix distribute1 (g : propForm) : propForm :=
       match f with
       | orp f1 f2 => match g with
                      | orp g1 g2 => orp (distribute1 g1) (distribute1 g2)
@@ -151,7 +151,7 @@ Module Sol2.
              end
       end.
 
-  Fixpoint toDNF (f':propForm):propForm :=
+  Fixpoint toDNF (f' : propForm) : propForm :=
     match f' with
     | top => f'
     | bot => f'

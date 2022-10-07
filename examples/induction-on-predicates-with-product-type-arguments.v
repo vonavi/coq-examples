@@ -168,7 +168,7 @@ Proof.
 To get almost the exact proof state we should've erased ``H`` from the
 context, using the ``clear H.`` command: ``refine (...); clear H.``.
 This rather primitive pattern-matching doesn't allow us to prove our
-goal. Coq abstracted away ``(n, m)`` and ``(n',m')`` replacing them
+goal. Coq abstracted away ``(n, m)`` and ``(n', m')`` replacing them
 with some pairs ``p`` and ``p'``, such that ``p = (a, b)`` and ``p' =
 (a, b)``. Unfortunately, our goal has the form ``n = n'`` and there is
 neither ``(n, m)`` nor ``(n', m')`` in it -- that's why Coq didn't
