@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+CONFIG=examples
+ROOT_DIR=$(dirname "$0")/..
+
+all_tags=$(mktemp -t tagsXXXXXX)
+sort_tags=$(mktemp -t tagsXXXXXX)
+cfg_tags=$(mktemp -t tagsXXXXXX)
+trap 'rm "${all_tags}" "${sort_tags}" "${cfg_tags}"' EXIT
+
+## Check that all tags are sorted
+
+sed -n '/^all_tags:/,/^[^ ]/p' "${ROOT_DIR}/public/_config.yml" | tail +2 | \
+    sed -E 's/^ +- +//' > "${all_tags}"
+sort -u "${all_tags}" > "${sort_tags}"
+unsort_tags=$(diff -u "${all_tags}" "${sort_tags}")
+if [[ -n ${unsort_tags} ]]; then
+    echo -e "unsorted 'all_tags':\n${unsort_tags}"
+    exit 1
+fi
+
+## Collect all used tags
+
+IFS=$'\n'
+config_path=${ROOT_DIR}/public/_data/${CONFIG}.yml
+tag_lines=$(sed -nE 's@^ +tags: +\[([^]]+)\]@\1@p' "${config_path}" | tr -d ',')
+for tags in ${tag_lines}; do
+    unsorted=$(xargs -n1 <<< ${tags})
+    sorted=$(sort -u <<< ${unsorted})
+    if [[ ${unsorted} != ${sorted} ]]; then
+        echo "unsorted tags:  [$(sed 's/ /, /g' <<< ${tags})]"
+        echo "sorted variant: [$(xargs <<< ${sorted} | sed 's/ /, /g')]"
+    fi
+done
+echo "${tag_lines}" | xargs -n1 | sort -u > "${cfg_tags}"
+
+res=0
+missing_tags=$(comm -23 "${cfg_tags}" "${all_tags}" 2>/dev/null)
+if [[ -n ${missing_tags} ]]; then
+    echo -e "missing or wrong tags:\n${missing_tags}"
+    res=1
+fi
+unused_tags=$(comm -13 "${cfg_tags}" "${all_tags}")
+if [[ -n ${unused_tags} ]]; then
+    echo -e "unused tags:\n${unused_tags}"
+    res=1
+fi
+exit ${res}
