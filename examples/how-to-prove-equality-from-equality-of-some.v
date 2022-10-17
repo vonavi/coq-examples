@@ -33,7 +33,7 @@ Qed.
 
 (*|
 The case of ``Some`` however is special enough that you might want to
-write it differently (especially if you ant to be able to read the
+write it differently (especially if you want to be able to read the
 proof that's generated). You can write some *get* function for
 ``option`` using a default value:
 |*)

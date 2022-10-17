@@ -32,7 +32,7 @@ messages. This one is fine:
 
 Lemma sumbool_or : forall p q : Prop, sumbool p q -> p \/ q.
 Proof.
-  exact (fun (p q : Prop) (H : sumbool p  q) =>
+  exact (fun (p q : Prop) (H : sumbool p q) =>
            match H with
            | left p0 => or_introl p0
            | right q0 => or_intror q0

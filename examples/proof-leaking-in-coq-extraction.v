@@ -41,10 +41,10 @@ Proof.
 Defined.
 
 (*|
-I used some custom lemmas on nats that I didn't paste here. It works,
-I managed to define the euclidean division ``div a b`` with it, which
-recursively uses ``div (a-b) b``. The extraction is almost what I
-expected:
+I used some custom lemmas on ``nat``\ s that I didn't paste here. It
+works, I managed to define the euclidean division ``div a b`` with it,
+which recursively uses ``div (a-b) b``. The extraction is almost what
+I expected:
 |*)
 
 Require Extraction. (* .none *)

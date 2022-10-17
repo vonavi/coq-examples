@@ -27,7 +27,7 @@ to `Coq.Vectors.VectorDef
  Infix ":::" := Rn (at level 60, right associativity).
 
  (* return length of vector *)
- Definition EucLength {n} (e: Euc n): nat:= n.
+ Definition EucLength {n} (e: Euc n): nat := n.
 
  Definition rectEuc (P: forall {n}, Euc (S n) -> Type)
             (bas: forall a: R, P [a])

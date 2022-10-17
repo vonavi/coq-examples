@@ -1,6 +1,6 @@
 (*|
 ##################################################################
-less or equal relation with largest element of natural number list
+Less or equal relation with largest element of natural number list
 ##################################################################
 
 :Link: https://stackoverflow.com/q/67379273

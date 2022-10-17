@@ -1,6 +1,6 @@
 (*|
 #################################################
-case analysis on evidence of equality type in Coq
+Case analysis on evidence of equality type in Coq
 #################################################
 
 :Link: https://stackoverflow.com/q/48161372

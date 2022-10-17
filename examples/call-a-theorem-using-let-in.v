@@ -16,13 +16,12 @@ using ``let (x, y) := f z in``. But then, trying to use these lemmas
 seems cumbersome. ``apply`` does not work directly, I have to add the
 lemma in the hypothesis using ``pose proof`` or a variant of it and
 destruct ``f z`` to be able to use it. Is there a way to use let-in
-smoothly in lemmas ? Or is it discouraged because it is painful to
-use?
+smoothly in lemmas? Or is it discouraged because it is painful to use?
 
 To complete my question, here are the other attempts I made to write
 lemmas about ``f``. I tried using ``fst (f z)`` and ``snd (f z)``
 directly, but I also found it cumbersome. Finally, I started my lemmas
-with ``forall x y, (x,y) = f z ->``.
+with ``forall x y, (x, y) = f z ->``.
 
 Here is a concrete example.
 |*)

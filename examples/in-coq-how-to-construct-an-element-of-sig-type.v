@@ -29,7 +29,7 @@ Definition filter (a : A) : bool :=
 Definition IstrueB (b : bool) : Prop := if b then True else False.
 
 (* subtype of *A* that only interests those who pass the filter *)
-Definition subsetA : Set := {a : A | IstrueB (filter a) }.
+Definition subsetA : Set := { a : A | IstrueB (filter a) }.
 
 (*|
 I try this code to cast element of ``A`` to ``subsetA`` when
@@ -60,7 +60,7 @@ wrapper. You can use it explicitly like so:
 |*)
 
 Reset subsetA. (* .none *)
-Definition subsetA : Set := {a : A | is_true (filter a) }.
+Definition subsetA : Set := { a : A | is_true (filter a) }.
 
 (*| or implicitly using the coercion mechanism: |*)
 

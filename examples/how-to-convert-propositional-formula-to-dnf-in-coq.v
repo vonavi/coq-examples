@@ -46,8 +46,8 @@ Fixpoint distribute (f : propForm) : propForm -> propForm :=
 This function works fine. However, I still need to define a function
 which transforms the propositional formula to DNF. The following
 function would do what I want, however it is not accepted by Coq
-because the function is not structurally decreasing in f' for the last
-case. Any hints and tips would be appreciated.
+because the function is not structurally decreasing in ``f'`` for the
+last case. Any hints and tips would be appreciated.
 |*)
 
 Fail Fixpoint toDNF (f' : propForm) : propForm :=

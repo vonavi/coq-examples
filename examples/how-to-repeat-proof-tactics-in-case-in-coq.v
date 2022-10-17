@@ -11,7 +11,7 @@ Question
 ********
 
 I would like to extend the exercise 6.10 in Coq'Art by adding a
-theorem that forall months which are not January, is_January will
+theorem that for all months which are not January, ``is_January`` will
 equal false.
 
 My definition of months looks like this:

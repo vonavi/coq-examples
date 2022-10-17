@@ -74,7 +74,10 @@ choose it), but it's cool that you can do this nonetheless.
 
 ----
 
-**Q:** Do you happen to know if there are more powerful tactics for finding unifiers? Just playing around a bit it seems that the ``eexists`` + ``eauto/tauto`` approach doesn't work on something with multiple instantiations like
+**Q:** Do you happen to know if there are more powerful tactics for
+finding unifiers? Just playing around a bit it seems that the
+``eexists`` + ``eauto``/``tauto`` approach doesn't work on something
+with multiple instantiations like
 |*)
 
 Lemma two_ids (X : Set) : exists f g : X -> X, forall x, f (g x) = x.

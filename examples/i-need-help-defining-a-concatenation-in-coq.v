@@ -76,7 +76,7 @@ Fixpoint ok x :=
 
 (*|
 Since ``ok`` is computable, you can use it for all sorts of things
-later you might car about, but you can also use it in proofs (see
+later you might care about, but you can also use it in proofs (see
 below).
 |*)
 

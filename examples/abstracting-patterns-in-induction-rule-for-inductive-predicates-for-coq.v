@@ -117,7 +117,7 @@ Fixpoint subseq (l1 l2 : list nat) : Prop :=
 Lemma subseq_nin x2 l1 l2 : subseq l1 l2 -> subseq l1 (x2 :: l2).
 Proof. destruct l1 as [|x1 l1]; simpl; eauto. Qed.
 
-Lemma subseq_remove : forall (x: nat) (l1 l2 : list nat),
+Lemma subseq_remove : forall (x : nat) (l1 l2 : list nat),
   subseq (x :: l1) l2 -> subseq l1 l2.
 Proof.
   intros x l1 l2 H.

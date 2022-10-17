@@ -258,7 +258,7 @@ Proof.
              | H : 1 <= ?n < ?a  |- _ =>
                assert (Hn: n = a - 1 \/ 1 <= n < a - 1) by lia;
                  clear H; destruct Hn as [Hn | H];
-                   [subst n; apply Zgcd_is_gcd | simpl in H; try lia ]
+                   [subst n; apply Zgcd_is_gcd | simpl in H; try lia]
              end.
 Qed.
 

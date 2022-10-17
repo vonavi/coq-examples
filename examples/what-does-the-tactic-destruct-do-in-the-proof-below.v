@@ -20,7 +20,7 @@ Definition excluded_middle := forall P : Prop,
 
 Theorem not_exists_dist :
   excluded_middle ->
-  forall (X:Type) (P : X -> Prop),
+  forall (X : Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> forall x, P x.
 
 (*|
@@ -59,7 +59,7 @@ Here is a long form proof of what is going on:
 Reset not_exists_dist. (* .none *)
 Theorem not_exists_dist :
   excluded_middle ->
-  forall (X:Type) (P : X -> Prop),
+  forall (X : Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> forall x, P x.
 Proof.
   unfold excluded_middle.

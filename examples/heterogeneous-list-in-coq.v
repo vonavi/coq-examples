@@ -53,7 +53,7 @@ Fail Fixpoint concatTuples {r : schema} {s : schema}
          (a : tuple r) (b : tuple s) : tuple (concatSchema r s) :=
   match r with
   | nil => b
-  | cons _ _ => (fst a , concatTuples (snd a) b)
+  | cons _ _ => (fst a, concatTuples (snd a) b)
   end. (* .fails .unfold *)
 
 (*|

@@ -1,6 +1,6 @@
 (*|
 #####################################################
-question about intros ``[=]`` and intros ``[= <- H]``
+Question about intros ``[=]`` and intros ``[= <- H]``
 #####################################################
 
 :Link: https://stackoverflow.com/q/68059205

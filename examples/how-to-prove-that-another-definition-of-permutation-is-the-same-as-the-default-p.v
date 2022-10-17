@@ -10,7 +10,7 @@ How to prove that another definition of permutation is the same as the Default P
 Question
 ********
 
-I need to proove that a secondary definition of permutation is
+I need to prove that a secondary definition of permutation is
 equivalent to the default definition of permutation in Coq:
 
 Down bellow is the default Permutation definition in Coq

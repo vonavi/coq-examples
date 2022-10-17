@@ -32,8 +32,9 @@ them.
 
     unfold gt, ge.
 
-You may want to unfold ``lt`` as well: it's defined in terms of `le``.
-Since the definition of ``gt`` uses ``lt``, unfold ``gt`` first.
+You may want to unfold ``lt`` as well: it's defined in terms of
+``le``. Since the definition of ``gt`` uses ``lt``, unfold ``gt``
+first.
 
 .. code-block:: coq
 
