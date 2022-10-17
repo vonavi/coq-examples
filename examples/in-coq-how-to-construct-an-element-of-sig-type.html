@@ -40,7 +40,7 @@
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IstrueB</span> (<span class="nv">b</span> : bool) : <span class="kt">Prop</span> := <span class="kr">if</span> b <span class="kr">then</span> <span class="kt">True</span> <span class="kr">else</span> <span class="kt">False</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 <span class="c">(* subtype of *A* that only interests those who pass the filter *)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := {a : A | IstrueB (filter a) }.</span></span></pre><p>I try this code to cast element of <tt class="docutils literal">A</tt> to <tt class="docutils literal">subsetA</tt> when
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | IstrueB (filter a) }.</span></span></pre><p>I try this code to cast element of <tt class="docutils literal">A</tt> to <tt class="docutils literal">subsetA</tt> when
 <tt class="docutils literal">filter</tt> passes, but failed to convenience Coq that it is a valid
 construction for an element of 'sig' type:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-coq-how-to-construct-an-element-of-sig-type-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-how-to-construct-an-element-of-sig-type-v-chk0"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">cast</span> (<span class="nv">a</span> : A) : option subsetA :=
@@ -62,7 +62,7 @@ what I provide there is type <tt class="docutils literal">Prop</tt>.</p>
 <h1>Answer</h1>
 <p>First of all, there is the standard <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Datatypes.html#is_true">is_true</a>
 wrapper. You can use it explicitly like so:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := {a : A | is_true (filter a) }.</span></span></pre><p>or implicitly using the coercion mechanism:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | is_true (filter a) }.</span></span></pre><p>or implicitly using the coercion mechanism:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">is_true</span> : bool &gt;-&gt; <span class="kt">Sortclass</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | filter a }.</span></span></pre><p>Next, non-dependent pattern-mathching on <tt class="docutils literal">filter a</tt> doesn't
 propagate <tt class="docutils literal">filter a = true</tt> into the <tt class="docutils literal">true</tt> branch. You have at
