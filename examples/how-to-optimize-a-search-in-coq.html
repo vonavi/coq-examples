@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
 <title>How to optimize a search in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -69,23 +69,23 @@ trivial example, consider looking for square roots:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> eq_refl.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>. <span class="c">(* 60 seconds *)</span></span></span></pre><p>Now try the corresponding function in Python:</p>
 <pre class="code python literal-block">
-<span class="k">def</span> <span class="nf">SearchSqrt</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
-      <span class="k">return</span> <span class="n">i</span>
-  <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">SearchSqrt</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w">
+</span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span><span class="w">
+</span>    <span class="k">if</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span><span class="w">
+</span>      <span class="k">return</span> <span class="n">i</span><span class="w">
+</span>  <span class="k">return</span> <span class="mi">0</span>
 </pre>
 <p>or slightly more literally</p>
 <pre class="code python literal-block">
-<span class="k">def</span> <span class="nf">SearchSqrtLoop</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-  <span class="k">if</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">i</span>
-  <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="k">return</span> <span class="mi">0</span>
-  <span class="k">return</span> <span class="n">SearchSqrtLoop</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">SearchSqrtLoop</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span><span class="w">
+</span>  <span class="k">if</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">i</span><span class="w">
+</span>  <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span><span class="w">
+</span>    <span class="k">return</span> <span class="mi">0</span><span class="w">
+</span>  <span class="k">return</span> <span class="n">SearchSqrtLoop</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="w">
 
-<span class="k">def</span> <span class="nf">SearchSqrt</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-  <span class="k">return</span> <span class="n">SearchSqrtLoop</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span><span class="k">def</span> <span class="nf">SearchSqrt</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w">
+</span>  <span class="k">return</span> <span class="n">SearchSqrtLoop</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 </pre>
 <p>The function is nearly instant in Python, but takes minutes in Coq,
 depending on exactly how you try to call it. Also curious is that
