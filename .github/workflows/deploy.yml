@@ -17,8 +17,8 @@ jobs:
 
     env:
       CACHE_DIR: content
-      DST_DIR: public
       GH_PAGES: gh-pages
+      SITE_DIR: public
       SRC_DIRS: examples notes
 
     steps:
@@ -29,15 +29,15 @@ jobs:
           git fetch --depth=1 origin
           if git branch ${GH_PAGES} origin/${GH_PAGES}; then
             if git restore --source=${GH_PAGES} "${CACHE_DIR}"; then
-              mkdir -p "${DST_DIR}"
-              mv -v "${CACHE_DIR}" "${DST_DIR}"
+              mkdir -p "${SITE_DIR}"
+              mv -v "${CACHE_DIR}" "${SITE_DIR}"
             fi
           fi
 
       - uses: coq-community/docker-coq-action@v1
         with:
           custom_image: mathcomp/mathcomp:1.16.0-coq-8.13
-          export: CACHE_DIR DST_DIR SRC_DIRS
+          export: CACHE_DIR SITE_DIR SRC_DIRS
           custom_script: |
             startGroup "Install APT/PyPI dependencies"
               sudo apt-get update -y -q
@@ -46,8 +46,8 @@ jobs:
               python3 -m pip install --user alectryon
             endGroup
             startGroup "Create site's directory"
-              sudo mkdir -p "${DST_DIR}"
-              sudo chown -R coq:coq "${DST_DIR}"
+              sudo mkdir -p "${SITE_DIR}"
+              sudo chown -R coq:coq "${SITE_DIR}"
             endGroup
             startGroup "Use Alectryon"
               for dir in ${SRC_DIRS}; do
@@ -55,9 +55,9 @@ jobs:
                   xargs -I{} alectryon \
                     --frontend coq+rst --backend webpage \
                     --no-header --long-line-threshold 80 \
-                    --cache-directory "${DST_DIR}/${CACHE_DIR}" \
+                    --cache-directory "${SITE_DIR}/${CACHE_DIR}" \
                     --cache-compression gzip \
-                    --output "${DST_DIR}/${dir}/{}.html" "${dir}/{}.v"
+                    --output "${SITE_DIR}/${dir}/{}.html" "${dir}/{}.v"
               done
             endGroup
 
@@ -66,5 +66,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: ${{ env.GH_PAGES }}
-          publish_dir: ${{ env.DST_DIR }}
+          publish_dir: ${{ env.SITE_DIR }}
           enable_jekyll: true
