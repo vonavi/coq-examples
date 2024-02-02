@@ -11,11 +11,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        coq_version: ['8.13.2']
-        ocaml_version: ['4.13.1-flambda']
-      fail-fast: false          # don't stop jobs if one fails
 
     permissions:
       contents: write
@@ -40,14 +35,9 @@ jobs:
 
       - uses: coq-community/docker-coq-action@v1
         with:
-          coq_version: ${{ matrix.coq_version }}
-          ocaml_version: ${{ matrix.ocaml_version }}
+          custom_image: mathcomp/mathcomp:1.16.0-coq-8.13
           export: 'CACHE_DIR DEST_DIR'
           custom_script: |
-            startGroup 'Install Equations & SSReflect'
-              opam repo add coq-released https://coq.inria.fr/opam/released
-              opam install coq-equations coq-mathcomp-ssreflect
-            endGroup
             startGroup "Install APT/PyPI dependencies"
               sudo apt-get update -y -q
               sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
