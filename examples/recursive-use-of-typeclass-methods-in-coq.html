@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursive use of typeclass methods in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="recursive-use-of-typeclass-methods-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="recursive-use-of-typeclass-methods-in-coq">
 <h1 class="title">Recursive use of typeclass methods in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52348668">https://stackoverflow.com/q/52348668</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52348668">https://stackoverflow.com/q/52348668</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Is there a way to use recursion with Coq's typeclasses? Like for e.g.,
-in defining show for lists, if you want to call the <tt class="docutils literal">show</tt> function
+in defining show for lists, if you want to call the <span class="docutils literal">show</span> function
 for lists recursively, then you will have to use a fixpoint like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.String.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.Ascii.</span><span class="alectryon-wsp">
@@ -51,8 +48,8 @@ for lists recursively, then you will have to use a fixpoint like so:</p>
         <span class="kr">end</span>
     }.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">showNormal</span>.</span></span></pre><p>Which is all well and good, but what if I want to define some helper
-function that I'll use for defining <tt class="docutils literal">Show</tt> instances? Like I want to
-create a more DAZZLING show function called <tt class="docutils literal">magicShow</tt> that prints
+function that I'll use for defining <span class="docutils literal">Show</span> instances? Like I want to
+create a more DAZZLING show function called <span class="docutils literal">magicShow</span> that prints
 stars around something...</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">magicShow</span> {<span class="nv">A</span> : <span class="kt">Type</span>} `{<span class="kn">Show</span> A} (a : A) : string :=
   <span class="s2">&quot;** &quot;</span> ++ show a ++ <span class="s2">&quot; **&quot;</span>.</span><span class="alectryon-wsp">
@@ -76,15 +73,15 @@ xs : list A
 
 <span class="nl">?H</span> : <span class="s2">&quot;Show (list A)&quot;</span>
 </blockquote></div></div></small></span></pre><p>However, in this case Coq can't find a show instance for the list
-<tt class="docutils literal">xs</tt> to pass to <tt class="docutils literal">magicShow</tt>.</p>
+<span class="docutils literal">xs</span> to pass to <span class="docutils literal">magicShow</span>.</p>
 <p>Is there any way to do this in general? I.e., can you define a method
 for a typeclass using functions that rely upon the typeclass instance
 that you're defining?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>If you must do this, it can be simulated by explicitly using the
-constructor of the underlying <tt class="docutils literal">Record</tt> (since &quot;Typeclasses are
+constructor of the underlying <span class="docutils literal">Record</span> (since &quot;Typeclasses are
 Records&quot;, to quote from Software Foundations [<a class="reference external" href="https://softwarefoundations.cis.upenn.edu/qc-current/Typeclasses.html">1</a>]),
 which can be instantiated using the function(s) being defined as a
 fixpoint. I'll post three examples and explain where this can be
@@ -126,9 +123,9 @@ Coq 8.10.1):</p>
 tricky to instantiate the record constructor, but it can be done by
 treating the functions as if they were defined by mutual recursion
 (although there doesn't necessarily have to be any actual mutual
-recursion). Here's a contrived example where <tt class="docutils literal">Show</tt> now has two
+recursion). Here's a contrived example where <span class="docutils literal">Show</span> now has two
 methods. Notice that the typeclass instance is added to the context
-with an anonymous <tt class="docutils literal"><span class="pre">let-in</span></tt> binding. Evidently, this is enough to
+with an anonymous <span class="docutils literal"><span class="pre">let-in</span></span> binding. Evidently, this is enough to
 satisfy Coq's typeclass resolution mechanism.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Strings.String.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -168,10 +165,10 @@ show2__list {A : <span class="kt">Type</span>} `{<span class="kn">Show</span> A}
   }.</span></span></pre><p>So why would you want to do this? A good example is when you are
 defining decidable equality on (rose) trees. In the middle of the
 definition, we have to recursively appeal to decidable equality of
-<tt class="docutils literal">list (tree A)</tt>. We would like to use the standard library helper
-function <tt class="docutils literal">Coq.Classes.EquivDec.list_eqdec</tt> [<a class="reference external" href="https://coq.inria.fr/library/Coq.Classes.EquivDec.html">2</a>], which
-shows how to pass decidable equality on a type <tt class="docutils literal">A</tt> to <tt class="docutils literal">list A</tt>.
-Since <tt class="docutils literal">list_eqdec</tt> requires a typeclass instance (the very one we
+<span class="docutils literal">list (tree A)</span>. We would like to use the standard library helper
+function <span class="docutils literal">Coq.Classes.EquivDec.list_eqdec</span> [<a class="reference external" href="https://coq.inria.fr/library/Coq.Classes.EquivDec.html">2</a>], which
+shows how to pass decidable equality on a type <span class="docutils literal">A</span> to <span class="docutils literal">list A</span>.
+Since <span class="docutils literal">list_eqdec</span> requires a typeclass instance (the very one we
 are in the middle of defining), we have to use the same trick above:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Classes.EquivDec.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Utils.</span><span class="alectryon-wsp">
@@ -209,14 +206,14 @@ are in the middle of defining), we have to use the same trick above:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Solve Obligations with</span> <span class="nb">split</span>;
 (<span class="nb">intros</span>; <span class="kp">try</span> <span class="nb">unfold</span> complement, equiv ; program_simpl).</span></span></pre><p>Commentary: There is no constructor for creating a record of type
-<tt class="docutils literal">EqDec</tt> (since it only has one class method), so to convince Coq
-that <tt class="docutils literal">list (tree A)</tt> has decidable equality, the invocation is
-simply <tt class="docutils literal">list_eqdec tequiv</tt>. For the uninitiated, <tt class="docutils literal">Program</tt> here is
+<span class="docutils literal">EqDec</span> (since it only has one class method), so to convince Coq
+that <span class="docutils literal">list (tree A)</span> has decidable equality, the invocation is
+simply <span class="docutils literal">list_eqdec tequiv</span>. For the uninitiated, <span class="docutils literal">Program</span> here is
 simply allowing for holes in the definition of the instance to be
-filled in later as <tt class="docutils literal">Obligation</tt>s, which is more convenient than
+filled in later as <span class="docutils literal">Obligation</span>s, which is more convenient than
 writing the appropriate proofs inline.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

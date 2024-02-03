@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>What is eq_rect and where is it defined in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,74 +14,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="what-is-eq-rect-and-where-is-it-defined-in-coq">
-<h1 class="title">What is <tt class="docutils literal">eq_rect</tt> and where is it defined in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48352966">https://stackoverflow.com/q/48352966</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="what-is-eq-rect-and-where-is-it-defined-in-coq">
+<h1 class="title">What is <span class="docutils literal">eq_rect</span> and where is it defined in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48352966">https://stackoverflow.com/q/48352966</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>From what I have read, <tt class="docutils literal">eq_rect</tt> and equality seem deeply
+<section id="question">
+<h2>Question</h2>
+<p>From what I have read, <span class="docutils literal">eq_rect</span> and equality seem deeply
 interlinked. Weirdly, I'm not able to find a definition on the manual
 for it.</p>
 <p>Where does it come from, and what does it state?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>If you use <tt class="docutils literal">Locate eq_rect</tt> you will find that <tt class="docutils literal">eq_rect</tt> is
-located in <tt class="docutils literal">Coq.Init.Logic</tt>, but if you look in that file there is
-no <tt class="docutils literal">eq_rect</tt> in it. So, what's going on?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>If you use <span class="docutils literal">Locate eq_rect</span> you will find that <span class="docutils literal">eq_rect</span> is
+located in <span class="docutils literal">Coq.Init.Logic</span>, but if you look in that file there is
+no <span class="docutils literal">eq_rect</span> in it. So, what's going on?</p>
 <p>When you define an inductive type, Coq in many cases <em>automatically
-generates</em> 3 induction principles for you, appending <tt class="docutils literal">_rect</tt>,
-<tt class="docutils literal">_rec</tt>, <tt class="docutils literal">_ind</tt> to the name of the type.</p>
-<p>To understand what <tt class="docutils literal">eq_rect</tt> means you need its type,</p>
+generates</em> 3 induction principles for you, appending <span class="docutils literal">_rect</span>,
+<span class="docutils literal">_rec</span>, <span class="docutils literal">_ind</span> to the name of the type.</p>
+<p>To understand what <span class="docutils literal">eq_rect</span> means you need its type,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="what-is-eq-rect-and-where-is-it-defined-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="what-is-eq-rect-and-where-is-it-defined-in-coq-v-chk0"><span class="kn">Check</span> eq_rect.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_rect
      : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">P</span> : A -&gt; <span class="kt">Type</span>),
        P x -&gt; <span class="kr">forall</span> <span class="nv">y</span> : A, x = y -&gt; P y</blockquote></div></div></small></span></pre><p>and you need to understand the notion of <a class="reference external" href="https://en.wikipedia.org/wiki/Equality_(mathematics)#Logical_formulations">Leibniz's equality</a>:</p>
 <blockquote>
 <p>Leibniz characterized the notion of equality as follows: Given any
-<tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>, <tt class="docutils literal">x = y</tt> if and only if, given any predicate
-<tt class="docutils literal">P</tt>, <tt class="docutils literal">P(x)</tt> if and only if <tt class="docutils literal">P(y)</tt>.</p>
-<p>In this law, &quot;<tt class="docutils literal">P(x)</tt> if and only if <tt class="docutils literal">P(y)</tt>&quot; can be weakened to
-&quot;<tt class="docutils literal">P(x)</tt> if <tt class="docutils literal">P(y)</tt>&quot;; the modified law is equivalent to the
-original, since a statement that applies to &quot;any <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>&quot;
-applies just as well to &quot;any <tt class="docutils literal">y</tt> and <tt class="docutils literal">x</tt>&quot;.</p>
+<span class="docutils literal">x</span> and <span class="docutils literal">y</span>, <span class="docutils literal">x = y</span> if and only if, given any predicate
+<span class="docutils literal">P</span>, <span class="docutils literal">P(x)</span> if and only if <span class="docutils literal">P(y)</span>.</p>
+<p>In this law, &quot;<span class="docutils literal">P(x)</span> if and only if <span class="docutils literal">P(y)</span>&quot; can be weakened to
+&quot;<span class="docutils literal">P(x)</span> if <span class="docutils literal">P(y)</span>&quot;; the modified law is equivalent to the
+original, since a statement that applies to &quot;any <span class="docutils literal">x</span> and <span class="docutils literal">y</span>&quot;
+applies just as well to &quot;any <span class="docutils literal">y</span> and <span class="docutils literal">x</span>&quot;.</p>
 </blockquote>
-<p>Speaking less formally, the above quotation says that if <tt class="docutils literal">x</tt> and
-<tt class="docutils literal">y</tt> are equal, their &quot;behavior&quot; for every predicate is the same.</p>
+<p>Speaking less formally, the above quotation says that if <span class="docutils literal">x</span> and
+<span class="docutils literal">y</span> are equal, their &quot;behavior&quot; for every predicate is the same.</p>
 <p>To see more clearly that Leibniz's equality directly corresponds to
-<tt class="docutils literal">eq_rect</tt> we can rearrange the order of parameters of <tt class="docutils literal">eq_rect</tt>
+<span class="docutils literal">eq_rect</span> we can rearrange the order of parameters of <span class="docutils literal">eq_rect</span>
 into the following equivalent formulation:</p>
-<pre class="code coq literal-block">
-<span class="n">eq_rect_reorder</span>
+<pre class="code coq literal-block"><code><span class="n">eq_rect_reorder</span>
   <span class="o">:</span> <span class="kr">forall</span> <span class="o">(</span><span class="nv">A</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">P</span> <span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">x</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">A</span><span class="o">),</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">y</span>
-</pre>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">y</span></code></pre>
 <hr class="docutils" />
 <p><strong>Q:</strong> What about the other two terms that are generated? I assume
-<tt class="docutils literal">_ind</tt> is the induction principle. What is <tt class="docutils literal">_rec</tt>?</p>
+<span class="docutils literal">_ind</span> is the induction principle. What is <span class="docutils literal">_rec</span>?</p>
 <p><strong>A:</strong> Those principles have the same form, the difference between
-them lies in the type of predicate <tt class="docutils literal">P</tt>: for <tt class="docutils literal">eq_rect</tt> it's <tt class="docutils literal">A <span class="pre">-&gt;</span>
-Type</tt>, for <tt class="docutils literal">eq_ind</tt> it's <tt class="docutils literal">A <span class="pre">-&gt;</span> Prop</tt>, and for <tt class="docutils literal">eq_rec</tt> -- <tt class="docutils literal">A
-<span class="pre">-&gt;</span> Set</tt>. In fact, <tt class="docutils literal">eq_rec</tt> is just a special case of <tt class="docutils literal">eq_rect</tt>,
-which you can check with <tt class="docutils literal">Print eq_rec</tt>.</p>
+them lies in the type of predicate <span class="docutils literal">P</span>: for <span class="docutils literal">eq_rect</span> it's <span class="docutils literal">A <span class="pre">-&gt;</span> Type</span>, for <span class="docutils literal">eq_ind</span> it's <span class="docutils literal">A <span class="pre">-&gt;</span> Prop</span>, and for <span class="docutils literal">eq_rec</span> -- <span class="docutils literal">A <span class="pre">-&gt;</span> Set</span>. In fact, <span class="docutils literal">eq_rec</span> is just a special case of <span class="docutils literal">eq_rect</span>,
+which you can check with <span class="docutils literal">Print eq_rec</span>.</p>
 <p><strong>A:</strong> Note that you can also generate such principles with things
-like <tt class="docutils literal">Scheme eq_rect := Minimality for eq Sort Type</tt>, <tt class="docutils literal">Scheme
-eq_rec := Minimality for eq Sort Set</tt>, <tt class="docutils literal">Scheme eq_ind := Minimality
-for eq Sort Prop</tt>, and there are also dependent versions where you
-replace <tt class="docutils literal">Minimality</tt> with <tt class="docutils literal">Induction</tt> and get schemes like
-<tt class="docutils literal">forall (A : Type) (x : A) (P : forall a : A, x = a <span class="pre">-&gt;</span> Type), P x
-eq_refl <span class="pre">-&gt;</span> forall (y : A) (e : x = y), P y e</tt>. I believe Coq
-automatically chooses <tt class="docutils literal">Minimality</tt> for inductives in <tt class="docutils literal">Prop</tt>, and
-<tt class="docutils literal">Induction</tt> for inductives landing in <tt class="docutils literal">Set</tt> and <tt class="docutils literal">Type</tt>.</p>
+like <span class="docutils literal">Scheme eq_rect := Minimality for eq Sort Type</span>, <span class="docutils literal">Scheme eq_rec := Minimality for eq Sort Set</span>, <span class="docutils literal">Scheme eq_ind := Minimality for eq Sort Prop</span>, and there are also dependent versions where you
+replace <span class="docutils literal">Minimality</span> with <span class="docutils literal">Induction</span> and get schemes like
+<span class="docutils literal">forall (A : Type) (x : A) (P : forall a : A, x = a <span class="pre">-&gt;</span> Type), P x eq_refl <span class="pre">-&gt;</span> forall (y : A) (e : x = y), P y e</span>. I believe Coq
+automatically chooses <span class="docutils literal">Minimality</span> for inductives in <span class="docutils literal">Prop</span>, and
+<span class="docutils literal">Induction</span> for inductives landing in <span class="docutils literal">Set</span> and <span class="docutils literal">Type</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

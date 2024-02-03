@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&quot;Verbose&quot; auto in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,63 +14,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="verbose-auto-in-coq">
-<h1 class="title">&quot;Verbose&quot; <tt class="docutils literal">auto</tt> in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/14917318">https://stackoverflow.com/q/14917318</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<div class="alectryon-root alectryon-centered"><main id="verbose-auto-in-coq">
+<h1 class="title">&quot;Verbose&quot; <span class="docutils literal">auto</span> in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/14917318">https://stackoverflow.com/q/14917318</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>I'm learning Coq and the book I'm learning from, (<a class="reference external" href="http://adam.chlipala.net/cpdt/html/toc.html">CPDT</a>) makes heavy use of
-<tt class="docutils literal">auto</tt> in proofs.</p>
+<span class="docutils literal">auto</span> in proofs.</p>
 <p>Since I'm learning I think it might be helpful for me to see exactly
-what <tt class="docutils literal">auto</tt> is doing under the hood (the less magic early on the
+what <span class="docutils literal">auto</span> is doing under the hood (the less magic early on the
 better). Is there any way to force it to display exactly what tactics
 or techniques it's using to compute the proof?</p>
-<p>If not, is there a place which details exactly what <tt class="docutils literal">auto</tt> does?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<p>If not, is there a place which details exactly what <span class="docutils literal">auto</span> does?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>There are multiple ways to get a glance at what is going on under the
 hood.</p>
-<p>TLDR: Put <tt class="docutils literal">info</tt> before your tactic, or use <tt class="docutils literal">Show Proof.</tt> before
+<p>TLDR: Put <span class="docutils literal">info</span> before your tactic, or use <span class="docutils literal">Show Proof.</span> before
 and after calling the tactic and spot the differences.</p>
 <hr class="docutils" />
 <p>To see what a particular tactic invocation has been doing, you can
-prefix is with <tt class="docutils literal">info</tt>, so as to show the particular proof steps it
+prefix is with <span class="docutils literal">info</span>, so as to show the particular proof steps it
 has taken.</p>
-<p>(This might be broken with Coq 8.4, I see that they provide <tt class="docutils literal">info_</tt>
+<p>(This might be broken with Coq 8.4, I see that they provide <span class="docutils literal">info_</span>
 versions of some tactics, read the error message if you need to.)</p>
 <p>This is probably what you want at a beginner level, it can already be
 quite terse.</p>
 <hr class="docutils" />
 <p>Another way to see what is currently going on within a proof is to use
-the command <tt class="docutils literal">Show Proof.</tt>. It will show you the currently built term
+the command <span class="docutils literal">Show Proof.</span>. It will show you the currently built term
 with holes, and show you which hole each of your current goals is
 supposed to fill.</p>
 <p>This is probably more advanced, especially if you use tactic such as
-<tt class="docutils literal">induction</tt> or <tt class="docutils literal">inversion</tt>, as the term being built is going to be
+<span class="docutils literal">induction</span> or <span class="docutils literal">inversion</span>, as the term being built is going to be
 fairly involved, and will require you to understand the underlying
 nature of induction schemes or dependent pattern-matching (which CPDT
 should teach you soon enough).</p>
 <hr class="docutils" />
-<p>Once you have finished a proof with <tt class="docutils literal">Qed.</tt> (or <tt class="docutils literal">Defined.</tt>), you
-can also ask to look at the term that was built by using <tt class="docutils literal">Print
-term.</tt> where <tt class="docutils literal">term</tt> is the name of the theorem/term.</p>
+<p>Once you have finished a proof with <span class="docutils literal">Qed.</span> (or <span class="docutils literal">Defined.</span>), you
+can also ask to look at the term that was built by using <span class="docutils literal">Print term.</span> where <span class="docutils literal">term</span> is the name of the theorem/term.</p>
 <p>This will often be a big and ugly term, and it needs some training to
 be able to read these for involved terms. In particular, if the term
-has been built via the use of powerful tactics (such as <tt class="docutils literal">omega</tt>,
-<tt class="docutils literal">crush</tt>, etc.), it is probably going to be unreadable. You'd
+has been built via the use of powerful tactics (such as <span class="docutils literal">omega</span>,
+<span class="docutils literal">crush</span>, etc.), it is probably going to be unreadable. You'd
 basically only use that to scan at some particular place of the term
 you're interested in. If it's more than 10 lines long, don't even
 bother reading it in such a crude format! :)</p>
 <hr class="docutils" />
-<p>With all of the previous, you can use <tt class="docutils literal">Set Printing All.</tt>
+<p>With all of the previous, you can use <span class="docutils literal">Set Printing All.</span>
 beforehand, so that Coq prints the unfolded, explicit versions of
 everything. It is additionally verbose but can help when you wonder
 what the values of implicit parameters are.</p>
@@ -80,17 +76,17 @@ might be more though.</p>
 <p>As for what a tactic does, the usual best answer is found in the
 documentation:</p>
 <p><a class="reference external" href="http://coq.inria.fr/distrib/V8.4/refman/Reference-Manual011.html#&#64;tactic155">http://coq.inria.fr/distrib/V8.4/refman/Reference-Manual011.html#&#64;tactic155</a></p>
-<p>Basically, <tt class="docutils literal">auto</tt> tries to use all the hints provided (depending on
+<p>Basically, <span class="docutils literal">auto</span> tries to use all the hints provided (depending on
 the database you use), and to solve your goal combining them up to
 some depth (that you can specify). By default, the database is
-<tt class="docutils literal">core</tt> and the depth is <tt class="docutils literal">5</tt>.</p>
+<span class="docutils literal">core</span> and the depth is <span class="docutils literal">5</span>.</p>
 <p>More info on that can be found here:</p>
 <p><a class="reference external" href="http://coq.inria.fr/distrib/V8.4/refman/Reference-Manual011.html#Hints-databases">http://coq.inria.fr/distrib/V8.4/refman/Reference-Manual011.html#Hints-databases</a></p>
 <hr class="docutils" />
-<p><strong>A:</strong> <tt class="docutils literal">info_auto</tt> shows only the &quot;path to success&quot;. To see what
-exactly <tt class="docutils literal">auto</tt> tries one can use <tt class="docutils literal">debug auto.</tt>: it shows all the
+<p><strong>A:</strong> <span class="docutils literal">info_auto</span> shows only the &quot;path to success&quot;. To see what
+exactly <span class="docutils literal">auto</span> tries one can use <span class="docutils literal">debug auto.</span>: it shows all the
 fails (!) and successes.</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

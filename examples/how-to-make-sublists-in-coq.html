@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to make sublists in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,27 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-make-sublists-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-make-sublists-in-coq">
 <h1 class="title">How to make sublists in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36896291">https://stackoverflow.com/q/36896291</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/36896291">https://stackoverflow.com/q/36896291</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm working in Coq and trying to figure out how to do the next thing:
-If I have a list of natural numbers and a given number <tt class="docutils literal">n</tt>, I want
-to break my list in what goes before and after each of the <tt class="docutils literal">n</tt>'s. To
-make it clearer, if I have the list <tt class="docutils literal">[1; 2; 0; 3; 4; 0; 9]</tt> and the
-number <tt class="docutils literal">n = 0</tt>, then I want to have as output the three lists:
-<tt class="docutils literal">[1;2]</tt>, <tt class="docutils literal">[3;4]</tt> and <tt class="docutils literal">[9]</tt>. The main problem I have is that I
-don't know how to output several elements on a <tt class="docutils literal">Fixpoint</tt>. I think I
-need to nest <tt class="docutils literal">Fixpoint</tt>s but I just don't see how. As a very raw
+If I have a list of natural numbers and a given number <span class="docutils literal">n</span>, I want
+to break my list in what goes before and after each of the <span class="docutils literal">n</span>'s. To
+make it clearer, if I have the list <span class="docutils literal">[1; 2; 0; 3; 4; 0; 9]</span> and the
+number <span class="docutils literal">n = 0</span>, then I want to have as output the three lists:
+<span class="docutils literal">[1;2]</span>, <span class="docutils literal">[3;4]</span> and <span class="docutils literal">[9]</span>. The main problem I have is that I
+don't know how to output several elements on a <span class="docutils literal">Fixpoint</span>. I think I
+need to nest <span class="docutils literal">Fixpoint</span>s but I just don't see how. As a very raw
 idea with one too many issues I have:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-make-sublists-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">SubLists</span> (<span class="nv">A</span> : list nat) (<span class="nv">m</span> : nat) :=
   <span class="kr">match</span> A <span class="kr">with</span>
@@ -43,9 +40,9 @@ idea with one too many issues I have:</p>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The reference L was not found <span class="kr">in</span> the current
 environment.</blockquote></div></div></small></span></pre><p>I would very much appreciate your input on how to do this, and how to
 navigate having an output of several elements.</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>You can do this by combining a few fixpoints:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
@@ -68,14 +65,14 @@ navigate having an output of several elements.</p>
   | [] =&gt; []
   | m :: l&#39; =&gt; prefix n (m :: l&#39;) :: split_at n (suffix n (m :: l&#39;))
   <span class="kr">end</span>.</span></span></pre><p>Notice that Coq's termination checker accepts the recursive call to
-<tt class="docutils literal">split_at</tt>, even though it is not done syntactically a subterm of
-<tt class="docutils literal">l</tt>. The reason for that is that it is able to detect that suffix
+<span class="docutils literal">split_at</span>, even though it is not done syntactically a subterm of
+<span class="docutils literal">l</span>. The reason for that is that it is able to detect that suffix
 only outputs subterms of its argument. But in order for this to work,
-we <em>must</em> return <tt class="docutils literal">l</tt>, and not <tt class="docutils literal">[]</tt> on its first branch (try
+we <em>must</em> return <span class="docutils literal">l</span>, and not <span class="docutils literal">[]</span> on its first branch (try
 changing it to see what happens!).</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>In addition to Arthur's solution, you can use an accumulator, which is
 typical of Functional Programming style:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Arith.</span><span class="alectryon-wsp">
@@ -97,9 +94,9 @@ typical of Functional Programming style:</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk1"><span class="kn">Compute</span> (split_seq <span class="mi">0</span> [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">0</span>; <span class="mi">3</span>; <span class="mi">4</span>; <span class="mi">0</span>; <span class="mi">9</span>] []).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= [[<span class="mi">1</span>; <span class="mi">2</span>]; [<span class="mi">3</span>; <span class="mi">4</span>]; [<span class="mi">9</span>]]
-: list (list nat)</blockquote></div></div></small></span></pre><p>Note that the result is reversed so you need to use <tt class="docutils literal">rev</tt>. A bonus
+: list (list nat)</blockquote></div></div></small></span></pre><p>Note that the result is reversed so you need to use <span class="docutils literal">rev</span>. A bonus
 exercise is to improve this.</p>
-<p>EDIT: Provided second variant that doesn't add <tt class="docutils literal">[]</tt> for repeated
+<p>EDIT: Provided second variant that doesn't add <span class="docutils literal">[]</span> for repeated
 separators.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">reset_acc</span> (<span class="nv">s</span> : list (list nat)) :=
   <span class="kr">match</span> s <span class="kr">with</span>
@@ -117,23 +114,20 @@ separators.</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk2"><span class="kn">Compute</span> (split_seq_nodup <span class="mi">0</span> [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">0</span>; <span class="mi">3</span>; <span class="mi">4</span>; <span class="mi">0</span>; <span class="mi">9</span>] []).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= [[<span class="mi">1</span>; <span class="mi">2</span>]; [<span class="mi">3</span>; <span class="mi">4</span>]; [<span class="mi">9</span>]]
 : list (list nat)</blockquote></div></div></small></span></pre><hr class="docutils" />
-<p><strong>A:</strong> (1) For <tt class="docutils literal">reset_acc</tt>'s body I'd write <tt class="docutils literal">match s with | [] :: _
-=&gt; s | _ =&gt; [] :: s</tt> (2) For novice Coq programmers, not familiar
+<p><strong>A:</strong> (1) For <span class="docutils literal">reset_acc</span>'s body I'd write <span class="docutils literal">match s with | [] :: _ =&gt; s | _ =&gt; [] :: s</span> (2) For novice Coq programmers, not familiar
 with the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual004.html#Implicits-explicitation">&#64; syntax</a>:
-it turns off &quot;implicitness&quot;, so <tt class="docutils literal">(&#64;rev _)</tt> stands for <tt class="docutils literal">(&#64;rev
-nat)</tt>. Without <tt class="docutils literal">&#64;</tt>, one could have used eta-expansion: <tt class="docutils literal">map (fun
-xs =&gt; rev xs) (rev acc)</tt>.</p>
-</div>
-<div class="section" id="answer-gallais">
-<h1>Answer (gallais)</h1>
+it turns off &quot;implicitness&quot;, so <span class="docutils literal">(&#64;rev _)</span> stands for <span class="docutils literal">(&#64;rev nat)</span>. Without <span class="docutils literal">&#64;</span>, one could have used eta-expansion: <span class="docutils literal">map (fun xs =&gt; rev xs) (rev acc)</span>.</p>
+</section>
+<section id="answer-gallais">
+<h2>Answer (gallais)</h2>
 <p>An alternative way to tackle this issue is to formally describe the
 problem you are trying to solve and then either write a
 dependently-typed function proving that this problem can indeed be
 solved or using tactics to slowly build up your proof.</p>
 <p>This is, if I am not mistaken, a relation describing the relationship
-between the outputs <tt class="docutils literal">n</tt> and <tt class="docutils literal">ns</tt> you want to pass your function
-and the output <tt class="docutils literal">mss</tt> you want to get back.</p>
-<p>The <tt class="docutils literal">(* <span class="pre">-------</span> *)</tt> lines are simple comments used to suggest that
+between the outputs <span class="docutils literal">n</span> and <span class="docutils literal">ns</span> you want to pass your function
+and the output <span class="docutils literal">mss</span> you want to get back.</p>
+<p>The <span class="docutils literal">(* <span class="pre">-------</span> *)</span> lines are simple comments used to suggest that
 these constructors should be seen as <a class="reference external" href="https://en.wikipedia.org/wiki/Inference_rule">inference rules</a>: whatever is under
 one such line is the conclusion one can make based on the assumptions
 above it.</p>
@@ -147,11 +141,11 @@ above it.</p>
 | consNotEq : <span class="kr">forall</span> <span class="nv">ns</span> <span class="nv">m</span> <span class="nv">ms</span> <span class="nv">mss</span>,
     (n &lt;&gt; m) -&gt; SubListsRel n ns (ms :: mss) -&gt;
     <span class="c">(* -------------------------------------- *)</span>
-    SubListsRel n (m :: ns) ((m :: ms) :: mss).</span></span></pre><p>We can then express your <tt class="docutils literal">Sublists</tt> problem as being, given inputs
-<tt class="docutils literal">n</tt> and <tt class="docutils literal">ns</tt>, the existence of an output <tt class="docutils literal">mss</tt> such that
-<tt class="docutils literal">SubListsRel n ns mss</tt> holds:</p>
+    SubListsRel n (m :: ns) ((m :: ms) :: mss).</span></span></pre><p>We can then express your <span class="docutils literal">Sublists</span> problem as being, given inputs
+<span class="docutils literal">n</span> and <span class="docutils literal">ns</span>, the existence of an output <span class="docutils literal">mss</span> such that
+<span class="docutils literal">SubListsRel n ns mss</span> holds:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">SubLists</span> (<span class="nv">n</span> : nat) (<span class="nv">ns</span> : list nat) : <span class="kt">Set</span> :=
-  { mss | SubListsRel n ns mss }.</span></span></pre><p>Using tactics we can readily generate such <tt class="docutils literal">Sublists</tt> for concrete
+  { mss | SubListsRel n ns mss }.</span></span></pre><p>Using tactics we can readily generate such <span class="docutils literal">Sublists</span> for concrete
 examples in order to sanity-check our specification. We can for
 instance take the example you had in your original post:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk3"><span class="kn">Example</span> <span class="nf">example1</span> : SubLists <span class="mi">0</span> (<span class="mi">1</span> :: <span class="mi">2</span> :: <span class="mi">0</span> :: <span class="mi">3</span> :: <span class="mi">4</span> :: <span class="mi">0</span> :: <span class="mi">9</span> :: nil).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">SubLists <span class="mi">0</span> (<span class="mi">1</span> :: <span class="mi">2</span> :: <span class="mi">0</span> :: <span class="mi">3</span> :: <span class="mi">4</span> :: <span class="mi">0</span> :: <span class="mi">9</span> :: nil)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -167,20 +161,19 @@ proj1_sig example1 =
 :: (<span class="mi">3</span> :: <span class="mi">4</span> :: nil) :: (<span class="mi">9</span> :: nil) :: nil
      : proj1_sig example1 =
        (<span class="mi">1</span> :: <span class="mi">2</span> :: nil)
-       :: (<span class="mi">3</span> :: <span class="mi">4</span> :: nil) :: (<span class="mi">9</span> :: nil) :: nil</blockquote></div></div></small></span></pre><p>Now comes the main part of this post: the proof that <tt class="docutils literal">forall n ns,
-SubLists n ns</tt>. Given that the premise of <tt class="docutils literal">consNotEq</tt> assumes that
-<tt class="docutils literal">mss</tt> is non-empty, we will actually prove a strengthened statement
+       :: (<span class="mi">3</span> :: <span class="mi">4</span> :: nil) :: (<span class="mi">9</span> :: nil) :: nil</blockquote></div></div></small></span></pre><p>Now comes the main part of this post: the proof that <span class="docutils literal">forall n ns, SubLists n ns</span>. Given that the premise of <span class="docutils literal">consNotEq</span> assumes that
+<span class="docutils literal">mss</span> is non-empty, we will actually prove a strengthened statement
 in order to make our life easier:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Strenghtened_SubLists</span> (<span class="nv">n</span> : nat) (<span class="nv">ns</span> : list nat) : <span class="kt">Set</span> :=
   { mss | SubListsRel n ns mss /\ mss &lt;&gt; nil }.</span></span></pre><p>And given that oftentimes we will have goals of the shape
-<tt class="docutils literal">something_absurd <span class="pre">-&gt;</span> False</tt>, I define a simple tactic to handle
+<span class="docutils literal">something_absurd <span class="pre">-&gt;</span> False</span>, I define a simple tactic to handle
 these things. It introduces the absurd assumption and inverts it
 immediately to make the goal disappear:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">dismiss</span> := <span class="nb">intro</span> Hf; <span class="nb">inversion</span> Hf.</span></span></pre><p>We can now prove the main statement by proving the strengthened
 version by induction and deducing it. I guess that here it's better
 for you to step through it in Coq rather than me trying to explain
-what happens. The key steps are the <tt class="docutils literal">cut</tt> (proving a stronger
-statement), <tt class="docutils literal">induction</tt> and the case analysis on <tt class="docutils literal">eq_nat_dec</tt>.</p>
+what happens. The key steps are the <span class="docutils literal">cut</span> (proving a stronger
+statement), <span class="docutils literal">induction</span> and the case analysis on <span class="docutils literal">eq_nat_dec</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk7"><span class="kn">Lemma</span> <span class="nf">subLists</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">ns</span>, SubLists n ns.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">ns</span> : list nat), SubLists n ns</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">ns</span> : list nat), SubLists n ns</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk9"><span class="nb">intros</span> n ns.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ns</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SubLists n ns</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chka"><span class="nb">cut</span> (Strenghtened_SubLists n ns).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ns</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Strenghtened_SubLists n ns -&gt; SubLists n ns</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-make-sublists-in-coq-v-chkb" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ns</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><label class="goal-separator" for="how-to-make-sublists-in-coq-v-chkb"><hr></label><div class="goal-conclusion">Strenghtened_SubLists n ns</div></blockquote></div></div></div></small><span class="alectryon-wsp">
@@ -193,28 +186,28 @@ statement), <tt class="docutils literal">induction</tt> and the case analysis on
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk19">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ns</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>mss</var><span class="hyp-type"><b>: </b><span>list (list nat)</span></span></span><br><span><var>Hmss</var><span class="hyp-type"><b>: </b><span>SubListsRel n ns mss</span></span></span><br><span><var>mssNotNil</var><span class="hyp-type"><b>: </b><span>mss &lt;&gt; nil</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>n &lt;&gt; a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Strenghtened_SubLists n (a :: ns)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk1a"><span class="nb">destruct</span> mss; [<span class="nb">apply</span> False_rect, mssNotNil; <span class="bp">reflexivity</span> |].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ns, l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>mss</var><span class="hyp-type"><b>: </b><span>list (list nat)</span></span></span><br><span><var>Hmss</var><span class="hyp-type"><b>: </b><span>SubListsRel n ns (l :: mss)</span></span></span><br><span><var>mssNotNil</var><span class="hyp-type"><b>: </b><span>l :: mss &lt;&gt; nil</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>n &lt;&gt; a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Strenghtened_SubLists n (a :: ns)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">        </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk1b"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ns, l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>mss</var><span class="hyp-type"><b>: </b><span>list (list nat)</span></span></span><br><span><var>Hmss</var><span class="hyp-type"><b>: </b><span>SubListsRel n ns (l :: mss)</span></span></span><br><span><var>mssNotNil</var><span class="hyp-type"><b>: </b><span>l :: mss &lt;&gt; nil</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>n &lt;&gt; a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">SubListsRel n (a :: ns) <span class="nl">?mss</span> /\ <span class="nl">?mss</span> &lt;&gt; nil</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">split</span>; [<span class="nb">eapply</span> consNotEq; <span class="bp">eassumption</span> | dismiss].</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>Once we have this function, we can come back to our example and
-generate the appropriate <tt class="docutils literal">Sublists</tt> this time not by calling tactics
-but by running the function <tt class="docutils literal">subLists</tt> we just defined.</p>
+generate the appropriate <span class="docutils literal">Sublists</span> this time not by calling tactics
+but by running the function <span class="docutils literal">subLists</span> we just defined.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Example</span> <span class="nf">example2</span> : SubLists <span class="mi">0</span> (<span class="mi">1</span> :: <span class="mi">2</span> :: <span class="mi">0</span> :: <span class="mi">3</span> :: <span class="mi">4</span> :: <span class="mi">0</span> :: <span class="mi">9</span> :: nil) :=
-  subLists _ _.</span></span></pre><p>And we can <tt class="docutils literal">Check</tt> that the computed list is indeed the same as the
-one obtained in <tt class="docutils literal">example1</tt>:</p>
+  subLists _ _.</span></span></pre><p>And we can <span class="docutils literal">Check</span> that the computed list is indeed the same as the
+one obtained in <span class="docutils literal">example1</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk1c"><span class="kn">Check</span> (eq_refl : proj1_sig example1 = proj1_sig example2).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_refl : proj1_sig example1 = proj1_sig example2
      : proj1_sig example1 = proj1_sig example2</blockquote></div></div></small></span></pre><p><strong>Nota Bene</strong>: It is paramount here that our proofs are ended with
-<tt class="docutils literal">Defined</tt> rather than <tt class="docutils literal">Qed</tt> in order for them to be unfolded when
+<span class="docutils literal">Defined</span> rather than <span class="docutils literal">Qed</span> in order for them to be unfolded when
 computing with them (which is what we want to do here: they give us
-the <tt class="docutils literal">list (list nat)</tt> we are looking for!).</p>
+the <span class="docutils literal">list (list nat)</span> we are looking for!).</p>
 <p><a class="reference external" href="https://gist.github.com/gallais/e6c7dac6542459037a9b3935f3fd3741">A gist</a>
 with all the code and the right imports.</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>Here is another take, based on the standard library function
-<tt class="docutils literal">List.fold_left</tt>. It works by maintaining an accumulator, which is a
+<span class="docutils literal">List.fold_left</span>. It works by maintaining an accumulator, which is a
 pair of the overall <em>reversed</em> result (a list of lists) and a current
 sublist (also reversed while accumulating). Once we reach a delimiter,
 we reverse the current sublist and put it into the resulting list of
-sublists. After executing <tt class="docutils literal">fold_left</tt>, we reverse the result in the
-outermost <tt class="docutils literal">match</tt> expression.</p>
+sublists. After executing <span class="docutils literal">fold_left</span>, we reverse the result in the
+outermost <span class="docutils literal">match</span> expression.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -235,8 +228,8 @@ outermost <tt class="docutils literal">match</tt> expression.</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-make-sublists-in-coq-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-sublists-in-coq-v-chk1d"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> split_skip_dup_delims <span class="mi">0</span> [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">0</span>; <span class="mi">0</span>; <span class="mi">0</span>; <span class="mi">3</span>; <span class="mi">4</span>; <span class="mi">0</span>; <span class="mi">9</span>].</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= [[<span class="mi">1</span>; <span class="mi">2</span>]; [<span class="mi">3</span>; <span class="mi">4</span>]; [<span class="mi">9</span>]]
-: list (list nat)</blockquote></div></div></small></span></pre></div>
+: list (list nat)</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Fixpoint with Prop inhabitant as argument</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,44 +14,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="fixpoint-with-prop-inhabitant-as-argument">
-<h1 class="title">Fixpoint with <tt class="docutils literal">Prop</tt> inhabitant as argument</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/51763716">https://stackoverflow.com/q/51763716</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="fixpoint-with-prop-inhabitant-as-argument">
+<h1 class="title">Fixpoint with <span class="docutils literal">Prop</span> inhabitant as argument</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/51763716">https://stackoverflow.com/q/51763716</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Consider the definition of <tt class="docutils literal">find</tt> in <a class="reference external" href="https://coq.inria.fr/library/Coq.Lists.List.html#find">the standard library</a>, which as
-the type <tt class="docutils literal">find: forall A : Type, (A <span class="pre">-&gt;</span> bool) <span class="pre">-&gt;</span> list A <span class="pre">-&gt;</span> option A</tt>.</p>
-<p>Of course, <tt class="docutils literal">find</tt> has to return an <tt class="docutils literal">option A</tt> and not an <tt class="docutils literal">A</tt>
+<section id="question">
+<h2>Question</h2>
+<p>Consider the definition of <span class="docutils literal">find</span> in <a class="reference external" href="https://coq.inria.fr/library/Coq.Lists.List.html#find">the standard library</a>, which as
+the type <span class="docutils literal">find: forall A : Type, (A <span class="pre">-&gt;</span> bool) <span class="pre">-&gt;</span> list A <span class="pre">-&gt;</span> option A</span>.</p>
+<p>Of course, <span class="docutils literal">find</span> has to return an <span class="docutils literal">option A</span> and not an <span class="docutils literal">A</span>
 because we don't know wether there is a &quot;valid&quot; element in the list.</p>
-<p>Now, say I find this definition of <tt class="docutils literal">find</tt> painful, because we have
+<p>Now, say I find this definition of <span class="docutils literal">find</span> painful, because we have
 to deal with the option, even when we are sure that such an element
 exists in the list.</p>
-<p>Hence, I'd like to define <tt class="docutils literal">myFind</tt> which additionnaly takes a proof
+<p>Hence, I'd like to define <span class="docutils literal">myFind</span> which additionnaly takes a proof
 that there is such an element in the list. It would be something like:</p>
-<pre class="code coq literal-block">
-<span class="kn">Variable</span> <span class="nv">A</span><span class="o">:</span> <span class="kt">Type</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Variable</span> <span class="nv">A</span><span class="o">:</span> <span class="kt">Type</span><span class="o">.</span>
 <span class="kn">Fixpoint</span> <span class="nf">myFind</span>
          <span class="o">(</span><span class="nv">f</span><span class="o">:</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">bool</span><span class="o">)</span>
          <span class="o">(</span><span class="nv">l</span><span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">)</span>
          <span class="o">(</span><span class="nv">H</span><span class="o">:</span> <span class="kr">exists</span> <span class="nv">a</span><span class="o">,</span> <span class="n">In</span> <span class="n">a</span> <span class="n">l</span> <span class="o">/\</span> <span class="n">f</span> <span class="n">a</span> <span class="o">=</span> <span class="n">true</span><span class="o">):</span> <span class="n">A</span> <span class="o">:=</span>
-         <span class="o">...</span>
-</pre>
+         <span class="o">...</span></code></pre>
 <p>If I am not mistaken, such a signature informally says: &quot;Give me a
 function, a list, and a proof that you have a &quot;valid&quot; element in the
 list&quot;.</p>
 <p>My question is: how can I use the hypothesis provided and define my
 fixpoint?</p>
 <p>What I have in mind is something like:</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">l</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">l</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">nil</span> <span class="o">=&gt;</span> <span class="c">(* Use H to prove this case is not possible *)</span>
 <span class="o">|</span> <span class="n">hd</span> <span class="o">::</span> <span class="n">tl</span> <span class="o">=&gt;</span>
   <span class="kr">if</span> <span class="n">f</span> <span class="n">hd</span>
@@ -60,28 +54,27 @@ fixpoint?</p>
     <span class="c">(* Use H and the fact that f hd = false
        to prove H': exists a, In a tl /\ f a = true *)</span>
     <span class="n">myFind</span> <span class="n">f</span> <span class="n">tl</span> <span class="n">H'</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
 <hr class="docutils" />
 <p>An bonus point would be to know whether I can embbed a property about
 the result directly within the type, for instance in our case, a proof
-that the return value <tt class="docutils literal">r</tt> is indeed such that <tt class="docutils literal">f r = true</tt>.</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
-<p>We can implement this <tt class="docutils literal">myFind</tt> function by structural recursion over
-the input list. In the case of empty list the <tt class="docutils literal">False_rect</tt> inductive
+that the return value <span class="docutils literal">r</span> is indeed such that <span class="docutils literal">f r = true</span>.</p>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
+<p>We can implement this <span class="docutils literal">myFind</span> function by structural recursion over
+the input list. In the case of empty list the <span class="docutils literal">False_rect</span> inductive
 principle is our friend because it lets us switch from the logical
 world to the world of computations. In general we cannot destruct
 proofs of propositions if the type of the term under construction
-lives in <tt class="docutils literal">Type</tt>, but if we have an inconsistency the system lets us.</p>
+lives in <span class="docutils literal">Type</span>, but if we have an inconsistency the system lets us.</p>
 <p>We can handle the case of the non-empty input list by using the
 <em>convoy pattern</em> (there is a number of great answers on Stackoverflow
-explaining this pattern) and an auxiliary lemma <tt class="docutils literal">find_not_head</tt>.</p>
+explaining this pattern) and an auxiliary lemma <span class="docutils literal">find_not_head</span>.</p>
 <p>It might be useful to add that I use the convoy pattern twice in the
 implementation below: the one on the top level is used to let Coq know
-the input list is empty in the first <tt class="docutils literal">match</tt>-branch -- observe that
-the type of <tt class="docutils literal">H</tt> is different in both branches.</p>
+the input list is empty in the first <span class="docutils literal">match</span>-branch -- observe that
+the type of <span class="docutils literal">H</span> is different in both branches.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
@@ -130,12 +123,12 @@ the type of <tt class="docutils literal">H</tt> is different in both branches.</
 <span class="c">  = exist (fun r : nat =&gt; f r) 0 eq_refl</span>
 <span class="c">  : {r : nat | f r}</span>
 <span class="c">*)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">FindTest</span>.</span></span></pre></div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
-<p>You can also use <tt class="docutils literal">Program</tt> to help you construct the proof arguments
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">FindTest</span>.</span></span></pre></section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
+<p>You can also use <span class="docutils literal">Program</span> to help you construct the proof arguments
 interactively. You fill in as much as you can in the program body and
-leave <tt class="docutils literal">_</tt> blanks that you get to fill in later with proof tactics.</p>
+leave <span class="docutils literal">_</span> blanks that you get to fill in later with proof tactics.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Find</span>.</span><span class="alectryon-wsp">
@@ -154,13 +147,13 @@ leave <tt class="docutils literal">_</tt> blanks that you get to fill in later w
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">firstorder</span>; <span class="bp">congruence</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Find</span>.</span></span></pre><p><tt class="docutils literal">Program</tt> is a little better at not forgetting information when you
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Find</span>.</span></span></pre><p><span class="docutils literal">Program</span> is a little better at not forgetting information when you
 do case analysis (it knows the convoy pattern) but it is not perfect,
-hence the use of <tt class="docutils literal">dec</tt> in the <tt class="docutils literal">if</tt> statement.</p>
+hence the use of <span class="docutils literal">dec</span> in the <span class="docutils literal">if</span> statement.</p>
 <p>(Notice how Coq was able to handle the first obligation, to construct
-a term of type <tt class="docutils literal">False</tt>, all by itself!)</p>
+a term of type <span class="docutils literal">False</span>, all by itself!)</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

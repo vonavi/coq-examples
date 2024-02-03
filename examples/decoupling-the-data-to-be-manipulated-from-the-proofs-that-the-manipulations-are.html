@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Decoupling the data to be manipulated from the proofs that the manipulations are justified</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="decoupling-the-data-to-be-manipulated-from-the-proofs-that-the-manipulations-are-justified">
+<div class="alectryon-root alectryon-centered"><main id="decoupling-the-data-to-be-manipulated-from-the-proofs-that-the-manipulations-are-justified">
 <h1 class="title">Decoupling the data to be manipulated from the proofs that the manipulations are justified</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/12366005">https://stackoverflow.com/q/12366005</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/12366005">https://stackoverflow.com/q/12366005</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have a type of lists whose heads and tails must be in a certain
 sense &quot;compatible&quot;:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tag</span> := A | B. <span class="c">(* Just an example *)</span></span><span class="alectryon-wsp">
@@ -40,23 +37,23 @@ sense &quot;compatible&quot;:</p>
 | ENil  : <span class="kr">forall</span>     <span class="nv">t</span>,                              estack t t
 | ECons : <span class="kr">forall</span> <span class="nv">r</span> <span class="nv">s</span> <span class="nv">t</span>, element r s -&gt; estack s t -&gt; estack r t.</span></span></pre><p>However, I do not like this code very much, for the following reasons:</p>
 <ol class="arabic simple">
-<li>It is not <em>modular</em>: The ad-hoc list data constructors are
+<li><p>It is not <em>modular</em>: The ad-hoc list data constructors are
 intrinsically coupled with the proofs that the heads and tails are
-compatible --- the tags.</li>
-<li>It does not favor <em>code reuse</em>: I am forced to redefine the usual
+compatible --- the tags.</p></li>
+<li><p>It does not favor <em>code reuse</em>: I am forced to redefine the usual
 list functions (such as list concatenation) and re-prove the usual
-list theorems (such as the associativity of list concatenation).</li>
+list theorems (such as the associativity of list concatenation).</p></li>
 </ol>
 <p>I have a different approach in mind, which consists of three steps:</p>
 <ol class="arabic">
-<li><p class="first">Defining a single type of tagged elements (as opposed to a family
+<li><p>Defining a single type of tagged elements (as opposed to a family
 of tagged types of elements):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">taggedElement</span> := Tagged : <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span>,
       element t1 t2 -&gt; taggedElement.</span></span></pre></li>
-<li><p class="first">Defining the type of arbitrary (that is, either valid or invalid)
+<li><p>Defining the type of arbitrary (that is, either valid or invalid)
 lists of tagged elements:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">taggedElementStack</span> := list taggedElement.</span></span></pre></li>
-<li><p class="first">Defining a <em>valid</em> list of tagged elements as a tuple whose
+<li><p>Defining a <em>valid</em> list of tagged elements as a tuple whose
 elements are an arbitrary list of tagged elements <em>and</em> a proof
 that the elements are compatible with the adjacent ones.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* I have no idea how to do this in Coq, hence the question!</span>
@@ -74,36 +71,36 @@ that the elements are compatible with the adjacent ones.</p>
 <span class="c"> *)</span></span></pre></li>
 </ol>
 <p>How would I perform the third step in Coq?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Look at your <tt class="docutils literal">estack</tt>, what does it do? Generalize! <tt class="docutils literal">element</tt> is
-just a relation (<tt class="docutils literal">A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> Set</tt>), <tt class="docutils literal">tag</tt> is just a <tt class="docutils literal">Set</tt>. What
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Look at your <span class="docutils literal">estack</span>, what does it do? Generalize! <span class="docutils literal">element</span> is
+just a relation (<span class="docutils literal">A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> Set</span>), <span class="docutils literal">tag</span> is just a <span class="docutils literal">Set</span>. What
 do you get?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">RTList</span> {<span class="nv">I</span> : <span class="kt">Set</span>} (<span class="nv">X</span> : Rel I) : Rel I :=
 | RTNil  : <span class="kr">forall</span> {<span class="nv">i</span> : I}, RTList X i i
-| RTCons : <span class="kr">forall</span> {<span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span> : I},    X i j -&gt; RTList X j k -&gt; RTList X i k.</span></span></pre><p>(<tt class="docutils literal">Rel</tt> ist just a Definition with <tt class="docutils literal">Rel I := I <span class="pre">-&gt;</span> I <span class="pre">-&gt;</span> Set</tt>.)</p>
+| RTCons : <span class="kr">forall</span> {<span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span> : I},    X i j -&gt; RTList X j k -&gt; RTList X i k.</span></span></pre><p>(<span class="docutils literal">Rel</span> ist just a Definition with <span class="docutils literal">Rel I := I <span class="pre">-&gt;</span> I <span class="pre">-&gt;</span> Set</span>.)</p>
 <p>Reflexive-transitive closure! That is common, reusable and modular. Or
 so you'd think.</p>
 <p>The only implementation I found in Coq's libs is in
-<tt class="docutils literal">Coq.Relations.Relation_Operators</tt>, named <a class="reference external" href="http://coq.inria.fr/stdlib/Coq.Relations.Relation_Operators.html#clos_refl_trans">clos_refl_trans</a>,
-differently structured and locked into <tt class="docutils literal">Prop</tt> (all according to the
+<span class="docutils literal">Coq.Relations.Relation_Operators</span>, named <a class="reference external" href="http://coq.inria.fr/stdlib/Coq.Relations.Relation_Operators.html#clos_refl_trans">clos_refl_trans</a>,
+differently structured and locked into <span class="docutils literal">Prop</span> (all according to the
 docs, didn't try it).</p>
 <p>You'll probably have to re-implement that or find a library somewhere.
 At least, you'll only have to do this once (or up to three times for
-<tt class="docutils literal">Set</tt>, <tt class="docutils literal">Prop</tt> and <tt class="docutils literal">Type</tt>).</p>
+<span class="docutils literal">Set</span>, <span class="docutils literal">Prop</span> and <span class="docutils literal">Type</span>).</p>
 <hr class="docutils" />
 <p>Your other idea will probably be harder to manage. Look at <a class="reference external" href="http://coq.inria.fr/stdlib/Coq.Lists.List.html#NoDup">NoDup</a> for
 something that's similar to your description, you might be able to
 reuse the pattern. If you really want that. <a class="reference external" href="http://coq.inria.fr/stdlib/Coq.Lists.List.html#NoDup">NoDup</a> uses <a class="reference external" href="http://coq.inria.fr/stdlib/Coq.Lists.List.html#In">In</a>, which is a
 function that checks if an element is in a list. The last time I tried
 using it, I found it considerably harder to solve proofs involving
-<tt class="docutils literal">In</tt>. You can't just <tt class="docutils literal">destruct</tt> but have to apply helper lemmas,
-you have to carefully unfold exactly <tt class="docutils literal">$n</tt> levels, folding back is
+<span class="docutils literal">In</span>. You can't just <span class="docutils literal">destruct</span> but have to apply helper lemmas,
+you have to carefully unfold exactly <span class="docutils literal">$n</span> levels, folding back is
 hard etc. etc. I'd suggest that unless it's truly necessary, you'd
-better stick with data types for <tt class="docutils literal">Prop</tt>s.</p>
+better stick with data types for <span class="docutils literal">Prop</span>s.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

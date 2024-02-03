@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>What does the tactic induction followed by a number do?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,45 +14,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="what-does-the-tactic-induction-followed-by-a-number-do">
-<h1 class="title">What does the tactic <tt class="docutils literal">induction</tt> followed by a number do?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55766757">https://stackoverflow.com/q/55766757</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<div class="alectryon-root alectryon-centered"><main id="what-does-the-tactic-induction-followed-by-a-number-do">
+<h1 class="title">What does the tactic <span class="docutils literal">induction</span> followed by a number do?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55766757">https://stackoverflow.com/q/55766757</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>What effect does the following tactic have on the goal and the
 assumptions? I know what induction on variables and named hypothesis
 do, but am unclear about induction on a number.</p>
-<pre class="code coq literal-block">
-<span class="n">Induction</span> <span class="mi">1</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<pre class="code coq literal-block"><code><span class="n">Induction</span> <span class="mi">1</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>From the Coq Reference Manual:
 <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.induction">https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.induction</a></p>
 <blockquote>
-(...) <tt class="docutils literal">induction num</tt> behaves as <tt class="docutils literal">intros until num</tt> followed
-by <tt class="docutils literal">induction</tt> applied to the last introduced hypothesis.</blockquote>
-<p>And for <tt class="docutils literal">intros until num</tt>:
+<p>(...) <span class="docutils literal">induction num</span> behaves as <span class="docutils literal">intros until num</span> followed
+by <span class="docutils literal">induction</span> applied to the last introduced hypothesis.</p>
+</blockquote>
+<p>And for <span class="docutils literal">intros until num</span>:
 <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacv.intros">https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacv.intros</a></p>
 <blockquote>
-<p><tt class="docutils literal">intros until num</tt>: This repeats intro until the <tt class="docutils literal">num</tt>-th
+<p><span class="docutils literal">intros until num</span>: This repeats intro until the <span class="docutils literal">num</span>-th
 non-dependent product.</p>
 <p><strong>Example</strong></p>
-<p>On the subgoal <tt class="docutils literal">forall x y : nat, x = y <span class="pre">-&gt;</span> y = x</tt> the tactic
-<tt class="docutils literal">intros until 1</tt> is equivalent to <tt class="docutils literal">intros x y H</tt>, as <tt class="docutils literal">x = y
-<span class="pre">-&gt;</span> y = x</tt> is the first non-dependent product.</p>
-<p>On the subgoal <tt class="docutils literal">forall x y z : nat, x = y <span class="pre">-&gt;</span> y = x</tt> the tactic
-<tt class="docutils literal">intros until 1</tt> is equivalent to <tt class="docutils literal">intros x y z</tt> as the
-product on <tt class="docutils literal">z</tt> can be rewritten as a non-dependent product:
-<tt class="docutils literal">forall x y : nat, nat <span class="pre">-&gt;</span> x = y <span class="pre">-&gt;</span> y = x</tt>.</p>
+<p>On the subgoal <span class="docutils literal">forall x y : nat, x = y <span class="pre">-&gt;</span> y = x</span> the tactic
+<span class="docutils literal">intros until 1</span> is equivalent to <span class="docutils literal">intros x y H</span>, as <span class="docutils literal">x = y <span class="pre">-&gt;</span> y = x</span> is the first non-dependent product.</p>
+<p>On the subgoal <span class="docutils literal">forall x y z : nat, x = y <span class="pre">-&gt;</span> y = x</span> the tactic
+<span class="docutils literal">intros until 1</span> is equivalent to <span class="docutils literal">intros x y z</span> as the
+product on <span class="docutils literal">z</span> can be rewritten as a non-dependent product:
+<span class="docutils literal">forall x y : nat, nat <span class="pre">-&gt;</span> x = y <span class="pre">-&gt;</span> y = x</span>.</p>
 </blockquote>
 <p>For reference, there is an index of standard tactics in the Manual
 where those can easily be looked up:
@@ -60,17 +55,17 @@ where those can easily be looked up:
 <p>(There are other indices in there that you may find interesting as
 well.)</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> So in your first example, <tt class="docutils literal">forall x y : nat, x = y <span class="pre">-&gt;</span> y = x</tt>.
-<tt class="docutils literal">Induction 1</tt> applies induction to <tt class="docutils literal">x = y</tt>? What does a
+<p><strong>Q:</strong> So in your first example, <span class="docutils literal">forall x y : nat, x = y <span class="pre">-&gt;</span> y = x</span>.
+<span class="docutils literal">Induction 1</span> applies induction to <span class="docutils literal">x = y</span>? What does a
 non-dependent product mean exactly? Form your examples, it seems to
 refer to a quantifier-free formula...</p>
-<p><strong>A:</strong> Yes, that's induction on <tt class="docutils literal">x = y</tt>. &quot;Product&quot; here refers to
-function types: <tt class="docutils literal">forall x, F x</tt> has similarities to <tt class="docutils literal">Π x, F x</tt>
-(product over all <tt class="docutils literal">x</tt> of <tt class="docutils literal">F x</tt>), and in fact <tt class="docutils literal">Π</tt> is used instead
-of <tt class="docutils literal">forall</tt> in some areas in the literature. When <tt class="docutils literal">F x</tt> is
-actually a constant <tt class="docutils literal">C</tt>, <tt class="docutils literal">forall x : T, C</tt> is called a
+<p><strong>A:</strong> Yes, that's induction on <span class="docutils literal">x = y</span>. &quot;Product&quot; here refers to
+function types: <span class="docutils literal">forall x, F x</span> has similarities to <span class="docutils literal">Π x, F x</span>
+(product over all <span class="docutils literal">x</span> of <span class="docutils literal">F x</span>), and in fact <span class="docutils literal">Π</span> is used instead
+of <span class="docutils literal">forall</span> in some areas in the literature. When <span class="docutils literal">F x</span> is
+actually a constant <span class="docutils literal">C</span>, <span class="docutils literal">forall x : T, C</span> is called a
 non-dependent product.</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq induction on modulo</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-induction-on-modulo">
+<div class="alectryon-root alectryon-centered"><main id="coq-induction-on-modulo">
 <h1 class="title">Coq induction on modulo</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29189073">https://stackoverflow.com/q/29189073</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/29189073">https://stackoverflow.com/q/29189073</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm new with Coq and I really have difficulty in applying the
 induction. As long as I can use theorems from the library, or tactics
-such as <tt class="docutils literal">lia</tt>, all this is &quot;not a problem&quot;. But as soon as these do
+such as <span class="docutils literal">lia</span>, all this is &quot;not a problem&quot;. But as soon as these do
 not work, I'm always stuck.</p>
 <p>To be precise, now I try to prove</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk0"><span class="kn">Lemma</span> <span class="nf">mod_diff</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat,
-n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m</div></blockquote></div></div></small></span></pre><p>the case <tt class="docutils literal">n = 0</tt> I already have.</p>
+n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m</div></blockquote></div></div></small></span></pre><p>the case <span class="docutils literal">n = 0</span> I already have.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat,
 n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n &gt;= m /\ m &lt;&gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(n - m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk3"><span class="nb">destruct</span> H <span class="kr">as</span> [H1 H2].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>n &gt;= m</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>m &lt;&gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(n - m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk4"><span class="nb">induction</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt;= m</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>m &lt;&gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> - m) mod m = <span class="mi">0</span> mod m</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-induction-on-modulo-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>S n &gt;= m</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>m &lt;&gt; <span class="mi">0</span></span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span>n &gt;= m -&gt; (n - m) mod m = n mod m</span></span></span><br></div><label class="goal-separator" for="coq-induction-on-modulo-v-chk5"><hr></label><div class="goal-conclusion">(S n - m) mod m = S n mod m</div></blockquote></div></div></div></small><span class="alectryon-wsp">
@@ -48,12 +45,12 @@ n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m<
   H2 : m &lt;&gt; <span class="mi">0</span>
   IHn : n &gt;= m -&gt; (n - m) mod m = n mod m
   ============================
-  (S n - m) mod m = S n mod m</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-atsby">
-<h1>Answer (Atsby)</h1>
+  (S n - m) mod m = S n mod m</blockquote></div></div></small></span></pre></section>
+<section id="answer-atsby">
+<h2>Answer (Atsby)</h2>
 <p>Induction is not necessary for the proof, there are sufficient lemmas
 in the Coq library that can be used. To find these lemmas, I used
-<tt class="docutils literal">SearchAbout modulo</tt> and <tt class="docutils literal">SearchAbout plus</tt>.</p>
+<span class="docutils literal">SearchAbout modulo</span> and <span class="docutils literal">SearchAbout plus</span>.</p>
 <p>Then, I did:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk9"><span class="kn">Lemma</span> <span class="nf">mod_add_back</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, m &lt;&gt; <span class="mi">0</span> -&gt; (n + m) mod m = n mod m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, m &lt;&gt; <span class="mi">0</span> -&gt; (n + m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, m &lt;&gt; <span class="mi">0</span> -&gt; (n + m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -71,22 +68,22 @@ n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m<
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk18">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n &gt;= m</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>m = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(n - m + m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk19"><span class="nb">assert</span> (n - m + m = n) <span class="bp">by</span> <span class="bp">lia</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n &gt;= m</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>m = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n - m + m = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(n - m + m) mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk1a"><span class="nb">rewrite</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n &gt;= m</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>m = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n - m + m = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n mod m = n mod m</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk1b">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n &gt;= m</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>m = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">m &lt;&gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intuition</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Notice the use of <tt class="docutils literal">assert ... by lia</tt> to prove an instance of a
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Notice the use of <span class="docutils literal">assert ... by lia</span> to prove an instance of a
 rewriting that doesn't seem to be available as a built-in lemma. It's
 a bit tricky because with nats it does not work in general, but only
-if <tt class="docutils literal">n &gt;= m</tt>. (<strong>EDIT</strong>: actually the built-in lemma
-<tt class="docutils literal">Nat.sub_add</tt> would've worked).</p>
+if <span class="docutils literal">n &gt;= m</span>. (<strong>EDIT</strong>: actually the built-in lemma
+<span class="docutils literal">Nat.sub_add</span> would've worked).</p>
 <p>So the idea in the proof is to first prove a lemma that allows you to
-&quot;add back&quot; <tt class="docutils literal">m</tt>, as this seems like a good idea to have a separate
+&quot;add back&quot; <span class="docutils literal">m</span>, as this seems like a good idea to have a separate
 lemma. However, I suppose it could also have been done as a single
 proof.</p>
-<p>Indeed, induction on <tt class="docutils literal">n</tt> does not advance the proof at all, because
+<p>Indeed, induction on <span class="docutils literal">n</span> does not advance the proof at all, because
 there is no way to show the preconditions of the inductive hypothesis
-(cannot derive <tt class="docutils literal">n &gt;= m</tt> from <tt class="docutils literal">S n &gt;= m</tt>). While induction is an
+(cannot derive <span class="docutils literal">n &gt;= m</span> from <span class="docutils literal">S n &gt;= m</span>). While induction is an
 important building block it is not always the right tool.</p>
-</div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
+</section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
 <p>As &#64;Atsby said, there is already useful lemmas in the library, so you
 can for instance do</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith.</span><span class="alectryon-wsp">
@@ -101,17 +98,17 @@ n &gt;= m /\ m &lt;&gt; <span class="mi">0</span> -&gt; (n - m) mod m = n mod m<
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Regarding your question about how to do it with induction, my general
 advice is to get an induction hypothesis that is as general as
 possible, i.e. don't introduce the quantified variables before you do
-<tt class="docutils literal">induction</tt>. And also, try to get an induction hypothesis that is
+<span class="docutils literal">induction</span>. And also, try to get an induction hypothesis that is
 also useful for &quot;the next&quot; value. I would therefore try to prove
-another formula <tt class="docutils literal">(n + k * m) mod m = n mod m</tt> and do induction on
-<tt class="docutils literal">k</tt>, because then only algebraic rewriting is necessary to prove the
-<tt class="docutils literal">k + 1</tt> case from <tt class="docutils literal">k</tt>. However, in this case, that 'other formula'
-was already in the library, called <tt class="docutils literal">Nat.sub_add</tt>.</p>
-</div>
-<div class="section" id="answer-partial">
-<h1>Answer (Partial)</h1>
+another formula <span class="docutils literal">(n + k * m) mod m = n mod m</span> and do induction on
+<span class="docutils literal">k</span>, because then only algebraic rewriting is necessary to prove the
+<span class="docutils literal">k + 1</span> case from <span class="docutils literal">k</span>. However, in this case, that 'other formula'
+was already in the library, called <span class="docutils literal">Nat.sub_add</span>.</p>
+</section>
+<section id="answer-partial">
+<h2>Answer (Partial)</h2>
 <p>You should use a different induction principle.</p>
-<p>The <tt class="docutils literal">mod</tt> function obeys the following relation.</p>
+<p>The <span class="docutils literal">mod</span> function obeys the following relation.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">mod_rel</span> : nat -&gt; nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
 | mod_rel_1 : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 = <span class="mi">0</span> -&gt; mod_rel n1 n2 <span class="mi">0</span>
 | mod_rel_2 : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 &gt; <span class="mi">0</span> -&gt; n1 &lt; n2 -&gt; mod_rel n1 n2 n1
@@ -120,20 +117,20 @@ was already in the library, called <tt class="docutils literal">Nat.sub_add</tt>
 truth is all theorems involving modulo have the precondition that the
 second argument not be zero, so it doesn't really matter whether
 modulo by zero is defined or not.</p>
-<p>The following is the domain of the <tt class="docutils literal">mod</tt> function.</p>
+<p>The following is the domain of the <span class="docutils literal">mod</span> function.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">mod_dom</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
 | mod_dom_1 : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 = <span class="mi">0</span> -&gt; mod_dom n1 n2
 | mod_dom_2 : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 &gt; <span class="mi">0</span> -&gt; n1 &lt; n2 -&gt; mod_dom n1 n2
 | mod_dom_3 : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>,
     n2 &gt; <span class="mi">0</span> -&gt; n1 &gt;= n2 -&gt; mod_dom (n1 - n2) n2 -&gt; mod_dom n1 n2.</span></span></pre><p>In Coq there are only total functions, so any pair of natural numbers
-is in the domain of <tt class="docutils literal">mod</tt>. This is provable by well-founded
+is in the domain of <span class="docutils literal">mod</span>. This is provable by well-founded
 induction and case analysis.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">wf_ind</span> : <span class="kr">forall</span> <span class="nv">P1</span>,
     (<span class="kr">forall</span> <span class="nv">n1</span>, (<span class="kr">forall</span> <span class="nv">n2</span>, n2 &lt; n1 -&gt; P1 n2) -&gt; P1 n1) -&gt; <span class="kr">forall</span> <span class="nv">n1</span>, P1 n1.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">O_gt</span> : <span class="kr">forall</span> <span class="nv">n1</span>, n1 = <span class="mi">0</span> \/ n1 &gt; <span class="mi">0</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">lt_ge</span> : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n1 &lt; n2 \/ n1 &gt;= n2.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">mod_total</span> : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, mod_dom n1 n2.</span></span></pre><p>The induction principle associated with <tt class="docutils literal">mod</tt>'s domain is</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">mod_total</span> : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, mod_dom n1 n2.</span></span></pre><p>The induction principle associated with <span class="docutils literal">mod</span>'s domain is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk1f"><span class="kn">Check</span> mod_dom_ind : <span class="kr">forall</span> <span class="nv">P1</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
     (<span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 = <span class="mi">0</span> -&gt; P1 n1 n2) -&gt;
     (<span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 &gt; <span class="mi">0</span> -&gt; n1 &lt; n2 -&gt; P1 n1 n2) -&gt;
@@ -158,22 +155,22 @@ induction and case analysis.</p>
         n1 &gt;= n2 -&gt;
         mod_dom (n1 - n2) n2 -&gt;
         P1 (n1 - n2) n2 -&gt; P1 n1 n2) -&gt;
-       <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span> : nat, mod_dom n1 n2 -&gt; P1 n1 n2</blockquote></div></div></small></span></pre><p>But since <tt class="docutils literal">mod</tt> is total, it's possible to simplify this to</p>
+       <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span> : nat, mod_dom n1 n2 -&gt; P1 n1 n2</blockquote></div></div></small></span></pre><p>But since <span class="docutils literal">mod</span> is total, it's possible to simplify this to</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">mod_ind</span> : <span class="kr">forall</span> <span class="nv">P1</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
     (<span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 = <span class="mi">0</span> -&gt; P1 n1 n2) -&gt;
     (<span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 &gt; <span class="mi">0</span> -&gt; n1 &lt; n2 -&gt; P1 n1 n2) -&gt;
     (<span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n2 &gt; <span class="mi">0</span> -&gt; n1 &gt;= n2 -&gt; P1 (n1 - n2) n2 -&gt; P1 n1 n2) -&gt;
     <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, P1 n1 n2.</span></span></pre><p>This induction principle applies to any pair of natural numbers. It's
-better suited to proving facts about <tt class="docutils literal">mod</tt> because follows the
-structure of the definition of <tt class="docutils literal">mod</tt>. <tt class="docutils literal">mod</tt> can't be defined
+better suited to proving facts about <span class="docutils literal">mod</span> because follows the
+structure of the definition of <span class="docutils literal">mod</span>. <span class="docutils literal">mod</span> can't be defined
 directly using structural recursion, so structural induction will only
-get you so far when proving things about <tt class="docutils literal">mod</tt>.</p>
+get you so far when proving things about <span class="docutils literal">mod</span>.</p>
 <p>Not every proof should be tackled with induction though. You need to
 ask yourself why you believe something to be true and translate that
 to a rigorous proof. If you're not sure why it's true, you need to
 learn or discover why it is or isn't.</p>
 <p>But division and modulo can be defined indirectly by structural
-recursion. In the following function, <tt class="docutils literal">n3</tt> and <tt class="docutils literal">n4</tt> serve as an
+recursion. In the following function, <span class="docutils literal">n3</span> and <span class="docutils literal">n4</span> serve as an
 intermediate quotient and remainder. You define it by decrementing the
 dividend and incrementing the remainder until the remainder reaches
 the divisor, at which point you increment the quotient and reset the
@@ -191,8 +188,8 @@ true quotient and remainder (assuming you didn't divide by zero).</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">div</span> (<span class="nv">n1</span> <span class="nv">n2</span> : nat) : nat := fst (div_mod n1 n2 <span class="mi">0</span> <span class="mi">0</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">mod</span> (<span class="nv">n1</span> <span class="nv">n2</span> : nat) : nat := snd (div_mod n1 n2 <span class="mi">0</span> <span class="mi">0</span>).</span></span></pre><p>You still don't use structural induction to prove things about <tt class="docutils literal">div</tt>
-and <tt class="docutils literal">mod</tt>. You use it to prove things about <tt class="docutils literal">div_mod</tt>. These
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">mod</span> (<span class="nv">n1</span> <span class="nv">n2</span> : nat) : nat := snd (div_mod n1 n2 <span class="mi">0</span> <span class="mi">0</span>).</span></span></pre><p>You still don't use structural induction to prove things about <span class="docutils literal">div</span>
+and <span class="docutils literal">mod</span>. You use it to prove things about <span class="docutils literal">div_mod</span>. These
 functions correspond to the following (structurally inductive)
 theorem.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk20"><span class="kn">Theorem</span> <span class="nf">augmented_division_algorithm</span> : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span> <span class="nv">n3</span> <span class="nv">n4</span>,
@@ -273,12 +270,12 @@ n4 &lt; n2 -&gt;
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk3a" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk3a"><span class="kn">Conjecture</span> <span class="nv">C3</span> : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, n1 &lt; n2 -&gt; S n1 &gt;= n2 -&gt; S n1 = n2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n1, n2, n3, n4</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n4 &lt; n2</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>S n4 &gt;= n2</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; n2</span></span></span><br><span><var>x, x0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>n1 + S n3 * n2 + <span class="mi">0</span> = x * n2 + x0</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>x0 &lt; n2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n1 + n3 * n2 + n4 = x * n2 + x0</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk3b" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk3b"><span class="nb">pose proof</span> (C3 _ _ H H0).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n1, n2, n3, n4</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n4 &lt; n2</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>S n4 &gt;= n2</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; n2</span></span></span><br><span><var>x, x0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>n1 + S n3 * n2 + <span class="mi">0</span> = x * n2 + x0</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>x0 &lt; n2</span></span></span><br><span><var>H4</var><span class="hyp-type"><b>: </b><span>S n4 = n2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n1 + n3 * n2 + n4 = x * n2 + x0</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk3c" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk3c"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n1, n3, n4</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; S n4</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>S n4 &gt;= S n4</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n4 &lt; S n4</span></span></span><br><span><var>x, x0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>x0 &lt; S n4</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>n1 + S n3 * S n4 + <span class="mi">0</span> = x * S n4 + x0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n1 + n3 * S n4 + n4 = x * S n4 + x0</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-induction-on-modulo-v-chk3d" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-induction-on-modulo-v-chk3d"><span class="nb">cbn</span> <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n1, n3, n4</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; S n4</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>S n4 &gt;= S n4</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n4 &lt; S n4</span></span></span><br><span><var>x, x0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>x0 &lt; S n4</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>n1 + S (n4 + n3 * S n4) + <span class="mi">0</span> = x * S n4 + x0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S (n1 + n3 * S n4 + n4) = x * S n4 + x0</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">admit</span>. <span class="c">(* H2 implies the conclusion. *)</span></span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>The usual division algorithm can be derived by setting <tt class="docutils literal">n3</tt> and
-<tt class="docutils literal">n4</tt> to zero.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>The usual division algorithm can be derived by setting <span class="docutils literal">n3</span> and
+<span class="docutils literal">n4</span> to zero.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Conjecture</span> <span class="nv">division_algorithm</span> : <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, <span class="mi">0</span> &lt; n2 -&gt; <span class="kr">exists</span> <span class="nv">n5</span> <span class="nv">n6</span>,
       n1 = n5 * n2 + n6 /\ n6 &lt; n2.</span></span></pre><p>Disclaimer: conjectures and simply-typed functions.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to use an unequality to simplify a if-then-else in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,41 +14,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-use-an-unequality-to-simplify-a-if-then-else-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-use-an-unequality-to-simplify-a-if-then-else-in-coq">
 <h1 class="title">How to use an unequality to simplify a if-then-else in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34135724">https://stackoverflow.com/q/34135724</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34135724">https://stackoverflow.com/q/34135724</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am in the middle of a proof, where I generated two cases by</p>
-<pre class="code coq literal-block">
-<span class="nb">destruct</span> <span class="o">(</span><span class="n">eq_id_dec</span> <span class="n">Y</span> <span class="n">X</span><span class="o">)</span>
-</pre>
-<p>(<tt class="docutils literal">eq_id_dec</tt> is similar in nature to <tt class="docutils literal">eq_nat_dec</tt>).</p>
-<p>This gives two cases with added assumptions <tt class="docutils literal">e: Y = X</tt> for equality
-and <tt class="docutils literal">n: Y &lt;&gt; X</tt> for unequality, respectively.</p>
-<p>In the first case, I can easily use <tt class="docutils literal">rewrite e</tt> or <tt class="docutils literal">rewrite &lt;- e</tt>.</p>
+<pre class="code coq literal-block"><code><span class="nb">destruct</span> <span class="o">(</span><span class="n">eq_id_dec</span> <span class="n">Y</span> <span class="n">X</span><span class="o">)</span></code></pre>
+<p>(<span class="docutils literal">eq_id_dec</span> is similar in nature to <span class="docutils literal">eq_nat_dec</span>).</p>
+<p>This gives two cases with added assumptions <span class="docutils literal">e: Y = X</span> for equality
+and <span class="docutils literal">n: Y &lt;&gt; X</span> for unequality, respectively.</p>
+<p>In the first case, I can easily use <span class="docutils literal">rewrite e</span> or <span class="docutils literal">rewrite &lt;- e</span>.</p>
 <p>But how can I efficiently make use of the unequality in the second
 case? Consider, e.g. a goal such as</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">if</span> <span class="n">eq_id_dec</span> <span class="n">X</span> <span class="n">Y</span> <span class="kr">then</span> <span class="n">AAA</span> <span class="kr">else</span> <span class="n">BBB</span><span class="o">)</span> <span class="o">=</span> <span class="n">BBB</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">if</span> <span class="n">eq_id_dec</span> <span class="n">X</span> <span class="n">Y</span> <span class="kr">then</span> <span class="n">AAA</span> <span class="kr">else</span> <span class="n">BBB</span><span class="o">)</span> <span class="o">=</span> <span class="n">BBB</span></code></pre>
 <p>?</p>
-<p>I tried <tt class="docutils literal">unfold eq_id_dec</tt> and some <tt class="docutils literal">rewrite</tt>s but got stuck.</p>
+<p>I tried <span class="docutils literal">unfold eq_id_dec</span> and some <span class="docutils literal">rewrite</span>s but got stuck.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> Is there a reason why you're not destructing <tt class="docutils literal">eq_id_dec X Y</tt>?
+<p><strong>A:</strong> Is there a reason why you're not destructing <span class="docutils literal">eq_id_dec X Y</span>?
 If you want functions to reduce, it's always a good strategy to
 perform the precise case analysis they do.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Ideally, you would like to say something like</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-an-unequality-to-simplify-a-if-then-else-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-an-unequality-to-simplify-a-if-then-else-in-coq-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> (<span class="nv">P</span> : <span class="kt">Prop</span>)
             (<span class="nv">b</span> : {P} + {~ P})
@@ -72,12 +65,12 @@ this:</p>
 (<span class="kr">if</span> PeanoNat.Nat.eq_dec n m <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">0</span>) = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-an-unequality-to-simplify-a-if-then-else-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-an-unequality-to-simplify-a-if-then-else-in-coq-v-chk6"><span class="nb">intros</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n &lt;&gt; m</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> PeanoNat.Nat.eq_dec n m <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">0</span>) = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> sumboolF; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>This helps solving your case, but may require showing analogous
-results for other uses of the <tt class="docutils literal">sumbool</tt> type.</p>
+results for other uses of the <span class="docutils literal">sumbool</span> type.</p>
 <p>This is one of the issues that are making us consider removing
-<tt class="docutils literal">sumbool</tt> from the Software Foundations book, and just using plain
+<span class="docutils literal">sumbool</span> from the Software Foundations book, and just using plain
 booleans instead.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

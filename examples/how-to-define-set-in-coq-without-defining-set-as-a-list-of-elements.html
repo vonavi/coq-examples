@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to define set in Coq without defining set as a list of elements</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-define-set-in-coq-without-defining-set-as-a-list-of-elements">
+<div class="alectryon-root alectryon-centered"><main id="how-to-define-set-in-coq-without-defining-set-as-a-list-of-elements">
 <h1 class="title">How to define set in Coq without defining set as a list of elements</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36588263">https://stackoverflow.com/q/36588263</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/36588263">https://stackoverflow.com/q/36588263</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I am trying to define <tt class="docutils literal">(1, 2, 3)</tt> as a set of elements in Coq. I can
-define it using list as <tt class="docutils literal">(1 :: (2 :: (3 :: <span class="pre">nil)))</span></tt>. Is there any way
+<section id="question">
+<h2>Question</h2>
+<p>I am trying to define <span class="docutils literal">(1, 2, 3)</span> as a set of elements in Coq. I can
+define it using list as <span class="docutils literal">(1 :: (2 :: (3 :: <span class="pre">nil)))</span></span>. Is there any way
 to define set in Coq without using list.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>There are basically four possible choices to be made when defining
 sets in Coq depending on your constraints on the base type of the set
 and computation needs:</p>
 <ul>
-<li><p class="first">If the base type doesn't have decidable equality, it is common to
+<li><p>If the base type doesn't have decidable equality, it is common to
 use:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">A</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">set</span> <span class="nv">A</span> := A -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
@@ -45,85 +42,80 @@ use:</p>
 representation cannot &quot;compute&quot;, as we can't even decide if two
 elements are equal.</p>
 </li>
-<li><p class="first">If the base data type has decidable equality, then there are two
+<li><p>If the base data type has decidable equality, then there are two
 choices depending if extensionality is wanted:</p>
 <ul>
-<li><p class="first">Extensionality means that two sets are equal <em>in Coq's logic</em> iff
+<li><p>Extensionality means that two sets are equal <em>in Coq's logic</em> iff
 they have the same elements, formally:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="o">(</span><span class="nv">A</span> <span class="nv">B</span> <span class="o">:</span> <span class="nb">set</span> <span class="n">T</span><span class="o">),</span> <span class="o">(</span><span class="n">A</span> <span class="o">=</span> <span class="n">B</span><span class="o">)</span> <span class="o">&lt;-&gt;</span> <span class="o">(</span><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">x</span> <span class="o">\</span><span class="kr">in</span> <span class="n">A</span> <span class="o">&lt;-&gt;</span> <span class="n">x</span> <span class="o">\</span><span class="kr">in</span> <span class="n">B</span><span class="o">).</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="o">(</span><span class="nv">A</span> <span class="nv">B</span> <span class="o">:</span> <span class="nb">set</span> <span class="n">T</span><span class="o">),</span> <span class="o">(</span><span class="n">A</span> <span class="o">=</span> <span class="n">B</span><span class="o">)</span> <span class="o">&lt;-&gt;</span> <span class="o">(</span><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">x</span> <span class="o">\</span><span class="kr">in</span> <span class="n">A</span> <span class="o">&lt;-&gt;</span> <span class="n">x</span> <span class="o">\</span><span class="kr">in</span> <span class="n">B</span><span class="o">).</span></code></pre>
 <p>If extensionality is wanted, sets should be represented by a
 canonically-sorted duplicate-free structure, usually a list. A
 good example is Cyril's Cohen <a class="reference external" href="https://github.com/Barbichu/finmap">finmap</a> library. This
 representation however is very inefficient for computing as
 re-sorting is needed every time a set is modified.</p>
 </li>
-<li><p class="first">If extensionality is not needed (usually a bad idea if proofs are
+<li><p>If extensionality is not needed (usually a bad idea if proofs are
 wanted), you can use representations based on binary trees such as
 Coq's <a class="reference external" href="https://coq.inria.fr/library/Coq.MSets.MSets.html">MSet</a>, which are
 similar to standard Functional Programming set implementations and
-can work efficiently.</p>
-</li>
+can work efficiently.</p></li>
 </ul>
 </li>
-<li><p class="first">Finally, when the base type is finite, the set of all sets is a
+<li><p>Finally, when the base type is finite, the set of all sets is a
 finite type too. The best example of this approach is IMO
 math-comp's <a class="reference external" href="http://math-comp.github.io/math-comp/htmldoc/mathcomp.ssreflect.finset.html">finset</a>,
 which encodes finite sets as the space of finitely supported
 membership functions, which is extensional, and forms a complete
-lattice.</p>
-</li>
+lattice.</p></li>
 </ul>
 <hr class="docutils" />
 <p><strong>Q:</strong> Why is Cyril's Cohen finmap inefficient?</p>
 <p><strong>A:</strong> A bit informally, the reason is because of the extensional
-representation. A <tt class="docutils literal">{fset T}</tt> needs to be &quot;sorted&quot; every time is
+representation. A <span class="docutils literal">{fset T}</span> needs to be &quot;sorted&quot; every time is
 modified. On top of that, the &quot;sorting&quot; function is extremely
 inefficient as it will enumerate all possible lists until it gets the
-desired one. This helps to avoid having to equip <tt class="docutils literal">T</tt> with an order
+desired one. This helps to avoid having to equip <span class="docutils literal">T</span> with an order
 relation, as choice is guaranteed to be extensional on the predicate
-(in this case, the library picks the first list satisfying, <tt class="docutils literal">P x :=
-perm_eq x (undup s)</tt> IIRC), which implies extensionality.</p>
+(in this case, the library picks the first list satisfying, <span class="docutils literal">P x := perm_eq x (undup s)</span> IIRC), which implies extensionality.</p>
 <p><strong>Q:</strong> Regarding your last bullet (base finite type) are you aware of
-any more lightweight implementations besides <tt class="docutils literal">finset</tt>? It is a part
-of <tt class="docutils literal">sslreflect</tt> which is a heavy dependency, which in addition comes
+any more lightweight implementations besides <span class="docutils literal">finset</span>? It is a part
+of <span class="docutils literal">sslreflect</span> which is a heavy dependency, which in addition comes
 with it's own language...</p>
 <p><strong>A:</strong> Well, you have Robbert Krebbers'
 <a class="reference external" href="https://gitlab.mpi-sws.org/robbertkrebbers/coq-stdpp">https://gitlab.mpi-sws.org/robbertkrebbers/coq-stdpp</a>, but I am not
 sure it is more &quot;lightweight&quot;, YMMV. ssreflect is surprisingly
 lightweight for the power it packs.</p>
-</div>
-<div class="section" id="answer-tiago-cogumbreiro">
-<h1>Answer (Tiago Cogumbreiro)</h1>
+</section>
+<section id="answer-tiago-cogumbreiro">
+<h2>Answer (Tiago Cogumbreiro)</h2>
 <p>The standard library of coq provides the following finite set modules:</p>
 <ol class="arabic simple">
-<li><a class="reference external" href="https://coq.inria.fr/library/Coq.MSets.MSets.html">Coq.MSets</a>
+<li><p><a class="reference external" href="https://coq.inria.fr/library/Coq.MSets.MSets.html">Coq.MSets</a>
 abstracts away the implementation details of the set. For instance,
 there is <a class="reference external" href="https://coq.inria.fr/library/Coq.MSets.MSetAVL.html#">an implementation that uses AVL trees</a> and
-<a class="reference external" href="https://coq.inria.fr/library/Coq.MSets.MSetList.html#">another based on lists</a>.</li>
-<li><a class="reference external" href="https://coq.inria.fr/library/Coq.FSets.FSets.html">Coq.FSets</a>
+<a class="reference external" href="https://coq.inria.fr/library/Coq.MSets.MSetList.html#">another based on lists</a>.</p></li>
+<li><p><a class="reference external" href="https://coq.inria.fr/library/Coq.FSets.FSets.html">Coq.FSets</a>
 abstracts away the implementation details of the set; it is a
-previous version of <tt class="docutils literal">MSets</tt>.</li>
-<li><a class="reference external" href="https://coq.inria.fr/library/Coq.Lists.ListSet.html">Coq.Lists.ListSet</a> is an
+previous version of <span class="docutils literal">MSets</span>.</p></li>
+<li><p><a class="reference external" href="https://coq.inria.fr/library/Coq.Lists.ListSet.html">Coq.Lists.ListSet</a> is an
 encoding of lists as sets, which I am including for the sake of
-completeness</li>
+completeness</p></li>
 </ol>
-<p>Here is an example on how to define a set with <tt class="docutils literal">FSets</tt>:</p>
+<p>Here is an example on how to define a set with <span class="docutils literal">FSets</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Structures.OrderedTypeEx.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.FSets.FSetAVL.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">NSet</span> := FSetAVL.Make Nat_as_OT.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp"><span class="c">(* Creates a set with only element 3 inside: *)</span>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-define-set-in-coq-without-defining-set-as-a-list-of-elements-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-define-set-in-coq-without-defining-set-as-a-list-of-elements-v-chk0"><span class="kn">Check</span> (NSet.add <span class="mi">3</span> NSet.empty).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">NSet.add <span class="mi">3</span> NSet.empty
-     : NSet.t</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-vinz">
-<h1>Answer (Vinz)</h1>
+     : NSet.t</blockquote></div></div></small></span></pre></section>
+<section id="answer-vinz">
+<h2>Answer (Vinz)</h2>
 <p>There are many encodings of sets in Coq (lists, function, trees, ...)
 which can be finite or not. You should have a look at Coq's standard
 library. For example the 'simplest' set definition I know is <a class="reference external" href="https://coq.inria.fr/library/Coq.Sets.Ensembles.html">this one</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

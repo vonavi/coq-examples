@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: a single notation for multiple constructors</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-a-single-notation-for-multiple-constructors">
+<div class="alectryon-root alectryon-centered"><main id="coq-a-single-notation-for-multiple-constructors">
 <h1 class="title">Coq: a single notation for multiple constructors</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/38060151">https://stackoverflow.com/q/38060151</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/38060151">https://stackoverflow.com/q/38060151</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Is it possible to define a single notation for multiple constructors
 in Coq? If the constructors differ by their argument types, they might
 be inferrable from them. A minimal (non-)working example:</p>
@@ -42,9 +39,9 @@ be inferrable from them. A minimal (non-)working example:</p>
 <span class="nl">?y</span> : [ |- <span class="kr">forall</span> <span class="nv">x</span> : C, <span class="nl">?T</span>]
 <span class="nl">?T</span> : [x : C |- <span class="kt">Type</span>]</blockquote></div></div></small></span></pre><p>In this case, constructor inference doesn't work. Maybe there's
 another way to specify a constructor as a variable?</p>
-</div>
-<div class="section" id="answer-daniel-schepler">
-<h1>Answer (Daniel Schepler)</h1>
+</section>
+<section id="answer-daniel-schepler">
+<h2>Answer (Daniel Schepler)</h2>
 <p>You can create a typeclass with the constructors as instances and let
 the instance resolution mechanism infer the constructor to call for
 you:</p>
@@ -56,9 +53,9 @@ you:</p>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk1"><span class="kn">Check</span> a_const c1.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">a_const c1
      : A</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk2"><span class="kn">Check</span> a_const d2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">a_const d2
-     : A</blockquote></div></div></small></span></pre><p>By the way, with Coq 8.5, if you really want a notation <tt class="docutils literal">' x</tt> to
-result in the exact constructor applied to <tt class="docutils literal">x</tt>, rather than e.g.
-<tt class="docutils literal">&#64;a_const C A_const_c c1</tt>, then you can use ltac-terms to accomplish
+     : A</blockquote></div></div></small></span></pre><p>By the way, with Coq 8.5, if you really want a notation <span class="docutils literal">' x</span> to
+result in the exact constructor applied to <span class="docutils literal">x</span>, rather than e.g.
+<span class="docutils literal">&#64;a_const C A_const_c c1</span>, then you can use ltac-terms to accomplish
 that:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk3"><span class="kn">Notation</span> <span class="s2">&quot;&#39; x&quot;</span> := <span class="kp">ltac</span>:(<span class="kr">match</span> <span class="kp">constr</span>:(a_const x) <span class="kr">with</span>
                         | @a_const _ <span class="nl">?f</span> _ =&gt;
@@ -72,10 +69,10 @@ be used <span class="kr">for</span> printing.
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk5"><span class="kn">Check</span> &#39;d2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">d d2
      : A</blockquote></div></div></small></span></pre><hr class="docutils" />
 <p><strong>A:</strong> Indeed; depending on the particular application using a
-<tt class="docutils literal">Canonical Structure</tt> could work very well here too.</p>
-</div>
-<div class="section" id="answer-daniel-schepler-1">
-<h1>Answer (Daniel Schepler)</h1>
+<span class="docutils literal">Canonical Structure</span> could work very well here too.</p>
+</section>
+<section id="answer-daniel-schepler-1">
+<h2>Answer (Daniel Schepler)</h2>
 <p>In fact, the idea of using an ltac-term leads to an entirely different
 solution from the other one I posted:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk6"><span class="kn">Notation</span> <span class="s2">&quot;&#39; x&quot;</span> := <span class="kp">ltac</span>:(<span class="kr">let</span> <span class="nv">T</span> := (<span class="kp">type of</span> x) <span class="kr">in</span>
@@ -89,11 +86,11 @@ be used <span class="kr">for</span> printing.
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk7"><span class="kn">Check</span> &#39;c1.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">c c1
      : A</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-a-single-notation-for-multiple-constructors-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-a-single-notation-for-multiple-constructors-v-chk8"><span class="kn">Check</span> &#39;d2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">d d2
-     : A</blockquote></div></div></small></span></pre><p>(Here the <tt class="docutils literal">eval hnf</tt> part lets it work even if the type of the
-argument isn't syntactically equal to <tt class="docutils literal">C</tt> or <tt class="docutils literal">D</tt>, but it does
+     : A</blockquote></div></div></small></span></pre><p>(Here the <span class="docutils literal">eval hnf</span> part lets it work even if the type of the
+argument isn't syntactically equal to <span class="docutils literal">C</span> or <span class="docutils literal">D</span>, but it does
 reduce to one of them.)</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

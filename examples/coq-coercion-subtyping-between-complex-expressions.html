@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: coercion/subtyping between complex expressions</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-coercion-subtyping-between-complex-expressions">
+<div class="alectryon-root alectryon-centered"><main id="coq-coercion-subtyping-between-complex-expressions">
 <h1 class="title">Coq: coercion/subtyping between complex expressions</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/38416025">https://stackoverflow.com/q/38416025</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/38416025">https://stackoverflow.com/q/38416025</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I've got an impression that it's impossible in Coq. For example</p>
-<pre class="code coq literal-block">
-<span class="kn">Parameter</span> <span class="nv">Arg</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Parameter</span> <span class="nv">Arg</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">.</span>
 <span class="kn">Parameter</span> <span class="nv">F</span> <span class="nv">X</span> <span class="nv">XP</span> <span class="o">:</span> <span class="n">Arg</span><span class="o">.</span>
 <span class="kn">Parameter</span> <span class="nv">S</span> <span class="nv">P</span> <span class="nv">I</span> <span class="nv">PLS</span> <span class="nv">PI</span> <span class="o">:</span> <span class="n">Arg</span> <span class="o">-&gt;</span> <span class="kt">Type</span><span class="o">.</span>
 <span class="kn">Parameter</span> <span class="nv">tree</span> <span class="nv">car</span> <span class="o">:</span> <span class="n">P</span> <span class="n">X</span><span class="o">.</span>
@@ -37,16 +33,14 @@
 <span class="kn">Parameter</span> <span class="nv">c</span> <span class="o">:</span> <span class="n">PLS</span> <span class="n">XP</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">XP</span><span class="o">.</span>
 <span class="kn">Coercion</span> <span class="nf">c</span> <span class="o">:</span> <span class="n">PLS</span> <span class="n">XP</span> <span class="o">&gt;-&gt;</span> <span class="n">P</span> <span class="n">XP</span><span class="o">.</span>
 <span class="c">(* Syntax error: '&gt;-&gt;' expected after [vernac:class_rawexpr] (in
-   [vernac:gallina_ext]). *)</span>
-</pre>
-<p>So not only must the types of the expressions next to <tt class="docutils literal"><span class="pre">&gt;-&gt;</span></tt> be
-<tt class="docutils literal">Set</tt>, <tt class="docutils literal">Type</tt> or <tt class="docutils literal">Prop</tt>, the expressions themselves must also be
+   [vernac:gallina_ext]). *)</span></code></pre>
+<p>So not only must the types of the expressions next to <span class="docutils literal"><span class="pre">&gt;-&gt;</span></span> be
+<span class="docutils literal">Set</span>, <span class="docutils literal">Type</span> or <span class="docutils literal">Prop</span>, the expressions themselves must also be
 syntactically elementary (&quot;rawexpressions&quot; in Gallina?)? How to bypass
 this; can I form a coercion between complex expression? Is there
 another way to define a subtype in Coq, one which would work w/
 complex expressions? Can I do better than</p>
-<pre class="code coq literal-block">
-<span class="kn">Let</span> <span class="nf">nui</span> <span class="o">:=</span> <span class="n">PLS</span> <span class="n">XP</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Let</span> <span class="nf">nui</span> <span class="o">:=</span> <span class="n">PLS</span> <span class="n">XP</span><span class="o">.</span>
 <span class="kn">Let</span> <span class="nf">hui</span> <span class="o">:=</span> <span class="n">P</span> <span class="n">XP</span><span class="o">.</span>
 <span class="kn">Parameter</span> <span class="nv">c</span> <span class="o">:</span> <span class="n">nui</span> <span class="o">-&gt;</span> <span class="n">hui</span><span class="o">.</span>
 <span class="kn">Coercion</span> <span class="nf">c</span> <span class="o">:</span> <span class="n">nui</span> <span class="o">&gt;-&gt;</span> <span class="n">hui</span><span class="o">.</span>
@@ -54,11 +48,10 @@ complex expressions? Can I do better than</p>
 <span class="kn">Check</span> <span class="n">st</span> <span class="o">(</span><span class="n">c</span> <span class="n">mary</span><span class="o">).</span> <span class="c">(* st mary : Type *)</span>
 <span class="kn">Check</span> <span class="n">st</span> <span class="n">mary</span><span class="o">.</span>
 <span class="c">(* Error: The term &quot;mary&quot; has type &quot;PLS XP&quot; while it is expected
-   to have type &quot;P XP&quot;.*)</span>
-</pre>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+   to have type &quot;P XP&quot;.*)</span></code></pre>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>IMVHO, the setup of the problem is looking very complicated; I am not
 sure this modeling method will be effective (in the sense of
 efficient).</p>
@@ -83,7 +76,7 @@ class so you will have to add some wrapping:</p>
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercion-subtyping-between-complex-expressions-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercion-subtyping-between-complex-expressions-v-chk0"><span class="kn">Check</span> st (c Mary).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">st (c Mary)
      : <span class="kt">Type</span></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercion-subtyping-between-complex-expressions-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercion-subtyping-between-complex-expressions-v-chk1"><span class="kn">Check</span> st Mary.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">st Mary
-     : <span class="kt">Type</span></blockquote></div></div></small></span></pre><p>YMMV. Note that the general <tt class="docutils literal">subType</tt> class in ssreflect <a class="reference external" href="http://math-comp.github.io/math-comp/htmldoc/mathcomp.ssreflect.eqtype.html">doc</a>
+     : <span class="kt">Type</span></blockquote></div></div></small></span></pre><p>YMMV. Note that the general <span class="docutils literal">subType</span> class in ssreflect <a class="reference external" href="http://math-comp.github.io/math-comp/htmldoc/mathcomp.ssreflect.eqtype.html">doc</a>
 may provide some help on how to make a generic coercion framework.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> Good! I didn't know you can define coercions without a prior
@@ -96,29 +89,25 @@ probably make it into an answer after some sleep)</p>
 [uniform-inheritance,typechecker]</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-coercion-subtyping-between-complex-expressions-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercion-subtyping-between-complex-expressions-v-chk3"><span class="kn">Print Coercions</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">c</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-coercion-subtyping-between-complex-expressions-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercion-subtyping-between-complex-expressions-v-chk4"><span class="kn">Print Graph</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">[c] : PLS &gt;-&gt; P</blockquote></div></div></small></span></pre><p>and yet there's no coercion:</p>
-<pre class="code coq literal-block">
-<span class="kn">Check</span> <span class="n">mary</span> <span class="o">:</span> <span class="n">P</span> <span class="n">XP</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Check</span> <span class="n">mary</span> <span class="o">:</span> <span class="n">P</span> <span class="n">XP</span><span class="o">.</span>
 <span class="c">(* Error: The term &quot;mary&quot; has type &quot;PLS XP&quot; while it is expected
-   to have type &quot;P XP&quot;. *)</span>
-</pre>
+   to have type &quot;P XP&quot;. *)</span></code></pre>
 <p>So the real problem is fulfilling the uniform inheritance condition.
-<tt class="docutils literal">P x</tt> is a superset of <tt class="docutils literal">PLS x</tt>, which is an intersection of <tt class="docutils literal">P
-x</tt>, <tt class="docutils literal">L x</tt> and <tt class="docutils literal">S x</tt>. So I might even pretend that <tt class="docutils literal">c</tt> is &quot;a
+<span class="docutils literal">P x</span> is a superset of <span class="docutils literal">PLS x</span>, which is an intersection of <span class="docutils literal">P x</span>, <span class="docutils literal">L x</span> and <span class="docutils literal">S x</span>. So I might even pretend that <span class="docutils literal">c</span> is &quot;a
 coercion which must be explicitly specified&quot;</p>
 <p><strong>A:</strong> I agree is very confusing; in practice it seems that &quot;does not
 respect the uniform inheritance&quot; means &quot;your coercion will never be
 considered for application&quot;.</p>
-</div>
-<div class="section" id="answer-jaam">
-<h1>Answer (jaam)</h1>
+</section>
+<section id="answer-jaam">
+<h2>Answer (jaam)</h2>
 <p>After trying this, that and whatnot, the solution was surprisingly
 easy. There were two steps my question was missing:</p>
 <ol class="arabic simple">
-<li>You can coerce <em>functions</em> towards one another, i.e. <tt class="docutils literal">Coercion c :
-PLS <span class="pre">&gt;-&gt;</span> P</tt> works</li>
-<li>To avoid breaking the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual021.html#sec657">&quot;uniform inheritance condition&quot;</a>,
+<li><p>You can coerce <em>functions</em> towards one another, i.e. <span class="docutils literal">Coercion c : PLS <span class="pre">&gt;-&gt;</span> P</span> works</p></li>
+<li><p>To avoid breaking the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual021.html#sec657">&quot;uniform inheritance condition&quot;</a>,
 you must define the function you want to make into a coercion in
-its general (<tt class="docutils literal">forall</tt>) form</li>
+its general (<span class="docutils literal">forall</span>) form</p></li>
 </ol>
 <p>In sum:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">Arg</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
@@ -129,8 +118,8 @@ its general (<tt class="docutils literal">forall</tt>) form</li>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">c</span> : <span class="kr">forall</span> <span class="nv">x</span> : Arg, PLS x -&gt; P x.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">c</span> : PLS &gt;-&gt; P.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercion-subtyping-between-complex-expressions-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercion-subtyping-between-complex-expressions-v-chk5"><span class="kn">Check</span> mary : P XP.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">mary : P XP
-     : P XP</blockquote></div></div></small></span></pre></div>
+     : P XP</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

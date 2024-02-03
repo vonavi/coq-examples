@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Is it possible to declare type-dependent Notation in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,46 +14,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="is-it-possible-to-declare-type-dependent-notation-in-coq">
-<h1 class="title">Is it possible to declare type-dependent <tt class="docutils literal">Notation</tt> in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69944163">https://stackoverflow.com/q/69944163</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="is-it-possible-to-declare-type-dependent-notation-in-coq">
+<h1 class="title">Is it possible to declare type-dependent <span class="docutils literal">Notation</span> in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/69944163">https://stackoverflow.com/q/69944163</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>As Coq has a powerful type inference algorithm, I am wondering whether
 we can &quot;overload&quot; notations for different rewriting based on the
-<tt class="docutils literal">Notation</tt>'s variables.</p>
+<span class="docutils literal">Notation</span>'s variables.</p>
 <p>As an example, I will borrow a piece of my work on formalizing a typed
 language's semantics in Coq. In this formalization, I have both pairs
 of types and pairs of expressions, and I would like to use the same
-symbol for their respective constructor: <tt class="docutils literal">{ _ , _ }</tt>.</p>
-<pre class="code coq literal-block">
-<span class="kn">Inductive</span> <span class="nf">type</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="o">...</span> <span class="o">|</span> <span class="n">tpair</span><span class="o">:</span> <span class="n">type</span> <span class="o">-&gt;</span> <span class="n">type</span> <span class="o">-&gt;</span> <span class="n">type</span> <span class="o">|</span> <span class="o">...</span>
+symbol for their respective constructor: <span class="docutils literal">{ _ , _ }</span>.</p>
+<pre class="code coq literal-block"><code><span class="kn">Inductive</span> <span class="nf">type</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="o">...</span> <span class="o">|</span> <span class="n">tpair</span><span class="o">:</span> <span class="n">type</span> <span class="o">-&gt;</span> <span class="n">type</span> <span class="o">-&gt;</span> <span class="n">type</span> <span class="o">|</span> <span class="o">...</span>
 <span class="kn">Inductive</span> <span class="nf">expr</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="o">...</span> <span class="o">|</span> <span class="n">epair</span><span class="o">:</span> <span class="n">expr</span> <span class="o">-&gt;</span> <span class="n">expr</span> <span class="o">-&gt;</span> <span class="n">expr</span> <span class="o">|</span> <span class="o">...</span>
 
 <span class="kn">Notation</span> <span class="s2">&quot;{ t1 , t2 }&quot;</span> <span class="o">:=</span> <span class="n">tpair</span> <span class="n">t1</span> <span class="n">t2</span>
-<span class="kn">Notation</span> <span class="s2">&quot;{ e1 , e2 }&quot;</span> <span class="o">:=</span> <span class="n">epair</span> <span class="n">e1</span> <span class="n">e2</span>
-</pre>
+<span class="kn">Notation</span> <span class="s2">&quot;{ e1 , e2 }&quot;</span> <span class="o">:=</span> <span class="n">epair</span> <span class="n">e1</span> <span class="n">e2</span></code></pre>
 <p>I know the last statement will raise an error because of the notation
 being already defined; I would appreciate if somebody has thought
 about trickery around it, or if there is another &quot;official&quot; way of
 doing this.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>One easy way to overload notations is by using scopes. In fact you
 should use scopes most of the time so that your notations don't mix
 with notations from other work that you might include or that might
 include yours.</p>
-<p>Using scope delimiters, you could have <tt class="docutils literal">{ t1 , t2 }%ty</tt> and <tt class="docutils literal">{ e1 ,
-e2 }%exp</tt> for instance (with the delimiters <tt class="docutils literal">ty</tt> and <tt class="docutils literal">exp</tt> to
+<p>Using scope delimiters, you could have <span class="docutils literal">{ t1 , t2 }%ty</span> and <span class="docutils literal">{ e1 , e2 }%exp</span> for instance (with the delimiters <span class="docutils literal">ty</span> and <span class="docutils literal">exp</span> to
 disambiguate).</p>
 <p>That said, in order to leverage typing information, there is one trick
 involving typeclasses which is to have a generic notion of pairs which
@@ -79,14 +73,14 @@ example below:</p>
 <p><strong>A:</strong> For instance, <a class="reference external" href="https://gitlab.mpi-sws.org/iris/stdpp">the stdpp library</a> makes pervasive use of
 for-notation-only typeclasses to provide overloaded notations like <a class="reference external" href="https://gitlab.mpi-sws.org/iris/stdpp/-/blob/0939f35/theories/base.v#L245-268">≡
 (Equiv)</a>,
-<tt class="docutils literal">∅</tt> (<tt class="docutils literal">Empty</tt>), <tt class="docutils literal">_ !! _</tt> (<tt class="docutils literal">Lookup</tt>), etc. A minor naming issue
+<span class="docutils literal">∅</span> (<span class="docutils literal">Empty</span>), <span class="docutils literal">_ !! _</span> (<span class="docutils literal">Lookup</span>), etc. A minor naming issue
 (this answer does it better than stdpp) is that with a typeclass named
-<tt class="docutils literal">Equiv</tt> you might think you have the mathematical properties of an
+<span class="docutils literal">Equiv</span> you might think you have the mathematical properties of an
 equivalence relation, whereas all you get is a notation
 (well-formedness properties are stated by another typeclass,
-<tt class="docutils literal">Equivalence</tt>).</p>
+<span class="docutils literal">Equivalence</span>).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

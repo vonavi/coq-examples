@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to use auto with repeat in custom tactics?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,60 +14,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-use-auto-with-repeat-in-custom-tactics">
-<h1 class="title">How to use <tt class="docutils literal">auto</tt> with <tt class="docutils literal">repeat</tt> in custom tactics?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41154060">https://stackoverflow.com/q/41154060</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<div class="alectryon-root alectryon-centered"><main id="how-to-use-auto-with-repeat-in-custom-tactics">
+<h1 class="title">How to use <span class="docutils literal">auto</span> with <span class="docutils literal">repeat</span> in custom tactics?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/41154060">https://stackoverflow.com/q/41154060</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>In my coq development I am learning how to create new tactics tailored
 to my problem domain, a la <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Match.html">Prof. Adam Chlipala</a>.</p>
 <p>On that page he describes how to create powerful tactics by wrapping
-<tt class="docutils literal">repeat</tt> around a <tt class="docutils literal">match</tt> that responds to various interesting
-conditions. The <tt class="docutils literal">repeat</tt> then iterates, allowing for far-reaching
+<span class="docutils literal">repeat</span> around a <span class="docutils literal">match</span> that responds to various interesting
+conditions. The <span class="docutils literal">repeat</span> then iterates, allowing for far-reaching
 inference.</p>
-<p>The use of <tt class="docutils literal">repeat</tt> has a caveat (emphasis mine):</p>
+<p>The use of <span class="docutils literal">repeat</span> has a caveat (emphasis mine):</p>
 <blockquote>
-The <tt class="docutils literal">repeat</tt> that we use here is called a <em>tactical</em>, or tactic
-combinator. The behavior of <tt class="docutils literal">repeat t</tt> is to loop through
-running <tt class="docutils literal">t</tt>, running <tt class="docutils literal">t</tt> on all generated subgoals, running
-<tt class="docutils literal">t</tt> on <em>their</em> generated subgoals, and so on. When <tt class="docutils literal">t</tt> fails
+<p>The <span class="docutils literal">repeat</span> that we use here is called a <em>tactical</em>, or tactic
+combinator. The behavior of <span class="docutils literal">repeat t</span> is to loop through
+running <span class="docutils literal">t</span>, running <span class="docutils literal">t</span> on all generated subgoals, running
+<span class="docutils literal">t</span> on <em>their</em> generated subgoals, and so on. When <span class="docutils literal">t</span> fails
 at any point in this search tree, that particular subgoal is left
 to be handled by later tactics. <strong>Thus, it is important never to
-use</strong> <tt class="docutils literal">repeat</tt> <strong>with a tactic that always succeeds.</strong></blockquote>
+use</strong> <span class="docutils literal">repeat</span> <strong>with a tactic that always succeeds.</strong></p>
+</blockquote>
 <p>Now, I already have a powerful tactic in use, <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#sec390">auto</a>. It
 similarly strings together chains of steps, this time found from hint
-databases. From <tt class="docutils literal">auto</tt>'s page:</p>
+databases. From <span class="docutils literal">auto</span>'s page:</p>
 <blockquote>
-<tt class="docutils literal">auto</tt> either solves completely the goal or else leaves it
-intact. <tt class="docutils literal">auto</tt> <strong>and</strong> <tt class="docutils literal">trivial</tt> <strong>never fail.</strong></blockquote>
-<p>Boo! I have already invested some effort in curating <tt class="docutils literal">auto</tt>'s hint
+<p><span class="docutils literal">auto</span> either solves completely the goal or else leaves it
+intact. <span class="docutils literal">auto</span> <strong>and</strong> <span class="docutils literal">trivial</span> <strong>never fail.</strong></p>
+</blockquote>
+<p>Boo! I have already invested some effort in curating <span class="docutils literal">auto</span>'s hint
 databases, but it seems I am forbidden from employing them in tactics
-using <tt class="docutils literal">repeat</tt> (that is, interesting tactics).</p>
-<p>Is there some variation of <tt class="docutils literal">auto</tt> that can fail, or otherwise be
+using <span class="docutils literal">repeat</span> (that is, interesting tactics).</p>
+<p>Is there some variation of <span class="docutils literal">auto</span> that can fail, or otherwise be
 used correctly in loops?</p>
 <p>For example, perhaps this variant fails when it &quot;leaves [the goal]
 intact&quot;.</p>
-<p><strong>EDIT</strong>: Incorporating <tt class="docutils literal">auto</tt> into loops isn't the &quot;right&quot; way to
+<p><strong>EDIT</strong>: Incorporating <span class="docutils literal">auto</span> into loops isn't the &quot;right&quot; way to
 do it anyway (see <a class="reference external" href="https://stackoverflow.com/q/41171406/580412">this</a>), but the actual
 question of a failing version of auto is still perhaps interesting.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>As mentioned by &#64;AntonTrunov you can always use the <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/ltac.html#coq:tacn.progress">progress</a>
 tactical to make the tactic fail if the goal has not been changed. In
 the case of <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.auto">auto</a>
 since it is supposed to solve the goal or leave it unchanged, you can
-also wrap it in <tt class="docutils literal">solve [ auto ]</tt> which will have the same effect
-because it will fail if <tt class="docutils literal">auto</tt> does not solve the goal completely
+also wrap it in <span class="docutils literal">solve [ auto ]</span> which will have the same effect
+because it will fail if <span class="docutils literal">auto</span> does not solve the goal completely
 (<a class="reference external" href="https://coq.inria.fr/refman/proof-engine/ltac.html#coq:tacn.solve">here is the doc for solve</a>).</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

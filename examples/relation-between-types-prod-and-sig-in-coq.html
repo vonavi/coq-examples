@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Relation between types prod and sig in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,31 +14,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="relation-between-types-prod-and-sig-in-coq">
-<h1 class="title">Relation between types <tt class="docutils literal">prod</tt> and <tt class="docutils literal">sig</tt> in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/13868705">https://stackoverflow.com/q/13868705</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="relation-between-types-prod-and-sig-in-coq">
+<h1 class="title">Relation between types <span class="docutils literal">prod</span> and <span class="docutils literal">sig</span> in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/13868705">https://stackoverflow.com/q/13868705</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>In Coq the type prod (with one constructor <tt class="docutils literal">pair</tt>) corresponds to
-cartesian product and the type <tt class="docutils literal">sig</tt> (with one constructor
-<tt class="docutils literal">exist</tt>) to dependent sum but how is described the fact that the
+<section id="question">
+<h2>Question</h2>
+<p>In Coq the type prod (with one constructor <span class="docutils literal">pair</span>) corresponds to
+cartesian product and the type <span class="docutils literal">sig</span> (with one constructor
+<span class="docutils literal">exist</span>) to dependent sum but how is described the fact that the
 cartesian product is a particular case of dependent sum? I wonder
-there is a link between <tt class="docutils literal">prod</tt> and <tt class="docutils literal">sig</tt>, for instance some
+there is a link between <span class="docutils literal">prod</span> and <span class="docutils literal">sig</span>, for instance some
 definitional equality but I don't find it explicitely in the reference
 manual.</p>
-</div>
-<div class="section" id="answer-ptival">
-<h1>Answer (Ptival)</h1>
-<p>As a matter of fact, the type <tt class="docutils literal">prod</tt> is more akin to <tt class="docutils literal">sigT</tt> than
-<tt class="docutils literal">sig</tt>:</p>
+</section>
+<section id="answer-ptival">
+<h2>Answer (Ptival)</h2>
+<p>As a matter of fact, the type <span class="docutils literal">prod</span> is more akin to <span class="docutils literal">sigT</span> than
+<span class="docutils literal">sig</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="relation-between-types-prod-and-sig-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">prod</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
     pair : <span class="kr">forall</span> (<span class="nv">_</span> : A) (<span class="nv">_</span> : B), prod A B
 
@@ -53,9 +50,9 @@ manual.</p>
     existT : <span class="kr">forall</span> (<span class="nv">x</span> : A) (<span class="nv">_</span> : P x), @sigT A P
 
 <span class="kn">Arguments</span> sigT [A]%type_scope _%type_scope
-<span class="kn">Arguments</span> existT [A]%type_scope _%function_scope _ _</blockquote></div></div></small></span></pre><p>From a meta-theoretic point of view, <tt class="docutils literal">prod</tt> is just a special case
-of <tt class="docutils literal">sigT</tt> where your <tt class="docutils literal">snd</tt> component does not depend on your
-<tt class="docutils literal">fst</tt> component. That is, you could define:</p>
+<span class="kn">Arguments</span> existT [A]%type_scope _%function_scope _ _</blockquote></div></div></small></span></pre><p>From a meta-theoretic point of view, <span class="docutils literal">prod</span> is just a special case
+of <span class="docutils literal">sigT</span> where your <span class="docutils literal">snd</span> component does not depend on your
+<span class="docutils literal">fst</span> component. That is, you could define:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">prod&#39;</span> <span class="nv">A</span> <span class="nv">B</span> := @sigT A (<span class="kr">fun</span> <span class="nv">_</span> =&gt; B).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">pair&#39;</span> {<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>} : A -&gt; B -&gt; prod&#39; A B := @existT A (<span class="kr">fun</span> <span class="nv">_</span> =&gt; B).</span><span class="alectryon-wsp">
@@ -94,22 +91,22 @@ types. You could show a bijection:</p>
     <span class="kr">end</span> <span class="kr">return</span> (@sigT A (<span class="kr">fun</span> <span class="nv">_</span> : A =&gt; B))
   <span class="kr">with</span>
   | pair a b =&gt; @existT A (<span class="kr">fun</span> <span class="nv">_</span> : A =&gt; B) a b
-  <span class="kr">end</span> x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> x.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-anthony">
-<h1>Answer (Anthony)</h1>
+  <span class="kr">end</span> x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> x.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-anthony">
+<h2>Answer (Anthony)</h2>
 <p>A product is the special case of a dependent sum precisely when the
 dependent sum is isomorphic to the common product type.</p>
 <p>Consider the traditional summation of a series whose terms do not
-depend on the index: the summation of a series of <tt class="docutils literal">n</tt> terms, all of
-which are <tt class="docutils literal">x</tt>. Since <tt class="docutils literal">x</tt> does not depend upon the index, usually
-denoted <tt class="docutils literal">i</tt>, we simplify this to <tt class="docutils literal">n * x</tt>. Otherwise, we would have
-<tt class="docutils literal">x_1 + x_2 + x_3 + ... + x_n</tt>, where each <tt class="docutils literal">x_i</tt> can be different.
-This is one way of describing what you have with Coq's <tt class="docutils literal">sigT</tt>: a
-type that is an indexed family of <tt class="docutils literal">x</tt>s, where the index is a
+depend on the index: the summation of a series of <span class="docutils literal">n</span> terms, all of
+which are <span class="docutils literal">x</span>. Since <span class="docutils literal">x</span> does not depend upon the index, usually
+denoted <span class="docutils literal">i</span>, we simplify this to <span class="docutils literal">n * x</span>. Otherwise, we would have
+<span class="docutils literal">x_1 + x_2 + x_3 + ... + x_n</span>, where each <span class="docutils literal">x_i</span> can be different.
+This is one way of describing what you have with Coq's <span class="docutils literal">sigT</span>: a
+type that is an indexed family of <span class="docutils literal">x</span>s, where the index is a
 generalization of the differing data constructors typically associated
 with variant types.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dealing with let-in expressions in current goal</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="dealing-with-let-in-expressions-in-current-goal">
+<div class="alectryon-root alectryon-centered"><main id="dealing-with-let-in-expressions-in-current-goal">
 <h1 class="title">Dealing with let-in expressions in current goal</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48278491">https://stackoverflow.com/q/48278491</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48278491">https://stackoverflow.com/q/48278491</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I got stuck while doing some coq proofs around the <tt class="docutils literal">state</tt> monad.
+<section id="question">
+<h2>Question</h2>
+<p>I got stuck while doing some coq proofs around the <span class="docutils literal">state</span> monad.
 Concretely, I've simplified the situation to this proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">my_call</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span>} (<span class="nv">f</span> : A -&gt; B * C) (<span class="nv">a</span> : A) : B * C :=
   <span class="kr">let</span> (<span class="nv">b</span>, c) := f a <span class="kr">in</span> (b, c).</span><span class="alectryon-wsp">
@@ -38,7 +35,7 @@ my_call f a = f a</div></blockquote></div></div></small><span class="alectryon-w
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A -&gt; B * C) (<span class="nv">a</span> : A),
 my_call f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk2"><span class="nb">intros</span> A B C f a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B * C</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">my_call f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk3"><span class="nb">unfold</span> my_call.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B * C</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> (<span class="nv">b</span>, c) := f a <span class="kr">in</span> (b, c)) = f a</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  <span class="c">(* stuck! *)</span></span></pre><p>The resulting goal after invoking <tt class="docutils literal">unfold</tt> is</p>
+</span></span><span class="alectryon-wsp">  <span class="c">(* stuck! *)</span></span></pre><p>The resulting goal after invoking <span class="docutils literal">unfold</span> is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   A : <span class="kt">Type</span>
@@ -62,29 +59,25 @@ my_call&#39; f a = f a</div></blockquote></div></div></small><span class="alectr
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A -&gt; B) (<span class="nv">a</span> : A),
 my_call&#39; f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk7"><span class="nb">intros</span> A B f a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">my_call&#39; f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk8"><span class="nb">unfold</span> my_call&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>It's easy to see what you need to do next, once you recall that</p>
-<pre class="code coq literal-block">
-<span class="kr">let</span> <span class="o">(</span><span class="nv">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">:=</span> <span class="n">f</span> <span class="n">a</span> <span class="kr">in</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">let</span> <span class="o">(</span><span class="nv">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">:=</span> <span class="n">f</span> <span class="n">a</span> <span class="kr">in</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span></code></pre>
 <p>is syntactic sugar for</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">f</span> <span class="n">a</span> <span class="kr">with</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="kr">end</span>
-</pre>
-<p>This means you need to destruct on <tt class="docutils literal">f a</tt> to finish the proof:</p>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">f</span> <span class="n">a</span> <span class="kr">with</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="kr">end</span></code></pre>
+<p>This means you need to destruct on <span class="docutils literal">f a</span> to finish the proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chk9"><span class="kn">Lemma</span> <span class="nf">mycall_is_call</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span>} (<span class="nv">f</span> : A -&gt; B * C) <span class="nv">a</span> :
   my_call f a = f a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B * C</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">my_call f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B * C</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">my_call f a = f a</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dealing-with-let-in-expressions-in-current-goal-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="dealing-with-let-in-expressions-in-current-goal-v-chkb"><span class="nb">unfold</span> my_call.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>A -&gt; B * C</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> (<span class="nv">b</span>, c) := f a <span class="kr">in</span> (b, c)) = f a</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> (f a).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
-<p><strong>A:</strong> Note that you can <tt class="docutils literal">Set Printing All</tt> to make the syntactic
+<p><strong>A:</strong> Note that you can <span class="docutils literal">Set Printing All</span> to make the syntactic
 sugar go away.</p>
 <p><strong>A:</strong> With pairs defined with primitive projections (as <a class="reference external" href="https://stackoverflow.com/a/48296323/2747511">here</a>), we can prove
-<tt class="docutils literal">mycall_is_call</tt> lemma using just <tt class="docutils literal">reflexivity</tt>.</p>
+<span class="docutils literal">mycall_is_call</span> lemma using just <span class="docutils literal">reflexivity</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to make use of information known about this function type in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,23 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-make-use-of-information-known-about-this-function-type-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-make-use-of-information-known-about-this-function-type-in-coq">
 <h1 class="title">How to make use of information known about this function type in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48959586">https://stackoverflow.com/q/48959586</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48959586">https://stackoverflow.com/q/48959586</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Say I have the following type <tt class="docutils literal">typ</tt> representing <tt class="docutils literal">bool</tt> or
-<tt class="docutils literal">nat</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>Say I have the following type <span class="docutils literal">typ</span> representing <span class="docutils literal">bool</span> or
+<span class="docutils literal">nat</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">typ</span> : <span class="kt">Type</span> := TB | TN.</span></span></pre><p>I also have a function to extract an actual function type from a list
-of <tt class="docutils literal">typ</tt>s and a result type:</p>
+of <span class="docutils literal">typ</span>s and a result type:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">get_types</span> (<span class="nv">s</span>: seq typ) (<span class="nv">result_type</span>: <span class="kt">Type</span>) : <span class="kt">Type</span> :=
   <span class="kr">match</span> s <span class="kr">with</span>
   | nil =&gt; result_type
@@ -41,8 +38,8 @@ of <tt class="docutils literal">typ</tt>s and a result type:</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk0"><span class="kn">Example</span> <span class="nf">get_types_works</span> : get_types (TB :: TN :: nil) nat = bool -&gt; nat -&gt; nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types [:: TB; TN] nat = bool -&gt; nat -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types [:: TB; TN] nat = bool -&gt; nat -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">by</span> [].</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now, I have another function that takes as input a list <tt class="docutils literal">s</tt> of
-<tt class="docutils literal">typ</tt>s and a function of type <tt class="docutils literal">get_types s</tt>:</p>
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">get_types [:: TB; TN] nat = bool -&gt; nat -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">by</span> [].</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now, I have another function that takes as input a list <span class="docutils literal">s</span> of
+<span class="docutils literal">typ</span>s and a function of type <span class="docutils literal">get_types s</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk2"><span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">s</span>: seq typ) (<span class="nv">constructor</span>: get_types s nat) : nat :=
   <span class="kr">match</span> s <span class="kr">with</span>
   | nil =&gt; <span class="mi">2</span> <span class="c">(* Not properly handling empty list case for now *)</span>
@@ -53,26 +50,25 @@ of <tt class="docutils literal">typ</tt>s and a result type:</p>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Illegal application (Non-functional construction): 
 The expression <span class="s2">&quot;constructor&quot;</span> of type <span class="s2">&quot;get_types s nat&quot;</span>
 cannot be applied to the term
- <span class="s2">&quot;true&quot;</span> : <span class="s2">&quot;bool&quot;</span></blockquote></div></div></small></span></pre><p>Defining the above function fails at the line <tt class="docutils literal">| TB :: nil =&gt;
-constructor true</tt>.</p>
-<p>Given we know here that the type of <tt class="docutils literal">get_types s nat</tt> should be
-<tt class="docutils literal">bool <span class="pre">-&gt;</span> nat</tt>, as the value of <tt class="docutils literal">s</tt> is <tt class="docutils literal">TB :: nil</tt>, I'm wondering
+ <span class="s2">&quot;true&quot;</span> : <span class="s2">&quot;bool&quot;</span></blockquote></div></div></small></span></pre><p>Defining the above function fails at the line <span class="docutils literal">| TB :: nil =&gt; constructor true</span>.</p>
+<p>Given we know here that the type of <span class="docutils literal">get_types s nat</span> should be
+<span class="docutils literal">bool <span class="pre">-&gt;</span> nat</span>, as the value of <span class="docutils literal">s</span> is <span class="docutils literal">TB :: nil</span>, I'm wondering
 if there's a way we can make Coq aware of this so that the above
 function can be defined?</p>
 <p>If not, is this a limitation of Coq or would the same apply to other
 dependently typed languages?</p>
 <p><strong>Edit:</strong> For context, this is not the original problem I'm trying to
 solve; it's a condensed version to show the issue I was having with
-the type system. In the actual version, rather than hard-coding <tt class="docutils literal">2</tt>
-and <tt class="docutils literal">true</tt>, the <tt class="docutils literal">typ</tt>-like datastructure also carries indices of
+the type system. In the actual version, rather than hard-coding <span class="docutils literal">2</span>
+and <span class="docutils literal">true</span>, the <span class="docutils literal">typ</span>-like datastructure also carries indices of
 data to parse from a memory slice, and validation functions. The aim
-for <tt class="docutils literal">app</tt> is a function that takes a list of such <tt class="docutils literal">typ</tt>s, a
+for <span class="docutils literal">app</span> is a function that takes a list of such <span class="docutils literal">typ</span>s, a
 slice, and a constructor for a record containing such types, then
 constructs an instance of that record from the indices of the types to
-parse, or returns <tt class="docutils literal">None</tt> if any of the validations fail.</p>
-</div>
-<div class="section" id="answer-tej-chajed">
-<h1>Answer (Tej Chajed)</h1>
+parse, or returns <span class="docutils literal">None</span> if any of the validations fail.</p>
+</section>
+<section id="answer-tej-chajed">
+<h2>Answer (Tej Chajed)</h2>
 <p>There's nothing wrong with what you want in principle. However, at
 least in Coq, there are some simple rules for how pattern matching is
 typechecked so that information about which constructor was used can
@@ -85,8 +81,8 @@ suspect you run into similar limitations there, where you have to fit
 your code into a form the system can type check.</p>
 <p>Here, you're running into two limitations of this pattern matching
 compilation. The first is that the type of constructor is not
-specialized based on the match on <tt class="docutils literal">s</tt>. This is easily fixed by
-computing a function from <tt class="docutils literal">get_types s nat <span class="pre">-&gt;</span> nat</tt>, which the
+specialized based on the match on <span class="docutils literal">s</span>. This is easily fixed by
+computing a function from <span class="docutils literal">get_types s nat <span class="pre">-&gt;</span> nat</span>, which the
 compiler gets right.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -163,20 +159,20 @@ Recursive definition <span class="kr">is</span>:
 <span class="s2"> end&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp"><span class="c">(* fails due to limitation of termination checker with nested matches *)</span></span></pre><p>...but then you run into a second problem with the termination
 checker. Note that your match is complex: it analyzes the structure of
-<tt class="docutils literal">s</tt> as well as its head and tail (if it was built with <tt class="docutils literal">cons</tt>).
+<span class="docutils literal">s</span> as well as its head and tail (if it was built with <span class="docutils literal">cons</span>).
 Ultimately all pattern matches are compiled to nested pattern matches
 on a single inductive type. If you look at this unfolding, you're
-destructing <tt class="docutils literal">s</tt> into <tt class="docutils literal">t :: xs</tt>, and then destructing <tt class="docutils literal">xs</tt> again
-into <tt class="docutils literal">t0 :: xs'</tt>, before finally recursing on <tt class="docutils literal">xs</tt>. Unfortunately,
-the Coq termination checker only sees this as <tt class="docutils literal">t0 :: xs'</tt> and
-doesn't recognize it as a subterm of <tt class="docutils literal">s</tt> (it really wants <tt class="docutils literal">xs</tt>).</p>
+destructing <span class="docutils literal">s</span> into <span class="docutils literal">t :: xs</span>, and then destructing <span class="docutils literal">xs</span> again
+into <span class="docutils literal">t0 :: xs'</span>, before finally recursing on <span class="docutils literal">xs</span>. Unfortunately,
+the Coq termination checker only sees this as <span class="docutils literal">t0 :: xs'</span> and
+doesn't recognize it as a subterm of <span class="docutils literal">s</span> (it really wants <span class="docutils literal">xs</span>).</p>
 <p>I had a hard time manually writing your function in a way that type
 checks, but here's a version written using tactics that is
 functionally correct. Note that the definition it produces is quite a
 bit more complicated than any ordinary pattern match, because it has
-to maintain a proof produced by <tt class="docutils literal">destruct_with_eqn</tt>. However, that
-proof is crucial to simultaneously using <tt class="docutils literal">xs</tt> to make the
-termination checker happy and revealing <tt class="docutils literal">t0 :: xs'</tt> for type
+to maintain a proof produced by <span class="docutils literal">destruct_with_eqn</span>. However, that
+proof is crucial to simultaneously using <span class="docutils literal">xs</span> to make the
+termination checker happy and revealing <span class="docutils literal">t0 :: xs'</span> for type
 checking the application of the constructor. It may be complicated but
 you can still run it just fine, as the last line illustrates.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk4"><span class="kn">Fixpoint</span> <span class="nf">app</span> (<span class="nv">s</span>: list typ) (<span class="nv">constructor</span>: get_types s nat) {<span class="nv">struct</span> <span class="nv">s</span>} : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span> : list typ, get_types s nat -&gt; nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>list typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>get_types s nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -260,12 +256,12 @@ you can still run it just fine, as the last line illustrates.</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk15"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> app [TB; TN] (<span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> =&gt; <span class="kr">if</span> x <span class="kr">then</span> y + <span class="mi">2</span> <span class="kr">else</span> y).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">4</span>
-: nat</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
-<p>Yet two other ways of defining <tt class="docutils literal">app</tt>.</p>
-<p>The first one uses tactics, and relies on <tt class="docutils literal">induction</tt> instead of
-<tt class="docutils literal">Fixpoint</tt>.</p>
+: nat</blockquote></div></div></small></span></pre></section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
+<p>Yet two other ways of defining <span class="docutils literal">app</span>.</p>
+<p>The first one uses tactics, and relies on <span class="docutils literal">induction</span> instead of
+<span class="docutils literal">Fixpoint</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk16"><span class="kn">Definition</span> <span class="nf">app</span> (<span class="nv">s</span>: seq typ) (<span class="nv">constructor</span>: get_types s nat) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>seq typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>get_types s nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk17"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>seq typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>get_types s nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk18"><span class="nb">induction</span> s <span class="kr">as</span> [|t xs].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>constructor</var><span class="hyp-type"><b>: </b><span>get_types [::] nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk19" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t</var><span class="hyp-type"><b>: </b><span>typ</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>seq typ</span></span></span><br><span><var>constructor</var><span class="hyp-type"><b>: </b><span>get_types (t :: xs) nat</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span>get_types xs nat -&gt; nat</span></span></span><br></div><label class="goal-separator" for="how-to-make-use-of-information-known-about-this-function-type-in-coq-v-chk19"><hr></label><div class="goal-conclusion">nat</div></blockquote></div></div></div></small><span class="alectryon-wsp">
@@ -295,19 +291,19 @@ you can still run it just fine, as the last line illustrates.</p>
                       <span class="kr">end</span>
                     <span class="kr">end</span>
     <span class="kr">end</span> eq_refl
-  <span class="kr">end</span>.</span></span></pre><p>When destructing <tt class="docutils literal">xs</tt>, we remember an equality between the original
-<tt class="docutils literal">xs</tt> and what it is destructed in. We do not need this equality in
-the <tt class="docutils literal">nil</tt> branch and discards it with <tt class="docutils literal">fun _</tt>. In the other
-branch, we pattern-match on the proof of equality (<tt class="docutils literal">match e</tt>), which
-corresponds to a rewriting using this equality. Inside the <tt class="docutils literal">eq_refl</tt>
-branch, we can use the original <tt class="docutils literal">xs</tt> and thus make recursive calls
+  <span class="kr">end</span>.</span></span></pre><p>When destructing <span class="docutils literal">xs</span>, we remember an equality between the original
+<span class="docutils literal">xs</span> and what it is destructed in. We do not need this equality in
+the <span class="docutils literal">nil</span> branch and discards it with <span class="docutils literal">fun _</span>. In the other
+branch, we pattern-match on the proof of equality (<span class="docutils literal">match e</span>), which
+corresponds to a rewriting using this equality. Inside the <span class="docutils literal">eq_refl</span>
+branch, we can use the original <span class="docutils literal">xs</span> and thus make recursive calls
 allowed by the termination checker. Outside the pattern-match, we
-return the right type expected by the pattern-matching on <tt class="docutils literal">xs</tt>. The
-last thing to do is to provide a proof of the equality of <tt class="docutils literal">xs</tt> and
-<tt class="docutils literal">xs0</tt>, but it is trivially <tt class="docutils literal">eq_refl</tt>.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+return the right type expected by the pattern-matching on <span class="docutils literal">xs</span>. The
+last thing to do is to provide a proof of the equality of <span class="docutils literal">xs</span> and
+<span class="docutils literal">xs0</span>, but it is trivially <span class="docutils literal">eq_refl</span>.</p>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>Well, I am not sure what you are really trying to do, but the first
 step to submit your code into the &quot;convoy&quot; pattern is indeed to add a
 bit more structure to you type interpretation. If you separate the
@@ -347,11 +343,11 @@ qualification when imported. [local-declaration,scope]</blockquote></div></div><
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Unused variable xs catches more than one <span class="nb">case</span>.
 [unused-<span class="nb">pattern</span>-matching-variable,<span class="nb">pattern</span>-matching]</blockquote><blockquote class="alectryon-message">Unused variable xs catches more than one <span class="nb">case</span>.
 [unused-<span class="nb">pattern</span>-matching-variable,<span class="nb">pattern</span>-matching]</blockquote></div></div></small></span></pre><p>Note that I've generalized the return type too as there was no good
-reason to hardcode the definition to <tt class="docutils literal">nat</tt>. A fun exercise is to
-modify the above <tt class="docutils literal">app</tt> function and prove it equivalent to the
+reason to hardcode the definition to <span class="docutils literal">nat</span>. A fun exercise is to
+modify the above <span class="docutils literal">app</span> function and prove it equivalent to the
 tactic-based version of Tej.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Returning a record from a definition in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,36 +14,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="returning-a-record-from-a-definition-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="returning-a-record-from-a-definition-in-coq">
 <h1 class="title">Returning a record from a definition in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45650879">https://stackoverflow.com/q/45650879</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/45650879">https://stackoverflow.com/q/45650879</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Suppose I've got a <tt class="docutils literal">record</tt> that contains two <tt class="docutils literal">nat</tt>s.</p>
+<section id="question">
+<h2>Question</h2>
+<p>Suppose I've got a <span class="docutils literal">record</span> that contains two <span class="docutils literal">nat</span>s.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">toy</span> := {
     num1 : nat;
     num2 : nat
-  }.</span></span></pre><p>I want to build a definition that given two <tt class="docutils literal">nat</tt>s returns a
-<tt class="docutils literal">record</tt> containing those two <tt class="docutils literal">nat</tt>s.</p>
-<pre class="code coq literal-block">
-<span class="kn">Definition</span> <span class="nf">args_to_toy_record</span> <span class="o">(</span><span class="nv">n1</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">(</span><span class="nv">n2</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">toy</span> <span class="o">:=</span>
-  <span class="c">(* { num1 = n1; num2 = n2} ?? *)</span>
-</pre>
+  }.</span></span></pre><p>I want to build a definition that given two <span class="docutils literal">nat</span>s returns a
+<span class="docutils literal">record</span> containing those two <span class="docutils literal">nat</span>s.</p>
+<pre class="code coq literal-block"><code><span class="kn">Definition</span> <span class="nf">args_to_toy_record</span> <span class="o">(</span><span class="nv">n1</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">(</span><span class="nv">n2</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">toy</span> <span class="o">:=</span>
+  <span class="c">(* { num1 = n1; num2 = n2} ?? *)</span></code></pre>
 <p>Unfortunately, the official documentation only seems to cover the
-simpler cases when the return type is a <tt class="docutils literal">bool</tt> or a <tt class="docutils literal">nat</tt>. Is such
+simpler cases when the return type is a <span class="docutils literal">bool</span> or a <span class="docutils literal">nat</span>. Is such
 a thing possible in coq? If yes, what is the best method to achieve
 it?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You had it almost right. You just need slightly different syntax:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">toy</span> := {
     num1 : nat;
@@ -52,8 +47,8 @@ it?</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">args_to_toy_record</span> (<span class="nv">n1</span> : nat) (<span class="nv">n2</span> : nat) : toy :=
   {| num1 := n1; num2 := n2 |}.</span></span></pre><p>Alternatively, you can use regular constructor syntax. Every record
-<tt class="docutils literal">toto</tt> in Coq is declared as an inductive (sometimes, coinductive)
-type with a single constructor <tt class="docutils literal">Build_toto</tt>, whose arguments are
+<span class="docutils literal">toto</span> in Coq is declared as an inductive (sometimes, coinductive)
+type with a single constructor <span class="docutils literal">Build_toto</span>, whose arguments are
 exactly the fields of the record:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">args_to_toy_record</span> (<span class="nv">n1</span> : nat) (<span class="nv">n2</span> : nat) : toy :=
   Build_toy n1 n2.</span></span></pre><p>You can also name the record constructor explicitly, like this:</p>
@@ -63,8 +58,8 @@ exactly the fields of the record:</p>
                }.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">args_to_toy_record</span> (<span class="nv">n1</span> : nat) (<span class="nv">n2</span> : nat) : toy :=
-  Toy n1 n2.</span></span></pre></div>
+  Toy n1 n2.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

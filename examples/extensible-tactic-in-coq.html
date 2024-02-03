@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Extensible tactic in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,44 +14,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="extensible-tactic-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="extensible-tactic-in-coq">
 <h1 class="title">Extensible tactic in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48868186">https://stackoverflow.com/q/48868186</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48868186">https://stackoverflow.com/q/48868186</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Let's say I have a fancy tactic that solves lemmas of a certain kind:</p>
-<pre class="code coq literal-block">
-<span class="kn">Ltac</span> <span class="nf">solveFancy</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="kn">Ltac</span> <span class="nf">solveFancy</span> <span class="o">:=</span>
   <span class="n">some_preparation</span><span class="o">;</span>
   <span class="kp">repeat</span> <span class="o">(</span><span class="kp">first</span> <span class="o">[</span><span class="n">important_step1</span> <span class="o">|</span> <span class="n">important_step2</span><span class="o">];</span>
           <span class="n">some_cleanup</span><span class="o">);</span>
-  <span class="n">solve_basecase</span><span class="o">.</span>
-</pre>
+  <span class="n">solve_basecase</span><span class="o">.</span></code></pre>
 <p>Now I use this tactic to prove further lemmas of that kind, which I
 subsequently want to use in this tactic.</p>
 <!-- code-block::: coq
 
 Lemma fancy3 := ... Proof. ... Qed.
 Ltac important_step3 := apply fancy3;[some | specific | stuff]. -->
-<p>Now I could simply re-define <tt class="docutils literal">Ltac solveFancy ::= ...</tt> and add
-<tt class="docutils literal">important_step3</tt> to the list, but that quickly gets old.</p>
+<p>Now I could simply re-define <span class="docutils literal">Ltac solveFancy ::= ...</span> and add
+<span class="docutils literal">important_step3</span> to the list, but that quickly gets old.</p>
 <p>Is there a more elegant way of now extending the list of
-<tt class="docutils literal">important_step</tt>-tactics in <tt class="docutils literal">solveFancy</tt>? I am imagining something
+<span class="docutils literal">important_step</span>-tactics in <span class="docutils literal">solveFancy</span>? I am imagining something
 like:</p>
-<pre class="code coq literal-block">
-<span class="kn">Add</span> <span class="kn">Hint</span> <span class="n">SolveFancy</span> <span class="n">important_step3</span><span class="o">.</span>
-</pre>
-</div>
-<div class="section" id="answer-tej-chajed">
-<h1>Answer (Tej Chajed)</h1>
+<pre class="code coq literal-block"><code><span class="kn">Add</span> <span class="kn">Hint</span> <span class="n">SolveFancy</span> <span class="n">important_step3</span><span class="o">.</span></code></pre>
+</section>
+<section id="answer-tej-chajed">
+<h2>Answer (Tej Chajed)</h2>
 <p>It's not what I'd call elegant, but here's a pure Ltac solution. You
 can leave a hook in your tactic which you re-define later, and you can
 keep following this pattern by always leaving a hook for the next
@@ -85,16 +78,15 @@ hint:</p>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="extensible-tactic-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="extensible-tactic-in-coq-v-chk4"><span class="kn">Theorem</span> <span class="nf">ex_3</span> : P <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">P <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="extensible-tactic-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="extensible-tactic-in-coq-v-chk5"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">P <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input">solve_P.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>There should be a way to do this with <tt class="docutils literal">Hint Extern</tt>, but it'll be
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>There should be a way to do this with <span class="docutils literal">Hint Extern</span>, but it'll be
 much harder to control when and in what order those hints are tried,
 and they have to fully solve the goal by the end.</p>
-</div>
-<div class="section" id="answer-lily-chung">
-<h1>Answer (Lily Chung)</h1>
-<p>I would add an argument to <tt class="docutils literal">solveFancy</tt> which you can use to pass in
+</section>
+<section id="answer-lily-chung">
+<h2>Answer (Lily Chung)</h2>
+<p>I would add an argument to <span class="docutils literal">solveFancy</span> which you can use to pass in
 another tactic:</p>
-<pre class="code coq literal-block">
-<span class="kn">Ltac</span> <span class="nf">solveFancy</span> <span class="n">hook</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="kn">Ltac</span> <span class="nf">solveFancy</span> <span class="n">hook</span> <span class="o">:=</span>
   <span class="n">some_preparation</span><span class="o">;</span>
   <span class="kp">repeat</span> <span class="o">(</span><span class="kp">first</span> <span class="o">[</span><span class="n">important_step1</span> <span class="o">|</span> <span class="n">important_step2</span> <span class="o">|</span> <span class="n">hook</span><span class="o">];</span>
           <span class="n">some_cleanup</span><span class="o">);</span>
@@ -106,11 +98,10 @@ another tactic:</p>
 <span class="kn">Ltac</span> <span class="nf">important_step3</span> <span class="o">:=</span> <span class="o">[...]</span>
 
 <span class="c">(* use solveFancy with important_step3 *)</span>
-<span class="o">[...]</span> <span class="n">solveFancy</span> <span class="n">important_step3</span> <span class="o">[...]</span>
-</pre>
+<span class="o">[...]</span> <span class="n">solveFancy</span> <span class="n">important_step3</span> <span class="o">[...]</span></code></pre>
 <p>This is somewhat more elegant than redefining a hook, though it
 doesn't solve the extensibility problem by itself. The following is a
-strategy for repeatedly redefining a tactic <tt class="docutils literal">x</tt> in terms of previous
+strategy for repeatedly redefining a tactic <span class="docutils literal">x</span> in terms of previous
 versions of itself, using the fact that modules allow redefining an
 Ltac name without overwriting the previous definition.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">x</span> := <span class="kp">idtac</span> <span class="s2">&quot;a&quot;</span>.</span><span class="alectryon-wsp">
@@ -137,11 +128,11 @@ Ltac name without overwriting the previous definition.</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="extensible-tactic-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="extensible-tactic-in-coq-v-chka"><span class="kn">Goal</span> <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="extensible-tactic-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="extensible-tactic-in-coq-v-chkb">x. <span class="c">(* a b c *)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">a</blockquote><blockquote class="alectryon-message">b</blockquote><blockquote class="alectryon-message">c</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>Note that the names <tt class="docutils literal">K0</tt>, <tt class="docutils literal">K1</tt> of the modules don't matter and
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>Note that the names <span class="docutils literal">K0</span>, <span class="docutils literal">K1</span> of the modules don't matter and
 they can be renamed or reordered however you want. This isn't the most
 elegant thing in the world but I think it's an improvement.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

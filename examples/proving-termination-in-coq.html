@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving termination in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-termination-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="proving-termination-in-coq">
 <h1 class="title">Proving termination in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/19507311">https://stackoverflow.com/q/19507311</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/19507311">https://stackoverflow.com/q/19507311</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>How can I prove termination for <tt class="docutils literal">size_prgm</tt>? I tried, but can't come
-up with a well founded relation to pass to <tt class="docutils literal">Fix</tt>.</p>
+<section id="question">
+<h2>Question</h2>
+<p>How can I prove termination for <span class="docutils literal">size_prgm</span>? I tried, but can't come
+up with a well founded relation to pass to <span class="docutils literal">Fix</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Stmt</span> : <span class="kt">Set</span> :=
 | assign : Stmt
 | if&#39; : list Stmt -&gt; list Stmt -&gt; Stmt.</span><span class="alectryon-wsp">
@@ -61,12 +58,12 @@ Recursive definition <span class="kr">is</span>:
 <span class="s2">     | assign =&gt; 1</span>
 <span class="s2">     | if&#39; b0 b1 =&gt; S (size_prgm b0 + size_prgm b1)</span>
 <span class="s2">     end</span>
-<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-gallais">
-<h1>Answer (gallais)</h1>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></section>
+<section id="answer-gallais">
+<h2>Answer (gallais)</h2>
 <p>The termination oracle is quite better than what it used to be.
-Defining a function <tt class="docutils literal">sum_with</tt> using <tt class="docutils literal">fold_left</tt> and feeding it
-the recursive call to <tt class="docutils literal">size_prgm</tt> works perfectly well.</p>
+Defining a function <span class="docutils literal">sum_with</span> using <span class="docutils literal">fold_left</span> and feeding it
+the recursive call to <span class="docutils literal">size_prgm</span> works perfectly well.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Stmt</span> : <span class="kt">Set</span> :=
@@ -80,20 +77,19 @@ the recursive call to <tt class="docutils literal">size_prgm</tt> works perfectl
   <span class="kr">match</span> p <span class="kr">with</span>
   | assign    =&gt; <span class="mi">1</span>
   | if&#39; b0 b1 =&gt; sum_with size_prgm b1 + sum_with size_prgm b0
-  <span class="kr">end</span>.</span></span></pre></div>
-<div class="section" id="answer-vinz">
-<h1>Answer (Vinz)</h1>
+  <span class="kr">end</span>.</span></span></pre></section>
+<section id="answer-vinz">
+<h2>Answer (Vinz)</h2>
 <p>Short answer, since I don't have much time right now (I'll try to get
 back to you later): this is a really usual (and silly) problem that
 every Coq user has to experience one day.</p>
 <p>If I recall correctly, there is two &quot;general&quot; solutions to this
 problem and lots of very specific ones. For the two former:</p>
 <ol class="arabic">
-<li><p class="first">build a inner fixpoint: I don't really remember how to do this
-properly.</p>
-</li>
-<li><p class="first">use a mutual recursive type: The issue with your code is that you
-use <tt class="docutils literal">list Stmt</tt> in your <tt class="docutils literal">Stmt</tt> type, and Coq is not able to
+<li><p>build a inner fixpoint: I don't really remember how to do this
+properly.</p></li>
+<li><p>use a mutual recursive type: The issue with your code is that you
+use <span class="docutils literal">list Stmt</span> in your <span class="docutils literal">Stmt</span> type, and Coq is not able to
 compute the induction principle you have in mind. But you could use
 a time like</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Stmt</span> : <span class="kt">Set</span> :=
@@ -104,9 +100,9 @@ a time like</p>
 | Cons_Stmt : Stmt -&gt; list_Stmt -&gt; list_Stmt.</span></span></pre></li>
 </ol>
 <p>Now write your function over this type and a bijection between this
-type and your original <tt class="docutils literal">Stmt</tt> type.</p>
+type and your original <span class="docutils literal">Stmt</span> type.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

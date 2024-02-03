@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proof automation in Coq how to factorize a proof</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proof-automation-in-coq-how-to-factorize-a-proof">
+<div class="alectryon-root alectryon-centered"><main id="proof-automation-in-coq-how-to-factorize-a-proof">
 <h1 class="title">Proof automation in Coq how to factorize a proof</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34581945">https://stackoverflow.com/q/34581945</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34581945">https://stackoverflow.com/q/34581945</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm following the book Software Foundation and I'm on the chapter
 named &quot;Imp&quot;.</p>
 <p>The authors expose a small language that is the following:</p>
@@ -43,9 +40,7 @@ named &quot;Imp&quot;.</p>
   | AMult a1 a2 =&gt; aeval a1 * aeval a2
   <span class="kr">end</span>.</span></span></pre><p>The exercise is to create a function that optimize the evaluation. For
 example:</p>
-<pre class="code coq literal-block">
-<span class="n">APlus</span> <span class="n">a</span> <span class="o">(</span><span class="n">ANum</span> <span class="mi">0</span><span class="o">)</span> <span class="o">--&gt;</span> <span class="n">a</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">APlus</span> <span class="n">a</span> <span class="o">(</span><span class="n">ANum</span> <span class="mi">0</span><span class="o">)</span> <span class="o">--&gt;</span> <span class="n">a</span></code></pre>
 <p>Here there is my optimize function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">optimizer_a</span> (<span class="nv">a</span> : aexp) : aexp :=
   <span class="kr">match</span> a <span class="kr">with</span>
@@ -68,33 +63,29 @@ some lemmas.</p>
       aeval (APlus (optimizer_a a) (optimizer_a b)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : aexp,
 aeval (optimizer_a (APlus a b)) =
 aeval (APlus (optimizer_a a) (optimizer_a b))</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>I have the proof, but it is boring. I do an induction on <tt class="docutils literal">a</tt> and
-then, for every case, I destruct <tt class="docutils literal">b</tt> and destruct the <tt class="docutils literal">aexp</tt> to
-handle the case when <tt class="docutils literal">b</tt> is <tt class="docutils literal">0</tt>.</p>
+</span></span></pre><p>I have the proof, but it is boring. I do an induction on <span class="docutils literal">a</span> and
+then, for every case, I destruct <span class="docutils literal">b</span> and destruct the <span class="docutils literal">aexp</span> to
+handle the case when <span class="docutils literal">b</span> is <span class="docutils literal">0</span>.</p>
 <p>I need to do that because</p>
-<pre class="code literal-block">
-n + 0 = n
-</pre>
-<p>doesn't reduce automatically, we need a theorem which is <tt class="docutils literal">plus_0_r</tt>.</p>
+<pre class="code literal-block"><code>n + 0 = n</code></pre>
+<p>doesn't reduce automatically, we need a theorem which is <span class="docutils literal">plus_0_r</span>.</p>
 <p>Now, I wonder, how can I build a better proof with Coq in order to
 avoid some boring repetitions during the proof.</p>
 <p>Here is my proof for this lemma:</p>
 <p><a class="reference external" href="http://pastebin.com/pB76JFGv">http://pastebin.com/pB76JFGv</a></p>
-<p>I think I should use <tt class="docutils literal">Hint Rewrite plus_0_r</tt> but I don't know how.</p>
+<p>I think I should use <span class="docutils literal">Hint Rewrite plus_0_r</span> but I don't know how.</p>
 <p>By the way, I'm also interested to know some tips in order to show the
 initial theorem (the soudness of my optimization function).</p>
-</div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
+</section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
 <p>When you are working with induction on data structures and need to
 consider cases, here is one method I found useful to consider the
-cases of a variable <tt class="docutils literal">X</tt>, get rid of the impossible cases, and solve
+cases of a variable <span class="docutils literal">X</span>, get rid of the impossible cases, and solve
 the trivial ones.</p>
-<pre class="code coq literal-block">
-<span class="nb">destruct</span> <span class="n">X</span><span class="o">;</span> <span class="kp">try</span> <span class="bp">congruence</span><span class="o">;</span> <span class="nb">auto</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="nb">destruct</span> <span class="n">X</span><span class="o">;</span> <span class="kp">try</span> <span class="bp">congruence</span><span class="o">;</span> <span class="nb">auto</span><span class="o">.</span></code></pre>
 <p>In your case, we can use it to prove useful rewrite lemmas about the
-<tt class="docutils literal">optimization_a</tt> function.</p>
+<span class="docutils literal">optimization_a</span> function.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chk2"><span class="kn">Lemma</span> <span class="nf">opt1</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>, a = ANum <span class="mi">0</span> -&gt; optimizer_a (APlus a b) = optimizer_a b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : aexp,
 a = ANum <span class="mi">0</span> -&gt; optimizer_a (APlus a b) = optimizer_a b</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chk3"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>aexp</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>a = ANum <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">optimizer_a (APlus a b) = optimizer_a b</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -135,13 +126,13 @@ that it can also be used almost mechanically.</p>
 <p>Also note the use of semicolon instead of point to string together the
 tactics so that they work on all the remaining goals after each step.</p>
 <p>Anyway, now that we have these lemmas, we can consider the different
-cases (Is <tt class="docutils literal">a = ANum 0</tt> or not? Is <tt class="docutils literal">b</tt>?), and just rewrite. To
-consider the cases, we need one more lemma that states that <tt class="docutils literal">a</tt> is
-either <tt class="docutils literal">ANum 0</tt> or it isn't.</p>
+cases (Is <span class="docutils literal">a = ANum 0</span> or not? Is <span class="docutils literal">b</span>?), and just rewrite. To
+consider the cases, we need one more lemma that states that <span class="docutils literal">a</span> is
+either <span class="docutils literal">ANum 0</span> or it isn't.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chk9"><span class="kn">Lemma</span> <span class="nf">ANum0_dec</span> : <span class="kr">forall</span> <span class="nv">a</span>, {a = ANum <span class="mi">0</span>} + {a &lt;&gt; ANum <span class="mi">0</span>}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> : aexp, {a = ANum <span class="mi">0</span>} + {a &lt;&gt; ANum <span class="mi">0</span>}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> a; <span class="kp">try</span> <span class="nb">destruct</span> n; <span class="kp">try</span> (<span class="nb">right</span>; <span class="bp">discriminate</span>); <span class="nb">left</span>; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We can destruct <tt class="docutils literal">ANum0_dec a</tt> and get either <tt class="docutils literal">a = ANum 0</tt> in the
-context, or <tt class="docutils literal">a &lt;&gt; ANum 0</tt> in the context.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We can destruct <span class="docutils literal">ANum0_dec a</span> and get either <span class="docutils literal">a = ANum 0</span> in the
+context, or <span class="docutils literal">a &lt;&gt; ANum 0</span> in the context.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith. <span class="c">(* for &quot;auto with arith&quot; to handle n = n + 0 *)</span></span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chka"><span class="kn">Lemma</span> <span class="nf">optimizer_a_plus_sound</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>,
@@ -167,13 +158,13 @@ aeval (APlus (optimizer_a a) (optimizer_a b))</div></blockquote></div></div></sm
 aeval (APlus (optimizer_a a) (optimizer_a b))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> opt2; <span class="nb">subst</span>; <span class="nb">simpl</span>; <span class="nb">auto with</span> arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chk14">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>aexp</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>a &lt;&gt; ANum <span class="mi">0</span></span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>b &lt;&gt; ANum <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">aeval (optimizer_a (APlus a b)) =
 aeval (APlus (optimizer_a a) (optimizer_a b))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> opt3; <span class="nb">subst</span>; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-larsr-1">
-<h1>Answer (larsr)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-larsr-1">
+<h2>Answer (larsr)</h2>
 <p>If you use the technique above, you can define your own tactical, so
 you don't have to type as much. And since the proofs are very short,
-you could do without the lemmas. (I called the tactical <tt class="docutils literal">dca</tt> for
-<tt class="docutils literal">destruct</tt>-<tt class="docutils literal">congruence</tt>-<tt class="docutils literal">auto</tt>.)</p>
+you could do without the lemmas. (I called the tactical <span class="docutils literal">dca</span> for
+<span class="docutils literal">destruct</span>-<span class="docutils literal">congruence</span>-<span class="docutils literal">auto</span>.)</p>
 <p>The shorter proof is not that readable, but it is essentially:
 consider the cases of the variables.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chk15"><span class="kn">Lemma</span> <span class="nf">ANum0_dec</span> : <span class="kr">forall</span> <span class="nv">a</span>, {a = ANum <span class="mi">0</span>} + {a &lt;&gt; ANum <span class="mi">0</span>}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> : aexp, {a = ANum <span class="mi">0</span>} + {a &lt;&gt; ANum <span class="mi">0</span>}</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -218,8 +209,8 @@ aeval (AMult a1 a2)</div></blockquote></div></div></div></small><span class="ale
 aeval (APlus a1 a2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> optimizer_a_plus_sound; <span class="nb">simpl</span>; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-automation-in-coq-how-to-factorize-a-proof-v-chk28" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-automation-in-coq-how-to-factorize-a-proof-v-chk28">- <span class="c">(* ... and so on for Minus and Mult *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a1, a2</var><span class="hyp-type"><b>: </b><span>aexp</span></span></span><br><span><var>IHa1</var><span class="hyp-type"><b>: </b><span>aeval (optimizer_a a1) = aeval a1</span></span></span><br><span><var>IHa2</var><span class="hyp-type"><b>: </b><span>aeval (optimizer_a a2) = aeval a2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">aeval (optimizer_a (AMinus a1 a2)) =
 aeval (AMinus a1 a2)</div></blockquote></div></div></small></span></pre><p>You could probably also do the full proof in this compact form.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

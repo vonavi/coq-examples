@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: viewing proof term during proof script writing</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,37 +14,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-viewing-proof-term-during-proof-script-writing">
+<div class="alectryon-root alectryon-centered"><main id="coq-viewing-proof-term-during-proof-script-writing">
 <h1 class="title">Coq: viewing proof term during proof script writing</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48875967">https://stackoverflow.com/q/48875967</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48875967">https://stackoverflow.com/q/48875967</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>So, I've got a proof that looks like this:</p>
-<pre class="code coq literal-block">
-<span class="nb">induction</span> <span class="n">t</span><span class="o">;</span> <span class="nb">intros</span><span class="o">;</span> <span class="nb">inversion</span> <span class="n">H</span><span class="o">;</span> <span class="n">crush</span><span class="o">.</span>
-</pre>
-<p>It solves all my goals, but when I do <tt class="docutils literal">Qed</tt>, I get the following
+<pre class="code coq literal-block"><code><span class="nb">induction</span> <span class="n">t</span><span class="o">;</span> <span class="nb">intros</span><span class="o">;</span> <span class="nb">inversion</span> <span class="n">H</span><span class="o">;</span> <span class="n">crush</span><span class="o">.</span></code></pre>
+<p>It solves all my goals, but when I do <span class="docutils literal">Qed</span>, I get the following
 error:</p>
 <blockquote>
-Cannot guess decreasing argument of fix.</blockquote>
+<p>Cannot guess decreasing argument of fix.</p>
+</blockquote>
 <p>So somewhere in the generated proof term, there's non-well-founded
 recursion. The problem is, I have no idea where.</p>
 <p>Is there a way to debug this kind of error, or to see the (possibly
 non halting) proof term that the tactics script generates?</p>
-</div>
-<div class="section" id="answer-tej-chajed">
-<h1>Answer (Tej Chajed)</h1>
-<p>You can use <tt class="docutils literal">Show Proof.</tt> to view the proof term so far.</p>
+</section>
+<section id="answer-tej-chajed">
+<h2>Answer (Tej Chajed)</h2>
+<p>You can use <span class="docutils literal">Show Proof.</span> to view the proof term so far.</p>
 <p>Another command that can help with seeing where the recursion went
-wrong is <tt class="docutils literal">Guarded.</tt>, which runs the termination checker on the proof
+wrong is <span class="docutils literal">Guarded.</span>, which runs the termination checker on the proof
 term so far. You'll need to break apart the tactic script into
 independent sentences to use it, though. Here's an example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-viewing-proof-term-during-proof-script-writing-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">f</span> (<span class="nv">n</span> : nat) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -61,42 +57,42 @@ a subterm of <span class="s2">&quot;n&quot;</span>.
 Recursive definition <span class="kr">is</span>:
 <span class="s2">&quot;fun n : nat =&gt; f n + ?X5@{__:=f; __:=n}&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-viewing-proof-term-during-proof-script-writing-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-viewing-proof-term-during-proof-script-writing-v-chk7"><span class="kn">Defined</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">(<span class="kr">in</span> proof f): Attempt to save an incomplete proof</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small></span></pre><hr class="docutils" />
-<p><strong>Q:</strong> Does <tt class="docutils literal">Guarded</tt> work when Coq cannot guess the decreasing
+<p><strong>Q:</strong> Does <span class="docutils literal">Guarded</span> work when Coq cannot guess the decreasing
 argument of fix?</p>
-<p><strong>A:</strong> It turns out when you define a <tt class="docutils literal">Fixpoint</tt> in proof mode, Coq
+<p><strong>A:</strong> It turns out when you define a <span class="docutils literal">Fixpoint</span> in proof mode, Coq
 always uses the last argument as the decreasing argument (and if it's
-not inductive, the command just fails). Then <tt class="docutils literal">Guarded</tt> ensures that
+not inductive, the command just fails). Then <span class="docutils literal">Guarded</span> ensures that
 this argument is decreased. Note that you can always explicitly
-provide a <tt class="docutils literal">{struct n}</tt> annotation at definition time, though.</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
-<p>You can use the <tt class="docutils literal">Show Proof.</tt> command inside proof mode to print the
+provide a <span class="docutils literal">{struct n}</span> annotation at definition time, though.</p>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
+<p>You can use the <span class="docutils literal">Show Proof.</span> command inside proof mode to print the
 proof term produced so far.</p>
-</div>
-<div class="section" id="answer-lily-chung">
-<h1>Answer (Lily Chung)</h1>
+</section>
+<section id="answer-lily-chung">
+<h2>Answer (Lily Chung)</h2>
 <p>In addition to the other excellent answers, I also want to point out
-that using <tt class="docutils literal">induction</tt> inside an interactive-mode <tt class="docutils literal">Fixpoint</tt> is
+that using <span class="docutils literal">induction</span> inside an interactive-mode <span class="docutils literal">Fixpoint</span> is
 usually a mistake, because you're recursing twice. Writing fixpoints
 in interactive mode is often tricky because most automation tools will
 happily make a recursive call at every possible opportunity, even when
 it would be ill-founded.</p>
-<p>I would advise to use <tt class="docutils literal">Definition</tt> instead of <tt class="docutils literal">Fixpoint</tt> and use
-<tt class="docutils literal">induction</tt> in the proof script. This invokes the explicit recursor,
+<p>I would advise to use <span class="docutils literal">Definition</span> instead of <span class="docutils literal">Fixpoint</span> and use
+<span class="docutils literal">induction</span> in the proof script. This invokes the explicit recursor,
 which allows for much better control of automation. The disadvantage
 is decreased flexibility since fixpoints have fewer restrictions than
 recursors - but as we've seen, that is both a blessing and a curse.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> If you are very careful, using <tt class="docutils literal">induction</tt> inside of a
-<tt class="docutils literal">Fixpoint</tt> is a relatively easy way to prove things about functions
+<p><strong>A:</strong> If you are very careful, using <span class="docutils literal">induction</span> inside of a
+<span class="docutils literal">Fixpoint</span> is a relatively easy way to prove things about functions
 which contain nested fixpoints. You have to make sure to specialize
-the fixpoint before running anything like <tt class="docutils literal">auto</tt>, though.</p>
+the fixpoint before running anything like <span class="docutils literal">auto</span>, though.</p>
 <p><strong>A:</strong> That's reasonable, though I would also consider abstracting the
 necessary nested induction into its own scheme so that there's no need
 to be so careful.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

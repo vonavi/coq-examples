@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq identity term which is not eq_refl</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,88 +14,82 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-identity-term-which-is-not-eq-refl">
-<h1 class="title">Coq identity term which is not <tt class="docutils literal">eq_refl</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35157052">https://stackoverflow.com/q/35157052</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-identity-term-which-is-not-eq-refl">
+<h1 class="title">Coq identity term which is not <span class="docutils literal">eq_refl</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/35157052">https://stackoverflow.com/q/35157052</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am still wondering what it means that a term of the equality type
-<tt class="docutils literal">eq</tt> in Coq can be different from <tt class="docutils literal">eq_refl</tt>.</p>
+<span class="docutils literal">eq</span> in Coq can be different from <span class="docutils literal">eq_refl</span>.</p>
 <p>Is the following term an example for this?</p>
-<pre class="code coq literal-block">
-<span class="o">((</span><span class="kr">fun</span> <span class="nv">x</span><span class="o">:</span><span class="n">nat</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="n">x</span><span class="o">)</span> <span class="mi">2</span><span class="o">).</span>
-</pre>
-<p>This term is syntactically different from <tt class="docutils literal">eq_refl</tt>, but
-nevertheless it computes to <tt class="docutils literal">eq_refl</tt>.</p>
+<pre class="code coq literal-block"><code><span class="o">((</span><span class="kr">fun</span> <span class="nv">x</span><span class="o">:</span><span class="n">nat</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="n">x</span><span class="o">)</span> <span class="mi">2</span><span class="o">).</span></code></pre>
+<p>This term is syntactically different from <span class="docutils literal">eq_refl</span>, but
+nevertheless it computes to <span class="docutils literal">eq_refl</span>.</p>
 <p>Does there exist examples of terms which do not compute to
-<tt class="docutils literal">eq_refl</tt>?</p>
+<span class="docutils literal">eq_refl</span>?</p>
 <p>P.S. Its not a homework question ;-)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>As you point out, <tt class="docutils literal">(fun x =&gt; eq_refl x) 2</tt> is <em>not</em> actually
-different from <tt class="docutils literal">eq_refl 2</tt>, since both expressions compute to the
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>As you point out, <span class="docutils literal">(fun x =&gt; eq_refl x) 2</span> is <em>not</em> actually
+different from <span class="docutils literal">eq_refl 2</span>, since both expressions compute to the
 same thing.</p>
 <p>Answering your second question is a bit delicate, because it can be
 interpreted in many different ways. Here's one possibility (which I
 think is the one you had in mind):</p>
 <blockquote>
-Are there any type <tt class="docutils literal">T</tt> and terms <tt class="docutils literal">x y : T</tt>, such that there is
-a proof <tt class="docutils literal">e</tt> of <tt class="docutils literal">&#64;eq T x y</tt> in the empty context that does
-<em>not</em> compute to <tt class="docutils literal">&#64;eq_refl T z</tt> (where <tt class="docutils literal">z : T</tt> is the result
-of computing <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>)?</blockquote>
+<p>Are there any type <span class="docutils literal">T</span> and terms <span class="docutils literal">x y : T</span>, such that there is
+a proof <span class="docutils literal">e</span> of <span class="docutils literal">&#64;eq T x y</span> in the empty context that does
+<em>not</em> compute to <span class="docutils literal">&#64;eq_refl T z</span> (where <span class="docutils literal">z : T</span> is the result
+of computing <span class="docutils literal">x</span> and <span class="docutils literal">y</span>)?</p>
+</blockquote>
 <p>I believe that the answer to this question is no. It should be
 possible to prove it formally by arguing that, since Coq's theory is
-strongly normalizing, <tt class="docutils literal">e</tt> must have a normal form <tt class="docutils literal">e'</tt>, and that
-all normal forms that have type <tt class="docutils literal">eq</tt> must be <tt class="docutils literal">eq_refl</tt>.</p>
-<p>Note that, if drop the requirement that <tt class="docutils literal">e</tt> is typed in the empty
+strongly normalizing, <span class="docutils literal">e</span> must have a normal form <span class="docutils literal">e'</span>, and that
+all normal forms that have type <span class="docutils literal">eq</span> must be <span class="docutils literal">eq_refl</span>.</p>
+<p>Note that, if drop the requirement that <span class="docutils literal">e</span> is typed in the empty
 context, this does not hold anymore. For instance, consider the proof
-term of <tt class="docutils literal">forall n, n + 0 = n</tt>.</p>
+term of <span class="docutils literal">forall n, n + 0 = n</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">plus_n_0</span> <span class="nv">n</span> : n + <span class="mi">0</span> = n :=
   <span class="kr">match</span> n <span class="kr">return</span> n + <span class="mi">0</span> = n <span class="kr">with</span>
   | <span class="mi">0</span> =&gt; eq_refl <span class="mi">0</span>
   | S n&#39; =&gt; <span class="kr">match</span> plus_n_0 n&#39; <span class="kr">in</span> _ = m <span class="kr">return</span> S (n&#39; + <span class="mi">0</span>) = S m <span class="kr">with</span>
             | eq_refl =&gt; eq_refl (S (n&#39; + <span class="mi">0</span>))
             <span class="kr">end</span>
-  <span class="kr">end</span>.</span></span></pre><p>In the successor branch, we use the <tt class="docutils literal">match</tt> to produce a proof of
-<tt class="docutils literal">S (n' + 0) = S n'</tt> which does <em>not</em> compute to <tt class="docutils literal">eq_refl</tt>. This
-happens because the <tt class="docutils literal">match</tt> cannot reduce the <tt class="docutils literal">plus_n_0 n'</tt> term,
+  <span class="kr">end</span>.</span></span></pre><p>In the successor branch, we use the <span class="docutils literal">match</span> to produce a proof of
+<span class="docutils literal">S (n' + 0) = S n'</span> which does <em>not</em> compute to <span class="docutils literal">eq_refl</span>. This
+happens because the <span class="docutils literal">match</span> cannot reduce the <span class="docutils literal">plus_n_0 n'</span> term,
 since it's a function applied to a variable. However, if we apply
-<tt class="docutils literal">plus_n_0</tt> to any concrete natural number (say, <tt class="docutils literal">1729</tt>), the
-resulting proof will compute to <tt class="docutils literal">eq_refl 1729</tt> (try it!).</p>
+<span class="docutils literal">plus_n_0</span> to any concrete natural number (say, <span class="docutils literal">1729</span>), the
+resulting proof will compute to <span class="docutils literal">eq_refl 1729</span> (try it!).</p>
 <p>Another thing worth pointing out is that, when arguing that every
-closed proof of equality computes to <tt class="docutils literal">eq_refl</tt>, we had to reason
+closed proof of equality computes to <span class="docutils literal">eq_refl</span>, we had to reason
 <em>outside</em> of Coq's logic, appealing to a normalization argument that
 we cannot phrase as a Coq proposition: note that, because Coq
 identifies terms up to convertibility, there's no way of writing a
-proposition <tt class="docutils literal">P : nat <span class="pre">-&gt;</span> Prop</tt> such that <tt class="docutils literal">P n</tt> holds if and only if
-<tt class="docutils literal">n</tt> is a Coq term in normal form.</p>
+proposition <span class="docutils literal">P : nat <span class="pre">-&gt;</span> Prop</span> such that <span class="docutils literal">P n</span> holds if and only if
+<span class="docutils literal">n</span> is a Coq term in normal form.</p>
 <p>Given this fact, you may wonder if there's anyway of establishing that
 result <em>inside</em> Coq's logic; that is,</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">T</span> <span class="o">(</span><span class="nv">x</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span> <span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">),</span> <span class="n">e</span> <span class="o">=</span> <span class="n">eq_refl</span> <span class="n">x</span><span class="o">,</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">T</span> <span class="o">(</span><span class="nv">x</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span> <span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">),</span> <span class="n">e</span> <span class="o">=</span> <span class="n">eq_refl</span> <span class="n">x</span><span class="o">,</span></code></pre>
 <p>or, paraphrased in English, &quot;every proof of equality is equal to
-<tt class="docutils literal">eq_refl</tt>&quot;. As it turns out, this statement is <em>independent</em> of
+<span class="docutils literal">eq_refl</span>&quot;. As it turns out, this statement is <em>independent</em> of
 Coq's logic, which means that it cannot be proved nor disproved within
 Coq itself.</p>
 <p>It may seem at first that this contradicts what I said earlier. But
 recall that we can always add new axioms to Coq's logic if they don't
 contradict results that can be proved inside the logic. This means
 that it is perfectly fine to assume that there exists <em>some</em> type
-<tt class="docutils literal">T</tt>, <em>some</em> term <tt class="docutils literal">x : T</tt>, and <em>some</em> proof <tt class="docutils literal">e</tt> of <tt class="docutils literal">x = x</tt> such
-that <tt class="docutils literal">e &lt;&gt; eq_refl x</tt>. If we added this axiom, then the argument I
+<span class="docutils literal">T</span>, <em>some</em> term <span class="docutils literal">x : T</span>, and <em>some</em> proof <span class="docutils literal">e</span> of <span class="docutils literal">x = x</span> such
+that <span class="docutils literal">e &lt;&gt; eq_refl x</span>. If we added this axiom, then the argument I
 gave earlier would no longer apply, since there would be normal forms
 of equality proofs that would be syntactically different from
-<tt class="docutils literal">eq_refl</tt> (namely, <tt class="docutils literal">e</tt>).</p>
+<span class="docutils literal">eq_refl</span> (namely, <span class="docutils literal">e</span>).</p>
 <p>The fact that we cannot establish this result inside Coq's logic (and
 similar formal systems, such as Martin-Löf's type theory) is exactly
 what enables homotopy type theory. HoTT postulates the existence of
@@ -104,45 +98,44 @@ proofs of equality.</p>
 <p><strong>Edit</strong> It is important to remember that there are two notions of
 equality in Coq: <em>definitional equality</em> (i.e., terms that are equal
 by simplification) and <em>propositional equality</em> (i.e., terms that we
-can relate by <tt class="docutils literal">=</tt>). Definitionally equal terms are interchangeable
+can relate by <span class="docutils literal">=</span>). Definitionally equal terms are interchangeable
 for Coq, whereas propositionally equal terms must be exchanged with an
-explicit rewriting step (or using the <tt class="docutils literal">match</tt> statement, as seen
+explicit rewriting step (or using the <span class="docutils literal">match</span> statement, as seen
 above).</p>
 <p>I was a bit lax in the discussion above about the difference between
 these two variants. There are cases where proofs of equality are
 propositionally equal even if they aren't so definitionally. For
 instance, consider the following alternate proof of reflexivity for
-<tt class="docutils literal">nat</tt>:</p>
+<span class="docutils literal">nat</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">eq_refl_nat</span> (<span class="nv">n</span> : nat) : n = n :=
   <span class="kr">match</span> n <span class="kr">return</span> n = n <span class="kr">with</span>
   | <span class="mi">0</span> =&gt; eq_refl <span class="mi">0</span>
   | S n&#39; =&gt; <span class="kr">match</span> eq_refl_nat n&#39; <span class="kr">in</span> _ = m <span class="kr">return</span> S n&#39; = S m <span class="kr">with</span>
             | eq_refl =&gt; eq_refl (S n&#39;)
             <span class="kr">end</span>
-  <span class="kr">end</span>.</span></span></pre><p>The term <tt class="docutils literal">eq_refl_nat</tt> is <em>not</em> definitionally equal to <tt class="docutils literal">eq_refl</tt>:
-we cannot obtain <tt class="docutils literal">eq_refl</tt> from <tt class="docutils literal">eq_refl_nat</tt> just by
+  <span class="kr">end</span>.</span></span></pre><p>The term <span class="docutils literal">eq_refl_nat</span> is <em>not</em> definitionally equal to <span class="docutils literal">eq_refl</span>:
+we cannot obtain <span class="docutils literal">eq_refl</span> from <span class="docutils literal">eq_refl_nat</span> just by
 simplification. However, both are <em>propositionally</em> equal: as it turns
-out, for <tt class="docutils literal">nat</tt>, it is possible to show that <tt class="docutils literal">forall n (e : n = n),
-e = eq_refl</tt>. (As I mentioned above, this cannot be shown for
+out, for <span class="docutils literal">nat</span>, it is possible to show that <span class="docutils literal">forall n (e : n = n), e = eq_refl</span>. (As I mentioned above, this cannot be shown for
 arbitrary Coq types.)</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> your function <tt class="docutils literal">eq_refl_nat</tt> is an example for a function
-which is propositionally equal to <tt class="docutils literal">eq_refl</tt> but not definitionally
-equal. Is my simpler function above, <tt class="docutils literal">fun x:nat =&gt; eq_refl x</tt>, of
+<p><strong>Q:</strong> your function <span class="docutils literal">eq_refl_nat</span> is an example for a function
+which is propositionally equal to <span class="docutils literal">eq_refl</span> but not definitionally
+equal. Is my simpler function above, <span class="docutils literal">fun x:nat =&gt; eq_refl x</span>, of
 the same kind?</p>
 <p><strong>A:</strong>
-No, because that is definitionally equal to <tt class="docutils literal">eq_refl</tt>, although it relies on a feature that was added to Coq only recently: eta conversion. You can try to write</p>
+No, because that is definitionally equal to <span class="docutils literal">eq_refl</span>, although it relies on a feature that was added to Coq only recently: eta conversion. You can try to write</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-identity-term-which-is-not-eq-refl-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-identity-term-which-is-not-eq-refl-v-chk0"><span class="kn">Check</span> (eq_refl : (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; eq_refl n) = @eq_refl nat).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_refl : (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; eq_refl) = @eq_refl nat
      : (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; eq_refl) = @eq_refl nat</blockquote></div></div></small></span></pre><p>which has the effect of testing whether two things are definitionally
 equal.</p>
 <p><strong>A:</strong> Regarding &quot;It should be possible to prove it formally by
 arguing that, since Coq's theory is strongly normalizing,&quot; Coq's
 theory may be strongly normalizing, but Coq's implementation is not.
-Closing a proof of equality with <tt class="docutils literal">Qed</tt> will have it not reducing to
-<tt class="docutils literal">eq_refl</tt>. You can also break subject reduction using coinductive
+Closing a proof of equality with <span class="docutils literal">Qed</span> will have it not reducing to
+<span class="docutils literal">eq_refl</span>. You can also break subject reduction using coinductive
 types, so I suspect you can use this to block equality reduction.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

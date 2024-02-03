@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Best practices for an effective use of Coq's hint database</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="best-practices-for-an-effective-use-of-coq-s-hint-database">
+<div class="alectryon-root alectryon-centered"><main id="best-practices-for-an-effective-use-of-coq-s-hint-database">
 <h1 class="title">Best practices for an effective use of Coq's hint database</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/14247771">https://stackoverflow.com/q/14247771</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/14247771">https://stackoverflow.com/q/14247771</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I've been told many times that I should use the hint database and
-<tt class="docutils literal">auto</tt> because it's the best thing ever and whatnot. However, the
+<span class="docutils literal">auto</span> because it's the best thing ever and whatnot. However, the
 few times I tried to use that, I have been utterly annoyed by trivial
 details. Here is one thing that keeps happening.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Annoying</span>.</span><span class="alectryon-wsp">
@@ -53,37 +50,37 @@ database. [implicit-core-hint-db,deprecated]</blockquote></div></div></small><sp
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Annoying</span>.</span></span></pre><p>Therefore, my question is: how do people use the hint database and not
 run into such trouble. Are there goods rules of thumbs for an
 effective hint database?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">auto</tt> works by applying unmodified theorems to goals. It looks for
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">auto</span> works by applying unmodified theorems to goals. It looks for
 what theorems to apply by a syntactic observation of their shape. So
-you theorem <tt class="docutils literal">notP</tt> will only apply to goals of the form</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="best-practices-for-an-effective-use-of-coqs-hint-database-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ P x</div></blockquote></div></div></small></span></pre><p>A goal of the form <tt class="docutils literal">P x <span class="pre">-&gt;</span> False</tt> is not in this form syntactically.
-In fact, the <tt class="docutils literal">auto</tt> tactic works in the following manner: first use
-<tt class="docutils literal">intros</tt> as much as possible, then try to apply theorems. So you
+you theorem <span class="docutils literal">notP</span> will only apply to goals of the form</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="best-practices-for-an-effective-use-of-coqs-hint-database-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ P x</div></blockquote></div></div></small></span></pre><p>A goal of the form <span class="docutils literal">P x <span class="pre">-&gt;</span> False</span> is not in this form syntactically.
+In fact, the <span class="docutils literal">auto</span> tactic works in the following manner: first use
+<span class="docutils literal">intros</span> as much as possible, then try to apply theorems. So you
 goal is transformed into</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="best-practices-for-an-effective-use-of-coqs-hint-database-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   x : <span class="kt">Type</span>
   H : P x
   ============================
-  <span class="kt">False</span></blockquote></div></div></small></span></pre><p>and then it tries to apply theorems that can prove <tt class="docutils literal">False</tt>.
+  <span class="kt">False</span></blockquote></div></div></small></span></pre><p>and then it tries to apply theorems that can prove <span class="docutils literal">False</span>.
 Unfortunately, it tries only to apply theorems for which there is no
 guessing of instantiations needed (theorems that can be used with the
-tactic <tt class="docutils literal">apply</tt> and do not require the <tt class="docutils literal">with</tt> extension). So a
-theorem with a statement of the form <tt class="docutils literal">forall a, P a <span class="pre">-&gt;</span> False</tt> would
-never be used by <tt class="docutils literal">auto</tt>, because <tt class="docutils literal">apply</tt> would complain that it
-does know how to instantiate <tt class="docutils literal">a</tt>.</p>
-<p>So, good candidate proofs for <tt class="docutils literal">auto</tt> are proofs that you can do by
-only using <tt class="docutils literal">intros</tt> and <tt class="docutils literal">apply</tt>, with no instance of <tt class="docutils literal">unfold</tt> or
-<tt class="docutils literal">apply ... with</tt> and no manual application of theorems to arguments,
+tactic <span class="docutils literal">apply</span> and do not require the <span class="docutils literal">with</span> extension). So a
+theorem with a statement of the form <span class="docutils literal">forall a, P a <span class="pre">-&gt;</span> False</span> would
+never be used by <span class="docutils literal">auto</span>, because <span class="docutils literal">apply</span> would complain that it
+does know how to instantiate <span class="docutils literal">a</span>.</p>
+<p>So, good candidate proofs for <span class="docutils literal">auto</span> are proofs that you can do by
+only using <span class="docutils literal">intros</span> and <span class="docutils literal">apply</span>, with no instance of <span class="docutils literal">unfold</span> or
+<span class="docutils literal">apply ... with</span> and no manual application of theorems to arguments,
 and where at each step, the rightmost formula (at the end of arrows)
 of the theorem uses the predicate as the predicate appearing in the
 goal's conclusion.</p>
 <p>Your annoying example works because the goal at some point the main
-formula is <tt class="docutils literal">~ P x</tt>, so the main symbol is <tt class="docutils literal">not</tt>, and <tt class="docutils literal">auto</tt> has
-the lemma <tt class="docutils literal">notP</tt> in its table for this main symbol.</p>
+formula is <span class="docutils literal">~ P x</span>, so the main symbol is <span class="docutils literal">not</span>, and <span class="docutils literal">auto</span> has
+the lemma <span class="docutils literal">notP</span> in its table for this main symbol.</p>
 <p>Here is an example that works well:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-practices-for-an-effective-use-of-coqs-hint-database-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="best-practices-for-an-effective-use-of-coqs-hint-database-v-chk7"><span class="kn">Variable</span> <span class="nv">my_le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
 declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
@@ -114,20 +111,19 @@ possible.
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-practices-for-an-effective-use-of-coqs-hint-database-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="best-practices-for-an-effective-use-of-coqs-hint-database-v-chkb"><span class="kn">Lemma</span> <span class="nf">toto</span> : my_le <span class="mi">10</span> <span class="mi">14</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">my_le <span class="mi">10</span> <span class="mi">14</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-practices-for-an-effective-use-of-coqs-hint-database-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="best-practices-for-an-effective-use-of-coqs-hint-database-v-chkc"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">my_le <span class="mi">10</span> <span class="mi">14</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>After the <tt class="docutils literal">Hint</tt> command, <tt class="docutils literal">auto</tt> has the two lemmas <tt class="docutils literal">my_le_n</tt>
-and <tt class="docutils literal">my_le_S</tt> in its table, to be used when the goals main symbol is
-<tt class="docutils literal">my_le</tt>. When looking at <tt class="docutils literal">my_le 10 14</tt>, it tries these two lemmas
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>After the <span class="docutils literal">Hint</span> command, <span class="docutils literal">auto</span> has the two lemmas <span class="docutils literal">my_le_n</span>
+and <span class="docutils literal">my_le_S</span> in its table, to be used when the goals main symbol is
+<span class="docutils literal">my_le</span>. When looking at <span class="docutils literal">my_le 10 14</span>, it tries these two lemmas
 in turn. The first fails, but the second one apply and produces a new
-goal <tt class="docutils literal">my_le 10 13</tt>, this can be repeated several times until
-<tt class="docutils literal">auto</tt> manages to apply <tt class="docutils literal">my_le_n</tt>. So <tt class="docutils literal">auto</tt> explores a tree of
+goal <span class="docutils literal">my_le 10 13</span>, this can be repeated several times until
+<span class="docutils literal">auto</span> manages to apply <span class="docutils literal">my_le_n</span>. So <span class="docutils literal">auto</span> explores a tree of
 possibilities where the branching comes from the fact that there may
 be several theorems applicable for a given goal. Also, the length of
-the branches is limited to 5, so that <tt class="docutils literal">my_le 10 15</tt> will not be
-solved by <tt class="docutils literal">auto</tt>. You can change the length of branches by giving a
-numeric argument to <tt class="docutils literal">auto</tt>. So <tt class="docutils literal">auto 20</tt> will solve <tt class="docutils literal">my_le 10
-15</tt> and other similar instances.</p>
+the branches is limited to 5, so that <span class="docutils literal">my_le 10 15</span> will not be
+solved by <span class="docutils literal">auto</span>. You can change the length of branches by giving a
+numeric argument to <span class="docutils literal">auto</span>. So <span class="docutils literal">auto 20</span> will solve <span class="docutils literal">my_le 10 15</span> and other similar instances.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

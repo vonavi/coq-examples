@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq - Coercion of list nat</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-coercion-of-list-nat">
-<h1 class="title">Coq - Coercion of <tt class="docutils literal">list nat</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70726083">https://stackoverflow.com/q/70726083</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-coercion-of-list-nat">
+<h1 class="title">Coq - Coercion of <span class="docutils literal">list nat</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/70726083">https://stackoverflow.com/q/70726083</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I would like to do a coercion from the type <tt class="docutils literal">list nat</tt> to the type
-<tt class="docutils literal">list bool</tt>. I would think that this could be done in the following
+<section id="question">
+<h2>Question</h2>
+<p>I would like to do a coercion from the type <span class="docutils literal">list nat</span> to the type
+<span class="docutils literal">list bool</span>. I would think that this could be done in the following
 way:</p>
-<pre class="code coq literal-block">
-<span class="kn">From</span> <span class="n">Coq</span> <span class="kn">Require Import</span> <span class="n">Lists</span><span class="o">.</span><span class="n">List</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">From</span> <span class="n">Coq</span> <span class="kn">Require Import</span> <span class="n">Lists</span><span class="o">.</span><span class="n">List</span><span class="o">.</span>
 
 <span class="kn">Definition</span> <span class="nf">nat_to_bool</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">bool</span> <span class="o">:=</span>
   <span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
@@ -42,17 +38,16 @@ way:</p>
 <span class="kn">Definition</span> <span class="nf">list_nat_to_list_bool</span> <span class="o">(</span><span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">bool</span> <span class="o">:=</span>
   <span class="n">map</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">n</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">nat_to_bool</span> <span class="n">n</span><span class="o">))</span> <span class="n">l</span><span class="o">.</span>
 
-<span class="kn">Coercion</span> <span class="nf">list_nat_to_list_bool</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span> <span class="o">&gt;-&gt;</span> <span class="n">list</span> <span class="n">bool</span><span class="o">.</span>
-</pre>
+<span class="kn">Coercion</span> <span class="nf">list_nat_to_list_bool</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span> <span class="o">&gt;-&gt;</span> <span class="n">list</span> <span class="n">bool</span><span class="o">.</span></code></pre>
 <p>However, this doesn't work. It seems like there is a fundamental issue
-with using coercion on something of the form <tt class="docutils literal">list nat</tt>. Why does
+with using coercion on something of the form <span class="docutils literal">list nat</span>. Why does
 this not work?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The <a class="reference external" href="https://coq.inria.fr/refman/addendum/implicit-coercions.html#classes">documentation</a>
-states that a class name must be a defined name. Neither <tt class="docutils literal">list nat</tt>
-nor <tt class="docutils literal">list bool</tt> are defined names - they are both applications. You
+states that a class name must be a defined name. Neither <span class="docutils literal">list nat</span>
+nor <span class="docutils literal">list bool</span> are defined names - they are both applications. You
 must give the types between you want to define coercions a name as in:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -69,19 +64,17 @@ must give the types between you want to define coercions a name as in:</p>
   map (<span class="kr">fun</span> <span class="nv">n</span> =&gt; (nat_to_bool n)) l.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">list_nat_to_list_bool</span> : list_nat &gt;-&gt; list_bool.</span></span></pre><p>Please note that the coercion function must use these names - you
-can't write <tt class="docutils literal">list nat</tt> instead of <tt class="docutils literal">list_nat</tt>. Also the
+can't write <span class="docutils literal">list nat</span> instead of <span class="docutils literal">list_nat</span>. Also the
 applications of the coercion must use the defined names as in:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> : list_bool := (<span class="mi">1</span> :: nil) : list_nat.</span></span></pre><p>I <em>guess</em> this is so because coercions might be done at the syntactic
 level where type unifications would be difficult.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> So, if I have a function <tt class="docutils literal">f</tt> whose inputs are of type <tt class="docutils literal">list
-bool</tt>, and I want to use coercion to pass objects of type <tt class="docutils literal">list
-nat</tt> to it, I'd have to edit <tt class="docutils literal">f</tt> so that its input type is
-<tt class="docutils literal">list_bool</tt> instead? There isn't a way around this?</p>
+<p><strong>Q:</strong> So, if I have a function <span class="docutils literal">f</span> whose inputs are of type <span class="docutils literal">list bool</span>, and I want to use coercion to pass objects of type <span class="docutils literal">list nat</span> to it, I'd have to edit <span class="docutils literal">f</span> so that its input type is
+<span class="docutils literal">list_bool</span> instead? There isn't a way around this?</p>
 <p><strong>A:</strong> I am not an expert for coercions, but as far as I know and
 understand the documentation, that's how it is, yes.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

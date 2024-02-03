@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Generalizing expressions under binders</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,60 +14,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="generalizing-expressions-under-binders">
+<div class="alectryon-root alectryon-centered"><main id="generalizing-expressions-under-binders">
 <h1 class="title">Generalizing expressions under binders</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46458710">https://stackoverflow.com/q/46458710</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46458710">https://stackoverflow.com/q/46458710</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I need to generalize expression under the binder. For example, I have
 in my goal two expressions:</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">g</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">g</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span></code></pre>
 <p>and</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">))</span>
-</pre>
-<p>And I want to generalize <tt class="docutils literal">g _ _ c</tt> part:</p>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">))</span></code></pre>
+<p>And I want to generalize <span class="docutils literal">g _ _ c</span> part:</p>
 <p>One way to do is to rewrite them first into:</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">=&gt;</span>  <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="n">c</span><span class="o">)</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">=&gt;</span>  <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="n">c</span><span class="o">)</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span></code></pre>
 <p>and the second into:</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span>
    <span class="n">f</span> <span class="o">(</span>
        <span class="o">(</span><span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> <span class="o">=&gt;</span>  <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="n">c</span><span class="o">)</span> <span class="n">a</span> <span class="n">b</span>
-<span class="o">))</span>
-</pre>
-<p>And then, to generalize <tt class="docutils literal">(fun x y, g x y c)</tt> as <tt class="docutils literal">somefun</tt> with
-type <tt class="docutils literal">A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> A</tt>. This will turn my expressions into:</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">somefun</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span>
-</pre>
+<span class="o">))</span></code></pre>
+<p>And then, to generalize <span class="docutils literal">(fun x y, g x y c)</span> as <span class="docutils literal">somefun</span> with
+type <span class="docutils literal">A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> A</span>. This will turn my expressions into:</p>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">somefun</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span></code></pre>
 <p>and</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">somefun</span> <span class="n">a</span> <span class="n">b</span><span class="o">))</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">somefun</span> <span class="n">a</span> <span class="n">b</span><span class="o">))</span></code></pre>
 <p>The difficulty here is that the expression I am trying to generalize
 is under the binder. I could not find either a tactic or LTAC
 expression to manipulate it. How can I do something like this?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>There are two keys to this answer: the <a class="reference external" href="https://coq.inria.fr/distrib/V8.6.1/refman/Reference-Manual010.html#hevea_tactic130">change tactic</a>,
-which replaces one term with a convertible one, and generalizing <tt class="docutils literal">c</tt>
-so that you deal not with <tt class="docutils literal">g _ _ c</tt> but <tt class="docutils literal">fun z =&gt; g _ _ z</tt>; this
-second key allows you to deal with <tt class="docutils literal">g</tt> rather than with <tt class="docutils literal">g</tt>
-applied to its arguments. Here, I use the <tt class="docutils literal">pose</tt> tactic to control
+which replaces one term with a convertible one, and generalizing <span class="docutils literal">c</span>
+so that you deal not with <span class="docutils literal">g _ _ c</span> but <span class="docutils literal">fun z =&gt; g _ _ z</span>; this
+second key allows you to deal with <span class="docutils literal">g</span> rather than with <span class="docutils literal">g</span>
+applied to its arguments. Here, I use the <span class="docutils literal">pose</span> tactic to control
 what function applications get β reduced:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">A</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">f</span> : A -&gt; A.</span><span class="alectryon-wsp">
@@ -89,8 +74,8 @@ what function applications get β reduced:</p>
 (<span class="kr">fun</span> <span class="nv">a0</span> <span class="nv">b</span> : A =&gt; a a0 b) =
 (<span class="kr">fun</span> <span class="nv">a0</span> <span class="nv">b</span> : A =&gt; f (a a0 b))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-expressions-under-binders-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-expressions-under-binders-v-chk7"><span class="nb">intro</span> somefun.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>g'</var><span><span class="hyp-body"><b>:= </b><span><span class="kr">fun</span> <span class="nv">z</span> <span class="nv">x</span> <span class="nv">y</span> : A =&gt; g x y z</span></span><span class="hyp-type"><b>: </b><span>A -&gt; A -&gt; A -&gt; A</span></span></span></span><br><span><var>somefun</var><span class="hyp-type"><b>: </b><span>A -&gt; A -&gt; A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; somefun a b) =
 (<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; f (somefun a b))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-expressions-under-binders-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-expressions-under-binders-v-chk8"><span class="nb">clear</span> g&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>somefun</var><span class="hyp-type"><b>: </b><span>A -&gt; A -&gt; A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; somefun a b) =
-(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; f (somefun a b))</div></blockquote></div></div></small></span></pre><p>Here is an alternate version that uses <tt class="docutils literal">id</tt> (the identity function)
-to block <tt class="docutils literal">cbv beta</tt>, rather than using <tt class="docutils literal">pose</tt>:</p>
+(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; f (somefun a b))</div></blockquote></div></div></small></span></pre><p>Here is an alternate version that uses <span class="docutils literal">id</span> (the identity function)
+to block <span class="docutils literal">cbv beta</span>, rather than using <span class="docutils literal">pose</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">A</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">f</span> : A -&gt; A.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">g</span> : A -&gt; A -&gt; A -&gt; A.</span><span class="alectryon-wsp">
@@ -116,8 +101,8 @@ to block <tt class="docutils literal">cbv beta</tt>, rather than using <tt class
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-expressions-under-binders-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-expressions-under-binders-v-chke"><span class="nb">generalize</span> (id (<span class="kr">fun</span> <span class="nv">x</span> <span class="nv">y</span> : A =&gt; g x y c)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> : A -&gt; A -&gt; A,
 (<span class="kr">fun</span> <span class="nv">a0</span> <span class="nv">b</span> : A =&gt; a a0 b) =
 (<span class="kr">fun</span> <span class="nv">a0</span> <span class="nv">b</span> : A =&gt; f (a a0 b))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalizing-expressions-under-binders-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="generalizing-expressions-under-binders-v-chkf"><span class="nb">intro</span> somefun.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>somefun</var><span class="hyp-type"><b>: </b><span>A -&gt; A -&gt; A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; somefun a b) =
-(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; f (somefun a b))</div></blockquote></div></div></small></span></pre></div>
+(<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> : A =&gt; f (somefun a b))</div></blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

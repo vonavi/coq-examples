@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Decidable equality statement with Set vs. Prop</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,69 +14,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="decidable-equality-statement-with-set-vs-prop">
-<h1 class="title">Decidable equality statement with <tt class="docutils literal">Set</tt> vs. <tt class="docutils literal">Prop</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69710435">https://stackoverflow.com/q/69710435</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="decidable-equality-statement-with-set-vs-prop">
+<h1 class="title">Decidable equality statement with <span class="docutils literal">Set</span> vs. <span class="docutils literal">Prop</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/69710435">https://stackoverflow.com/q/69710435</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>When looking at results for types with decidable equality (especially
 in <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.Eqdep_dec.html">Eqdep_dec</a>) there are
-some of the results that (for a type <tt class="docutils literal">A</tt>) require</p>
+some of the results that (for a type <span class="docutils literal">A</span>) require</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, x = y \/ x &lt;&gt; y.</span><span class="alectryon-wsp">
 </span></span></pre><p>whereas some require</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">eq_dec</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : A, {x = y} + {x &lt;&gt; y}.</span><span class="alectryon-wsp">
 </span></span></pre><p>It is my impression that it is the last one that is referred to as
 <em>decidable equality</em>, but I am very much uncertain what the difference
-is. I know that <tt class="docutils literal">x = y \/ x &lt;&gt; y</tt> in <tt class="docutils literal">Prop</tt> and <tt class="docutils literal">{x = y} + {x &lt;&gt;
-y}</tt> is in <tt class="docutils literal">Set</tt>, and I can prove the first one from the second one
+is. I know that <span class="docutils literal">x = y \/ x &lt;&gt; y</span> in <span class="docutils literal">Prop</span> and <span class="docutils literal">{x = y} + {x &lt;&gt; y}</span> is in <span class="docutils literal">Set</span>, and I can prove the first one from the second one
 but not the other way around. As far as I understand it, it is because
-I am not allowed to construct values of type <tt class="docutils literal">Prop</tt> from values of
-type <tt class="docutils literal">Set</tt>.</p>
+I am not allowed to construct values of type <span class="docutils literal">Prop</span> from values of
+type <span class="docutils literal">Set</span>.</p>
 <p>Can anyone tell what the difference between the two are? Are there
 some example of a type for which the first statement can be proved but
-not the second. Also, is it true that the version with <tt class="docutils literal">{x = y} + {x
-&lt;&gt; y}</tt> is what is referred to as decidable equality?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+not the second. Also, is it true that the version with <span class="docutils literal">{x = y} + {x &lt;&gt; y}</span> is what is referred to as decidable equality?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You are correct that the latter definition, the one which lives in
-<tt class="docutils literal">Set</tt>, is referred to as <em>decidable equality</em>.</p>
-<p>Intuitively, we interpret objects in <tt class="docutils literal">Set</tt> as programs, and objects
-in <tt class="docutils literal">Prop</tt> as proofs. So the decidable equality type is the type of a
-function which takes any two elements of some type <tt class="docutils literal">A</tt> and decides
+<span class="docutils literal">Set</span>, is referred to as <em>decidable equality</em>.</p>
+<p>Intuitively, we interpret objects in <span class="docutils literal">Set</span> as programs, and objects
+in <span class="docutils literal">Prop</span> as proofs. So the decidable equality type is the type of a
+function which takes any two elements of some type <span class="docutils literal">A</span> and decides
 whether they are equal or unequal.</p>
 <p>The other statement is slightly weaker. It describes the proposition
-that any two elements of <tt class="docutils literal">A</tt> are either equal of unequal. Notably,
+that any two elements of <span class="docutils literal">A</span> are either equal of unequal. Notably,
 we would not be able to inspect <em>which</em> outcome is the case for
-specific values of <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>, at least outside of case analysis
-within a proof. This is the result of the <tt class="docutils literal">Prop</tt> elimination
+specific values of <span class="docutils literal">x</span> and <span class="docutils literal">y</span>, at least outside of case analysis
+within a proof. This is the result of the <span class="docutils literal">Prop</span> elimination
 restriction that you alluded to (although you got it backwards: one is
-not allowed to construct values of sort <tt class="docutils literal">Set</tt>/<tt class="docutils literal">Type</tt> by
-eliminating/matching on an element of sort <tt class="docutils literal">Prop</tt>).</p>
-<p>Without adding axioms, the <tt class="docutils literal">Prop</tt> universe is constructive, so I
-believe that there would not be any types <tt class="docutils literal">A</tt> such that equality is
+not allowed to construct values of sort <span class="docutils literal">Set</span>/<span class="docutils literal">Type</span> by
+eliminating/matching on an element of sort <span class="docutils literal">Prop</span>).</p>
+<p>Without adding axioms, the <span class="docutils literal">Prop</span> universe is constructive, so I
+believe that there would not be any types <span class="docutils literal">A</span> such that equality is
 undecidable but the propositional variant is provable. However,
-consider the scenario in which we make the <tt class="docutils literal">Prop</tt> universe classical
+consider the scenario in which we make the <span class="docutils literal">Prop</span> universe classical
 by adding the following axiom:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">classic</span> : <span class="kr">forall</span> <span class="nv">P</span>, P \/ ~P.</span></span></pre><p>This would make the propositional variant trivially provable for any
-type <tt class="docutils literal">A</tt>, while the decidable equality may not be realizable.</p>
+type <span class="docutils literal">A</span>, while the decidable equality may not be realizable.</p>
 <p>Note that our axiom is a proposition. Intuitively, it makes sense that
 either a proposition or its negation must hold. If we hadn't made this
-a <tt class="docutils literal">Prop</tt> (for example, if we axiomatized <tt class="docutils literal">forall P, {P} + {~P}</tt>),
+a <span class="docutils literal">Prop</span> (for example, if we axiomatized <span class="docutils literal">forall P, {P} + {~P}</span>),
 then we would likely not accept the axiom, since it would instead be
 declaring the existence of a universal decision procedure.</p>
 <p>That was a bit of a digression, but hopefully it demonstrated some
-differences in our interpretation of <tt class="docutils literal">Prop</tt>s and <tt class="docutils literal">Set</tt>s.</p>
+differences in our interpretation of <span class="docutils literal">Prop</span>s and <span class="docutils literal">Set</span>s.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

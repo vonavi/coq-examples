@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Destructing equality of dependent records in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,60 +14,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="destructing-equality-of-dependent-records-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="destructing-equality-of-dependent-records-in-coq">
 <h1 class="title">Destructing equality of dependent records in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/54569749">https://stackoverflow.com/q/54569749</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/54569749">https://stackoverflow.com/q/54569749</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Given a dependent record type:</p>
-<pre class="code coq literal-block">
-<span class="kn">Record</span> <span class="nf">FinPath</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mkPath</span> <span class="o">{</span> <span class="n">fp_head</span> <span class="o">:</span> <span class="n">S</span> <span class="n">i</span><span class="o">;</span>
+<pre class="code coq literal-block"><code><span class="kn">Record</span> <span class="nf">FinPath</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mkPath</span> <span class="o">{</span> <span class="n">fp_head</span> <span class="o">:</span> <span class="n">S</span> <span class="n">i</span><span class="o">;</span>
                                   <span class="n">fp_tail</span> <span class="o">:</span> <span class="n">FinPathTail</span> <span class="n">fp_head</span>
-                                <span class="o">}.</span>
-</pre>
-<p>and two objects of type <tt class="docutils literal">Path</tt> that are equal, I'd like to infer
+                                <span class="o">}.</span></code></pre>
+<p>and two objects of type <span class="docutils literal">Path</span> that are equal, I'd like to infer
 that their heads and tails are equal. The problem is that I quickly
 get something of this form:</p>
-<pre class="code coq literal-block">
-<span class="n">fpH</span> <span class="o">:</span> <span class="o">{|</span> <span class="n">path_head</span> <span class="o">:=</span> <span class="n">fp_head</span> <span class="n">fp</span><span class="o">;</span> <span class="n">path_tail</span> <span class="o">:=</span> <span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp</span><span class="o">)</span> <span class="o">|}</span> <span class="o">=</span>
-      <span class="o">{|</span> <span class="n">path_head</span> <span class="o">:=</span> <span class="n">fp_head</span> <span class="n">fp'</span><span class="o">;</span> <span class="n">path_tail</span> <span class="o">:=</span> <span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp'</span><span class="o">)</span> <span class="o">|}</span>
-</pre>
-<p>Using the injection tactic, I can infer that <tt class="docutils literal">fp_head fp = fp_head
-fp'</tt> and also this term:</p>
-<pre class="code coq literal-block">
-<span class="n">existT</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">path_head</span> <span class="o">:</span> <span class="n">S</span> <span class="n">i</span> <span class="o">=&gt;</span> <span class="n">PathTail</span> <span class="n">path_head</span><span class="o">)</span> <span class="o">(</span><span class="n">fp_head</span> <span class="n">fp</span><span class="o">)</span>
+<pre class="code coq literal-block"><code><span class="n">fpH</span> <span class="o">:</span> <span class="o">{|</span> <span class="n">path_head</span> <span class="o">:=</span> <span class="n">fp_head</span> <span class="n">fp</span><span class="o">;</span> <span class="n">path_tail</span> <span class="o">:=</span> <span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp</span><span class="o">)</span> <span class="o">|}</span> <span class="o">=</span>
+      <span class="o">{|</span> <span class="n">path_head</span> <span class="o">:=</span> <span class="n">fp_head</span> <span class="n">fp'</span><span class="o">;</span> <span class="n">path_tail</span> <span class="o">:=</span> <span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp'</span><span class="o">)</span> <span class="o">|}</span></code></pre>
+<p>Using the injection tactic, I can infer that <span class="docutils literal">fp_head fp = fp_head fp'</span> and also this term:</p>
+<pre class="code coq literal-block"><code><span class="n">existT</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">path_head</span> <span class="o">:</span> <span class="n">S</span> <span class="n">i</span> <span class="o">=&gt;</span> <span class="n">PathTail</span> <span class="n">path_head</span><span class="o">)</span> <span class="o">(</span><span class="n">fp_head</span> <span class="n">fp</span><span class="o">)</span>
        <span class="o">(</span><span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp</span><span class="o">))</span> <span class="o">=</span>
 <span class="n">existT</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">path_head</span> <span class="o">:</span> <span class="n">S</span> <span class="n">i</span> <span class="o">=&gt;</span> <span class="n">PathTail</span> <span class="n">path_head</span><span class="o">)</span> <span class="o">(</span><span class="n">fp_head</span> <span class="n">fp'</span><span class="o">)</span>
-       <span class="o">(</span><span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp'</span><span class="o">))</span>
-</pre>
-<p>Assuming decidability of <tt class="docutils literal">S i</tt>, I'd normally then want to use
-<tt class="docutils literal">inj_pair2_eq_dec</tt> but that doesn't apply in this case because
-<tt class="docutils literal">fp_head fp</tt> and <tt class="docutils literal">fp_head fp'</tt> aren't syntactically the same. I
+       <span class="o">(</span><span class="n">fpt_to_pt</span> <span class="o">(</span><span class="n">fp_tail</span> <span class="n">fp'</span><span class="o">))</span></code></pre>
+<p>Assuming decidability of <span class="docutils literal">S i</span>, I'd normally then want to use
+<span class="docutils literal">inj_pair2_eq_dec</span> but that doesn't apply in this case because
+<span class="docutils literal">fp_head fp</span> and <span class="docutils literal">fp_head fp'</span> aren't syntactically the same. I
 also can't rewrite them to be the same because rewriting with
-<tt class="docutils literal">fp_head fp' = fp_head fp</tt> would leave the right hand side
+<span class="docutils literal">fp_head fp' = fp_head fp</span> would leave the right hand side
 ill-typed.</p>
 <p>How can I proceed from here? Is there some cleverer version of
-<tt class="docutils literal">inj_pair2_eq_dec</tt> that somehow uses the (non-syntactic) base
+<span class="docutils literal">inj_pair2_eq_dec</span> that somehow uses the (non-syntactic) base
 equality rather than requiring the bases of the sigma types to be
 equal?</p>
 <p><strong>Edit:</strong> Thinking about this a little harder, I realise that it
 doesn't make sense to ask that the tails are equal (since they are of
 different types). But is it possible to prove some form of Leibniz
-equality between them based on <tt class="docutils literal">eq_rect</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+equality between them based on <span class="docutils literal">eq_rect</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Issues like these are why many prefer avoiding dependent types in Coq.
-I'll answer your question in the case of the Coq sigma type <tt class="docutils literal">{x : T &amp;
-S x}</tt>, which can be generalized to other dependent records.</p>
+I'll answer your question in the case of the Coq sigma type <span class="docutils literal">{x : T &amp; S x}</span>, which can be generalized to other dependent records.</p>
 <p>We can express the equality that the dependent component of the pair
 should satisfy via a cast function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">cast</span> {<span class="nv">T</span>} (<span class="nv">S</span> : T -&gt; <span class="kt">Type</span>) {<span class="nv">a</span> <span class="nv">b</span> : T} (<span class="nv">p</span> : a = b) : S a -&gt; S b :=
@@ -78,14 +67,14 @@ should satisfy via a cast function:</p>
   {q : a = b &amp; cast S q x = y} :=
   <span class="kr">match</span> p <span class="kr">in</span> _ = z <span class="kr">return</span> {q : a = projT1 z &amp; cast S q x = projT2 z} <span class="kr">with</span>
   | eq_refl =&gt; existT _ eq_refl eq_refl
-  <span class="kr">end</span>.</span></span></pre><p>The <tt class="docutils literal">cast</tt> function allows us to use an equality <tt class="docutils literal">p : a = b</tt> to
-cast from <tt class="docutils literal">S a</tt> to <tt class="docutils literal">S b</tt>. The <tt class="docutils literal">eq_sig</tt> lemma, which I've defined
-through a proof term, says that given an equality <tt class="docutils literal">p</tt> between two
-dependent pairs <tt class="docutils literal">existT S a x</tt> and <tt class="docutils literal">existT S b y</tt>, I can produce
+  <span class="kr">end</span>.</span></span></pre><p>The <span class="docutils literal">cast</span> function allows us to use an equality <span class="docutils literal">p : a = b</span> to
+cast from <span class="docutils literal">S a</span> to <span class="docutils literal">S b</span>. The <span class="docutils literal">eq_sig</span> lemma, which I've defined
+through a proof term, says that given an equality <span class="docutils literal">p</span> between two
+dependent pairs <span class="docutils literal">existT S a x</span> and <span class="docutils literal">existT S b y</span>, I can produce
 another dependent pair containing:</p>
 <ul class="simple">
-<li>An equality <tt class="docutils literal">q : a = b</tt>, and</li>
-<li>a proof that <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> are equal <em>after casting</em>.</li>
+<li><p>An equality <span class="docutils literal">q : a = b</span>, and</p></li>
+<li><p>a proof that <span class="docutils literal">x</span> and <span class="docutils literal">y</span> are equal <em>after casting</em>.</p></li>
 </ul>
 <p>With a similar definition, we can provide a proof principle for
 &quot;inducting&quot; on a proof of equality between dependent pairs:</p>
@@ -96,19 +85,18 @@ another dependent pair containing:</p>
         <span class="kr">return</span> <span class="kr">forall</span> (<span class="nv">R</span> : <span class="kr">forall</span> <span class="nv">c</span>, S c -&gt; <span class="kt">Prop</span>), R a x -&gt; R _ (projT2 z)
   <span class="kr">with</span>
   | eq_refl =&gt; <span class="kr">fun</span> <span class="nv">R</span> <span class="nv">H</span> =&gt; H
-  <span class="kr">end</span>.</span></span></pre><p>The shape of the lemma is similar to that of <tt class="docutils literal">eq_sig</tt>, but this time
+  <span class="kr">end</span>.</span></span></pre><p>The shape of the lemma is similar to that of <span class="docutils literal">eq_sig</span>, but this time
 it says that in the presence of such an equality we can prove an
-arbitrary <em>dependent</em> predicate <tt class="docutils literal">R b y</tt> provided a proof of <tt class="docutils literal">R a
-x</tt>.</p>
+arbitrary <em>dependent</em> predicate <span class="docutils literal">R b y</span> provided a proof of <span class="docutils literal">R a x</span>.</p>
 <p>Using such dependent principles can be awkward. The challenge is
-finding such an <tt class="docutils literal">R</tt> that allows you to express your goal: in the
-result type above, the type of the second argument of <tt class="docutils literal">R</tt> is
+finding such an <span class="docutils literal">R</span> that allows you to express your goal: in the
+result type above, the type of the second argument of <span class="docutils literal">R</span> is
 parametric with respect to the first argument. In many cases of
-interest, the first component of the second term, <tt class="docutils literal">y</tt>, is not a
+interest, the first component of the second term, <span class="docutils literal">y</span>, is not a
 variable, but has a specific shape, which might prevent a direct
 generalization.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lift existentials in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,56 +14,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="lift-existentials-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="lift-existentials-in-coq">
 <h1 class="title">Lift existentials in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/54944574">https://stackoverflow.com/q/54944574</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/54944574">https://stackoverflow.com/q/54944574</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Can this lemma be proven in Coq?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="lift-existentials-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="lift-existentials-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">liftExists</span> : <span class="kr">forall</span> (<span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>),
     (<span class="kr">forall</span> <span class="nv">n</span> : nat, <span class="kr">exists</span> <span class="nv">p</span> : nat, P n p)
     -&gt; <span class="kr">exists</span> (<span class="nv">f</span> : nat -&gt; nat), <span class="kr">forall</span> <span class="nv">n</span> : nat, P n (f n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
 (<span class="kr">forall</span> <span class="nv">n</span> : nat, <span class="kr">exists</span> <span class="nv">p</span> : nat, P n p) -&gt;
 <span class="kr">exists</span> <span class="nv">f</span> : nat -&gt; nat, <span class="kr">forall</span> <span class="nv">n</span> : nat, P n (f n)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>The simple <tt class="docutils literal">destruct</tt> does not compile, because we cannot eliminate
-the object <tt class="docutils literal">exists p:nat, P n p</tt> in sort <tt class="docutils literal">Prop</tt>, to produce the
-function <tt class="docutils literal">f</tt> in sort <tt class="docutils literal">Set</tt>.</p>
-<p>If Coq cannot prove this lemma, then what is the meaning of <tt class="docutils literal">forall
-n:nat, exists p:nat, P n p</tt>? In constructive mathematics it would
-mean the existence of the function <tt class="docutils literal">f</tt>, but I have the impression
-that we will never see this function <tt class="docutils literal">f</tt> in Coq, not even in sort
-<tt class="docutils literal">Prop</tt> as expressed above.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span></pre><p>The simple <span class="docutils literal">destruct</span> does not compile, because we cannot eliminate
+the object <span class="docutils literal">exists p:nat, P n p</span> in sort <span class="docutils literal">Prop</span>, to produce the
+function <span class="docutils literal">f</span> in sort <span class="docutils literal">Set</span>.</p>
+<p>If Coq cannot prove this lemma, then what is the meaning of <span class="docutils literal">forall n:nat, exists p:nat, P n p</span>? In constructive mathematics it would
+mean the existence of the function <span class="docutils literal">f</span>, but I have the impression
+that we will never see this function <span class="docutils literal">f</span> in Coq, not even in sort
+<span class="docutils literal">Prop</span> as expressed above.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>It is not provable in Coq because of the restriction on eliminating
-<tt class="docutils literal">Prop</tt> into <tt class="docutils literal">Set</tt>. As for the philosophical &quot;meaning&quot;, I'm not
+<span class="docutils literal">Prop</span> into <span class="docutils literal">Set</span>. As for the philosophical &quot;meaning&quot;, I'm not
 sure if anyone has a very good story about this. The inhabitants of
-<tt class="docutils literal">forall n:nat, exists p:nat, P n p</tt> are functions returning a pair
-of <tt class="docutils literal">p</tt> and a proof, but in addition they a functions that can be
+<span class="docutils literal">forall n:nat, exists p:nat, P n p</span> are functions returning a pair
+of <span class="docutils literal">p</span> and a proof, but in addition they a functions that can be
 ignored when compiling programs because you know that nothing will
 look at the value that was returned.</p>
-<p>So partly this system of <tt class="docutils literal">Prop</tt> versus <tt class="docutils literal">Set</tt> is a way to compile
+<p>So partly this system of <span class="docutils literal">Prop</span> versus <span class="docutils literal">Set</span> is a way to compile
 programs more efficiently, but actually this is also used for logical
-properties. In Coq the <tt class="docutils literal">Prop</tt> type is impredicative and the <tt class="docutils literal">Set</tt>
+properties. In Coq the <span class="docutils literal">Prop</span> type is impredicative and the <span class="docutils literal">Set</span>
 type is not, and even so it's consistent to assume the law of exluded
-middle for <tt class="docutils literal">Prop</tt>s as an axiom, and to prove that this is
+middle for <span class="docutils literal">Prop</span>s as an axiom, and to prove that this is
 consistent you can appeal to a &quot;<a class="reference external" href="http://www.lix.polytechnique.fr/~werner/publis/cc.pdf">proof-irrelevant model</a>&quot;, where you
-interpret types in <tt class="docutils literal">Prop</tt>s as sets by ignoring all information
+interpret types in <span class="docutils literal">Prop</span>s as sets by ignoring all information
 except whether they are inhabited or not. From a classical logic
 perspective (where all you care about are truth values) that makes
 sense, but if you are interested in constructive mathematics it's a
 bit weird!</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

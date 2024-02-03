@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Renaming part of hypothesis in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="renaming-part-of-hypothesis-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="renaming-part-of-hypothesis-in-coq">
 <h1 class="title">Renaming part of hypothesis in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52350119">https://stackoverflow.com/q/52350119</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52350119">https://stackoverflow.com/q/52350119</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>After destructing <tt class="docutils literal">n</tt> in my proof, I am stuck at the following:</p>
+<section id="question">
+<h2>Question</h2>
+<p>After destructing <span class="docutils literal">n</span> in my proof, I am stuck at the following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   n : nat
@@ -39,11 +36,11 @@
   E : n = S n&#39;
   H&#39; : length t = n&#39;
   ============================
-  nth_error t n&#39; = None</blockquote></div></div></small></span></pre><p>I want to rewrite using <tt class="docutils literal">IHl</tt>, but that is not possible. How do I
-compose <tt class="docutils literal">IHl</tt> and <tt class="docutils literal">H'</tt> to make sense and prove this theorem?</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+  nth_error t n&#39; = None</blockquote></div></div></small></span></pre><p>I want to rewrite using <span class="docutils literal">IHl</span>, but that is not possible. How do I
+compose <span class="docutils literal">IHl</span> and <span class="docutils literal">H'</span> to make sense and prove this theorem?</p>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>I am just trying to elaborate on &#64;Arthur answer.</p>
 <p>I was able to reproduce your goal with the following script:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
@@ -72,7 +69,7 @@ length (h :: t) = S n0 -&gt;
 nth_error (h :: t) (S n0) = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk12"><span class="nb">intros</span> n&#39; E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span>length t = n -&gt; nth_error t n = None</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (h :: t) = S n&#39; -&gt;
 nth_error (h :: t) (S n&#39;) = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk13"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span>length t = n -&gt; nth_error t n = None</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S (length t) = S n&#39; -&gt; nth_error t n&#39; = None</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk14"><span class="nb">intros</span> E&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span>length t = n -&gt; nth_error t n = None</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n&#39;</span></span></span><br><span><var>E'</var><span class="hyp-type"><b>: </b><span>S (length t) = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nth_error t n&#39; = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk15"><span class="nb">injection</span> E&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span>length t = n -&gt; nth_error t n = None</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n&#39;</span></span></span><br><span><var>E'</var><span class="hyp-type"><b>: </b><span>S (length t) = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t = n&#39; -&gt; nth_error t n&#39; = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk16"><span class="nb">clear</span> E&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span>length t = n -&gt; nth_error t n = None</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t = n&#39; -&gt; nth_error t n&#39; = None</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk17"><span class="nb">intros</span> H&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span>length t = n -&gt; nth_error t n = None</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n&#39;</span></span></span><br><span><var>H'</var><span class="hyp-type"><b>: </b><span>length t = n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nth_error t n&#39; = None</div></blockquote></div></div></small></span></pre><p>and I agree that this goal cannot be proved. Now, if you instead start
-your proof with the following text (the <tt class="docutils literal">Proof</tt> and <tt class="docutils literal">induction</tt>
+your proof with the following text (the <span class="docutils literal">Proof</span> and <span class="docutils literal">induction</span>
 lines have to be replaced), it will be provable (I checked).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk18"><span class="kn">Restart</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l = n -&gt; nth_error l n = None</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="renaming-part-of-hypothesis-in-coq-v-chk19"><span class="nb">revert</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, length l = n -&gt; nth_error l n = None</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -81,30 +78,26 @@ statement.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="renaming-part-of-hypothesis-in-coq-v-chk1c" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">IHl
      : <span class="kr">forall</span> <span class="nv">n</span> : nat,
        length t = n -&gt; nth_error t n = None</blockquote></div></div></small></span></pre><p>What happened? In the first (faulty) variant, you attempt to prove a
-statement for all lists whose length is equal to a precise <tt class="docutils literal">n</tt>,
-because <tt class="docutils literal">n</tt> is fixed before you start the proof by induction. In the
+statement for all lists whose length is equal to a precise <span class="docutils literal">n</span>,
+because <span class="docutils literal">n</span> is fixed before you start the proof by induction. In the
 second (correct) variant, you attempt to prove a statement for all
-lists <tt class="docutils literal">l</tt>, and this statement accepts any <tt class="docutils literal">n</tt> as long as <tt class="docutils literal">length
-l = n</tt>.</p>
-<p>In the first variant, <tt class="docutils literal">n</tt> is fixed and the equality <tt class="docutils literal">length l = n</tt>
-restricts <tt class="docutils literal">l</tt> to be among those that have length precisely <tt class="docutils literal">n</tt>. In
-the second case, <tt class="docutils literal">l</tt> is chosen first, and <tt class="docutils literal">n</tt> is not fixed, but
-the equality <tt class="docutils literal">length l = n</tt> restricts <tt class="docutils literal">n</tt> to follow the length of
-<tt class="docutils literal">l</tt>.</p>
-<p>This is called &quot;loading the induction&quot; because the statement <tt class="docutils literal">forall
-n, length l = n <span class="pre">-&gt;</span> nth_error l n = None</tt> is stronger (it is loaded)
+lists <span class="docutils literal">l</span>, and this statement accepts any <span class="docutils literal">n</span> as long as <span class="docutils literal">length l = n</span>.</p>
+<p>In the first variant, <span class="docutils literal">n</span> is fixed and the equality <span class="docutils literal">length l = n</span>
+restricts <span class="docutils literal">l</span> to be among those that have length precisely <span class="docutils literal">n</span>. In
+the second case, <span class="docutils literal">l</span> is chosen first, and <span class="docutils literal">n</span> is not fixed, but
+the equality <span class="docutils literal">length l = n</span> restricts <span class="docutils literal">n</span> to follow the length of
+<span class="docutils literal">l</span>.</p>
+<p>This is called &quot;loading the induction&quot; because the statement <span class="docutils literal">forall n, length l = n <span class="pre">-&gt;</span> nth_error l n = None</span> is stronger (it is loaded)
 than the statement that you attempt to prove in the first variant
-(just for one specific <tt class="docutils literal">n</tt>), but surprisingly it is easier to prove.</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+(just for one specific <span class="docutils literal">n</span>), but surprisingly it is easier to prove.</p>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>You cannot, because your induction hypothesis is not general enough.
 Here is a statement that should be easier to prove:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="o">(</span><span class="nv">X</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">t</span> <span class="o">:</span> <span class="n">list</span> <span class="n">X</span><span class="o">),</span> <span class="n">nth_error</span> <span class="n">t</span> <span class="o">(</span><span class="n">length</span> <span class="n">t</span><span class="o">)</span> <span class="o">=</span> <span class="n">None</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="o">(</span><span class="nv">X</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">t</span> <span class="o">:</span> <span class="n">list</span> <span class="n">X</span><span class="o">),</span> <span class="n">nth_error</span> <span class="n">t</span> <span class="o">(</span><span class="n">length</span> <span class="n">t</span><span class="o">)</span> <span class="o">=</span> <span class="n">None</span></code></pre>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cannot determine termination</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="cannot-determine-termination">
+<div class="alectryon-root alectryon-centered"><main id="cannot-determine-termination">
 <h1 class="title">Cannot determine termination</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48289090">https://stackoverflow.com/q/48289090</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48289090">https://stackoverflow.com/q/48289090</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Function for determining if a set is a subset of another:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="cannot-determine-termination-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="cannot-determine-termination-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">subset</span> (<span class="nv">s1</span> : bag) (<span class="nv">s2</span> : bag) : bool :=
   <span class="kr">match</span> s1 <span class="kr">with</span>
@@ -37,22 +34,22 @@
               <span class="kr">end</span>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>For clarity</p>
 <ul class="simple">
-<li><tt class="docutils literal">beq_nat</tt> determines equality of two natural numbers</li>
-<li><tt class="docutils literal">count</tt> counts the number of times a given natural number occurs
-in a set</li>
-<li><tt class="docutils literal">remove_all</tt> removes each instance of a given natural number from
-a set</li>
+<li><p><span class="docutils literal">beq_nat</span> determines equality of two natural numbers</p></li>
+<li><p><span class="docutils literal">count</span> counts the number of times a given natural number occurs
+in a set</p></li>
+<li><p><span class="docutils literal">remove_all</span> removes each instance of a given natural number from
+a set</p></li>
 </ul>
 <p>CoqIDE &quot;Cannot guess decreasing argument of fix.&quot; Given that the
-recursion is being done on a subset of <tt class="docutils literal">t</tt> (the tail of <tt class="docutils literal">s1</tt>) why
+recursion is being done on a subset of <span class="docutils literal">t</span> (the tail of <span class="docutils literal">s1</span>) why
 is this not guaranteed to terminate?</p>
 <p><strong>Note:</strong> This problem is from <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/">this website</a> whose authors request
 solutions not to be posted publicly. Furthermore I have already solved
 this exercise so <strong>a solution is not desired</strong>. An explanation of why
 Coq can't determine termination would be much appreciated.</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>As a first approximation, the rule for accepting a recursive call is
 that in the recursive call one of the arguments should be a <em>variable</em>
 obtained through <em>pattern-matching</em> from the input variable at the
@@ -63,8 +60,8 @@ relaxed, but not much.</p>
   <span class="kr">match</span> n <span class="kr">with</span>
   | O =&gt; m
   | S p =&gt; S (plus p m)
-  <span class="kr">end</span>.</span></span></pre><p>The explanation for acceptance is that <tt class="docutils literal">p</tt> is the argument at rank
-1, it is obtained as a pattern-matching variable from <tt class="docutils literal">n</tt>, which is
+  <span class="kr">end</span>.</span></span></pre><p>The explanation for acceptance is that <span class="docutils literal">p</span> is the argument at rank
+1, it is obtained as a pattern-matching variable from <span class="docutils literal">n</span>, which is
 the initial argument at rank 1. So the function is structurally
 recursive, decreasing on the first argument. There should always be an
 argument that decreases. Combined decrease between several arguments
@@ -82,12 +79,11 @@ Here is an example of an awkward function that exploits this idea:</p>
   | a :: ((b :: l&#39;&#39;) <span class="kr">as</span> l&#39;) =&gt;
     b :: awk1 (<span class="kr">if</span> Nat.even a <span class="kr">then</span> l&#39; <span class="kr">else</span> l&#39;&#39;)
   | _ =&gt; l
-  <span class="kr">end</span>.</span></span></pre><p>So in the function <tt class="docutils literal">awk1</tt> the recursive call is not on a variable,
+  <span class="kr">end</span>.</span></span></pre><p>So in the function <span class="docutils literal">awk1</span> the recursive call is not on a variable,
 but on a pattern-matching expression, but it is okay because all
 possible values of this recursive call are indeed variables obtained
 through pattern matching. This also illustrates how picky the
-termination checker can be, because the expression <tt class="docutils literal">(if Nat.even a
-then (b :: <span class="pre">l'')</span> else <span class="pre">l'')</span></tt> would not be accepted: <tt class="docutils literal">(b :: <span class="pre">l'')</span></tt> is
+termination checker can be, because the expression <span class="docutils literal">(if Nat.even a then (b :: <span class="pre">l'')</span> else <span class="pre">l'')</span></span> would not be accepted: <span class="docutils literal">(b :: <span class="pre">l'')</span></span> is
 not a variable.</p>
 <p>The second relaxation of the rule is that the recursive argument can
 be a function call, as long as this function call is convertible to an
@@ -110,24 +106,24 @@ transmit the decreasing property recursively. Here is an illustration:</p>
   <span class="kr">match</span> n, m <span class="kr">with</span>
   | S n&#39;, S m&#39; =&gt; S (mydiv (Nat.sub n&#39; m&#39;) m)
   | _, _ =&gt; n
-  <span class="kr">end</span>.</span></span></pre><p>If you print the definition of <tt class="docutils literal">Nat.sub</tt> you will see that it is
+  <span class="kr">end</span>.</span></span></pre><p>If you print the definition of <span class="docutils literal">Nat.sub</span> you will see that it is
 carefully crafted to always return either the result of a recursive
 call, or the first input, and moreover, in recursive calls, the first
 argument is indeed a variable obtained through pattern-matching from
 the first input. This kind of decreasing property is recognized.</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>Your termination argument is correct, but Coq is not smart enough to
 figure this out by itself. Roughly speaking, Coq only accepts
 recursive calls performed on syntactic subterms of its principal
-argument. This is a very restrictive notion: for instance, <tt class="docutils literal">[1; 3]</tt>
-is a sublist of <tt class="docutils literal">[0; 1; 2; 3]</tt>, but not a syntactic subterm.</p>
+argument. This is a very restrictive notion: for instance, <span class="docutils literal">[1; 3]</span>
+is a sublist of <span class="docutils literal">[0; 1; 2; 3]</span>, but not a syntactic subterm.</p>
 <p>If you want Coq to accept this, you probably need to rewrite your
 function using well-founded recursion. Adam Chipala's book CPDT has a
 <a class="reference external" href="http://adam.chlipala.net/cpdt/html/GeneralRec.html">nice chapter on this</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

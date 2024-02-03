@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Locating definition of a tactic in Coq proofs</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,49 +14,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="locating-definition-of-a-tactic-in-coq-proofs">
+<div class="alectryon-root alectryon-centered"><main id="locating-definition-of-a-tactic-in-coq-proofs">
 <h1 class="title">Locating definition of a tactic in Coq proofs</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/13623319">https://stackoverflow.com/q/13623319</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/13623319">https://stackoverflow.com/q/13623319</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>In studying Coq proofs of other authors, I often encounter a tactic,
-lets say <tt class="docutils literal">inv eq Heq</tt> or <tt class="docutils literal">intro_b</tt>. I want to understand such
+lets say <span class="docutils literal">inv eq Heq</span> or <span class="docutils literal">intro_b</span>. I want to understand such
 tactics.</p>
 <p>How can I find if it is a Coq tactic or a tactic notation defined
 somewhere in my current project?</p>
 <p>Second, is there a way to find its definition?</p>
-<p>I used <tt class="docutils literal">SearchAbout</tt>, <tt class="docutils literal">Search</tt>, <tt class="docutils literal">Locate</tt> and <tt class="docutils literal">Print</tt> but could
+<p>I used <span class="docutils literal">SearchAbout</span>, <span class="docutils literal">Search</span>, <span class="docutils literal">Locate</span> and <span class="docutils literal">Print</span> but could
 not find answers to the above questions.</p>
-</div>
-<div class="section" id="answer-ptival">
-<h1>Answer (Ptival)</h1>
+</section>
+<section id="answer-ptival">
+<h2>Answer (Ptival)</h2>
 <p>You should be able to use</p>
-<pre class="code coq literal-block">
-<span class="kn">Print Ltac</span> <span class="o">&lt;</span><span class="n">tacticname</span><span class="o">&gt;.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Print Ltac</span> <span class="o">&lt;</span><span class="n">tacticname</span><span class="o">&gt;.</span></code></pre>
 <p>to print the code of a user-defined tactic (according to the
 <a class="reference external" href="http://coq.inria.fr/distrib/V8.4/refman/Reference-Manual012.html#&#64;command252">documentation</a>).</p>
 <hr class="docutils" />
 <p>To find where it is defined... I guess you're going to need grep
-unfortunately, <tt class="docutils literal">Locate</tt> does not work for tactics names it seems.</p>
+unfortunately, <span class="docutils literal">Locate</span> does not work for tactics names it seems.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> <tt class="docutils literal">Locate Ltac</tt> is the tactic version of <tt class="docutils literal">Locate</tt></p>
-</div>
-<div class="section" id="answer-clement">
-<h1>Answer (Clément)</h1>
-<p>As mentioned before, <tt class="docutils literal">Print Ltac ...</tt> prints the code of a
+<p><strong>A:</strong> <span class="docutils literal">Locate Ltac</span> is the tactic version of <span class="docutils literal">Locate</span></p>
+</section>
+<section id="answer-clement">
+<h2>Answer (Clément)</h2>
+<p>As mentioned before, <span class="docutils literal">Print Ltac ...</span> prints the code of a
 user-defined tactic.</p>
 <p>To locate a user-defined tactic (i.e. to know where its defined), use
-<tt class="docutils literal">Locate Ltac ...</tt>. It gives you the fully qualified name. Then use
-<tt class="docutils literal">Locate Library</tt> to find the corresponding file.</p>
-</div>
-</div>
+<span class="docutils literal">Locate Ltac ...</span>. It gives you the fully qualified name. Then use
+<span class="docutils literal">Locate Library</span> to find the corresponding file.</p>
+</section>
+</main>
 </div></body>
 </html>

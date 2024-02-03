@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to make algebraic manipulations in Coq easier?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-make-algebraic-manipulations-in-coq-easier">
+<div class="alectryon-root alectryon-centered"><main id="how-to-make-algebraic-manipulations-in-coq-easier">
 <h1 class="title">How to make algebraic manipulations in Coq easier?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55406985">https://stackoverflow.com/q/55406985</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55406985">https://stackoverflow.com/q/55406985</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm experimenting with Coq's standard libraries for integers and
 rationals. So far my proofs are very time-consuming and look terrible.
 I guess I miss some important proof techniques. Such simple lemmas
@@ -79,12 +76,12 @@ Qnum (y # <span class="mi">1</span>) * Qnum (<span class="mi">1</span> # p)
 | Z.pos p =&gt; QDen (inject_Z (Z.pos z)) # p
 | Z.neg p =&gt; Z.neg (Qden (inject_Z (Z.pos z))) # p
 <span class="kr">end</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk1f"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>Hl</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;= x)%Z</span></span></span><br><span><var>Hr</var><span class="hyp-type"><b>: </b><span>inject_Z x &lt;= inject_Z y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt; <span class="mi">1</span> # z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Z.lt_0_1.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>I did not have the courage to analyze your lengthy proof, but I see
 you choose to use a <em>forward</em> proof style. The telltale sign is the
-fact that you have several <tt class="docutils literal">rewrite ... in ...</tt> in your script. Most
+fact that you have several <span class="docutils literal">rewrite ... in ...</span> in your script. Most
 libraries of theorems are designed to work in <em>backward</em> proof style.</p>
 <p>Contrast this with my proposal for the same proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk20"><span class="kn">Theorem</span> <span class="nf">q_less</span>: <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span>, (<span class="mi">0</span> &lt;= x &lt;= y)%Z -&gt; x # z &lt;= y # z.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> <span class="nv">y</span> : Z) (<span class="nv">z</span> : positive),
@@ -96,37 +93,34 @@ inject_Z y / inject_Z (Z.pos z)</div></blockquote></div></div></small><span clas
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk26" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk26">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>cmp</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;= x &lt;= y)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">inject_Z x &lt;= inject_Z y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk27" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk27"><span class="nb">rewrite</span> &lt;- Zle_Qle.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>cmp</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;= x &lt;= y)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(x &lt;= y)%Z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">tauto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk28" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk28">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>cmp</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;= x &lt;= y)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt;= / inject_Z (Z.pos z)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk29" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk29"><span class="nb">apply</span> Qinv_le_0_compat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>cmp</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;= x &lt;= y)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt;= inject_Z (Z.pos z)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-make-algebraic-manipulations-in-coq-easier-v-chk2a" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-make-algebraic-manipulations-in-coq-easier-v-chk2a"><span class="nb">replace</span> <span class="mi">0</span> <span class="kr">with</span> (inject_Z <span class="mi">0</span>) <span class="bp">by</span> <span class="bp">easy</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>positive</span></span></span><br><span><var>cmp</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;= x &lt;= y)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">inject_Z <span class="mi">0</span> &lt;= inject_Z (Z.pos z)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> &lt;- Zle_Qle.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Here is how I proceed. First, <tt class="docutils literal">x # z</tt> is a notation for a very
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Here is how I proceed. First, <span class="docutils literal">x # z</span> is a notation for a very
 specific form of division: the one that appears in a basic fraction.
 There are many chances that this specific form of division is less
 well covered by theorems in the library, so I choose to replace it by
 a regular division between rational numbers. To find the theorem, I
-just use the <tt class="docutils literal">Search</tt> query with the patterns <tt class="docutils literal">(_ # _) (_ / _)</tt>.
-This gives me <tt class="docutils literal">Qmake_Qdiv</tt>.</p>
-<p>Then I simply expect that there is a theorem expressing <tt class="docutils literal">a &lt;= b <span class="pre">-&gt;</span> a
-/ c &lt;= b / c</tt> under suitable conditions. I use <tt class="docutils literal">Search (_ / _ &lt;= _ /
-_).</tt> to find such a theorem. Alas, none is found. So I remember that
+just use the <span class="docutils literal">Search</span> query with the patterns <span class="docutils literal">(_ # _) (_ / _)</span>.
+This gives me <span class="docutils literal">Qmake_Qdiv</span>.</p>
+<p>Then I simply expect that there is a theorem expressing <span class="docutils literal">a &lt;= b <span class="pre">-&gt;</span> a / c &lt;= b / c</span> under suitable conditions. I use <span class="docutils literal">Search (_ / _ &lt;= _ / _).</span> to find such a theorem. Alas, none is found. So I remember that
 division is often described as multiplication by the inverse so I
-search for the other possibility <tt class="docutils literal">Search (_ * _ &lt;= _ * _).</tt>. This
-gives me <tt class="docutils literal">Qmult_le_compat_r</tt>. I try applying it and it works.</p>
+search for the other possibility <span class="docutils literal">Search (_ * _ &lt;= _ * _).</span>. This
+gives me <span class="docutils literal">Qmult_le_compat_r</span>. I try applying it and it works.</p>
 <p>Here is what I mean by working in a <em>backward</em> proof style: I look at
 the conclusion and I think <em>what theorem could help me obtain this
 conclusion</em>? <em>I will then try to fulfill its conditions.</em></p>
-<p>There are two conditions. The first one is <tt class="docutils literal">(inject_Z x &lt;= inject_Z
-y)</tt>. So now I need a theorem relating comparison in <tt class="docutils literal">Z</tt> and
-comparison in <tt class="docutils literal">Q</tt> through function <tt class="docutils literal">inject_Z</tt>. To find it I type
-<tt class="docutils literal">Search inject_Z (_ &lt;= _).</tt>. This gives me <tt class="docutils literal">Zle_Qle</tt>. Please note
-that your hypothesis is too strong: you don't need <tt class="docutils literal">x</tt> to be
-positive. The automatic tactic <tt class="docutils literal">tauto</tt> obtains the right condition
-from your hypothesis (which I named <tt class="docutils literal">cmp</tt>).</p>
-<p>The last condition is <tt class="docutils literal">(0 &lt;= inject_Z (Z.pos z))</tt>. I can re-use the
-same theorem as above, because surely <tt class="docutils literal">0</tt> must be the same thing as
-<tt class="docutils literal">inject_Z 0</tt>.</p>
-<p>All this being said, I do not recommend using <tt class="docutils literal">QArith</tt> for
+<p>There are two conditions. The first one is <span class="docutils literal">(inject_Z x &lt;= inject_Z y)</span>. So now I need a theorem relating comparison in <span class="docutils literal">Z</span> and
+comparison in <span class="docutils literal">Q</span> through function <span class="docutils literal">inject_Z</span>. To find it I type
+<span class="docutils literal">Search inject_Z (_ &lt;= _).</span>. This gives me <span class="docutils literal">Zle_Qle</span>. Please note
+that your hypothesis is too strong: you don't need <span class="docutils literal">x</span> to be
+positive. The automatic tactic <span class="docutils literal">tauto</span> obtains the right condition
+from your hypothesis (which I named <span class="docutils literal">cmp</span>).</p>
+<p>The last condition is <span class="docutils literal">(0 &lt;= inject_Z (Z.pos z))</span>. I can re-use the
+same theorem as above, because surely <span class="docutils literal">0</span> must be the same thing as
+<span class="docutils literal">inject_Z 0</span>.</p>
+<p>All this being said, I do not recommend using <span class="docutils literal">QArith</span> for
 mathematical reasoning (the kind of algebraic reasoning that you show
 here), because it is less well populated than other libraries. If you
 want to work with numbers and reason on them, you should use
-<tt class="docutils literal"><span class="pre">math-comp</span></tt> or <tt class="docutils literal">Reals</tt>: you will find more theorems that are
+<span class="docutils literal"><span class="pre">math-comp</span></span> or <span class="docutils literal">Reals</span>: you will find more theorems that are
 already proved for you.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> thanks for the elaborate explanation. I repeated your steps.
@@ -134,10 +128,10 @@ Makes sense! How did you acquire such a strategy? Is it just the
 experience?</p>
 <p><strong>A:</strong> I don't remember, I learned by trials and errors, too long ago
 (28 years). But I remember that in the beginning there were no
-<tt class="docutils literal">rewrite ... in ...</tt> or <tt class="docutils literal">apply ... in ...</tt> tactics, so that the
+<span class="docutils literal">rewrite ... in ...</span> or <span class="docutils literal">apply ... in ...</span> tactics, so that the
 backward style was practically</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

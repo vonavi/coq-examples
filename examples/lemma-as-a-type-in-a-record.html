@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lemma as a type in a record</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="lemma-as-a-type-in-a-record">
+<div class="alectryon-root alectryon-centered"><main id="lemma-as-a-type-in-a-record">
 <h1 class="title">Lemma as a type in a record</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55563771">https://stackoverflow.com/q/55563771</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55563771">https://stackoverflow.com/q/55563771</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Beginner here! How do we I interpret a record that looks something
 like this?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="lemma-as-a-type-in-a-record-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="lemma-as-a-type-in-a-record-v-chk0"><span class="kn">Record</span> <span class="nf">test</span> <span class="nv">A</span> <span class="nv">B</span> :=
@@ -45,17 +42,15 @@ The term <span class="s2">&quot;CA m&quot;</span> has type <span class="s2">&quo
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;bool&quot;</span>.</blockquote></div></div></small></span></pre><p>I am trying to get a sense of what an instance of this record would
 look like and moreover, what it means to have a quantified lemma as a
 type.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>What you are writing cannot make sense because the notation <tt class="docutils literal">_ ==&gt;
-_</tt> is supposed to link two boolean values. But <tt class="docutils literal">CA</tt> has type <tt class="docutils literal">A
-m</tt>, which is itself a type, not a boolean value.</p>
-<p>One possibility to go forward would be to make <tt class="docutils literal">CA</tt> a boolean
-function that could represent the <tt class="docutils literal">A</tt> predicate.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>What you are writing cannot make sense because the notation <span class="docutils literal">_ ==&gt; _</span> is supposed to link two boolean values. But <span class="docutils literal">CA</span> has type <span class="docutils literal">A m</span>, which is itself a type, not a boolean value.</p>
+<p>One possibility to go forward would be to make <span class="docutils literal">CA</span> a boolean
+function that could represent the <span class="docutils literal">A</span> predicate.</p>
 <p>Another difficulty with your hypothetical record is that we don't know
-what are the input types for <tt class="docutils literal">A</tt> and <tt class="docutils literal">B</tt>, so I will assume we live
-in an ambient type <tt class="docutils literal">T</tt> over which quantifications appear. So here is
+what are the input types for <span class="docutils literal">A</span> and <span class="docutils literal">B</span>, so I will assume we live
+in an ambient type <span class="docutils literal">T</span> over which quantifications appear. So here is
 a variant:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">test</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">A</span> : T -&gt; <span class="kt">Prop</span>) (<span class="nv">B</span> : T * T -&gt; bool) :=
   {
@@ -63,7 +58,7 @@ a variant:</p>
   CA_A : <span class="kr">forall</span> <span class="nv">m</span>, CA m = true -&gt; A m;
   CB : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">m</span>, (CA m ==&gt; B(a, b)) = true
   }.</span></span></pre><p>This example forces you to understand that there are two distinct
-concepts in this logical language: <tt class="docutils literal">bool</tt> values and <tt class="docutils literal">Prop</tt>
+concepts in this logical language: <span class="docutils literal">bool</span> values and <span class="docutils literal">Prop</span>
 values. They represent different things, which can sometimes be
 amalgamated but you need to make the distinction clear in your head to
 leave the category of <em>beginner</em>.</p>
@@ -74,29 +69,24 @@ return arrays of integers. However, you cannot be explicit and say
 that you want to return an array of integers of a <em>specific length</em>.
 In Gallina (the basic programming language of Coq), you can define a
 type of arrays of length 10. Let us assume that such a type would be
-written <tt class="docutils literal">array n</tt>. So <tt class="docutils literal">array 10</tt> and <tt class="docutils literal">array 11</tt> would be two
-different types. A function that takes as input a number <tt class="docutils literal">n</tt> and
-return as output an array of length <tt class="docutils literal">n</tt> would have the following
+written <span class="docutils literal">array n</span>. So <span class="docutils literal">array 10</span> and <span class="docutils literal">array 11</span> would be two
+different types. A function that takes as input a number <span class="docutils literal">n</span> and
+return as output an array of length <span class="docutils literal">n</span> would have the following
 type:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">n</span><span class="o">,</span> <span class="n">array</span> <span class="n">n</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">n</span><span class="o">,</span> <span class="n">array</span> <span class="n">n</span></code></pre>
 <p>So an object that has a quantified formula as a type simply is a
 function.</p>
-<p>From a logical point of view, the statement <tt class="docutils literal">forall n, array n</tt> is
-usually read as <em>for every</em> <tt class="docutils literal">n</tt> <em>there exists an array of</em> <tt class="docutils literal">size
-n</tt>. This statement is probably no surprise to you.</p>
+<p>From a logical point of view, the statement <span class="docutils literal">forall n, array n</span> is
+usually read as <em>for every</em> <span class="docutils literal">n</span> <em>there exists an array of</em> <span class="docutils literal">size n</span>. This statement is probably no surprise to you.</p>
 <p>So the type of an array depends on an indice. Now we can think of
-another type, for example, the <em>type of proofs that</em> <tt class="docutils literal">n</tt> <em>is prime</em>.
-Let's assume this type is written <tt class="docutils literal">prime n</tt>. Surely, there are
-numbers that are not prime, so for example the type <tt class="docutils literal">prime 4</tt> should
+another type, for example, the <em>type of proofs that</em> <span class="docutils literal">n</span> <em>is prime</em>.
+Let's assume this type is written <span class="docutils literal">prime n</span>. Surely, there are
+numbers that are not prime, so for example the type <span class="docutils literal">prime 4</span> should
 not contain any proof at all. Now I may write a function called
-<tt class="docutils literal">test_prime : nat <span class="pre">-&gt;</span> bool</tt> with the property that when it returns
-<tt class="docutils literal">true</tt> I have the guarantee that the input is prime. This would be
+<span class="docutils literal">test_prime : nat <span class="pre">-&gt;</span> bool</span> with the property that when it returns
+<span class="docutils literal">true</span> I have the guarantee that the input is prime. This would be
 written as such:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">n</span><span class="o">,</span> <span class="n">test_prime</span> <span class="n">n</span> <span class="o">=</span> <span class="n">true</span> <span class="o">-&gt;</span> <span class="n">prime</span> <span class="n">n</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">n</span><span class="o">,</span> <span class="n">test_prime</span> <span class="n">n</span> <span class="o">=</span> <span class="n">true</span> <span class="o">-&gt;</span> <span class="n">prime</span> <span class="n">n</span></code></pre>
 <p>Now, if I want to define a collection of all correct prime testing
 functions, I would want to associate in one piece of data the function
 and the proof that it is correct, so I would define the following data
@@ -108,12 +98,12 @@ type.</p>
   }.</span></span></pre><p>So records that contain universally quantified formulas can be in one
 of these two categories: either one component is one of this function
 whose output varies across several types of the same family (like in
-the example of <tt class="docutils literal">array</tt>) or one of the components actually brings
+the example of <span class="docutils literal">array</span>) or one of the components actually brings
 more logical information about another component which is a function.
-In the <tt class="docutils literal">certified_prime_test</tt> example, the <tt class="docutils literal">certificate</tt> component
-brings more information about the <tt class="docutils literal">test_prime</tt> function.</p>
+In the <span class="docutils literal">certified_prime_test</span> example, the <span class="docutils literal">certificate</span> component
+brings more information about the <span class="docutils literal">test_prime</span> function.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

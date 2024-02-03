@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Inside a branch of a match block, how do I use the assertion that the matched expression is equal to the branch's data constructor expression?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="inside-a-branch-of-a-match-block-how-do-i-use-the-assertion-that-the-matched-expression-is-equal-to-the-branch-s-data-constructor-expression">
+<div class="alectryon-root alectryon-centered"><main id="inside-a-branch-of-a-match-block-how-do-i-use-the-assertion-that-the-matched-expression-is-equal-to-the-branch-s-data-constructor-expression">
 <h1 class="title">Inside a branch of a match block, how do I use the assertion that the matched expression is equal to the branch's data constructor expression?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/14085189">https://stackoverflow.com/q/14085189</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/14085189">https://stackoverflow.com/q/14085189</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to develop a programming style that is based on preventing
 bad input as soon as possible. For example, instead of the following
 plausible definition for the predecessor function on the natural
@@ -59,15 +56,14 @@ More precisely:
 - <span class="nl">?e</span>: Cannot infer this placeholder of type <span class="s2">&quot;n = 0&quot;</span> <span class="kr">in</span>
   environment:
   n : nat
-  q : n &lt;&gt; <span class="mi">0</span></blockquote></div></div></small></span></pre><p>But I have no idea what to replace <tt class="docutils literal">_</tt> with. My intuition suggests
-me that there must be some <tt class="docutils literal">assumption : n = O</tt> available in the <tt class="docutils literal">|
-O =&gt;</tt> branch. Does Coq indeed introduce such an assumption? If so,
+  q : n &lt;&gt; <span class="mi">0</span></blockquote></div></div></small></span></pre><p>But I have no idea what to replace <span class="docutils literal">_</span> with. My intuition suggests
+me that there must be some <span class="docutils literal">assumption : n = O</span> available in the <span class="docutils literal">| O =&gt;</span> branch. Does Coq indeed introduce such an assumption? If so,
 what is its name?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Coq doesn't automatically introduce such hypothesis, but you can
-introduce it explicitly by using the full form of the <tt class="docutils literal">match</tt>
+introduce it explicitly by using the full form of the <span class="docutils literal">match</span>
 construction:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">pred2</span> <span class="nv">n</span> (<span class="nv">q</span> : n &lt;&gt; O) :=
   <span class="kr">match</span> n <span class="kr">as</span> n&#39; <span class="kr">return</span> n = n&#39; -&gt; nat <span class="kr">with</span>
@@ -75,22 +71,21 @@ construction:</p>
   | O   =&gt; <span class="kr">fun</span> <span class="nv">Heq</span> =&gt; <span class="kr">match</span> q Heq <span class="kr">with</span> <span class="kr">end</span>
   <span class="kr">end</span> (eq_refl n).</span></span></pre><p>Explanations:</p>
 <ul class="simple">
-<li><tt class="docutils literal">return</tt> introduces a type annotation with the type of the whole
-<tt class="docutils literal">match ... end</tt> expression;</li>
-<li><tt class="docutils literal">as</tt> introduces a variable name that can be used in this type
+<li><p><span class="docutils literal">return</span> introduces a type annotation with the type of the whole
+<span class="docutils literal">match ... end</span> expression;</p></li>
+<li><p><span class="docutils literal">as</span> introduces a variable name that can be used in this type
 annotation and will be substituted with the left hand side in each
-branch. Here,<ul>
-<li>in the first branch, the right hand side has type <tt class="docutils literal">n = S p <span class="pre">-&gt;</span>
-nat</tt>;</li>
-<li>in the second branch, the right hand side has type <tt class="docutils literal">n = O <span class="pre">-&gt;</span>
-nat</tt>. Therefore, <tt class="docutils literal">q Heq</tt> has type <tt class="docutils literal">False</tt> and can be matched.</li>
+branch. Here,</p>
+<ul>
+<li><p>in the first branch, the right hand side has type <span class="docutils literal">n = S p <span class="pre">-&gt;</span> nat</span>;</p></li>
+<li><p>in the second branch, the right hand side has type <span class="docutils literal">n = O <span class="pre">-&gt;</span> nat</span>. Therefore, <span class="docutils literal">q Heq</span> has type <span class="docutils literal">False</span> and can be matched.</p></li>
 </ul>
 </li>
 </ul>
 <p>More information in the <a class="reference external" href="http://coq.inria.fr/distrib/V8.4/refman/">reference manual</a>, in the chapter on
 <a class="reference external" href="http://coq.inria.fr/distrib/V8.4/refman/Reference-Manual022.html">Extended pattern-matching</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

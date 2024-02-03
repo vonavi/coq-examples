@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pattern Matching with Even and Odd Cases</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="pattern-matching-with-even-and-odd-cases">
+<div class="alectryon-root alectryon-centered"><main id="pattern-matching-with-even-and-odd-cases">
 <h1 class="title">Pattern Matching with Even and Odd Cases</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46383481">https://stackoverflow.com/q/46383481</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46383481">https://stackoverflow.com/q/46383481</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Suppose I write a Fixpoint algorithm in Coq that sums up all the
 &quot;halves&quot; of a number:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="pattern-matching-with-even-and-odd-cases-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">sum_of_halves</span> (<span class="nv">a</span> : nat) : nat :=
@@ -35,27 +32,26 @@
   | <span class="mi">2</span> * k =&gt; a + (sum_of_halves k)
   | S (<span class="mi">2</span> * k) =&gt; a + (sum_of_halves k)
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Invalid notation <span class="kr">for</span> <span class="nb">pattern</span>.</blockquote></div></div></small></span></pre><p>How can I get Coq to recognize that a is either an even or an odd
-number, and match it with either <tt class="docutils literal">2 * k</tt> or <tt class="docutils literal">S (2 * k)</tt>?</p>
-</div>
-<div class="section" id="answer-jbapple">
-<h1>Answer (jbapple)</h1>
-<p>Coq can only <tt class="docutils literal">match</tt> on constructors. <tt class="docutils literal">nat</tt> has two constructors,
-<tt class="docutils literal">O</tt> and <tt class="docutils literal">S</tt>, so you cannot match on <tt class="docutils literal">2 * k</tt>. You will have to
-use a non-<tt class="docutils literal">match</tt> construct or a non-<tt class="docutils literal">nat</tt> type or a different
+number, and match it with either <span class="docutils literal">2 * k</span> or <span class="docutils literal">S (2 * k)</span>?</p>
+</section>
+<section id="answer-jbapple">
+<h2>Answer (jbapple)</h2>
+<p>Coq can only <span class="docutils literal">match</span> on constructors. <span class="docutils literal">nat</span> has two constructors,
+<span class="docutils literal">O</span> and <span class="docutils literal">S</span>, so you cannot match on <span class="docutils literal">2 * k</span>. You will have to
+use a non-<span class="docutils literal">match</span> construct or a non-<span class="docutils literal">nat</span> type or a different
 algorithm.</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>You need to prove that there are only three cases for a given natural
-number <tt class="docutils literal">a</tt>. Either <tt class="docutils literal">a</tt> is 0, either <tt class="docutils literal">a</tt> is the double of another
-number <tt class="docutils literal">k</tt> and <tt class="docutils literal">k &lt; a</tt>, or <tt class="docutils literal">a</tt> is the double <tt class="docutils literal">k + 1</tt> and <tt class="docutils literal">k &lt;
-a</tt>, that the three cases are exclusive (this is important, otherwise
+number <span class="docutils literal">a</span>. Either <span class="docutils literal">a</span> is 0, either <span class="docutils literal">a</span> is the double of another
+number <span class="docutils literal">k</span> and <span class="docutils literal">k &lt; a</span>, or <span class="docutils literal">a</span> is the double <span class="docutils literal">k + 1</span> and <span class="docutils literal">k &lt; a</span>, that the three cases are exclusive (this is important, otherwise
 making pattern matching possible would lead to an inconsistency).</p>
 <p>Fortunately, all this can be done. It is a bit advanced Coq
-programming, but it is somehow already done in <tt class="docutils literal">ZArith</tt>. Here is a
+programming, but it is somehow already done in <span class="docutils literal">ZArith</span>. Here is a
 solution.</p>
 <p>First note that the other number is already provided by one of the
-functions in the Coq library, <tt class="docutils literal">div2</tt>.</p>
+functions in the Coq library, <span class="docutils literal">div2</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith Nat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-with-even-and-odd-cases-v-chk1"><span class="kn">Definition</span> <span class="nf">cases_div2</span> (<span class="nv">a</span> : nat) :
@@ -94,13 +90,13 @@ S a&#39; = <span class="mi">0</span>}</div></blockquote></div></div></small><spa
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-with-even-and-odd-cases-v-chk1d">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>odd_a</var><span class="hyp-type"><b>: </b><span>odd (S a&#39;) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">2</span> * Nat.div2 (S a&#39;) + Nat.b2n (Nat.odd (S a&#39;)) =
 <span class="mi">2</span> * div2 (S a&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-with-even-and-odd-cases-v-chk1e"><span class="nb">rewrite</span> odd_a.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>odd_a</var><span class="hyp-type"><b>: </b><span>odd (S a&#39;) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">2</span> * Nat.div2 (S a&#39;) + Nat.b2n false = <span class="mi">2</span> * div2 (S a&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-with-even-and-odd-cases-v-chk1f"><span class="nb">simpl</span> Nat.b2n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>odd_a</var><span class="hyp-type"><b>: </b><span>odd (S a&#39;) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">2</span> * Nat.div2 (S a&#39;) + <span class="mi">0</span> = <span class="mi">2</span> * div2 (S a&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">ring</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-with-even-and-odd-cases-v-chk20">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>odd_a</var><span class="hyp-type"><b>: </b><span>odd (S a&#39;) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">div2 (S a&#39;) &lt; S a&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-matching-with-even-and-odd-cases-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-matching-with-even-and-odd-cases-v-chk21"><span class="nb">apply</span> Nat.lt_div2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>odd_a</var><span class="hyp-type"><b>: </b><span>odd (S a&#39;) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> &lt; S a&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto with</span> arith.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>Now, you can pattern match on your number a using <tt class="docutils literal">cases_div2</tt>, but
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>Now, you can pattern match on your number a using <span class="docutils literal">cases_div2</span>, but
 it is still not enough to define your function, because recursion
-using <tt class="docutils literal">Fixpoint</tt> relies on recursive calls happening on the
-predecessor, and here <tt class="docutils literal">k</tt> cannot be written as a predecessor pattern
-that will work for any input <tt class="docutils literal">a</tt>. You need a stronger kind of
-recursion. I usually rely on <tt class="docutils literal">Function</tt> or <tt class="docutils literal">Fix</tt> for this kind of
-strong recursion. Here is an example with <tt class="docutils literal">Fix</tt>:</p>
+using <span class="docutils literal">Fixpoint</span> relies on recursive calls happening on the
+predecessor, and here <span class="docutils literal">k</span> cannot be written as a predecessor pattern
+that will work for any input <span class="docutils literal">a</span>. You need a stronger kind of
+recursion. I usually rely on <span class="docutils literal">Function</span> or <span class="docutils literal">Fix</span> for this kind of
+strong recursion. Here is an example with <span class="docutils literal">Fix</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">sum_of_halves</span> : nat -&gt; nat :=
   Fix Arith.Wf_nat.lt_wf (<span class="kr">fun</span> <span class="nv">_</span> =&gt; nat)
       (<span class="kr">fun</span> <span class="nv">a</span> (<span class="nv">sum_of_halves&#39;</span> : <span class="kr">forall</span> <span class="nv">y</span>, y &lt; a -&gt; nat) =&gt;
@@ -110,11 +106,11 @@ strong recursion. Here is an example with <tt class="docutils literal">Fix</tt>:
              a + sum_of_halves&#39; k klt
          | inleft (inr (exist _ k (conj keq klt))) =&gt;
              a + sum_of_halves&#39; k klt
-         <span class="kr">end</span>).</span></span></pre><p>Then to reason about <tt class="docutils literal">sum_of_halves</tt> you will need to reason by well
-founded induction and use <tt class="docutils literal">Fix_eq</tt>.</p>
+         <span class="kr">end</span>).</span></span></pre><p>Then to reason about <span class="docutils literal">sum_of_halves</span> you will need to reason by well
+founded induction and use <span class="docutils literal">Fix_eq</span>.</p>
 <p>This is one possibility.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq theorem proving: Simple fraction law in peano arithmetic</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,23 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-theorem-proving-simple-fraction-law-in-peano-arithmetic">
+<div class="alectryon-root alectryon-centered"><main id="coq-theorem-proving-simple-fraction-law-in-peano-arithmetic">
 <h1 class="title">Coq theorem proving: Simple fraction law in peano arithmetic</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/59120093">https://stackoverflow.com/q/59120093</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/59120093">https://stackoverflow.com/q/59120093</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am learning coq and am trying to prove equalities in peano
 arithmetic.</p>
 <p>I got stuck on a simple fraction law.</p>
-<p>We know that <tt class="docutils literal">(n + m) / 2 = n / 2 + m / 2</tt> from primary school. In
+<p>We know that <span class="docutils literal">(n + m) / 2 = n / 2 + m / 2</span> from primary school. In
 peano arithmetic this does only hold if n and m are even (because then
 division produces correct results).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith Even.</span><span class="alectryon-wsp">
@@ -50,9 +47,9 @@ an inductive proof, e.g.</p>
 </span></span></pre><p>So I don't find a way to apply the induction hypothesis.</p>
 <p>After long research of the standard library and documentation, i don't
 find an answer.</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>You need to strengthen your induction hypothesis in cases like this.
 One way of doing this is by proving an induction principle like this
 one:</p>
@@ -68,7 +65,7 @@ P <span class="mi">1</span> -&gt;
 (<span class="kr">forall</span> <span class="nv">n</span> : nat, P n -&gt; P (S n) -&gt; P (S (S n))) -&gt;
 <span class="kr">forall</span> <span class="nv">n</span> : nat, P n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> P0 P1 IH n; <span class="nb">enough</span> (H : P n /\ P (S n)); [|<span class="nb">induction</span> n]; <span class="nb">intuition</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><tt class="docutils literal">nat_ind2</tt> can be used as follows:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><span class="docutils literal">nat_ind2</span> can be used as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-theorem-proving-simple-fraction-law-in-peano-arithmetic-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-theorem-proving-simple-fraction-law-in-peano-arithmetic-v-chka"><span class="kn">Theorem</span> <span class="nf">fraction_addition</span> <span class="nv">n</span> <span class="nv">m</span> :
   even n -&gt; even m -&gt; Nat.div2 n + Nat.div2 m = Nat.div2 (n + m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">even n -&gt;
 even m -&gt; Nat.div2 n + Nat.div2 m = Nat.div2 (n + m)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -84,13 +81,12 @@ even m -&gt;
 Nat.div2 (S (S n)) + Nat.div2 m =
 Nat.div2 (S (S n) + m)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* here goes the rest of the proof *)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
 <p>You can also prove your theorem without induction if you are ok with
 using the standard library.</p>
-<p>If you use <tt class="docutils literal">Even m</tt> in your hypothesis (which says <tt class="docutils literal">exists n, m =
-2*m</tt>) then you can use simple algebraic rewrites with lemmas from the
+<p>If you use <span class="docutils literal">Even m</span> in your hypothesis (which says <span class="docutils literal">exists n, m = 2*m</span>) then you can use simple algebraic rewrites with lemmas from the
 standard library.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> PeanoNat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> Nat.</span><span class="alectryon-wsp">
@@ -104,15 +100,15 @@ Even n -&gt; Even m -&gt; n / <span class="mi">2</span> + m / <span class="mi">2
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">rewrite</span> ?(div_mul); <span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The question mark just means &quot;rewrite as many (zero or more) times as
 possible&quot;.</p>
-<p><tt class="docutils literal">inversion 1</tt> does inversion on the first inductive hypothesis in
-the goal, in this case first <tt class="docutils literal">Even n</tt> and then <tt class="docutils literal">Even m</tt>. It gives
-us <tt class="docutils literal">n = 2 * x</tt> and <tt class="docutils literal">m = 2 * x0</tt> in the context, which we then
+<p><span class="docutils literal">inversion 1</span> does inversion on the first inductive hypothesis in
+the goal, in this case first <span class="docutils literal">Even n</span> and then <span class="docutils literal">Even m</span>. It gives
+us <span class="docutils literal">n = 2 * x</span> and <span class="docutils literal">m = 2 * x0</span> in the context, which we then
 substitute.</p>
-<p>Also note <tt class="docutils literal">even_spec: forall n : nat, even n = true <span class="pre">&lt;-&gt;</span> Even n</tt>, so
-you can use <tt class="docutils literal">even</tt> if you prefer that, just rewrite with
-<tt class="docutils literal">even_spec</tt> first...</p>
+<p>Also note <span class="docutils literal">even_spec: forall n : nat, even n = true <span class="pre">&lt;-&gt;</span> Even n</span>, so
+you can use <span class="docutils literal">even</span> if you prefer that, just rewrite with
+<span class="docutils literal">even_spec</span> first...</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

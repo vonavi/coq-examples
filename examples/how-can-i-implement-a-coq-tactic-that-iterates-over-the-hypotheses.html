@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How can I implement a Coq tactic that iterates over the hypotheses?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses">
+<div class="alectryon-root alectryon-centered"><main id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses">
 <h1 class="title">How can I implement a Coq tactic that iterates over the hypotheses?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42709481">https://stackoverflow.com/q/42709481</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/42709481">https://stackoverflow.com/q/42709481</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>As minimal example for my general question, suppose we have the
 following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">C</span> : <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">blah</span> := C.</span></span></pre><p>I would like to implement a tactic that automatically unfolds <tt class="docutils literal">blah</tt>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">blah</span> := C.</span></span></pre><p>I would like to implement a tactic that automatically unfolds <span class="docutils literal">blah</span>
 in all hypotheses of the goal.</p>
 <p>I tried this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">my_auto_unfold</span> :=
@@ -42,16 +39,16 @@ in all hypotheses of the goal.</p>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk0"><span class="kn">Theorem</span> <span class="nf">g</span> : blah -&gt; blah -&gt; blah.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">blah -&gt; blah -&gt; blah</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">blah -&gt; blah -&gt; blah</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H, H0</var><span class="hyp-type"><b>: </b><span>blah</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">blah</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-implement-a-coq-tactic-that-iterates-over-the-hypotheses-v-chk3">my_auto_unfold.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>blah</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">blah</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>But only one hypothesis had <tt class="docutils literal">blah</tt> unfolded.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>I think you may be looking for the <tt class="docutils literal">progress</tt> tactical. If you do
+</span></span></pre><p>But only one hypothesis had <span class="docutils literal">blah</span> unfolded.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>I think you may be looking for the <span class="docutils literal">progress</span> tactical. If you do
 this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">my_auto_unfold</span> :=
   <span class="kp">repeat</span> <span class="kr">match goal with</span>
          | [ H: <span class="nl">?P</span> |- <span class="nl">?P</span> ] =&gt; <span class="kp">progress</span> <span class="nb">unfold</span> blah <span class="kr">in</span> H
-         <span class="kr">end</span>.</span></span></pre><p>then it will unfold <tt class="docutils literal">blah</tt> in both hypotheses. You can even do:</p>
+         <span class="kr">end</span>.</span></span></pre><p>then it will unfold <span class="docutils literal">blah</span> in both hypotheses. You can even do:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">in_all_hyps</span> tac :=
   <span class="kp">repeat</span> <span class="kr">match goal with</span>
          | [ H : _ |- _ ] =&gt; <span class="kp">progress</span> tac H
@@ -94,8 +91,8 @@ in the goal (i.e., to mark how many variables can be introduced), and
 then you revert all of the context into the goal, so that you can
 reintroduce the context one hypothesis at a time, running the tactic
 on each hypothesis you just introduced.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

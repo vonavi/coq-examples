@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How can I use type arguments in an ltac?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,40 +14,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-use-type-arguments-in-an-ltac">
+<div class="alectryon-root alectryon-centered"><main id="how-can-i-use-type-arguments-in-an-ltac">
 <h1 class="title">How can I use type arguments in an ltac?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55463216">https://stackoverflow.com/q/55463216</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55463216">https://stackoverflow.com/q/55463216</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to write the following function:</p>
-<pre class="code coq literal-block">
-<span class="kn">Ltac</span> <span class="nf">restore_dims</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="kn">Ltac</span> <span class="nf">restore_dims</span> <span class="o">:=</span>
   <span class="kp">repeat</span> <span class="kr">match goal with</span>
          <span class="o">|</span> <span class="o">[</span> <span class="o">|-</span> <span class="kp">context</span><span class="o">[&#64;</span><span class="n">Mmult</span> <span class="nl">?m</span> <span class="nl">?n</span> <span class="nl">?o</span> <span class="nl">?A</span> <span class="nl">?B</span><span class="o">]]</span> <span class="o">=&gt;</span>
            <span class="kr">let</span> <span class="nv">Matrix</span> <span class="nv">m'</span> <span class="nv">n'</span> <span class="o">:=</span> <span class="kp">type of</span> <span class="n">A</span> <span class="kr">in</span>
            <span class="kr">let</span> <span class="nv">Matrix</span> <span class="nv">n''</span> <span class="nv">o'</span> <span class="o">:=</span> <span class="kp">type of</span> <span class="n">B</span> <span class="kr">in</span>
            <span class="nb">replace</span> <span class="n">m</span> <span class="kr">with</span> <span class="n">m'</span> <span class="bp">by</span> <span class="bp">easy</span>
-         <span class="kr">end</span><span class="o">.</span>
-</pre>
-<p>That is, I want to use information about the types of <tt class="docutils literal">A</tt> and <tt class="docutils literal">B</tt>
+         <span class="kr">end</span><span class="o">.</span></code></pre>
+<p>That is, I want to use information about the types of <span class="docutils literal">A</span> and <span class="docutils literal">B</span>
 (which are both matrices with 2 dimension arguments) in my Ltac. Is
 that possible, and if so, how?</p>
-<p>(Ideally, this would replace the <tt class="docutils literal">m</tt> in question with <tt class="docutils literal">m'</tt> and
-likewise for <tt class="docutils literal">n</tt> and <tt class="docutils literal">o</tt> for all matrix products in my goal.)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can do syntactical matching on <tt class="docutils literal">type of A</tt> to extract the
+<p>(Ideally, this would replace the <span class="docutils literal">m</span> in question with <span class="docutils literal">m'</span> and
+likewise for <span class="docutils literal">n</span> and <span class="docutils literal">o</span> for all matrix products in my goal.)</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can do syntactical matching on <span class="docutils literal">type of A</span> to extract the
 arguments.</p>
-<pre class="code coq literal-block">
-<span class="kn">Ltac</span> <span class="nf">restore_dims</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="kn">Ltac</span> <span class="nf">restore_dims</span> <span class="o">:=</span>
   <span class="kp">repeat</span> <span class="kr">match goal with</span>
          <span class="o">|</span> <span class="o">[</span> <span class="o">|-</span> <span class="kp">context</span><span class="o">[&#64;</span><span class="n">Mmult</span> <span class="nl">?m</span> <span class="nl">?n</span> <span class="nl">?o</span> <span class="nl">?A</span> <span class="nl">?B</span><span class="o">]]</span> <span class="o">=&gt;</span>
            <span class="kr">match</span> <span class="kp">type of</span> <span class="n">A</span> <span class="kr">with</span>
@@ -57,14 +51,13 @@ arguments.</p>
            <span class="o">|</span> <span class="n">Matrix</span> <span class="nl">?n''</span> <span class="nl">?o'</span> <span class="o">=&gt;</span> <span class="nb">replace</span> <span class="n">n</span> <span class="kr">with</span> <span class="n">n''</span> <span class="bp">by</span> <span class="bp">easy</span>
            <span class="c">(* or whatever you wanted to do with n'' and o' *)</span>
            <span class="kr">end</span>
-         <span class="kr">end</span><span class="o">.</span>
-</pre>
-<p>If you think <tt class="docutils literal">m</tt> and <tt class="docutils literal">m'</tt> will be convertible, not merely equal,
+         <span class="kr">end</span><span class="o">.</span></code></pre>
+<p>If you think <span class="docutils literal">m</span> and <span class="docutils literal">m'</span> will be convertible, not merely equal,
 and you care about having nice proof terms, consider using the tactic
 <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.change">change</a>
-instead of <tt class="docutils literal">replace</tt> e.g. <tt class="docutils literal">change n'' with n</tt>. This won't add
+instead of <span class="docutils literal">replace</span> e.g. <span class="docutils literal">change n'' with n</span>. This won't add
 anything to the proof term, so it might be easier to work with.</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

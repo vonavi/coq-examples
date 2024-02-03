@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq adding a new variable instead of using the correct one</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-adding-a-new-variable-instead-of-using-the-correct-one">
+<div class="alectryon-root alectryon-centered"><main id="coq-adding-a-new-variable-instead-of-using-the-correct-one">
 <h1 class="title">Coq adding a new variable instead of using the correct one</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/39459959">https://stackoverflow.com/q/39459959</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/39459959">https://stackoverflow.com/q/39459959</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm working on my own implementation of vectors in Coq, and I'm
 running into a bizarre problem.</p>
 <p>Here is my code thus far:</p>
@@ -72,8 +69,8 @@ i : Fin (S m)
 n0 : nat
 j : Fin n0
 The term <span class="s2">&quot;j&quot;</span> has type <span class="s2">&quot;Fin n0&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Fin m&quot;</span>.</blockquote></div></div></small></span></pre><p>Everything up to <tt class="docutils literal">tail</tt> compiles fine, but when I try to compile
-<tt class="docutils literal">index</tt>, I receive the following error:</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Fin m&quot;</span>.</blockquote></div></div></small></span></pre><p>Everything up to <span class="docutils literal">tail</span> compiles fine, but when I try to compile
+<span class="docutils literal">index</span>, I receive the following error:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-adding-a-new-variable-instead-of-using-the-correct-one-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
 index : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat),
@@ -86,16 +83,16 @@ i : Fin (S m)
 n0 : nat
 j : Fin n0
 The term <span class="s2">&quot;j&quot;</span> has type <span class="s2">&quot;Fin n0&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Fin m&quot;</span>.</blockquote></div></div></small></span></pre><p>Clearly, the culprit is that Coq introduces the new variable <tt class="docutils literal">n0</tt>
-instead of assigning <tt class="docutils literal">j</tt> the type <tt class="docutils literal">Fin m</tt>, even though this is the
-only possible type for <tt class="docutils literal">j</tt> which would result in <tt class="docutils literal">i</tt> being built
-from <tt class="docutils literal">j</tt>. Any idea why this would happen, and how I might be able to
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Fin m&quot;</span>.</blockquote></div></div></small></span></pre><p>Clearly, the culprit is that Coq introduces the new variable <span class="docutils literal">n0</span>
+instead of assigning <span class="docutils literal">j</span> the type <span class="docutils literal">Fin m</span>, even though this is the
+only possible type for <span class="docutils literal">j</span> which would result in <span class="docutils literal">i</span> being built
+from <span class="docutils literal">j</span>. Any idea why this would happen, and how I might be able to
 resolve this issue?</p>
-</div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
-<p>Note that you do not need to pattern-match against <tt class="docutils literal">n</tt>, but only
-against the argument of type <tt class="docutils literal">Fin n</tt>. The resulting definition is
+</section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
+<p>Note that you do not need to pattern-match against <span class="docutils literal">n</span>, but only
+against the argument of type <span class="docutils literal">Fin n</span>. The resulting definition is
 simpler.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">index</span> {<span class="nv">A</span> : <span class="kt">Type</span>} {<span class="nv">n</span> : nat} (<span class="nv">i</span> : Fin n) : Vec A n -&gt; A :=
   <span class="kr">match</span> i <span class="kr">in</span> Fin n0 <span class="kr">return</span> Vec A n0 -&gt; A <span class="kr">with</span>
@@ -111,16 +108,16 @@ simpler.</p>
 swapping solves the problem instantaneously. Nice!</p>
 <p><strong>A:</strong> I did not realize that I switched the arguments. Another
 difference with the original function: the decreasing argument is
-<tt class="docutils literal">i</tt>, not <tt class="docutils literal">n</tt>.</p>
+<span class="docutils literal">i</span>, not <span class="docutils literal">n</span>.</p>
 <p><strong>A (Anton Trunov):</strong> Yes, however if you start with pattern-mathing
 on a vector (as in <a class="reference external" href="http://stackoverflow.com/a/39469676/2747511">my answer</a>), you will have to
 use something like the convoy pattern (see <a class="reference external" href="http://stackoverflow.com/a/39467904/2747511">larsr's answer</a>). So that swap is
 actually a big deal.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
-<p>I find <tt class="docutils literal">Vec</tt> and <tt class="docutils literal">Fin</tt> very hard to use in general, so these days
-I use <tt class="docutils literal">'I_n</tt> and <tt class="docutils literal"><span class="pre">n.-tuples</span> T</tt> from math-comp, which are just
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
+<p>I find <span class="docutils literal">Vec</span> and <span class="docutils literal">Fin</span> very hard to use in general, so these days
+I use <span class="docutils literal">'I_n</span> and <span class="docutils literal"><span class="pre">n.-tuples</span> T</span> from math-comp, which are just
 naturals and lists with an irrelevant proof attached. However, if you
 want to continue the fun of complex pattern matches, you could try to
 define a stronger pattern matching principle:</p>
@@ -128,26 +125,26 @@ define a stronger pattern matching principle:</p>
   <span class="kr">match</span> i <span class="kr">with</span>
   | FZ _ =&gt; <span class="kr">fun</span> <span class="nv">fn</span> <span class="nv">fz</span> =&gt; fn
   | FS j =&gt; <span class="kr">fun</span> <span class="nv">fn</span> <span class="nv">fz</span> =&gt; fz j
-  <span class="kr">end</span>.</span></span></pre><p>Once you have <tt class="docutils literal">fin_case</tt>, you function definition works:</p>
+  <span class="kr">end</span>.</span></span></pre><p>Once you have <span class="docutils literal">fin_case</span>, you function definition works:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">index</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat) : Vec A n -&gt; Fin n -&gt; A :=
   <span class="kr">match</span> n <span class="kr">as</span> n <span class="kr">return</span> Vec A n -&gt; Fin n -&gt; A <span class="kr">with</span>
   | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">i</span> =&gt; emptyf _ i
   | S m =&gt; <span class="kr">fun</span> <span class="nv">v</span> <span class="nv">i</span> =&gt; fin_case i (head v) (index (tail v))
   <span class="kr">end</span>.</span></span></pre><hr class="docutils" />
 <p><strong>Q:</strong> Thanks for the reply, but It seems to me like this just pushes
-the problem onto how to define <tt class="docutils literal">fin_case</tt>. No matter what I try, I
+the problem onto how to define <span class="docutils literal">fin_case</span>. No matter what I try, I
 still run into the same problem. Would you mind sharing the definition
 you have in mind?</p>
 <p><strong>A:</strong> Updated, a couple of comments:</p>
 <ol class="loweralpha simple">
-<li>Note that this &quot;pushing the problem onto&quot; is indeed more than that
-and a crucial tool in Coq style dependent programming.</li>
-<li>There are many other ways to solve these kind of problems, indeed,
-writing a proper match still feels like a bit of an art.</li>
+<li><p>Note that this &quot;pushing the problem onto&quot; is indeed more than that
+and a crucial tool in Coq style dependent programming.</p></li>
+<li><p>There are many other ways to solve these kind of problems, indeed,
+writing a proper match still feels like a bit of an art.</p></li>
 </ol>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>Just to add to the other answers, a tactic-based solution:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-new-variable-instead-of-using-the-correct-one-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-new-variable-instead-of-using-the-correct-one-v-chk4"><span class="kn">Fixpoint</span> <span class="nf">index</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat) (<span class="nv">v</span> : Vec A n) (<span class="nv">i</span> : Fin n) : A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>index</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat),
 Vec A n -&gt; Fin n -&gt; A</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>Vec A n</span></span></span><br><span><var>i</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -164,27 +161,25 @@ Vec A n -&gt; Fin n -&gt; A</span></span></span><br><span><var>A</var><span clas
 Vec A n -&gt; Fin n -&gt; A</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>tl</var><span class="hyp-type"><b>: </b><span>Vec A n</span></span></span><br><span><var>i</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n0 = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> h.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-new-variable-instead-of-using-the-correct-one-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-new-variable-instead-of-using-the-correct-one-v-chkc">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>index</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat),
 Vec A n -&gt; Fin n -&gt; A</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>tl</var><span class="hyp-type"><b>: </b><span>Vec A n</span></span></span><br><span><var>i</var><span class="hyp-type"><b>: </b><span>Fin (S n)</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>i'</var><span class="hyp-type"><b>: </b><span>Fin n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n0 = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (index _ _ tl i&#39;).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>The <tt class="docutils literal">inversion</tt> tactic takes care of the &quot;information loss&quot;. If you
-try to <tt class="docutils literal">Print index.</tt> the result won't be pretty, but Coq
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>The <span class="docutils literal">inversion</span> tactic takes care of the &quot;information loss&quot;. If you
+try to <span class="docutils literal">Print index.</span> the result won't be pretty, but Coq
 essentially uses the convoy pattern &#64;larsr has mentioned.</p>
-<p>Notice that this approach doesn't use pattern-matching on <tt class="docutils literal">n</tt>. It
+<p>Notice that this approach doesn't use pattern-matching on <span class="docutils literal">n</span>. It
 pattern-matches on the vector argument instead, that's why it doesn't
-need the <tt class="docutils literal">head</tt> and <tt class="docutils literal">tail</tt> functions.</p>
-</div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
-<p>When you use <tt class="docutils literal">match</tt> you can lose information. I used the <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">convoy
+need the <span class="docutils literal">head</span> and <span class="docutils literal">tail</span> functions.</p>
+</section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
+<p>When you use <span class="docutils literal">match</span> you can lose information. I used the <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">convoy
 pattern</a> to get
 the info back into the context.</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">Fin</span> <span class="o">(</span><span class="n">S</span> <span class="n">n0</span><span class="o">)</span> <span class="kr">return</span> <span class="n">n0</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">A</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">Fin</span> <span class="o">(</span><span class="n">S</span> <span class="n">n0</span><span class="o">)</span> <span class="kr">return</span> <span class="n">n0</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">A</span> <span class="kr">with</span>
   <span class="o">...</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">H</span> <span class="o">:</span> <span class="n">n0</span> <span class="o">=</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="o">...</span>
-<span class="kr">end</span> <span class="n">eq_refl</span>
-</pre>
-<p>enables Coq to get the info <tt class="docutils literal">n0 = m</tt> into the context. It is sent
+<span class="kr">end</span> <span class="n">eq_refl</span></code></pre>
+<p>enables Coq to get the info <span class="docutils literal">n0 = m</span> into the context. It is sent
 into the match clauses as a function parameter. To use it in the type
-check I use <tt class="docutils literal">(match H with ... end)</tt> so that Coq understands that
-<tt class="docutils literal">Fin n0 = Fin m</tt>. This is the solution.</p>
+check I use <span class="docutils literal">(match H with ... end)</span> so that Coq understands that
+<span class="docutils literal">Fin n0 = Fin m</span>. This is the solution.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">index</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : nat) : Vec A n -&gt; Fin n -&gt; A :=
   <span class="kr">match</span> n <span class="kr">as</span> n <span class="kr">return</span> Vec A n -&gt; Fin n -&gt; A <span class="kr">with</span>
   | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">_</span> <span class="nv">i</span> =&gt; emptyf _ i
@@ -195,18 +190,17 @@ check I use <tt class="docutils literal">(match H with ... end)</tt> so that Coq
              <span class="kr">end</span> eq_refl
   <span class="kr">end</span>.</span></span></pre><p>When the type checking doesn't understand that two things are equal,
 usually the convoy pattern can help you get that info into the
-context. I also recommend using <tt class="docutils literal">refine</tt> to incrementally build up
+context. I also recommend using <span class="docutils literal">refine</span> to incrementally build up
 the term. It let's you see what information there is in the context.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> A simple</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">cast</span> (<span class="nv">m</span> <span class="nv">n</span> : nat) (<span class="nv">i</span> : Fin m) (<span class="nv">H</span> : m = n) : Fin n :=
-  eq_rec m Fin i n H.</span></span></pre><p>might make the code a bit easier to read (<tt class="docutils literal">(match H with eq_refl _ =&gt;
-j end)</tt> gets replaced by <tt class="docutils literal">(cast j H)</tt>).</p>
+  eq_rec m Fin i n H.</span></span></pre><p>might make the code a bit easier to read (<span class="docutils literal">(match H with eq_refl _ =&gt; j end)</span> gets replaced by <span class="docutils literal">(cast j H)</span>).</p>
 <p><strong>A:</strong> A comment on the solutions using equality casts, (including the
-one with <tt class="docutils literal">inversion</tt>) is that they may not compute/reduce properly
+one with <span class="docutils literal">inversion</span>) is that they may not compute/reduce properly
 inside Coq, needing additional rewrites.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

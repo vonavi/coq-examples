@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Can Coq intros pattern split at the rightmost opportunity for conjunction?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,46 +14,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction">
-<h1 class="title">Can Coq <tt class="docutils literal">intros</tt> pattern split at the rightmost opportunity for conjunction?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/63381511">https://stackoverflow.com/q/63381511</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction">
+<h1 class="title">Can Coq <span class="docutils literal">intros</span> pattern split at the rightmost opportunity for conjunction?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/63381511">https://stackoverflow.com/q/63381511</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I am wondering if there is some intro pattern which can introduce <tt class="docutils literal">A
-/\ B /\ C</tt> as</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A /\ B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>I'm aware that <tt class="docutils literal">intros [H1 H2]</tt> will produce</p>
+<section id="question">
+<h2>Question</h2>
+<p>I am wondering if there is some intro pattern which can introduce <span class="docutils literal">A /\ B /\ C</span> as</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A /\ B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>I'm aware that <span class="docutils literal">intros [H1 H2]</span> will produce</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="can-coq-intros-pattern-split-at-the-rightmost-opportunity-for-conjunction-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B, C</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>B /\ C</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>but cannot figure out how to configure the brackets for the other
 direction. This is a trivial example; but I have a more complicated
 combination of conjunctions and disjunctions that I would much prefer
 to destruct from right to left.</p>
 <p>Thanks,</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal">_ /\ _</tt> notation in Coq is a right-associative <em>binary</em>
-operator, so <tt class="docutils literal">A /\ B /\ C</tt> really stands for <tt class="docutils literal">A /\ (B /\ C)</tt>. If
-you want to build some <tt class="docutils literal">A /\ B</tt> you should first fully decompose the
-<tt class="docutils literal">/\</tt> (<tt class="docutils literal">intros [HA [HB <span class="pre">HC]].</span></tt>, you can nest the patterns
-arbitrarily) and then build the <tt class="docutils literal">A /\ B</tt> hypothesis (for instance
-using <tt class="docutils literal">assert (A /\ B) as HAB by (split; [exact HA| exact <span class="pre">HB]).</span></tt> or
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal">_ /\ _</span> notation in Coq is a right-associative <em>binary</em>
+operator, so <span class="docutils literal">A /\ B /\ C</span> really stands for <span class="docutils literal">A /\ (B /\ C)</span>. If
+you want to build some <span class="docutils literal">A /\ B</span> you should first fully decompose the
+<span class="docutils literal">/\</span> (<span class="docutils literal">intros [HA [HB <span class="pre">HC]].</span></span>, you can nest the patterns
+arbitrarily) and then build the <span class="docutils literal">A /\ B</span> hypothesis (for instance
+using <span class="docutils literal">assert (A /\ B) as HAB by (split; [exact HA| exact <span class="pre">HB]).</span></span> or
 any other way you prefer to add an hypothesis).</p>
-<p>In a more complex setting, you might want to write a lemma <tt class="docutils literal">and_assoc
-: forall A B C, A /\ B /\ C <span class="pre">-&gt;</span> (A /\ B) /\ C</tt> and use a
-<em>view</em>-pattern. Starting from a goal <tt class="docutils literal">A /\ B /\ C <span class="pre">-&gt;</span> P</tt> you can use
-<tt class="docutils literal">intros [HAB <span class="pre">HC]%and_assoc.</span></tt> to obtain <tt class="docutils literal">HAB : A /\ B</tt> and <tt class="docutils literal">HC :
-C</tt> : the <tt class="docutils literal">pat%and_assoc</tt> part says that <tt class="docutils literal">and_assoc</tt> should be
+<p>In a more complex setting, you might want to write a lemma <span class="docutils literal">and_assoc : forall A B C, A /\ B /\ C <span class="pre">-&gt;</span> (A /\ B) /\ C</span> and use a
+<em>view</em>-pattern. Starting from a goal <span class="docutils literal">A /\ B /\ C <span class="pre">-&gt;</span> P</span> you can use
+<span class="docutils literal">intros [HAB <span class="pre">HC]%and_assoc.</span></span> to obtain <span class="docutils literal">HAB : A /\ B</span> and <span class="docutils literal">HC : C</span> : the <span class="docutils literal">pat%and_assoc</span> part says that <span class="docutils literal">and_assoc</span> should be
 applied first to the top assumption and then further destructed with
-<tt class="docutils literal">pat</tt>.</p>
+<span class="docutils literal">pat</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

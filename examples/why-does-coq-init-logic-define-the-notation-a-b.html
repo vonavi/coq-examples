@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why does Coq.Init.Logic define the notation A -&gt; B?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,59 +14,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-does-coq-init-logic-define-the-notation-a-b">
-<h1 class="title">Why does <tt class="docutils literal">Coq.Init.Logic</tt> define the notation <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt>?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52247439">https://stackoverflow.com/q/52247439</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="why-does-coq-init-logic-define-the-notation-a-b">
+<h1 class="title">Why does <span class="docutils literal">Coq.Init.Logic</span> define the notation <span class="docutils literal">A <span class="pre">-&gt;</span> B</span>?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52247439">https://stackoverflow.com/q/52247439</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>The Coq Standard Library file <tt class="docutils literal">Coq.Init.Logic</tt>, which can be found
+<section id="question">
+<h2>Question</h2>
+<p>The Coq Standard Library file <span class="docutils literal">Coq.Init.Logic</span>, which can be found
 <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Logic.html">here</a>, contains
 the statement</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-does-coq-init-logic-define-the-notation-a-b-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;A -&gt; B&quot;</span> := (<span class="kr">forall</span> <span class="nv">_</span> : A, B) : type_scope
-  (default interpretation)</blockquote></div></div></small></span></pre><p>I don't understand how this is possible, given that the symbol <tt class="docutils literal"><span class="pre">-&gt;</span></tt>
-already has a built-in meaning. Is <tt class="docutils literal"><span class="pre">-&gt;</span></tt> overwritten by this?</p>
-<p>If I type in <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt>, how does Coq know if I mean <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt> or
-<tt class="docutils literal">forall (x : A), B</tt>?</p>
+  (default interpretation)</blockquote></div></div></small></span></pre><p>I don't understand how this is possible, given that the symbol <span class="docutils literal"><span class="pre">-&gt;</span></span>
+already has a built-in meaning. Is <span class="docutils literal"><span class="pre">-&gt;</span></span> overwritten by this?</p>
+<p>If I type in <span class="docutils literal">A <span class="pre">-&gt;</span> B</span>, how does Coq know if I mean <span class="docutils literal">A <span class="pre">-&gt;</span> B</span> or
+<span class="docutils literal">forall (x : A), B</span>?</p>
 <p>Yes, I know the two propositions are logically equivalent, but
 shouldn't this be a theorem instead of a notation?</p>
 <hr class="docutils" />
 <p>As you can tell, I've not had much experience with Coq, but I want to
 understand the details.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal"><span class="pre">-&gt;</span></tt> symbol is actually defined by the notation you found in
-<tt class="docutils literal">Coq.Init.Logic</tt>! While <tt class="docutils literal">forall</tt> is built-in, <tt class="docutils literal"><span class="pre">-&gt;</span></tt> is defined
-using the notation system. The <tt class="docutils literal">Coq.Init.Logic</tt> module is loaded
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal"><span class="pre">-&gt;</span></span> symbol is actually defined by the notation you found in
+<span class="docutils literal">Coq.Init.Logic</span>! While <span class="docutils literal">forall</span> is built-in, <span class="docutils literal"><span class="pre">-&gt;</span></span> is defined
+using the notation system. The <span class="docutils literal">Coq.Init.Logic</span> module is loaded
 automatically into Coq because it's exported by <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Prelude.html">Coq.Init.Prelude</a>, which is why
 you immediately have access to it.</p>
-<p>When you write <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt> it's interpreted using the notation, which
-is <tt class="docutils literal">forall (_:A), B</tt>; this is syntactically similar to <tt class="docutils literal">forall
-(x:A), B</tt>, except that the expression <tt class="docutils literal">B</tt> isn't allowed to depend
-on <tt class="docutils literal">x</tt>. There's no ambiguity - this is the only definition for <tt class="docutils literal">A
-<span class="pre">-&gt;</span> B</tt>, and indeed if you load Coq without the prelude (eg, by passing
-the <tt class="docutils literal"><span class="pre">-ninety</span></tt> flag) <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt> will not parse.</p>
-<p>One aspect of Coq that makes <tt class="docutils literal"><span class="pre">-&gt;</span></tt> seem built-in is that the notation
+<p>When you write <span class="docutils literal">A <span class="pre">-&gt;</span> B</span> it's interpreted using the notation, which
+is <span class="docutils literal">forall (_:A), B</span>; this is syntactically similar to <span class="docutils literal">forall (x:A), B</span>, except that the expression <span class="docutils literal">B</span> isn't allowed to depend
+on <span class="docutils literal">x</span>. There's no ambiguity - this is the only definition for <span class="docutils literal">A <span class="pre">-&gt;</span> B</span>, and indeed if you load Coq without the prelude (eg, by passing
+the <span class="docutils literal"><span class="pre">-ninety</span></span> flag) <span class="docutils literal">A <span class="pre">-&gt;</span> B</span> will not parse.</p>
+<p>One aspect of Coq that makes <span class="docutils literal"><span class="pre">-&gt;</span></span> seem built-in is that the notation
 is <em>bidirectional</em> - it applies to both parsing and to printing. This
-is why you see <tt class="docutils literal"><span class="pre">-&gt;</span></tt> in your goals and when you use <tt class="docutils literal">Check</tt> and
-<tt class="docutils literal">Search</tt>. Here there is real ambiguity; in this case, if a <tt class="docutils literal">forall
-(x:A), B</tt> has a <tt class="docutils literal">B</tt> that does not depend on <tt class="docutils literal">x</tt>, Coq prefers to
+is why you see <span class="docutils literal"><span class="pre">-&gt;</span></span> in your goals and when you use <span class="docutils literal">Check</span> and
+<span class="docutils literal">Search</span>. Here there is real ambiguity; in this case, if a <span class="docutils literal">forall (x:A), B</span> has a <span class="docutils literal">B</span> that does not depend on <span class="docutils literal">x</span>, Coq prefers to
 print it using the notation rather than the built-in syntax. If you
-turn off printing of notations (<tt class="docutils literal">Unset Printing Notation.</tt>) you'll
-see <tt class="docutils literal">forall (_:A), B</tt> everywhere you used to see <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt>. Of
+turn off printing of notations (<span class="docutils literal">Unset Printing Notation.</span>) you'll
+see <span class="docutils literal">forall (_:A), B</span> everywhere you used to see <span class="docutils literal">A <span class="pre">-&gt;</span> B</span>. Of
 course, if you have a function type with a real dependency, then Coq
-needs to use <tt class="docutils literal">forall (x:A), B</tt> since <tt class="docutils literal">B</tt> needs to refer to the
-variable <tt class="docutils literal">x</tt>.</p>
+needs to use <span class="docutils literal">forall (x:A), B</span> since <span class="docutils literal">B</span> needs to refer to the
+variable <span class="docutils literal">x</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

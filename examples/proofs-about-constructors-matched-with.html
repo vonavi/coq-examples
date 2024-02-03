@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proofs about constructors matched with _</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,34 +14,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proofs-about-constructors-matched-with">
-<h1 class="title">Proofs about constructors matched with <tt class="docutils literal">_</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/19277175">https://stackoverflow.com/q/19277175</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="proofs-about-constructors-matched-with">
+<h1 class="title">Proofs about constructors matched with <span class="docutils literal">_</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/19277175">https://stackoverflow.com/q/19277175</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Assume I have the following <tt class="docutils literal">Set</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>Assume I have the following <span class="docutils literal">Set</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Many</span> : <span class="kt">Set</span> :=
 | aa : Many
 | bb : Many
 | cc : Many
 <span class="c">(* | ... many more constructors *)</span>
-.</span></span></pre><p>How can I proof in the <tt class="docutils literal">_</tt> match, that <tt class="docutils literal">y &lt;&gt; aa</tt>?</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span>
+.</span></span></pre><p>How can I proof in the <span class="docutils literal">_</span> match, that <span class="docutils literal">y &lt;&gt; aa</span>?</p>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">aa</span>     <span class="o">=&gt;</span> <span class="n">true</span>
-<span class="o">|</span> <span class="n">_</span> <span class="kr">as</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="c">(* how can I proof that y &lt;&gt; aa ? *)</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<span class="o">|</span> <span class="n">_</span> <span class="kr">as</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="c">(* how can I proof that y &lt;&gt; aa ? *)</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Unfortunately, it does not seem possible to get such a proof without
 some more work in pure Gallina. What you would like to write is:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">foo</span> (<span class="nv">x</span> : Many) : bool :=
@@ -53,8 +48,8 @@ some more work in pure Gallina. What you would like to write is:</p>
           eq_ind y (<span class="kr">fun</span> <span class="nv">e</span> =&gt; <span class="kr">match</span> e <span class="kr">with</span> aa =&gt; <span class="kt">False</span> | _ =&gt; <span class="kt">True</span> <span class="kr">end</span>) I aa yaa
       <span class="kr">in</span> false
   <span class="kr">end</span>.</span></span></pre><p>But that does not work quite well in Gallina, as it does not expand
-the wildcard into all possible cases, leaving <tt class="docutils literal">y</tt> abstract in the
-<tt class="docutils literal">eq_ind</tt> invocation. It does however work in tactic mode:</p>
+the wildcard into all possible cases, leaving <span class="docutils literal">y</span> abstract in the
+<span class="docutils literal">eq_ind</span> invocation. It does however work in tactic mode:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proofs-about-constructors-matched-with-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="proofs-about-constructors-matched-with-v-chk0"><span class="kn">Definition</span> <span class="nf">foo</span> (<span class="nv">x</span> : Many) : bool.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>Many</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bool</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (
       <span class="kr">match</span> x <span class="kr">with</span>
@@ -79,8 +74,8 @@ force a return annotation mentioning the discriminee, like so:</p>
       <span class="kr">in</span> false
   <span class="kr">end</span>.</span></span></pre><p>My guess is that the term elaboration differs whether the match is
 dependent or not...</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

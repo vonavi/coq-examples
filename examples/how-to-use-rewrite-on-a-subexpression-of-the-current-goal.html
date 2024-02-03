@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to use rewrite on a subexpression of the current goal</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal">
-<h1 class="title">How to use <tt class="docutils literal">rewrite</tt> on a subexpression of the current goal</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/13645979">https://stackoverflow.com/q/13645979</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal">
+<h1 class="title">How to use <span class="docutils literal">rewrite</span> on a subexpression of the current goal</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/13645979">https://stackoverflow.com/q/13645979</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In Coq, is it somehow possible to apply a lemma or hypothesis to a
 subexpression of the current goal? For example I would like to apply
 the fact that plus is commutative in order to swap 3 and 4 in this
@@ -42,11 +39,11 @@ example.</p>
  <span class="s2">&quot;foob (3 + 4) = foob (4 + 3)&quot;</span>.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">foob (<span class="mi">3</span> + <span class="mi">4</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></small></span></pre><p>gives:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Unable to <span class="nb">unify</span> <span class="s2">&quot;?M691 + ?M692 = ?M692 + ?M691&quot;</span> <span class="kr">with</span>
- <span class="s2">&quot;foob (3 + 4) = foob (4 + 3)&quot;</span>.</blockquote></div></div></small></span></pre><p>How can I tell Coq where exactly in this goal to <tt class="docutils literal">apply plus_comm</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>In this particular case, <tt class="docutils literal">rewrite</tt> will work if you define the
+ <span class="s2">&quot;foob (3 + 4) = foob (4 + 3)&quot;</span>.</blockquote></div></div></small></span></pre><p>How can I tell Coq where exactly in this goal to <span class="docutils literal">apply plus_comm</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>In this particular case, <span class="docutils literal">rewrite</span> will work if you define the
 inductive type using a constructor parameter instead of an index:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">foobar</span> : <span class="kt">Type</span> :=
 | foob (n : nat).</span></span></pre><p>Since there is only one constructor for this type, my understanding
@@ -54,21 +51,21 @@ inductive type using a constructor parameter instead of an index:</p>
 is that using an index does not provide any benefit but makes it
 harder for Coq to pattern-match.</p>
 <p>In general, either of the following techniques can achieve the effect
-of a targeted <tt class="docutils literal">rewrite</tt>:</p>
-<div class="section" id="assert">
-<h2>assert</h2>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk4"><span class="nb">assert</span> (H: <span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></span></span></span><br></div><label class="goal-separator" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk5"><hr></label><div class="goal-conclusion">foob (<span class="mi">3</span> + <span class="mi">4</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk6">{</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk7"><span class="nb">rewrite</span> &lt;- plus_comm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">4</span> + <span class="mi">3</span> = <span class="mi">4</span> + <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk8">}</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foob (<span class="mi">3</span> + <span class="mi">4</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></small></span></pre></div>
-<div class="section" id="rewrite">
-<h2>rewrite</h2>
+of a targeted <span class="docutils literal">rewrite</span>:</p>
+<section id="assert">
+<h3>assert</h3>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk4"><span class="nb">assert</span> (H: <span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></span></span></span><br></div><label class="goal-separator" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk5"><hr></label><div class="goal-conclusion">foob (<span class="mi">3</span> + <span class="mi">4</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk6">{</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk7"><span class="nb">rewrite</span> &lt;- plus_comm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">4</span> + <span class="mi">3</span> = <span class="mi">4</span> + <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk8">}</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">4</span> + <span class="mi">3</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foob (<span class="mi">3</span> + <span class="mi">4</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></small></span></pre></section>
+<section id="rewrite">
+<h3>rewrite</h3>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  <span class="c">(* introduce a new sub-goal where you can prove that the replacement is OK *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chk9"><span class="nb">replace</span> (<span class="mi">3</span> + <span class="mi">4</span>) <span class="kr">with</span> (<span class="mi">4</span> + <span class="mi">3</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">foob (<span class="mi">4</span> + <span class="mi">3</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote><div class="alectryon-extra-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">4</span> + <span class="mi">3</span> = <span class="mi">3</span> + <span class="mi">4</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* Coq orders the new goal last. I think it&#39;s clearer to tackle it first *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chka"><span class="mi">2</span>: {</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">4</span> + <span class="mi">3</span> = <span class="mi">3</span> + <span class="mi">4</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    <span class="c">(* do the rewrite *)</span>
 </span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chkb"><span class="nb">rewrite</span> &lt;- plus_comm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> + <span class="mi">4</span> = <span class="mi">3</span> + <span class="mi">4</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chkc">}</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">foob (<span class="mi">4</span> + <span class="mi">3</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></small></span></pre></div>
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-rewrite-on-a-subexpression-of-the-current-goal-v-chkc">}</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">foob (<span class="mi">4</span> + <span class="mi">3</span>) = foob (<span class="mi">4</span> + <span class="mi">3</span>)</div></blockquote></div></div></small></span></pre></section>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

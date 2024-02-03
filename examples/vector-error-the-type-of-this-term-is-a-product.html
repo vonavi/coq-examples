@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Vector error: The type of this term is a product</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="vector-error-the-type-of-this-term-is-a-product">
+<div class="alectryon-root alectryon-centered"><main id="vector-error-the-type-of-this-term-is-a-product">
 <h1 class="title">Vector error: The type of this term is a product</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/63955903">https://stackoverflow.com/q/63955903</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/63955903">https://stackoverflow.com/q/63955903</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I want last <tt class="docutils literal">k</tt> elements of vector. I wrote this code with reference
+<section id="question">
+<h2>Question</h2>
+<p>I want last <span class="docutils literal">k</span> elements of vector. I wrote this code with reference
 to <a class="reference external" href="https://coq.inria.fr/library/Coq.Vectors.VectorDef.html">Coq.Vectors.VectorDef</a>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Reals.Reals.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -75,23 +72,23 @@ to <a class="reference external" href="https://coq.inria.fr/library/Coq.Vectors.
 while it <span class="kr">is</span> expected to be
  (P <span class="nl">?n</span>@{n1:=<span class="mi">0</span>} <span class="nl">?n0</span>@{k1:=<span class="mi">0</span>} <span class="nl">?e</span>@{n1:=<span class="mi">0</span>; e1:=[ ]}).</blockquote></div></div></small></span></pre><p>The problem is the second line from the bottom of the code.</p>
 <p>Why does last pattern have an error?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The function term that you see on the branch of <tt class="docutils literal">rectEuc</tt> is how you
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The function term that you see on the branch of <span class="docutils literal">rectEuc</span> is how you
 tell Coq that a pattern-match branch is contradictory. In your first
 recursive function, for instance, you use it to say that the first
-<tt class="docutils literal">v'</tt> cannot be a cons because its length is zero. The reason you are
+<span class="docutils literal">v'</span> cannot be a cons because its length is zero. The reason you are
 getting the error in the last branch is because that case is not
 contradictory: nothing in the type of your function prevents the case
-<tt class="docutils literal">k = 0</tt> and <tt class="docutils literal">n = 0</tt>.</p>
+<span class="docutils literal">k = 0</span> and <span class="docutils literal">n = 0</span>.</p>
 <p>To write dependently typed programs over indexed families, you often
 need to use the <em>convoy pattern</em>: to refine the type of an argument
-<tt class="docutils literal">x</tt> after branching on some expression, your <tt class="docutils literal">match</tt> needs to
-return a function that abstracts over <tt class="docutils literal">x</tt>. For instance, this
+<span class="docutils literal">x</span> after branching on some expression, your <span class="docutils literal">match</span> needs to
+return a function that abstracts over <span class="docutils literal">x</span>. For instance, this
 function computes the last element of a vector by recursion over its
-length. In the <tt class="docutils literal">S</tt> branch, we need to know that the length of <tt class="docutils literal">v</tt>
-is connected to <tt class="docutils literal">n</tt> somehow.</p>
+length. In the <span class="docutils literal">S</span> branch, we need to know that the length of <span class="docutils literal">v</span>
+is connected to <span class="docutils literal">n</span> somehow.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">head</span> <span class="nv">n</span> (<span class="nv">v</span> : Euc (S n)) : R :=
   <span class="kr">match</span> v <span class="kr">with</span>
   | x ::: _ =&gt; x
@@ -106,8 +103,8 @@ is connected to <tt class="docutils literal">n</tt> somehow.</p>
   <span class="kr">match</span> n <span class="kr">with</span>
   | <span class="mi">0</span>   =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; head <span class="mi">0</span> v
   | S n =&gt; <span class="kr">fun</span> <span class="nv">v</span> =&gt; <span class="nb">last</span> n (tail _ v)
-  <span class="kr">end</span>.</span></span></pre><p>Here is the code for extracting the last <tt class="docutils literal">k</tt> elements. Note that its
-type uses the <tt class="docutils literal">Nat.min</tt> function to specify the length of the
+  <span class="kr">end</span>.</span></span></pre><p>Here is the code for extracting the last <span class="docutils literal">k</span> elements. Note that its
+type uses the <span class="docutils literal">Nat.min</span> function to specify the length of the
 result: the result cannot be larger than the original vector!</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">but_last</span> <span class="nv">n</span> : Euc (S n) -&gt; Euc n :=
   <span class="kr">match</span> n <span class="kr">with</span>
@@ -136,8 +133,8 @@ and prove after the fact that it has some property that you care
 about. (E.g. try to show that reversing a list twice yields the same
 list using vectors!) Of course, there are cases where dependent types
 are useful, but most of the time they are not needed.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>even_Sn_not_even_n - apply 1 hypothesis in another</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="even-sn-not-even-n-apply-1-hypothesis-in-another">
-<h1 class="title"><tt class="docutils literal">even_Sn_not_even_n</tt> - apply 1 hypothesis in another</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/56354064">https://stackoverflow.com/q/56354064</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="even-sn-not-even-n-apply-1-hypothesis-in-another">
+<h1 class="title"><span class="docutils literal">even_Sn_not_even_n</span> - apply 1 hypothesis in another</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/56354064">https://stackoverflow.com/q/56354064</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Unfortunately I got stuck again:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">even</span> : nat -&gt; <span class="kt">Prop</span> :=
 | ev_0 : even <span class="mi">0</span>
@@ -49,23 +46,21 @@
   IHn : ~ even n&#39; -&gt; even (S n&#39;)
   ============================
   even n&#39;</blockquote></div></div></small></span></pre><p>As far I could prove it in words:</p>
-<p><tt class="docutils literal">(n' + 1)</tt> is not even according to <tt class="docutils literal">H</tt>. Therefore according to
-<tt class="docutils literal">IHn</tt>, it is not true that <tt class="docutils literal">n'</tt> is not even (double negation):</p>
-<pre class="code coq literal-block">
-<span class="n">IHn</span> <span class="o">:</span> <span class="o">~</span> <span class="o">~</span> <span class="n">even</span> <span class="n">n'</span>
-</pre>
-<p>Unfolding double negation, we conclude that <tt class="docutils literal">n'</tt> is even.</p>
+<p><span class="docutils literal">(n' + 1)</span> is not even according to <span class="docutils literal">H</span>. Therefore according to
+<span class="docutils literal">IHn</span>, it is not true that <span class="docutils literal">n'</span> is not even (double negation):</p>
+<pre class="code coq literal-block"><code><span class="n">IHn</span> <span class="o">:</span> <span class="o">~</span> <span class="o">~</span> <span class="n">even</span> <span class="n">n'</span></code></pre>
+<p>Unfolding double negation, we conclude that <span class="docutils literal">n'</span> is even.</p>
 <p>But how to write it in coq?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The usual way to strip double negation is to introduce the &quot;excluded
-middle&quot; axiom, which is defined under the name <tt class="docutils literal">classic</tt> in
+middle&quot; axiom, which is defined under the name <span class="docutils literal">classic</span> in
 <a class="reference external" href="https://coq.inria.fr/distrib/current/stdlib/Coq.Logic.Classical_Prop.html">Coq.Logic.Classical_Prop</a>,
-and apply the lemma <tt class="docutils literal">NNPP</tt>.</p>
+and apply the lemma <span class="docutils literal">NNPP</span>.</p>
 <p>However, in this particular case, you can use the technique called
-<strong>reflection</strong> by showing that the <tt class="docutils literal">Prop</tt> is consistent with a
-boolean function (you might remember the <tt class="docutils literal">evenb</tt> function introduced
+<strong>reflection</strong> by showing that the <span class="docutils literal">Prop</span> is consistent with a
+boolean function (you might remember the <span class="docutils literal">evenb</span> function introduced
 earlier in the book).</p>
 <p>(Assuming you're at the beginning of IndProp) You'll soon see the
 following definition later in that chapter:</p>
@@ -73,10 +68,10 @@ following definition later in that chapter:</p>
 | ReflectT (H : P) : reflect P true
 | ReflectF (H : ~ P) : reflect P false.</span></span></pre><p>You can prove the statement</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="even-sn-not-even-n-apply-1-hypothesis-in-another-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="even-sn-not-even-n-apply-1-hypothesis-in-another-v-chk19"><span class="kn">Lemma</span> <span class="nf">even_reflect</span> : <span class="kr">forall</span> <span class="nv">n</span> : nat, reflect (even n) (evenb n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, reflect (even n) (evenb n)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>and then use it to move between a <tt class="docutils literal">Prop</tt> and a boolean (which
-contain the same information i.e. the (non-)evenness of <tt class="docutils literal">n</tt>) at the
+</span></span></pre><p>and then use it to move between a <span class="docutils literal">Prop</span> and a boolean (which
+contain the same information i.e. the (non-)evenness of <span class="docutils literal">n</span>) at the
 same time. This also means that you can do classical reasoning on that
-particular property without using the <tt class="docutils literal">classic</tt> axiom.</p>
+particular property without using the <span class="docutils literal">classic</span> axiom.</p>
 <p>I suggest to complete the exercises under Reflection section in
 IndProp, and then try the following exercises. (<strong>Edit:</strong> I uploaded
 the full answer <a class="reference external" href="https://github.com/Bubbler-4/coq-misc-works/blob/gitpod-vnc/StackOverflow/even_reflect.v">here</a>.)</p>
@@ -157,8 +152,8 @@ reflect P b -&gt; ~ P &lt;-&gt; b = false</div></blockquote></div></div></small>
     even (S n) &lt;-&gt; not (even n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, even (S n) &lt;-&gt; ~ even n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="even-sn-not-even-n-apply-1-hypothesis-in-another-v-chk3b" style="display: none" type="checkbox"><label class="alectryon-input" for="even-sn-not-even-n-apply-1-hypothesis-in-another-v-chk3b"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, even (S n) &lt;-&gt; ~ even n</div></blockquote></div></div></small></span><span class="alectryon-wsp"> <span class="c">(* Fill in here.</span>
 <span class="c">          Hint: Now you can convert all the (non-)evenness properties</span>
-<span class="c">          to booleans, and then work with boolean logic! *)</span></span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
+<span class="c">          to booleans, and then work with boolean logic! *)</span></span><span class="alectryon-wsp"> </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to systematically normalize inequalities to &lt; (lt) and &lt;= (le) in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,46 +14,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-systematically-normalize-inequalities-to-lt-and-le-in-coq">
-<h1 class="title">How to systematically normalize inequalities to <tt class="docutils literal">&lt;</tt> (<tt class="docutils literal">lt</tt>) and <tt class="docutils literal">&lt;=</tt> (<tt class="docutils literal">le</tt>) in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34467163">https://stackoverflow.com/q/34467163</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<div class="alectryon-root alectryon-centered"><main id="how-to-systematically-normalize-inequalities-to-lt-and-le-in-coq">
+<h1 class="title">How to systematically normalize inequalities to <span class="docutils literal">&lt;</span> (<span class="docutils literal">lt</span>) and <span class="docutils literal">&lt;=</span> (<span class="docutils literal">le</span>) in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34467163">https://stackoverflow.com/q/34467163</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>In proving facts about inequalities (for real numbers), there is
-<tt class="docutils literal">&lt;</tt>, <tt class="docutils literal">&lt;=</tt>, <tt class="docutils literal">&gt;</tt>, and <tt class="docutils literal">&gt;=</tt>. It's kind of tedious to write down
+<span class="docutils literal">&lt;</span>, <span class="docutils literal">&lt;=</span>, <span class="docutils literal">&gt;</span>, and <span class="docutils literal">&gt;=</span>. It's kind of tedious to write down
 and use theorems/lemmas for both these forms.</p>
-<p>Currently, I am converting these to just <tt class="docutils literal">&lt;</tt> and <tt class="docutils literal">&lt;=</tt> manually by
-first <tt class="docutils literal">assert</tt> and then proving a trivial subgoal. I was wondering
+<p>Currently, I am converting these to just <span class="docutils literal">&lt;</span> and <span class="docutils literal">&lt;=</span> manually by
+first <span class="docutils literal">assert</span> and then proving a trivial subgoal. I was wondering
 if it is possible to automatically normalize all inequalities to just
-<tt class="docutils literal">&lt;</tt> and <tt class="docutils literal">&lt;=</tt> in the hypotheses and the goal?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">gt</tt> and <tt class="docutils literal">ge</tt> are functions that call <tt class="docutils literal">lt</tt> and <tt class="docutils literal">le</tt>
+<span class="docutils literal">&lt;</span> and <span class="docutils literal">&lt;=</span> in the hypotheses and the goal?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">gt</span> and <span class="docutils literal">ge</span> are functions that call <span class="docutils literal">lt</span> and <span class="docutils literal">le</span>
 respectively on swapped arguments. To get rid of them, just unfold
 them.</p>
-<pre class="code coq literal-block">
-<span class="nb">unfold</span> <span class="n">gt</span><span class="o">,</span> <span class="n">ge</span><span class="o">.</span>
-</pre>
-<p>You may want to unfold <tt class="docutils literal">lt</tt> as well: it's defined in terms of
-<tt class="docutils literal">le</tt>. Since the definition of <tt class="docutils literal">gt</tt> uses <tt class="docutils literal">lt</tt>, unfold <tt class="docutils literal">gt</tt>
+<pre class="code coq literal-block"><code><span class="nb">unfold</span> <span class="n">gt</span><span class="o">,</span> <span class="n">ge</span><span class="o">.</span></code></pre>
+<p>You may want to unfold <span class="docutils literal">lt</span> as well: it's defined in terms of
+<span class="docutils literal">le</span>. Since the definition of <span class="docutils literal">gt</span> uses <span class="docutils literal">lt</span>, unfold <span class="docutils literal">gt</span>
 first.</p>
-<pre class="code coq literal-block">
-<span class="nb">unfold</span> <span class="n">gt</span><span class="o">,</span> <span class="n">ge</span><span class="o">,</span> <span class="n">lt</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="nb">unfold</span> <span class="n">gt</span><span class="o">,</span> <span class="n">ge</span><span class="o">,</span> <span class="n">lt</span><span class="o">.</span></code></pre>
 <p>You can tell Coq to try this when attempting to prove a goal with
-<tt class="docutils literal">auto</tt>.</p>
-<pre class="code coq literal-block">
-<span class="kn">Hint Unfold</span> <span class="n">gt</span> <span class="n">ge</span> <span class="n">lt</span><span class="o">.</span>
-</pre>
-</div>
-</div>
+<span class="docutils literal">auto</span>.</p>
+<pre class="code coq literal-block"><code><span class="kn">Hint Unfold</span> <span class="n">gt</span> <span class="n">ge</span> <span class="n">lt</span><span class="o">.</span></code></pre>
+</section>
+</main>
 </div></body>
 </html>

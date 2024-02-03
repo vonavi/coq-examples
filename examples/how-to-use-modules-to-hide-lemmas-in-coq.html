@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to use modules to hide lemmas in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-use-modules-to-hide-lemmas-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-use-modules-to-hide-lemmas-in-coq">
 <h1 class="title">How to use modules to hide lemmas in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/11451536">https://stackoverflow.com/q/11451536</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have a theorem <tt class="docutils literal">T</tt>, its proof, and the zillion lemmas used in
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/11451536">https://stackoverflow.com/q/11451536</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
+<p>I have a theorem <span class="docutils literal">T</span>, its proof, and the zillion lemmas used in
 proving it.</p>
 <p>I would like to hide the lemmas, and make available only the theorem
 -- mainly because I don't want to have to think of good, global names
@@ -34,8 +31,7 @@ for the Lemmas.</p>
 <p>Can I place the theorem, its proof, and the lemmas in a module,
 restricted with a module type, and make only the theorem available?</p>
 <p>Something like:</p>
-<pre class="code coq literal-block">
-<span class="kn">Module Type</span> <span class="nf">T_MY_T</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Module Type</span> <span class="nf">T_MY_T</span><span class="o">.</span>
 <span class="kn">End</span> <span class="nf">T_MY_T</span><span class="o">.</span>
 
 <span class="kn">Module</span> <span class="nf">T_My_theorem</span> <span class="o">:</span> <span class="n">T_MY_T</span><span class="o">.</span>
@@ -45,18 +41,17 @@ restricted with a module type, and make only the theorem available?</p>
   <span class="kn">Proof</span><span class="o">.</span> <span class="kn">Admitted</span><span class="o">.</span>
   <span class="kn">Theorem</span> <span class="nf">My_Great_Theorem</span> <span class="o">:</span> <span class="o">...</span>
   <span class="kn">Proof</span><span class="o">.</span> <span class="nb">apply</span> <span class="n">L1</span><span class="o">;</span> <span class="nb">apply</span> <span class="n">L2</span><span class="o">.</span> <span class="kn">Qed</span><span class="o">.</span>
-<span class="kn">End</span> <span class="nf">T_My_theorem</span><span class="o">.</span>
-</pre>
+<span class="kn">End</span> <span class="nf">T_My_theorem</span><span class="o">.</span></code></pre>
 <p>If so, can someone please post or point me to a simple example?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal">Module Type A</tt> should contain Axioms for the theorems you wish
-to export. The <tt class="docutils literal">Module B : A</tt> contains these axioms as theorems that
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal">Module Type A</span> should contain Axioms for the theorems you wish
+to export. The <span class="docutils literal">Module B : A</span> contains these axioms as theorems that
 need to be proven. It can also contain whatever lemmas and other
 machinery needed to prove the theorems. To access a theorem from
-outside the module, you can <tt class="docutils literal">apply B.Theorem1</tt>, etc.</p>
-</div>
-</div>
+outside the module, you can <span class="docutils literal">apply B.Theorem1</span>, etc.</p>
+</section>
+</main>
 </div></body>
 </html>

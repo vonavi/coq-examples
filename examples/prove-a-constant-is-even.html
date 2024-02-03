@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Prove a constant is even</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,28 +14,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="prove-a-constant-is-even">
+<div class="alectryon-root alectryon-centered"><main id="prove-a-constant-is-even">
 <h1 class="title">Prove a constant is even</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/62326896">https://stackoverflow.com/q/62326896</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/62326896">https://stackoverflow.com/q/62326896</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Given the inductive definition of evenness, how is it best proved
-that, say, 1024 is an even number? Repeating <tt class="docutils literal">apply even_S</tt> down to
+that, say, 1024 is an even number? Repeating <span class="docutils literal">apply even_S</span> down to
 zero is certainly not the right approach.</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>As HTNW pointed out, you can use Ltac automation to produce such a
 proof. This has the disadvantage of producing a large proof term
-<tt class="docutils literal">even_S (even_S ... even_O)</tt>, thus slowing down proofs. In this
+<span class="docutils literal">even_S (even_S ... even_O)</span>, thus slowing down proofs. In this
 case, it is better to reformulate the goal using a boolean decision
 procedure:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">evenb</span> (<span class="nv">n</span> : nat) : bool :=
@@ -47,21 +44,21 @@ procedure:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk0"><span class="kn">Lemma</span> <span class="nf">evenb_correct</span> : <span class="kr">forall</span> <span class="nv">n</span>, evenb n = true &lt;-&gt; even n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, evenb n = true &lt;-&gt; even n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp"><span class="c">(* Fun exercise! *)</span>
-</span></pre><p>Coq can prove that <tt class="docutils literal">evenb 1024 = true</tt> simply by evaluating the
+</span></pre><p>Coq can prove that <span class="docutils literal">evenb 1024 = true</span> simply by evaluating the
 left-hand side:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk1"><span class="kn">Goal</span> (even <span class="mi">1024</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">even <span class="mi">1024</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk2"><span class="nb">apply</span> evenb_correct.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">evenb <span class="mi">1024</span> = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-htnw">
-<h1>Answer (HTNW)</h1>
-<p>Repeating <tt class="docutils literal">apply even_S</tt> is not the way. <tt class="docutils literal">repeat apply even_S</tt> is.
-If <tt class="docutils literal">even_S</tt> is a constructor, there's also <tt class="docutils literal">repeat constructor</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk1"><span class="kn">Goal</span> (even <span class="mi">1024</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">even <span class="mi">1024</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk2"><span class="nb">apply</span> evenb_correct.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">evenb <span class="mi">1024</span> = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-htnw">
+<h2>Answer (HTNW)</h2>
+<p>Repeating <span class="docutils literal">apply even_S</span> is not the way. <span class="docutils literal">repeat apply even_S</span> is.
+If <span class="docutils literal">even_S</span> is a constructor, there's also <span class="docutils literal">repeat constructor</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">even</span> : nat -&gt; <span class="kt">Prop</span> :=
 | even_O : even O
 | even_S : <span class="kr">forall</span> <span class="nv">n</span>, even n -&gt; even (S (S n)).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk3"><span class="kn">Goal</span> (even <span class="mi">1024</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">even <span class="mi">1024</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk4"><span class="kp">repeat</span> <span class="nb">apply</span> even_S.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">even <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> even_O.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-a-constant-is-even-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-a-constant-is-even-v-chk5"><span class="kn">Goal</span> (even <span class="mi">1024</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">even <span class="mi">1024</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="nb">constructor</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp"><span class="c">(* also finds even_O, would leave as goal otherwise *)</span></span></pre></div>
+</span></span><span class="alectryon-wsp"><span class="c">(* also finds even_O, would leave as goal otherwise *)</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Expanding Recursive Functions In Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="expanding-recursive-functions-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="expanding-recursive-functions-in-coq">
 <h1 class="title">Expanding Recursive Functions In Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29825609">https://stackoverflow.com/q/29825609</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/29825609">https://stackoverflow.com/q/29825609</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<div class="section" id="background">
-<h2>Background</h2>
+<section id="question">
+<h2>Question</h2>
+<section id="background">
+<h3>Background</h3>
 <p>I understand that Iota reduction is used to reduce/expand recursive
 functions. For instance, given the following application of a simple
 recursive function (factorial over natural numbers):</p>
-<pre class="code coq literal-block">
-<span class="o">((</span><span class="kr">fix</span> <span class="n">fact</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="o">((</span><span class="kr">fix</span> <span class="n">fact</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span>
     <span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
     <span class="o">|</span> <span class="n">O</span> <span class="o">=&gt;</span> <span class="mi">1</span>
-    <span class="o">|</span> <span class="n">S</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fact</span> <span class="n">m</span> <span class="kr">end</span><span class="o">)</span> <span class="mi">2</span><span class="o">)</span>
-</pre>
+    <span class="o">|</span> <span class="n">S</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fact</span> <span class="n">m</span> <span class="kr">end</span><span class="o">)</span> <span class="mi">2</span><span class="o">)</span></code></pre>
 <p>Iota reduction expands the recursive call, effectively iterating over
 the recursive function once:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk0"><span class="kn">Eval</span> <span class="nb">lazy</span> iota <span class="kr">in</span> ((<span class="kr">fix</span> fact (n : nat) : nat :=
@@ -89,9 +84,9 @@ odd respectively. To see this consider:</p>
       <span class="kr">for</span>
       odd) m
  <span class="kr">end</span>) <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
-<div class="section" id="problem">
-<h2>Problem</h2>
+</span></span></pre></section>
+<section id="problem">
+<h3>Problem</h3>
 <p>This is obviously the correct behaviour. <strong>Unfortunately</strong>, and
 apparently inexplicably, Coq wont apply Iota reduction in cases where
 a recursive function is either not applied to an argument or the
@@ -130,10 +125,10 @@ nothing worked.</p>
 <p>How do I get Coq to apply Iota reduction to recursive functions that
 are either not applied to any arguments or that are applied to
 universally quantified arguments?</p>
-</div>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The problem here is that the iota rule is restricted for fixpoints:
 the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual006.html#sec217">Coq manual</a>
 explicitly states that iota can only be applied to a fixpoint if the
@@ -145,15 +140,14 @@ the function being defined infinitely.</p>
 <p>In practice, if you want to simplify such a fixpoint, there are two
 things you can do:</p>
 <ol class="arabic">
-<li><p class="first">Destruct the recursive argument (<tt class="docutils literal">n</tt>, in your case) manually and
+<li><p>Destruct the recursive argument (<span class="docutils literal">n</span>, in your case) manually and
 then reduce. This is simpler to do in some cases, but requires you
-to consider many cases.</p>
-</li>
-<li><p class="first">Prove a simplification lemma and do a rewrite instead of a
+to consider many cases.</p></li>
+<li><p>Prove a simplification lemma and do a rewrite instead of a
 reduction. For instance, you could have proved a lemma of the form
-<tt class="docutils literal">odd n <span class="pre">&lt;-&gt;</span> ~ even n</tt>, which might help you in some cases. You can
+<span class="docutils literal">odd n <span class="pre">&lt;-&gt;</span> ~ even n</span>, which might help you in some cases. You can
 also prove the unfolding explicitly as a lemma (this time, using
-your original definition of <tt class="docutils literal">even</tt>):</p>
+your original definition of <span class="docutils literal">even</span>):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="expanding-recursive-functions-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="expanding-recursive-functions-in-coq-v-chk8"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span>, even n = <span class="kr">match</span> n <span class="kr">with</span> | O =&gt; <span class="kt">True</span> | S m =&gt; odd m <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat,
 even n = <span class="kr">match</span> n <span class="kr">with</span>
          | <span class="mi">0</span> =&gt; <span class="kt">True</span>
@@ -162,8 +156,8 @@ even n = <span class="kr">match</span> n <span class="kr">with</span>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> n.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
 </ol>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

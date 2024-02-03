@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>In Coq, How to construct an element of 'sig' type</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="in-coq-how-to-construct-an-element-of-sig-type">
+<div class="alectryon-root alectryon-centered"><main id="in-coq-how-to-construct-an-element-of-sig-type">
 <h1 class="title">In Coq, How to construct an element of 'sig' type</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44967359">https://stackoverflow.com/q/44967359</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44967359">https://stackoverflow.com/q/44967359</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>With a simple inductive definition of a type <tt class="docutils literal">A</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>With a simple inductive definition of a type <span class="docutils literal">A</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">A</span> : <span class="kt">Set</span> := mkA : nat -&gt; A.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 <span class="c">(* get ID of A *)</span>
@@ -40,8 +37,8 @@
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IstrueB</span> (<span class="nv">b</span> : bool) : <span class="kt">Prop</span> := <span class="kr">if</span> b <span class="kr">then</span> <span class="kt">True</span> <span class="kr">else</span> <span class="kt">False</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 <span class="c">(* subtype of *A* that only interests those who pass the filter *)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | IstrueB (filter a) }.</span></span></pre><p>I try this code to cast element of <tt class="docutils literal">A</tt> to <tt class="docutils literal">subsetA</tt> when
-<tt class="docutils literal">filter</tt> passes, but failed to convenience Coq that it is a valid
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | IstrueB (filter a) }.</span></span></pre><p>I try this code to cast element of <span class="docutils literal">A</span> to <span class="docutils literal">subsetA</span> when
+<span class="docutils literal">filter</span> passes, but failed to convenience Coq that it is a valid
 construction for an element of 'sig' type:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-coq-how-to-construct-an-element-of-sig-type-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-how-to-construct-an-element-of-sig-type-v-chk0"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">cast</span> (<span class="nv">a</span> : A) : option subsetA :=
   <span class="kr">match</span> filter a <span class="kr">with</span>
@@ -54,21 +51,21 @@ The term <span class="s2">&quot;IstrueB (filter a)&quot;</span> has type <span c
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;?P a&quot;</span>
 (unable to find a well-typed instantiation <span class="kr">for</span> <span class="s2">&quot;?P&quot;</span>:
 cannot ensure that <span class="s2">&quot;A -&gt; Type&quot;</span> <span class="kr">is</span> a subtype of
-<span class="s2">&quot;A -&gt; Prop&quot;</span>).</blockquote></div></div></small></span></pre><p>So, Coq expects an actual proof of type <tt class="docutils literal">IstrueB (filter a)</tt>, but
-what I provide there is type <tt class="docutils literal">Prop</tt>.</p>
+<span class="s2">&quot;A -&gt; Prop&quot;</span>).</blockquote></div></div></small></span></pre><p>So, Coq expects an actual proof of type <span class="docutils literal">IstrueB (filter a)</span>, but
+what I provide there is type <span class="docutils literal">Prop</span>.</p>
 <p>Could you shed some lights on how to provide such type? thank you.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>First of all, there is the standard <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Datatypes.html#is_true">is_true</a>
 wrapper. You can use it explicitly like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | is_true (filter a) }.</span></span></pre><p>or implicitly using the coercion mechanism:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">is_true</span> : bool &gt;-&gt; <span class="kt">Sortclass</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | filter a }.</span></span></pre><p>Next, non-dependent pattern-mathching on <tt class="docutils literal">filter a</tt> doesn't
-propagate <tt class="docutils literal">filter a = true</tt> into the <tt class="docutils literal">true</tt> branch. You have at
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">subsetA</span> : <span class="kt">Set</span> := { a : A | filter a }.</span></span></pre><p>Next, non-dependent pattern-mathching on <span class="docutils literal">filter a</span> doesn't
+propagate <span class="docutils literal">filter a = true</span> into the <span class="docutils literal">true</span> branch. You have at
 least three options:</p>
 <ol class="arabic simple">
-<li>Use tactics to build your <tt class="docutils literal">cast</tt> function:</li>
+<li><p>Use tactics to build your <span class="docutils literal">cast</span> function:</p></li>
 </ol>
 <blockquote>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-how-to-construct-an-element-of-sig-type-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-how-to-construct-an-element-of-sig-type-v-chk1"><span class="kn">Definition</span> <span class="nf">cast</span> (<span class="nv">a</span> : A) : option subsetA.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option subsetA</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -77,7 +74,7 @@ least three options:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-how-to-construct-an-element-of-sig-type-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-how-to-construct-an-element-of-sig-type-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>filter a = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">option subsetA</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> None.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></blockquote>
 <ol class="arabic" start="2">
-<li><p class="first">Use dependent pattern-matching explicitly (search for &quot;convoy
+<li><p>Use dependent pattern-matching explicitly (search for &quot;convoy
 pattern&quot; on Stackoverflow or in <a class="reference external" href="http://adam.chlipala.net/cpdt/">CDPT</a>):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">cast&#39;</span> (<span class="nv">a</span> : A) : option subsetA :=
   <span class="kr">match</span> filter a <span class="kr">as</span> fa
@@ -86,7 +83,7 @@ pattern&quot; on Stackoverflow or in <a class="reference external" href="http://
   | true =&gt; <span class="kr">fun</span> <span class="nv">prf</span> =&gt; Some (exist _ a prf)
   | false =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; None
   <span class="kr">end</span> eq_refl.</span></span></pre></li>
-<li><p class="first">Use the Program facilities:</p>
+<li><p>Use the Program facilities:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Definition</span> <span class="nf">cast&#39;&#39;</span> (<span class="nv">a</span> : A) : option subsetA :=
@@ -96,9 +93,9 @@ pattern&quot; on Stackoverflow or in <a class="reference external" href="http://
   <span class="kr">end</span>.</span></span></pre></li>
 </ol>
 <hr class="docutils" />
-<p><strong>A:</strong> There is also <tt class="docutils literal">Is_true</tt> in <tt class="docutils literal">Bool</tt>.</p>
+<p><strong>A:</strong> There is also <span class="docutils literal">Is_true</span> in <span class="docutils literal">Bool</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

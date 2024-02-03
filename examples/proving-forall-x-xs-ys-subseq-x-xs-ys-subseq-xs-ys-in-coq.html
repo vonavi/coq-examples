@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving forall x xs ys, subseq (x :: xs) ys -&gt; subseq xs ys in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq">
-<h1 class="title">Proving <tt class="docutils literal">forall x xs ys, subseq (x :: xs) ys <span class="pre">-&gt;</span> subseq xs ys</tt> in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/54378236">https://stackoverflow.com/q/54378236</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq">
+<h1 class="title">Proving <span class="docutils literal">forall x xs ys, subseq (x :: xs) ys <span class="pre">-&gt;</span> subseq xs ys</span> in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/54378236">https://stackoverflow.com/q/54378236</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have the following definition</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">subseq</span> : list nat -&gt; list nat -&gt; <span class="kt">Prop</span> :=
 | empty_subseq : subseq [] []
@@ -34,36 +31,36 @@
 | add_both : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">xs</span> <span class="nv">ys</span>, subseq xs ys -&gt; subseq (x :: xs) (y :: ys).</span></span></pre><p>Using this, I wish to prove the following lemma</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">del_l_preserves_subseq</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">xs</span> <span class="nv">ys</span>,
     subseq (x :: xs) ys -&gt; subseq xs ys.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : nat) (<span class="nv">xs</span> <span class="nv">ys</span> : list nat),
-subseq (x :: xs) ys -&gt; subseq xs ys</div></blockquote></div></div></small></span></pre><p>So, I tried looking at the proof of <tt class="docutils literal">subseq (x :: xs) ys</tt> by doing
-<tt class="docutils literal">destruct H</tt>.</p>
+subseq (x :: xs) ys -&gt; subseq xs ys</div></blockquote></div></div></small></span></pre><p>So, I tried looking at the proof of <span class="docutils literal">subseq (x :: xs) ys</span> by doing
+<span class="docutils literal">destruct H</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : nat) (<span class="nv">xs</span> <span class="nv">ys</span> : list nat),
 subseq (x :: xs) ys -&gt; subseq xs ys</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs, ys</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: xs) ys</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq xs ys</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk3"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq xs []</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs0, ys</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq xs0 ys</span></span></span><br><span><var>IHsubseq</var><span class="hyp-type"><b>: </b><span>subseq xs ys</span></span></span><br></div><label class="goal-separator" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk4"><hr></label><div class="goal-conclusion">subseq xs (y :: ys)</div></blockquote><input class="alectryon-extra-goal-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>x0, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs0, ys</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq xs0 ys</span></span></span><br><span><var>IHsubseq</var><span class="hyp-type"><b>: </b><span>subseq xs ys</span></span></span><br></div><label class="goal-separator" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk5"><hr></label><div class="goal-conclusion">subseq xs (y :: ys)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Why does the first subgoal ask me to prove <tt class="docutils literal">subseq xs []</tt>? Shouldn't
-the <tt class="docutils literal">destruct</tt> tactic know that the proof cannot be of the form
-<tt class="docutils literal">empty_subseq</tt> since the type contains <tt class="docutils literal">x :: xs</tt> and not <tt class="docutils literal">[]</tt>?</p>
+</span></span></pre><p>Why does the first subgoal ask me to prove <span class="docutils literal">subseq xs []</span>? Shouldn't
+the <span class="docutils literal">destruct</span> tactic know that the proof cannot be of the form
+<span class="docutils literal">empty_subseq</span> since the type contains <span class="docutils literal">x :: xs</span> and not <span class="docutils literal">[]</span>?</p>
 <p>In general how do I prove the lemma that I am trying to prove?</p>
-</div>
-<div class="section" id="answer-li-yao-xia">
-<h1>Answer (Li-yao Xia)</h1>
+</section>
+<section id="answer-li-yao-xia">
+<h2>Answer (Li-yao Xia)</h2>
 <blockquote>
-Shouldn't the <tt class="docutils literal">destruct</tt> tactic know that the proof cannot be of
-the form <tt class="docutils literal">empty_subseq</tt> since the type contains <tt class="docutils literal">x :: xs</tt> and
-not <tt class="docutils literal">[]</tt>?</blockquote>
-<p>In fact, <tt class="docutils literal">destruct</tt> doesn't know that much. It just replaces <tt class="docutils literal">x ::
-xs</tt> and <tt class="docutils literal">xs</tt> with <tt class="docutils literal">[]</tt> and <tt class="docutils literal">[]</tt> in the <tt class="docutils literal">empty_subseq</tt> case.
+<p>Shouldn't the <span class="docutils literal">destruct</span> tactic know that the proof cannot be of
+the form <span class="docutils literal">empty_subseq</span> since the type contains <span class="docutils literal">x :: xs</span> and
+not <span class="docutils literal">[]</span>?</p>
+</blockquote>
+<p>In fact, <span class="docutils literal">destruct</span> doesn't know that much. It just replaces <span class="docutils literal">x :: xs</span> and <span class="docutils literal">xs</span> with <span class="docutils literal">[]</span> and <span class="docutils literal">[]</span> in the <span class="docutils literal">empty_subseq</span> case.
 In particular, this frequently leads to lost information in the
 context. Better alternatives:</p>
 <ul class="simple">
-<li>Use <tt class="docutils literal">inversion</tt> instead of <tt class="docutils literal">destruct</tt>.</li>
-<li>Use <tt class="docutils literal">remember</tt> to ensure both type indices of <tt class="docutils literal">subseq</tt> are
-variables before <tt class="docutils literal">destruct</tt>. (<tt class="docutils literal">remember (x :: xs) as xxs in H.</tt>)
+<li><p>Use <span class="docutils literal">inversion</span> instead of <span class="docutils literal">destruct</span>.</p></li>
+<li><p>Use <span class="docutils literal">remember</span> to ensure both type indices of <span class="docutils literal">subseq</span> are
+variables before <span class="docutils literal">destruct</span>. (<span class="docutils literal">remember (x :: xs) as xxs in H.</span>)
 This more explicit goal management also works well with
-<tt class="docutils literal">induction</tt>.</li>
+<span class="docutils literal">induction</span>.</p></li>
 </ul>
-</div>
-<div class="section" id="answer-agnishom-chattopadhyay">
-<h1>Answer (Agnishom Chattopadhyay)</h1>
+</section>
+<section id="answer-agnishom-chattopadhyay">
+<h2>Answer (Agnishom Chattopadhyay)</h2>
 <p>Li-yao's answer was actually useful. This is a proof of the lemma.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk6"><span class="kn">Lemma</span> <span class="nf">del_l_preserves_subseq</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">xs</span> <span class="nv">ys</span>,
     subseq (x :: xs) ys -&gt; subseq xs ys.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">x</span> : nat) (<span class="nv">xs</span> <span class="nv">ys</span> : list nat),
@@ -79,8 +76,8 @@ subseq (x :: xs) ys -&gt; subseq xs ys</div></blockquote></div></div></small><sp
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk12"><span class="nb">apply</span> IHys&#39; <span class="kr">in</span> H2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ys'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHys'</var><span class="hyp-type"><b>: </b><span>subseq (x :: xs) ys&#39; -&gt; subseq xs ys&#39;</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: xs) (y :: ys&#39;)</span></span></span><br><span><var>y0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs0, ys</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>subseq xs ys&#39;</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>xs0 = x :: xs</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>y0 = y</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>ys = ys&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq xs (y :: ys&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> add_right.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-forall-x-xs-ys-subseq-x-xs-ys-subseq-xs-ys-in-coq-v-chk13">+ <span class="c">(* When [subseq xs ys&#39;] holds *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ys'</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHys'</var><span class="hyp-type"><b>: </b><span>subseq (x :: xs) ys&#39; -&gt; subseq xs ys&#39;</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: xs) (y :: ys&#39;)</span></span></span><br><span><var>x0, y0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>xs0, ys</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>subseq xs ys&#39;</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>x0 = x</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>xs0 = xs</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>y0 = y</span></span></span><br><span><var>H4</var><span class="hyp-type"><b>: </b><span>ys = ys&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq xs (y :: ys&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> add_right.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

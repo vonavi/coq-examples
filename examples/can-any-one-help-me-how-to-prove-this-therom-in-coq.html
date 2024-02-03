@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Can any one help me how to prove this theorem in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="can-any-one-help-me-how-to-prove-this-theorem-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="can-any-one-help-me-how-to-prove-this-theorem-in-coq">
 <h1 class="title">Can any one help me how to prove this theorem in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69540976">https://stackoverflow.com/q/69540976</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/69540976">https://stackoverflow.com/q/69540976</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>This is the first part of my code:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">D</span>: <span class="kt">Set</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">x</span>: D.</span><span class="alectryon-wsp">
@@ -37,23 +34,23 @@
 </span></span></pre><p>I have worked on it for quite a long time, but it seems that I cannot
 use the left part of the implication well.</p>
 <p>Can anyone help me figure out how to write the rest of of the code?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Your question is a bit vague, as you don't specify what <tt class="docutils literal">D</tt> and
-<tt class="docutils literal">R</tt> are, and where you are stuck in your proof. Try providing a
-minimal working example, with an explicit <tt class="docutils literal">fail</tt> tactic for where
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Your question is a bit vague, as you don't specify what <span class="docutils literal">D</span> and
+<span class="docutils literal">R</span> are, and where you are stuck in your proof. Try providing a
+minimal working example, with an explicit <span class="docutils literal">fail</span> tactic for where
 you're stuck in the proof.</p>
 <p>In <em>classical logic</em> (the one you're use to in maths), as you have the
 <em>excluded middle</em> rule, you can always do a case analysis on whether
 something is true or false. In vanilla Coq, built for <em>intuitionistic
 logic</em>, it's not the case. Your result is actually <em>not provable</em> if
-the predicate <tt class="docutils literal">R</tt> is not decidable (if it's not either true or false
-on every input : <tt class="docutils literal">forall (x:D), R x \/ ~R x</tt>), if the type <tt class="docutils literal">D</tt> is
+the predicate <span class="docutils literal">R</span> is not decidable (if it's not either true or false
+on every input : <span class="docutils literal">forall (x:D), R x \/ ~R x</span>), if the type <span class="docutils literal">D</span> is
 not empty.</p>
-<p>Try adding the decidability of <tt class="docutils literal">R</tt> as an hypothesis and reprove it.
+<p>Try adding the decidability of <span class="docutils literal">R</span> as an hypothesis and reprove it.
 It should follow more or less this structure (the key being the case
-analysis on whether <tt class="docutils literal">(R y)</tt> is true or false):</p>
+analysis on whether <span class="docutils literal">(R y)</span> is true or false):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="can-any-one-help-me-how-to-prove-this-therom-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="can-any-one-help-me-how-to-prove-this-therom-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">yourGoal</span> :
   (<span class="kr">forall</span> <span class="nv">x</span>, R x \/ ~ R x) -&gt; <span class="c">(* Decidability of R *)</span>
   ~ (<span class="kr">exists</span> <span class="nv">x</span>, ~ R x) -&gt; <span class="kr">forall</span> <span class="nv">y</span>, R y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : D, R x \/ ~ R x) -&gt;
@@ -75,8 +72,8 @@ analysis on whether <tt class="docutils literal">(R y)</tt> is true or false):</
 in Software foundations, which is a great resource to learn Coq and
 logic:
 <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/lf-current/Logic.html#not_exists_dist">https://softwarefoundations.cis.upenn.edu/lf-current/Logic.html#not_exists_dist</a></p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

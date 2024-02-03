@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using dependent induction tactic to keep information while doing induction</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,54 +14,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction">
-<h1 class="title">Using <tt class="docutils literal">dependent induction</tt> tactic to keep information while doing induction</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34088140">https://stackoverflow.com/q/34088140</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="using-dependent-induction-tactic-to-keep-information-while-doing-induction">
+<h1 class="title">Using <span class="docutils literal">dependent induction</span> tactic to keep information while doing induction</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34088140">https://stackoverflow.com/q/34088140</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have just run into the issue of the Coq <tt class="docutils literal">induction</tt> discarding
+<section id="question">
+<h2>Question</h2>
+<p>I have just run into the issue of the Coq <span class="docutils literal">induction</span> discarding
 information about constructed terms while reading a proof from <a class="reference external" href="https://www.cis.upenn.edu/~bcpierce/sf/current/Equiv.html">here</a>.</p>
 <p>The authors used something like:</p>
-<pre class="code coq literal-block">
-<span class="nb">remember</span> <span class="o">(</span><span class="n">WHILE</span> <span class="n">b</span> <span class="n">DO</span> <span class="n">c</span> <span class="n">END</span><span class="o">)</span> <span class="kr">as</span> <span class="n">cw</span> <span class="nb">eqn</span><span class="o">:</span><span class="n">Heqcw</span><span class="o">.</span>
-</pre>
-<p>to rewrite a hypothesis <tt class="docutils literal">H</tt> before the actual induction <tt class="docutils literal">induction
-H</tt>. I really don't like the idea of having to introduce a trivial
+<pre class="code coq literal-block"><code><span class="nb">remember</span> <span class="o">(</span><span class="n">WHILE</span> <span class="n">b</span> <span class="n">DO</span> <span class="n">c</span> <span class="n">END</span><span class="o">)</span> <span class="kr">as</span> <span class="n">cw</span> <span class="nb">eqn</span><span class="o">:</span><span class="n">Heqcw</span><span class="o">.</span></code></pre>
+<p>to rewrite a hypothesis <span class="docutils literal">H</span> before the actual induction <span class="docutils literal">induction H</span>. I really don't like the idea of having to introduce a trivial
 equality as it looks like black magic.</p>
-<p>Some search here in SO shows that actually the <tt class="docutils literal">remember</tt> trick is
+<p>Some search here in SO shows that actually the <span class="docutils literal">remember</span> trick is
 necessary. One answer <a class="reference external" href="https://stackoverflow.com/a/4899467/683218">here</a>, however, points out
-that the new <tt class="docutils literal">dependent induction</tt> can be used to avoid the
-<tt class="docutils literal">remember</tt> trick. This is nice, but the <tt class="docutils literal">dependent induction</tt>
+that the new <span class="docutils literal">dependent induction</span> can be used to avoid the
+<span class="docutils literal">remember</span> trick. This is nice, but the <span class="docutils literal">dependent induction</span>
 itself now seems a bit magical.</p>
-<p>I have a hard time trying to understand how <tt class="docutils literal">dependent induction</tt>
+<p>I have a hard time trying to understand how <span class="docutils literal">dependent induction</span>
 works. The <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#hevea_tactic78">documentation</a>
-gives an example where <tt class="docutils literal">dependent induction</tt> is required:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk0"><span class="kn">Lemma</span> <span class="nf">le_minus</span> : <span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span></div></blockquote></div></div></small></span></pre><p>I can verify how <tt class="docutils literal">induction</tt> fails and <tt class="docutils literal">dependent induction</tt> works
-in this case. But I can't use the <tt class="docutils literal">remember</tt> trick to replicate the
-<tt class="docutils literal">dependent induction</tt> result.</p>
-<p>What I tried so far to mimic the <tt class="docutils literal">remember</tt> trick is:</p>
+gives an example where <span class="docutils literal">dependent induction</span> is required:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk0"><span class="kn">Lemma</span> <span class="nf">le_minus</span> : <span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span></div></blockquote></div></div></small></span></pre><p>I can verify how <span class="docutils literal">induction</span> fails and <span class="docutils literal">dependent induction</span> works
+in this case. But I can't use the <span class="docutils literal">remember</span> trick to replicate the
+<span class="docutils literal">dependent induction</span> result.</p>
+<p>What I tried so far to mimic the <span class="docutils literal">remember</span> trick is:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Equality.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk1"><span class="kn">Lemma</span> <span class="nf">le_minus</span> : <span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk3"><span class="nb">intros</span> n H. <span class="c">(* dependent induction H works*)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n &lt; <span class="mi">1</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk4"><span class="nb">remember</span> (n &lt; <span class="mi">1</span>) <span class="kr">as</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>HeqH0</var><span class="hyp-type"><b>: </b><span>H0 = (n &lt; <span class="mi">1</span>)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>H0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk5"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Not an inductive product.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>HeqH0</var><span class="hyp-type"><b>: </b><span>H0 = (n &lt; <span class="mi">1</span>)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>H0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small></span></pre><p>But this doesn't work. Anyone can explain how <tt class="docutils literal">dependent induction</tt>
-works here in terms of the <tt class="docutils literal">remember</tt>-ing?</p>
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk4"><span class="nb">remember</span> (n &lt; <span class="mi">1</span>) <span class="kr">as</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>HeqH0</var><span class="hyp-type"><b>: </b><span>H0 = (n &lt; <span class="mi">1</span>)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>H0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk5"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Not an inductive product.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>HeqH0</var><span class="hyp-type"><b>: </b><span>H0 = (n &lt; <span class="mi">1</span>)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>H0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small></span></pre><p>But this doesn't work. Anyone can explain how <span class="docutils literal">dependent induction</span>
+works here in terms of the <span class="docutils literal">remember</span>-ing?</p>
 <hr class="docutils" />
 <p><strong>A:</strong> As indicated in the documentation, dependent induction is
-defined in <tt class="docutils literal">Coq.Program.Equality</tt>. You can <a class="reference external" href="https://coq.inria.fr/distrib/current/stdlib/Coq.Program.Equality.html">dig through its guts</a>
+defined in <span class="docutils literal">Coq.Program.Equality</span>. You can <a class="reference external" href="https://coq.inria.fr/distrib/current/stdlib/Coq.Program.Equality.html">dig through its guts</a>
 to see how it works.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You can do</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Equality.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -79,7 +73,7 @@ words, doing induction over the &quot;less than&quot; relation instructs Coq to
 try to prove something about a generic upper bound, as opposed to the
 specific one you're considering (1).</p>
 <p>Notice that it is always possible to prove such goals without
-<tt class="docutils literal">remember</tt> or <tt class="docutils literal">dependent induction</tt>, by generalizing your result a
+<span class="docutils literal">remember</span> or <span class="docutils literal">dependent induction</span>, by generalizing your result a
 little bit:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk11"><span class="kn">Lemma</span> <span class="nf">le_minus_aux</span> :
   <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span>, n &lt; m -&gt;
@@ -120,8 +114,8 @@ n &lt; m -&gt; <span class="kr">match</span> m <span class="kr">with</span>
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk19"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n &lt; <span class="mi">1</span> -&gt; n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-induction-tactic-to-keep-information-while-doing-induction-v-chk1a"><span class="nb">intros</span> n H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n &lt; <span class="mi">1</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> (le_minus_aux n <span class="mi">1</span> H).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

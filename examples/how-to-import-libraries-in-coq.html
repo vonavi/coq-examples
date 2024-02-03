@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to import libraries in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,43 +14,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-import-libraries-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-import-libraries-in-coq">
 <h1 class="title">How to import libraries in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46027014">https://stackoverflow.com/q/46027014</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46027014">https://stackoverflow.com/q/46027014</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I want to use <tt class="docutils literal">&amp;&amp;</tt> as infix form of <tt class="docutils literal">andb</tt> in Coq. Official documentation tells me <tt class="docutils literal">&amp;&amp;</tt> is defined in <tt class="docutils literal">Coq.Init.Datatypes</tt> module. I tried this:</p>
+<section id="question">
+<h2>Question</h2>
+<p>I want to use <span class="docutils literal">&amp;&amp;</span> as infix form of <span class="docutils literal">andb</span> in Coq. Official documentation tells me <span class="docutils literal">&amp;&amp;</span> is defined in <span class="docutils literal">Coq.Init.Datatypes</span> module. I tried this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> Coq.Init.Datatypes.</span></span></pre><p>Still Coq gives error:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-import-libraries-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Unknown interpretation <span class="kr">for</span> notation <span class="s2">&quot;_ &amp;&amp; _&quot;</span>.</blockquote></div></div></small></span></pre><p>What is the correct way to include Std library in Coq?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can use the <tt class="docutils literal">Locate</tt> command to get some information on this:</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can use the <span class="docutils literal">Locate</span> command to get some information on this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-import-libraries-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-import-libraries-in-coq-v-chk1"><span class="kn">Locate</span> <span class="s2">&quot;&amp;&amp;&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;x &amp;&amp; y&quot;</span> := (andb x y) : bool_scope</blockquote></div></div></small></span></pre><p>Here is its output:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-import-libraries-in-coq-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;x &amp;&amp; y&quot;</span> := (andb x y) : bool_scope</blockquote></div></div></small></span></pre><p>The <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual014.html#scopes">manual</a>
 says that</p>
 <blockquote>
-The initial state of Coq declares three interpretation scopes and
+<p>The initial state of Coq declares three interpretation scopes and
 no lonely notations. These scopes, in opening order, are
-<tt class="docutils literal">core_scope</tt>, <tt class="docutils literal">type_scope</tt> and <tt class="docutils literal">nat_scope</tt>.</blockquote>
-<p>As you can see, <tt class="docutils literal">bool_scope</tt> where the <tt class="docutils literal">&amp;&amp;</tt> notation lives isn't
+<span class="docutils literal">core_scope</span>, <span class="docutils literal">type_scope</span> and <span class="docutils literal">nat_scope</span>.</p>
+</blockquote>
+<p>As you can see, <span class="docutils literal">bool_scope</span> where the <span class="docutils literal">&amp;&amp;</span> notation lives isn't
 open by default.</p>
 <p>You can either specify the scope explicitly:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-import-libraries-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-import-libraries-in-coq-v-chk3"><span class="kn">Check</span> (true &amp;&amp; false) % bool.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">(true &amp;&amp; false)%bool
      : bool</blockquote></div></div></small></span></pre><p>or open it like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> bool_scope.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-import-libraries-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-import-libraries-in-coq-v-chk4"><span class="kn">Check</span> true &amp;&amp; false.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">true &amp;&amp; false
-     : bool</blockquote></div></div></small></span></pre></div>
+     : bool</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

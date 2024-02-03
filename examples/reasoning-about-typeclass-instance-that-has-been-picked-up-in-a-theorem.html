@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Reasoning about typeclass instance that has been picked up in a theorem?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem">
+<div class="alectryon-root alectryon-centered"><main id="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem">
 <h1 class="title">Reasoning about typeclass instance that has been picked up in a theorem?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50889650">https://stackoverflow.com/q/50889650</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/50889650">https://stackoverflow.com/q/50889650</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Action</span> (<span class="nv">Actor</span>: <span class="kt">Type</span>) (<span class="nv">Acted</span>: <span class="kt">Type</span>) :=
   {
   act : Actor -&gt; Acted -&gt; Acted;
@@ -52,20 +49,20 @@ act n l = (n :: l)%list</div></blockquote></div></div></small><span class="alect
 <span class="sd">      If I remove this, this unfold works **)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chk6"><span class="nb">unfold</span> natListAction.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">natListAction <span class="kr">is</span> opaque.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> (<span class="nv">act</span>, _) := natListAction <span class="kr">in</span> act) n l =
 (n :: l)%list</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>What I actually want is this: because I know that <tt class="docutils literal">act</tt> resolves to
-<tt class="docutils literal">natListAction</tt>, I know that <tt class="docutils literal">act = cons</tt>. Hence, the lemma should
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>What I actually want is this: because I know that <span class="docutils literal">act</span> resolves to
+<span class="docutils literal">natListAction</span>, I know that <span class="docutils literal">act = cons</span>. Hence, the lemma should
 go through.</p>
-<p>If I do not have the <tt class="docutils literal">someProof</tt> in my <tt class="docutils literal">Action</tt> class, then I can
-<tt class="docutils literal">unfold natListAction</tt> and stuff works. But now, I am unable to do
+<p>If I do not have the <span class="docutils literal">someProof</span> in my <span class="docutils literal">Action</span> class, then I can
+<span class="docutils literal">unfold natListAction</span> and stuff works. But now, I am unable to do
 so.</p>
-<p>However, how do I convince coq that <tt class="docutils literal">act = cons</tt> in this case?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<p>However, how do I convince coq that <span class="docutils literal">act = cons</span> in this case?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>I found the answer on another SO thread: <a class="reference external" href="https://stackoverflow.com/questions/24111816/coq-unfolding-class-instances">Coq: unfolding typeclass
 instances</a>.</p>
-<p>Ending the <tt class="docutils literal">Proof</tt> section with a <tt class="docutils literal">Qed</tt> makes it opaque. Instead,
-end the proof with a <tt class="docutils literal">Defined</tt> and it will go through.</p>
+<p>Ending the <span class="docutils literal">Proof</span> section with a <span class="docutils literal">Qed</span> makes it opaque. Instead,
+end the proof with a <span class="docutils literal">Defined</span> and it will go through.</p>
 <p>For the sake of completeness, here is the final proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Action</span> (<span class="nv">Actor</span>: <span class="kt">Type</span>) (<span class="nv">Acted</span>: <span class="kt">Type</span>) :=
   {
@@ -90,19 +87,18 @@ act n l = (n :: l)%list</div></blockquote></div></div></small><span class="alect
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chkb"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">act n l = (n :: l)%list</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chkc"><span class="nb">unfold</span> act.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">let</span> (<span class="nv">act</span>, _) := natListAction <span class="kr">in</span> act) n l =
 (n :: l)%list</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-typeclass-instance-that-has-been-picked-up-in-a-theorem-v-chkd"><span class="nb">unfold</span> natListAction.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(n :: l)%list = (n :: l)%list</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
-<p><strong>A:</strong> Observe that <tt class="docutils literal">reflexivity</tt> alone is enough to do the proof.</p>
-<p><strong>Q:</strong> ah, nice. Because <tt class="docutils literal">reflexivity</tt> simplifies things?</p>
-<p><strong>A:</strong> Correct. <tt class="docutils literal">reflexivity</tt> is a pretty complex tactic with <a class="reference external" href="https://stackoverflow.com/q/46227271/2747511">lots
+<p><strong>A:</strong> Observe that <span class="docutils literal">reflexivity</span> alone is enough to do the proof.</p>
+<p><strong>Q:</strong> ah, nice. Because <span class="docutils literal">reflexivity</span> simplifies things?</p>
+<p><strong>A:</strong> Correct. <span class="docutils literal">reflexivity</span> is a pretty complex tactic with <a class="reference external" href="https://stackoverflow.com/q/46227271/2747511">lots
 of fallbacks</a>. So it
-can do <tt class="docutils literal">intros</tt> and the rest of it follows by computation, which
-includes unfoldings a.k.a. <tt class="docutils literal">delta</tt> reduction.</p>
-<p><strong>A:</strong> Technically, the reason <tt class="docutils literal">reflexivity</tt> can solve this is
-because (a) <tt class="docutils literal">reflexivity</tt> does <tt class="docutils literal">intros</tt>, and (b), the term <tt class="docutils literal">fun n
-l =&gt; eq_refl</tt> typechecks as a proof of your theorem. It is not that
-<tt class="docutils literal">reflexivity</tt> is doing <tt class="docutils literal">delta</tt> reduction here, but that judgmental
+can do <span class="docutils literal">intros</span> and the rest of it follows by computation, which
+includes unfoldings a.k.a. <span class="docutils literal">delta</span> reduction.</p>
+<p><strong>A:</strong> Technically, the reason <span class="docutils literal">reflexivity</span> can solve this is
+because (a) <span class="docutils literal">reflexivity</span> does <span class="docutils literal">intros</span>, and (b), the term <span class="docutils literal">fun n l =&gt; eq_refl</span> typechecks as a proof of your theorem. It is not that
+<span class="docutils literal">reflexivity</span> is doing <span class="docutils literal">delta</span> reduction here, but that judgmental
 equality is modulo delta.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

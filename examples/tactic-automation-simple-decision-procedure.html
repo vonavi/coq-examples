@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tactic automation: simple decision procedure</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="tactic-automation-simple-decision-procedure">
+<div class="alectryon-root alectryon-centered"><main id="tactic-automation-simple-decision-procedure">
 <h1 class="title">Tactic automation: simple decision procedure</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47126795">https://stackoverflow.com/q/47126795</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47126795">https://stackoverflow.com/q/47126795</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to automate a decision procedure for whether an ASCII
 character is whitespace or not. Here is what I currently have.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Ascii String.</span><span class="alectryon-wsp">
@@ -44,11 +41,11 @@ character is whitespace or not. Here is what I currently have.</p>
 {~ (c = <span class="s2">&quot;009&quot;</span>%char \/ c = <span class="s2">&quot; &quot;</span>%char)}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chk4"><span class="nb">right</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>c &lt;&gt; <span class="s2">&quot;009&quot;</span>%char</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>c &lt;&gt; <span class="s2">&quot; &quot;</span>%char</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ (c = <span class="s2">&quot;009&quot;</span>%char \/ c = <span class="s2">&quot; &quot;</span>%char)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span> [H3 | H3]; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>What would be a good approach for making the proof more concise?</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>The proof is almost the most concise it can be! At most what you can
-do is to call a more powerful tactic such as <tt class="docutils literal">intuition</tt>:</p>
+do is to call a more powerful tactic such as <span class="docutils literal">intuition</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chk5"><span class="kn">Definition</span> <span class="nf">isWhitespace</span> (<span class="nv">c</span> : ascii) : {IsWhitespace c} + {not (IsWhitespace c)}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{IsWhitespace c} + {~ IsWhitespace c}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{IsWhitespace c} + {~ IsWhitespace c}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">unfold</span> IsWhitespace;
@@ -59,10 +56,10 @@ do is to call a more powerful tactic such as <tt class="docutils literal">intuit
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chk7"><span class="kn">Definition</span> <span class="nf">isWhitespace</span> (<span class="nv">c</span> : ascii) : {IsWhitespace c} + {not (IsWhitespace c)}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{IsWhitespace c} + {~ IsWhitespace c}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chk8"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{IsWhitespace c} + {~ IsWhitespace c}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">compute</span>; <span class="nb">case</span> (ascii_eq_dec c <span class="s2">&quot;009&quot;</span>%char), (ascii_eq_dec c <span class="s2">&quot; &quot;</span>%char); <span class="bp">tauto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We use <tt class="docutils literal">compute</tt> to unfold everything here.</p>
-</div>
-<div class="section" id="answer-jason-gross">
-<h1>Answer (Jason Gross)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We use <span class="docutils literal">compute</span> to unfold everything here.</p>
+</section>
+<section id="answer-jason-gross">
+<h2>Answer (Jason Gross)</h2>
 <p>Frequently, making a proof more automated involves writing a bit more
 code than you started with, so that you can handle more cases. Taking
 this approach, I adapted some boilerplate from <a class="reference external" href="https://github.com/mit-plv/fiat-crypto/blob/5da42750e1349ce761107902ef3039195adac62c/src/Util/Decidable.v">fiat-crypto</a>:</p>
@@ -77,33 +74,32 @@ this approach, I adapted some boilerplate from <a class="reference external" hre
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>HA</var><span class="hyp-type"><b>: </b><span>Decidable A</span></span></span><br><span><var>HB</var><span class="hyp-type"><b>: </b><span>Decidable B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Decidable (A \/ B)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chkb"><span class="nb">hnf</span> <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>HA</var><span class="hyp-type"><b>: </b><span>{A} + {~ A}</span></span></span><br><span><var>HB</var><span class="hyp-type"><b>: </b><span>{B} + {~ B}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{A \/ B} + {~ (A \/ B)}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">tauto</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Global Instance</span> <span class="nf">dec_eq_ascii</span> : DecidableRel (@eq ascii) := ascii_dec.</span></span></pre><p>With this boilerplate, your proof becomes</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IsWhitespace</span> (<span class="nv">c</span> : ascii) := (c = <span class="s2">&quot;009&quot;</span>%char) \/ (c = <span class="s2">&quot;032&quot;</span>%char).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">isWhitespace</span> (<span class="nv">c</span> : ascii) : Decidable (IsWhitespace c) := _.</span></span></pre><p>which is about as short as a proof can be. (Note that <tt class="docutils literal">:= _</tt> is the
-same as <tt class="docutils literal">. Proof. exact _. Defined.</tt>, which itself is the same as
-<tt class="docutils literal">. Proof. typeclasses eauto. Defined.</tt>.)</p>
-<p>Note that this is fairly similar to ejgallego's proof, since <tt class="docutils literal">tauto</tt>
-is the same as <tt class="docutils literal">intuition fail</tt>.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">isWhitespace</span> (<span class="nv">c</span> : ascii) : Decidable (IsWhitespace c) := _.</span></span></pre><p>which is about as short as a proof can be. (Note that <span class="docutils literal">:= _</span> is the
+same as <span class="docutils literal">. Proof. exact _. Defined.</span>, which itself is the same as
+<span class="docutils literal">. Proof. typeclasses eauto. Defined.</span>.)</p>
+<p>Note that this is fairly similar to ejgallego's proof, since <span class="docutils literal">tauto</span>
+is the same as <span class="docutils literal">intuition fail</span>.</p>
 <p>Note also that <a class="reference external" href="https://github.com/mit-plv/fiat-crypto/blob/5da42750e1349ce761107902ef3039195adac62c/src/Util/Decidable.v">the original boilerplate in fiat-crypto</a>
-is much longer, but also more powerful than simply using <tt class="docutils literal">hnf in *;
-tauto</tt>, and handles a few dozen different sorts of decidable
+is much longer, but also more powerful than simply using <span class="docutils literal">hnf in *; tauto</span>, and handles a few dozen different sorts of decidable
 propositions.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> This is super interesting! Would you mind explaining the
-<tt class="docutils literal">Arguments</tt> aspect? And why use <tt class="docutils literal">Notation</tt> instead of
-<tt class="docutils literal">Definition</tt>?</p>
+<span class="docutils literal">Arguments</span> aspect? And why use <span class="docutils literal">Notation</span> instead of
+<span class="docutils literal">Definition</span>?</p>
 <p><strong>Q:</strong> Also... This approach looks a lot like the
-<tt class="docutils literal">Coq.Structures.Equalities</tt> part of the standard library, is there
+<span class="docutils literal">Coq.Structures.Equalities</span> part of the standard library, is there
 any particular reason not to use it?</p>
-<p><strong>A:</strong> The <tt class="docutils literal">Arguments</tt> bit lets you write <tt class="docutils literal">dec (x = y)</tt> to mean
-&quot;find an instance of decidability of <tt class="docutils literal">x = y</tt> by typeclass resolution
-and use that here&quot;. Without it, <tt class="docutils literal">dec (x = y)</tt> is a type error,
-because <tt class="docutils literal">dec</tt> means &quot;find the first instance of decidability of any
+<p><strong>A:</strong> The <span class="docutils literal">Arguments</span> bit lets you write <span class="docutils literal">dec (x = y)</span> to mean
+&quot;find an instance of decidability of <span class="docutils literal">x = y</span> by typeclass resolution
+and use that here&quot;. Without it, <span class="docutils literal">dec (x = y)</span> is a type error,
+because <span class="docutils literal">dec</span> means &quot;find the first instance of decidability of any
 proposition, by typeclass resolution, and use that here&quot;.</p>
-</div>
-<div class="section" id="answer-ejgallego-1">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego-1">
+<h2>Answer (ejgallego)</h2>
 <p>Following the spirit of Jason's answer, we can of course use some
 libraries dealing with decidable equality to arrive at your result:</p>
-<p>This will declare <tt class="docutils literal">ascii</tt> as a type with decidable equality:</p>
+<p>This will declare <span class="docutils literal">ascii</span> as a type with decidable equality:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Ascii String ssreflect ssrfun ssrbool.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chkc"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> eqtype ssrnat.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ + _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
 [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ - _&quot;</span> was already used <span class="kr">in</span> scope nat_scope.
@@ -129,8 +125,8 @@ propositions so there is nothing to prove:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chkf"><span class="kn">Lemma</span> <span class="nf">whitespaceP</span> <span class="nv">c</span> : reflect (IsWhitespace c) (IsWhitespaceb c).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">reflect (IsWhitespace c) (IsWhitespaceb c)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="tactic-automation-simple-decision-procedure-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="tactic-automation-simple-decision-procedure-v-chk10"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">reflect (IsWhitespace c) (IsWhitespaceb c)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span>: pred2P.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Some more automation can be used of course.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

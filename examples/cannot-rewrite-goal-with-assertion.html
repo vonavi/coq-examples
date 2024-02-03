@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cannot rewrite goal with assertion?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="cannot-rewrite-goal-with-assertion">
+<div class="alectryon-root alectryon-centered"><main id="cannot-rewrite-goal-with-assertion">
 <h1 class="title">Cannot rewrite goal with assertion?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70490662">https://stackoverflow.com/q/70490662</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/70490662">https://stackoverflow.com/q/70490662</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I am not sure I understand why in some cases rewriting <tt class="docutils literal">H</tt> works,
+<section id="question">
+<h2>Question</h2>
+<p>I am not sure I understand why in some cases rewriting <span class="docutils literal">H</span> works,
 and in some it doesnt. Here for example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> PeanoNat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -51,13 +48,13 @@ nat -&gt; n + n * p + m + m * p = n + m + n * p + m * p</div></blockquote></div>
   n + n * p + m + m * p = n + m + n * p + m * p</blockquote></div></div></small></span></pre><p>But Coq complains:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="cannot-rewrite-goal-with-assertion-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Found no subterm matching <span class="s2">&quot;n * p + m&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div></div></small></span></pre><p>I clearly see one, on the left side. When using induction, rewriting
-with <tt class="docutils literal">IHn</tt> doesn't pose any problem, even if there are some other
+with <span class="docutils literal">IHn</span> doesn't pose any problem, even if there are some other
 terms in front of rewriteable expression.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can &quot;see&quot; a subterm <tt class="docutils literal">n * p + m</tt>, but this is misleading: Coq
-doesn't show you the implicit parentheses around all the <tt class="docutils literal">+</tt>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can &quot;see&quot; a subterm <span class="docutils literal">n * p + m</span>, but this is misleading: Coq
+doesn't show you the implicit parentheses around all the <span class="docutils literal">+</span>
 expressions.</p>
 <p>Use</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kt">Set</span> Printing Parentheses.</span></span></pre><p>to make them visible. Your proof state is really:</p>
@@ -67,14 +64,13 @@ expressions.</p>
   H : ((n * p) + m) = (m + (n * p))
   ============================
   (((n + (n * p)) + m) + (m * p)) =
-  (((n + m) + (n * p)) + (m * p))</blockquote></div></div></small></span></pre><p>Coq was right that there is no subterm that matches <tt class="docutils literal">H</tt>'s left hand
-side expression <tt class="docutils literal">((n * p) + m)</tt>. You need to rewrite using some
+  (((n + m) + (n * p)) + (m * p))</blockquote></div></div></small></span></pre><p>Coq was right that there is no subterm that matches <span class="docutils literal">H</span>'s left hand
+side expression <span class="docutils literal">((n * p) + m)</span>. You need to rewrite using some
 associativity lemmas to shift the parentheses around.</p>
-<p>Also, <tt class="docutils literal">add_assoc2</tt> is not a good name for a lemma <tt class="docutils literal">forall n m :
-nat, n + m = m + n</tt>. This is a <strong>commutativity</strong> property, not
+<p>Also, <span class="docutils literal">add_assoc2</span> is not a good name for a lemma <span class="docutils literal">forall n m : nat, n + m = m + n</span>. This is a <strong>commutativity</strong> property, not
 associativity.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

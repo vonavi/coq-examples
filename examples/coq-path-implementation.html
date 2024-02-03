@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq path implementation</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,35 +14,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-path-implementation">
-<h1 class="title">Coq <tt class="docutils literal">path</tt> implementation</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47948452">https://stackoverflow.com/q/47948452</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-path-implementation">
+<h1 class="title">Coq <span class="docutils literal">path</span> implementation</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47948452">https://stackoverflow.com/q/47948452</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>This is a follow up to <a class="reference external" href="https://stackoverflow.com/questions/47764368/coq-equality-implementation">Coq equality implementation</a>
 (though this question is self-contained).</p>
-<p>I have a simple inductive type of trees (<tt class="docutils literal">t</tt>) with a fixed set of
-tags (<tt class="docutils literal">arityCode</tt>), each with a fixed number of children. I have a
-type (<tt class="docutils literal">path</tt>) of paths into a tree. I'm trying to implement some
+<p>I have a simple inductive type of trees (<span class="docutils literal">t</span>) with a fixed set of
+tags (<span class="docutils literal">arityCode</span>), each with a fixed number of children. I have a
+type (<span class="docutils literal">path</span>) of paths into a tree. I'm trying to implement some
 manipulations. In particular, I want to be able to move a cursor
 around in a few directions. This seems pretty straightforward, but I'm
 running into a roadblock.</p>
 <p>This is all in the code, but a quick explanation of where I'm stuck:
-To construct a <tt class="docutils literal">there</tt> path, I need to produce a <tt class="docutils literal">path (Vector.nth
-v i)</tt> (a path in one of the children). But the only <tt class="docutils literal">path</tt>
-constructors (<tt class="docutils literal">here</tt> and <tt class="docutils literal">there</tt>) produce a <tt class="docutils literal">path (Node c v)</tt>.
+To construct a <span class="docutils literal">there</span> path, I need to produce a <span class="docutils literal">path (Vector.nth v i)</span> (a path in one of the children). But the only <span class="docutils literal">path</span>
+constructors (<span class="docutils literal">here</span> and <span class="docutils literal">there</span>) produce a <span class="docutils literal">path (Node c v)</span>.
 So in some sense I need to show the compiler that a path
-simultaneously has type <tt class="docutils literal">path (Node c v)</tt> and <tt class="docutils literal">path (Vector.nth v
-i)</tt>, but Coq is not clever enough to compute <tt class="docutils literal">(Vector.nth children
-fin_n)</tt> -&gt; <tt class="docutils literal">Node c v</tt>. How can I convince it that this is okay?</p>
+simultaneously has type <span class="docutils literal">path (Node c v)</span> and <span class="docutils literal">path (Vector.nth v i)</span>, but Coq is not clever enough to compute <span class="docutils literal">(Vector.nth children fin_n)</span> -&gt; <span class="docutils literal">Node c v</span>. How can I convince it that this is okay?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Coq.Bool.Bool.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> bool.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Coq.Strings.String.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Coq.Arith.EqNat.</span><span class="alectryon-wsp">
@@ -148,19 +142,17 @@ The term <span class="s2">&quot;Here ?c@{n0:=n; n:=n0} ?v@{n0:=n; n:=n0}&quot;</
 has type
  <span class="s2">&quot;path (Node ?c@{n0:=n; n:=n0} ?v@{n0:=n; n:=n0})&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
- <span class="s2">&quot;path (Vector.nth children fin_n)&quot;</span>.</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You could define a smart constructor for <tt class="docutils literal">Here</tt> which does not have
-any constraint on the shape of the <tt class="docutils literal">t</tt> value it is applied to:</p>
+ <span class="s2">&quot;path (Vector.nth children fin_n)&quot;</span>.</blockquote></div></div></small></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You could define a smart constructor for <span class="docutils literal">Here</span> which does not have
+any constraint on the shape of the <span class="docutils literal">t</span> value it is applied to:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Here&#39;</span> (<span class="nv">v</span> : t) : path v := <span class="kr">match</span> v <span class="kr">return</span> path v <span class="kr">with</span>
                                          | Node c vs =&gt; Here c vs
                                          <span class="kr">end</span>.</span></span></pre><p>You can then write:</p>
-<pre class="code coq literal-block">
-<span class="kr">let</span> <span class="nv">here</span> <span class="o">:</span> <span class="n">path</span> <span class="o">(</span><span class="n">Vector</span><span class="o">.</span><span class="n">nth</span> <span class="n">children</span> <span class="n">fin_n</span><span class="o">)</span> <span class="o">:=</span> <span class="n">Here'</span> <span class="n">_</span> <span class="kr">in</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">let</span> <span class="nv">here</span> <span class="o">:</span> <span class="n">path</span> <span class="o">(</span><span class="n">Vector</span><span class="o">.</span><span class="n">nth</span> <span class="n">children</span> <span class="n">fin_n</span><span class="o">)</span> <span class="o">:=</span> <span class="n">Here'</span> <span class="n">_</span> <span class="kr">in</span></code></pre>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>What's the difference between Program Fixpoint and Function in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,44 +14,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="what-s-the-difference-between-program-fixpoint-and-function-in-coq">
-<h1 class="title">What's the difference between <tt class="docutils literal">Program Fixpoint</tt> and <tt class="docutils literal">Function</tt> in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44606245">https://stackoverflow.com/q/44606245</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<div class="alectryon-root alectryon-centered"><main id="what-s-the-difference-between-program-fixpoint-and-function-in-coq">
+<h1 class="title">What's the difference between <span class="docutils literal">Program Fixpoint</span> and <span class="docutils literal">Function</span> in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44606245">https://stackoverflow.com/q/44606245</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>They seem to serve similar purposes. The one difference I've noticed
-so far is that while <tt class="docutils literal">Program Fixpoint</tt> will accept a compound
-measure like <tt class="docutils literal">{measure (length l1 + length l2)}</tt>, <tt class="docutils literal">Function</tt> seems
-to reject this and will only allow <tt class="docutils literal">{measure length l1}</tt>.</p>
-<p>Is <tt class="docutils literal">Program Fixpoint</tt> strictly more powerful than <tt class="docutils literal">Function</tt>, or
+so far is that while <span class="docutils literal">Program Fixpoint</span> will accept a compound
+measure like <span class="docutils literal">{measure (length l1 + length l2)}</span>, <span class="docutils literal">Function</span> seems
+to reject this and will only allow <span class="docutils literal">{measure length l1}</span>.</p>
+<p>Is <span class="docutils literal">Program Fixpoint</span> strictly more powerful than <span class="docutils literal">Function</span>, or
 are they better suited for different use cases?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>This may not be a complete list, but it is what I have found so far:</p>
 <ul class="simple">
-<li>As you already mentioned, <tt class="docutils literal">Program Fixpoint</tt> allows the measure to
-look at more than one argument.</li>
-<li><tt class="docutils literal">Function</tt> creates a <tt class="docutils literal">foo_equation</tt> lemma that can be used to
-rewrite calls to <tt class="docutils literal">foo</tt> with its RHS. Very useful to avoid problems
-like <a class="reference external" href="https://stackoverflow.com/q/36329256/946226">Coq simpl for Program Fixpoint</a>.</li>
-<li>In some (simple?) cases, <tt class="docutils literal">Function</tt> can define a <tt class="docutils literal">foo_ind</tt> lemma
+<li><p>As you already mentioned, <span class="docutils literal">Program Fixpoint</span> allows the measure to
+look at more than one argument.</p></li>
+<li><p><span class="docutils literal">Function</span> creates a <span class="docutils literal">foo_equation</span> lemma that can be used to
+rewrite calls to <span class="docutils literal">foo</span> with its RHS. Very useful to avoid problems
+like <a class="reference external" href="https://stackoverflow.com/q/36329256/946226">Coq simpl for Program Fixpoint</a>.</p></li>
+<li><p>In some (simple?) cases, <span class="docutils literal">Function</span> can define a <span class="docutils literal">foo_ind</span> lemma
 to perform induction along the structure of recursive calls of
-<tt class="docutils literal">foo</tt>. Again, very useful to prove things about <tt class="docutils literal">foo</tt> without
-effectively repeating the termination argument in the proof.</li>
-<li><tt class="docutils literal">Program Fixpoint</tt> can be tricked into supporting nested
+<span class="docutils literal">foo</span>. Again, very useful to prove things about <span class="docutils literal">foo</span> without
+effectively repeating the termination argument in the proof.</p></li>
+<li><p><span class="docutils literal">Program Fixpoint</span> can be tricked into supporting nested
 recursion, see <a class="reference external" href="https://stackoverflow.com/a/46859452/946226">https://stackoverflow.com/a/46859452/946226</a>. This is
-also why <tt class="docutils literal">Program Fixpoint</tt> can <a class="reference external" href="https://stackoverflow.com/questions/10292421/error-in-defining-ackermann-in-coq">define the Ackermann</a>
-function when <tt class="docutils literal">Function</tt> cannot.</li>
+also why <span class="docutils literal">Program Fixpoint</span> can <a class="reference external" href="https://stackoverflow.com/questions/10292421/error-in-defining-ackermann-in-coq">define the Ackermann</a>
+function when <span class="docutils literal">Function</span> cannot.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

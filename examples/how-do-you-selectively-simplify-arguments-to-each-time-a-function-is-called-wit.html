@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How do you selectively simplify arguments to each time a function is called, without evaluating the function itself?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-without-evaluating-the-function-itself">
+<div class="alectryon-root alectryon-centered"><main id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-without-evaluating-the-function-itself">
 <h1 class="title">How do you selectively simplify arguments to each time a function is called, without evaluating the function itself?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41404337">https://stackoverflow.com/q/41404337</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/41404337">https://stackoverflow.com/q/41404337</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>To make a contrived but illustrative example,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* fix so simpl will automatically unfold. *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">double</span> := <span class="kr">fix</span> f n := <span class="mi">2</span>*n.</span><span class="alectryon-wsp">
@@ -40,7 +37,7 @@ been put into the correct form.)</p>
   n : nat
   ============================
   S (S (n + S (S (n + <span class="mi">0</span>)))) =
-  S (S (S (n + S (n + <span class="mi">0</span>))))</blockquote></div></div></small></span></pre><p>This converted the outside <tt class="docutils literal">(2 + <span class="pre">...)</span></tt> to <tt class="docutils literal">(S (S <span class="pre">...))</span></tt> as well as
+  S (S (S (n + S (n + <span class="mi">0</span>))))</blockquote></div></div></small></span></pre><p>This converted the outside <span class="docutils literal">(2 + <span class="pre">...)</span></span> to <span class="docutils literal">(S (S <span class="pre">...))</span></span> as well as
 unfolding double.</p>
 <p>I can match one of them by doing:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk3"><span class="kr">match goal with</span> | |- (double <span class="nl">?A</span>) = _ =&gt; <span class="nb">simpl</span> A <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (S (S n)) = <span class="mi">2</span> + double (<span class="mi">1</span> + n)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -54,29 +51,29 @@ get</p>
 
   n : nat
   ============================
-  double (S (S n)) = <span class="mi">2</span> + double (S n)</blockquote></div></div></small></span></pre><p>without having to put a separate pattern for each call to <tt class="docutils literal">double</tt>.</p>
+  double (S (S n)) = <span class="mi">2</span> + double (S n)</blockquote></div></div></small></span></pre><p>without having to put a separate pattern for each call to <span class="docutils literal">double</span>.</p>
 <p>I can simplify except for double itself with</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk6"><span class="nb">remember</span> double <span class="kr">as</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>Heqx</var><span class="hyp-type"><b>: </b><span>x = double</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x (S (S n)) = <span class="mi">2</span> + x (<span class="mi">1</span> + n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk7"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>Heqx</var><span class="hyp-type"><b>: </b><span>x = double</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x (S (S n)) = S (S (x (S n)))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk8"><span class="nb">subst</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (S (S n)) = S (S (double (S n)))</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk9" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   n : nat
   ============================
-  double (S (S n)) = S (S (double (S n)))</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
-<div class="section" id="opaque-transparent-approach">
-<h2>Opaque/Transparent approach</h2>
+  double (S (S n)) = S (S (double (S n)))</blockquote></div></div></small></span></pre></section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
+<section id="opaque-transparent-approach">
+<h3>Opaque/Transparent approach</h3>
 <p>Combining the results of <a class="reference external" href="https://stackoverflow.com/a/39363591/2747511">this answer</a> and <a class="reference external" href="https://stackoverflow.com/a/39363591/2747511">this one</a>, we get the
 following solution:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chka"><span class="kn">Opaque</span> double.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (<span class="mi">2</span> + n) = <span class="mi">2</span> + double (<span class="mi">1</span> + n)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chkb"><span class="nb">simpl</span> (double _).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (S (S n)) = <span class="mi">2</span> + double (S n)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chkc"><span class="kn">Transparent</span> double.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (S (S n)) = <span class="mi">2</span> + double (S n)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>We use the pattern capability of <tt class="docutils literal">simpl</tt> to narrow down its &quot;action
-domain&quot;, and <tt class="docutils literal">Opaque</tt>/<tt class="docutils literal">Transparent</tt> to forbid (allow resp.)
-unfolding of <tt class="docutils literal">double</tt>.</p>
-</div>
-<div class="section" id="custom-tactic-approach">
-<h2>Custom tactic approach</h2>
+</span></span></pre><p>We use the pattern capability of <span class="docutils literal">simpl</span> to narrow down its &quot;action
+domain&quot;, and <span class="docutils literal">Opaque</span>/<span class="docutils literal">Transparent</span> to forbid (allow resp.)
+unfolding of <span class="docutils literal">double</span>.</p>
+</section>
+<section id="custom-tactic-approach">
+<h3>Custom tactic approach</h3>
 <p>We can also define a custom tactic for simplifying arguments:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* simplifies the first argument of a function *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">simpl_arg_of</span> function :=
@@ -84,7 +81,7 @@ unfolding of <tt class="docutils literal">double</tt>.</p>
          | |- <span class="kp">context</span> [function <span class="nl">?A</span>] =&gt;
              <span class="kr">let</span> <span class="nv">A&#39;</span> := <span class="kp">eval</span> <span class="nb">cbn</span> -[function] <span class="kr">in</span> A <span class="kr">in</span>
                <span class="nb">change</span> A <span class="kr">with</span> A&#39;
-         <span class="kr">end</span>.</span></span></pre><p>That <tt class="docutils literal">let A' := ...</tt> construction is needed to protect nested
+         <span class="kr">end</span>.</span></span></pre><p>That <span class="docutils literal">let A' := ...</span> construction is needed to protect nested
 functions from simplification. Here is a simple test:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chkd"><span class="kn">Fact</span> <span class="nf">test</span> <span class="nv">n</span> :
   <span class="mi">82</span> + double (<span class="mi">2</span> + n) = double (<span class="mi">1</span> + double (<span class="mi">1</span> + <span class="mi">20</span>)) + double (<span class="mi">1</span> * n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">82</span> + double (<span class="mi">2</span> + n) =
@@ -98,26 +95,27 @@ double (S (double <span class="mi">21</span>)) + double (n + <span class="mi">0<
   n : nat
   ============================
   <span class="mi">82</span> + double (S (S n)) =
-  double (S (double <span class="mi">21</span>)) + double (n + <span class="mi">0</span>)</blockquote></div></div></small></span></pre><p>Had we used something like <tt class="docutils literal">context [function <span class="pre">?A]</span> =&gt; simpl A</tt> in the
-definition of <tt class="docutils literal">simpl_arg_of</tt>, we would've gotten</p>
+  double (S (double <span class="mi">21</span>)) + double (n + <span class="mi">0</span>)</blockquote></div></div></small></span></pre><p>Had we used something like <span class="docutils literal">context [function <span class="pre">?A]</span> =&gt; simpl A</span> in the
+definition of <span class="docutils literal">simpl_arg_of</span>, we would've gotten</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk11" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   n : nat
   ============================
   <span class="mi">82</span> + double (S (S n)) = double <span class="mi">43</span> + double (n + <span class="mi">0</span>)</blockquote></div></div></small></span></pre><p>instead.</p>
-</div>
-<div class="section" id="arguments-directive-approach">
-<h2>Arguments directive approach</h2>
+</section>
+<section id="arguments-directive-approach">
+<h3>Arguments directive approach</h3>
 <p>As suggested by &#64;eponier in comments, we can take advantage of yet
-another form of <tt class="docutils literal">simpl</tt> -- <tt class="docutils literal">simpl &lt;qualid&gt;</tt>, which the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/proofs/writing-proofs/equality.html#coq:tacn.simpl">manual</a>
+another form of <span class="docutils literal">simpl</span> -- <span class="docutils literal">simpl &lt;qualid&gt;</span>, which the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/proofs/writing-proofs/equality.html#coq:tacn.simpl">manual</a>
 defines as:</p>
 <blockquote>
-This applies <tt class="docutils literal">simpl</tt> only to the applicative subterms whose head
+<p>This applies <span class="docutils literal">simpl</span> only to the applicative subterms whose head
 occurrence is the unfoldable constant <em>qualid</em> (the constant can
 be referred to by its notation using string if such a notation
-exists).</blockquote>
-<p>The <tt class="docutils literal">Opaque</tt>/<tt class="docutils literal">Transparent</tt> approach doesn't work with it, however
-we can block unfolding of <tt class="docutils literal">double</tt> using the <tt class="docutils literal">Arguments</tt>
+exists).</p>
+</blockquote>
+<p>The <span class="docutils literal">Opaque</span>/<span class="docutils literal">Transparent</span> approach doesn't work with it, however
+we can block unfolding of <span class="docutils literal">double</span> using the <span class="docutils literal">Arguments</span>
 directive:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk12"><span class="kn">Arguments</span> double : <span class="nb">simpl</span> never.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (<span class="mi">2</span> + n) = <span class="mi">2</span> + double (<span class="mi">1</span> + n)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk13"><span class="nb">simpl</span> double.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (S (S n)) = <span class="mi">2</span> + double (S n)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -125,13 +123,13 @@ directive:</p>
 
   n : nat
   ============================
-  double (S (S n)) = <span class="mi">2</span> + double (S n)</blockquote></div></div></small></span></pre></div>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+  double (S (S n)) = <span class="mi">2</span> + double (S n)</blockquote></div></div></small></span></pre></section>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>You may find the ssreflect pattern selection language and rewrite
 mechanism useful here. For instance, you can have a finer grained
-control with patterns + the simpl operator <tt class="docutils literal">/=</tt>:</p>
+control with patterns + the simpl operator <span class="docutils literal">/=</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> ssreflect.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">double</span> := <span class="kr">fix</span> f n := <span class="mi">2</span>*n.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk15"><span class="kn">Theorem</span> <span class="nf">contrived</span> <span class="nv">n</span> : double (<span class="mi">2</span> + n) = <span class="mi">2</span> + double (<span class="mi">1</span> + n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (<span class="mi">2</span> + n) = <span class="mi">2</span> + double (<span class="mi">1</span> + n)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -151,8 +149,8 @@ control with patterns + the simpl operator <tt class="docutils literal">/=</tt>:
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-selectively-simplify-arguments-to-each-time-a-function-is-called-wit-v-chk1d"><span class="kn">Theorem</span> <span class="nf">contrived</span> <span class="nv">n</span> : double (<span class="mi">1</span> + n) = <span class="mi">2</span> + double n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">double (<span class="mi">1</span> + n) = <span class="mi">2</span> + double n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> doubleS.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

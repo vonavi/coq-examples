@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to &quot;extract&quot; Z from subset type {z : Z | z &gt; 0}</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-extract-z-from-subset-type-z-z-z-0">
-<h1 class="title">How to &quot;extract&quot; <tt class="docutils literal">Z</tt> from subset type <tt class="docutils literal">{z : Z | z &gt; 0}</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26493911">https://stackoverflow.com/q/26493911</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="how-to-extract-z-from-subset-type-z-z-z-0">
+<h1 class="title">How to &quot;extract&quot; <span class="docutils literal">Z</span> from subset type <span class="docutils literal">{z : Z | z &gt; 0}</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/26493911">https://stackoverflow.com/q/26493911</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>If a function take <tt class="docutils literal">Z</tt> as arguments, it should also be possible to
-take any subset of <tt class="docutils literal">Z</tt>, right? For example, <tt class="docutils literal">Zmod</tt> takes two <tt class="docutils literal">Z</tt>
-and return <tt class="docutils literal">Z</tt>. Can I improve on this method with subset types
+<section id="question">
+<h2>Question</h2>
+<p>If a function take <span class="docutils literal">Z</span> as arguments, it should also be possible to
+take any subset of <span class="docutils literal">Z</span>, right? For example, <span class="docutils literal">Zmod</span> takes two <span class="docutils literal">Z</span>
+and return <span class="docutils literal">Z</span>. Can I improve on this method with subset types
 without reimplementing it?</p>
 <p>I want this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith.</span><span class="alectryon-wsp">
@@ -41,31 +38,28 @@ without reimplementing it?</p>
 n1 : Z_gt0
 n2 : Z_gt0
 The term <span class="s2">&quot;n1&quot;</span> has type <span class="s2">&quot;Z_gt0&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Z&quot;</span>.</blockquote></div></div></small></span></pre><p>But Coq complains that <tt class="docutils literal">n1 is expected to have type Z</tt>, of course.
-How can I make it work with <tt class="docutils literal">Z_gt0</tt>? Coerce?</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Z&quot;</span>.</blockquote></div></div></small></span></pre><p>But Coq complains that <span class="docutils literal">n1 is expected to have type Z</span>, of course.
+How can I make it work with <span class="docutils literal">Z_gt0</span>? Coerce?</p>
 <p>This question is related to my other one here: <a class="reference external" href="https://stackoverflow.com/questions/26475258/random-nat-stream-and-subset-types-in-coq">Random nat stream and
 subset types in Coq</a></p>
-<p><strong>Edit:</strong> <tt class="docutils literal">proj1_sig</tt> might do the trick, thanks Coq IRC channel!</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">proj1_sig</tt> is the usual way to go. Another solution is to pattern
+<p><strong>Edit:</strong> <span class="docutils literal">proj1_sig</span> might do the trick, thanks Coq IRC channel!</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">proj1_sig</span> is the usual way to go. Another solution is to pattern
 match:</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">z1</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">z1</span> <span class="kr">with</span>
   <span class="n">exist</span> <span class="n">_</span> <span class="n">z</span> <span class="n">hz</span> <span class="o">=&gt;</span> <span class="o">...</span>
-<span class="kr">end</span>
-</pre>
-<p><tt class="docutils literal">z</tt> will be your projection, and <tt class="docutils literal">hz</tt> will be a proof that <tt class="docutils literal">z &gt;
-0</tt>. I usually leave the first parameter anonymous since I know that
-<tt class="docutils literal">z : Z</tt>.</p>
-<p>I recent version of Coq, there is another way to do it, using <tt class="docutils literal">let</tt>
-(because <tt class="docutils literal">sig</tt> is an inductive with only one constructor):</p>
+<span class="kr">end</span></code></pre>
+<p><span class="docutils literal">z</span> will be your projection, and <span class="docutils literal">hz</span> will be a proof that <span class="docutils literal">z &gt; 0</span>. I usually leave the first parameter anonymous since I know that
+<span class="docutils literal">z : Z</span>.</p>
+<p>I recent version of Coq, there is another way to do it, using <span class="docutils literal">let</span>
+(because <span class="docutils literal">sig</span> is an inductive with only one constructor):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Zmod_gt0</span> (<span class="nv">z1</span> <span class="nv">z2</span> : Z_gt0) : Z :=
   <span class="kr">let</span> (<span class="nv">a</span>, _) := z1 <span class="kr">in</span>
   <span class="kr">let</span> (<span class="nv">b</span>, _) := z2 <span class="kr">in</span>
-  Zmod a b.</span></span></pre></div>
+  Zmod a b.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

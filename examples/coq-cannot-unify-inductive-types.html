@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: cannot unify inductive types</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-cannot-unify-inductive-types">
+<div class="alectryon-root alectryon-centered"><main id="coq-cannot-unify-inductive-types">
 <h1 class="title">Coq: cannot unify inductive types</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50883392">https://stackoverflow.com/q/50883392</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/50883392">https://stackoverflow.com/q/50883392</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to represent multi-dimensional arrays as restricted
 functions, and I am having a trouble with defining what seem to be a
 primitive function.</p>
@@ -51,7 +48,7 @@ primitive function.</p>
     (<span class="kr">forall</span> <span class="nv">idx</span> <span class="nv">pf</span>, bound_idx d idx <span class="kr">is</span> pf -&gt; nat) -&gt; <span class="kt">Type</span> :=
   RectArray: <span class="kr">forall</span> (<span class="nv">d</span>:nat) <span class="nv">sh_f</span> <span class="nv">val_f</span>, array d (Rect d sh_f) val_f.</span></span></pre><p>I define type families for rectangular index-spaces, for indices and
 for an index that is bounded by a rectangular index-space. The array
-type is a function from a restricted index-space to <tt class="docutils literal">nat</tt>.</p>
+type is a function from a restricted index-space to <span class="docutils literal">nat</span>.</p>
 <p>Now, I am trying to construct an array from such a function, and Coq
 tells me:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-cannot-unify-inductive-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-cannot-unify-inductive-types-v-chk0"><span class="kn">Definition</span> <span class="nf">func_to_arr</span> <span class="nv">d</span> <span class="nv">is</span>
@@ -76,9 +73,9 @@ while it <span class="kr">is</span> expected to <span class="nb">have</span> typ
 definition, so that it becomes valid. Unless I misunderstand
 something, the type of af contains all the necessary information to
 reconstruct an array.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>This issue is very common in dependently-typed programming with Coq.
 To solve it, people usually use the <em>convoy pattern</em> described in
 <a class="reference external" href="http://adam.chlipala.net/cpdt/">CPDT</a> by A. Chlipala (MoreDep
@@ -97,13 +94,13 @@ chapter, IIRC) and mentioned multiple time on Stackoverflow.</p>
 that a human reader ususally takes for granted. You can read about the
 constructions I used here in <a class="reference external" href="https://coq.inria.fr/refman/addendum/extended-pattern-matching.html#matching-objects-of-dependent-types">extended pattern matching</a>
 section of the manual.</p>
-<p>Incidentally, if you made <tt class="docutils literal">d</tt> a <em>parameter</em> of your inductive types
+<p>Incidentally, if you made <span class="docutils literal">d</span> a <em>parameter</em> of your inductive types
 instead of making it an <em>index</em>, you would not need to mess with
-<tt class="docutils literal">d1</tt>, <tt class="docutils literal">d2</tt> and the <tt class="docutils literal">in (ispace d1)</tt> would not be necessary. If
+<span class="docutils literal">d1</span>, <span class="docutils literal">d2</span> and the <span class="docutils literal">in (ispace d1)</span> would not be necessary. If
 the choice was accidental, then you might want to take a look at the
 <a class="reference external" href="https://stackoverflow.com/questions/24600256/difference-between-type-parameters-and-indices/24601292#24601292">answer explaining the difference between those</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving a property on sets</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-a-property-on-sets">
+<div class="alectryon-root alectryon-centered"><main id="proving-a-property-on-sets">
 <h1 class="title">Proving a property on sets</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52448832">https://stackoverflow.com/q/52448832</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52448832">https://stackoverflow.com/q/52448832</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>As a Coq programming experience and following my question in <a class="reference external" href="https://stackoverflow.com/q/52195198/9335627">here</a>, I'd like to know if
 there is another proof, possibly shorter and without using Lemma
-<tt class="docutils literal">subset_listpair_conserve</tt>, for proving Lemma
-<tt class="docutils literal">subset_listpair_consFalse</tt>. I proved it but it is long and uses
-Lemma <tt class="docutils literal">subset_listpair_consve</tt>.</p>
+<span class="docutils literal">subset_listpair_conserve</span>, for proving Lemma
+<span class="docutils literal">subset_listpair_consFalse</span>. I proved it but it is long and uses
+Lemma <span class="docutils literal">subset_listpair_consve</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Bool.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -334,9 +331,9 @@ subset_listpair l1 l3 = false -&gt;
 subset_listpair l2 l3 = false</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>in_listpair e l2 = true /\
 subset_listpair l1 l2 = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>in_listpair e l3 = false \/
 subset_listpair l1 l3 = false</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>in_listpair e l2 = true</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>subset_listpair l1 l2 = true</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>subset_listpair l1 l3 = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subset_listpair l1 l3 = false</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Here is one possible solution. I didn't go for a lemma-less proof or
 for the shortest proof. Instead, I tried to break down everything into
 a bite-sized chunks that are (relatively) easy to manipulate.</p>
@@ -373,7 +370,7 @@ in_listpair p l2 = true</div></blockquote></div></div></small><span class="alect
 subset_listpair l1 l2 = true -&gt;
 in_listpair p l2 = true</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>in_listpair p l1 = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>in_listpair x1 l2 = true</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>subset_listpair l1 l2 = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">in_listpair p l2 = true</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> IH.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Next, we prove that <tt class="docutils literal">subset</tt> is transitive:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Next, we prove that <span class="docutils literal">subset</span> is transitive:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-a-property-on-sets-v-chk48" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-a-property-on-sets-v-chk48"><span class="kn">Lemma</span> <span class="nf">subset_listpair_transitive</span> <span class="nv">l2</span> <span class="nv">l1</span> <span class="nv">l3</span> :
   subset_listpair l1 l2 = true -&gt;
   subset_listpair l2 l3 = true -&gt;
@@ -409,8 +406,8 @@ subset_listpair l2 l3 = false</div></blockquote></div></div></small><span class=
 subset_listpair l2 l3 = false</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-a-property-on-sets-v-chk50" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-a-property-on-sets-v-chk50"><span class="nb">rewrite</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l1, l2, l3</var><span class="hyp-type"><b>: </b><span>listPair</span></span></span><br><span><var>S12</var><span class="hyp-type"><b>: </b><span>subset_listpair l1 l2 = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subset_listpair l2 l3 = true -&gt;
 subset_listpair l1 l3 = true</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> subset_listpair_transitive.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

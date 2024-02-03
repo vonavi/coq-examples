@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursion for Church encoding of equality</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="recursion-for-church-encoding-of-equality">
+<div class="alectryon-root alectryon-centered"><main id="recursion-for-church-encoding-of-equality">
 <h1 class="title">Recursion for Church encoding of equality</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55089210">https://stackoverflow.com/q/55089210</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55089210">https://stackoverflow.com/q/55089210</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>For the Church encoding <tt class="docutils literal">N</tt> of positive integers, one can define a
-recursion principle <tt class="docutils literal">nat_rec</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>For the Church encoding <span class="docutils literal">N</span> of positive integers, one can define a
+recursion principle <span class="docutils literal">nat_rec</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">N</span> : <span class="kt">Type</span> := <span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>), X -&gt; (X -&gt; X) -&gt; X.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursion-for-church-encoding-of-equality-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="recursion-for-church-encoding-of-equality-v-chk0"><span class="kn">Definition</span> <span class="nf">nat_rec</span> (<span class="nv">z</span> : N) (<span class="nv">s</span> : N -&gt; N) (<span class="nv">n</span> : N) : N :=
@@ -39,15 +36,13 @@ n : N
 The term <span class="s2">&quot;N&quot;</span> has type <span class="s2">&quot;Type@{N.u0}&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Type@{N.u1}&quot;</span>
 (universe inconsistency: Cannot enforce N.u0 &lt;=
-N.u1 because N.u1 &lt; N.u0).</blockquote></div></div></small></span></pre><p>What is the recursion principle <tt class="docutils literal">equal_rec</tt> for the following Church
-encoding <tt class="docutils literal">equal</tt> of equality?</p>
+N.u1 because N.u1 &lt; N.u0).</blockquote></div></div></small></span></pre><p>What is the recursion principle <span class="docutils literal">equal_rec</span> for the following Church
+encoding <span class="docutils literal">equal</span> of equality?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">equal</span> (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Type</span> :=
-  <span class="kr">fun</span> <span class="nv">x&#39;</span> =&gt; <span class="kr">forall</span> (<span class="nv">P</span> : A -&gt; <span class="kt">Type</span>), P x -&gt; P x&#39;.</span></span></pre><pre class="code coq literal-block">
-<span class="kn">Definition</span> <span class="nf">equal_rec</span> <span class="o">(*</span> <span class="o">...</span> <span class="o">*)</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+  <span class="kr">fun</span> <span class="nv">x&#39;</span> =&gt; <span class="kr">forall</span> (<span class="nv">P</span> : A -&gt; <span class="kt">Type</span>), P x -&gt; P x&#39;.</span></span></pre><pre class="code coq literal-block"><code><span class="kn">Definition</span> <span class="nf">equal_rec</span> <span class="o">(*</span> <span class="o">...</span> <span class="o">*)</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Like the case of natural numbers, the recursion principle is simply an
 eta expansion:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">equal</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Type</span> :=
@@ -58,9 +53,9 @@ eta expansion:</p>
 <p><strong>Q:</strong> This looks pretty useless, isn't it? Can it be used to prove
 symmetry, transitivity or congruence of equality?</p>
 <p><strong>A:</strong> It cannot, because of universe issues. But you can replace
-<tt class="docutils literal">Type</tt> by <tt class="docutils literal">Prop</tt> everywhere, and it should work.</p>
+<span class="docutils literal">Type</span> by <span class="docutils literal">Prop</span> everywhere, and it should work.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

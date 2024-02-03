@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to specialize nested hypotheses in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,58 +14,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-specialize-nested-hypotheses-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-specialize-nested-hypotheses-in-coq">
 <h1 class="title">How to specialize nested hypotheses in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/65747150">https://stackoverflow.com/q/65747150</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/65747150">https://stackoverflow.com/q/65747150</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I've already got the idea of <tt class="docutils literal">specialize</tt> in Coq.</p>
-<p>It works okay with <tt class="docutils literal">specialize (H1 trm_int)</tt>.</p>
-<pre class="code coq literal-block">
-<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">term</span> <span class="n">x</span><span class="o">.</span>
-</pre>
+<section id="question">
+<h2>Question</h2>
+<p>I've already got the idea of <span class="docutils literal">specialize</span> in Coq.</p>
+<p>It works okay with <span class="docutils literal">specialize (H1 trm_int)</span>.</p>
+<pre class="code coq literal-block"><code><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">term</span> <span class="n">x</span><span class="o">.</span></code></pre>
 <p>But what about this case</p>
-<pre class="code coq literal-block">
-<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span>
-</pre>
-<p>It doesn't work with <tt class="docutils literal">specialize (H1 trm_int _trm_int)</tt>.</p>
+<pre class="code coq literal-block"><code><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></pre>
+<p>It doesn't work with <span class="docutils literal">specialize (H1 trm_int _trm_int)</span>.</p>
 <p>Edit:</p>
-<p><tt class="docutils literal">specialize (H1 trm_int _trm_int)</tt> works fine with</p>
-<pre class="code coq literal-block">
-<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span>
-</pre>
-<p>Notice the <tt class="docutils literal">forall y</tt> appears in the second premise.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>I am not sure I understand your problem. <tt class="docutils literal">specialize</tt> will apply
+<p><span class="docutils literal">specialize (H1 trm_int _trm_int)</span> works fine with</p>
+<pre class="code coq literal-block"><code><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></pre>
+<p>Notice the <span class="docutils literal">forall y</span> appears in the second premise.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>I am not sure I understand your problem. <span class="docutils literal">specialize</span> will apply
 your hypothesis to the arguments you give it. It is not limited to
-<tt class="docutils literal">forall</tt> quantifiers.</p>
+<span class="docutils literal">forall</span> quantifiers.</p>
 <p>Say you have</p>
-<pre class="code coq literal-block">
-<span class="n">h</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span>
-</pre>
-<p>you can also use <tt class="docutils literal">specialize (h 0)</tt> and you will get</p>
-<pre class="code coq literal-block">
-<span class="n">h</span> <span class="o">:</span> <span class="n">bool</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">h</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span></code></pre>
+<p>you can also use <span class="docutils literal">specialize (h 0)</span> and you will get</p>
+<pre class="code coq literal-block"><code><span class="n">h</span> <span class="o">:</span> <span class="n">bool</span></code></pre>
 <p>So when you have</p>
-<pre class="code coq literal-block">
-<span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span>
-</pre>
-<p>and you specialise, you have to use <tt class="docutils literal">specialize (H1 some_x
-some_value_x some_y)</tt> where <tt class="docutils literal">some_x</tt> is an instance for <tt class="docutils literal">x</tt>,
-<tt class="docutils literal">some_value_x</tt> is a proof of <tt class="docutils literal">value some_x</tt> and <tt class="docutils literal">some_y</tt> is an
-instance for <tt class="docutils literal">y</tt>.</p>
-<p>Note that there is an alternative using <tt class="docutils literal">with</tt> that allows you to
+<pre class="code coq literal-block"><code><span class="n">H1</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">value</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="kr">forall</span> <span class="nv">y</span><span class="o">,</span> <span class="n">value</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">sub</span> <span class="n">x</span> <span class="n">y</span><span class="o">.</span></code></pre>
+<p>and you specialise, you have to use <span class="docutils literal">specialize (H1 some_x some_value_x some_y)</span> where <span class="docutils literal">some_x</span> is an instance for <span class="docutils literal">x</span>,
+<span class="docutils literal">some_value_x</span> is a proof of <span class="docutils literal">value some_x</span> and <span class="docutils literal">some_y</span> is an
+instance for <span class="docutils literal">y</span>.</p>
+<p>Note that there is an alternative using <span class="docutils literal">with</span> that allows you to
 specialise using names. Please consider the following example</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-specialize-nested-hypotheses-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-specialize-nested-hypotheses-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">foo</span> :
   <span class="kr">forall</span> (<span class="nv">h</span> : <span class="kr">forall</span> <span class="nv">x</span>, x = <span class="mi">0</span> -&gt; <span class="kr">forall</span> <span class="nv">y</span>, y = x -&gt; x = y),
@@ -81,8 +65,8 @@ x = <span class="mi">0</span> -&gt; <span class="kr">forall</span> <span class="
   h : <span class="mi">0</span> = <span class="mi">0</span> -&gt; <span class="mi">0</span> = <span class="mi">0</span> -&gt; <span class="mi">0</span> = <span class="mi">0</span>
   ============================
   <span class="kt">True</span></blockquote></div></div></small></span></pre><p>But you could also give the proof directly with</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-specialize-nested-hypotheses-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-specialize-nested-hypotheses-in-coq-v-chk5"><span class="nb">specialize</span> (h <span class="mi">0</span> eq_refl <span class="mi">0</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>h</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> = <span class="mi">0</span> -&gt; <span class="mi">0</span> = <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small></span></pre></div>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-specialize-nested-hypotheses-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-specialize-nested-hypotheses-in-coq-v-chk5"><span class="nb">specialize</span> (h <span class="mi">0</span> eq_refl <span class="mi">0</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>h</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> = <span class="mi">0</span> -&gt; <span class="mi">0</span> = <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

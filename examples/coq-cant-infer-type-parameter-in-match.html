@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq can't infer type parameter in match</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-can-t-infer-type-parameter-in-match">
-<h1 class="title">Coq can't infer type parameter in <tt class="docutils literal">match</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/66881274">https://stackoverflow.com/q/66881274</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-can-t-infer-type-parameter-in-match">
+<h1 class="title">Coq can't infer type parameter in <span class="docutils literal">match</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/66881274">https://stackoverflow.com/q/66881274</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following Coq program:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">foo</span> : nat -&gt; <span class="kt">Type</span> :=
 | nil : foo <span class="mi">0</span>
@@ -42,26 +39,24 @@ B : foo n
 n0 : nat
 C : foo n0
 The term <span class="s2">&quot;C&quot;</span> has type <span class="s2">&quot;foo n0&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;foo n&quot;</span>.</blockquote></div></div></small></span></pre><p>Coq complains on the definition of <tt class="docutils literal">bar</tt>.</p>
-<p>But for <tt class="docutils literal">B : foo n</tt> to be a <tt class="docutils literal">succ C</tt>, <tt class="docutils literal">C</tt> must also be a <tt class="docutils literal">foo
-n</tt>. Why can't Coq infer this, and how can I fix the definition of
-<tt class="docutils literal">bar</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>When you match on <tt class="docutils literal">B</tt>, the type system &quot;forgets&quot; that the new <tt class="docutils literal">n'</tt>
-inside <tt class="docutils literal">B</tt>'s type is the same as <tt class="docutils literal">n</tt>. There is a trick to add that
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;foo n&quot;</span>.</blockquote></div></div></small></span></pre><p>Coq complains on the definition of <span class="docutils literal">bar</span>.</p>
+<p>But for <span class="docutils literal">B : foo n</span> to be a <span class="docutils literal">succ C</span>, <span class="docutils literal">C</span> must also be a <span class="docutils literal">foo n</span>. Why can't Coq infer this, and how can I fix the definition of
+<span class="docutils literal">bar</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>When you match on <span class="docutils literal">B</span>, the type system &quot;forgets&quot; that the new <span class="docutils literal">n'</span>
+inside <span class="docutils literal">B</span>'s type is the same as <span class="docutils literal">n</span>. There is a trick to add that
 information to the context (there are many ways, plugins, etc. but it
 is good to know how to do it &quot;by hand&quot;). It is called <a class="reference external" href="https://stackoverflow.com/search?q=convoy+coq">&quot;The convoy
 pattern&quot; by Adam Chlipala</a> and every coq user
 must post a question about that once in his/her life (your's truly
 included).</p>
 <p>You make the body be not just a value but a function that takes an
-additional input with the type <tt class="docutils literal">n=n'</tt> and adds an <tt class="docutils literal">eq_refl</tt> term
+additional input with the type <span class="docutils literal">n=n'</span> and adds an <span class="docutils literal">eq_refl</span> term
 at the end. This plays well with how Coq's type system can break down
 terms.</p>
-<p>You can either rewrite the <tt class="docutils literal">A</tt> type to change its type from <tt class="docutils literal">foo
-n</tt> to <tt class="docutils literal">foo n'</tt> with tactics, like this:</p>
+<p>You can either rewrite the <span class="docutils literal">A</span> type to change its type from <span class="docutils literal">foo n</span> to <span class="docutils literal">foo n'</span> with tactics, like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-infer-type-parameter-in-match-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-infer-type-parameter-in-match-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">bar</span> (<span class="nv">n</span>:nat) (<span class="nv">A</span>:foo n) (<span class="nv">B</span>:foo n) : <span class="kt">Prop</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>bar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, foo n -&gt; foo n -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A, B</var><span class="hyp-type"><b>: </b><span>foo n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">Prop</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-infer-type-parameter-in-match-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-infer-type-parameter-in-match-v-chk2"><span class="nb">refine</span> (
       <span class="kr">match</span> B <span class="kr">in</span> (foo m) <span class="kr">return</span>  (n=m -&gt; _) <span class="kr">with</span>
@@ -70,13 +65,13 @@ n</tt> to <tt class="docutils literal">foo n'</tt> with tactics, like this:</p>
       <span class="kr">end</span>  eq_refl).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>bar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, foo n -&gt; foo n -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A, B</var><span class="hyp-type"><b>: </b><span>foo n</span></span></span><br><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>B'</var><span class="hyp-type"><b>: </b><span>foo n&#39;</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foo n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-infer-type-parameter-in-match-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-infer-type-parameter-in-match-v-chk3"><span class="nb">rewrite</span> E <span class="kr">in</span> A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>bar</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, foo n -&gt; foo n -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>n, n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span>foo n&#39;</span></span></span><br><span><var>B</var><span class="hyp-type"><b>: </b><span>foo n</span></span></span><br><span><var>B'</var><span class="hyp-type"><b>: </b><span>foo n&#39;</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foo n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> A.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>or directly with <tt class="docutils literal">eq_rect</tt></p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>or directly with <span class="docutils literal">eq_rect</span></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">bar</span> {<span class="nv">n</span>:nat} (<span class="nv">A</span>:foo n) (<span class="nv">B</span>:foo n) : <span class="kt">Prop</span> :=
   <span class="kr">match</span> B <span class="kr">in</span> (foo m) <span class="kr">return</span>  (n=m -&gt; _) <span class="kr">with</span>
   | nil =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt;  <span class="kt">False</span>
   | succ B&#39; =&gt; <span class="kr">fun</span> <span class="nv">E</span> =&gt; bar (eq_rect _ _ A _ E) B&#39;
-  <span class="kr">end</span> eq_refl.</span></span></pre></div>
+  <span class="kr">end</span> eq_refl.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

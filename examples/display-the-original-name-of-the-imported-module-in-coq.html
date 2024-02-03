@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Display the original name of the imported module in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="display-the-original-name-of-the-imported-module-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="display-the-original-name-of-the-imported-module-in-coq">
 <h1 class="title">Display the original name of the imported module in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52469003">https://stackoverflow.com/q/52469003</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52469003">https://stackoverflow.com/q/52469003</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>How to choose the textual representation of variables which belongs to
 some module? (Please see commentaries inside the code below. It's like
 Notation for modules.) I want to use it because it's preferable to see
 the original meaning of the terms. (and separate different types with
-the same realization: <tt class="docutils literal">SetVars.t</tt>, <tt class="docutils literal">FuncSymb.t</tt>, <tt class="docutils literal">PredSymb.t</tt>,
+the same realization: <span class="docutils literal">SetVars.t</span>, <span class="docutils literal">FuncSymb.t</span>, <span class="docutils literal">PredSymb.t</span>,
 etc)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Structures.Equalities.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.PeanoNat.</span><span class="alectryon-wsp">
@@ -51,22 +48,17 @@ etc)</p>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="display-the-original-name-of-the-imported-module-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="display-the-original-name-of-the-imported-module-in-coq-v-chk2"><span class="kn">Check</span> h. <span class="c">(*&quot;h : nat -&gt; nat&quot;*)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">h
      : nat -&gt; nat</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(*But I want to see &quot;h : SetVars.t -&gt; SetVars.t&quot; *)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">mod2</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">mod2</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Replace</p>
-<pre class="code coq literal-block">
-<span class="kn">Module</span> <span class="nf">SetVars</span> <span class="o">:=</span> <span class="n">PeanoNat</span><span class="o">.</span><span class="n">Nat</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Module</span> <span class="nf">SetVars</span> <span class="o">:=</span> <span class="n">PeanoNat</span><span class="o">.</span><span class="n">Nat</span><span class="o">.</span></code></pre>
 <p>with</p>
-<pre class="code coq literal-block">
-<span class="kn">Module</span> <span class="nf">SetVars</span> <span class="o">:</span> <span class="n">UsualDecidableTypeFull</span> <span class="o">:=</span> <span class="n">PeanoNat</span><span class="o">.</span><span class="n">Nat</span><span class="o">.</span>
-</pre>
-<p>This makes the module <tt class="docutils literal">SetVars</tt> opaque, exposing exactly the
-signature <tt class="docutils literal">UsualDecidableTypeFull</tt>, so that the type <tt class="docutils literal">SetVars.t <span class="pre">-&gt;</span>
-SetVars.t</tt> can no longer be reduced.</p>
+<pre class="code coq literal-block"><code><span class="kn">Module</span> <span class="nf">SetVars</span> <span class="o">:</span> <span class="n">UsualDecidableTypeFull</span> <span class="o">:=</span> <span class="n">PeanoNat</span><span class="o">.</span><span class="n">Nat</span><span class="o">.</span></code></pre>
+<p>This makes the module <span class="docutils literal">SetVars</span> opaque, exposing exactly the
+signature <span class="docutils literal">UsualDecidableTypeFull</span>, so that the type <span class="docutils literal">SetVars.t <span class="pre">-&gt;</span> SetVars.t</span> can no longer be reduced.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

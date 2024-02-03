@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to unfold a recursive function just once in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-unfold-a-recursive-function-just-once-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-unfold-a-recursive-function-just-once-in-coq">
 <h1 class="title">How to unfold a recursive function just once in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/24304345">https://stackoverflow.com/q/24304345</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/24304345">https://stackoverflow.com/q/24304345</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Here is a recursive function <tt class="docutils literal">all_zero</tt> that checks whether all
+<section id="question">
+<h2>Question</h2>
+<p>Here is a recursive function <span class="docutils literal">all_zero</span> that checks whether all
 members of a list of natural numbers are zero:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
@@ -38,28 +35,28 @@ members of a list of natural numbers are zero:</p>
   | n :: l&#39; =&gt; andb (beq_nat n <span class="mi">0</span>) (all_zero l&#39;)
   <span class="kr">end</span>.</span></span></pre><p>Now, suppose I had the following goal</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">l&#39;</span>, true = all_zero (n :: l&#39;).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">l&#39;</span> : list nat),
-true = all_zero (n :: l&#39;)</div></blockquote></div></div></small></span></pre><p>And I wanted to use the <tt class="docutils literal">unfold</tt> tactic to transform it to</p>
+true = all_zero (n :: l&#39;)</div></blockquote></div></div></small></span></pre><p>And I wanted to use the <span class="docutils literal">unfold</span> tactic to transform it to</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   n : nat
   l&#39; : list nat
   ============================
-  true = ((n =? <span class="mi">0</span>) &amp;&amp; all_zero l&#39;)%bool</blockquote></div></div></small></span></pre><p>Unfortunately, I can't do it with a simple <tt class="docutils literal">unfold all_zero</tt> because
+  true = ((n =? <span class="mi">0</span>) &amp;&amp; all_zero l&#39;)%bool</blockquote></div></div></small></span></pre><p>Unfortunately, I can't do it with a simple <span class="docutils literal">unfold all_zero</span> because
 the tactic will eagerly find and replace all instances of
-<tt class="docutils literal">all_zero</tt>, including the one in the once-unfolded form, and it
+<span class="docutils literal">all_zero</span>, including the one in the once-unfolded form, and it
 turns into a mess. Is there a way to avoid this and unfold a recursive
 function just once?</p>
 <p>I know I can achieve the same results by proving an ad hoc equivalence
-with <tt class="docutils literal">assert <span class="pre">(...)</span> as X</tt>, but it is inefficient. I'd like to know if
-there's an easy way to do it similar to <tt class="docutils literal">unfold</tt>.</p>
+with <span class="docutils literal">assert <span class="pre">(...)</span> as X</span>, but it is inefficient. I'd like to know if
+there's an easy way to do it similar to <span class="docutils literal">unfold</span>.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> You could also prove</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk2"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">l</span>, all_zero (n :: l) = andb (beq_nat n <span class="mi">0</span>) (all_zero l).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">l</span> : list nat),
 all_zero (n :: l) = ((n =? <span class="mi">0</span>) &amp;&amp; all_zero l)%bool</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>and rewrite with that.</p>
-</div>
-<div class="section" id="answer-volker-stolz">
-<h1>Answer (Volker Stolz)</h1>
+</section>
+<section id="answer-volker-stolz">
+<h2>Answer (Volker Stolz)</h2>
 <p>Try</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk3"><span class="nb">unfold</span> all_zero.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">l&#39;</span> : list nat),
 true =
@@ -75,13 +72,13 @@ true = ((n =? <span class="mi">0</span>) &amp;&amp; all_zero l&#39;)%bool</div><
   ============================
   <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">l&#39;</span> : list nat),
   true = ((n =? <span class="mi">0</span>) &amp;&amp; all_zero l&#39;)%bool</blockquote></div></div></small></span></pre><hr class="docutils" />
-<p><strong>Q:</strong> <tt class="docutils literal">unfold</tt> followed by <tt class="docutils literal">fold</tt> indeed works for <tt class="docutils literal">all_zero</tt>,
+<p><strong>Q:</strong> <span class="docutils literal">unfold</span> followed by <span class="docutils literal">fold</span> indeed works for <span class="docutils literal">all_zero</span>,
 but not for polymorphic recursive functions. Here's one example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">none</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">t</span> : X -&gt; bool) (<span class="nv">l</span> : list X) : bool :=
   <span class="kr">match</span> l <span class="kr">with</span>
   | nil =&gt; true
   | h :: l&#39; =&gt; andb (negb (t h)) (none t l&#39;)
-  <span class="kr">end</span>.</span></span></pre><p><tt class="docutils literal">unfold none</tt> followed by <tt class="docutils literal">fold none</tt> results in the following
+  <span class="kr">end</span>.</span></span></pre><p><span class="docutils literal">unfold none</span> followed by <span class="docutils literal">fold none</span> results in the following
 error message:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-unfold-a-recursive-function-just-once-in-coq-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Cannot infer the implicit parameter X of none whose
@@ -93,24 +90,24 @@ h : X
 l&#39; : list X
 H : true = none t l&#39;
 H0 : false = t h</blockquote></div></div></small></span></pre><p>So I think a generic solution for unfolding a recursive function once
-will have to avoid using <tt class="docutils literal">unfold</tt> in the first place, unless there
-is some way to supply parametric information to <tt class="docutils literal">fold</tt>.</p>
-<p><strong>A:</strong> You can make the implicit parameter <tt class="docutils literal">X</tt> of <tt class="docutils literal">none</tt> explicit
-by writing <tt class="docutils literal">&#64;none</tt>. If you write <tt class="docutils literal">fold &#64;none.</tt>, then Coq is able
-to give the argument explictly and searches for a suitable <tt class="docutils literal">X</tt> in
+will have to avoid using <span class="docutils literal">unfold</span> in the first place, unless there
+is some way to supply parametric information to <span class="docutils literal">fold</span>.</p>
+<p><strong>A:</strong> You can make the implicit parameter <span class="docutils literal">X</span> of <span class="docutils literal">none</span> explicit
+by writing <span class="docutils literal">&#64;none</span>. If you write <span class="docutils literal">fold &#64;none.</span>, then Coq is able
+to give the argument explictly and searches for a suitable <span class="docutils literal">X</span> in
 the current context, just as it does for the other all-quantified
-variables <tt class="docutils literal">t</tt> and <tt class="docutils literal">l</tt>. If there is ambiguity you can also specify
-the corresponding variables explicitly, i.e. <tt class="docutils literal">fold (&#64;none X)</tt>.</p>
-</div>
-<div class="section" id="answer-virgile">
-<h1>Answer (Virgile)</h1>
-<p>It seems to me that <tt class="docutils literal">simpl</tt> will do what you want. If you have a
+variables <span class="docutils literal">t</span> and <span class="docutils literal">l</span>. If there is ambiguity you can also specify
+the corresponding variables explicitly, i.e. <span class="docutils literal">fold (&#64;none X)</span>.</p>
+</section>
+<section id="answer-virgile">
+<h2>Answer (Virgile)</h2>
+<p>It seems to me that <span class="docutils literal">simpl</span> will do what you want. If you have a
 more complicated goal, with functions that you want to apply and
 functions that you want to keep as they are, you might need to use the
-various options of the <tt class="docutils literal">cbv</tt> tactic (see
+various options of the <span class="docutils literal">cbv</span> tactic (see
 <a class="reference external" href="http://coq.inria.fr/distrib/current/refman/Reference-Manual010.html#hevea_tactic127">http://coq.inria.fr/distrib/current/refman/Reference-Manual010.html#hevea_tactic127</a>).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: Associativity of relational composition</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-associativity-of-relational-composition">
+<div class="alectryon-root alectryon-centered"><main id="coq-associativity-of-relational-composition">
 <h1 class="title">Coq: Associativity of relational composition</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70377028">https://stackoverflow.com/q/70377028</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/70377028">https://stackoverflow.com/q/70377028</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am working on verifying a system based on relation algebra. I found
 D. Pous's relation algebra library popular among the Coq society.</p>
 <p><a class="reference external" href="https://github.com/damien-pous/relation-algebra">https://github.com/damien-pous/relation-algebra</a></p>
-<p>On this page, binary relation <tt class="docutils literal">hrel</tt> is defined together with its
-relational composition <tt class="docutils literal">hrel_dot</tt>.</p>
+<p>On this page, binary relation <span class="docutils literal">hrel</span> is defined together with its
+relational composition <span class="docutils literal">hrel_dot</span>.</p>
 <p><a class="reference external" href="http://perso.ens-lyon.fr/damien.pous/ra/html/RelationAlgebra.rel.html">http://perso.ens-lyon.fr/damien.pous/ra/html/RelationAlgebra.rel.html</a></p>
 <p>In this library, a binary relation is defined as</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Universe</span> <span class="nf">U</span>.</span><span class="alectryon-wsp">
@@ -60,16 +57,16 @@ are equivalent, but I have no clues about the next steps.</p>
      <span class="kr">exists2</span> k0 : n, x i k0 &amp; y k0 k &amp; z k j) =
   (<span class="kr">fun</span> (<span class="nv">i</span> : m) (<span class="nv">j</span> : q) =&gt;
    <span class="kr">exists2</span> k : n,
-     x i k &amp; <span class="kr">exists2</span> k0 : p, y k k0 &amp; z k0 j)</blockquote></div></div></small></span></pre><p>I don't know how to reason about the nested <tt class="docutils literal">exists2</tt>, although the
-results seem straightforward by exchanging the variables <tt class="docutils literal">k</tt> and
-<tt class="docutils literal">k0</tt>.</p>
+     x i k &amp; <span class="kr">exists2</span> k0 : p, y k k0 &amp; z k0 j)</blockquote></div></div></small></span></pre><p>I don't know how to reason about the nested <span class="docutils literal">exists2</span>, although the
+results seem straightforward by exchanging the variables <span class="docutils literal">k</span> and
+<span class="docutils literal">k0</span>.</p>
 <hr class="docutils" />
 <p><strong>A (Ana Borges):</strong> I'm not sure you can prove the <em>equality</em> of those
 two expressions, at least not without proof irrelevance. If you
 rewrite your goal as a logical equivalence things should be easier.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>As Ana pointed out, it is not possible to prove this equality without
 assuming extra axioms. One possibility is to use functional and
 propositional extensionality:</p>
@@ -115,8 +112,8 @@ hrel_dot m n q x (hrel_dot n p q y z) a b</div></blockquote></div></div></small>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-associativity-of-relational-composition-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-associativity-of-relational-composition-v-chke">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n, p, q</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>hrel m n</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>hrel n p</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>hrel p q</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>m</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>q</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">exists2</span> k : n,
    x a k &amp; <span class="kr">exists2</span> k0 : p, y k k0 &amp; z k0 b) -&gt;
 <span class="kr">exists2</span> k : p, <span class="kr">exists2</span> k0 : n, x a k0 &amp; y k0 k &amp; z k b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-associativity-of-relational-composition-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-associativity-of-relational-composition-v-chkf"><span class="nb">intros</span> [c ? [d ? ?]].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n, p, q</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>hrel m n</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>hrel n p</span></span></span><br><span><var>z</var><span class="hyp-type"><b>: </b><span>hrel p q</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>m</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>q</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>x a c</span></span></span><br><span><var>d</var><span class="hyp-type"><b>: </b><span>p</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>y c d</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>z d b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists2</span> k : p, <span class="kr">exists2</span> k0 : n, x a k0 &amp; y k0 k &amp; z k b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eauto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

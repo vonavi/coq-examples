@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq coercions and goal matching</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-coercions-and-goal-matching">
+<div class="alectryon-root alectryon-centered"><main id="coq-coercions-and-goal-matching">
 <h1 class="title">Coq coercions and goal matching</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45482430">https://stackoverflow.com/q/45482430</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/45482430">https://stackoverflow.com/q/45482430</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Assume I have the following setup:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">exp</span>: <span class="kt">Set</span> :=
 | CE: nat -&gt; exp.</span><span class="alectryon-wsp">
@@ -42,29 +39,29 @@
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercions-and-goal-matching-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercions-and-goal-matching-v-chk0"><span class="kn">Theorem</span> <span class="nf">silly</span>: adt <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">adt <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercions-and-goal-matching-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercions-and-goal-matching-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">adt <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-coercions-and-goal-matching-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-coercions-and-goal-matching-v-chk2">my_tactic.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">No matching clauses <span class="kr">for</span> <span class="kr">match</span>.</blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>This fails, because the goal is not of the form <tt class="docutils literal">adt (CE <span class="pre">?N)</span></tt> but of
-the form <tt class="docutils literal">adt (nat_to_exp <span class="pre">?N)</span></tt> (This is shown explicitly when using
-<tt class="docutils literal">Set Printing Coercions</tt>).</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>This fails, because the goal is not of the form <span class="docutils literal">adt (CE <span class="pre">?N)</span></span> but of
+the form <span class="docutils literal">adt (nat_to_exp <span class="pre">?N)</span></span> (This is shown explicitly when using
+<span class="docutils literal">Set Printing Coercions</span>).</p>
 <p>Trying to prove a slightly different theorem works:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercions-and-goal-matching-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercions-and-goal-matching-v-chk3"><span class="kn">Theorem</span> <span class="nf">silly</span>: adt (CE <span class="mi">0</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">adt (CE <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-coercions-and-goal-matching-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-coercions-and-goal-matching-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">adt (CE <span class="mi">0</span>)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input">my_tactic.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Possible workarounds I know of:</p>
 <ul class="simple">
-<li>Not using coercions.</li>
-<li>Unfolding coercions in the tactic (with <tt class="docutils literal">unfold nat_to_exp</tt>). This
+<li><p>Not using coercions.</p></li>
+<li><p>Unfolding coercions in the tactic (with <span class="docutils literal">unfold nat_to_exp</span>). This
 alleviates the problem slightly, but fails as soon as a new coercion
-is introduced the tactic doesn't know about.</li>
+is introduced the tactic doesn't know about.</p></li>
 </ul>
 <p>Ideally, I would like the pattern matching to succeed if the pattern
 matches after unfolding all definitions (The definitions should not
 stay unfolded, of course).</p>
 <p>Is this possible? If not, are there reasons why it is not possible?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can directly declare the constructor <tt class="docutils literal">CE</tt> as a coercion rather
-than wrapping it as <tt class="docutils literal">nat_to_exp</tt> like so:</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can directly declare the constructor <span class="docutils literal">CE</span> as a coercion rather
+than wrapping it as <span class="docutils literal">nat_to_exp</span> like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Coercion</span> <span class="nf">CE</span> : nat &gt;-&gt; exp.</span></span></pre><p>The proof then goes through without any issue. If you insist on naming
 your coercion (e.g. because it's a compound expression rather than a
 single constructor), you can change your tactics so that it handles
@@ -75,13 +72,13 @@ non unfolded coercions explicitly:</p>
                   <span class="kr">end</span>.</span></span></pre><hr class="docutils" />
 <p><strong>A:</strong> There is also syntactic sugar for the case when constructors
 are coercions:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">exp</span>: <span class="kt">Set</span> := | CE :&gt; nat -&gt; exp.</span></span></pre><p>automatically declares <tt class="docutils literal">CE</tt> as a coercion (notice that I used <tt class="docutils literal">:&gt;</tt>
-instead of <tt class="docutils literal">:</tt> for <tt class="docutils literal">CE</tt>).</p>
-<p><strong>A:</strong> You can also use e.g. <tt class="docutils literal">cbv delta.</tt> before pattern-matching on
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">exp</span>: <span class="kt">Set</span> := | CE :&gt; nat -&gt; exp.</span></span></pre><p>automatically declares <span class="docutils literal">CE</span> as a coercion (notice that I used <span class="docutils literal">:&gt;</span>
+instead of <span class="docutils literal">:</span> for <span class="docutils literal">CE</span>).</p>
+<p><strong>A:</strong> You can also use e.g. <span class="docutils literal">cbv delta.</span> before pattern-matching on
 the goal to unfold transparent definitions. Then your original
-<tt class="docutils literal">my_tactic</tt> would work.</p>
+<span class="docutils literal">my_tactic</span> would work.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Subtyping in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="subtyping-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="subtyping-in-coq">
 <h1 class="title">Subtyping in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41306638">https://stackoverflow.com/q/41306638</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/41306638">https://stackoverflow.com/q/41306638</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I defined Subtype as follows</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Subtype</span> {<span class="nv">T</span> : <span class="kt">Type</span>} (<span class="nv">P</span> : T -&gt; <span class="kt">Prop</span>) := {
     subtype       :&gt; <span class="kt">Type</span>;
@@ -40,9 +37,9 @@
 </span></span></pre><p>If not, is it provable from any well-known compatible axiom? Or Can I
 add this as an axiom? Would it conflict with any usual axiom? (like
 extensionality, functional choice, etc.)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Your definition is practically identical to the one of MathComp;
 indeed, what you are missing mainly is injectivity due to proof
 relevance.</p>
@@ -63,10 +60,10 @@ exist (<span class="kr">fun</span> <span class="nv">x</span> : T =&gt; P x) t Pt
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="subtyping-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="subtyping-in-coq-v-chk9">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>subtype_inj</var><span><span class="hyp-body"><b>:= </b><span>proj1_sig (P:=P)</span></span><span class="hyp-type"><b>: </b><span>{x : T | P x} -&gt; T</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : T,
 P x -&gt; <span class="kr">exists</span> <span class="nv">s</span> : {x0 : T | P x0}, x = subtype_inj s</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> x Px; <span class="kr">exists</span> (<span class="nv">exist</span> <span class="nv">_</span> <span class="nv">x</span> <span class="nv">Px</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="subtyping-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="subtyping-in-coq-v-chka">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>subtype_inj</var><span><span class="hyp-body"><b>:= </b><span>proj1_sig (P:=P)</span></span><span class="hyp-type"><b>: </b><span>{x : T | P x} -&gt; T</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : {x : T | P x}, P (subtype_inj s)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intro</span> H; <span class="nb">destruct</span> H.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>You can always restrict you predicate <tt class="docutils literal">P</tt> to a type which is
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>You can always restrict you predicate <span class="docutils literal">P</span> to a type which is
 effectively proof-irrelevant, of course.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

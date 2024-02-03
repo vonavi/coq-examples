@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Split conjunction goal into subgoals</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="split-conjunction-goal-into-subgoals">
+<div class="alectryon-root alectryon-centered"><main id="split-conjunction-goal-into-subgoals">
 <h1 class="title">Split conjunction goal into subgoals</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/43945888">https://stackoverflow.com/q/43945888</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/43945888">https://stackoverflow.com/q/43945888</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following toy exercise:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk0"><span class="kn">Theorem</span> <span class="nf">swap_id</span> : <span class="kr">forall</span> (<span class="nv">m</span> <span class="nv">n</span> : nat), m = n -&gt; (m, n) = (n, m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -36,11 +33,10 @@
   m, n : nat
   H : m = n
   ============================
-  (m, n) = (n, m)</blockquote></div></div></small></span></pre><p>I would like to split the goal into two subgoals, <tt class="docutils literal">m = n</tt> and <tt class="docutils literal">n =
-m</tt>. Is there a tactic which does that?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+  (m, n) = (n, m)</blockquote></div></div></small></span></pre><p>I would like to split the goal into two subgoals, <span class="docutils literal">m = n</span> and <span class="docutils literal">n = m</span>. Is there a tactic which does that?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Solve using the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual010.html#hevea_tactic169">f_equal</a>
 tactic:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="split-conjunction-goal-into-subgoals-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="split-conjunction-goal-into-subgoals-v-chk4"><span class="kn">Theorem</span> <span class="nf">test</span> : <span class="kr">forall</span> (<span class="nv">m</span> <span class="nv">n</span> : nat), m = n -&gt; (m, n) = (n, m).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, m = n -&gt; (m, n) = (n, m)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -55,13 +51,12 @@ tactic:</p>
 
 subgoal <span class="mi">2</span> <span class="kr">is</span>:
  n = m</blockquote></div></div></small></span></pre><hr class="docutils" />
-<p><strong>A:</strong> A comment about the reason <tt class="docutils literal">f_equal</tt> works: if we unfold some
-notations, we'll get from the goal <tt class="docutils literal">(m, n) = (n, m)</tt> to <tt class="docutils literal">pair m n =
-pair n m</tt>, where <tt class="docutils literal">pair</tt> is the only constructor of the <tt class="docutils literal">prod</tt>
-datatype. At this point it should be obvious why <tt class="docutils literal">f_equal</tt> splits
+<p><strong>A:</strong> A comment about the reason <span class="docutils literal">f_equal</span> works: if we unfold some
+notations, we'll get from the goal <span class="docutils literal">(m, n) = (n, m)</span> to <span class="docutils literal">pair m n = pair n m</span>, where <span class="docutils literal">pair</span> is the only constructor of the <span class="docutils literal">prod</span>
+datatype. At this point it should be obvious why <span class="docutils literal">f_equal</span> splits
 the goal into two subgoals.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

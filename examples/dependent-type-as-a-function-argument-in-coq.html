@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dependent type as a function argument in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,52 +14,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="dependent-type-as-a-function-argument-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="dependent-type-as-a-function-argument-in-coq">
 <h1 class="title">Dependent type as a function argument in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/58848680">https://stackoverflow.com/q/58848680</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/58848680">https://stackoverflow.com/q/58848680</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am very new to Coq. I am trying to experiment with Coq's dependent
 types. What I want to do, is to simply feed an even number to a
 function. For example, in pseudo-code:</p>
-<pre class="code literal-block">
-def next_even(n: {n: Integer | n is even}) :=
+<pre class="code literal-block"><code>def next_even(n: {n: Integer | n is even}) :=
 {
   add n 2
-}
-</pre>
+}</code></pre>
 <p>Then I want to utilize the function with different arguments, such as
 (in pseudo-code):</p>
-<pre class="code C literal-block">
-<span class="n">next_even</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w">    </span><span class="c1">// Coq should show an error
-</span><span class="n">next_even</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w">    </span><span class="c1">// Coq should compute 6</span>
-</pre>
+<pre class="code C literal-block"><code><span class="n">next_even</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w">    </span><span class="c1">// Coq should show an error
+</span><span class="n">next_even</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w">    </span><span class="c1">// Coq should compute 6</span></code></pre>
 <p>So, in Coq, I want to do the following:</p>
-<pre class="code coq literal-block">
-<span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">1</span><span class="o">).</span>
-<span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">4</span><span class="o">).</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">1</span><span class="o">).</span>
+<span class="kn">Compute</span> <span class="o">(</span><span class="n">next_even</span> <span class="mi">4</span><span class="o">).</span></code></pre>
 <p>How can I construct it?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Here is a direct translation of your function in Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">add_two_even</span> (<span class="nv">n</span> : {n : nat | Nat.even n = true}) : nat :=
-  proj1_sig n + <span class="mi">1</span>.</span></span></pre><p>Note that you need the <tt class="docutils literal">proj1_sig</tt> function to extract <tt class="docutils literal">n</tt> from
-the subset type <tt class="docutils literal">{n : nat | Nat.even n = true}</tt>. To use
-<tt class="docutils literal">add_two_even</tt>, you also need to go the other way around: go from a
-number to an element of <tt class="docutils literal">{n | Nat.even n = true}</tt>. In Coq, this
-requires manual proof. For concrete values of <tt class="docutils literal">n</tt>, this is easy:</p>
+  proj1_sig n + <span class="mi">1</span>.</span></span></pre><p>Note that you need the <span class="docutils literal">proj1_sig</span> function to extract <span class="docutils literal">n</span> from
+the subset type <span class="docutils literal">{n : nat | Nat.even n = true}</span>. To use
+<span class="docutils literal">add_two_even</span>, you also need to go the other way around: go from a
+number to an element of <span class="docutils literal">{n | Nat.even n = true}</span>. In Coq, this
+requires manual proof. For concrete values of <span class="docutils literal">n</span>, this is easy:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* The next command fails with a type checking error *)</span>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-type-as-a-function-argument-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="dependent-type-as-a-function-argument-in-coq-v-chk0"><span class="kn">Compute</span> add_two_even (exist _ <span class="mi">1</span> eq_refl).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term
  <span class="s2">&quot;exist (fun n : nat =&gt; Nat.even n = true) 1 eq_refl&quot;</span>
@@ -72,19 +63,18 @@ constraint
 cannot <span class="nb">unify</span> <span class="s2">&quot;Nat.even 1&quot;</span> <span class="kn">and</span> <span class="s2">&quot;true&quot;</span>).</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp"><span class="c">(* The next command succeeds *)</span>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-type-as-a-function-argument-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-type-as-a-function-argument-in-coq-v-chk1"><span class="kn">Compute</span> add_two_even (exist _ <span class="mi">4</span> eq_refl).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">5</span>
-: nat</blockquote></div></div></small></span></pre><p>The <tt class="docutils literal">exist</tt> constructor wraps a value <tt class="docutils literal">x</tt> with a proof of <tt class="docutils literal">P x</tt>,
-producing an element of the subset type <tt class="docutils literal">{x | P x}</tt>. The <tt class="docutils literal">eq_refl</tt>
-term is a proof of <tt class="docutils literal">x = x</tt> for any value of <tt class="docutils literal">x</tt>. When <tt class="docutils literal">n</tt> is a
-concrete number, Coq can evaluate <tt class="docutils literal">Nat.even n</tt> and find if
-<tt class="docutils literal">eq_refl</tt> is a valid proof of <tt class="docutils literal">Nat.even n = true</tt>. When <tt class="docutils literal">n</tt> is
-<tt class="docutils literal">1</tt>, <tt class="docutils literal">Nat.even n = false</tt>, and the check fails, leading to the
-first error message. When <tt class="docutils literal">n</tt> is <tt class="docutils literal">4</tt>, the check succeeds.</p>
-<p>Things get more complicated when <tt class="docutils literal">n</tt> is not a constant, but an
-arbitrary expression. A proof that <tt class="docutils literal">Nat.even n = true</tt> can require
+: nat</blockquote></div></div></small></span></pre><p>The <span class="docutils literal">exist</span> constructor wraps a value <span class="docutils literal">x</span> with a proof of <span class="docutils literal">P x</span>,
+producing an element of the subset type <span class="docutils literal">{x | P x}</span>. The <span class="docutils literal">eq_refl</span>
+term is a proof of <span class="docutils literal">x = x</span> for any value of <span class="docutils literal">x</span>. When <span class="docutils literal">n</span> is a
+concrete number, Coq can evaluate <span class="docutils literal">Nat.even n</span> and find if
+<span class="docutils literal">eq_refl</span> is a valid proof of <span class="docutils literal">Nat.even n = true</span>. When <span class="docutils literal">n</span> is
+<span class="docutils literal">1</span>, <span class="docutils literal">Nat.even n = false</span>, and the check fails, leading to the
+first error message. When <span class="docutils literal">n</span> is <span class="docutils literal">4</span>, the check succeeds.</p>
+<p>Things get more complicated when <span class="docutils literal">n</span> is not a constant, but an
+arbitrary expression. A proof that <span class="docutils literal">Nat.even n = true</span> can require
 detailed reasoning that must be guided by the user. For instance, we
-know that <tt class="docutils literal">Nat.even (n + n) = true</tt> for any value of <tt class="docutils literal">n</tt>, but Coq
-does not. Thus, to call <tt class="docutils literal">add_two_even</tt> on something of the form <tt class="docutils literal">n
-+ n</tt>, we need to show a lemma.</p>
+know that <span class="docutils literal">Nat.even (n + n) = true</span> for any value of <span class="docutils literal">n</span>, but Coq
+does not. Thus, to call <span class="docutils literal">add_two_even</span> on something of the form <span class="docutils literal">n + n</span>, we need to show a lemma.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-type-as-a-function-argument-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-type-as-a-function-argument-in-coq-v-chk2"><span class="kn">Lemma</span> <span class="nf">add_n_n_even</span> <span class="nv">n</span> : Nat.even (n + n) = true.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Nat.even (n + n) = true</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-type-as-a-function-argument-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-type-as-a-function-argument-in-coq-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Nat.even (n + n) = true</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-type-as-a-function-argument-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-type-as-a-function-argument-in-coq-v-chk4"><span class="nb">induction</span> n <span class="kr">as</span> [|n IH]; <span class="nb">trivial</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>Nat.even (n + n) = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Nat.even (S n + S n) = true</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -95,38 +85,34 @@ does not. Thus, to call <tt class="docutils literal">add_two_even</tt> on someth
   add_two_even (exist _ (n + n) (add_n_n_even n)).</span></span></pre><p>There are some tools for facilitating this style of programming, such
 as the <a class="reference external" href="https://github.com/mattam82/Coq-Equations">equations plugin</a>, but the general wisdom
 in the Coq community is that you should avoid subset types for
-functions like <tt class="docutils literal">add_two_even</tt>, where the constraints do not
+functions like <span class="docutils literal">add_two_even</span>, where the constraints do not
 substantially simplify the properties about the function.</p>
 <p>You can find many examples of good uses of subset types in the
 <a class="reference external" href="https://github.com/math-comp/math-comp">Mathematical Components</a>
 libraries. For example, the libraries use subset types to define a
-type <tt class="docutils literal"><span class="pre">n.-tuple</span> T</tt> of lists of length <tt class="docutils literal">n</tt>, and a type <tt class="docutils literal">'I_n</tt> of
-integers bounded by <tt class="docutils literal">n</tt>. This allows us to define a total accessor
-function <tt class="docutils literal">tnth (t : <span class="pre">n.-tuple</span> T) (i : 'I_n) : T</tt> that extracts the
-<tt class="docutils literal">i</tt>th element of the list <tt class="docutils literal">t</tt>. If we define this accessor for
+type <span class="docutils literal"><span class="pre">n.-tuple</span> T</span> of lists of length <span class="docutils literal">n</span>, and a type <span class="docutils literal">'I_n</span> of
+integers bounded by <span class="docutils literal">n</span>. This allows us to define a total accessor
+function <span class="docutils literal">tnth (t : <span class="pre">n.-tuple</span> T) (i : 'I_n) : T</span> that extracts the
+<span class="docutils literal">i</span>th element of the list <span class="docutils literal">t</span>. If we define this accessor for
 arbitrary lists and integers, we need to pass a default value to the
 function to return when the index is out of bounds, or change the
-function's signature so that it returns a value of type <tt class="docutils literal">option T</tt>
+function's signature so that it returns a value of type <span class="docutils literal">option T</span>
 instead, indicating that the function can fail to return a value. This
 change makes properties of the accessor function harder to state. For
-example, consider the <tt class="docutils literal">eq_from_tnth</tt> lemma, which says that two
+example, consider the <span class="docutils literal">eq_from_tnth</span> lemma, which says that two
 lists are equal if all their elements are equal:</p>
-<pre class="code coq literal-block">
-<span class="n">eq_from_tnth</span><span class="o">:</span>
+<pre class="code coq literal-block"><code><span class="n">eq_from_tnth</span><span class="o">:</span>
   <span class="kr">forall</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">(</span><span class="nv">T</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">t1</span> <span class="nv">t2</span> <span class="o">:</span> <span class="n">n</span><span class="o">.-</span><span class="n">tuple</span> <span class="n">T</span><span class="o">),</span>
-    <span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="o">'</span><span class="n">I_n</span><span class="o">,</span> <span class="n">tnth</span> <span class="n">t1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">tnth</span> <span class="n">t2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span>
-</pre>
+    <span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="o">'</span><span class="n">I_n</span><span class="o">,</span> <span class="n">tnth</span> <span class="n">t1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">tnth</span> <span class="n">t2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span></code></pre>
 <p>The statement of this lemma for arbitrary lists becomes more
 complicated, because we need an extra assumption saying that the two
-lists are of the same size. (Here, <tt class="docutils literal">x0</tt> is the default value.)</p>
-<pre class="code coq literal-block">
-<span class="n">eq_from_nth</span><span class="o">:</span>
+lists are of the same size. (Here, <span class="docutils literal">x0</span> is the default value.)</p>
+<pre class="code coq literal-block"><code><span class="n">eq_from_nth</span><span class="o">:</span>
   <span class="kr">forall</span> <span class="o">(</span><span class="nv">T</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="nv">x0</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="nv">s1</span> <span class="nv">s2</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">),</span>
   <span class="n">size</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">size</span> <span class="n">s2</span> <span class="o">-&gt;</span>
-  <span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="n">s1</span> <span class="o">-&gt;</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">s2</span>
-</pre>
+  <span class="o">(</span><span class="kr">forall</span> <span class="nv">i</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="n">s1</span> <span class="o">-&gt;</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s1</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nth</span> <span class="n">x0</span> <span class="n">s2</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">s2</span></code></pre>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

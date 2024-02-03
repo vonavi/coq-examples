@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Inversion produces unexpected existT in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,32 +14,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="inversion-produces-unexpected-existt-in-coq">
-<h1 class="title">Inversion produces unexpected <tt class="docutils literal">existT</tt> in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/24720137">https://stackoverflow.com/q/24720137</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="inversion-produces-unexpected-existt-in-coq">
+<h1 class="title">Inversion produces unexpected <span class="docutils literal">existT</span> in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/24720137">https://stackoverflow.com/q/24720137</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Here is an inductive type <tt class="docutils literal">pc</tt> that I am using in a mathematical
+<section id="question">
+<h2>Question</h2>
+<p>Here is an inductive type <span class="docutils literal">pc</span> that I am using in a mathematical
 theorem.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">pc</span> (<span class="nv">n</span> : nat) : <span class="kt">Type</span> :=
 | pcs : <span class="kr">forall</span> <span class="nv">m</span> : nat, m &lt; n -&gt; pc n
-| pcm : pc n -&gt; pc n -&gt; pc n.</span></span></pre><p>And another inductive type <tt class="docutils literal">pc_tree</tt>, which is basically a binary
-tree that contains one or more <tt class="docutils literal">pc</tt>s. <tt class="docutils literal">pcts</tt> is a leaf node
-constructor that contains a single <tt class="docutils literal">pc</tt>, and <tt class="docutils literal">pctm</tt> is an internal
-node constructor that contains multiple <tt class="docutils literal">pc</tt>s.</p>
+| pcm : pc n -&gt; pc n -&gt; pc n.</span></span></pre><p>And another inductive type <span class="docutils literal">pc_tree</span>, which is basically a binary
+tree that contains one or more <span class="docutils literal">pc</span>s. <span class="docutils literal">pcts</span> is a leaf node
+constructor that contains a single <span class="docutils literal">pc</span>, and <span class="docutils literal">pctm</span> is an internal
+node constructor that contains multiple <span class="docutils literal">pc</span>s.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">pc_tree</span> : <span class="kt">Type</span> :=
 | pcts : <span class="kr">forall</span> <span class="nv">n</span> : nat, pc n -&gt; pc_tree
-| pctm : pc_tree -&gt; pc_tree -&gt; pc_tree.</span></span></pre><p>And an inductively defined proposition <tt class="docutils literal">contains</tt>. <tt class="docutils literal">contains n x
-t</tt> means that the tree <tt class="docutils literal">t</tt> contains at least one ocurrence of <tt class="docutils literal">x :
-pc n</tt>.</p>
+| pctm : pc_tree -&gt; pc_tree -&gt; pc_tree.</span></span></pre><p>And an inductively defined proposition <span class="docutils literal">contains</span>. <span class="docutils literal">contains n x t</span> means that the tree <span class="docutils literal">t</span> contains at least one ocurrence of <span class="docutils literal">x : pc n</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">contains</span> (<span class="nv">n</span> : nat) (<span class="nv">x</span> : pc n) : pc_tree -&gt; <span class="kt">Prop</span> :=
 | contain0 : contains n x (pcts n x)
 | contain1 : <span class="kr">forall</span> <span class="nv">t</span> <span class="nv">s</span> : pc_tree, contains n x t -&gt; contains n x (pctm t s)
@@ -48,16 +43,16 @@ pc n</tt>.</p>
     contains n x (pcts n y) -&gt; x = y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : pc n),
 contains n x (pcts n y) -&gt; x = y</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>What the lemma means is really simple: if a tree that has a single
-leaf node containing <tt class="docutils literal">y : pc n</tt> contains some <tt class="docutils literal">x : pc n</tt>, it
-follows that <tt class="docutils literal">x = y</tt>. I thought I should be able to prove this with
-a simple <tt class="docutils literal">inversion</tt> on <tt class="docutils literal">contains</tt>. So When I wrote</p>
+leaf node containing <span class="docutils literal">y : pc n</span> contains some <span class="docutils literal">x : pc n</span>, it
+follows that <span class="docutils literal">x = y</span>. I thought I should be able to prove this with
+a simple <span class="docutils literal">inversion</span> on <span class="docutils literal">contains</span>. So When I wrote</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="inversion-produces-unexpected-existt-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">contains_single_eq</span> : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : pc n),
     contains n x (pcts n y) -&gt; x = y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : pc n),
 contains n x (pcts n y) -&gt; x = y</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="inversion-produces-unexpected-existt-in-coq-v-chk2"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">x</span> <span class="nv">y</span> : pc n),
 contains n x (pcts n y) -&gt; x = y</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="inversion-produces-unexpected-existt-in-coq-v-chk3"><span class="nb">intros</span> n x y H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>pc n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>contains n x (pcts n y)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="inversion-produces-unexpected-existt-in-coq-v-chk4"><span class="nb">inversion</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>pc n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>contains n x (pcts n y)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n x =
-existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small></span></pre><p>I was expecting to get <tt class="docutils literal">x = y</tt> as an hypothesis in the context.
+existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small></span></pre><p>I was expecting to get <span class="docutils literal">x = y</span> as an hypothesis in the context.
 Here's what I got instead:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
@@ -67,32 +62,29 @@ Here's what I got instead:</p>
   H1 : existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n x =
        existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n y
   ============================
-  x = y</blockquote></div></div></small></span></pre><p><tt class="docutils literal">H1</tt> is quite different from what I expected. (I've never seen
-<tt class="docutils literal">existT</tt> before.) All I care about is that I prove
-<tt class="docutils literal">contains_single_eq</tt>, but I'm not sure how to use <tt class="docutils literal">H1</tt> for it, or
+  x = y</blockquote></div></div></small></span></pre><p><span class="docutils literal">H1</span> is quite different from what I expected. (I've never seen
+<span class="docutils literal">existT</span> before.) All I care about is that I prove
+<span class="docutils literal">contains_single_eq</span>, but I'm not sure how to use <span class="docutils literal">H1</span> for it, or
 whether it is usable at all.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> <tt class="docutils literal">{x : T &amp; P x}</tt> is a dependent sum like <tt class="docutils literal">T * P</tt> is a
-nondependent sum. <tt class="docutils literal">&#64;existT T P x H : {x : T &amp; P x}</tt> like <tt class="docutils literal">&#64;pair T P
-x H : T * P</tt>. <tt class="docutils literal">exists x : T, P x, {x : T | P x}</tt>, and <tt class="docutils literal">{x : T &amp; P
-x}</tt> are very similar. Use the <tt class="docutils literal">Print ex.</tt>, <tt class="docutils literal">Print sig.</tt>, and
-<tt class="docutils literal">Print sigT.</tt> commands.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<p><strong>A:</strong> <span class="docutils literal">{x : T &amp; P x}</span> is a dependent sum like <span class="docutils literal">T * P</span> is a
+nondependent sum. <span class="docutils literal">&#64;existT T P x H : {x : T &amp; P x}</span> like <span class="docutils literal">&#64;pair T P x H : T * P</span>. <span class="docutils literal">exists x : T, P x, {x : T | P x}</span>, and <span class="docutils literal">{x : T &amp; P x}</span> are very similar. Use the <span class="docutils literal">Print ex.</span>, <span class="docutils literal">Print sig.</span>, and
+<span class="docutils literal">Print sigT.</span> commands.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>This is a recurring problem when doing inversion on things that
 involve dependent types. The equality that is generated over
-<tt class="docutils literal">existT</tt> just means that Coq cannot invert the equality <tt class="docutils literal">pcts n x =
-pcts n y</tt> like it would for normal types. The reason for that is that
-the index <tt class="docutils literal">n</tt> that appears on the types of <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> cannot be
-generalized when typing the equality <tt class="docutils literal">x = y</tt>, which is required for
+<span class="docutils literal">existT</span> just means that Coq cannot invert the equality <span class="docutils literal">pcts n x = pcts n y</span> like it would for normal types. The reason for that is that
+the index <span class="docutils literal">n</span> that appears on the types of <span class="docutils literal">x</span> and <span class="docutils literal">y</span> cannot be
+generalized when typing the equality <span class="docutils literal">x = y</span>, which is required for
 doing the inversion.</p>
-<p><tt class="docutils literal">existT</tt> is the constructor for the dependent pair type, which
-&quot;hides&quot; the <tt class="docutils literal">nat</tt> index and allows Coq to avoid this problem in the
+<p><span class="docutils literal">existT</span> is the constructor for the dependent pair type, which
+&quot;hides&quot; the <span class="docutils literal">nat</span> index and allows Coq to avoid this problem in the
 general case, producing a statement which is slightly similar to what
 you want, although not quite the same. Fortunately, for indices that
-have a decidable equality (such as <tt class="docutils literal">nat</tt>), it is actually possible
-to recover the &quot;usual&quot; equality using theorem <tt class="docutils literal">inj_pair2_eq_dec</tt> in
+have a decidable equality (such as <span class="docutils literal">nat</span>), it is actually possible
+to recover the &quot;usual&quot; equality using theorem <span class="docutils literal">inj_pair2_eq_dec</span> in
 the <a class="reference external" href="http://coq.inria.fr/distrib/current/stdlib/Coq.Logic.Eqdep_dec.html">standard library</a>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Logic.Eqdep_dec.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Peano_dec.</span><span class="alectryon-wsp">
@@ -109,8 +101,8 @@ existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) 
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="inversion-produces-unexpected-existt-in-coq-v-chkc">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>pc n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>contains n x (pcts n y)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>x = y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inversion-produces-unexpected-existt-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="inversion-produces-unexpected-existt-in-coq-v-chkd">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>pc n</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>contains n x (pcts n y)</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n x =
 existT (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; pc n) n y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> eq_nat_dec.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

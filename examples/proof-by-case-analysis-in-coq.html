@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proof by case analysis in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proof-by-case-analysis-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="proof-by-case-analysis-in-coq">
 <h1 class="title">Proof by case analysis in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/33856689">https://stackoverflow.com/q/33856689</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/33856689">https://stackoverflow.com/q/33856689</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to prove a Proposition about the following function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">division</span> (<span class="nv">m</span> : nat) (<span class="nv">n</span> : nat) {<span class="nv">measure</span> <span class="nv">m</span>} : nat :=
   <span class="kr">match</span> <span class="mi">0</span> &lt;? n <span class="kr">with</span>
@@ -36,31 +33,29 @@
             | true =&gt; S (division (menos m n) n)
             <span class="kr">end</span>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
-</span></span></pre><p><tt class="docutils literal">menos</tt> is natural subtraction.</p>
+</span></span></pre><p><span class="docutils literal">menos</span> is natural subtraction.</p>
 <p>I am trying to prove some fact involving division. I wrote down an
-informal proof were I first consider a case analysis in <tt class="docutils literal">lt_nat 0 n</tt>
-and then in the case when <tt class="docutils literal">lt_nat</tt> is true a further case analysis
-in <tt class="docutils literal">leq_nat n m</tt>. This is in order to reduce the definition of
+informal proof were I first consider a case analysis in <span class="docutils literal">lt_nat 0 n</span>
+and then in the case when <span class="docutils literal">lt_nat</span> is true a further case analysis
+in <span class="docutils literal">leq_nat n m</span>. This is in order to reduce the definition of
 division.</p>
 <p>However I can not find how to express this case analysis in Coq. I
-tried with <tt class="docutils literal">destruct (leq_nat n m)</tt> but it does nothing. I am
+tried with <span class="docutils literal">destruct (leq_nat n m)</span> but it does nothing. I am
 expecting Coq to generate two subgoals: one where I need to prove my
-proposition assuming <tt class="docutils literal">leq_nat n m = false</tt> and one assuming
-<tt class="docutils literal">leq_nat n m = true</tt>.</p>
+proposition assuming <span class="docutils literal">leq_nat n m = false</span> and one assuming
+<span class="docutils literal">leq_nat n m = true</span>.</p>
 <p>Furthermore, I can not unfold the definition of division in my proof!
-When I try <tt class="docutils literal">unfold division</tt> I get: <tt class="docutils literal">division_func (existT (fun _ :
-nat =&gt; nat) m n)</tt>.</p>
-<p>How can I perfom case analysis in <tt class="docutils literal">leq_nat n m</tt>? Why is it that I
+When I try <span class="docutils literal">unfold division</span> I get: <span class="docutils literal">division_func (existT (fun _ : nat =&gt; nat) m n)</span>.</p>
+<p>How can I perfom case analysis in <span class="docutils literal">leq_nat n m</span>? Why is it that I
 can not unfold the definition of division as I usually do with other
 functions?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Everything is more complicated than usual because of <tt class="docutils literal">Program
-Fixpoint</tt>, which does not define your function as you would expect
-with a classic <tt class="docutils literal">Fixpoint</tt>, since it needs to find a structurally
-recursive way of defining it. What <tt class="docutils literal">division</tt> really is, is hidden
-in <tt class="docutils literal">division_func</tt>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Everything is more complicated than usual because of <span class="docutils literal">Program Fixpoint</span>, which does not define your function as you would expect
+with a classic <span class="docutils literal">Fixpoint</span>, since it needs to find a structurally
+recursive way of defining it. What <span class="docutils literal">division</span> really is, is hidden
+in <span class="docutils literal">division_func</span>.</p>
 <p>Therefore, to manipulate your function, you need to prove basic
 lemmas, including the one stating that your function can be replaced
 by its body.</p>
@@ -78,8 +73,8 @@ division m n =
   <span class="kr">if</span> n &lt;=? m <span class="kr">then</span> S (division (menos m n) n) <span class="kr">else</span> <span class="mi">0</span>
  <span class="kr">else</span> <span class="mi">0</span>)</div></blockquote></div></div></small></span></pre><p>Now, the question is how to prove this result. Here is the only
 solution I know, which I consider really unsatisfying.</p>
-<p>I use the tactic <tt class="docutils literal">fix_sub_eq</tt> located in <tt class="docutils literal">Program.Wf</tt>, or
-<tt class="docutils literal">fix_sub_eq_ext</tt> in <tt class="docutils literal">Program.Wf.WfExtensionality</tt>.</p>
+<p>I use the tactic <span class="docutils literal">fix_sub_eq</span> located in <span class="docutils literal">Program.Wf</span>, or
+<span class="docutils literal">fix_sub_eq_ext</span> in <span class="docutils literal">Program.Wf.WfExtensionality</span>.</p>
 <p>This gives something like:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
 division m n =
@@ -583,11 +578,11 @@ S
      (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk11">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk12">+</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span></span></pre><p>But the second goal is quite complicated. The easy and general way of
-solving it is to use the axioms <tt class="docutils literal">proof_irrelevance</tt> and
-<tt class="docutils literal">functional_extensionality</tt>. It should be possible to prove this
+solving it is to use the axioms <span class="docutils literal">proof_irrelevance</span> and
+<span class="docutils literal">functional_extensionality</span>. It should be possible to prove this
 particular subgoal without any axioms, but I have not found the right
 way to do it. Instead of manually applying the axioms, you can use the
-second tactic <tt class="docutils literal">fix_sub_eq_ext</tt> which calls them directly, leaving
+second tactic <span class="docutils literal">fix_sub_eq_ext</span> which calls them directly, leaving
 you a single goal.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk13"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat,
 division m n =
@@ -888,8 +883,8 @@ S
      (existT (<span class="kr">fun</span> <span class="nv">_</span> : nat =&gt; nat) (menos m n) n))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk20">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = true</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>(n &lt;=? m) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk21">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="mi">0</span> &lt;? n) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I have not found a better way to use <tt class="docutils literal">Program Fixpoint</tt>, that's why
-I prefer using <tt class="docutils literal">Function</tt>, which has other defaults, but generates
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I have not found a better way to use <span class="docutils literal">Program Fixpoint</span>, that's why
+I prefer using <span class="docutils literal">Function</span>, which has other defaults, but generates
 directly the equation lemma.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Recdef.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-by-case-analysis-in-coq-v-chk22" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-by-case-analysis-in-coq-v-chk22"><span class="kn">Function</span> <span class="nf">division</span> (m : nat) (n : nat) {<span class="kn">measure</span> (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n) m} : nat :=
@@ -965,14 +960,14 @@ directly the equation lemma.</p>
          <span class="kr">else</span> <span class="mi">0</span>
         <span class="kr">else</span> <span class="mi">0</span>)</blockquote></div></div></small></span></pre><p>Now you have the equation lemma, you can rewrite with it and reason as
 usual.</p>
-<p>About your problem with <tt class="docutils literal">destruct</tt>, <tt class="docutils literal">destruct</tt> does not unfold the
+<p>About your problem with <span class="docutils literal">destruct</span>, <span class="docutils literal">destruct</span> does not unfold the
 definitions. Therefore, if you have no occurrences of the term you're
-destructing in your goal or any of the hypotheses, <tt class="docutils literal">destruct</tt> will
+destructing in your goal or any of the hypotheses, <span class="docutils literal">destruct</span> will
 not do anything interesting, unless you save the equation it produces.
-You can use <tt class="docutils literal">destruct ... eqn:H</tt> for this purpose. I did not know
-<tt class="docutils literal">case_eq</tt> but it seems to do the same thing.</p>
+You can use <span class="docutils literal">destruct ... eqn:H</span> for this purpose. I did not know
+<span class="docutils literal">case_eq</span> but it seems to do the same thing.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

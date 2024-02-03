@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Prove equality on Sigma-types</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="prove-equality-on-sigma-types">
+<div class="alectryon-root alectryon-centered"><main id="prove-equality-on-sigma-types">
 <h1 class="title">Prove equality on Sigma-types</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/27079513">https://stackoverflow.com/q/27079513</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/27079513">https://stackoverflow.com/q/27079513</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have defined a Sygma-Type that looks like:</p>
-<pre class="code coq literal-block">
-<span class="o">{</span> <span class="n">R</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span> <span class="o">|</span> <span class="n">Reflexive</span> <span class="n">R</span> <span class="o">}</span>
-</pre>
-<p>I have two elements <tt class="docutils literal">r1 r2 : { R : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> bool | Reflexive R
-}</tt> and I am to prove <tt class="docutils literal">r1 = r2</tt>. How can I do that?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<pre class="code coq literal-block"><code><span class="o">{</span> <span class="n">R</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">nat</span> <span class="o">-&gt;</span> <span class="n">bool</span> <span class="o">|</span> <span class="n">Reflexive</span> <span class="n">R</span> <span class="o">}</span></code></pre>
+<p>I have two elements <span class="docutils literal">r1 r2 : { R : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> bool | Reflexive R }</span> and I am to prove <span class="docutils literal">r1 = r2</span>. How can I do that?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>If you want to show such an equality, you need to (1) show that the
-underlying functions are equal (i.e., the <tt class="docutils literal">R</tt> component of your
+underlying functions are equal (i.e., the <span class="docutils literal">R</span> component of your
 sigma type), and (2) show that the corresponding proofs are equal.
 There are two problems, however.</p>
 <p>The first one is that equality of functions is too weak in Coq.
@@ -50,12 +44,12 @@ known as <em>functional extensionality</em>:</p>
 Coq's logic! Roughly speaking, the only way two functions can be equal
 is if they can be converted to a syntactically equal terms according
 to the computation rules of the logic. For instance, we can show that
-<tt class="docutils literal">fun n : nat =&gt; 0 + n</tt> and <tt class="docutils literal">fun n : nat =&gt; n</tt> are equal because
-<tt class="docutils literal">+</tt> is defined in Coq by pattern-matching on the first argument, and
-the first argument on the first term is <tt class="docutils literal">0</tt>.</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-equality-on-sigma-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-equality-on-sigma-types-v-chk0"><span class="kn">Goal</span> (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; <span class="mi">0</span> + n) = (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; <span class="mi">0</span> + n) = (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We could expect to show that <tt class="docutils literal">fun n =&gt; n + 0</tt> and <tt class="docutils literal">fun n =&gt; n</tt> are
+<span class="docutils literal">fun n : nat =&gt; 0 + n</span> and <span class="docutils literal">fun n : nat =&gt; n</span> are equal because
+<span class="docutils literal">+</span> is defined in Coq by pattern-matching on the first argument, and
+the first argument on the first term is <span class="docutils literal">0</span>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="prove-equality-on-sigma-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="prove-equality-on-sigma-types-v-chk0"><span class="kn">Goal</span> (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; <span class="mi">0</span> + n) = (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; <span class="mi">0</span> + n) = (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>We could expect to show that <span class="docutils literal">fun n =&gt; n + 0</span> and <span class="docutils literal">fun n =&gt; n</span> are
 equal by similar means. However, Coq does not accept this, because
-<tt class="docutils literal">+</tt> cannot be simplified when the first argument is a variable.</p>
+<span class="docutils literal">+</span> cannot be simplified when the first argument is a variable.</p>
 <p>The other problem is that the notion of equality on proofs is not very
 interesting as well. The only way one can show that two proofs are
 equal is, again, syntactic equality. Intuitively, however, one would
@@ -141,7 +135,7 @@ exist
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Even though axioms can be useful, one might like to avoid them. In
 this case, it is actually possible to prove this lemma just with
 functional extensionality, but you do need at least that. If you want
-to avoid using axioms, and <tt class="docutils literal">r1</tt> and <tt class="docutils literal">r2</tt> are <em>not</em> equal up to
+to avoid using axioms, and <span class="docutils literal">r1</span> and <span class="docutils literal">r2</span> are <em>not</em> equal up to
 computation, you'll have to use a difference equivalence relation on
 your type, and do your formalization using that relation instead, e.g.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">rel_equiv</span>
@@ -149,23 +143,21 @@ your type, and do your formalization using that relation instead, e.g.</p>
   := <span class="kr">forall</span> <span class="nv">n1</span> <span class="nv">n2</span>, proj1_sig r1 n1 n2 = proj1_sig r2 n1 n2.</span></span></pre><p>The <a class="reference external" href="http://coq.inria.fr/">standard library</a> has good support for
 rewriting with equivalence relations; cf. for instance <a class="reference external" href="https://coq.inria.fr/distrib/current/stdlib/Coq.Classes.SetoidClass.html">this</a>.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> I wouldn't say, e.g., <tt class="docutils literal">(fun x : nat =&gt; x)</tt> and <tt class="docutils literal">(fun f =&gt; f)
-(fun x : nat =&gt; x)</tt> are <em>syntactically</em> equal, but in Coq they are
+<p><strong>A:</strong> I wouldn't say, e.g., <span class="docutils literal">(fun x : nat =&gt; x)</span> and <span class="docutils literal">(fun f =&gt; f) (fun x : nat =&gt; x)</span> are <em>syntactically</em> equal, but in Coq they are
 equal. Perhaps it'd be better to replace &quot;syntactically&quot; with
 &quot;definitionally&quot; or &quot;up to computation&quot;?</p>
-<p><strong>A:</strong> The <tt class="docutils literal">l</tt> lemma can also be proved using the unicity of
+<p><strong>A:</strong> The <span class="docutils literal">l</span> lemma can also be proved using the unicity of
 equality proofs (UIP) axiom, which is <em>weaker</em> than the proof
 irrelevance axiom. The modification is simple: we need to introduce</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">UIP</span> : <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">x</span> <span class="nv">y</span> : A) (<span class="nv">p1</span> <span class="nv">p2</span> : x = y), p1 = p2.</span></span></pre><p>and change <tt class="docutils literal">apply proof_irrelevance.</tt> at the end of the proof into
-<tt class="docutils literal">apply functional_extensionality; intros; apply UIP.</tt></p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">UIP</span> : <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">x</span> <span class="nv">y</span> : A) (<span class="nv">p1</span> <span class="nv">p2</span> : x = y), p1 = p2.</span></span></pre><p>and change <span class="docutils literal">apply proof_irrelevance.</span> at the end of the proof into
+<span class="docutils literal">apply functional_extensionality; intros; apply UIP.</span></p>
 <p><strong>A:</strong> On the first reading I missed your comment on the possibility
 of proving this special case without proof irrelevance (or UIP). Since
-<tt class="docutils literal">bool</tt> is a type with decidable equality, we can use
-<tt class="docutils literal">UIP_refl_bool</tt> from <tt class="docutils literal">Eqdep_dec</tt> module to finish the proof:
-<tt class="docutils literal">apply functional_extensionality; intro. destruct (H2 _). apply
-UIP_refl_bool.</tt></p>
+<span class="docutils literal">bool</span> is a type with decidable equality, we can use
+<span class="docutils literal">UIP_refl_bool</span> from <span class="docutils literal">Eqdep_dec</span> module to finish the proof:
+<span class="docutils literal">apply functional_extensionality; intro. destruct (H2 _). apply UIP_refl_bool.</span></p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

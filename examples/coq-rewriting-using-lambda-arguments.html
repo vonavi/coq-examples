@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq rewriting using lambda arguments</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-rewriting-using-lambda-arguments">
+<div class="alectryon-root alectryon-centered"><main id="coq-rewriting-using-lambda-arguments">
 <h1 class="title">Coq rewriting using lambda arguments</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/43849824">https://stackoverflow.com/q/43849824</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/43849824">https://stackoverflow.com/q/43849824</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>We have a function that inserts an element into a specific index of a
 list.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">inject_into</span> {<span class="nv">A</span>} (<span class="nv">x</span> : A) (<span class="nv">l</span> : list A) (<span class="nv">n</span> : nat) : option (list A) :=
@@ -39,14 +36,13 @@ list.</p>
                       | Some l&#39; =&gt; Some (h :: l&#39;)
                       <span class="kr">end</span>
   <span class="kr">end</span>.</span></span></pre><p>The following property of the aforementioned function is of relevance
-to the problem (proof omitted, straightforward induction on <tt class="docutils literal">l</tt> with
-<tt class="docutils literal">n</tt> not being fixed):</p>
+to the problem (proof omitted, straightforward induction on <span class="docutils literal">l</span> with
+<span class="docutils literal">n</span> not being fixed):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-using-lambda-arguments-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-using-lambda-arguments-v-chk0"><span class="kn">Theorem</span> <span class="nf">inject_correct_index</span> : <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">x</span> (<span class="nv">l</span> : list A) <span class="nv">n</span>,
     n &lt;= length l -&gt; <span class="kr">exists</span> <span class="nv">l&#39;</span>, inject_into x l n = Some l&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">l</span> : list A) (<span class="nv">n</span> : nat),
 n &lt;= length l -&gt;
 <span class="kr">exists</span> <span class="nv">l&#39;</span> : list A, inject_into x l n = Some l&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>And we have a computational definition of permutations, with <tt class="docutils literal">iota
-k</tt> being a list of nats <tt class="docutils literal"><span class="pre">[0...k]</span></tt>:</p>
+</span></span></pre><p>And we have a computational definition of permutations, with <span class="docutils literal">iota k</span> being a list of nats <span class="docutils literal"><span class="pre">[0...k]</span></span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">permute</span> {<span class="nv">A</span>} (<span class="nv">l</span> : list A) : list (list A) :=
   <span class="kr">match</span> l <span class="kr">with</span>
   | []     =&gt; [[]]
@@ -60,7 +56,7 @@ k</tt> being a list of nats <tt class="docutils literal"><span class="pre">[0...
   <span class="kr">end</span>.</span></span></pre><p>The theorem we're trying to prove:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-using-lambda-arguments-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-using-lambda-arguments-v-chk1"><span class="kn">Theorem</span> <span class="nf">num_permutations</span> : <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">l</span> : list A) <span class="nv">k</span>,
     length l = k -&gt; length (permute l) = fact k.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list A) (<span class="nv">k</span> : nat),
-length l = k -&gt; length (permute l) = fact k</div></blockquote></div></div></small></span></pre><p>By induction on <tt class="docutils literal">l</tt> we can (eventually) get to following goal:</p>
+length l = k -&gt; length (permute l) = fact k</div></blockquote></div></div></small></span></pre><p>By induction on <span class="docutils literal">l</span> we can (eventually) get to following goal:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-rewriting-using-lambda-arguments-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   A : <span class="kt">Type</span>
@@ -72,7 +68,7 @@ length l = k -&gt; length (permute l) = fact k</div></blockquote></div></div></s
   H1 : length l = k
   ============================
   length (permute (a :: l)) =
-  S (length l) * fact (length l)</blockquote></div></div></small></span></pre><p>If we now simply <tt class="docutils literal">cbn</tt>, the resulting goal is stated as follows:</p>
+  S (length l) * fact (length l)</blockquote></div></div></small></span></pre><p>If we now simply <span class="docutils literal">cbn</span>, the resulting goal is stated as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-rewriting-using-lambda-arguments-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   A : <span class="kt">Type</span>
@@ -92,17 +88,17 @@ length l = k -&gt; length (permute l) = fact k</div></blockquote></div></div></s
            | Some permutations =&gt; permutations
            | None =&gt; []
            <span class="kr">end</span>) (iota (length l))) (permute l)) =
-  fact (length l) + length l * fact (length l)</blockquote></div></div></small></span></pre><p>Here I would like to proceed by <tt class="docutils literal">destruct (inject_into a x y)</tt>,
-which is impossible considering <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> are lambda arguments.
-Please note that we will never get the <tt class="docutils literal">None</tt> branch as a result of
-the lemma <tt class="docutils literal">inject_correct_index</tt>.</p>
+  fact (length l) + length l * fact (length l)</blockquote></div></div></small></span></pre><p>Here I would like to proceed by <span class="docutils literal">destruct (inject_into a x y)</span>,
+which is impossible considering <span class="docutils literal">x</span> and <span class="docutils literal">y</span> are lambda arguments.
+Please note that we will never get the <span class="docutils literal">None</span> branch as a result of
+the lemma <span class="docutils literal">inject_correct_index</span>.</p>
 <p>How does one proceed from this proof state? (Please do note that I am
 not trying to simply complete the proof of the theorem, that's
 completely irrelevant.)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>There is a way to rewrite under binders: the <tt class="docutils literal">setoid_rewrite</tt> tactic
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>There is a way to rewrite under binders: the <span class="docutils literal">setoid_rewrite</span> tactic
 (see <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual030.html#sec787">§27.3.1</a> of
 the Coq Reference manual).</p>
 <p>However, <strong>direct</strong> rewriting under lambdas is not possible without
@@ -154,8 +150,8 @@ Coq Club post to rewrite under lambdas like so:</p>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-using-lambda-arguments-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-using-lambda-arguments-v-chka"><span class="kn">Goal</span> (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n + <span class="mi">0</span>) = (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n + <span class="mi">0</span>) = (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-using-lambda-arguments-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-using-lambda-arguments-v-chkb"><span class="nb">setoid_rewrite</span> &lt;- plus_n_O.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n) = (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; n)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

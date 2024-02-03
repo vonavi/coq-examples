@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Import &lt;Module&gt; vs. Include &lt;Module&gt; in Coq Module system</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,37 +14,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="import-module-vs-include-module-in-coq-module-system">
-<h1 class="title"><tt class="docutils literal">Import &lt;Module&gt;</tt> vs. <tt class="docutils literal">Include &lt;Module&gt;</tt> in Coq Module system</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48837996">https://stackoverflow.com/q/48837996</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="import-module-vs-include-module-in-coq-module-system">
+<h1 class="title"><span class="docutils literal">Import &lt;Module&gt;</span> vs. <span class="docutils literal">Include &lt;Module&gt;</span> in Coq Module system</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48837996">https://stackoverflow.com/q/48837996</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>What is the exact semantics of <tt class="docutils literal">Include M1</tt> inside another module,
-say <tt class="docutils literal">M</tt>? How is it different from doing <tt class="docutils literal">Import M1</tt> inside the
-module <tt class="docutils literal">M</tt>? More precisely what is the semantics of the following
+<section id="question">
+<h2>Question</h2>
+<p>What is the exact semantics of <span class="docutils literal">Include M1</span> inside another module,
+say <span class="docutils literal">M</span>? How is it different from doing <span class="docutils literal">Import M1</span> inside the
+module <span class="docutils literal">M</span>? More precisely what is the semantics of the following
 command:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">M</span> := M1 &lt;+ M2 &lt;+ M3.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">M</span> := M1 &lt;+ M2 &lt;+ M3.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>To summarize the semantics of both vernacular commands:</p>
 <ul class="simple">
-<li>The command <tt class="docutils literal">Include M1</tt> (which can be used in the definition of a
+<li><p>The command <span class="docutils literal">Include M1</span> (which can be used in the definition of a
 <em>module</em> or a <em>module type</em>) asks Coq to make a copy of all the
-fields of <tt class="docutils literal">M1</tt>. Thus, it acts just like a &quot;copy-and-paste&quot; of the
-contents of <tt class="docutils literal">M1</tt> inside the ambient module (resp. module type).</li>
-<li>The command <tt class="docutils literal">Import M1</tt> (which can also be used in the definition
+fields of <span class="docutils literal">M1</span>. Thus, it acts just like a &quot;copy-and-paste&quot; of the
+contents of <span class="docutils literal">M1</span> inside the ambient module (resp. module type).</p></li>
+<li><p>The command <span class="docutils literal">Import M1</span> (which can also be used in the definition
 of a <em>module</em> or a <em>module type</em>, but additionally requires that
-<tt class="docutils literal">M1</tt> is a <em>module</em>) allows one to refer to the fields of <tt class="docutils literal">M1</tt>
+<span class="docutils literal">M1</span> is a <em>module</em>) allows one to refer to the fields of <span class="docutils literal">M1</span>
 with their short identifier (i.e., without needing to use qualified
-identifiers <tt class="docutils literal">M1.field_name</tt>)</li>
+identifiers <span class="docutils literal">M1.field_name</span>)</p></li>
 </ul>
 <p>Next, the syntax</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module Type</span> <span class="nf">M</span> := M1 &lt;+ M2 &lt;+ M3.</span></span></pre><p>is a shortcut for:</p>
@@ -56,14 +53,14 @@ identifiers <tt class="docutils literal">M1.field_name</tt>)</li>
 (Include)</a>,
 <a class="reference external" href="https://coq.inria.fr/distrib/V8.7.2/refman/gallina-ext.html#Import">Sect. 2.5.8 (Import)</a>
 and you may also want to take a look at the <a class="reference external" href="https://coq.inria.fr/distrib/V8.7.2/refman/gallina-ext.html#hevea_command55">Export</a>
-command (a variant of <tt class="docutils literal">Import</tt>).</p>
-<p>If at some point you hesitate between <tt class="docutils literal">Include</tt> and <tt class="docutils literal">Import</tt>, you
-should probably try to use <tt class="docutils literal">Import</tt> in the first place, because it
+command (a variant of <span class="docutils literal">Import</span>).</p>
+<p>If at some point you hesitate between <span class="docutils literal">Include</span> and <span class="docutils literal">Import</span>, you
+should probably try to use <span class="docutils literal">Import</span> in the first place, because it
 will have a lighter effect (it won't clone the contents of the
 specified module but just define shorter names).</p>
 <p>Finally, below are two comprehensive examples that illustrate the use
 of modules, module types, and functors in Coq as well as the commands
-<tt class="docutils literal">Include</tt> and <tt class="docutils literal">Import</tt>:</p>
+<span class="docutils literal">Include</span> and <span class="docutils literal">Import</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="sd">(********************************************)</span>
 <span class="c">(* Example involving a parameterized module *)</span>
 <span class="sd">(********************************************)</span>
@@ -97,7 +94,7 @@ of modules, module types, and functors in Coq as well as the commands
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">FM1</span> := F1 M1.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="import-module-vs-include-module-in-coq-module-system-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="import-module-vs-include-module-in-coq-module-system-v-chk0"><span class="kn">Compute</span> FM1.fu.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">1</span>
 : M1.t</blockquote></div></div></small></span></pre><p>and I recall that <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/vernacular.html#hevea_command97">Compute</a>
-is a shortcut for <tt class="docutils literal">Eval vm_compute in</tt></p>
+is a shortcut for <span class="docutils literal">Eval vm_compute in</span></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="sd">(**********************************************)</span>
 <span class="c">(* Extra example: a parameterized signature   *)</span>
 <span class="c">(*                                            *)</span>
@@ -130,8 +127,8 @@ is a shortcut for <tt class="docutils literal">Eval vm_compute in</tt></p>
 <span class="c">(* Instantiation *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">FM2</span> := F2 M M2.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="import-module-vs-include-module-in-coq-module-system-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="import-module-vs-include-module-in-coq-module-system-v-chk1"><span class="kn">Compute</span> FM2.fu.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= true
-: M.t</blockquote></div></div></small></span></pre></div>
+: M.t</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

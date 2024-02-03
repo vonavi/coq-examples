@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: Proving relation between &lt; and &lt;=</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,25 +14,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-proving-relation-between-and">
-<h1 class="title">Coq: Proving relation between <tt class="docutils literal">&lt;</tt> and <tt class="docutils literal">&lt;=</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/57719818">https://stackoverflow.com/q/57719818</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-proving-relation-between-and">
+<h1 class="title">Coq: Proving relation between <span class="docutils literal">&lt;</span> and <span class="docutils literal">&lt;=</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/57719818">https://stackoverflow.com/q/57719818</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am learning Coq right now and in a larger proof I have become
 stumped by the following sub-proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-proving-relation-between-and-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-proving-relation-between-and-v-chk0"><span class="kn">Theorem</span> <span class="nf">sub</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; n &lt; m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; n &lt; m</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>Or, once unfolded:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-proving-relation-between-and-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-proving-relation-between-and-v-chk1"><span class="kn">Theorem</span> <span class="nf">sub</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; S n &lt;= m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;&gt; m -&gt; S n &lt;= m</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Here, <tt class="docutils literal">n &lt;= m</tt> is inductively defined as follows:</p>
+</span></span></pre><p>Here, <span class="docutils literal">n &lt;= m</span> is inductively defined as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
 | le_n : <span class="kr">forall</span> <span class="nv">n</span> : nat, le n n
 | le_S : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span></span></pre><p>I have not gotten very far, but my attempt looks like this:</p>
@@ -50,36 +47,35 @@ hypothesis shows the following:</p>
   ============================
   <span class="mi">0</span> &lt;= S m -&gt; <span class="mi">0</span> &lt;&gt; S m -&gt; <span class="mi">1</span> &lt;= S m</blockquote></div></div></small></span></pre><p>I am not sure how I can leverage this hypothesis to prove the subgoal.
 I would appreciate any guidance in the right direction.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Since <tt class="docutils literal">le</tt> is defined as an inductive predicate, it makes more sense
-to do the induction on that, rather than <tt class="docutils literal">n</tt>. <tt class="docutils literal">le</tt> doesn't make
-any references to <tt class="docutils literal">0</tt> or even <tt class="docutils literal">S n</tt> (it does have <tt class="docutils literal">S m</tt>), so
-induction on <tt class="docutils literal">n</tt> is probably not the way to go. Induction on <tt class="docutils literal">m</tt>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Since <span class="docutils literal">le</span> is defined as an inductive predicate, it makes more sense
+to do the induction on that, rather than <span class="docutils literal">n</span>. <span class="docutils literal">le</span> doesn't make
+any references to <span class="docutils literal">0</span> or even <span class="docutils literal">S n</span> (it does have <span class="docutils literal">S m</span>), so
+induction on <span class="docutils literal">n</span> is probably not the way to go. Induction on <span class="docutils literal">m</span>
 <em>might</em> work, but it's probably harder than necessary.</p>
 <p>Before starting a formal proof, it can often be helpful to think about
 how you would prove this informally (still using the same definitions,
-though). If you assume that <tt class="docutils literal">n &lt;= m</tt>, then by the inductive
-definition of <tt class="docutils literal">lt</tt>, this means that either <tt class="docutils literal">n</tt> and <tt class="docutils literal">m</tt> are the
-same, or <tt class="docutils literal">m</tt> is the successor of some number <tt class="docutils literal">m'</tt> and <tt class="docutils literal">n</tt> is
-less than or equal to <tt class="docutils literal">m'</tt> (can you see why the definition of <tt class="docutils literal">lt</tt>
+though). If you assume that <span class="docutils literal">n &lt;= m</span>, then by the inductive
+definition of <span class="docutils literal">lt</span>, this means that either <span class="docutils literal">n</span> and <span class="docutils literal">m</span> are the
+same, or <span class="docutils literal">m</span> is the successor of some number <span class="docutils literal">m'</span> and <span class="docutils literal">n</span> is
+less than or equal to <span class="docutils literal">m'</span> (can you see why the definition of <span class="docutils literal">lt</span>
 implies this?). In the first case, we'll have to use the additional
-hypothesis that <tt class="docutils literal">n &lt;&gt; m</tt> to derive a contradiction. In the second
-case, we won't even need that. <tt class="docutils literal">n &lt;= m'</tt> implies that <tt class="docutils literal">S n &lt;= S
-m'</tt>, so since <tt class="docutils literal">m = S m'</tt>, <tt class="docutils literal">S n &lt;= m</tt>, i.e., <tt class="docutils literal">n &lt; m</tt>.</p>
+hypothesis that <span class="docutils literal">n &lt;&gt; m</span> to derive a contradiction. In the second
+case, we won't even need that. <span class="docutils literal">n &lt;= m'</span> implies that <span class="docutils literal">S n &lt;= S m'</span>, so since <span class="docutils literal">m = S m'</span>, <span class="docutils literal">S n &lt;= m</span>, i.e., <span class="docutils literal">n &lt; m</span>.</p>
 <p>For the formalization, we'll have to prove that assumption on the last
-line that <tt class="docutils literal">n &lt;= m</tt> implies <tt class="docutils literal">S n &lt;= S m</tt>. You should try a similar
+line that <span class="docutils literal">n &lt;= m</span> implies <span class="docutils literal">S n &lt;= S m</span>. You should try a similar
 informal analysis to prove it. Other than that, the informal proof
-should be straightforward to formalize. Case analysis on <tt class="docutils literal">H: n &lt;= m</tt>
-is just <tt class="docutils literal">destruct H.</tt>.</p>
+should be straightforward to formalize. Case analysis on <span class="docutils literal">H: n &lt;= m</span>
+is just <span class="docutils literal">destruct H.</span>.</p>
 <hr class="docutils" />
 <p>One more thing. This isn't essential, but can often help in the long
 run. When defining an inductive type (or predicate), if you can factor
 out a parameter that's used the same way in each constructor, it can
 make the induction principle more powerful. The way you have it with
-<tt class="docutils literal">le</tt>, <tt class="docutils literal">n</tt> is universally quantified and used the same way for both
-constructors. Every instance of <tt class="docutils literal">le</tt> starts with <tt class="docutils literal">le n</tt>.</p>
+<span class="docutils literal">le</span>, <span class="docutils literal">n</span> is universally quantified and used the same way for both
+constructors. Every instance of <span class="docutils literal">le</span> starts with <span class="docutils literal">le n</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span> :=
 | le_n : <span class="kr">forall</span> <span class="nv">n</span> : nat, le n n
 | le_S : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span></span></pre><p>That means that we can factor out that index into a parameter.</p>
@@ -90,19 +86,19 @@ constructors. Every instance of <tt class="docutils literal">le</tt> starts with
      : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>),
        P n -&gt;
        (<span class="kr">forall</span> <span class="nv">m</span> : nat, le&#39; n m -&gt; P m -&gt; P (S m)) -&gt;
-       <span class="kr">forall</span> <span class="nv">n0</span> : nat, le&#39; n n0 -&gt; P n0</blockquote></div></div></small></span></pre><p>Compare this to <tt class="docutils literal">le_ind</tt>.</p>
+       <span class="kr">forall</span> <span class="nv">n0</span> : nat, le&#39; n n0 -&gt; P n0</blockquote></div></div></small></span></pre><p>Compare this to <span class="docutils literal">le_ind</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-proving-relation-between-and-v-chk11" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">le_ind
      : <span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
        (<span class="kr">forall</span> <span class="nv">n</span> : nat, P n n) -&gt;
        (<span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, le n m -&gt; P n m -&gt; P n (S m)) -&gt;
-       <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">n0</span> : nat, le n n0 -&gt; P n n0</blockquote></div></div></small></span></pre><p>Basically what's happening here is that with <tt class="docutils literal">le_ind</tt>, you have to
-prove everything for every <tt class="docutils literal">n</tt>. With <tt class="docutils literal">le'_ind</tt>, you only need to
-prove it for the particular <tt class="docutils literal">n</tt> that you're using. This can
+       <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">n0</span> : nat, le n n0 -&gt; P n n0</blockquote></div></div></small></span></pre><p>Basically what's happening here is that with <span class="docutils literal">le_ind</span>, you have to
+prove everything for every <span class="docutils literal">n</span>. With <span class="docutils literal">le'_ind</span>, you only need to
+prove it for the particular <span class="docutils literal">n</span> that you're using. This can
 sometimes simplify proofs, though it's not necessary for the proof of
 your theorem. It's a good exercise to prove that these two predicates
 are equivalent.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

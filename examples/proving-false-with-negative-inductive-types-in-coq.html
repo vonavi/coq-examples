@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving False with negative inductive types in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,40 +14,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-false-with-negative-inductive-types-in-coq">
-<h1 class="title">Proving <tt class="docutils literal">False</tt> with negative inductive types in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/31226427">https://stackoverflow.com/q/31226427</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="proving-false-with-negative-inductive-types-in-coq">
+<h1 class="title">Proving <span class="docutils literal">False</span> with negative inductive types in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/31226427">https://stackoverflow.com/q/31226427</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>The third chapter of CPDT briefly discusses why negative inductive
 types are forbidden in Coq. If we had</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-false-with-negative-inductive-types-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="proving-false-with-negative-inductive-types-in-coq-v-chk0"><span class="kn">Inductive</span> <span class="nf">term</span> : <span class="kt">Set</span> :=
 | App : term -&gt; term -&gt; term
 | Abs : (term -&gt; term) -&gt; term.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non strictly positive occurrence of <span class="s2">&quot;term&quot;</span> <span class="kr">in</span>
  <span class="s2">&quot;(term -&gt; term) -&gt; term&quot;</span>.</blockquote></div></div></small></span></pre><p>then we could easily define a function</p>
-<pre class="code coq literal-block">
-<span class="kn">Definition</span> <span class="nf">uhoh</span> <span class="o">(</span><span class="nv">t</span> <span class="o">:</span> <span class="n">term</span><span class="o">)</span> <span class="o">:</span> <span class="n">term</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="kn">Definition</span> <span class="nf">uhoh</span> <span class="o">(</span><span class="nv">t</span> <span class="o">:</span> <span class="n">term</span><span class="o">)</span> <span class="o">:</span> <span class="n">term</span> <span class="o">:=</span>
   <span class="kr">match</span> <span class="n">t</span> <span class="kr">with</span>
   <span class="o">|</span> <span class="n">Abs</span> <span class="n">f</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="n">t</span>
   <span class="o">|</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">t</span>
-  <span class="kr">end</span><span class="o">.</span>
-</pre>
-<p>so that the term <tt class="docutils literal">uhoh (Abs uhoh)</tt> would be non-terminating, with
+  <span class="kr">end</span><span class="o">.</span></code></pre>
+<p>so that the term <span class="docutils literal">uhoh (Abs uhoh)</span> would be non-terminating, with
 which &quot;we would be able to prove every theorem&quot;.</p>
 <p>I understand the non-termination part, but I don't get how we can
-prove anything with it. How would one prove <tt class="docutils literal">False</tt> using <tt class="docutils literal">term</tt>
+prove anything with it. How would one prove <span class="docutils literal">False</span> using <span class="docutils literal">term</span>
 as defined above?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Reading your question made me realize that I didn't quite understand
 Adam's argument either. But inconsistency in this case results quite
 easily from Cantor's usual <a class="reference external" href="https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument">diagonal argument</a> (a
@@ -85,17 +80,17 @@ following assumptions:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Diag</span>.</span></span></pre><p>This is a generic development that could be instantiated with the
-<tt class="docutils literal">term</tt> type defined in CPDT: <tt class="docutils literal">T</tt> would be <tt class="docutils literal">term</tt>, <tt class="docutils literal">x</tt> and
-<tt class="docutils literal">y</tt> would be two elements of <tt class="docutils literal">term</tt> that we can test discriminate
-between (e.g. <tt class="docutils literal">App (Abs id) (Abs id)</tt> and <tt class="docutils literal">Abs id</tt>). The key point
+<span class="docutils literal">term</span> type defined in CPDT: <span class="docutils literal">T</span> would be <span class="docutils literal">term</span>, <span class="docutils literal">x</span> and
+<span class="docutils literal">y</span> would be two elements of <span class="docutils literal">term</span> that we can test discriminate
+between (e.g. <span class="docutils literal">App (Abs id) (Abs id)</span> and <span class="docutils literal">Abs id</span>). The key point
 is the last assumption: we assume that we have an invertible function
-<tt class="docutils literal">g : (T <span class="pre">-&gt;</span> T) <span class="pre">-&gt;</span> T</tt> which, in your example, would be <tt class="docutils literal">Abs</tt>. Using
+<span class="docutils literal">g : (T <span class="pre">-&gt;</span> T) <span class="pre">-&gt;</span> T</span> which, in your example, would be <span class="docutils literal">Abs</span>. Using
 that function, we play the usual diagonalization trick: we define a
-function <tt class="docutils literal">kaboom</tt> that is by construction different from every
-function <tt class="docutils literal">T <span class="pre">-&gt;</span> T</tt>, including itself. The contradiction results from
+function <span class="docutils literal">kaboom</span> that is by construction different from every
+function <span class="docutils literal">T <span class="pre">-&gt;</span> T</span>, including itself. The contradiction results from
 that.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

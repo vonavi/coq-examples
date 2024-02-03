@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Best way to handle (sub) types of the form { x : nat | x &gt;= 13 /\ x &lt;= 19 }?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19">
-<h1 class="title">Best way to handle (sub) types of the form <tt class="docutils literal">{ x : nat | x &gt;= 13 /\ x &lt;= 19 }</tt>?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/37897316">https://stackoverflow.com/q/37897316</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19">
+<h1 class="title">Best way to handle (sub) types of the form <span class="docutils literal">{ x : nat | x &gt;= 13 /\ x &lt;= 19 }</span>?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/37897316">https://stackoverflow.com/q/37897316</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Coq would let me define this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">teenagers</span> : <span class="kt">Set</span> := { x : nat | x &gt;= <span class="mi">13</span> /\ x &lt;= <span class="mi">19</span> }.</span></span></pre><p>and also:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk0"><span class="kn">Variable</span> <span class="nv">Julia</span> : teenagers.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
@@ -38,35 +35,34 @@ x : teenagers
 The term <span class="s2">&quot;x&quot;</span> has type <span class="s2">&quot;teenagers&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>or:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk2"><span class="kn">Example</span> <span class="nf">Julia_fact1</span> : Julia &gt; <span class="mi">12</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;Julia&quot;</span> has type <span class="s2">&quot;teenagers&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This is because Julia (of type <tt class="docutils literal">teenagers</tt>) cannot be compared to 12
-(<tt class="docutils literal">nat</tt>).</p>
-<p><strong>Q:</strong> How should I inform Coq that Julia's support type is <tt class="docutils literal">nat</tt> so
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This is because Julia (of type <span class="docutils literal">teenagers</span>) cannot be compared to 12
+(<span class="docutils literal">nat</span>).</p>
+<p><strong>Q:</strong> How should I inform Coq that Julia's support type is <span class="docutils literal">nat</span> so
 that I can write anything useful about her?</p>
 <p><strong>Q':</strong> My definition of teenagers seems like a dead end; it is more
 declarative than constructive and I seem to have lost inductive
-properties of <tt class="docutils literal">nat</tt>. How can I show up its inhabitants? If there is
-no way, I can still stick to <tt class="docutils literal">nat</tt> and work with <tt class="docutils literal">Prop</tt> and
+properties of <span class="docutils literal">nat</span>. How can I show up its inhabitants? If there is
+no way, I can still stick to <span class="docutils literal">nat</span> and work with <span class="docutils literal">Prop</span> and
 functions. (newbie here, less than one week self learning with
 <a class="reference external" href="https://www.cis.upenn.edu/~bcpierce/sf/current/index.html">Pierce's SF</a>).</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The pattern you are using in <tt class="docutils literal">teenagers</tt> is an instance of the
-&quot;subType&quot; pattern. As you have noted, a <tt class="docutils literal">{ x : nat | P x }</tt> is
-different from <tt class="docutils literal">nat</tt>. Currently, Coq provides little support to
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The pattern you are using in <span class="docutils literal">teenagers</span> is an instance of the
+&quot;subType&quot; pattern. As you have noted, a <span class="docutils literal">{ x : nat | P x }</span> is
+different from <span class="docutils literal">nat</span>. Currently, Coq provides little support to
 handle these kind of types effectively, but if you restrict to
-&quot;well-behaved&quot; classes of <tt class="docutils literal">P</tt>, you can actually work in a reasonable
+&quot;well-behaved&quot; classes of <span class="docutils literal">P</span>, you can actually work in a reasonable
 way. [This should really become a Coq FAQ BTW]</p>
 <p>In the long term, you may want to use special support for this
 pattern. A good example of such support is provided by the math-comp
-library <tt class="docutils literal">subType</tt> interface.</p>
+library <span class="docutils literal">subType</span> interface.</p>
 <p>Describing this interface is beyond your original question, so I will
 end with a few comments:</p>
 <ul>
-<li><p class="first">In your <tt class="docutils literal">minus_20</tt> example, you want to use the <em>first projection</em>
-of your teenagers datatype. Try <tt class="docutils literal">forall x : teenagers, proj1_sig x
-&lt; 20</tt>. Coq can try to insert such projection automatically if you
-declare the projection as a <tt class="docutils literal">Coercion</tt>:</p>
+<li><p>In your <span class="docutils literal">minus_20</span> example, you want to use the <em>first projection</em>
+of your teenagers datatype. Try <span class="docutils literal">forall x : teenagers, proj1_sig x &lt; 20</span>. Coq can try to insert such projection automatically if you
+declare the projection as a <span class="docutils literal">Coercion</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lia.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">teenagers</span> : <span class="kt">Set</span> := { x : nat | x &gt;= <span class="mi">13</span> /\ x &lt;= <span class="mi">19</span> }.</span><span class="alectryon-wsp">
@@ -77,15 +73,13 @@ declare the projection as a <tt class="docutils literal">Coercion</tt>:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk3"><span class="kn">Lemma</span> <span class="nf">u</span> <span class="nv">t</span> : t &lt; <span class="mi">20</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t</var><span class="hyp-type"><b>: </b><span>teenagers</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t &lt; <span class="mi">20</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="best-way-to-handle-sub-types-of-the-form-x-nat-x-13-x-19-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t</var><span class="hyp-type"><b>: </b><span>teenagers</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t &lt; <span class="mi">20</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">destruct</span> t; <span class="nb">simpl</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
-<li><p class="first">As you have correctly observed, <tt class="docutils literal">{ x : T | P x }</tt> is not the same
-in Coq than <tt class="docutils literal">x</tt>. In principle, you cannot transfer reasoning from
-objects of type <tt class="docutils literal">T</tt> to objects of type <tt class="docutils literal">{ x : T | P x }</tt> as you
-must also reason in addition about objects of type <tt class="docutils literal">P x</tt>. But for
-a wide class of <tt class="docutils literal">P</tt>, you can show that the <tt class="docutils literal">teen_to_nat</tt>
+<li><p>As you have correctly observed, <span class="docutils literal">{ x : T | P x }</span> is not the same
+in Coq than <span class="docutils literal">x</span>. In principle, you cannot transfer reasoning from
+objects of type <span class="docutils literal">T</span> to objects of type <span class="docutils literal">{ x : T | P x }</span> as you
+must also reason in addition about objects of type <span class="docutils literal">P x</span>. But for
+a wide class of <span class="docutils literal">P</span>, you can show that the <span class="docutils literal">teen_to_nat</span>
 projection is injective, that is:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">,</span> <span class="n">teen_to_nat</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">teen_to_nat</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">,</span> <span class="n">teen_to_nat</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">teen_to_nat</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span></code></pre>
 <p>Then, reasoning over the base type can be transferred to the
 subtype. See also: <a class="reference external" href="https://stackoverflow.com/questions/35290012/inductive-subset-of-an-inductive-set-in-coq/35300521#35300521">Inductive subset of an inductive set in Coq</a></p>
 </li>
@@ -93,14 +87,13 @@ subtype. See also: <a class="reference external" href="https://stackoverflow.com
 <p><strong>[edit]:</strong> I've added a couple typical examples of subTypes in
 math-comp, as I think they illustrate well the concept:</p>
 <ul class="simple">
-<li>Sized lists or <tt class="docutils literal"><span class="pre">n.-tuples</span></tt>. A list of length <tt class="docutils literal">n</tt> is represented
+<li><p>Sized lists or <span class="docutils literal"><span class="pre">n.-tuples</span></span>. A list of length <span class="docutils literal">n</span> is represented
 in math-comp as a pair of a single list plus a proof of size, that
-is to say <tt class="docutils literal"><span class="pre">n.-tuple</span> T = { s : seq T | size s == n}</tt>. Thanks to
+is to say <span class="docutils literal"><span class="pre">n.-tuple</span> T = { s : seq T | size s == n}</span>. Thanks to
 injectivity and coertions, you can use all the regular list
-functions over tuples and they work fine.</li>
-<li>Bounded natural or ordinals: similarly, the type <tt class="docutils literal">'I_n = { x : nat
-| x &lt; n }</tt> works almost the same than a natural number, but with a
-bound.</li>
+functions over tuples and they work fine.</p></li>
+<li><p>Bounded natural or ordinals: similarly, the type <span class="docutils literal">'I_n = { x : nat | x &lt; n }</span> works almost the same than a natural number, but with a
+bound.</p></li>
 </ul>
 <hr class="docutils" />
 <p><strong>A:</strong> CPDT covers subset types, starting from <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Cpdt.Subset.html">this chapter</a>.</p>
@@ -110,8 +103,8 @@ soon at ITP soon thou:
 run in the browser, also this provides some exercises
 <a class="reference external" href="https://team.inria.fr/marelle/en/advanced-coq-winter-school-2016">https://team.inria.fr/marelle/en/advanced-coq-winter-school-2016</a> but
 it is geared towards math.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

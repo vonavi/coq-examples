@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>What is difference between destruct and case_eq tactics in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,69 +14,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq">
-<h1 class="title">What is difference between <tt class="docutils literal">destruct</tt> and <tt class="docutils literal">case_eq</tt> tactics in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46440349">https://stackoverflow.com/q/46440349</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq">
+<h1 class="title">What is difference between <span class="docutils literal">destruct</span> and <span class="docutils literal">case_eq</span> tactics in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46440349">https://stackoverflow.com/q/46440349</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I understood <tt class="docutils literal">destruct</tt> as it breaks an inductive definition into
-its constructors. I recently saw <tt class="docutils literal">case_eq</tt> and I couldn't understand
+<section id="question">
+<h2>Question</h2>
+<p>I understood <span class="docutils literal">destruct</span> as it breaks an inductive definition into
+its constructors. I recently saw <span class="docutils literal">case_eq</span> and I couldn't understand
 what it does differently?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, k</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>M.t nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">match</span> M.find (elt:=nat) n m <span class="kr">with</span>
 | Some _ =&gt; true
 | None =&gt; false
-<span class="kr">end</span> = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">cc n (M.add k k m) = true</div></blockquote></div></div></small></span></pre><p>In the above context, if I do destruct <tt class="docutils literal">M.find n m</tt> it breaks <tt class="docutils literal">H</tt>
-into true and false whereas <tt class="docutils literal">case_eq (M.find n m)</tt> leaves <tt class="docutils literal">H</tt>
-intact and adds separate proposition <tt class="docutils literal">M.find <span class="pre">(elt:=nat)</span> n m = Some
-v</tt>, which I can rewrite to get same effect as destruct.</p>
+<span class="kr">end</span> = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">cc n (M.add k k m) = true</div></blockquote></div></div></small></span></pre><p>In the above context, if I do destruct <span class="docutils literal">M.find n m</span> it breaks <span class="docutils literal">H</span>
+into true and false whereas <span class="docutils literal">case_eq (M.find n m)</span> leaves <span class="docutils literal">H</span>
+intact and adds separate proposition <span class="docutils literal">M.find <span class="pre">(elt:=nat)</span> n m = Some v</span>, which I can rewrite to get same effect as destruct.</p>
 <p>Can someone please explain me the difference between the two tactics
 and when which one should be used?</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Check this link
 <a class="reference external" href="https://stackoverflow.com/questions/6823301/how-to-do-cases-with-an-inductive-type-in-coq/6828451#6828451">https://stackoverflow.com/questions/6823301/how-to-do-cases-with-an-inductive-type-in-coq/6828451#6828451</a></p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The first basic tactic in the family of <tt class="docutils literal">destruct</tt> and <tt class="docutils literal">case_eq</tt>
-is called <tt class="docutils literal">case</tt>. This tactic modifies only the conclusion. When you
-type <tt class="docutils literal">case A</tt> and <tt class="docutils literal">A</tt> has a type <tt class="docutils literal">T</tt> which is inductive, the
-system replaces <tt class="docutils literal">A</tt> in the goal's conclusion by instances of all the
-constructors of type <tt class="docutils literal">T</tt>, adding universal quantifications for the
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The first basic tactic in the family of <span class="docutils literal">destruct</span> and <span class="docutils literal">case_eq</span>
+is called <span class="docutils literal">case</span>. This tactic modifies only the conclusion. When you
+type <span class="docutils literal">case A</span> and <span class="docutils literal">A</span> has a type <span class="docutils literal">T</span> which is inductive, the
+system replaces <span class="docutils literal">A</span> in the goal's conclusion by instances of all the
+constructors of type <span class="docutils literal">T</span>, adding universal quantifications for the
 arguments of these constructors, if needed. This creates as many goals
-as there are constructors in type <tt class="docutils literal">T</tt>. The formula <tt class="docutils literal">A</tt> disappears
-from the goal and if there is any information about <tt class="docutils literal">A</tt> in an
+as there are constructors in type <span class="docutils literal">T</span>. The formula <span class="docutils literal">A</span> disappears
+from the goal and if there is any information about <span class="docutils literal">A</span> in an
 hypothesis, the link between this information and all the new
 constructors that replace it in the conclusion gets lost. In spite of
-this, <tt class="docutils literal">case</tt> is an important primitive tactic.</p>
+this, <span class="docutils literal">case</span> is an important primitive tactic.</p>
 <p>Loosing the link between information in the hypotheses and instances
-of <tt class="docutils literal">A</tt> in the conclusion is a big problem in practice, so developers
-came up with two solutions: <tt class="docutils literal">case_eq</tt> and <tt class="docutils literal">destruct</tt>.</p>
+of <span class="docutils literal">A</span> in the conclusion is a big problem in practice, so developers
+came up with two solutions: <span class="docutils literal">case_eq</span> and <span class="docutils literal">destruct</span>.</p>
 <p>Personally, when writing the Coq'Art book, I proposed that we write a
-simple tactic on top of <tt class="docutils literal">case</tt> that keeps a link between <tt class="docutils literal">A</tt> and
+simple tactic on top of <span class="docutils literal">case</span> that keeps a link between <span class="docutils literal">A</span> and
 the various constructor instances in the form of an equality. This is
-the tactic now called <tt class="docutils literal">case_eq</tt>. It does the same thing as <tt class="docutils literal">case</tt>
+the tactic now called <span class="docutils literal">case_eq</span>. It does the same thing as <span class="docutils literal">case</span>
 but adds an extra implication in the goal, where the premise of the
-implication is an equality of the form <tt class="docutils literal">A = ...</tt> and where <tt class="docutils literal">...</tt>
+implication is an equality of the form <span class="docutils literal">A = ...</span> and where <span class="docutils literal">...</span>
 is an instance of each constructor.</p>
-<p>At about the same time, the tactic <tt class="docutils literal">destruct</tt> was proposed. Instead
+<p>At about the same time, the tactic <span class="docutils literal">destruct</span> was proposed. Instead
 of limiting the effect of replacement in the goal's conclusion,
-<tt class="docutils literal">destruct</tt> replaces all instances of <tt class="docutils literal">A</tt> appearing in the
-hypotheses with instances of constructors of type <tt class="docutils literal">T</tt>. In a sense,
+<span class="docutils literal">destruct</span> replaces all instances of <span class="docutils literal">A</span> appearing in the
+hypotheses with instances of constructors of type <span class="docutils literal">T</span>. In a sense,
 this is cleaner because it avoids relying on the extra concept of
-equality, but it is still incomplete because the expression <tt class="docutils literal">A</tt> may
-be a compound expression <tt class="docutils literal">f B</tt>, and if <tt class="docutils literal">B</tt> appears in the
-hypothesis but not <tt class="docutils literal">f B</tt> the link between <tt class="docutils literal">A</tt> and <tt class="docutils literal">B</tt> will still
+equality, but it is still incomplete because the expression <span class="docutils literal">A</span> may
+be a compound expression <span class="docutils literal">f B</span>, and if <span class="docutils literal">B</span> appears in the
+hypothesis but not <span class="docutils literal">f B</span> the link between <span class="docutils literal">A</span> and <span class="docutils literal">B</span> will still
 be lost.</p>
-<div class="section" id="illustration">
-<h2>Illustration</h2>
+<section id="illustration">
+<h3>Illustration</h3>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">my_pred</span> (<span class="nv">n</span> : nat) := <span class="kr">match</span> n <span class="kr">with</span> <span class="mi">0</span> =&gt; <span class="mi">0</span> | S p =&gt; p <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">example</span> <span class="nv">n</span> : n &lt;= <span class="mi">1</span> -&gt; my_pred n &lt;= <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &lt;= <span class="mi">1</span> -&gt; my_pred n &lt;= <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -86,23 +82,21 @@ my_pred n = S n0 -&gt; n &lt;= <span class="mi">1</span> -&gt; S n0 &lt;= <span 
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">my_pred n = <span class="mi">0</span> -&gt; n &lt;= <span class="mi">1</span> -&gt; <span class="mi">0</span> &lt;= <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk6" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><label class="goal-separator" for="what-is-difference-between-destruct-and-case-eq-tactics-in-coq-v-chk6"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n0</span> : nat,
 my_pred n = S n0 -&gt; n &lt;= <span class="mi">1</span> -&gt; S n0 &lt;= <span class="mi">0</span></div></blockquote></div></div></div></small></span></pre><p>the extra equality is very useful here.</p>
 <p>In <a class="reference external" href="https://stackoverflow.com/q/46434503/1809211">this question</a> I
-suggested that the developer use <tt class="docutils literal">case_eq (a == b)</tt> when <tt class="docutils literal">(a ==
-b)</tt> has type <tt class="docutils literal">bool</tt> because this type is inductive and not very
-informative (constructors have no argument). But when <tt class="docutils literal">(a == b)</tt> has
-type <tt class="docutils literal">{a = b} + {a &lt;&gt; b}</tt> (which is the case for the <tt class="docutils literal">string_dec</tt>
+suggested that the developer use <span class="docutils literal">case_eq (a == b)</span> when <span class="docutils literal">(a == b)</span> has type <span class="docutils literal">bool</span> because this type is inductive and not very
+informative (constructors have no argument). But when <span class="docutils literal">(a == b)</span> has
+type <span class="docutils literal">{a = b} + {a &lt;&gt; b}</span> (which is the case for the <span class="docutils literal">string_dec</span>
 function) the constructors have arguments that are proofs of
 interesting properties and the extra universal quantification for the
 arguments of the constructors are enough to give the relevant
-information, in this case <tt class="docutils literal">a = b</tt> in a first goal and <tt class="docutils literal">a &lt;&gt; b</tt> in
+information, in this case <span class="docutils literal">a = b</span> in a first goal and <span class="docutils literal">a &lt;&gt; b</span> in
 a second goal.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> Note that <tt class="docutils literal">destruct</tt> has a variant <tt class="docutils literal">destruct H eqn:H0</tt>
+<p><strong>A:</strong> Note that <span class="docutils literal">destruct</span> has a variant <span class="docutils literal">destruct H eqn:H0</span>
 which also remembers an equality.</p>
-<p><strong>A:</strong> Also note that there's a simple wrapper <tt class="docutils literal">destruct_with_eqn
-H</tt>, which automatically generates a fresh name for the equality.</p>
+<p><strong>A:</strong> Also note that there's a simple wrapper <span class="docutils literal">destruct_with_eqn H</span>, which automatically generates a fresh name for the equality.</p>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Understanding how pattern matching works in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="understanding-how-pattern-matching-works-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="understanding-how-pattern-matching-works-in-coq">
 <h1 class="title">Understanding how pattern matching works in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/72930287">https://stackoverflow.com/q/72930287</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/72930287">https://stackoverflow.com/q/72930287</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm currently following the <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/">Software Foundations</a> book, I am currently
 on the <strong>Lists chapter</strong>. However, I'm having a hard time wrapping my
 head around a specific case of pattern matching and, due to being a
 beginner in Coq, I'm not sure about how to find the answer of this
 question.</p>
-<p>So, the exercise was to create a <tt class="docutils literal">Fixpoint</tt> to calculate how many
-nat <tt class="docutils literal">v</tt> we have in a list <tt class="docutils literal">s</tt> (a bag, more specifically).</p>
+<p>So, the exercise was to create a <span class="docutils literal">Fixpoint</span> to calculate how many
+nat <span class="docutils literal">v</span> we have in a list <span class="docutils literal">s</span> (a bag, more specifically).</p>
 <p>I decided to use pattern matching for this, but if I tried to define a
 function like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">count&#39;</span> (<span class="nv">v</span> : nat) (<span class="nv">s</span> : bag) : nat :=
@@ -43,60 +40,50 @@ function like this:</p>
               | v =&gt; S (count&#39; v t)
               <span class="kr">end</span>
   <span class="kr">end</span>.</span></span></pre><p>and tried to apply this function to, let's say,</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-how-pattern-matching-works-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-how-pattern-matching-works-in-coq-v-chk0"><span class="kn">Example</span> <span class="nf">test_count1</span> : count&#39; <span class="mi">1</span> [<span class="mi">1</span>;<span class="mi">2</span>;<span class="mi">3</span>;<span class="mi">1</span>;<span class="mi">4</span>;<span class="mi">1</span>] = <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count&#39; <span class="mi">1</span> [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>; <span class="mi">1</span>; <span class="mi">4</span>; <span class="mi">1</span>] = <span class="mi">3</span></div></blockquote></div></div></small></span></pre><p>I would end up with <tt class="docutils literal">6 = 3</tt>. My understanding is that matching <tt class="docutils literal">h</tt>
-with <tt class="docutils literal">v</tt> is always &quot;true&quot;, so it ends up counting every element of
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="understanding-how-pattern-matching-works-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="understanding-how-pattern-matching-works-in-coq-v-chk0"><span class="kn">Example</span> <span class="nf">test_count1</span> : count&#39; <span class="mi">1</span> [<span class="mi">1</span>;<span class="mi">2</span>;<span class="mi">3</span>;<span class="mi">1</span>;<span class="mi">4</span>;<span class="mi">1</span>] = <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count&#39; <span class="mi">1</span> [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>; <span class="mi">1</span>; <span class="mi">4</span>; <span class="mi">1</span>] = <span class="mi">3</span></div></blockquote></div></div></small></span></pre><p>I would end up with <span class="docutils literal">6 = 3</span>. My understanding is that matching <span class="docutils literal">h</span>
+with <span class="docutils literal">v</span> is always &quot;true&quot;, so it ends up counting every element of
 the list.</p>
 <p>But why does it happen? How could we compare, using pattern matching,
-the values of both <tt class="docutils literal">h</tt> and <tt class="docutils literal">v</tt>?</p>
+the values of both <span class="docutils literal">h</span> and <span class="docutils literal">v</span>?</p>
 <p><strong>PS:</strong> I have already solved this exercise using an auxiliary
-function that compares if <tt class="docutils literal">h</tt> and <tt class="docutils literal">v</tt> are equal, but I'm wondering
+function that compares if <span class="docutils literal">h</span> and <span class="docutils literal">v</span> are equal, but I'm wondering
 if this can be achieved only using built-in pattern matching.</p>
-</div>
-<div class="section" id="answer-li-yao-xia">
-<h1>Answer (Li-yao Xia)</h1>
+</section>
+<section id="answer-li-yao-xia">
+<h2>Answer (Li-yao Xia)</h2>
 <p>The pattern</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">h</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">h</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">v</span> <span class="o">=&gt;</span> <span class="n">S</span> <span class="o">(</span><span class="n">count'</span> <span class="n">v</span> <span class="n">t</span><span class="o">)</span>
-<span class="kr">end</span>
-</pre>
-<p>introduces a new variable <tt class="docutils literal">v</tt> bound to <tt class="docutils literal">h</tt>, shadowing the existing
-<tt class="docutils literal">v</tt>. It is equivalent to a <tt class="docutils literal">let</tt> expression:</p>
-<pre class="code coq literal-block">
-<span class="kr">let</span> <span class="nv">v</span> <span class="o">:=</span> <span class="n">h</span> <span class="kr">in</span> <span class="n">S</span> <span class="o">(</span><span class="n">count'</span> <span class="n">v</span> <span class="n">t</span><span class="o">)</span>
+<span class="kr">end</span></code></pre>
+<p>introduces a new variable <span class="docutils literal">v</span> bound to <span class="docutils literal">h</span>, shadowing the existing
+<span class="docutils literal">v</span>. It is equivalent to a <span class="docutils literal">let</span> expression:</p>
+<pre class="code coq literal-block"><code><span class="kr">let</span> <span class="nv">v</span> <span class="o">:=</span> <span class="n">h</span> <span class="kr">in</span> <span class="n">S</span> <span class="o">(</span><span class="n">count'</span> <span class="n">v</span> <span class="n">t</span><span class="o">)</span>
 <span class="c">(* or, without shadowing *)</span>
-<span class="kr">let</span> <span class="nv">v1</span> <span class="o">:=</span> <span class="n">h</span> <span class="kr">in</span> <span class="n">S</span> <span class="o">(</span><span class="n">count'</span> <span class="n">v1</span> <span class="n">t</span><span class="o">)</span>
-</pre>
-<p>Instead, to compare <tt class="docutils literal">h</tt> and <tt class="docutils literal">v</tt>, use a comparison function:</p>
-<pre class="code coq literal-block">
-<span class="kr">if</span> <span class="n">h</span> <span class="o">=?</span> <span class="n">v</span> <span class="kr">then</span> <span class="o">...</span> <span class="kr">else</span> <span class="o">...</span>
-</pre>
-</div>
-<div class="section" id="answer-ana-borges">
-<h1>Answer (Ana Borges)</h1>
+<span class="kr">let</span> <span class="nv">v1</span> <span class="o">:=</span> <span class="n">h</span> <span class="kr">in</span> <span class="n">S</span> <span class="o">(</span><span class="n">count'</span> <span class="n">v1</span> <span class="n">t</span><span class="o">)</span></code></pre>
+<p>Instead, to compare <span class="docutils literal">h</span> and <span class="docutils literal">v</span>, use a comparison function:</p>
+<pre class="code coq literal-block"><code><span class="kr">if</span> <span class="n">h</span> <span class="o">=?</span> <span class="n">v</span> <span class="kr">then</span> <span class="o">...</span> <span class="kr">else</span> <span class="o">...</span></code></pre>
+</section>
+<section id="answer-ana-borges">
+<h2>Answer (Ana Borges)</h2>
 <p>Pattern matching is useful when you want to make case distinctions on
 constructors. Perhaps the name is misleading in this sense, since</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">h</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">h</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">v</span> <span class="o">=&gt;</span> <span class="o">...</span>
-<span class="kr">end</span>
-</pre>
-<p>will not compare <tt class="docutils literal">h</tt> and the specific <tt class="docutils literal">v</tt> from above. Instead, the
-<tt class="docutils literal">match</tt> checks to see if the shape of <tt class="docutils literal">h</tt> matches the shape
-exemplified by <tt class="docutils literal">v</tt>. Like Li-yao Xia mentioned, here <tt class="docutils literal">v</tt> has no
+<span class="kr">end</span></code></pre>
+<p>will not compare <span class="docutils literal">h</span> and the specific <span class="docutils literal">v</span> from above. Instead, the
+<span class="docutils literal">match</span> checks to see if the shape of <span class="docutils literal">h</span> matches the shape
+exemplified by <span class="docutils literal">v</span>. Like Li-yao Xia mentioned, here <span class="docutils literal">v</span> has no
 shape, it is a universal placeholder. On the other hand something like</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">h</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">h</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">O</span> <span class="o">=&gt;</span> <span class="o">...</span>
 <span class="o">|</span> <span class="n">S</span> <span class="n">k</span> <span class="o">=&gt;</span> <span class="o">...</span>
-<span class="kr">end</span>
-</pre>
-<p>exposes two different shapes that a <tt class="docutils literal">nat</tt> can have, namely being
-<tt class="docutils literal">O</tt> or the successor of some <tt class="docutils literal">k</tt>. The latter is the kind of
-situation where we do want to use <tt class="docutils literal">match</tt>. Comparing values is best
-done through <tt class="docutils literal">_ =? _</tt>.</p>
+<span class="kr">end</span></code></pre>
+<p>exposes two different shapes that a <span class="docutils literal">nat</span> can have, namely being
+<span class="docutils literal">O</span> or the successor of some <span class="docutils literal">k</span>. The latter is the kind of
+situation where we do want to use <span class="docutils literal">match</span>. Comparing values is best
+done through <span class="docutils literal">_ =? _</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

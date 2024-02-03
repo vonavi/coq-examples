@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using dependent types in Coq (safe nth function)</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-dependent-types-in-coq-safe-nth-function">
-<h1 class="title">Using dependent types in Coq (safe <tt class="docutils literal">nth</tt> function)</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/27637949">https://stackoverflow.com/q/27637949</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="using-dependent-types-in-coq-safe-nth-function">
+<h1 class="title">Using dependent types in Coq (safe <span class="docutils literal">nth</span> function)</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/27637949">https://stackoverflow.com/q/27637949</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to learn Coq, but I find it hard to make the leap from what
 I read in <em>Software Foundations and Certified Programming with
 Dependent Types</em> to my own use cases.</p>
 <p>In particular, I thought I'd try to make a verified version of the
-<tt class="docutils literal">nth</tt> function on lists. I managed to write this:</p>
+<span class="docutils literal">nth</span> function on lists. I managed to write this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -63,25 +60,23 @@ S n &lt; length (x :: xs) -&gt; n &lt; length xs</div></blockquote></div></div><
                         safe_nth n&#39; xs&#39; (predecessor_proof n&#39; x xs&#39; pf)
   <span class="kr">end</span>.</span></span></pre><p>This works, but it raises two questions:</p>
 <ol class="arabic simple">
-<li>How would experienced Coq users write this? Are the three lemmas
-really necessary? Is this a use case for <tt class="docutils literal">{ | }</tt> types?</li>
-<li>How do I call this function from other code, i.e., how do I supply
-the required proofs?</li>
+<li><p>How would experienced Coq users write this? Are the three lemmas
+really necessary? Is this a use case for <span class="docutils literal">{ | }</span> types?</p></li>
+<li><p>How do I call this function from other code, i.e., how do I supply
+the required proofs?</p></li>
 </ol>
 <p>I tried this:</p>
-<pre class="code coq literal-block">
-<span class="kn">Require Import</span> <span class="n">NPeano</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Require Import</span> <span class="n">NPeano</span><span class="o">.</span>
 <span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span>
-  <span class="kr">if</span> <span class="n">ltb</span> <span class="mi">2</span> <span class="o">(</span><span class="n">length</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">])</span> <span class="kr">then</span> <span class="n">safe_nth</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span> <span class="o">???</span> <span class="kr">else</span> <span class="mi">0</span><span class="o">.</span>
-</pre>
+  <span class="kr">if</span> <span class="n">ltb</span> <span class="mi">2</span> <span class="o">(</span><span class="n">length</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">])</span> <span class="kr">then</span> <span class="n">safe_nth</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span> <span class="o">???</span> <span class="kr">else</span> <span class="mi">0</span><span class="o">.</span></code></pre>
 <p>But of course this won't work until I figure out what to write for the
-<tt class="docutils literal"><span class="pre">???</span></tt> part. I tried putting <tt class="docutils literal">2 &lt; length [1; 2; 3]</tt> there but that
-has type <tt class="docutils literal">Prop</tt> rather than type <tt class="docutils literal">2 &lt; length [1; 2; 3]</tt>. I could
+<span class="docutils literal"><span class="pre">???</span></span> part. I tried putting <span class="docutils literal">2 &lt; length [1; 2; 3]</span> there but that
+has type <span class="docutils literal">Prop</span> rather than type <span class="docutils literal">2 &lt; length [1; 2; 3]</span>. I could
 write and prove a lemma of that specific type, and that works. But
 what's the general solution?</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>I don't think there is a consensus on what the best way for doing this
 sort of thing is.</p>
 <p>I believe that usually Coq developments tend to favor indexed
@@ -89,8 +84,8 @@ inductive types for writing code like that. This is the solution
 followed by the <a class="reference external" href="https://coq.inria.fr/distrib/current/stdlib/Coq.Vectors.Vector.html">vector library</a>
 in the Coq distribution. There, you would define an indexed inductive
 type for vectors and another one for bounded integers (called
-<tt class="docutils literal">Vector.t</tt> and <tt class="docutils literal">Fin.t</tt> in the standard library, respectively).
-Some functions, such as <tt class="docutils literal">nth</tt>, are much simpler to write in this
+<span class="docutils literal">Vector.t</span> and <span class="docutils literal">Fin.t</span> in the standard library, respectively).
+Some functions, such as <span class="docutils literal">nth</span>, are much simpler to write in this
 style, since pattern matching on vectors and indices ends up doing a
 little bit of reasoning for you when getting rid of contradictory
 cases and doing recursive calls, for instance. The disadvantage is
@@ -99,16 +94,16 @@ sometimes you have to write your functions in a weird way to get them
 to work. Another problem with this approach is that one needs to
 redefine many functions that work on lists to work on vectors.</p>
 <p>Another solution is to define bounded integers as a dependent pair of
-a <tt class="docutils literal">nat</tt> and a proof that that index is bounded, which is essentially
-what you going for when you mentioned <tt class="docutils literal">{ | }</tt> types. This is the
+a <span class="docutils literal">nat</span> and a proof that that index is bounded, which is essentially
+what you going for when you mentioned <span class="docutils literal">{ | }</span> types. This is the
 approach followed by the <a class="reference external" href="http://ssr.msr-inria.inria.fr/~jenkins/current/Ssreflect.fintype.html">ssreflect</a>
-library, for instance (look fot the <tt class="docutils literal">ordinal</tt> type). To define a
-safe <tt class="docutils literal">nth</tt> function, what they do is to define a simple version that
+library, for instance (look fot the <span class="docutils literal">ordinal</span> type). To define a
+safe <span class="docutils literal">nth</span> function, what they do is to define a simple version that
 takes a default element to return when the index is out of bounds, and
-use the proof that <tt class="docutils literal">n &lt; length l</tt> to supply that default element
+use the proof that <span class="docutils literal">n &lt; length l</span> to supply that default element
 (have a look for instance at <a class="reference external" href="http://ssr.msr-inria.inria.fr/~jenkins/current/Ssreflect.tuple.html">tuple</a>
 library of ssreflect, where they define length-indexed lists, and see
-how they define <tt class="docutils literal">tnth</tt>). The advantage is that it is easier to
+how they define <span class="docutils literal">tnth</span>). The advantage is that it is easier to
 relate the more informative types and functions to the simpler
 variants. The disadvantage is that some things become harder to
 express directly: for instance, you can't do pattern-matching directly
@@ -116,33 +111,32 @@ on an ssreflect tuple.</p>
 <p>Another point worth noting is that very often it is easier to work
 with boolean properties instead of inductively defined ones, because
 computation and simplification obviate the need for some lemmas. Thus,
-when using a boolean version of <tt class="docutils literal">&lt;</tt>, Coq doesn't make a difference
-between a proof of <tt class="docutils literal">0 &lt; 0 = true</tt> and <tt class="docutils literal">false = true</tt>, or between a
-proof of <tt class="docutils literal">S n &lt; length (x :: l) = true</tt> and a proof of <tt class="docutils literal">n &lt; length
-l = true</tt>, which means that you would be able to use those proofs
-directly in your definition of <tt class="docutils literal">nth</tt> without having to massage them
+when using a boolean version of <span class="docutils literal">&lt;</span>, Coq doesn't make a difference
+between a proof of <span class="docutils literal">0 &lt; 0 = true</span> and <span class="docutils literal">false = true</span>, or between a
+proof of <span class="docutils literal">S n &lt; length (x :: l) = true</span> and a proof of <span class="docutils literal">n &lt; length l = true</span>, which means that you would be able to use those proofs
+directly in your definition of <span class="docutils literal">nth</span> without having to massage them
 with auxiliary lemmas. The Coq standard library, unfortunately, tends
 to favor inductively defined types over boolean computations in many
-cases where they are not useful, such as for defining <tt class="docutils literal">&lt;</tt>. The
+cases where they are not useful, such as for defining <span class="docutils literal">&lt;</span>. The
 <a class="reference external" href="http://ssr.msr-inria.inria.fr/">ssreflect</a> library, on the other
 hand, makes much more use of boolean computations for defining
 properties, making it more appropriate for this style of programming.</p>
-</div>
-<div class="section" id="answer-perce-strop">
-<h1>Answer (Perce Strop)</h1>
-<p><tt class="docutils literal">zltz</tt> has the same type as <tt class="docutils literal">nltz 0</tt>.</p>
+</section>
+<section id="answer-perce-strop">
+<h2>Answer (Perce Strop)</h2>
+<p><span class="docutils literal">zltz</span> has the same type as <span class="docutils literal">nltz 0</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-types-in-coq-safe-nth-function-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-types-in-coq-safe-nth-function-v-chkd"><span class="kn">Check</span> zltz.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">zltz
      : <span class="mi">0</span> &lt; <span class="mi">0</span> -&gt; <span class="kt">False</span></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-types-in-coq-safe-nth-function-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-types-in-coq-safe-nth-function-v-chke"><span class="kn">Check</span> nltz <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">nltz <span class="mi">0</span>
-     : <span class="mi">0</span> &lt; <span class="mi">0</span> -&gt; <span class="kt">False</span></blockquote></div></div></small></span></pre><p>To use your function with <tt class="docutils literal">2</tt> and <tt class="docutils literal">[1; 2; 3]</tt> from within another
-function, you can use <tt class="docutils literal">lt_dec</tt>.</p>
+     : <span class="mi">0</span> &lt; <span class="mi">0</span> -&gt; <span class="kt">False</span></blockquote></div></div></small></span></pre><p>To use your function with <span class="docutils literal">2</span> and <span class="docutils literal">[1; 2; 3]</span> from within another
+function, you can use <span class="docutils literal">lt_dec</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-dependent-types-in-coq-safe-nth-function-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="using-dependent-types-in-coq-safe-nth-function-v-chkf"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> <span class="kr">match</span> lt_dec <span class="mi">2</span> (length [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>]) <span class="kr">with</span>
                 | <span class="nb">left</span> pf =&gt; safe_nth <span class="mi">2</span> [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>] pf
                 | <span class="nb">right</span> _ =&gt; <span class="mi">0</span>
                 <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">3</span>
-: nat</blockquote></div></div></small></span></pre><p>If you extract <tt class="docutils literal">lt_dec</tt>, you'll find it's very similar to <tt class="docutils literal">ltb</tt>
-after the proofs are erased. You don't need to use <tt class="docutils literal">lt_dec</tt> if you
-can build your proof from within the function where <tt class="docutils literal">safe_nth</tt> is
+: nat</blockquote></div></div></small></span></pre><p>If you extract <span class="docutils literal">lt_dec</span>, you'll find it's very similar to <span class="docutils literal">ltb</span>
+after the proofs are erased. You don't need to use <span class="docutils literal">lt_dec</span> if you
+can build your proof from within the function where <span class="docutils literal">safe_nth</span> is
 called.</p>
 <p>You can shorten your function a bit like this.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">safe_nth&#39;</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">xs</span> : list X) (<span class="nv">n</span> : nat) : n &lt; length xs -&gt; X :=
@@ -151,13 +145,13 @@ called.</p>
   | x :: _, <span class="mi">0</span> =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; x
   | x :: xs&#39;, S n&#39; =&gt; <span class="kr">fun</span> <span class="nv">pf</span> =&gt; safe_nth&#39; xs&#39; n&#39; (predecessor_proof n&#39; x xs&#39; pf)
   <span class="kr">end</span>.</span></span></pre><p>I'm not sure what best practices are, but you get tidier extracted
-code if you use <tt class="docutils literal">sig</tt>.</p>
+code if you use <span class="docutils literal">sig</span>.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> Thanks for the explanation using <tt class="docutils literal">lt_dec</tt>, that was the piece
-I was missing! And yes, I had seen the similarity between <tt class="docutils literal">zltz</tt> and
-<tt class="docutils literal">nltz</tt> but missed the equivalence...</p>
+<p><strong>Q:</strong> Thanks for the explanation using <span class="docutils literal">lt_dec</span>, that was the piece
+I was missing! And yes, I had seen the similarity between <span class="docutils literal">zltz</span> and
+<span class="docutils literal">nltz</span> but missed the equivalence...</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

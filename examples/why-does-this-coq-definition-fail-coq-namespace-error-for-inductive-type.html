@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why does this Coq Definition fail? Coq Namespace error for Inductive Type</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-does-this-coq-definition-fail-coq-namespace-error-for-inductive-type">
-<h1 class="title">Why does this Coq <tt class="docutils literal">Definition</tt> fail? Coq Namespace error for Inductive Type</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71267447">https://stackoverflow.com/q/71267447</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="why-does-this-coq-definition-fail-coq-namespace-error-for-inductive-type">
+<h1 class="title">Why does this Coq <span class="docutils literal">Definition</span> fail? Coq Namespace error for Inductive Type</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71267447">https://stackoverflow.com/q/71267447</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have the following Inductive Type and a test function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">parameter</span> : <span class="kt">Type</span> :=
 | Nop
@@ -59,10 +56,10 @@ The term <span class="s2">&quot;Some (x, y)&quot;</span> has type
  <span class="s2">&quot;option (Datatypes.nat * nat)&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
  <span class="s2">&quot;option (Datatypes.nat * Datatypes.nat)&quot;</span>.</blockquote></div></div></small></span></pre><p>I don't understand why my definition does not work. Is there a
-difference between <tt class="docutils literal">nat</tt> and <tt class="docutils literal">Datatypes.nat</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+difference between <span class="docutils literal">nat</span> and <span class="docutils literal">Datatypes.nat</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>In Coq, it is not possible to test what a type is. Consider the
 following program:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-does-this-coq-definition-fail-coq-namespace-error-for-inductive-type-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="why-does-this-coq-definition-fail-coq-namespace-error-for-inductive-type-v-chk3"><span class="kn">Definition</span> <span class="nf">is_nat</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : bool :=
@@ -70,14 +67,14 @@ following program:</p>
   | nat =&gt; true
   | _   =&gt; false
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Pattern <span class="s2">&quot;_&quot;</span> <span class="kr">is</span> redundant <span class="kr">in</span> this clause.</blockquote></div></div></small></span></pre><p>If you try to run this, Coq tells you that the last branch is
-redundant, and rejects the definition. The issue is that <tt class="docutils literal">nat</tt> is
-taken to be a variable name, not the <tt class="docutils literal">nat</tt> data type from the
+redundant, and rejects the definition. The issue is that <span class="docutils literal">nat</span> is
+taken to be a variable name, not the <span class="docutils literal">nat</span> data type from the
 standard library. Therefore, the first branch matches every type
-<tt class="docutils literal">A</tt>, and the last branch is redundant. In your example, the pattern
-<tt class="docutils literal">nat</tt> ends up masking the data type <tt class="docutils literal">nat</tt>, which is why you end up
-seeing the qualified name <tt class="docutils literal">Datatypes.nat</tt>.</p>
+<span class="docutils literal">A</span>, and the last branch is redundant. In your example, the pattern
+<span class="docutils literal">nat</span> ends up masking the data type <span class="docutils literal">nat</span>, which is why you end up
+seeing the qualified name <span class="docutils literal">Datatypes.nat</span>.</p>
 <p>One way of solving this issue is to use a type of <em>codes</em> instead of
-<tt class="docutils literal">Type</tt>. For instance:</p>
+<span class="docutils literal">Type</span>. For instance:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">type</span> : <span class="kt">Type</span> :=
 | Bool
 | Nat.</span><span class="alectryon-wsp">
@@ -103,14 +100,14 @@ seeing the qualified name <tt class="docutils literal">Datatypes.nat</tt>.</p>
   | TwoP Nat x y =&gt; Some (x, y)
   | _ =&gt; None
   <span class="kr">end</span>.</span></span></pre><p>There are two issues with this solution. First, it requires you to
-anticipate all types that you will need in <tt class="docutils literal">parameter</tt>, and add
-those in the definition of <tt class="docutils literal">type</tt>. Second, it forces you to program
+anticipate all types that you will need in <span class="docutils literal">parameter</span>, and add
+those in the definition of <span class="docutils literal">type</span>. Second, it forces you to program
 with dependent types, which can be hard to manipulate. It might be
 possible to refactor your definitions to avoid the problem of type
 matching altogether, although there is no one-size-fits-all solution
 -- it depends on your application.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using length of list X as an argument for a constructor of X in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,34 +14,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq">
-<h1 class="title">Using length of list <tt class="docutils literal">X</tt> as an argument for a constructor of <tt class="docutils literal">X</tt> in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26835278">https://stackoverflow.com/q/26835278</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq">
+<h1 class="title">Using length of list <span class="docutils literal">X</span> as an argument for a constructor of <span class="docutils literal">X</span> in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/26835278">https://stackoverflow.com/q/26835278</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>The title is not very informative, so let me explain.</p>
 <p>I'm trying to formalize what it means to be a term in first-order
 logic. Here is the textbook definition of terms of an arbitrary
-language <tt class="docutils literal">L</tt>:</p>
+language <span class="docutils literal">L</span>:</p>
 <blockquote>
 <ol class="arabic simple">
-<li>Each variable or constant is a term.</li>
-<li>If <tt class="docutils literal">n &gt;= 1</tt>, <tt class="docutils literal">f</tt> is an <tt class="docutils literal">n</tt>-ary function of <tt class="docutils literal">L</tt>, and
-<tt class="docutils literal">t1 ... tn</tt> are terms of <tt class="docutils literal">L</tt>, then <tt class="docutils literal">f t1 ... tn</tt> is a
-term of <tt class="docutils literal">L</tt>.</li>
+<li><p>Each variable or constant is a term.</p></li>
+<li><p>If <span class="docutils literal">n &gt;= 1</span>, <span class="docutils literal">f</span> is an <span class="docutils literal">n</span>-ary function of <span class="docutils literal">L</span>, and
+<span class="docutils literal">t1 ... tn</span> are terms of <span class="docutils literal">L</span>, then <span class="docutils literal">f t1 ... tn</span> is a
+term of <span class="docutils literal">L</span>.</p></li>
 </ol>
 </blockquote>
 <p>I have already defined variables, constants, functions, and languages
-as <tt class="docutils literal">var</tt>, <tt class="docutils literal">const</tt>, <tt class="docutils literal">func</tt>, and <tt class="docutils literal">lang</tt>. I also have functions
-<tt class="docutils literal">f_arity</tt> and <tt class="docutils literal">L_funcs</tt> that returns the arity of a function and
+as <span class="docutils literal">var</span>, <span class="docutils literal">const</span>, <span class="docutils literal">func</span>, and <span class="docutils literal">lang</span>. I also have functions
+<span class="docutils literal">f_arity</span> and <span class="docutils literal">L_funcs</span> that returns the arity of a function and
 the ensemble of all functions in a language, respectively. So giving
 an inductive definition of terms should be pretty straightforward:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk0"><span class="kn">Inductive</span> <span class="nf">term</span> (<span class="nv">L</span> : lang) : <span class="kt">Type</span> :=
@@ -55,13 +52,13 @@ an inductive definition of terms should be pretty straightforward:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Non strictly positive occurrence of <span class="s2">&quot;term&quot;</span> <span class="kr">in</span>
  <span class="s2">&quot;forall (f : func) (l : list (term L)),</span>
-<span class="s2">  length l = f_arity f -&gt; In f (L_funcs L) -&gt; term L&quot;</span>.</blockquote></div></div></small></span></pre><p>I have a vague idea of what's going on here. The constructor <tt class="docutils literal">t_f</tt>
-has an argument <tt class="docutils literal">length l = f_arity</tt>, which Coq doesn't like because
-it has <tt class="docutils literal">term L</tt> on the left side of an arrow. But I think Coq is
+<span class="s2">  length l = f_arity f -&gt; In f (L_funcs L) -&gt; term L&quot;</span>.</blockquote></div></div></small></span></pre><p>I have a vague idea of what's going on here. The constructor <span class="docutils literal">t_f</span>
+has an argument <span class="docutils literal">length l = f_arity</span>, which Coq doesn't like because
+it has <span class="docutils literal">term L</span> on the left side of an arrow. But I think Coq is
 being overly cautious here, because it lets me do pretty much the same
 thing if I tweak the types a bit. I could, for instance, define a
-custom list type <tt class="docutils literal">listN</tt> indexed by its size, so that <tt class="docutils literal">list X n</tt>
-would be a list of <tt class="docutils literal">X</tt> with <tt class="docutils literal">n</tt> elements. Then I would have</p>
+custom list type <span class="docutils literal">listN</span> indexed by its size, so that <span class="docutils literal">list X n</span>
+would be a list of <span class="docutils literal">X</span> with <span class="docutils literal">n</span> elements. Then I would have</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="using-length-of-list-x-as-an-argument-for-a-constructor-of-x-in-coq-v-chk2"><span class="kn">Inductive</span> <span class="nf">term</span> (<span class="nv">L</span> : lang) : <span class="kt">Type</span> :=
 | t_v : var -&gt; term L
 | t_c : const -&gt; term L
@@ -72,18 +69,18 @@ would be a list of <tt class="docutils literal">X</tt> with <tt class="docutils 
 <span class="s2">  In f (L_funcs L) -&gt; term L&quot;</span>.</blockquote></div></div></small></span></pre><p>But I don't want to go this way, because it is ad-hoc, and makes all
 the useful list libraries unusable. So I'm looking for a way to
 convince Coq that what I'm trying to do is perfectly safe, so it will
-accept <tt class="docutils literal">length l = f_arity f</tt> as a constructor argument. Is there a
+accept <span class="docutils literal">length l = f_arity f</span> as a constructor argument. Is there a
 way to do this?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>This is a nice problem indeed, I hadn't encountered it in this form
 before.</p>
 <p>Quite frankly, unfortunately, I don't see a way of getting Coq to
 accept your definition as is. Here are some options for mitigating
 this problem:</p>
 <ol class="arabic">
-<li><p class="first">Use a separate inductive predicate for term well-formedness.
+<li><p>Use a separate inductive predicate for term well-formedness.
 Manipulating terms will be much more convenient, because you won't
 have to worry about the length constraints when writing your
 functions. On the other hand, you will have to reason about
@@ -100,8 +97,8 @@ you would have something like</p>
 | wf_f f ts :
   In f (L_funcs L) -&gt; Forall (wf_term L) ts -&gt;
   length ts = f_arity f -&gt; wf_term L (t_f L f ts).</span></span></pre></li>
-<li><p class="first">Use a dependently typed encoding for term. You can add e.g. a
-<tt class="docutils literal">nat</tt> parameter to <tt class="docutils literal">term</tt> for expressing how many arguments are
+<li><p>Use a dependently typed encoding for term. You can add e.g. a
+<span class="docutils literal">nat</span> parameter to <span class="docutils literal">term</span> for expressing how many arguments are
 &quot;missing&quot;, which would give you something like</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term</span> <span class="nv">L</span> : nat -&gt; <span class="kt">Type</span> :=
 | t_v : var -&gt; term L <span class="mi">0</span>
@@ -110,10 +107,10 @@ you would have something like</p>
 | t_a n (t : term L (S n)) (t : term L <span class="mi">0</span>) : term L n.</span></span></pre><p>This might not be what you want, since you don't get the list of
 arguments to manipulate, but it might be helpful.</p>
 </li>
-<li><p class="first">Use a &quot;bad&quot; encoding with a length-indexed list, and use auxiliary
+<li><p>Use a &quot;bad&quot; encoding with a length-indexed list, and use auxiliary
 types (&quot;views&quot;) and functions to make this &quot;bad&quot; definition more
-convenient to use. You define <tt class="docutils literal">term</tt> like in your second
-definition, but then define a new <tt class="docutils literal">term'</tt> on top of it, like</p>
+convenient to use. You define <span class="docutils literal">term</span> like in your second
+definition, but then define a new <span class="docutils literal">term'</span> on top of it, like</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">term&#39;</span> <span class="nv">L</span> : <span class="kt">Type</span> :=
 | t_v&#39; : var -&gt; term&#39; L
 | t_c&#39; : const -&gt; term&#39; L
@@ -129,10 +126,10 @@ definition, but then define a new <tt class="docutils literal">term'</tt> on top
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></li>
 </ol>
 <p>You can even define custom induction/recursion principles that work
-directly with <tt class="docutils literal">t_f''</tt> instead of <tt class="docutils literal">t_f</tt>, effectively hiding the
+directly with <span class="docutils literal">t_f''</span> instead of <span class="docutils literal">t_f</span>, effectively hiding the
 annoying details of your original definition.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

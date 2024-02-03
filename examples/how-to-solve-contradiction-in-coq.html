@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to solve contradiction in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,51 +14,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-solve-contradiction-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-solve-contradiction-in-coq">
 <h1 class="title">How to solve contradiction in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/63028399">https://stackoverflow.com/q/63028399</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/63028399">https://stackoverflow.com/q/63028399</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have statement <tt class="docutils literal">true &lt;&gt; false</tt>, in hypothesis. I want to prove
-<tt class="docutils literal">true = false</tt>. Can I solve it? The problem is that, it can not be
+<section id="question">
+<h2>Question</h2>
+<p>I have statement <span class="docutils literal">true &lt;&gt; false</span>, in hypothesis. I want to prove
+<span class="docutils literal">true = false</span>. Can I solve it? The problem is that, it can not be
 solved by contradiction.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>I agree that you should provide a better example. That said! You need
-to be clear...is <tt class="docutils literal">true &lt;&gt; false</tt> above the line (eg a hypothesis) or
+to be clear...is <span class="docutils literal">true &lt;&gt; false</span> above the line (eg a hypothesis) or
 below the line (a goal)?</p>
 <p>I'm assuming it is a goal, because as a hypothesis, it doesn't
 actually tell you anything (it's just a tautology).</p>
 <p>If it's a goal:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk0"><span class="kn">Goal</span> (true &lt;&gt; false).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; false</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk1"><span class="nb">intros</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">discriminate</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>There are a lot of general ways to deal with contradictions...<tt class="docutils literal">discriminate</tt> and <tt class="docutils literal">inversion</tt> are quite common. But a clearer
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>There are a lot of general ways to deal with contradictions...<span class="docutils literal">discriminate</span> and <span class="docutils literal">inversion</span> are quite common. But a clearer
 example would be better.</p>
-<p>Something to note in general is that <tt class="docutils literal">A &lt;&gt; B</tt> is just a notation for
-<tt class="docutils literal">A = B <span class="pre">-&gt;</span> False</tt>, which is why <tt class="docutils literal">intros contra</tt> above works,
+<p>Something to note in general is that <span class="docutils literal">A &lt;&gt; B</span> is just a notation for
+<span class="docutils literal">A = B <span class="pre">-&gt;</span> False</span>, which is why <span class="docutils literal">intros contra</span> above works,
 because it's pulling out the hypothesis. In cases where you're not
 sure what to do, you can use intros to put the equality above the line
 and then derive a contradiction.</p>
-<p>In the case where you have something like <tt class="docutils literal">true &lt;&gt; true</tt> <em>above</em> the
+<p>In the case where you have something like <span class="docutils literal">true &lt;&gt; true</span> <em>above</em> the
 line (that's important), then you can apply it.</p>
 <p>Example</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk2"><span class="kn">Goal</span> (true &lt;&gt; true -&gt; <span class="mi">0</span> = <span class="mi">1</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; true -&gt; <span class="mi">0</span> = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk3"><span class="nb">intros</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk4"><span class="nb">exfalso</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-contradiction-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-contradiction-in-coq-v-chk5"><span class="nb">apply</span> contra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>contra</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">true = true</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><tt class="docutils literal">exfalso</tt> clears out the current goal and replaces it with <tt class="docutils literal">False</tt>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><span class="docutils literal">exfalso</span> clears out the current goal and replaces it with <span class="docutils literal">False</span>
 -- this is useful when you have an impossible goal but a contradiction
-in your hypothesis (above the line). <tt class="docutils literal">apply contra</tt> uses the fact
-that <tt class="docutils literal">&lt;&gt;</tt> is <tt class="docutils literal">... <span class="pre">-&gt;</span> False</tt> like I mentioned above.</p>
+in your hypothesis (above the line). <span class="docutils literal">apply contra</span> uses the fact
+that <span class="docutils literal">&lt;&gt;</span> is <span class="docutils literal">... <span class="pre">-&gt;</span> False</span> like I mentioned above.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Program Fixpoint: recursive call in let and hypothesis of the obligation</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation">
-<h1 class="title"><tt class="docutils literal">Program Fixpoint</tt>: recursive call in <tt class="docutils literal">let</tt> and hypothesis of the obligation</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47909582">https://stackoverflow.com/q/47909582</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation">
+<h1 class="title"><span class="docutils literal">Program Fixpoint</span>: recursive call in <span class="docutils literal">let</span> and hypothesis of the obligation</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47909582">https://stackoverflow.com/q/47909582</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Say I have the following <tt class="docutils literal">Program Fixpoint</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>Say I have the following <span class="docutils literal">Program Fixpoint</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -36,20 +33,19 @@
   <span class="kr">match</span> hd_error l <span class="kr">with</span>
   | Some n =&gt; n :: f_rec
   | None =&gt; []
-  <span class="kr">end</span>.</span></span></pre><p>(This example basically returns <tt class="docutils literal">l</tt> in a very stupid way, for the
+  <span class="kr">end</span>.</span></span></pre><p>(This example basically returns <span class="docutils literal">l</span> in a very stupid way, for the
 sake of having a simple example).</p>
-<p>Here, I have a recursive call to <tt class="docutils literal">f</tt> (stored in <tt class="docutils literal">f_rec</tt>) which is
-only used if <tt class="docutils literal">l</tt> contains an element, which ensures that when I use
-<tt class="docutils literal">f_rec</tt>, <tt class="docutils literal">length (tl l)</tt> is indeed smaller than <tt class="docutils literal">length l</tt>.</p>
+<p>Here, I have a recursive call to <span class="docutils literal">f</span> (stored in <span class="docutils literal">f_rec</span>) which is
+only used if <span class="docutils literal">l</span> contains an element, which ensures that when I use
+<span class="docutils literal">f_rec</span>, <span class="docutils literal">length (tl l)</span> is indeed smaller than <span class="docutils literal">length l</span>.</p>
 <p>However, when I want to solve the obligation</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk0"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
 length l0 &lt; length l -&gt; list nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl l) &lt; length l</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>I don't have the hypothesis <tt class="docutils literal">hd_error l = Some n</tt> which I need.</p>
-<p>(Somehow, I have the impression that it is understood as &quot;compute <tt class="docutils literal">f
-(tl l)</tt> at the <tt class="docutils literal">let ... in</tt> place&quot;, and not &quot;delay the computation
+</span></span></pre><p>I don't have the hypothesis <span class="docutils literal">hd_error l = Some n</span> which I need.</p>
+<p>(Somehow, I have the impression that it is understood as &quot;compute <span class="docutils literal">f (tl l)</span> at the <span class="docutils literal">let ... in</span> place&quot;, and not &quot;delay the computation
 until it is actually used&quot;).</p>
 <hr class="docutils" />
-<p>To illustrate the difference, if I &quot;inline&quot; the <tt class="docutils literal">let ... in</tt>
+<p>To illustrate the difference, if I &quot;inline&quot; the <span class="docutils literal">let ... in</span>
 statement:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">f</span> <span class="nv">l</span> {<span class="nv">measure</span> (length l)} : list nat :=
   <span class="kr">match</span> hd_error l <span class="kr">with</span>
@@ -62,25 +58,23 @@ length l0 &lt; length l -&gt; list nat</span></span></span><br><span><var>n</var
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk2"><span class="nb">destruct</span> l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l</span> : list nat,
 length l &lt; length [] -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error []</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl []) &lt; length []</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
 length l0 &lt; length (n0 :: l) -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error (n0 :: l)</span></span></span><br></div><label class="goal-separator" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk3"><hr></label><div class="goal-conclusion">length (tl (n0 :: l)) &lt; length (n0 :: l)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Here I have <tt class="docutils literal">Heq_anonymous : Some n = hd_error []</tt> in the
+</span></span></pre><p>Here I have <span class="docutils literal">Heq_anonymous : Some n = hd_error []</span> in the
 environment.</p>
 <hr class="docutils" />
 <p>My question is the following: is it possible to have the hypothesis I
-need, i.e. to have the hypothesis generated by the <tt class="docutils literal">match ... with</tt>
+need, i.e. to have the hypothesis generated by the <span class="docutils literal">match ... with</span>
 statement?</p>
-<p>N.B.: Moving the <tt class="docutils literal">let</tt> is a solution, but I am curious to know
+<p>N.B.: Moving the <span class="docutils literal">let</span> is a solution, but I am curious to know
 whether this is possible without doing so. For instance, it might be
-useful in the case <tt class="docutils literal">f_rec</tt> is used in various contexts, to avoid
-duplicating <tt class="docutils literal">f (tl l)</tt>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+useful in the case <span class="docutils literal">f_rec</span> is used in various contexts, to avoid
+duplicating <span class="docutils literal">f (tl l)</span>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>One trick is to explicitly ask for the hypothesis you need (I recently
 saw it in <a class="reference external" href="https://stackoverflow.com/a/46859452/2747511">this answer</a> by <a class="reference external" href="https://stackoverflow.com/users/946226/joachim-breitner">Joachim Breitner</a>):</p>
-<pre class="code coq literal-block">
-<span class="kr">let</span> <span class="nv">f_rec</span> <span class="o">:=</span> <span class="kr">fun</span> <span class="nv">pf</span> <span class="o">:</span> <span class="n">length</span> <span class="o">(</span><span class="n">tl</span> <span class="n">l</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="n">l</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">tl</span> <span class="n">l</span><span class="o">)</span> <span class="kr">in</span>
-</pre>
-<p>This way you will be able to use <tt class="docutils literal">f_rec</tt> only when it makes sense.</p>
+<pre class="code coq literal-block"><code><span class="kr">let</span> <span class="nv">f_rec</span> <span class="o">:=</span> <span class="kr">fun</span> <span class="nv">pf</span> <span class="o">:</span> <span class="n">length</span> <span class="o">(</span><span class="n">tl</span> <span class="n">l</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="n">l</span> <span class="o">=&gt;</span> <span class="n">f</span> <span class="o">(</span><span class="n">tl</span> <span class="n">l</span><span class="o">)</span> <span class="kr">in</span></code></pre>
+<p>This way you will be able to use <span class="docutils literal">f_rec</span> only when it makes sense.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">f</span> <span class="nv">l</span> {<span class="nv">measure</span> (length l)} : list nat :=
   <span class="kr">let</span> <span class="nv">f_rec</span> := <span class="kr">fun</span> <span class="nv">pf</span> : length (tl l) &lt; length l =&gt; f (tl l) <span class="kr">in</span>
   <span class="kr">match</span> hd_error l <span class="kr">with</span>
@@ -88,8 +82,8 @@ saw it in <a class="reference external" href="https://stackoverflow.com/a/468594
   | None =&gt; []
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="program-fixpoint-recursive-call-in-let-and-hypothesis-of-the-obligation-v-chk4"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l0</span> : list nat,
-length l0 &lt; length l -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error l</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl l) &lt; length l</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> l; [<span class="bp">discriminate</span> | <span class="nb">auto</span>].</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+length l0 &lt; length l -&gt; list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heq_anonymous</var><span class="hyp-type"><b>: </b><span>Some n = hd_error l</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (tl l) &lt; length l</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> l; [<span class="bp">discriminate</span> | <span class="nb">auto</span>].</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

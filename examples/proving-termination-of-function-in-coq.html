@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving Termination of Function in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-termination-of-function-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="proving-termination-of-function-in-coq">
 <h1 class="title">Proving Termination of Function in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46928911">https://stackoverflow.com/q/46928911</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46928911">https://stackoverflow.com/q/46928911</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am having trouble proving termination of the following function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-termination-of-function-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="proving-termination-of-function-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">norm_union</span> <span class="nv">u</span> <span class="nv">v</span> : regex :=
   <span class="kr">match</span> u, v <span class="kr">with</span>
@@ -43,13 +40,13 @@
                             <span class="kr">else</span> <span class="kr">if</span> le_regex u v
                                  <span class="kr">then</span> Union u v
                                  <span class="kr">else</span> Union v u
-  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>where <tt class="docutils literal">regex</tt> is the type of regular expressions and <tt class="docutils literal">le_regex</tt>
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>where <span class="docutils literal">regex</span> is the type of regular expressions and <span class="docutils literal">le_regex</span>
 implements a total ordering on regular expressions. The source is page
 five of <a class="reference external" href="http://www21.in.tum.de/~krauss/papers/rexp.pdf">this</a>
 document. The function occurs as part of a normalization function for
-regular expressions (formalized in Isabelle/HOL). The <tt class="docutils literal">le_regex</tt>
-function is adapted from the same paper. I am using <tt class="docutils literal">ascii</tt> to avoid
-parameterizing <tt class="docutils literal">regex</tt> by a decidable total ordering (and want to
+regular expressions (formalized in Isabelle/HOL). The <span class="docutils literal">le_regex</span>
+function is adapted from the same paper. I am using <span class="docutils literal">ascii</span> to avoid
+parameterizing <span class="docutils literal">regex</span> by a decidable total ordering (and want to
 extract the program).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">regex</span> : <span class="kt">Set</span> :=
 | Empty   : regex
@@ -86,61 +83,59 @@ extract the program).</p>
 [unused-<span class="nb">pattern</span>-matching-variable,<span class="nb">pattern</span>-matching]</blockquote><blockquote class="alectryon-message">Unused variable v catches more than one <span class="nb">case</span>.
 [unused-<span class="nb">pattern</span>-matching-variable,<span class="nb">pattern</span>-matching]</blockquote><blockquote class="alectryon-message">Unused variable v catches more than one <span class="nb">case</span>.
 [unused-<span class="nb">pattern</span>-matching-variable,<span class="nb">pattern</span>-matching]</blockquote></div></div></small></span></pre><p>I think the correct approach is to define a decreasing measure and use
-<tt class="docutils literal">Program Fixpoint</tt> to prove termination. However, I'm having trouble
+<span class="docutils literal">Program Fixpoint</span> to prove termination. However, I'm having trouble
 coming up with the correct measure (attempts based on the number of
 operators have been unsuccessful). I have tried factoring the work
 into separate functions, but ran into similar problems. Any help would
 be appreciated, or hints pointing in the right direction.</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>Your code is more complex than what is usually handled with a measure
 function, because you have a nested recursive call in the following
 line:</p>
-<pre class="code coq literal-block">
-<span class="n">Union</span> <span class="n">u</span> <span class="n">v</span><span class="o">,</span> <span class="n">w</span>         <span class="o">=&gt;</span> <span class="n">norm_union</span> <span class="n">u</span> <span class="o">(</span><span class="n">norm_union</span> <span class="n">v</span> <span class="n">w</span><span class="o">)</span>  <span class="c">(* line 5 *)</span>
-</pre>
-<p>I suggest that you should not return a value in type <tt class="docutils literal">regex</tt>, but in
-type <tt class="docutils literal">{r : regex | size r &lt; combined_size u v}</tt> for suitable notions
-of <tt class="docutils literal">size</tt> and <tt class="docutils literal">combined_size</tt>.</p>
+<pre class="code coq literal-block"><code><span class="n">Union</span> <span class="n">u</span> <span class="n">v</span><span class="o">,</span> <span class="n">w</span>         <span class="o">=&gt;</span> <span class="n">norm_union</span> <span class="n">u</span> <span class="o">(</span><span class="n">norm_union</span> <span class="n">v</span> <span class="n">w</span><span class="o">)</span>  <span class="c">(* line 5 *)</span></code></pre>
+<p>I suggest that you should not return a value in type <span class="docutils literal">regex</span>, but in
+type <span class="docutils literal">{r : regex | size r &lt; combined_size u v}</span> for suitable notions
+of <span class="docutils literal">size</span> and <span class="docutils literal">combined_size</span>.</p>
 <p>After several hours of study on your problem, it also turns out that
 your recursion relies on lexical ordering of the arguments.
-<tt class="docutils literal">norm_union v w</tt> may well return <tt class="docutils literal">Union v w</tt>, so you need that the
-argument pair <tt class="docutils literal">(u, Union v w)</tt> is smaller than <tt class="docutils literal">(Union u v, w)</tt>.
+<span class="docutils literal">norm_union v w</span> may well return <span class="docutils literal">Union v w</span>, so you need that the
+argument pair <span class="docutils literal">(u, Union v w)</span> is smaller than <span class="docutils literal">(Union u v, w)</span>.
 So if you really want to use a measure, you need the weight of the
 left-hand side to be larger than the weight of the right-hand side,
-and you need the measure of a component of a <tt class="docutils literal">Union</tt> to be less than
+and you need the measure of a component of a <span class="docutils literal">Union</span> to be less than
 the measure of the whole.</p>
 <p>Because of the lexical ordering nature, I chose to not use a measure
-but a well-founded order. Also, I don't know <tt class="docutils literal">Program Fixpoint</tt> well
+but a well-founded order. Also, I don't know <span class="docutils literal">Program Fixpoint</span> well
 enough, so I developed a solution to your problem using another tool.
 The solution I came up with can be seen <a class="reference external" href="https://github.com/ybertot/norm_union_example">here on github</a>. At least this
 shows all the decrease conditions that need to be proved.</p>
-</div>
-<div class="section" id="answer-yves-1">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves-1">
+<h2>Answer (Yves)</h2>
 <p>After an extra day of work, I now have a more complete answer to this
 question. It is still visible at <a class="reference external" href="https://github.com/ybertot/norm_union_example">this link</a>. This solution
 deserves a few comments.</p>
-<p>First, I am using a function constructor called <tt class="docutils literal">Fix</tt> (the long name
-is <tt class="docutils literal">Coq.Init.Wf.Fix</tt>). This is a higher order function that can be
+<p>First, I am using a function constructor called <span class="docutils literal">Fix</span> (the long name
+is <span class="docutils literal">Coq.Init.Wf.Fix</span>). This is a higher order function that can be
 used to define functions by well-founded recursion. I need a well
-founded order for this, this order is called <tt class="docutils literal">order</tt>. Well founded
+founded order for this, this order is called <span class="docutils literal">order</span>. Well founded
 orders were studied intensively in the early 2000s and they are still
-at the foundation of the <tt class="docutils literal">Program Fixpoint</tt> command.</p>
+at the foundation of the <span class="docutils literal">Program Fixpoint</span> command.</p>
 <p>Second, the code you wrote performs case analyses on two values of
-type <tt class="docutils literal">regex</tt> simultaneously, so this leads to 36 cases (a bit less,
+type <span class="docutils literal">regex</span> simultaneously, so this leads to 36 cases (a bit less,
 because there is no case analysis on the second argument when the
-first one is <tt class="docutils literal">Empty</tt>). You don't see the 36 cases in your code,
+first one is <span class="docutils literal">Empty</span>). You don't see the 36 cases in your code,
 because several constructors are covered by the same rule where the
 pattern is just a variable. To avoid this multiplication of cases, I
 devised a specific inductive type for the case analyses. I called this
-specific type <tt class="docutils literal">arT</tt>. Then I define a function <tt class="docutils literal">ar</tt> that maps any
-element of type <tt class="docutils literal">regex</tt> to the corresponding element of <tt class="docutils literal">arT</tt>. The
-type <tt class="docutils literal">arT</tt> has three constructors instead of six, so pattern
+specific type <span class="docutils literal">arT</span>. Then I define a function <span class="docutils literal">ar</span> that maps any
+element of type <span class="docutils literal">regex</span> to the corresponding element of <span class="docutils literal">arT</span>. The
+type <span class="docutils literal">arT</span> has three constructors instead of six, so pattern
 matching expressions will contain much less code and proofs will be
 less verbose.</p>
-<p>Then I proceeded to define <tt class="docutils literal">norm_union</tt> using <tt class="docutils literal">Fix</tt>. As usual in
+<p>Then I proceeded to define <span class="docutils literal">norm_union</span> using <span class="docutils literal">Fix</span>. As usual in
 Coq (and in most theorem provers, including Isabelle), the language of
 recursive definitions ensures that recursive functions always
 terminate. In this case, this is done by imposing that recursive calls
@@ -148,25 +143,22 @@ only happen on arguments that are <em>smaller</em> than the function's input.
 In this case, this is done by describing the body of the recursive
 function by a function that takes as first argument the initial input
 and as second argument the function that will be used to represent the
-recursive calls. The name of this function is <tt class="docutils literal">norm_union_F</tt> and its
+recursive calls. The name of this function is <span class="docutils literal">norm_union_F</span> and its
 type is as follows:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">p</span> <span class="o">:</span> <span class="n">regex</span> <span class="o">*</span> <span class="n">regex</span><span class="o">,</span>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">p</span> <span class="o">:</span> <span class="n">regex</span> <span class="o">*</span> <span class="n">regex</span><span class="o">,</span>
   <span class="kr">forall</span> <span class="nv">g</span> <span class="o">:</span> <span class="o">(</span><span class="kr">forall</span> <span class="nv">p'</span><span class="o">,</span> <span class="n">order</span> <span class="n">p'</span> <span class="n">p</span> <span class="o">-&gt;</span>
                          <span class="o">{</span><span class="n">r</span> <span class="o">:</span> <span class="n">regex</span> <span class="o">|</span> <span class="n">size_regex</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">size_2regex</span> <span class="n">p'</span><span class="o">}),</span>
-    <span class="o">{</span><span class="n">r</span> <span class="o">:</span> <span class="n">regex</span> <span class="o">|</span> <span class="n">size_regex</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">size_2regex</span> <span class="n">p</span><span class="o">}</span>
-</pre>
+    <span class="o">{</span><span class="n">r</span> <span class="o">:</span> <span class="n">regex</span> <span class="o">|</span> <span class="n">size_regex</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">size_2regex</span> <span class="n">p</span><span class="o">}</span></code></pre>
 <p>In this type description, the name of the function used to represent
-recursive calls is <tt class="docutils literal">g</tt> and we see that the type of <tt class="docutils literal">g</tt> imposes
-that it can only be used on pairs of <tt class="docutils literal">regex</tt> terms that are smaller
-than the initial argument <tt class="docutils literal">p</tt> for the order named <tt class="docutils literal">order</tt>. In this
+recursive calls is <span class="docutils literal">g</span> and we see that the type of <span class="docutils literal">g</span> imposes
+that it can only be used on pairs of <span class="docutils literal">regex</span> terms that are smaller
+than the initial argument <span class="docutils literal">p</span> for the order named <span class="docutils literal">order</span>. In this
 type description, we also see I chose to express that the returned
-type of the recursive calls is not <tt class="docutils literal">regex</tt> but <tt class="docutils literal">{r : regex |
-size_regex r &lt;= size_2regex p'}</tt>. This is because we have to handle
+type of the recursive calls is not <span class="docutils literal">regex</span> but <span class="docutils literal">{r : regex | size_regex r &lt;= size_2regex p'}</span>. This is because we have to handle
 <em>nested</em> recursion, where outputs of recursive calls will be used as
 inputs of other recursive calls. <strong>This is the main trick of this
 answer.</strong></p>
-<p>Then we have the body of the <tt class="docutils literal">norm_union_F</tt> function:</p>
+<p>Then we have the body of the <span class="docutils literal">norm_union_F</span> function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">norm_union_F</span> : <span class="kr">forall</span> <span class="nv">p</span> : regex * regex,
   <span class="kr">forall</span> <span class="nv">g</span> : (<span class="kr">forall</span> <span class="nv">p&#39;</span>, order p&#39; p -&gt;
                          {r : regex | size_regex r &lt;= size_2regex p&#39;}),
@@ -231,36 +223,35 @@ answer.</strong></p>
                    exist _ (Union (fst p) (snd p)) (th12&#39; _)
                  <span class="kr">else</span> exist _ (Union (snd p) (fst p)) (th13&#39; _)
         <span class="kr">end</span>
-    <span class="kr">end</span>.</span></span></pre><p>In this code, all output values are within an <tt class="docutils literal">exist _</tt> context: not
+    <span class="kr">end</span>.</span></span></pre><p>In this code, all output values are within an <span class="docutils literal">exist _</span> context: not
 only do we produce the output value, but we also show that the size of
 this value is smaller than the combined size of the input pair of
-values. More over, all recursive calls are within a <tt class="docutils literal">proj1_sig</tt>
+values. More over, all recursive calls are within a <span class="docutils literal">proj1_sig</span>
 context, so that we forget the size information at the moment of
 constructing the output value. But also, all recursive calls, here
-represented by calls to the function named <tt class="docutils literal">norm_union</tt> also have a
+represented by calls to the function named <span class="docutils literal">norm_union</span> also have a
 proof that the input to the recursive call is indeed smaller than the
 initial input. All the proofs are in <a class="reference external" href="https://github.com/ybertot/norm_union_example">the complete development</a>.</p>
-<p>It would probably be possible to use tactics like <tt class="docutils literal">refine</tt> to define
-<tt class="docutils literal">norm_union_F</tt>, you are invited to explore.</p>
-<p>Then we define the truly recursive function <tt class="docutils literal">norm_union_1</tt>:</p>
+<p>It would probably be possible to use tactics like <span class="docutils literal">refine</span> to define
+<span class="docutils literal">norm_union_F</span>, you are invited to explore.</p>
+<p>Then we define the truly recursive function <span class="docutils literal">norm_union_1</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">norm_union_1</span> : <span class="kr">forall</span> <span class="nv">p</span> : regex * regex,
     {x | size_regex x &lt;= size_2regex p} :=
   Fix well_founded_order (<span class="kr">fun</span> <span class="nv">p</span> =&gt; {x | size_regex x &lt;= size_2regex p})
-      norm_union_F.</span></span></pre><p>Note that the output of <tt class="docutils literal">norm_union_1</tt> has type <tt class="docutils literal">{x | size_regex x
-&lt;= size_2regex p}</tt>. This is not the type you asked for. So we define
+      norm_union_F.</span></span></pre><p>Note that the output of <span class="docutils literal">norm_union_1</span> has type <span class="docutils literal">{x | size_regex x &lt;= size_2regex p}</span>. This is not the type you asked for. So we define
 a new function, which is really the one you want, simply by forgetting
 the logical information that the output has a size smaller than the
 input.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">norm_union</span> <span class="nv">u</span> <span class="nv">v</span> : regex := proj1_sig (norm_union_1 (u, v)).</span></span></pre><p>You might still doubt that this is the right function, the one you
 asked for. To convince ourselves, we are going to prove a lemma that
 expresses exactly what you would have said in a definition.</p>
-<p>We first prove the corresponding lemma for <tt class="docutils literal">norm_union_1</tt>. This
-relies on a theorem associated to the <tt class="docutils literal">Fix</tt> function, name
-<tt class="docutils literal">Fix_eq</tt>. The proof that needs to be done is fairly routine (it
+<p>We first prove the corresponding lemma for <span class="docutils literal">norm_union_1</span>. This
+relies on a theorem associated to the <span class="docutils literal">Fix</span> function, name
+<span class="docutils literal">Fix_eq</span>. The proof that needs to be done is fairly routine (it
 always is, it could be done automatically, but I never came around to
 developing the automatic tool for that).</p>
 <p>Then we finish with most interesting lemma, the one for
-<tt class="docutils literal">norm_union</tt>. Here is the statement:</p>
+<span class="docutils literal">norm_union</span>. Here is the statement:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-termination-of-function-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-termination-of-function-in-coq-v-chk5"><span class="kn">Lemma</span> <span class="nf">norm_union_eqn</span> <span class="nv">u</span> <span class="nv">v</span> :
   norm_union u v =
     <span class="kr">match</span> u, v <span class="kr">with</span>
@@ -307,8 +298,8 @@ The proof of this final theorem is also fairly systematic.</p>
 <p>Now, I made the effort of following exactly your request, but after
 the fact I discovered that there is a simple implementation of the
 same functionality, using three recursive functions. The first one
-flattens binary trees of <tt class="docutils literal">Union</tt> to make then look like list, and
-the other two sort these union with respect to the order <tt class="docutils literal">le_regex</tt>
+flattens binary trees of <span class="docutils literal">Union</span> to make then look like list, and
+the other two sort these union with respect to the order <span class="docutils literal">le_regex</span>
 while removing duplicates as soon as they are uncovered. Such an
 implementation would workaround the need for nested recursion.</p>
 <p>If you still want to stick to nested recursion and need to refer to
@@ -316,8 +307,8 @@ the technique described here, it was first published in a paper by
 Balaa and Bertot at TPHOLs2000. That paper is difficult to read
 because it was written at a time when Coq was using a different
 syntax.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

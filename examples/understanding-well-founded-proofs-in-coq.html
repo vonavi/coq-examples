@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Understanding &quot;well founded&quot; proofs in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,25 +14,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="understanding-well-founded-proofs-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="understanding-well-founded-proofs-in-coq">
 <h1 class="title">Understanding &quot;well founded&quot; proofs in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50204730">https://stackoverflow.com/q/50204730</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/50204730">https://stackoverflow.com/q/50204730</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm writing a fixpoint that requires an integer to be incremented
 &quot;towards&quot; zero at every iteration. This is too complicated for Coq to
 recognize as a decreasing argument automatically and I'm trying prove
 that my fixpoint will terminate.</p>
 <p>I have been copying (what I believe is) an example of a
-well-foundedness proof for a step function on <tt class="docutils literal">Z</tt> from the standard
+well-foundedness proof for a step function on <span class="docutils literal">Z</span> from the standard
 library. <a class="reference external" href="https://coq.inria.fr/library/Coq.ZArith.Zwf.html">(Here)</a></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith.Zwf.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -57,32 +54,30 @@ property, &quot;Z_increment&quot;.</p>
 <p>The most useful explanation I have looked at is <a class="reference external" href="https://github.com/coq/coq/wiki/Inductive-and-Co-Inductive-Types">this</a>
 but I've never worked with the list type that it uses and it doesn't
 explain what is meant by terms like &quot;accessible&quot;.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Basically, you don't need to do a well founded proof, you just need to
-prove that your function decreases the (natural number) <tt class="docutils literal">abs z</tt>.
-More concretely, you can implement <tt class="docutils literal">abs (z : Z) : nat := z_to_nat (z
-* Z.sgn z)</tt> (with some appropriate conversion to nat) and then use
-this as a measure with <tt class="docutils literal">Function</tt>, something like <tt class="docutils literal">Function foo z
-{measure abs z} := ...</tt>.</p>
+prove that your function decreases the (natural number) <span class="docutils literal">abs z</span>.
+More concretely, you can implement <span class="docutils literal">abs (z : Z) : nat := z_to_nat (z * Z.sgn z)</span> (with some appropriate conversion to nat) and then use
+this as a measure with <span class="docutils literal">Function</span>, something like <span class="docutils literal">Function foo z {measure abs z} := ...</span>.</p>
 <p>The well founded business is for showing <em>relations</em> are well-founded:
 the idea is that you can prove your function terminates by showing it
-&quot;decreases&quot; some well-founded relation <tt class="docutils literal">R</tt> (think of it as <tt class="docutils literal">&lt;</tt>);
-that is, the definition of <tt class="docutils literal">f x</tt> makes recursive subcalls <tt class="docutils literal">f y</tt>
-only when <tt class="docutils literal">R y x</tt>. For this to work <tt class="docutils literal">R</tt> has to be <em>well-founded</em>,
+&quot;decreases&quot; some well-founded relation <span class="docutils literal">R</span> (think of it as <span class="docutils literal">&lt;</span>);
+that is, the definition of <span class="docutils literal">f x</span> makes recursive subcalls <span class="docutils literal">f y</span>
+only when <span class="docutils literal">R y x</span>. For this to work <span class="docutils literal">R</span> has to be <em>well-founded</em>,
 which intuitively means it has no infinitely descending chains. CPDT's
 <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Cpdt.GeneralRec.html">general recursion chapter</a> as a
 really good explanation of how this really works.</p>
 <p>How does this relate to what you're doing? The standard library proves
-that, for all lower bounds <tt class="docutils literal">c</tt>, <tt class="docutils literal">x &lt; y</tt> is a well-founded relation
-in <tt class="docutils literal">Z</tt> if additionally its only applied to <tt class="docutils literal">y &gt;= c</tt>. I don't think
+that, for all lower bounds <span class="docutils literal">c</span>, <span class="docutils literal">x &lt; y</span> is a well-founded relation
+in <span class="docutils literal">Z</span> if additionally its only applied to <span class="docutils literal">y &gt;= c</span>. I don't think
 this applies to you - instead you move towards zero, so you can just
-decrease <tt class="docutils literal">abs z</tt> with the usual <tt class="docutils literal">&lt;</tt> relation on <tt class="docutils literal">nat</tt>s. The
+decrease <span class="docutils literal">abs z</span> with the usual <span class="docutils literal">&lt;</span> relation on <span class="docutils literal">nat</span>s. The
 standard library already has a proof that this relation is well
-founded, and that's what <tt class="docutils literal">Function ... {measure <span class="pre">...}</span></tt> uses.</p>
+founded, and that's what <span class="docutils literal">Function ... {measure <span class="pre">...}</span></span> uses.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

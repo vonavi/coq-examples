@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Difference between parameters and members of a class</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="difference-between-parameters-and-members-of-a-class">
+<div class="alectryon-root alectryon-centered"><main id="difference-between-parameters-and-members-of-a-class">
 <h1 class="title">Difference between parameters and members of a class</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70112873">https://stackoverflow.com/q/70112873</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/70112873">https://stackoverflow.com/q/70112873</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am new to Coq and was wondering what is the difference between the
 following things:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">test</span> (<span class="nv">f</span> <span class="nv">g</span> : nat -&gt; nat) := {
@@ -37,9 +34,9 @@ following things:</p>
     g : nat -&gt; nat;
     init : f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
   }.</span></span></pre><p>Could anyone provide an explanation?</p>
-</div>
-<div class="section" id="answer-ana-borges">
-<h1>Answer (Ana Borges)</h1>
+</section>
+<section id="answer-ana-borges">
+<h2>Answer (Ana Borges)</h2>
 <p>The difference between them is referred to as bundling.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">test</span> (<span class="nv">f</span> <span class="nv">g</span> : nat -&gt; nat) := {
     init:   f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
@@ -50,36 +47,36 @@ following things:</p>
     init : f <span class="mi">0</span> = <span class="mi">0</span> /\ g <span class="mi">0</span> = <span class="mi">0</span>;
   }.</span></span></pre><p>is bundled.</p>
 <p>The advantage of bundling is that you don't need to always provide
-<tt class="docutils literal">f</tt> and <tt class="docutils literal">g</tt>. The advantage of unbundling is that you can have
-different instances of the same class sharing the same <tt class="docutils literal">f</tt> and
-<tt class="docutils literal">g</tt>. If you bundle them, Coq will not be easily convinced that
+<span class="docutils literal">f</span> and <span class="docutils literal">g</span>. The advantage of unbundling is that you can have
+different instances of the same class sharing the same <span class="docutils literal">f</span> and
+<span class="docutils literal">g</span>. If you bundle them, Coq will not be easily convinced that
 different instances share parameters.</p>
 <p>You can read more about this in <a class="reference external" href="https://www.researchgate.net/publication/48202776_Type_Classes_for_Mathematics_in_Type_Theory">Type Classes for Mathematics in Type
 Theory</a>.</p>
-</div>
-<div class="section" id="answer-maelan">
-<h1>Answer (Maëlan)</h1>
+</section>
+<section id="answer-maelan">
+<h2>Answer (Maëlan)</h2>
 <p>To complement Ana's excellent answer, here is a practical difference:</p>
 <ul class="simple">
-<li>the unbundled version (call it <tt class="docutils literal">utest</tt>) allows you to write the
-logical statement <tt class="docutils literal">utest f g</tt> about a specific pair of functions
-<tt class="docutils literal">f</tt> and <tt class="docutils literal">g</tt>,</li>
-<li>whereas the bundled version (call it <tt class="docutils literal">btest</tt>) allows you to state
+<li><p>the unbundled version (call it <span class="docutils literal">utest</span>) allows you to write the
+logical statement <span class="docutils literal">utest f g</span> about a specific pair of functions
+<span class="docutils literal">f</span> and <span class="docutils literal">g</span>,</p></li>
+<li><p>whereas the bundled version (call it <span class="docutils literal">btest</span>) allows you to state
 that there exists a pair of functions which satisfies the
 properties; you can later refer to these functions by the projection
-names <tt class="docutils literal">f</tt> and <tt class="docutils literal">g</tt>.</li>
+names <span class="docutils literal">f</span> and <span class="docutils literal">g</span>.</p></li>
 </ul>
 <p>So, roughly speaking:</p>
 <ul class="simple">
-<li><tt class="docutils literal">btest</tt> is &quot;equivalent&quot; to <tt class="docutils literal">∃ f g, utest f g</tt>;</li>
-<li><tt class="docutils literal">utest f' g'</tt> is &quot;equivalent&quot; to <tt class="docutils literal">btest</tt> ∧ &quot;the <tt class="docutils literal">f</tt> (resp.
-<tt class="docutils literal">g</tt>) in the aforementioned proof of btest is equal to <tt class="docutils literal">f'</tt>
-(resp. <tt class="docutils literal">g'</tt>)&quot;.</li>
+<li><p><span class="docutils literal">btest</span> is &quot;equivalent&quot; to <span class="docutils literal">∃ f g, utest f g</span>;</p></li>
+<li><p><span class="docutils literal">utest f' g'</span> is &quot;equivalent&quot; to <span class="docutils literal">btest</span> ∧ &quot;the <span class="docutils literal">f</span> (resp.
+<span class="docutils literal">g</span>) in the aforementioned proof of btest is equal to <span class="docutils literal">f'</span>
+(resp. <span class="docutils literal">g'</span>)&quot;.</p></li>
 </ul>
 <p>More formally, here are the equivalences for a minimal example (in
-this code, the notation <tt class="docutils literal">{ x : A | B }</tt> is a <strong>dependent pair</strong>
-type, i.e. the type of <tt class="docutils literal">(x, y)</tt> where <tt class="docutils literal">x : A</tt> and <tt class="docutils literal">y : B</tt> and
-the type <tt class="docutils literal">B</tt> depends on the value <tt class="docutils literal">x</tt>):</p>
+this code, the notation <span class="docutils literal">{ x : A | B }</span> is a <strong>dependent pair</strong>
+type, i.e. the type of <span class="docutils literal">(x, y)</span> where <span class="docutils literal">x : A</span> and <span class="docutils literal">y : B</span> and
+the type <span class="docutils literal">B</span> depends on the value <span class="docutils literal">x</span>):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* unbundled: *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">utest</span> (<span class="nv">x</span> : nat) : <span class="kt">Prop</span> := {
     uprop : x = <span class="mi">0</span>;
@@ -118,10 +115,10 @@ the type <tt class="docutils literal">B</tt> depends on the value <tt class="doc
 <span class="c">(* NOTE: Here I&#39;ve explicited all implicit arguments; in fact, you</span>
 <span class="c">   can let Coq infer them, and write just [bx], [bprop], [uprop]</span>
 <span class="c">   instead of [@bx b], [@bprop b], [@uprop x u]. *)</span></span></pre><p>In this example, we can also observe a difference with respect to
-computational relevance: <tt class="docutils literal">utest</tt> can live in <tt class="docutils literal">Prop</tt>, because its
-only member, <tt class="docutils literal">uprop</tt>, is a proposition. On the other hand, I cannot
-really put <tt class="docutils literal">btest</tt> in <tt class="docutils literal">Prop</tt>, because that would mean that <em>both</em>
-<tt class="docutils literal">bx</tt> and <tt class="docutils literal">bprop</tt> would live in <tt class="docutils literal">Prop</tt> but <tt class="docutils literal">bf</tt> is
+computational relevance: <span class="docutils literal">utest</span> can live in <span class="docutils literal">Prop</span>, because its
+only member, <span class="docutils literal">uprop</span>, is a proposition. On the other hand, I cannot
+really put <span class="docutils literal">btest</span> in <span class="docutils literal">Prop</span>, because that would mean that <em>both</em>
+<span class="docutils literal">bx</span> and <span class="docutils literal">bprop</span> would live in <span class="docutils literal">Prop</span> but <span class="docutils literal">bf</span> is
 computationally relevant. In other words, Coq gives you this warning:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="difference-between-parameters-and-members-of-a-class-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="difference-between-parameters-and-members-of-a-class-v-chk11"><span class="kn">Class</span> <span class="nf">btest</span> : <span class="kt">Prop</span> := {
     bx : nat;
@@ -132,8 +129,8 @@ not defined. [cannot-define-projection,records]</blockquote></div></div></small>
 </span></span><span class="alectryon-wsp"><span class="c">(* WARNING:</span>
 <span class="c">   bx cannot be defined because it is informative and btest is not.</span>
 <span class="c">   bprop cannot be defined because the projection bx was not defined.</span>
-<span class="c">*)</span></span></pre></div>
+<span class="c">*)</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Does Gallina have holes like in Agda?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="does-gallina-have-holes-like-in-agda">
+<div class="alectryon-root alectryon-centered"><main id="does-gallina-have-holes-like-in-agda">
 <h1 class="title">Does Gallina have holes like in Agda?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/60662078">https://stackoverflow.com/q/60662078</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/60662078">https://stackoverflow.com/q/60662078</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>When proving in Coq, it's nice to be able to prove one little piece at
 a time, and have Coq help keep track of the obligations.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk0"><span class="kn">Theorem</span> <span class="nf">ModusPonens</span>: <span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>), ((A -&gt; B) /\ A) -&gt; B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, (A -&gt; B) /\ A -&gt; B</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -62,19 +59,19 @@ put ltac in there and Coq will find what it needs:</p>
 probably smart enough to tell me what I need to write in order to
 finish the function myself, at least in simple cases like this.</p>
 <p>So how do I do this? Does Coq have this kind of feature?</p>
-</div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
-<p>You can use <tt class="docutils literal">refine</tt> for this. You can write underscores which will
+</section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
+<p>You can use <span class="docutils literal">refine</span> for this. You can write underscores which will
 turn into obligations for you to solve later.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk5"><span class="kn">Definition</span> <span class="nf">ModusPonens</span>: <span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>), ((A -&gt; B) /\ A) -&gt; B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>, (A -&gt; B) /\ A -&gt; B</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk6"><span class="nb">refine</span> (<span class="kr">fun</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">H</span> =&gt;
             <span class="kr">match</span> H <span class="kr">with</span>
             | conj H1 H2 =&gt; H1 _ <span class="c">(* hole of type A *)</span>
-            <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(A -&gt; B) /\ A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small></span></pre><p>Now your goal is to provide an <tt class="docutils literal">A</tt>. This can be discharged with</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> H2.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
-<div class="section" id="answer-li-yao-xia">
-<h1>Answer (Li-yao Xia)</h1>
+            <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(A -&gt; B) /\ A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small></span></pre><p>Now your goal is to provide an <span class="docutils literal">A</span>. This can be discharged with</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> H2.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></section>
+<section id="answer-li-yao-xia">
+<h2>Answer (Li-yao Xia)</h2>
 <p>Use an underscore</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="does-gallina-have-holes-like-in-agda-v-chk7"><span class="kn">Definition</span> <span class="nf">ModusPonens&#39;</span> :=
   <span class="kr">fun</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : (A -&gt; B) /\ A) =&gt;
@@ -91,7 +88,7 @@ More precisely:
   A, B : <span class="kt">Prop</span>
   H : (A -&gt; B) /\ A
   H1 : A -&gt; B
-  H2 : A</blockquote></div></div></small></span></pre><p>or use <tt class="docutils literal">Program</tt></p>
+  H2 : A</blockquote></div></div></small></span></pre><p>or use <span class="docutils literal">Program</span></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Obligation Tactic</span> := <span class="kp">idtac</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp"><span class="c">(* By default Program tries to be smart and solve simple obligations</span>
@@ -105,8 +102,8 @@ More precisely:
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk8"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : (A -&gt; B) /\ A) (<span class="nv">H1</span> : A -&gt; B)
   (<span class="nv">H2</span> : A), conj H1 H2 = H -&gt; A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="does-gallina-have-holes-like-in-agda-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="does-gallina-have-holes-like-in-agda-v-chk9"><span class="nb">intros</span>. <span class="c">(* See the type of the hole *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(A -&gt; B) /\ A</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A -&gt; B</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>Heq_H</var><span class="hyp-type"><b>: </b><span>conj H1 H2 = H</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
+</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

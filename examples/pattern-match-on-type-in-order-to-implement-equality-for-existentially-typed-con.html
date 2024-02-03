@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pattern-match on type in order to implement equality for existentially typed constructor in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="pattern-match-on-type-in-order-to-implement-equality-for-existentially-typed-constructor-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="pattern-match-on-type-in-order-to-implement-equality-for-existentially-typed-constructor-in-coq">
 <h1 class="title">Pattern-match on type in order to implement equality for existentially typed constructor in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42140009">https://stackoverflow.com/q/42140009</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/42140009">https://stackoverflow.com/q/42140009</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Let's say I have again a small problem with my datatype with an
 existential quantified component. This time I want to define when two
-values of type <tt class="docutils literal">ext</tt> are equal.</p>
+values of type <span class="docutils literal">ext</span> are equal.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">ext</span> (<span class="nv">A</span> : <span class="kt">Set</span>) :=
 | ext_ : <span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Set</span>), option X -&gt; ext A.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -42,21 +39,21 @@ values of type <tt class="docutils literal">ext</tt> are equal.</p>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 The <span class="nb">constructor</span> ext_ (<span class="kr">in</span> type ext) expects <span class="mi">3</span> arguments.</blockquote></div></div></small></span></pre><p>What I'd like to do is somehow distinguish between the cases where the
 existential type is actually same and where it's not. Is this a case
-for <tt class="docutils literal">JMeq</tt> or is there some other way to accomplish such a case
+for <span class="docutils literal">JMeq</span> or is there some other way to accomplish such a case
 distinction?</p>
 <p>I googled a lot, but unfortunately I mostly stumbled upon posts about
 dependent pattern matching.</p>
-<p>I also tried to generate a (boolean) scheme with <tt class="docutils literal">Scheme Equality for
-ext</tt>, but this wasn't successful because of the type argument.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<p>I also tried to generate a (boolean) scheme with <span class="docutils literal">Scheme Equality for ext</span>, but this wasn't successful because of the type argument.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <blockquote>
-What I'd like to do is somehow distinguish between the cases where
-the existential type is actually same and where it's not.</blockquote>
+<p>What I'd like to do is somehow distinguish between the cases where
+the existential type is actually same and where it's not.</p>
+</blockquote>
 <p>This is not possible as Coq's logic is compatible with the univalence
 axiom which says that isomorphic types are equal. So even though
-<tt class="docutils literal">(unit * unit)</tt> and <tt class="docutils literal">unit</tt> are syntactically distinct, they cannot
+<span class="docutils literal">(unit * unit)</span> and <span class="docutils literal">unit</span> are syntactically distinct, they cannot
 be distinguished by Coq's logic.</p>
 <p>A possible work-around is to have a datatype of codes for the types
 you are interested in and store that as an existential. Something like
@@ -96,18 +93,17 @@ this:</p>
                   <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>ext A</span></span></span><br><span><var>c</var><span class="hyp-type"><b>: </b><span>Code</span></span></span><br><span><var>ox</var><span class="hyp-type"><b>: </b><span>option (meaning c)</span></span></span><br><span><var>d</var><span class="hyp-type"><b>: </b><span>Code</span></span></span><br><span><var>oy</var><span class="hyp-type"><b>: </b><span>option (meaning d)</span></span></span><br><span><var>eq</var><span class="hyp-type"><b>: </b><span>c = d</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">Prop</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pattern-match-on-type-in-order-to-implement-equality-for-existentially-typed-con-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="pattern-match-on-type-in-order-to-implement-equality-for-existentially-typed-con-v-chk18"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>ext A</span></span></span><br><span><var>d</var><span class="hyp-type"><b>: </b><span>Code</span></span></span><br><span><var>ox, oy</var><span class="hyp-type"><b>: </b><span>option (meaning d)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">Prop</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (ox = oy).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>However this obviously limits quite a lot the sort of types you can
-pack in an <tt class="docutils literal">ext</tt>. Other, more powerful, languages (e.g. equipped
+pack in an <span class="docutils literal">ext</span>. Other, more powerful, languages (e.g. equipped
 with <a class="reference external" href="https://en.wikipedia.org/wiki/Induction-recursion">Induction-recursion</a>) would give you
 more expressive power.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Nice workaround! Let me add a couple comments: (1)
-<tt class="docutils literal">Code_eq_dec</tt> can be <em>literally</em> defined using the <tt class="docutils literal">decide
-equality</tt> tactic, which will really shine when we start adding more
-data constructors into <tt class="docutils literal">Code</tt>; (2) <tt class="docutils literal">ext_</tt> can be destructed using
-the <tt class="docutils literal">let</tt> expression (since it has only one constructor), which
-makes the code a bit more concise: <tt class="docutils literal">let (c,ox) := x in ...</tt></p>
+<span class="docutils literal">Code_eq_dec</span> can be <em>literally</em> defined using the <span class="docutils literal">decide equality</span> tactic, which will really shine when we start adding more
+data constructors into <span class="docutils literal">Code</span>; (2) <span class="docutils literal">ext_</span> can be destructed using
+the <span class="docutils literal">let</span> expression (since it has only one constructor), which
+makes the code a bit more concise: <span class="docutils literal">let (c,ox) := x in ...</span></p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

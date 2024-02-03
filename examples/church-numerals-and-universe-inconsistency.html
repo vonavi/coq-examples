@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Church numerals and universe inconsistency</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="church-numerals-and-universe-inconsistency">
+<div class="alectryon-root alectryon-centered"><main id="church-numerals-and-universe-inconsistency">
 <h1 class="title">Church numerals and universe inconsistency</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55091525">https://stackoverflow.com/q/55091525</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55091525">https://stackoverflow.com/q/55091525</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>In the following code, the statement <tt class="docutils literal">add'_commut</tt> is accepted by
-Coq but <tt class="docutils literal">add_commut</tt> is rejected because of a universe
+<section id="question">
+<h2>Question</h2>
+<p>In the following code, the statement <span class="docutils literal">add'_commut</span> is accepted by
+Coq but <span class="docutils literal">add_commut</span> is rejected because of a universe
 inconsistency.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Universe Polymorphism</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -60,24 +57,24 @@ church_numerals_and_universe_inconsistency.<span class="mi">64</span> &lt;=
 church_numerals_and_universe_inconsistency.<span class="mi">65</span> because
 church_numerals_and_universe_inconsistency.<span class="mi">65</span>
 &lt; church_numerals_and_universe_inconsistency.<span class="mi">64</span>).</blockquote></div></div></small></span></pre><p>How to make it go through?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Church numerals only work if you turn on impredicative <tt class="docutils literal">Set</tt>, by
-putting <tt class="docutils literal"><span class="pre">-arg</span> <span class="pre">-impredicative-set</span></tt> into your <tt class="docutils literal">_CoqProject</tt> file or
-using <tt class="docutils literal"><span class="pre">-impredicative-set</span></tt> command line option. Then define <tt class="docutils literal">nat</tt>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Church numerals only work if you turn on impredicative <span class="docutils literal">Set</span>, by
+putting <span class="docutils literal"><span class="pre">-arg</span> <span class="pre">-impredicative-set</span></span> into your <span class="docutils literal">_CoqProject</span> file or
+using <span class="docutils literal"><span class="pre">-impredicative-set</span></span> command line option. Then define <span class="docutils literal">nat</span>
 as:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="church-numerals-and-universe-inconsistency-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="church-numerals-and-universe-inconsistency-v-chk2"><span class="kn">Definition</span> <span class="nf">nat</span> : <span class="kt">Set</span> := <span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Set</span>), X -&gt; (X -&gt; X) -&gt; X.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;forall X : Set, X -&gt; (X -&gt; X) -&gt; X&quot;</span> has type
  <span class="s2">&quot;Type&quot;</span> while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Set&quot;</span>
-(universe inconsistency: Cannot enforce <span class="kt">Set</span>+<span class="mi">1</span> &lt;= <span class="kt">Set</span>).</blockquote></div></div></small></span></pre><p>Impredicative <tt class="docutils literal">Set</tt> allows <tt class="docutils literal">nat</tt> to have exactly the same type
-<tt class="docutils literal">Set</tt> which it quantifies over. Without impredicativity, <tt class="docutils literal">nat</tt>
+(universe inconsistency: Cannot enforce <span class="kt">Set</span>+<span class="mi">1</span> &lt;= <span class="kt">Set</span>).</blockquote></div></div></small></span></pre><p>Impredicative <span class="docutils literal">Set</span> allows <span class="docutils literal">nat</span> to have exactly the same type
+<span class="docutils literal">Set</span> which it quantifies over. Without impredicativity, <span class="docutils literal">nat</span>
 must have a higher universe level than what it quantifies over,
 although the levels are hidden from you until you get an error like in
 the question.</p>
-<p>Note that impredicative <tt class="docutils literal">Set</tt> is <a class="reference external" href="https://github.com/coq/coq/wiki/The-Logic-of-Coq">incompatible</a> with classical
+<p>Note that impredicative <span class="docutils literal">Set</span> is <a class="reference external" href="https://github.com/coq/coq/wiki/The-Logic-of-Coq">incompatible</a> with classical
 logic.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

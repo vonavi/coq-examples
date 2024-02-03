@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Difference between sumbool and intuitionnistic disjunction</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,29 +14,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="difference-between-sumbool-and-intuitionnistic-disjunction">
-<h1 class="title">Difference between <tt class="docutils literal">sumbool</tt> and intuitionnistic disjunction</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/51288196">https://stackoverflow.com/q/51288196</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="difference-between-sumbool-and-intuitionnistic-disjunction">
+<h1 class="title">Difference between <span class="docutils literal">sumbool</span> and intuitionnistic disjunction</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/51288196">https://stackoverflow.com/q/51288196</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>According to Coq's documentation</p>
 <blockquote>
-<tt class="docutils literal">sumbool</tt> is a boolean type equipped with the justification of
-their value</blockquote>
+<p><span class="docutils literal">sumbool</span> is a boolean type equipped with the justification of
+their value</p>
+</blockquote>
 <p>I thought that was already a property of the disjunction, in the
 intuitionnistic (or constructive) logic that Coq implements.</p>
-<p>For example, to prove an excluded middle <tt class="docutils literal">p \/ ~p</tt> in Coq, you have
-to do actual work, it is not a logical axiom. So a proof of <tt class="docutils literal">p \/ q</tt>
-must either be a proof of <tt class="docutils literal">p</tt> or a proof of <tt class="docutils literal">q</tt>.</p>
-<p>Then why do we need <tt class="docutils literal">sumbool p q</tt>?</p>
+<p>For example, to prove an excluded middle <span class="docutils literal">p \/ ~p</span> in Coq, you have
+to do actual work, it is not a logical axiom. So a proof of <span class="docutils literal">p \/ q</span>
+must either be a proof of <span class="docutils literal">p</span> or a proof of <span class="docutils literal">q</span>.</p>
+<p>Then why do we need <span class="docutils literal">sumbool p q</span>?</p>
 <p><strong>EDIT</strong></p>
 <p>By replacing the tactics by exact proofs, I got more specific error
 messages. This one is fine:</p>
@@ -60,46 +58,44 @@ the <span class="kr">return</span> type has sort <span class="s2">&quot;Set&quot
 should be <span class="s2">&quot;SProp&quot;</span> or <span class="s2">&quot;Prop&quot;</span>.
 Elimination of an inductive object of sort <span class="kt">Prop</span>
 <span class="kr">is</span> not allowed on a predicate <span class="kr">in</span> sort <span class="kt">Set</span>
-because proofs can be eliminated <span class="kp">only</span> to build proofs.</blockquote></div></div></small></span></pre><p>I'm a bit surprised. So a primitive like <tt class="docutils literal">match</tt> depends on the sort
+because proofs can be eliminated <span class="kp">only</span> to build proofs.</blockquote></div></div></small></span></pre><p>I'm a bit surprised. So a primitive like <span class="docutils literal">match</span> depends on the sort
 of thing we want to prove? It looks low-level lambda-calculus though.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal">sumbool</tt> type lives in Coq's computationally relevant universe
-<tt class="docutils literal">Type</tt> (or <tt class="docutils literal">Set</tt>). In particular, we can write programs using
-functions that return elements of <tt class="docutils literal">{P} + {Q}</tt> (for instance, the
-standard library's <tt class="docutils literal">Nat.eq_dec : forall n m : nat, {n = m} + {n &lt;&gt;
-m}</tt>, which tests whether two numbers are equal).</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal">sumbool</span> type lives in Coq's computationally relevant universe
+<span class="docutils literal">Type</span> (or <span class="docutils literal">Set</span>). In particular, we can write programs using
+functions that return elements of <span class="docutils literal">{P} + {Q}</span> (for instance, the
+standard library's <span class="docutils literal">Nat.eq_dec : forall n m : nat, {n = m} + {n &lt;&gt; m}</span>, which tests whether two numbers are equal).</p>
 <p>Logical disjunction, on the other hand, belongs to the computationally
-irrelevant universe <tt class="docutils literal">Prop</tt>. We cannot perform case analysis on a
-proof of type <tt class="docutils literal">P \/ Q</tt> because Coq was designed to erase proofs when
+irrelevant universe <span class="docutils literal">Prop</span>. We cannot perform case analysis on a
+proof of type <span class="docutils literal">P \/ Q</span> because Coq was designed to erase proofs when
 a program is extracted, and such a case analysis might alter the
 outcome of a computation. This makes it safe for us, for example, to
-add the excluded middle axiom <tt class="docutils literal">forall P : Prop, P \/ ~ P</tt> without
+add the excluded middle axiom <span class="docutils literal">forall P : Prop, P \/ ~ P</span> without
 impacting the execution of extracted programs.</p>
 <p>It would also be possible to add a strong form of the excluded middle
-that lives in <tt class="docutils literal">Type</tt>: <tt class="docutils literal">forall P : Prop, {P} + {~P}</tt>; however, if
+that lives in <span class="docutils literal">Type</span>: <span class="docutils literal">forall P : Prop, {P} + {~P}</span>; however, if
 we use this axiom to write programs, we will not be able to execute
 them.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Think of what is going to happen at runtime. When extracting a
 program (i.e. erasing all the proofs since you don't need them at
-runtime) all arguments of type <tt class="docutils literal">or A B</tt> can be erased, i.e. those
+runtime) all arguments of type <span class="docutils literal">or A B</span> can be erased, i.e. those
 cannot have any influence on program execution. Whereas it's not
-possible to remove a term of type <tt class="docutils literal">sumbool A B</tt>, we can only hope
-that the extractor would erase the proofs <tt class="docutils literal">left</tt> and <tt class="docutils literal">right</tt>
-constructors carry. Essentially <tt class="docutils literal">sumbool</tt> should turn into a plain
-simple <tt class="docutils literal">bool</tt> type at runtime (that was a part of my answer I was
+possible to remove a term of type <span class="docutils literal">sumbool A B</span>, we can only hope
+that the extractor would erase the proofs <span class="docutils literal">left</span> and <span class="docutils literal">right</span>
+constructors carry. Essentially <span class="docutils literal">sumbool</span> should turn into a plain
+simple <span class="docutils literal">bool</span> type at runtime (that was a part of my answer I was
 writing, but Arthur beat me to it :)).</p>
-<p><strong>A:</strong> Note that the resulting type is <tt class="docutils literal">Prop</tt> for <tt class="docutils literal">or</tt> and <tt class="docutils literal">Set</tt>
-for <tt class="docutils literal">sumbool</tt>. This means you can use terms of <tt class="docutils literal">sumbool</tt> type as
-<em>data</em>, but terms of <tt class="docutils literal">or</tt> type is for <em>specification</em> purposes only.
+<p><strong>A:</strong> Note that the resulting type is <span class="docutils literal">Prop</span> for <span class="docutils literal">or</span> and <span class="docutils literal">Set</span>
+for <span class="docutils literal">sumbool</span>. This means you can use terms of <span class="docutils literal">sumbool</span> type as
+<em>data</em>, but terms of <span class="docutils literal">or</span> type is for <em>specification</em> purposes only.
 Which one to use depends on what you are trying to achieve.
-<tt class="docutils literal">sumbool</tt> can be used inside the logical world, but <tt class="docutils literal">or</tt> can't
-affect computations. You can prove <tt class="docutils literal">Lemma sumbool_to_or P Q : {P} +
-{Q} <span class="pre">-&gt;</span> P \/ Q.</tt>, but not <tt class="docutils literal">P \/ Q <span class="pre">-&gt;</span> {P} + {Q}</tt>.</p>
+<span class="docutils literal">sumbool</span> can be used inside the logical world, but <span class="docutils literal">or</span> can't
+affect computations. You can prove <span class="docutils literal">Lemma sumbool_to_or P Q : {P} + {Q} <span class="pre">-&gt;</span> P \/ Q.</span>, but not <span class="docutils literal">P \/ Q <span class="pre">-&gt;</span> {P} + {Q}</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

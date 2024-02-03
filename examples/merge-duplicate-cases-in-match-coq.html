@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Merge duplicate cases in match Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,35 +14,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="merge-duplicate-cases-in-match-coq">
+<div class="alectryon-root alectryon-centered"><main id="merge-duplicate-cases-in-match-coq">
 <h1 class="title">Merge duplicate cases in match Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/37514976">https://stackoverflow.com/q/37514976</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/37514976">https://stackoverflow.com/q/37514976</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have come by this problem many times: I have a proof state in Coq
 that includes matches on both sides of an equality that are the same.</p>
 <p>Is there a standard way to rewrite multiple matches into one?</p>
 <p>Eg.</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">expression_evaling_to_Z</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">expression_evaling_to_Z</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">Zarith</span><span class="o">.</span><span class="n">Z0</span> <span class="o">=&gt;</span> <span class="n">something</span>
 <span class="o">|</span> <span class="n">Zarith</span><span class="o">.</span><span class="n">Pos</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">something_else</span>
 <span class="o">|</span> <span class="n">Zarith</span><span class="o">.</span><span class="n">Neg</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">something_else</span>
-<span class="kr">end</span> <span class="o">=</span> <span class="n">yet_another_thing</span><span class="o">.</span>
-</pre>
-<p>And if I destruct on <tt class="docutils literal">expression_evaling_to_Z</tt> I get two identical
+<span class="kr">end</span> <span class="o">=</span> <span class="n">yet_another_thing</span><span class="o">.</span></code></pre>
+<p>And if I destruct on <span class="docutils literal">expression_evaling_to_Z</span> I get two identical
 goals. I would like to find a way to get only one of the goals.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>A standard solution is to define &quot;a view&quot; of your datatype using a
 type family that will introduce the proper conditions and cases when
 destructed. For your particular case, you could do:</p>
@@ -71,40 +66,35 @@ destructed. For your particular case, you could do:</p>
 | _ =&gt; <span class="mi">1</span>
 <span class="kr">end</span> = <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>This is a common idiom in some libraries like math-comp, which
-provides special support for instantiating the <tt class="docutils literal">z</tt> argument of the
+provides special support for instantiating the <span class="docutils literal">z</span> argument of the
 type family.</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
-<p>You can write the <tt class="docutils literal">match</tt> expression more succinctly:</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">expression_evaling_to_Z</span> <span class="kr">with</span>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
+<p>You can write the <span class="docutils literal">match</span> expression more succinctly:</p>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">expression_evaling_to_Z</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">Z0</span> <span class="o">=&gt;</span> <span class="n">something</span>
 <span class="o">|</span> <span class="n">Zpos</span> <span class="n">_</span> <span class="o">|</span> <span class="n">Zneg</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">something_else</span>
-<span class="kr">end</span> <span class="o">=</span> <span class="n">yet_another_thing</span><span class="o">.</span>
-</pre>
-<p>But that will give you 3 subgoals when using <tt class="docutils literal">destruct</tt>.</p>
+<span class="kr">end</span> <span class="o">=</span> <span class="n">yet_another_thing</span><span class="o">.</span></code></pre>
+<p>But that will give you 3 subgoals when using <span class="docutils literal">destruct</span>.</p>
 <p>In this particular case we may use the fact that you actually need to
 distinguish the zero and non-zero cases, and it looks like a job for
-the <tt class="docutils literal">Z.abs_nat : Z <span class="pre">-&gt;</span> nat</tt> function.</p>
-<pre class="code coq literal-block">
-<span class="kn">Require Import</span> <span class="n">Coq</span><span class="o">.</span><span class="n">ZArith</span><span class="o">.</span><span class="n">BinIntDef</span><span class="o">.</span>
+the <span class="docutils literal">Z.abs_nat : Z <span class="pre">-&gt;</span> nat</span> function.</p>
+<pre class="code coq literal-block"><code><span class="kn">Require Import</span> <span class="n">Coq</span><span class="o">.</span><span class="n">ZArith</span><span class="o">.</span><span class="n">BinIntDef</span><span class="o">.</span>
 
 <span class="kr">match</span> <span class="n">Z</span><span class="o">.</span><span class="n">abs_nat</span> <span class="o">(</span><span class="n">expression_evaling_to_Z</span><span class="o">)</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">O</span> <span class="o">=&gt;</span> <span class="n">something</span>
 <span class="o">|</span> <span class="n">S</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">something_else</span>
-<span class="kr">end</span> <span class="o">=</span> <span class="n">yet_another_thing</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span> <span class="o">=</span> <span class="n">yet_another_thing</span><span class="o">.</span></code></pre>
 <p>This will get you only two subcases, but you need to destruct on
-<tt class="docutils literal">Z.abs_nat (expression_evaling_to_Z)</tt> or introduce a new variable.
-If you choose the 1st variant, then you'll probably need <tt class="docutils literal">destruct
-<span class="pre">(...)</span> eqn:Heq.</tt> to put the equation into context.</p>
+<span class="docutils literal">Z.abs_nat (expression_evaling_to_Z)</span> or introduce a new variable.
+If you choose the 1st variant, then you'll probably need <span class="docutils literal">destruct <span class="pre">(...)</span> eqn:Heq.</span> to put the equation into context.</p>
 <p>Basically this approach is about finding a new datatype (or defining
 one) and a suitable function to map from the old type to the new one.</p>
-</div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
-<p>If you don't mind typing you can use <tt class="docutils literal">replace</tt> to replace the RHS
+</section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
+<p>If you don't mind typing you can use <span class="docutils literal">replace</span> to replace the RHS
 with the LHS of your goal, which makes it trivial to solve, and then
 you just have to prove once that the rewrite is indeed ok.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> Z.</span><span class="alectryon-wsp">
@@ -134,8 +124,8 @@ you just have to prove once that the rewrite is indeed ok.</p>
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Z.add_comm.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Perhaps you can use some Ltac-fu or other lemma to not have to type in
 the RHS manually too.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

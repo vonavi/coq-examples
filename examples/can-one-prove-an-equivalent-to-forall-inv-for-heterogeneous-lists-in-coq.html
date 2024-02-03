@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Can one prove an equivalent to Forall_inv for heterogeneous lists in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq">
-<h1 class="title">Can one prove an equivalent to <tt class="docutils literal">Forall_inv</tt> for heterogeneous lists in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/59178484">https://stackoverflow.com/q/59178484</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq">
+<h1 class="title">Can one prove an equivalent to <span class="docutils literal">Forall_inv</span> for heterogeneous lists in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/59178484">https://stackoverflow.com/q/59178484</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Following Adam Chlipala's <a class="reference external" href="http://adam.chlipala.net/cpdt/html/Cpdt.DataStruct.html#lab57">definition</a> of
 heterogeneous lists, I wanted to define an equivalent of the
-<tt class="docutils literal">Forall</tt> function on normal lists. This isn't too difficult, and you
+<span class="docutils literal">Forall</span> function on normal lists. This isn't too difficult, and you
 end up with two constructors as usual. Now suppose that I know that a
 fact is true about every element of a non-empty list. With normal
-lists, I could use <tt class="docutils literal">Forall_inv</tt> and <tt class="docutils literal">Forall_inv_tail</tt> to assert
+lists, I could use <span class="docutils literal">Forall_inv</span> and <span class="docutils literal">Forall_inv_tail</span> to assert
 that it's true about the head and tail of the list.</p>
-<p>I'd like to prove the equivalent for <tt class="docutils literal">hForall</tt> as defined below,
+<p>I'd like to prove the equivalent for <span class="docutils literal">hForall</span> as defined below,
 starting with the head case. Looking at the source in <a class="reference external" href="https://github.com/coq/coq/blob/master/theories/Lists/List.v">Lists/List.v</a>, the
-proof for normal lists is easy and runs by inversion on <tt class="docutils literal">Forall (a ::
-l)</tt>. The equivalent for my <tt class="docutils literal">hForall</tt> gives a mess of dependent
+proof for normal lists is easy and runs by inversion on <span class="docutils literal">Forall (a :: l)</span>. The equivalent for my <span class="docutils literal">hForall</span> gives a mess of dependent
 variables. Am I missing something obvious?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -63,11 +59,11 @@ variables. Am I missing something obvious?</p>
 </span></span><span class="alectryon-wsp">      <span class="c">(* Help! *)</span>
 </span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">hForall</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">hlist</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">hlist</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Inductives indexed by indexed types lead to that kind of difficulty.</p>
-<p>Alternatively, consider defining <tt class="docutils literal">hForall</tt> as a <tt class="docutils literal">Fixpoint</tt>. Then
+<p>Alternatively, consider defining <span class="docutils literal">hForall</span> as a <span class="docutils literal">Fixpoint</span>. Then
 the inversion lemma follows by just unfolding the definition.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">hForall&#39;</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -90,14 +86,14 @@ the inversion lemma follows by just unfolding the definition.</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">hForall&#39;</span>.</span></span></pre><hr class="docutils" />
-<div class="section" id="appendix">
-<h2>Appendix</h2>
+<section id="appendix">
+<h3>Appendix</h3>
 <p>Mostly for educational purposes, here's a few ways to prove that
-inversion lemma for the original inductive definition of <tt class="docutils literal">hForall</tt>
+inversion lemma for the original inductive definition of <span class="docutils literal">hForall</span>
 (starting from the simpler to use).</p>
-<p>One solution is the <tt class="docutils literal">dependent destruction</tt> tactic, which also
+<p>One solution is the <span class="docutils literal">dependent destruction</span> tactic, which also
 automatically handles heterogeneous equalities, as opposed to
-<tt class="docutils literal">destruct</tt>. It is imported from the <tt class="docutils literal">Program</tt> module:</p>
+<span class="docutils literal">destruct</span>. It is imported from the <span class="docutils literal">Program</span> module:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq-v-chk4"><span class="kn">Require Import</span> Program.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Use of “<span class="kn">Require</span>” <span class="kn">inside</span> a section <span class="kr">is</span> fragile. It <span class="kr">is</span>
 not recommended to use this functionality <span class="kr">in</span> finished
 proof scripts. [require-<span class="kr">in</span>-section,fragile]</blockquote></div></div></small><span class="alectryon-wsp">
@@ -120,20 +116,20 @@ Eqdep.Eq_rect_eq.eq_rect_eq
   : <span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">Q</span> : U -&gt; <span class="kt">Type</span>)
       (<span class="nv">x</span> : Q p) (<span class="nv">h</span> : p = p), x = eq_rect p Q x p h
 JMeq_eq : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> <span class="nv">y</span> : A), x ~= y -&gt; x = y</blockquote></div></div></small></span></pre><hr class="docutils" />
-<p>With a little more knowledge of how <tt class="docutils literal">destruct</tt> works/dependent
+<p>With a little more knowledge of how <span class="docutils literal">destruct</span> works/dependent
 pattern-matching, here's a proof without axioms.</p>
 <p>There are some detailed explanations of dependent pattern-matching in
 CPDT, but briefly the issue is that when we do
-<tt class="docutils literal">destruct</tt>/<tt class="docutils literal">inversion</tt> on <tt class="docutils literal">hForall (HCons x hl)</tt>, the index
-<tt class="docutils literal">HCons x hl</tt> gets generalized before the case-split, so you get a
-nonsensical case where it is replaced with <tt class="docutils literal">HNil</tt>, and a second case
-with a <em>different</em> index <tt class="docutils literal">HCons x0 hl0</tt>, and a good way of
+<span class="docutils literal">destruct</span>/<span class="docutils literal">inversion</span> on <span class="docutils literal">hForall (HCons x hl)</span>, the index
+<span class="docutils literal">HCons x hl</span> gets generalized before the case-split, so you get a
+nonsensical case where it is replaced with <span class="docutils literal">HNil</span>, and a second case
+with a <em>different</em> index <span class="docutils literal">HCons x0 hl0</span>, and a good way of
 remembering the (heterogeneous) equality across that generalization is
 a research-grade problem. You wouldn't need to mess with heterogeneous
 equalities if the goal just got rewritten with those variables, and
 indeed you can refactor the goal so that it explicitly depends on
-<tt class="docutils literal">HCons x hl</tt>, instead of <tt class="docutils literal">x</tt> and <tt class="docutils literal">hl</tt> separately, which will
-then be generalized by <tt class="docutils literal">destruct</tt>:</p>
+<span class="docutils literal">HCons x hl</span>, instead of <span class="docutils literal">x</span> and <span class="docutils literal">hl</span> separately, which will
+then be generalized by <span class="docutils literal">destruct</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq-v-chka"><span class="kn">Lemma</span> <span class="nf">hForall_inv&#39;</span> (<span class="nv">a</span> : A) (<span class="nv">ls</span> : list A) (<span class="nv">x</span> : B a) (<span class="nv">hl</span> : hlist ls) :
   hForall (HCons x hl) -&gt; P a x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>B</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, B a -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>ls</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>B a</span></span></span><br><span><var>hl</var><span class="hyp-type"><b>: </b><span>hlist ls</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">hForall (HCons x hl) -&gt; P a x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="can-one-prove-an-equivalent-to-forall-inv-for-heterogeneous-lists-in-coq-v-chkb"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>B</var><span class="hyp-type"><b>: </b><span>A -&gt; <span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> : A, B a -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>ls</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>B a</span></span></span><br><span><var>hl</var><span class="hyp-type"><b>: </b><span>hlist ls</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">hForall (HCons x hl) -&gt; P a x</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -168,9 +164,9 @@ then be generalized by <tt class="docutils literal">destruct</tt>:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The Equations plugin probably automates that properly, but I haven't
 tried.</p>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

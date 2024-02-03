@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dependent Pair Types</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="dependent-pair-types">
+<div class="alectryon-root alectryon-centered"><main id="dependent-pair-types">
 <h1 class="title">Dependent Pair Types</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/51053375">https://stackoverflow.com/q/51053375</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/51053375">https://stackoverflow.com/q/51053375</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In software foundations, <a class="reference external" href="http://www.seas.upenn.edu/~cis500/current/sf/lf-current/Logic.HTML">Logic in Coq</a>,
 we are introduced to parametrized propositions:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">is_three</span> (<span class="nv">n</span> : nat) : <span class="kt">Prop</span> :=
@@ -40,14 +37,14 @@ dependent pair types to be defined:</p>
 Coq, it says &quot;Since we haven't defined propositional equality, we
 can't do much that is interesting here&quot;, why can't we do anything
 interesting without propositional equality?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Let us pretend for now that the HoTT code uses <tt class="docutils literal">A <span class="pre">-&gt;</span> Prop</tt> instead
-of <tt class="docutils literal">A <span class="pre">-&gt;</span> Type</tt>; the difference between the two is orthogonal to your
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Let us pretend for now that the HoTT code uses <span class="docutils literal">A <span class="pre">-&gt;</span> Prop</span> instead
+of <span class="docutils literal">A <span class="pre">-&gt;</span> Type</span>; the difference between the two is orthogonal to your
 question.</p>
-<p>A parametrized proposition <tt class="docutils literal">P : A <span class="pre">-&gt;</span> Prop</tt> is simply property of
-elements of the type <tt class="docutils literal">A</tt>. Besides the simple <tt class="docutils literal">is_three</tt>
+<p>A parametrized proposition <span class="docutils literal">P : A <span class="pre">-&gt;</span> Prop</span> is simply property of
+elements of the type <span class="docutils literal">A</span>. Besides the simple <span class="docutils literal">is_three</span>
 proposition above, we can express more complex properties of natural
 numbers in this fashion. For instance:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">even</span> (<span class="nv">n</span> : nat) : <span class="kt">Prop</span> :=
@@ -55,35 +52,34 @@ numbers in this fashion. For instance:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">prime</span> (<span class="nv">n</span> : nat) : <span class="kt">Prop</span> :=
   n &gt;= <span class="mi">2</span> /\
-  <span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span>, n = p * q -&gt; p = n \/ p = <span class="mi">1</span>.</span></span></pre><p>The type <tt class="docutils literal">sigT A P</tt> type allows us to restrict the type <tt class="docutils literal">A</tt> to
-elements that satisfy the property <tt class="docutils literal">P</tt>. For instance, <tt class="docutils literal">sigT nat
-even</tt> is the type of all even numbers, <tt class="docutils literal">sigT nat prime</tt> is the type
+  <span class="kr">forall</span> <span class="nv">p</span> <span class="nv">q</span>, n = p * q -&gt; p = n \/ p = <span class="mi">1</span>.</span></span></pre><p>The type <span class="docutils literal">sigT A P</span> type allows us to restrict the type <span class="docutils literal">A</span> to
+elements that satisfy the property <span class="docutils literal">P</span>. For instance, <span class="docutils literal">sigT nat even</span> is the type of all even numbers, <span class="docutils literal">sigT nat prime</span> is the type
 of all prime numbers, etc. In Coq, properties are the more primitive
-concept, and subset types like <tt class="docutils literal">sigT</tt> are a derived concept.</p>
+concept, and subset types like <span class="docutils literal">sigT</span> are a derived concept.</p>
 <p>In traditional mathematics, the concepts of property and subset can
 almost be conflated: saying that 2 is a prime number is equivalent to
 saying that it belongs to the set of all prime numbers. In Coq's type
 theory, this is not quite the case, because being an element of a type
 is not a proposition: you cannot, for instance, state a theorem saying
-that 2 is an element of <tt class="docutils literal">sigT nat prime</tt>. The following snippet
+that 2 is an element of <span class="docutils literal">sigT nat prime</span>. The following snippet
 throws an error:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="dependent-pair-types-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="dependent-pair-types-v-chk1"><span class="kn">Lemma</span> <span class="nf">bogus</span> : (<span class="mi">2</span> : {x : nat &amp; prime x}).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;2&quot;</span> has type <span class="s2">&quot;nat&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
- <span class="s2">&quot;{x : nat &amp; prime x}&quot;</span>.</blockquote></div></div></small></span></pre><p>(The <tt class="docutils literal">{ ... &amp; ... }</tt> is syntactic sugar for the <tt class="docutils literal">sigT</tt> type
+ <span class="s2">&quot;{x : nat &amp; prime x}&quot;</span>.</blockquote></div></div></small></span></pre><p>(The <span class="docutils literal">{ ... &amp; ... }</span> is syntactic sugar for the <span class="docutils literal">sigT</span> type
 defined in Coq's standard library.)</p>
 <p>The closest we can get is to say that 2 can be extracted from that
 type:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pair-types-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pair-types-v-chk2"><span class="kn">Lemma</span> <span class="nf">fixed</span> : <span class="kr">exists</span> <span class="nv">x</span> : {x : nat &amp; prime x}, <span class="mi">2</span> = projT1 x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : {x : nat &amp; prime x}, <span class="mi">2</span> = projT1 x</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>where <tt class="docutils literal">projT1</tt> is the function that extracts the first component of
+</span></span></pre><p>where <span class="docutils literal">projT1</span> is the function that extracts the first component of
 the dependent pair. However, this is much more cumbersome than simply
 stating that 2 is prime:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pair-types-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pair-types-v-chk3"><span class="kn">Lemma</span> <span class="nf">prime_two</span> : prime <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">prime <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>In general, parametrized propositions are more useful in Coq, but
-there are cases where <tt class="docutils literal">sigT</tt> type comes in handy; for instance, when
+there are cases where <span class="docutils literal">sigT</span> type comes in handy; for instance, when
 we only care about the elements of a type that satisfy a certain
 property. Imagine that you implement a associative map in Coq using a
 type of binary search trees. You might begin by defining a type
-<tt class="docutils literal">tree</tt> of <em>arbitrary</em> trees:</p>
+<span class="docutils literal">tree</span> of <em>arbitrary</em> trees:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">tree</span> :=
 | Leaf : tree
 | Node : tree -&gt; nat -&gt; nat -&gt; tree -&gt; tree.</span></span></pre><p>This type defines a binary tree whose nodes store a key-value pair of
@@ -93,8 +89,7 @@ invariant that the keys of the tree are sorted (that is, that the keys
 on the left subtree are less than the keys of a node, and the opposite
 for the right subtree). Since users of this tree will not want to
 consider trees that do not satisfy this invariant, we might use
-instead the type <tt class="docutils literal">sigT tree well_formed</tt>, where <tt class="docutils literal">well_formed : tree
-<span class="pre">-&gt;</span> Prop</tt> expresses the above invariant. The main advantage is that
+instead the type <span class="docutils literal">sigT tree well_formed</span>, where <span class="docutils literal">well_formed : tree <span class="pre">-&gt;</span> Prop</span> expresses the above invariant. The main advantage is that
 this simplifies the interface of our library: instead of having a
 separate lemma saying that the insertion function preserves the
 invariant, this would be automatically expressed in the type of the
@@ -103,10 +98,10 @@ that the trees that they construct using the interface respect the
 invariant.</p>
 <p>As for your second question, equality is so fundamental that it is
 hard to define interesting properties without it. For instance, the
-properties <tt class="docutils literal">even</tt> and <tt class="docutils literal">prime</tt> above are both defined using
+properties <span class="docutils literal">even</span> and <span class="docutils literal">prime</span> above are both defined using
 equality.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

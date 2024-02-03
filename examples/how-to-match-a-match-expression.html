@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to match a match expression?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-match-a-match-expression">
-<h1 class="title">How to match a <tt class="docutils literal">match</tt> expression?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28454977">https://stackoverflow.com/q/28454977</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="how-to-match-a-match-expression">
+<h1 class="title">How to match a <span class="docutils literal">match</span> expression?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/28454977">https://stackoverflow.com/q/28454977</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to write a rule for hypotheses, formulated with a help of
-<tt class="docutils literal">match</tt> construction:</p>
+<span class="docutils literal">match</span> construction:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-match-a-match-expression-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-match-a-match-expression-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">x</span> : nat,
     (<span class="kr">match</span> x <span class="kr">with</span> | <span class="mi">0</span> =&gt; <span class="mi">0</span> | <span class="mi">1</span> =&gt; <span class="mi">5</span> | _ =&gt; <span class="mi">10</span> <span class="kr">end</span> = <span class="mi">5</span> -&gt; x = <span class="mi">1</span>)%nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> : nat,
 <span class="kr">match</span> x <span class="kr">with</span>
@@ -42,71 +39,61 @@
 | S (S _) =&gt; <span class="mi">10</span>
 <span class="kr">end</span> = <span class="mi">5</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = <span class="mi">1</span></div></blockquote></div></div></small></span></pre><p>How can I match such hypotheses? The following straight forward method
 fails:</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="o">[</span><span class="n">H</span> <span class="o">:</span> <span class="kr">match</span> <span class="nl">?e</span> <span class="kr">with</span> <span class="o">|</span> <span class="nl">?a</span> <span class="o">=&gt;</span> <span class="nl">?x</span> <span class="o">|</span> <span class="nl">?b</span> <span class="o">=&gt;</span> <span class="nl">?y</span> <span class="o">|</span> <span class="nl">?c</span> <span class="o">=&gt;</span> <span class="nl">?z</span> <span class="kr">end</span> <span class="o">=</span> <span class="nl">?b</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="kp">idtac</span>
 <span class="kr">end</span><span class="o">.</span>
 
-<span class="o">&gt;</span> <span class="n">Syntax</span> <span class="n">error</span><span class="o">:</span> <span class="o">'</span><span class="n">end'</span> <span class="n">expected</span> <span class="nb">after</span> <span class="o">[</span><span class="n">branches</span><span class="o">]</span> <span class="o">(</span><span class="kr">in</span> <span class="o">[</span><span class="n">match_constr</span><span class="o">]).</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Pattern-matching on <tt class="docutils literal">match</tt> statements is somewhat weird.</p>
+<span class="o">&gt;</span> <span class="n">Syntax</span> <span class="n">error</span><span class="o">:</span> <span class="o">'</span><span class="n">end'</span> <span class="n">expected</span> <span class="nb">after</span> <span class="o">[</span><span class="n">branches</span><span class="o">]</span> <span class="o">(</span><span class="kr">in</span> <span class="o">[</span><span class="n">match_constr</span><span class="o">]).</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Pattern-matching on <span class="docutils literal">match</span> statements is somewhat weird.</p>
 <p>The first thing you should know is that, inside Coq, there's no such
-thing as a <tt class="docutils literal">match</tt> on several variables or with deep matching:
-everything is translated in terms of simpler <tt class="docutils literal">match</tt> statements.
+thing as a <span class="docutils literal">match</span> on several variables or with deep matching:
+everything is translated in terms of simpler <span class="docutils literal">match</span> statements.
 Thus, the term you wrote is actually syntax sugar for the following
 term:</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="mi">0</span>
 <span class="o">|</span> <span class="n">S</span> <span class="n">x'</span> <span class="o">=&gt;</span>
     <span class="kr">match</span> <span class="n">x'</span> <span class="kr">with</span>
     <span class="o">|</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="mi">5</span>
     <span class="o">|</span> <span class="n">S</span> <span class="n">x''</span> <span class="o">=&gt;</span> <span class="mi">10</span>
     <span class="kr">end</span>
-<span class="kr">end</span>
-</pre>
+<span class="kr">end</span></code></pre>
 <p>which is what Coq is hinting at when it prints your proof state. The
 problem is that this syntax sugar doesn't work on Ltac patterns: thus,
-when writing an Ltac pattern that mentions a <tt class="docutils literal">match</tt>, you should
-always try to match it as if it were a one-level <tt class="docutils literal">match</tt>.</p>
+when writing an Ltac pattern that mentions a <span class="docutils literal">match</span>, you should
+always try to match it as if it were a one-level <span class="docutils literal">match</span>.</p>
 <p>The second problem is that you can't bind the <em>pattern</em> part of a
-<tt class="docutils literal">match</tt>: something like</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<span class="docutils literal">match</span>: something like</p>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="n">H</span> <span class="o">:</span> <span class="kr">match</span> <span class="nl">?x</span> <span class="o">=&gt;</span> <span class="n">_</span> <span class="o">|</span> <span class="nl">?y</span> <span class="o">=&gt;</span> <span class="n">_</span> <span class="kr">end</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">|-</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="c">(* ... *)</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
 <p>doesn't really make sense in Ltac.</p>
 <p>You have two choices for solving your problem, then:</p>
 <ol class="arabic">
-<li><p class="first">Write down the <tt class="docutils literal">match</tt> you expect with the exact list of
+<li><p>Write down the <span class="docutils literal">match</span> you expect with the exact list of
 constructors of your type on the pattern part, e.g.</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="n">H</span> <span class="o">:</span> <span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span> <span class="mi">0</span> <span class="o">=&gt;</span> <span class="n">_</span> <span class="o">|</span> <span class="n">S</span> <span class="n">_</span>  <span class="o">=&gt;</span> <span class="n">_</span> <span class="kr">end</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">|-</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="c">(* ... *)</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
 </li>
-<li><p class="first">Use the special <tt class="docutils literal">match (* ... *) with _ =&gt; _ end</tt> syntax, which
-matches <em>any</em> <tt class="docutils literal">match</tt> whatsoever:</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<li><p>Use the special <span class="docutils literal">match (* ... *) with _ =&gt; _ end</span> syntax, which
+matches <em>any</em> <span class="docutils literal">match</span> whatsoever:</p>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="n">H</span> <span class="o">:</span> <span class="kr">match</span> <span class="n">x</span> <span class="kr">with</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">_</span> <span class="kr">end</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">|-</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="c">(* ... *)</span>
-<span class="kr">end</span>
-</pre>
+<span class="kr">end</span></code></pre>
 </li>
 </ol>
 <p>Often, as in your case, one still wants to consider <em>all</em> branches of
-<tt class="docutils literal">match</tt>, including deep ones. This idiom often comes in handy in
+<span class="docutils literal">match</span>, including deep ones. This idiom often comes in handy in
 that case:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-match-a-match-expression-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-match-a-match-expression-v-chk2"><span class="kp">repeat</span> <span class="kr">match goal with</span>
        | H : <span class="kr">match</span> <span class="nl">?x</span> <span class="kr">with</span> _ =&gt; _ <span class="kr">end</span> = _ |- _ =&gt;
            <span class="nb">destruct</span> x; <span class="kp">try</span> <span class="kp">solve</span> [<span class="nb">inversion</span> H]
-       <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">5</span> = <span class="mi">5</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">1</span> = <span class="mi">1</span></div></blockquote></div></div></small></span></pre></div>
+       <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">5</span> = <span class="mi">5</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">1</span> = <span class="mi">1</span></div></blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

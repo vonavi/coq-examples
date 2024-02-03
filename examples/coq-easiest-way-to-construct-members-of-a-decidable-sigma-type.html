@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: easiest way to construct members of a decidable sigma type?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,33 +14,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type">
+<div class="alectryon-root alectryon-centered"><main id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type">
 <h1 class="title">Coq: easiest way to construct members of a decidable sigma type?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71595304">https://stackoverflow.com/q/71595304</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71595304">https://stackoverflow.com/q/71595304</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following toy development:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">IsEven</span> : nat -&gt; <span class="kt">Prop</span> :=
 | is_even_z : IsEven <span class="mi">0</span>
 | is_even_S : <span class="kr">forall</span> <span class="nv">n</span>, IsEven n -&gt; IsEven (S (S n)).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">EvenNat</span> := {n | IsEven n}.</span></span></pre><p>I'd like to create a function that, given a number that I personally
-know to be even, returns the corresponding value of type <tt class="docutils literal">EvenNat</tt>
+know to be even, returns the corresponding value of type <span class="docutils literal">EvenNat</span>
 with minimum fuss.</p>
-<pre class="code coq literal-block">
-<span class="kn">Example</span> <span class="nf">fortyTwo</span> <span class="o">:</span> <span class="n">EvenNat</span> <span class="o">:=</span> <span class="n">mkEven</span> <span class="mi">42</span><span class="o">.</span>
-</pre>
-</div>
-<div class="section" id="answer-theo-winterhalter">
-<h1>Answer (Théo Winterhalter)</h1>
+<pre class="code coq literal-block"><code><span class="kn">Example</span> <span class="nf">fortyTwo</span> <span class="o">:</span> <span class="n">EvenNat</span> <span class="o">:=</span> <span class="n">mkEven</span> <span class="mi">42</span><span class="o">.</span></code></pre>
+</section>
+<section id="answer-theo-winterhalter">
+<h2>Answer (Théo Winterhalter)</h2>
 <p>I don't know exactly what your assumptions are but I would say one way
 of doing it is to use the automation capabilities of type classes:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Init.Specif.</span><span class="alectryon-wsp">
@@ -74,21 +69,21 @@ of doing it is to use the automation capabilities of type classes:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input">#[export] <span class="kn">Hint Extern</span> <span class="mi">4</span> (EvenClass <span class="nl">?n</span>) =&gt;
   my_decision_procedure
-  : typeclass_instances.</span></span></pre><p>Instead of defining instances, I use the <tt class="docutils literal">Hint Extern</tt> mechanism to
+  : typeclass_instances.</span></span></pre><p>Instead of defining instances, I use the <span class="docutils literal">Hint Extern</span> mechanism to
 inject any tactic I want to solve the goal. Assuming you have a tactic
 to decide your property you can use it there. The natural number
 indicates the &quot;cost&quot; to each hint so the search will try to apply the
 hints with the lowest costs first.</p>
 <p>Once you have this, the function you want is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">mkEven</span> (<span class="nv">n</span> : nat) {<span class="nv">h</span> : EvenClass n} : EvenNat :=
-  exist _ n h.</span></span></pre><p>Then just writing <tt class="docutils literal">mkEven n</tt> will trigger the proof search as
+  exist _ n h.</span></span></pre><p>Then just writing <span class="docutils literal">mkEven n</span> will trigger the proof search as
 described by the hints above.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">ev</span> := mkEven <span class="mi">42</span>.</span></span></pre><hr class="docutils" />
 <p>To elaborate the difference between Yves's and my answer, I chose to
 use hints rather than class instances so that the proof search is not
 too greedy.</p>
-<p>For instance, I force the search to only use <tt class="docutils literal">is_even_z</tt> when I
-really want to prove <tt class="docutils literal">EvenClass 0</tt>, as exemplified by the example
+<p>For instance, I force the search to only use <span class="docutils literal">is_even_z</span> when I
+really want to prove <span class="docutils literal">EvenClass 0</span>, as exemplified by the example
 below:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk3"><span class="kn">Goal</span> <span class="kr">exists</span> <span class="nv">n</span>, EvenClass n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">n</span> : nat, EvenClass n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">n</span> : nat, EvenClass n</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -107,28 +102,24 @@ Unable to satisfy the following constraints:
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk9"><span class="kn">Goal</span> <span class="kr">exists</span> <span class="nv">n</span>, EvenClass n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">n</span> : nat, EvenClass n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">n</span> : nat, EvenClass n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chkb"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">EvenClass <span class="nl">?n</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> _.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>As you can see, in the first case, we have <tt class="docutils literal">EvenClass <span class="pre">?n</span></tt> as a goal,
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>As you can see, in the first case, we have <span class="docutils literal">EvenClass <span class="pre">?n</span></span> as a goal,
 and so the proof search does not find any candidate. However, if we
-add the <tt class="docutils literal">0</tt> case as a type class instance, then the proof search
-will succeed by unifying <tt class="docutils literal"><span class="pre">?n</span></tt> with <tt class="docutils literal">0</tt>. It is my belief that this
+add the <span class="docutils literal">0</span> case as a type class instance, then the proof search
+will succeed by unifying <span class="docutils literal"><span class="pre">?n</span></span> with <span class="docutils literal">0</span>. It is my belief that this
 is doing a bit too much for the case at hand here, but both solutions
 have their applications.</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>The question, as originally stated, has an obvious answer.</p>
-<p><em>Question A</em>: If you have in your context a number <tt class="docutils literal">n</tt> of type
-<tt class="docutils literal">nat</tt> and a proof <tt class="docutils literal">knowledge</tt> with statement <tt class="docutils literal">IsEven n</tt>, how do
-you construct an object of type <tt class="docutils literal">EvenNat</tt>?</p>
-<p>you can simply construct an object of type <tt class="docutils literal">EvenNat</tt> by writing the
+<p><em>Question A</em>: If you have in your context a number <span class="docutils literal">n</span> of type
+<span class="docutils literal">nat</span> and a proof <span class="docutils literal">knowledge</span> with statement <span class="docutils literal">IsEven n</span>, how do
+you construct an object of type <span class="docutils literal">EvenNat</span>?</p>
+<p>you can simply construct an object of type <span class="docutils literal">EvenNat</span> by writing the
 following expression</p>
-<pre class="code coq literal-block">
-<span class="n">exist</span> <span class="n">_</span> <span class="n">n</span> <span class="n">knowledge</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">exist</span> <span class="n">_</span> <span class="n">n</span> <span class="n">knowledge</span></code></pre>
 <p>Or, if you really want to be explicit:</p>
-<pre class="code coq literal-block">
-<span class="n">exist</span> <span class="n">IsEven</span> <span class="n">n</span> <span class="n">knowledge</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">exist</span> <span class="n">IsEven</span> <span class="n">n</span> <span class="n">knowledge</span></code></pre>
 <p>This is embodied in the following script</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">IsEven</span> : nat -&gt; <span class="kt">Prop</span> :=
 | is_even_z : IsEven <span class="mi">0</span>
@@ -138,8 +129,8 @@ following expression</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">mkEven</span> (<span class="nv">n</span> : nat) (<span class="nv">knowledge</span> : IsEven n) : EvenNat :=
   exist IsEven n knowledge.</span></span></pre><p>Another reading of the question is as follows:</p>
-<p><em>Question B</em>: how do you construct an object of type <tt class="docutils literal">EvenNat</tt> from
-a known constant (like <tt class="docutils literal">42</tt>) which is obviously even to the naked
+<p><em>Question B</em>: how do you construct an object of type <span class="docutils literal">EvenNat</span> from
+a known constant (like <span class="docutils literal">42</span>) which is obviously even to the naked
 eye?</p>
 <p>Here is my elaboration of a solution sketched by Theo Winterhalter,
 using the device of type classes in full.</p>
@@ -178,22 +169,22 @@ using the device of type classes in full.</p>
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk12"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">proj1_sig ev42 = <span class="mi">42</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">easy</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk13"><span class="kn">Lemma</span> <span class="nf">IsEven42</span> : IsEven <span class="mi">42</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">IsEven <span class="mi">42</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk14"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">IsEven <span class="mi">42</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (proj2_sig ev42).</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The explanation for using curly braces in the definition of <tt class="docutils literal">mkEven</tt>
-is that <tt class="docutils literal">mkEven</tt> actually requires 2 arguments, but the second one
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk14"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">IsEven <span class="mi">42</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (proj2_sig ev42).</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The explanation for using curly braces in the definition of <span class="docutils literal">mkEven</span>
+is that <span class="docutils literal">mkEven</span> actually requires 2 arguments, but the second one
 is not written by the user: it must be automatically constructed using
 the type class inference mechanism. This proof must succeed for the
 object to be actually defined.</p>
-<p>The definition of <tt class="docutils literal">ev42</tt> is the answer of question <em>B</em>. Note that a
-definition relying on <tt class="docutils literal">mkEven 3</tt> will fail, because no proof that
-<tt class="docutils literal">3</tt> is even can be found.</p>
+<p>The definition of <span class="docutils literal">ev42</span> is the answer of question <em>B</em>. Note that a
+definition relying on <span class="docutils literal">mkEven 3</span> will fail, because no proof that
+<span class="docutils literal">3</span> is even can be found.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-easiest-way-to-construct-members-of-a-decidable-sigma-type-v-chk15"><span class="kn">Fail</span> <span class="kn">Definition</span> <span class="nf">ev3</span> := mkEven <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 The following term contains unresolved implicit arguments:
   (mkEven <span class="mi">3</span>)
 More precisely: 
 - <span class="nl">?h</span>: Cannot infer the implicit parameter h of mkEven
   whose type <span class="kr">is</span> <span class="s2">&quot;EvenClass 3&quot;</span> (no type class instance
-  found).</blockquote></div></div></small></span></pre></div>
+  found).</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

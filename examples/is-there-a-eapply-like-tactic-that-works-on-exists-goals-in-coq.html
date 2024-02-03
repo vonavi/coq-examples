@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Is there a eapply-like tactic that works on exists goals in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,38 +14,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq">
-<h1 class="title">Is there a <tt class="docutils literal">eapply</tt>-like tactic that works on <tt class="docutils literal">exists</tt> goals in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34216180">https://stackoverflow.com/q/34216180</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq">
+<h1 class="title">Is there a <span class="docutils literal">eapply</span>-like tactic that works on <span class="docutils literal">exists</span> goals in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34216180">https://stackoverflow.com/q/34216180</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have the following during a proof where the goal is an existential,
 and the target property is one of the assumptions.</p>
-<pre class="code literal-block">
-H : x ==&gt; y
+<pre class="code literal-block"><code>H : x ==&gt; y
 ...
 ______________________________________(1/2)
-exists t : tm, x ==&gt; t
-</pre>
-<p>I know I can do <tt class="docutils literal">exists y. apply H.</tt> to prove the current goal, but
+exists t : tm, x ==&gt; t</code></pre>
+<p>I know I can do <span class="docutils literal">exists y. apply H.</span> to prove the current goal, but
 I am wondering if there is a more intelligent tactic that can use the
-assumption directly to prove the existential goal here, like <tt class="docutils literal">eapply
-H</tt>?</p>
+assumption directly to prove the existential goal here, like <span class="docutils literal">eapply H</span>?</p>
 <p>Since this is one unification away, it would be nice not having to
-write the <tt class="docutils literal">X</tt> part in <tt class="docutils literal">exists X.</tt>.</p>
+write the <span class="docutils literal">X</span> part in <span class="docutils literal">exists X.</span>.</p>
 <p>If such a tactic does not exist, how do I write one?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>There exists such a tactic and it is called <tt class="docutils literal">eexists</tt>. It does
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>There exists such a tactic and it is called <span class="docutils literal">eexists</span>. It does
 exactly what you seem to expect.</p>
 <p><a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual010.html#hevea_tactic23">https://coq.inria.fr/distrib/current/refman/Reference-Manual010.html#hevea_tactic23</a></p>
 <hr class="docutils" />
@@ -63,14 +57,12 @@ qualification when imported. [local-declaration,scope]</blockquote></div></div><
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : T, R x y -&gt; <span class="kr">exists</span> <span class="nv">t</span> : T, R x t</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq-v-chk4"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R x y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">t</span> : T, R x t</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="is-there-a-eapply-like-tactic-that-works-on-exists-goals-in-coq-v-chk5"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R x y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">R x <span class="nl">?t</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
-<p><strong>Q:</strong> Thanks. An extra question. Is there a way to avoid the <tt class="docutils literal">apply
-H</tt> part? I can imagine something like <tt class="docutils literal">eassumption</tt> that tries
-<tt class="docutils literal">apply</tt> on every assumption. I tried <tt class="docutils literal">assumption</tt> and got <tt class="docutils literal">Error:
-No such assumption.</tt></p>
-<p><strong>A:</strong> <tt class="docutils literal">eexists. eassumption.</tt> works perfectly for the above
-example. <tt class="docutils literal">eauto.</tt> works too, btw.</p>
+<p><strong>Q:</strong> Thanks. An extra question. Is there a way to avoid the <span class="docutils literal">apply H</span> part? I can imagine something like <span class="docutils literal">eassumption</span> that tries
+<span class="docutils literal">apply</span> on every assumption. I tried <span class="docutils literal">assumption</span> and got <span class="docutils literal">Error: No such assumption.</span></p>
+<p><strong>A:</strong> <span class="docutils literal">eexists. eassumption.</span> works perfectly for the above
+example. <span class="docutils literal">eauto.</span> works too, btw.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

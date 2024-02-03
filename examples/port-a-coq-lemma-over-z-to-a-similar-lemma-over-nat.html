@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Port a Coq lemma over Z to a similar lemma over nat</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="port-a-coq-lemma-over-z-to-a-similar-lemma-over-nat">
-<h1 class="title">Port a Coq lemma over <tt class="docutils literal">Z</tt> to a similar lemma over <tt class="docutils literal">nat</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/37293710">https://stackoverflow.com/q/37293710</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="port-a-coq-lemma-over-z-to-a-similar-lemma-over-nat">
+<h1 class="title">Port a Coq lemma over <span class="docutils literal">Z</span> to a similar lemma over <span class="docutils literal">nat</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/37293710">https://stackoverflow.com/q/37293710</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have a lemma that is proved for <tt class="docutils literal">Z</tt>. All the variables are bounded
+<section id="question">
+<h2>Question</h2>
+<p>I have a lemma that is proved for <span class="docutils literal">Z</span>. All the variables are bounded
 to be greater that or equal to zero.</p>
 <p>Q: How can one as easily and generally as possible &quot;port&quot; that lemma
-to <tt class="docutils literal">nat</tt>, i.e. use that lemma to prove a similar lemma for <tt class="docutils literal">nat</tt>
-by using the lemma for <tt class="docutils literal">Z</tt>?</p>
+to <span class="docutils literal">nat</span>, i.e. use that lemma to prove a similar lemma for <span class="docutils literal">nat</span>
+by using the lemma for <span class="docutils literal">Z</span>?</p>
 <p>Example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> Z.</span><span class="alectryon-wsp">
@@ -72,12 +69,12 @@ n1 + n0 = n2 + n -&gt;
 n5 * n1 + n6 * n2 + n3 * n0 + n * n4 =
 n5 * n2 + n1 * n6 + n3 * n + n0 * n4</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* prove this using `Z_lemma` *)</span>
-</span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You can do it rather generically for all the lemmas which have this
-shape by defining a tactic exploiting the fact that <tt class="docutils literal">Z.of_nat</tt> is
-injective and distributes over <tt class="docutils literal">( + )</tt> and <tt class="docutils literal">( * )</tt>:</p>
+shape by defining a tactic exploiting the fact that <span class="docutils literal">Z.of_nat</span> is
+injective and distributes over <span class="docutils literal">( + )</span> and <span class="docutils literal">( * )</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">solve_using_Z_and</span> lemma :=
   <span class="c">(* Apply Z.of_nat to both sides of the equation *)</span>
   <span class="nb">apply</span> Nat2Z.inj;
@@ -92,7 +89,7 @@ injective and distributes over <tt class="docutils literal">( + )</tt> and <tt c
   <span class="c">(* Peal off Z.of_nat on each side of the equation *)</span>
   <span class="nb">f_equal</span>;
   <span class="c">(* Look up the assumption in the environment*)</span>
-  <span class="bp">assumption</span>.</span></span></pre><p>The proof of <tt class="docutils literal">nat_lemma</tt> now simply becomes:</p>
+  <span class="bp">assumption</span>.</span></span></pre><p>The proof of <span class="docutils literal">nat_lemma</span> now simply becomes:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="port-a-coq-lemma-over-z-to-a-similar-lemma-over-nat-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="port-a-coq-lemma-over-z-to-a-similar-lemma-over-nat-v-chk2"><span class="kn">Lemma</span> <span class="nf">nat_lemma</span> :
   <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">n0</span> <span class="nv">n1</span> <span class="nv">n2</span> <span class="nv">n3</span> <span class="nv">n4</span> <span class="nv">n5</span> <span class="nv">n6</span> : nat,
     n5 + n4 = n6 + n3 -&gt;
@@ -110,8 +107,8 @@ n5 * n1 + n6 * n2 + n3 * n0 + n * n4 =
 n5 * n2 + n1 * n6 + n3 * n + n0 * n4</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="port-a-coq-lemma-over-z-to-a-similar-lemma-over-nat-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="port-a-coq-lemma-over-z-to-a-similar-lemma-over-nat-v-chk4"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0, n1, n2, n3, n4, n5, n6</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n5 + n4 = n6 + n3</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n1 + n0 = n2 + n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n5 * n1 + n6 * n2 + n3 * n0 + n * n4 =
 n5 * n2 + n1 * n6 + n3 * n + n0 * n4</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input">solve_using_Z_and Z_lemma.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

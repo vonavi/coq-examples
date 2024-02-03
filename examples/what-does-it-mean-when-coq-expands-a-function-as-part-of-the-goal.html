@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>What does it mean when Coq expands a function as part of the goal?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal">
+<div class="alectryon-root alectryon-centered"><main id="what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal">
 <h1 class="title">What does it mean when Coq expands a function as part of the goal?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/54336455">https://stackoverflow.com/q/54336455</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/54336455">https://stackoverflow.com/q/54336455</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I was trying to solve the following theorem and got stuck at the last
-<tt class="docutils literal">simpl.</tt>:</p>
+<span class="docutils literal">simpl.</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal-v-chk0"><span class="kn">Lemma</span> <span class="nf">nonzeros_app</span> : <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : natlist,
     nonzeros (l1 ++ l2) = (nonzeros l1) ++ (nonzeros l2).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : natlist,
 nonzeros (l1 ++ l2) = nonzeros l1 ++ nonzeros l2</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -78,8 +75,8 @@ nonzeros l&#39; ++ nonzeros l2</span></span></span><br></div><span class="goal-s
 just copy pastes the definition of a function into my goal? What do I
 even do with this?</p>
 <hr class="docutils" />
-<div class="section" id="context-of-question">
-<h2>Context of Question:</h2>
+<section id="context-of-question">
+<h3>Context of Question:</h3>
 <p>Someone told me that the solution is:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="what-does-it-mean-when-coq-expands-a-function-as-part-of-the-goal-v-chkb"><span class="kn">Lemma</span> <span class="nf">nonzeros_app</span> : <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : natlist,
     nonzeros (l1 ++ l2) = (nonzeros l1) ++ (nonzeros l2).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : natlist,
@@ -131,19 +128,19 @@ nonzeros l&#39; ++ nonzeros l2</span></span></span><br><span><var>IHn'</var><spa
 | S _ =&gt; n&#39; :: nonzeros l&#39;
 <span class="kr">end</span> ++ nonzeros l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n&#39; :: nonzeros (l&#39; ++ l2) =
 (S n&#39; :: nonzeros l&#39;) ++ nonzeros l2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input">}</span><span class="alectryon-wsp">
-</span></span></pre><p>which made me want to understand why they use induction on <tt class="docutils literal">n'</tt>
+</span></span></pre><p>which made me want to understand why they use induction on <span class="docutils literal">n'</span>
 since it feels it would never occur to me to use induction there. So I
 am asking, why? But I realized that before I could ask that why I
 didn't even understand the proof state before that since it just
 seemed to copy paste a function to a proof state (which makes no sense
 to me). So before I asked why use induction there I have to ask what
 does the proof state before that, maybe that would yield light into
-why induction on <tt class="docutils literal">n'</tt>.</p>
-</div>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>I am assuming that you have defined <tt class="docutils literal">nonzeros</tt> in the following way
+why induction on <span class="docutils literal">n'</span>.</p>
+</section>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>I am assuming that you have defined <span class="docutils literal">nonzeros</span> in the following way
 (or similar):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -155,31 +152,29 @@ why induction on <tt class="docutils literal">n'</tt>.</p>
   | [] =&gt; []
   | <span class="mi">0</span> :: xs =&gt; nonzeros xs
   | x :: xs =&gt; x :: nonzeros xs
-  <span class="kr">end</span>.</span></span></pre><p>So that <tt class="docutils literal">nonzeros</tt> is recursive with structural decreasing on <tt class="docutils literal">l</tt>.
-Coq's <tt class="docutils literal">simpl</tt> tactic employs a heuristic in which it unfolds
+  <span class="kr">end</span>.</span></span></pre><p>So that <span class="docutils literal">nonzeros</span> is recursive with structural decreasing on <span class="docutils literal">l</span>.
+Coq's <span class="docutils literal">simpl</span> tactic employs a heuristic in which it unfolds
 definitions of fixpoints if they are applied to a term that has a
-constructor as the head symbol. In your case, e.g., <tt class="docutils literal">nonzeros (n' ::
-l')</tt>, the constant <tt class="docutils literal">nonzeros</tt> is followed by a term formed by a
-constructor, <tt class="docutils literal">Cons</tt> (=<tt class="docutils literal">::</tt>). Coq performs a so-called &quot;delta
-reduction&quot;, replacing the occurrence of <tt class="docutils literal">nonzeros</tt> with its
-definition. Since that definition is a <tt class="docutils literal">match</tt>, you get a <tt class="docutils literal">match</tt>
+constructor as the head symbol. In your case, e.g., <span class="docutils literal">nonzeros (n' :: l')</span>, the constant <span class="docutils literal">nonzeros</span> is followed by a term formed by a
+constructor, <span class="docutils literal">Cons</span> (=<span class="docutils literal">::</span>). Coq performs a so-called &quot;delta
+reduction&quot;, replacing the occurrence of <span class="docutils literal">nonzeros</span> with its
+definition. Since that definition is a <span class="docutils literal">match</span>, you get a <span class="docutils literal">match</span>
 as your new term. Further substitutions do simplify it a bit, but
 cannot eliminate the two cases: one for zero head and one for nonzero
 head.</p>
-<p>Same happens to the occurrence <tt class="docutils literal">nonzeros ((n' :: l') ++ l2)</tt>, which
-is first simplified to <tt class="docutils literal">nonzeros (n' :: (l' ++ l2))</tt>, so that again,
-the head of the argument is <tt class="docutils literal">Cons</tt>.</p>
-<p>If you want to avoid exposing <tt class="docutils literal">match</tt> expressions when simplifying,
+<p>Same happens to the occurrence <span class="docutils literal">nonzeros ((n' :: l') ++ l2)</span>, which
+is first simplified to <span class="docutils literal">nonzeros (n' :: (l' ++ l2))</span>, so that again,
+the head of the argument is <span class="docutils literal">Cons</span>.</p>
+<p>If you want to avoid exposing <span class="docutils literal">match</span> expressions when simplifying,
 you can put the following directive after the definition of
-<tt class="docutils literal">nonzeros</tt>:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> nonzeros l : <span class="nb">simpl</span> nomatch.</span></span></pre><p>This specifically tells <tt class="docutils literal">simpl</tt> to avoid expanding a term if this
-will end up exposing a <tt class="docutils literal">match</tt> at the location of the change.</p>
-<p>As for the <tt class="docutils literal">induction</tt> used by your friend here: it is applied to
-force a case split over <tt class="docutils literal">n'</tt>, so that each case (<tt class="docutils literal">n' = 0</tt>, <tt class="docutils literal">n' =
-S _</tt>) can be handled separately. Indeed, induction is not needed
-here. A simple case split (<tt class="docutils literal">case n'</tt>) will do the same.</p>
+<span class="docutils literal">nonzeros</span>:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> nonzeros l : <span class="nb">simpl</span> nomatch.</span></span></pre><p>This specifically tells <span class="docutils literal">simpl</span> to avoid expanding a term if this
+will end up exposing a <span class="docutils literal">match</span> at the location of the change.</p>
+<p>As for the <span class="docutils literal">induction</span> used by your friend here: it is applied to
+force a case split over <span class="docutils literal">n'</span>, so that each case (<span class="docutils literal">n' = 0</span>, <span class="docutils literal">n' = S _</span>) can be handled separately. Indeed, induction is not needed
+here. A simple case split (<span class="docutils literal">case n'</span>) will do the same.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

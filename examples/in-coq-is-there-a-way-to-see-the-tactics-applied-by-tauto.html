@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>In Coq, is there a way to see the tactics applied by tauto?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,44 +14,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto">
-<h1 class="title">In Coq, is there a way to see the tactics applied by <tt class="docutils literal">tauto</tt>?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/66812480">https://stackoverflow.com/q/66812480</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto">
+<h1 class="title">In Coq, is there a way to see the tactics applied by <span class="docutils literal">tauto</span>?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/66812480">https://stackoverflow.com/q/66812480</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Is there a way to see the tactics applied by <tt class="docutils literal">tauto</tt>? I.e., run
-<tt class="docutils literal">tauto</tt> and get a list of tactics to apply (not including
-<tt class="docutils literal">tauto</tt>)?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">tauto</tt> is a tactic directly written in OCaml, so it does not apply
+<section id="question">
+<h2>Question</h2>
+<p>Is there a way to see the tactics applied by <span class="docutils literal">tauto</span>? I.e., run
+<span class="docutils literal">tauto</span> and get a list of tactics to apply (not including
+<span class="docutils literal">tauto</span>)?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">tauto</span> is a tactic directly written in OCaml, so it does not apply
 other tactics - it constructs a proof term. But you can have a look at
 the proof term it constructs.</p>
 <p>E.g.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ Q -&gt; P.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>, P /\ Q -&gt; P</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">tauto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-is-there-a-way-to-see-the-tactics-applied-by-tauto-v-chk1"><span class="kn">Show Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">(<span class="kr">fun</span> (<span class="nv">P</span> <span class="nv">Q</span> : <span class="kt">Prop</span>) (<span class="nv">H</span> : P /\ Q) =&gt;
- and_ind (<span class="kr">fun</span> (<span class="nv">H0</span> : P) (<span class="nv">_</span> : Q) =&gt; H0) H)</blockquote></div></div></small></span></pre><p>The <tt class="docutils literal">fun (P Q : Prop) (H : P /\ Q)</tt> corresponds to <tt class="docutils literal">intros P Q H</tt>.
-Then it uses <tt class="docutils literal">and_ind</tt> with a function as argument. This corresponds
-to <tt class="docutils literal">exact (and_ind (fun P' Q' =&gt; P') H)</tt>. As you can see the trick
-is in the construction of the function argument of <tt class="docutils literal">and_ind</tt>.</p>
+ and_ind (<span class="kr">fun</span> (<span class="nv">H0</span> : P) (<span class="nv">_</span> : Q) =&gt; H0) H)</blockquote></div></div></small></span></pre><p>The <span class="docutils literal">fun (P Q : Prop) (H : P /\ Q)</span> corresponds to <span class="docutils literal">intros P Q H</span>.
+Then it uses <span class="docutils literal">and_ind</span> with a function as argument. This corresponds
+to <span class="docutils literal">exact (and_ind (fun P' Q' =&gt; P') H)</span>. As you can see the trick
+is in the construction of the function argument of <span class="docutils literal">and_ind</span>.</p>
 <p>It is instructive to look at these proof terms, but if you would do
 the proof manually, you would usually do it in a different way than
-<tt class="docutils literal">tauto</tt> does.</p>
-<p>And if you look at proof terms of <tt class="docutils literal">tauto</tt>, isolate the goal you
-proof with <tt class="docutils literal">tauto</tt> - otherwise the proof term will be hard to
+<span class="docutils literal">tauto</span> does.</p>
+<p>And if you look at proof terms of <span class="docutils literal">tauto</span>, isolate the goal you
+proof with <span class="docutils literal">tauto</span> - otherwise the proof term will be hard to
 digest.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

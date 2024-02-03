@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using Omega to prove a lemma in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-omega-to-prove-a-lemma-in-coq">
-<h1 class="title">Using <tt class="docutils literal">Omega</tt> to prove a lemma in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/13690147">https://stackoverflow.com/q/13690147</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="using-omega-to-prove-a-lemma-in-coq">
+<h1 class="title">Using <span class="docutils literal">Omega</span> to prove a lemma in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/13690147">https://stackoverflow.com/q/13690147</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I am trying to make a proof in Coq using <tt class="docutils literal">Omega</tt>. I spent a lot of
+<section id="question">
+<h2>Question</h2>
+<p>I am trying to make a proof in Coq using <span class="docutils literal">Omega</span>. I spent a lot of
 time on it, but nothing came to me. I have to say I am new in Coq, so
 I am not at ease with this kind of language, and I do not have much
 experience. But I am working on it.</p>
@@ -47,19 +44,19 @@ experience. But I am working on it.</p>
   <span class="kr">end</span>.</span></span></pre><p>To make this proof, I thought it would help to prove by induction this
 lemma first:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-omega-to-prove-a-lemma-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-omega-to-prove-a-lemma-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">div2_eq</span> : <span class="kr">forall</span> <span class="nv">n</span>, <span class="mi">2</span> * div2 n + mod2 n = n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, <span class="mi">2</span> * div2 n + mod2 n = n</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Then this one, using <tt class="docutils literal">omega</tt> and <tt class="docutils literal">div2_eq</tt>:</p>
+</span></span></pre><p>Then this one, using <span class="docutils literal">omega</span> and <span class="docutils literal">div2_eq</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-omega-to-prove-a-lemma-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="using-omega-to-prove-a-lemma-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">div2_le</span> : <span class="kr">forall</span> <span class="nv">n</span>, div2 n &lt;= n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, div2 n &lt;= n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>But I did not manage to go further.</p>
 <p>Does anyone know what to do?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can easily derive induction principles from the functions <tt class="docutils literal">div2</tt>
-and <tt class="docutils literal">mod2</tt> like so:</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can easily derive induction principles from the functions <span class="docutils literal">div2</span>
+and <span class="docutils literal">mod2</span> like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> FunInd.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Functional Scheme</span> <span class="nf">div2_ind</span> := <span class="kn">Induction for</span> div2 <span class="kn">Sort</span> <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Functional Scheme</span> <span class="nf">mod2_ind</span> := <span class="kn">Induction for</span> mod2 <span class="kn">Sort</span> <span class="kt">Prop</span>.</span></span></pre><p><tt class="docutils literal">div2_ind</tt> and <tt class="docutils literal">mod2_ind</tt> have more or less types:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Functional Scheme</span> <span class="nf">mod2_ind</span> := <span class="kn">Induction for</span> mod2 <span class="kn">Sort</span> <span class="kt">Prop</span>.</span></span></pre><p><span class="docutils literal">div2_ind</span> and <span class="docutils literal">mod2_ind</span> have more or less types:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="using-omega-to-prove-a-lemma-in-coq-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">div2_ind
      : <span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; nat -&gt; <span class="kt">Prop</span>,
        (<span class="kr">forall</span> <span class="nv">n</span> : nat, n = <span class="mi">0</span> -&gt; P <span class="mi">0</span> <span class="mi">0</span>) -&gt;
@@ -78,9 +75,8 @@ and <tt class="docutils literal">mod2</tt> like so:</p>
         <span class="kr">forall</span> <span class="nv">p</span> : nat,
         n0 = S p -&gt;
         P p (mod2 p) -&gt; P (S (S p)) (mod2 p)) -&gt;
-       <span class="kr">forall</span> <span class="nv">n</span> : nat, P n (mod2 n)</blockquote></div></div></small></span></pre><p>To apply these theorems you can conveniently write <tt class="docutils literal">functional
-induction (div2 n)</tt> or <tt class="docutils literal">functional induction (mod2 n)</tt> where you
-might usually write <tt class="docutils literal">induction n</tt>.</p>
+       <span class="kr">forall</span> <span class="nv">n</span> : nat, P n (mod2 n)</blockquote></div></div></small></span></pre><p>To apply these theorems you can conveniently write <span class="docutils literal">functional induction (div2 n)</span> or <span class="docutils literal">functional induction (mod2 n)</span> where you
+might usually write <span class="docutils literal">induction n</span>.</p>
 <p>But a stronger induction principle is associated with these functions:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-omega-to-prove-a-lemma-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="using-omega-to-prove-a-lemma-in-coq-v-chk4"><span class="kn">Lemma</span> <span class="nf">nat_ind_alt</span> : <span class="kr">forall</span> <span class="nv">P1</span> : nat -&gt; <span class="kt">Prop</span>,
     P1 <span class="mi">0</span> -&gt;
@@ -106,9 +102,8 @@ P1 <span class="mi">1</span> -&gt;
     <span class="nb">simple apply</span> le_n (<span class="kr">in</span> core).</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In fact, the domain of any function is a clue to a useful induction
 principle. For example, the induction principle associated to the
-domain of the functions <tt class="docutils literal">plus : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt> and <tt class="docutils literal">mult : nat
-<span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt> is just structural induction. Which makes me wonder
-why <tt class="docutils literal">Functional Scheme</tt> doesn't just generate these more general
+domain of the functions <span class="docutils literal">plus : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</span> and <span class="docutils literal">mult : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</span> is just structural induction. Which makes me wonder
+why <span class="docutils literal">Functional Scheme</span> doesn't just generate these more general
 principles instead.</p>
 <p>In any case, the proofs of your theorems then become:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lia.</span><span class="alectryon-wsp">
@@ -130,8 +125,8 @@ principles instead.</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>You should familiarize yourself with functional induction, but more
 importantly, you should really familiarize yourself with well-founded
 induction.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

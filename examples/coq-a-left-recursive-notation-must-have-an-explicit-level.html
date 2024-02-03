@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: a left-recursive notation must have an explicit level</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,32 +14,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-a-left-recursive-notation-must-have-an-explicit-level">
+<div class="alectryon-root alectryon-centered"><main id="coq-a-left-recursive-notation-must-have-an-explicit-level">
 <h1 class="title">Coq: a left-recursive notation must have an explicit level</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/33929265">https://stackoverflow.com/q/33929265</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/33929265">https://stackoverflow.com/q/33929265</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have seen a Coq notation definition for &quot;evaluates to&quot; as follows:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;e &#39;||&#39; n&quot;</span> := (aevalR e n) : type_scope.</span></span></pre><p>I am trying to change the symbol <tt class="docutils literal"><span class="pre">'||'</span></tt> to something else as <tt class="docutils literal">||</tt>
-is often times used for logical <tt class="docutils literal">or</tt>. However, I always get an error</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;e &#39;||&#39; n&quot;</span> := (aevalR e n) : type_scope.</span></span></pre><p>I am trying to change the symbol <span class="docutils literal"><span class="pre">'||'</span></span> to something else as <span class="docutils literal">||</span>
+is often times used for logical <span class="docutils literal">or</span>. However, I always get an error</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-a-left-recursive-notation-must-have-an-explicit-level-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-A <span class="nb">left</span>-recursive notation must <span class="nb">have</span> an explicit level.</blockquote></div></div></small></span></pre><p>For example, this happens when I change <tt class="docutils literal"><span class="pre">'||'</span></tt> to:</p>
-<p><tt class="docutils literal"><span class="pre">'\|/'</span></tt>, <tt class="docutils literal"><span class="pre">'\||/'</span></tt>, <tt class="docutils literal">'|_|'</tt>, <tt class="docutils literal"><span class="pre">'|.|'</span></tt>, <tt class="docutils literal">'|v|'</tt>, or <tt class="docutils literal">'|_'</tt>.</p>
-<p>Is there something special about <tt class="docutils literal">||</tt> here? and how should I fix it
+A <span class="nb">left</span>-recursive notation must <span class="nb">have</span> an explicit level.</blockquote></div></div></small></span></pre><p>For example, this happens when I change <span class="docutils literal"><span class="pre">'||'</span></span> to:</p>
+<p><span class="docutils literal"><span class="pre">'\|/'</span></span>, <span class="docutils literal"><span class="pre">'\||/'</span></span>, <span class="docutils literal">'|_|'</span>, <span class="docutils literal"><span class="pre">'|.|'</span></span>, <span class="docutils literal">'|v|'</span>, or <span class="docutils literal">'|_'</span>.</p>
+<p>Is there something special about <span class="docutils literal">||</span> here? and how should I fix it
 to make these other notations work (if possible)?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>If I am right, if you overload a notation, Coq uses the properties of
-the first definition. The notation <tt class="docutils literal">_ <span class="pre">'||'</span> _</tt> has already a level,
+the first definition. The notation <span class="docutils literal">_ <span class="pre">'||'</span> _</span> has already a level,
 so Coq uses this level for your definition.</p>
 <p>But with new symbols, Coq cannot do that, and you have to specify the
 level:</p>
@@ -50,8 +47,8 @@ above. You cannot redefine the level of a notation. Try for example:</p>
 <span class="kr">with</span> arguments <span class="kn">constr at level</span> <span class="mi">50</span>, <span class="kp">constr</span>
 <span class="kn">at next level</span> while it <span class="kr">is</span> <span class="bp">now</span> required to be
 <span class="kn">at level</span> <span class="mi">20</span> <span class="kr">with</span> arguments <span class="kn">constr at next level</span>,
-<span class="kn">constr at next level</span>.</blockquote></div></div></small></span></pre></div>
+<span class="kn">constr at next level</span>.</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

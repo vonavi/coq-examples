@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Induction proofs on MSets</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,28 +14,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="induction-proofs-on-msets">
-<h1 class="title">Induction proofs on <tt class="docutils literal">MSet</tt>s</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47572526">https://stackoverflow.com/q/47572526</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="induction-proofs-on-msets">
+<h1 class="title">Induction proofs on <span class="docutils literal">MSet</span>s</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47572526">https://stackoverflow.com/q/47572526</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to use MSet library in a Coq development and I need a
-<tt class="docutils literal">smap</tt> function, which is absent from the library, but can be
-implemented using <tt class="docutils literal">fold</tt>, as usual.</p>
+<span class="docutils literal">smap</span> function, which is absent from the library, but can be
+implemented using <span class="docutils literal">fold</span>, as usual.</p>
 <p>In the following <a class="reference external" href="https://gist.github.com/rodrigogribeiro/1bb47d5a07e91e27384175fdb2710e34">gist</a>,
 I've put a simplification of what I'm working on, full of axioms, just
 to get straight to the point.</p>
-<p>My problem is to prove a property of the following <tt class="docutils literal">smap</tt> function:</p>
+<p>My problem is to prove a property of the following <span class="docutils literal">smap</span> function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">smap</span> (<span class="nv">f</span> : Exp -&gt; Exp) <span class="nv">s</span> :=
-  MSet.<span class="nb">fold</span> (<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">ac</span> =&gt; MSet.add (f a) ac) MSet.empty s.</span></span></pre><p>Which uses <tt class="docutils literal">fold</tt> from Coq MSet library. The property that I want to
+  MSet.<span class="nb">fold</span> (<span class="kr">fun</span> <span class="nv">a</span> <span class="nv">ac</span> =&gt; MSet.add (f a) ac) MSet.empty s.</span></span></pre><p>Which uses <span class="docutils literal">fold</span> from Coq MSet library. The property that I want to
 show is:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-proofs-on-msets-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-proofs-on-msets-v-chk0"><span class="kn">Lemma</span> <span class="nf">smap_lemma</span> : <span class="kr">forall</span> <span class="nv">s</span> <span class="nv">f</span> <span class="nv">e</span>,
     In e (smap f s) -&gt; <span class="kr">exists</span> <span class="nv">e&#39;</span>, In e&#39; s /\ e = f e&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">s</span> : t) (<span class="nv">f</span> : Exp -&gt; Exp) (<span class="nv">e</span> : elt),
@@ -47,28 +44,27 @@ In e (smap f s) -&gt;
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-proofs-on-msets-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-proofs-on-msets-v-chk2"><span class="nb">induction</span> s <span class="nb">using</span> set_induction; <span class="nb">intros</span>; <span class="kp">try</span> fsetdec.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s1, s2</var><span class="hyp-type"><b>: </b><span>t</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>elt</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>~ In x s1</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="kn">Add</span> x s1 s2</span></span></span><br><span><var>IHs1</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">f</span> : Exp -&gt; Exp) (<span class="nv">e</span> : elt),
 In e (smap f s1) -&gt;
 <span class="kr">exists</span> <span class="nv">e&#39;</span> : elt, In e&#39; s1 /\ e = f e&#39;</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span>Exp -&gt; Exp</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>elt</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>In e (smap f s2)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">e&#39;</span> : elt, In e&#39; s2 /\ e = f e&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Which is intended to show that if an element <tt class="docutils literal">e</tt> in the set <tt class="docutils literal">smap f
-s</tt>, then exists another element <tt class="docutils literal">e'</tt> in <tt class="docutils literal">s</tt>, s.t. <tt class="docutils literal">e = f e'</tt>.
+</span></span></pre><p>Which is intended to show that if an element <span class="docutils literal">e</span> in the set <span class="docutils literal">smap f s</span>, then exists another element <span class="docutils literal">e'</span> in <span class="docutils literal">s</span>, s.t. <span class="docutils literal">e = f e'</span>.
 My difficulty is to prove the inductive case, since the induction
-hypothesis produced by <tt class="docutils literal">set_induction</tt> does not seems useful at all.</p>
+hypothesis produced by <span class="docutils literal">set_induction</span> does not seems useful at all.</p>
 <p>Could someone provide me any clues on how should I proceed?</p>
 <hr class="docutils" />
-<p><strong>A:</strong> A note about sets don't include a <tt class="docutils literal">smap</tt> operation is because
+<p><strong>A:</strong> A note about sets don't include a <span class="docutils literal">smap</span> operation is because
 it only makes sense as such if the mapped function is injective and
 order-preserving. For all other cases, you are talking about &quot;the
 image of a set under f&quot;, which has slightly different properties.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>First, I think there is a problem in your definition of <tt class="docutils literal">smap</tt>. You
-must swap <tt class="docutils literal">MSet.empty</tt> and <tt class="docutils literal">s</tt>, otherwise you can prove:</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>First, I think there is a problem in your definition of <span class="docutils literal">smap</span>. You
+must swap <span class="docutils literal">MSet.empty</span> and <span class="docutils literal">s</span>, otherwise you can prove:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-proofs-on-msets-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-proofs-on-msets-v-chk3"><span class="kn">Lemma</span> <span class="nf">smap_trivial</span> : <span class="kr">forall</span> <span class="nv">f</span> <span class="nv">s</span>, smap f s = s.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">f</span> : Exp -&gt; Exp) (<span class="nv">s</span> : t), smap f s = s</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-proofs-on-msets-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-proofs-on-msets-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">f</span> : Exp -&gt; Exp) (<span class="nv">s</span> : t), smap f s = s</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-proofs-on-msets-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-proofs-on-msets-v-chk5"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>Exp -&gt; Exp</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">smap f s = s</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>With the right definition, you can use the <tt class="docutils literal">fold_rec</tt> lemma that is
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>With the right definition, you can use the <span class="docutils literal">fold_rec</span> lemma that is
 adapted to this kind of goal.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

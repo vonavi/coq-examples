@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to leave a goal unfinished in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,41 +14,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-leave-a-goal-unfinished-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-leave-a-goal-unfinished-in-coq">
 <h1 class="title">How to leave a goal unfinished in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/60018942">https://stackoverflow.com/q/60018942</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/60018942">https://stackoverflow.com/q/60018942</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In Isabelle, you can leave a goal unfinished in two ways:</p>
 <ul class="simple">
-<li>sorry: will leave your proof and the fact can be used in later
-proofs.</li>
-<li>oops: will leave the proof but the fact cannot be used in later
-proofs.</li>
+<li><p>sorry: will leave your proof and the fact can be used in later
+proofs.</p></li>
+<li><p>oops: will leave the proof but the fact cannot be used in later
+proofs.</p></li>
 </ul>
 <p>Is there similar functionality in Coq that would allow me to leave a
 goal unfinished to come back later to it? This is useful to sketch the
 structure of the proof while not filling in all the details. Note that
 the approach in <a class="reference external" href="https://stackoverflow.com/questions/34421064/how-to-switch-the-current-goal-in-coq">How to switch the current goal in Coq?</a>
 modifies the proof structure. That's not what I'm looking for.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You have several ways to terminate a proof in Coq. You probably know
-<tt class="docutils literal">Qed</tt> which asserts the proof is completed. There is also
-<tt class="docutils literal">Defined</tt> for when you want the proof to have computational content.</p>
+<span class="docutils literal">Qed</span> which asserts the proof is completed. There is also
+<span class="docutils literal">Defined</span> for when you want the proof to have computational content.</p>
 <p>The things you are looking for are:</p>
 <ul class="simple">
-<li><tt class="docutils literal">Admitted</tt> which admits the proof, so it can be used later;</li>
-<li><tt class="docutils literal">Abort</tt> which gives up on proving the lemma.</li>
+<li><p><span class="docutils literal">Admitted</span> which admits the proof, so it can be used later;</p></li>
+<li><p><span class="docutils literal">Abort</span> which gives up on proving the lemma.</p></li>
 </ul>
 <p>They can be used that way:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chk0"><span class="kn">Lemma</span> <span class="nf">foo</span> : <span class="kr">forall</span> <span class="nv">n</span>, n = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -60,10 +57,10 @@ modifies the proof structure. That's not what I'm looking for.</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chk7"><span class="kn">Lemma</span> <span class="nf">bar</span> : <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">n</span> : A), n = n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">n</span> : A), n = n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>In both cases you can have a partial proof script before the
-<tt class="docutils literal">Admitted</tt>/<tt class="docutils literal">Abort</tt> or none at all.</p>
-<p>As &#64;HTNW points out, you can also use the equivalent tactics <tt class="docutils literal">admit</tt>
-and <tt class="docutils literal">give_up</tt> inside subgoals of the proof. Using those, the proof
-however <em>has</em> to be concluded using either <tt class="docutils literal">Admitted</tt> or <tt class="docutils literal">Abort</tt>.</p>
+<span class="docutils literal">Admitted</span>/<span class="docutils literal">Abort</span> or none at all.</p>
+<p>As &#64;HTNW points out, you can also use the equivalent tactics <span class="docutils literal">admit</span>
+and <span class="docutils literal">give_up</span> inside subgoals of the proof. Using those, the proof
+however <em>has</em> to be concluded using either <span class="docutils literal">Admitted</span> or <span class="docutils literal">Abort</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chk8"><span class="kn">Lemma</span> <span class="nf">lem</span> : <span class="kr">forall</span> <span class="nv">A</span>, A + A -&gt; A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, A + A -&gt; A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chk9"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, A + A -&gt; A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chka"><span class="nb">intros</span> A h.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>(A + A)%type</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chkb"><span class="nb">destruct</span> h.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><label class="goal-separator" for="how-to-leave-a-goal-unfinished-in-coq-v-chkc"><hr></label><div class="goal-conclusion">A</div></blockquote></div></div></div></small><span class="alectryon-wsp">
@@ -83,12 +80,12 @@ close the goals that you want to leave for later.</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chk14">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input">cheat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-leave-a-goal-unfinished-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-leave-a-goal-unfinished-in-coq-v-chk15">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input">cheat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>. <span class="c">(* This is now ok *)</span></span></span></pre><p>You have to be careful using that trick though. You can check that a
-lemma has been proven without axioms using <tt class="docutils literal">Print Assumptions lem</tt>.
+lemma has been proven without axioms using <span class="docutils literal">Print Assumptions lem</span>.
 If it says &quot;closed under context&quot; you're good, otherwise it will lists
-the axioms it depends on and if <tt class="docutils literal">cheating</tt> appears you know it's not
+the axioms it depends on and if <span class="docutils literal">cheating</span> appears you know it's not
 entirely proven.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

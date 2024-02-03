@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dependent pattern matching</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="dependent-pattern-matching">
+<div class="alectryon-root alectryon-centered"><main id="dependent-pattern-matching">
 <h1 class="title">Dependent pattern matching</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1549">https://proofassistants.stackexchange.com/q/1549</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://proofassistants.stackexchange.com/q/1549">https://proofassistants.stackexchange.com/q/1549</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>upd. What I would like to do is to put <tt class="docutils literal">a = RedNode' ..</tt> into
-current context (when using <tt class="docutils literal">refine</tt>). I found this technique here
+<section id="question">
+<h2>Question</h2>
+<p>upd. What I would like to do is to put <span class="docutils literal">a = RedNode' ..</span> into
+current context (when using <span class="docutils literal">refine</span>). I found this technique here
 <a class="reference external" href="https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement">https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement</a>
 .</p>
 <p>This code works:</p>
@@ -50,30 +47,30 @@ current context (when using <tt class="docutils literal">refine</tt>). I found t
       | RedNode&#39; _ c0 _ t1 y t2 =&gt; <span class="kr">fun</span> <span class="nv">Heqa</span> =&gt; _
       <span class="kr">end</span> (eq_refl a)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br><span><var>c, c0</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t1</var><span class="hyp-type"><b>: </b><span>rbtree c n0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>t2</var><span class="hyp-type"><b>: </b><span>rbtree c0 n0</span></span></span><br><span><var>Heqa</var><span class="hyp-type"><b>: </b><span>RedNode&#39; c c0 n0 t1 y t2 =
 RedNode&#39; c c0 n0 t1 y t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n0)}</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>My question is in next (slightly modified definition) of <tt class="docutils literal">balance1</tt>:</p>
+</span></span></pre><p>My question is in next (slightly modified definition) of <span class="docutils literal">balance1</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="dependent-pattern-matching-v-chk2"><span class="kn">Definition</span> <span class="nf">balance1</span> <span class="nv">n</span> (<span class="nv">a</span> : rtree n) (<span class="nv">data</span> : nat) <span class="nv">c2</span> (<span class="nv">t</span> : rbtree c2 n)
   : { c : color &amp; rbtree c (S n) }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="dependent-pattern-matching-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="dependent-pattern-matching-v-chk3"><span class="nb">refine</span> (
       <span class="kr">match</span> a <span class="kr">as</span> ax <span class="kr">in</span> rtreen nx <span class="kr">return</span> a = ax -&gt; _ <span class="kr">with</span>
       | RedNode&#39; _ c0 _ t1 y t2 =&gt; <span class="kr">fun</span> <span class="nv">Heqa</span> =&gt; _
       <span class="kr">end</span> (eq_refl a)).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">This should be an inductive type applied to patterns.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>rtree n</span></span></span><br><span><var>data</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>c2</var><span class="hyp-type"><b>: </b><span>color</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>rbtree c2 n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{c : color &amp; rbtree c (S n)}</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>And now Coq does not see that <tt class="docutils literal">a</tt> and <tt class="docutils literal">ax</tt> the same because it is
-not able to see that <tt class="docutils literal">n</tt> and <tt class="docutils literal">nx</tt> are the same.</p>
-<p>What is going on and how to express equality between <tt class="docutils literal">n</tt> and <tt class="docutils literal">nx</tt>
-(so, Coq will see I can have <tt class="docutils literal">a = ax</tt>)?</p>
+</span></span></pre><p>And now Coq does not see that <span class="docutils literal">a</span> and <span class="docutils literal">ax</span> the same because it is
+not able to see that <span class="docutils literal">n</span> and <span class="docutils literal">nx</span> are the same.</p>
+<p>What is going on and how to express equality between <span class="docutils literal">n</span> and <span class="docutils literal">nx</span>
+(so, Coq will see I can have <span class="docutils literal">a = ax</span>)?</p>
 <p>(an example is taken from CPDT).</p>
 <hr class="docutils" />
-<p><strong>A:</strong> What I would like to do is to put <tt class="docutils literal">RedNode'</tt> into current
+<p><strong>A:</strong> What I would like to do is to put <span class="docutils literal">RedNode'</span> into current
 context (which I see in proof mode when using refine). I found this
 here
 <a class="reference external" href="https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement">https://stackoverflow.com/questions/27316254/coq-keeping-information-in-a-match-statement</a></p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>As mentioned by Pierre Castèran, the first definition works because
-Coq infers a (useless) return type <tt class="docutils literal">ax = ax <span class="pre">-&gt;</span> _</tt>. If you really
-want to maintain an equality like <tt class="docutils literal">a = ax</tt> you need to work a bit
-more to have (a modification of) <tt class="docutils literal">a</tt> and <tt class="docutils literal">ax</tt> at the same type.
+Coq infers a (useless) return type <span class="docutils literal">ax = ax <span class="pre">-&gt;</span> _</span>. If you really
+want to maintain an equality like <span class="docutils literal">a = ax</span> you need to work a bit
+more to have (a modification of) <span class="docutils literal">a</span> and <span class="docutils literal">ax</span> at the same type.
 The first possibility is to make explicit the equality between the
 natural number indices and rewrite along it in the return clause:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* First possibility: take an equation between the indices as argument</span>
@@ -124,14 +121,14 @@ directly on the pairs:</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>In both cases, actually using these equalities afterwards will be
 somewhat painful: you might be able to use them thanks to decidable
 equality on natural numbers and its consequences (in particular
-<tt class="docutils literal">UIP_nat</tt> in <tt class="docutils literal">Coq.Arith.Peano_dec</tt> if you use the stdlib).</p>
+<span class="docutils literal">UIP_nat</span> in <span class="docutils literal">Coq.Arith.Peano_dec</span> if you use the stdlib).</p>
 <p>But more globally, you should consider whether maintining such an
-equality will be really useful for proving your goal: <tt class="docutils literal">a</tt> does not
+equality will be really useful for proving your goal: <span class="docutils literal">a</span> does not
 appear in the conclusion, nor in any other premise so you should not
 need to know anything about it beyond its content once
 pattern-matched.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

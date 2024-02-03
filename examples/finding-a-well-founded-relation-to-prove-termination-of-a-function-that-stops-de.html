@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Finding a well founded relation to prove termination of a function that stops decreasing at some point</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-decreasing-at-some-point">
+<div class="alectryon-root alectryon-centered"><main id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-decreasing-at-some-point">
 <h1 class="title">Finding a well founded relation to prove termination of a function that stops decreasing at some point</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48121413">https://stackoverflow.com/q/48121413</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48121413">https://stackoverflow.com/q/48121413</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Suppose we have:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> Z_scope.</span><span class="alectryon-wsp">
@@ -35,8 +32,8 @@
   <span class="kr">if</span> <span class="kn">from</span> &lt;? to
   <span class="kr">then</span> <span class="kn">from</span> :: range (<span class="kn">from</span> + <span class="mi">1</span>) to
   <span class="kr">else</span> [].</span></span></pre><p>I'd like to convince Coq that this terminates - I tried by measuring
-the size of the range as <tt class="docutils literal">abs (to - from)</tt>. However, this doesn't
-quite work because once the range is empty (that is, <tt class="docutils literal">from &gt;= to</tt>),
+the size of the range as <span class="docutils literal">abs (to - from)</span>. However, this doesn't
+quite work because once the range is empty (that is, <span class="docutils literal">from &gt;= to</span>),
 it simply starts increasing once again.</p>
 <p>Using my custom:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">preceeds_eq</span> (<span class="nv">l</span> <span class="nv">r</span> : option nat) : <span class="kt">Prop</span> :=
@@ -58,17 +55,17 @@ it simply starts increasing once again.</p>
   <span class="kr">let</span> <span class="nv">range</span> := (to - <span class="kn">from</span>) <span class="kr">in</span>
   <span class="kr">if</span> (range &lt;? <span class="mi">0</span>)
   <span class="kr">then</span> None
-  <span class="kr">else</span> Some (Z_to_nat (Z.abs range) (Z.abs_nonneg range)).</span></span></pre><p>But it runs into the issue that I cannot show that <tt class="docutils literal">None &lt; None</tt> and
-using reflexive <tt class="docutils literal">preceeds_eq</tt> makes the relation not well founded,
+  <span class="kr">else</span> Some (Z_to_nat (Z.abs range) (Z.abs_nonneg range)).</span></span></pre><p>But it runs into the issue that I cannot show that <span class="docutils literal">None &lt; None</span> and
+using reflexive <span class="docutils literal">preceeds_eq</span> makes the relation not well founded,
 which brings me back to the same problem.</p>
-<p>Is there a way to convince Coq that <tt class="docutils literal">range</tt> terminates? Is my
+<p>Is there a way to convince Coq that <span class="docutils literal">range</span> terminates? Is my
 approach completely broken?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>If you map the length of you interval to <tt class="docutils literal">nat</tt> using <tt class="docutils literal">Z.abs_nat</tt>
-or <tt class="docutils literal">Z.to_nat</tt> functions, and use a function deciding if the range is
-not-empty with a more informative result type (<tt class="docutils literal">Z_lt_dec</tt>) then the
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>If you map the length of you interval to <span class="docutils literal">nat</span> using <span class="docutils literal">Z.abs_nat</span>
+or <span class="docutils literal">Z.to_nat</span> functions, and use a function deciding if the range is
+not-empty with a more informative result type (<span class="docutils literal">Z_lt_dec</span>) then the
 solution becomes very simple:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -83,18 +80,18 @@ Z.abs_nat (to - <span class="kn">from</span>) -&gt;
 list Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="kn">from</span> &lt; to)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Z.abs_nat (to - (<span class="kn">from</span> + <span class="mi">1</span>)) &lt; Z.abs_nat (to - <span class="kn">from</span>)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="finding-a-well-founded-relation-to-prove-termination-of-a-function-that-stops-de-v-chka"><span class="nb">apply</span> Zabs_nat_lt.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>from, to</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>range</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">from0</span> <span class="nv">to0</span> : Z,
 Z.abs_nat (to0 - from0) &lt;
 Z.abs_nat (to - <span class="kn">from</span>) -&gt; 
-list Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="kn">from</span> &lt; to)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> &lt;= to - (<span class="kn">from</span> + <span class="mi">1</span>) &lt; to - <span class="kn">from</span>)%Z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto with</span> zarith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Using <tt class="docutils literal">Z_lt_dec</tt> instead of its boolean counter-part gives you the
-benefit of propagating the proof of <tt class="docutils literal">from &lt; to</tt> into the context,
+list Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>(<span class="kn">from</span> &lt; to)%Z</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="mi">0</span> &lt;= to - (<span class="kn">from</span> + <span class="mi">1</span>) &lt; to - <span class="kn">from</span>)%Z</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto with</span> zarith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Using <span class="docutils literal">Z_lt_dec</span> instead of its boolean counter-part gives you the
+benefit of propagating the proof of <span class="docutils literal">from &lt; to</span> into the context,
 which gives you the ability to deal with the proof obligation easily.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> <tt class="docutils literal">Z_lt_dec</tt> is a decision procedure too, but in addition to
-marking the result as true or false (which are called <tt class="docutils literal">left</tt> and
-<tt class="docutils literal">right</tt> respectively) it also attaches a proof to the result. It's
-quite suggestively called <tt class="docutils literal">sumbool</tt> -- once I tried to explain its
+<p><strong>A:</strong> <span class="docutils literal">Z_lt_dec</span> is a decision procedure too, but in addition to
+marking the result as true or false (which are called <span class="docutils literal">left</span> and
+<span class="docutils literal">right</span> respectively) it also attaches a proof to the result. It's
+quite suggestively called <span class="docutils literal">sumbool</span> -- once I tried to explain its
 usage in <a class="reference external" href="https://stackoverflow.com/a/42313822/2747511">this answer</a> (in its second
 half).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

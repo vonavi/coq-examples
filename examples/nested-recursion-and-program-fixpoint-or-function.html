@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nested recursion and Program Fixpoint or Function</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="nested-recursion-and-program-fixpoint-or-function">
-<h1 class="title">Nested recursion and <tt class="docutils literal">Program Fixpoint</tt> or <tt class="docutils literal">Function</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46838928">https://stackoverflow.com/q/46838928</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="nested-recursion-and-program-fixpoint-or-function">
+<h1 class="title">Nested recursion and <span class="docutils literal">Program Fixpoint</span> or <span class="docutils literal">Function</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46838928">https://stackoverflow.com/q/46838928</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I'd like to define the following function using <tt class="docutils literal">Program Fixpoint</tt>
-or <tt class="docutils literal">Function</tt> in Coq:</p>
+<section id="question">
+<h2>Question</h2>
+<p>I'd like to define the following function using <span class="docutils literal">Program Fixpoint</span>
+or <span class="docutils literal">Function</span> in Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Wf.</span><span class="alectryon-wsp">
@@ -49,70 +46,58 @@ or <tt class="docutils literal">Function</tt> in Coq:</p>
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk0"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
 <span class="kr">forall</span> <span class="nv">t</span> : Tree,
 height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt; height (Node x ts)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>Unfortunately, at this point I have a proof obligation <tt class="docutils literal">height t &lt;
-height (Node x ts)</tt> without knowing that <tt class="docutils literal">t</tt> is a member of <tt class="docutils literal">ts</tt>.</p>
-<p>Similarly with <tt class="docutils literal">Function</tt> instead of <tt class="docutils literal">Program Fixpoint</tt>, only that
-<tt class="docutils literal">Function</tt> detects the problem and aborts the definition:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">the term <span class="kr">fun</span> <span class="nv">t</span> : Tree =&gt; mapTree0 f t can not contain a recursive call to mapTree0</blockquote></div></div></small></span></pre><p>I would expect to get a proof obligation of <tt class="docutils literal">In t ts <span class="pre">-&gt;</span> height t &lt;
-height (Node x ts)</tt>.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>Unfortunately, at this point I have a proof obligation <span class="docutils literal">height t &lt; height (Node x ts)</span> without knowing that <span class="docutils literal">t</span> is a member of <span class="docutils literal">ts</span>.</p>
+<p>Similarly with <span class="docutils literal">Function</span> instead of <span class="docutils literal">Program Fixpoint</span>, only that
+<span class="docutils literal">Function</span> detects the problem and aborts the definition:</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">the term <span class="kr">fun</span> <span class="nv">t</span> : Tree =&gt; mapTree0 f t can not contain a recursive call to mapTree0</blockquote></div></div></small></span></pre><p>I would expect to get a proof obligation of <span class="docutils literal">In t ts <span class="pre">-&gt;</span> height t &lt; height (Node x ts)</span>.</p>
 <p>Is there a way of getting that that does not involve restructuring the
 function definition? (I know work-arounds that require inlining the
-definition of <tt class="docutils literal">map</tt> here, for example – I'd like to avoid these.)</p>
-<div class="section" id="isabelle">
-<h2>Isabelle</h2>
+definition of <span class="docutils literal">map</span> here, for example – I'd like to avoid these.)</p>
+<section id="isabelle">
+<h3>Isabelle</h3>
 <p>To justify that expectation, let me show what happens when I do the
-same in Isabelle, using the <tt class="docutils literal">function</tt> command, which is (AFAIK)
-related to Coq's <tt class="docutils literal">Function</tt> command:</p>
-<pre class="code isabelle literal-block">
-<span class="k">theory</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="kp">imports</span><span class="w"> </span><span class="n">Main</span><span class="w"> </span><span class="k">begin</span><span class="w">
+same in Isabelle, using the <span class="docutils literal">function</span> command, which is (AFAIK)
+related to Coq's <span class="docutils literal">Function</span> command:</p>
+<pre class="code isabelle literal-block"><code><span class="k">theory</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="kp">imports</span><span class="w"> </span><span class="n">Main</span><span class="w"> </span><span class="k">begin</span><span class="w">
 
-</span><span class="k">datatype</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="s">&quot;Tree list&quot;</span><span class="w">
+</span><span class="k">datatype</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><s>&quot;Tree list&quot;</s><span class="w">
 
 </span><span class="k">fun</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="kp">where</span><span class="w">
-  </span><span class="s">&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</span><span class="w">
+  </span><s>&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</s><span class="w">
 
 </span><span class="kn">function</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
-  </span><span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span><span class="w">
+  </span><s>&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</s><span class="w">
 </span><span class="k">by</span><span class="w"> </span><span class="n">pat_completeness</span><span class="w"> </span><span class="n">auto</span><span class="w">
 
 </span><span class="kn">termination</span><span class="w">
-</span><span class="k">proof</span><span class="w"> </span><span class="o">(</span><span class="n">relation</span><span class="w"> </span><span class="s">&quot;measure (λ(f, t). height t)&quot;</span><span class="o">)</span><span class="w">
-  </span><span class="k">show</span><span class="w"> </span><span class="s">&quot;wf (measure (λ(f, t). height t))&quot;</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">auto</span><span class="w">
+</span><span class="k">proof</span><span class="w"> </span><span class="o">(</span><span class="n">relation</span><span class="w"> </span><s>&quot;measure (λ(f, t). height t)&quot;</s><span class="o">)</span><span class="w">
+  </span><span class="k">show</span><span class="w"> </span><s>&quot;wf (measure (λ(f, t). height t))&quot;</s><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">auto</span><span class="w">
 </span><span class="k">next</span><span class="w">
-  </span><span class="k">fix</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="s">&quot;nat ⇒ nat&quot;</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="s">&quot;Tree list&quot;</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">t</span><span class="w">
-  </span><span class="k">assume</span><span class="w"> </span><span class="s">&quot;t ∈ set ts&quot;</span><span class="w">
-  </span><span class="k">thus</span><span class="w"> </span><span class="s">&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</span><span class="w">
+  </span><span class="k">fix</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><s>&quot;nat ⇒ nat&quot;</s><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><s>&quot;Tree list&quot;</s><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">t</span><span class="w">
+  </span><span class="k">assume</span><span class="w"> </span><s>&quot;t ∈ set ts&quot;</s><span class="w">
+  </span><span class="k">thus</span><span class="w"> </span><s>&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</s><span class="w">
     </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="n">induction</span><span class="w"> </span><span class="n">ts</span><span class="o">)</span><span class="w"> </span><span class="n">auto</span><span class="w">
-</span><span class="k">qed</span>
-</pre>
-<p>In the termination proof, I get the assumption <tt class="docutils literal">t ∈ set ts</tt>.</p>
+</span><span class="k">qed</span></code></pre>
+<p>In the termination proof, I get the assumption <span class="docutils literal">t ∈ set ts</span>.</p>
 <p>Note that Isabelle does not require a manual termination proof here,
 and the following definition works just fine:</p>
-<pre class="code isabelle literal-block">
-<span class="k">fun</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
-  </span><span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span>
-</pre>
-<p>This works because the <tt class="docutils literal">map</tt> function has a &quot;congruence lemma&quot; of
+<pre class="code isabelle literal-block"><code><span class="k">fun</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
+  </span><s>&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</s></code></pre>
+<p>This works because the <span class="docutils literal">map</span> function has a &quot;congruence lemma&quot; of
 the form</p>
-<pre class="code isabelle literal-block">
-<span class="s">&quot;xs = ys ⟹ (⋀x. x ∈ set ys ⟹ f x = g x) ⟹ map f xs = map g ys&quot;</span>
-</pre>
-<p>that the <tt class="docutils literal">function</tt> command uses to find out that the termination
-proof only needs to consider <tt class="docutils literal">t ∈ set ts</tt>.</p>
+<pre class="code isabelle literal-block"><code><s>&quot;xs = ys ⟹ (⋀x. x ∈ set ys ⟹ f x = g x) ⟹ map f xs = map g ys&quot;</s></code></pre>
+<p>that the <span class="docutils literal">function</span> command uses to find out that the termination
+proof only needs to consider <span class="docutils literal">t ∈ set ts</span>.</p>
 <p>If such a lemma is not available, e.g. because I define</p>
-<pre class="code isabelle literal-block">
-<span class="k">definition</span><span class="w"> </span><span class="s">&quot;map' = map&quot;</span>
-</pre>
-<p>and use that in <tt class="docutils literal">mapTree</tt>, I get the same unprovable proof
+<pre class="code isabelle literal-block"><code><span class="k">definition</span><span class="w"> </span><s>&quot;map' = map&quot;</s></code></pre>
+<p>and use that in <span class="docutils literal">mapTree</span>, I get the same unprovable proof
 obligation as in Coq. I can make it work again by declaring a
-congruence lemma for <tt class="docutils literal">map'</tt>, e.g. using</p>
-<pre class="code isabelle literal-block">
-<span class="k">declare</span><span class="w"> </span><span class="n">map_cong</span><span class="o">[</span><span class="n">folded</span><span class="w"> </span><span class="n">map'_def</span><span class="o">,</span><span class="n">fundef_cong</span><span class="o">]</span>
-</pre>
-</div>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+congruence lemma for <span class="docutils literal">map'</span>, e.g. using</p>
+<pre class="code isabelle literal-block"><code><span class="k">declare</span><span class="w"> </span><span class="n">map_cong</span><span class="o">[</span><span class="n">folded</span><span class="w"> </span><span class="n">map'_def</span><span class="o">,</span><span class="n">fundef_cong</span><span class="o">]</span></code></pre>
+</section>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>In this case, you actually do not need well-founded recursion in its
 full generality:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
@@ -125,9 +110,9 @@ full generality:</p>
   <span class="kr">match</span> t <span class="kr">with</span>
   | Node x ts =&gt; Node (f x) (map (<span class="kr">fun</span> <span class="nv">t</span> =&gt; map_tree f t) ts)
   <span class="kr">end</span>.</span></span></pre><p>Coq is able to figure out by itself that recursive calls to
-<tt class="docutils literal">map_tree</tt> are performed on strict subterms. However, proving
+<span class="docutils literal">map_tree</span> are performed on strict subterms. However, proving
 anything about this function is difficult, as the induction principle
-generated for <tt class="docutils literal">tree</tt> is not useful:</p>
+generated for <span class="docutils literal">tree</span> is not useful:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">tree_ind
      : <span class="kr">forall</span> <span class="nv">P</span> : tree -&gt; <span class="kt">Prop</span>,
        (<span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">l</span> : list tree), P (Node n l)) -&gt;
@@ -160,11 +145,11 @@ proof term.</p>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">map_tree</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">t</span> : tree) : tree :=
   <span class="kr">match</span> t <span class="kr">with</span>
   | Node x ts =&gt; Node (f x) (map (<span class="kr">fun</span> <span class="nv">t</span> =&gt; map_tree f t) ts)
-  <span class="kr">end</span>.</span></span></pre><p>The <tt class="docutils literal">Unset Elimination Schemes</tt> command prevents Coq from generating
-its default (and not useful) induction principle for <tt class="docutils literal">tree</tt>. The
-occurrence of <tt class="docutils literal">fold_right</tt> on the induction hypothesis simply
-expresses that the predicate <tt class="docutils literal">P</tt> holds of every tree <tt class="docutils literal">t'</tt>
-appearing in <tt class="docutils literal">ts</tt>.</p>
+  <span class="kr">end</span>.</span></span></pre><p>The <span class="docutils literal">Unset Elimination Schemes</span> command prevents Coq from generating
+its default (and not useful) induction principle for <span class="docutils literal">tree</span>. The
+occurrence of <span class="docutils literal">fold_right</span> on the induction hypothesis simply
+expresses that the predicate <span class="docutils literal">P</span> holds of every tree <span class="docutils literal">t'</span>
+appearing in <span class="docutils literal">ts</span>.</p>
 <p>Here is a statement that you can prove using this induction principle:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk3"><span class="kn">Lemma</span> <span class="nf">map_tree_comp</span> <span class="nv">f</span> <span class="nv">g</span> <span class="nv">t</span> :
   map_tree f (map_tree g t) = map_tree (<span class="kr">fun</span> <span class="nv">n</span> =&gt; f (g n)) t.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f, g</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>tree</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">map_tree f (map_tree g t) =
@@ -281,25 +266,21 @@ map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g
 :: map
      (<span class="kr">fun</span> <span class="nv">t</span> : tree =&gt;
       map_tree (<span class="kr">fun</span> <span class="nv">n</span> : nat =&gt; f (g n)) t) ts&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> IHt&#39;, &lt;- IHts.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-joachim-breitner">
-<h1>Answer (Joachim Breitner)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-joachim-breitner">
+<h2>Answer (Joachim Breitner)</h2>
 <p>In general, it might be advisable to avoid this problem. But if one
 really wants to obtain the proof obligation that Isabelle gives you,
 here is a way:</p>
-<p>In Isabelle, we can give an external lemma that stats that <tt class="docutils literal">map</tt>
+<p>In Isabelle, we can give an external lemma that stats that <span class="docutils literal">map</span>
 applies its arguments only to members of the given list. In Coq, we
 cannot do this in an external lemma, but we can do it in the type. So
 instead of the normal type of map</p>
-<pre class="code coq literal-block">
-<span class="k">forall</span> <span class="n">A</span> <span class="n">B</span><span class="o">,</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">B</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="k">forall</span> <span class="n">A</span> <span class="n">B</span><span class="o">,</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">B</span></code></pre>
 <p>we want the type to say &quot;f is only ever applied to elements of the list&quot;:</p>
-<pre class="code coq literal-block">
-<span class="k">forall</span> <span class="n">A</span> <span class="n">B</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">),</span> <span class="o">(</span><span class="k">forall</span> <span class="n">x</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">In</span> <span class="n">x</span> <span class="n">xs</span> <span class="o">-&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">B</span>
-</pre>
-<p>(It requires reordering the argument so that the type of <tt class="docutils literal">f</tt> can
-mention <tt class="docutils literal">xs</tt>).</p>
+<pre class="code coq literal-block"><code><span class="k">forall</span> <span class="n">A</span> <span class="n">B</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">),</span> <span class="o">(</span><span class="k">forall</span> <span class="n">x</span> <span class="o">:</span> <span class="n">A</span><span class="o">,</span> <span class="n">In</span> <span class="n">x</span> <span class="n">xs</span> <span class="o">-&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">B</span></code></pre>
+<p>(It requires reordering the argument so that the type of <span class="docutils literal">f</span> can
+mention <span class="docutils literal">xs</span>).</p>
 <p>Writing this function is not trivial, and I found it easier to use a
 proof script:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chkc"><span class="kn">Definition</span> <span class="nf">map</span> {<span class="nv">A</span> <span class="nv">B</span>} (<span class="nv">xs</span> : list A) (<span class="nv">f</span> : <span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B) : list B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>f</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, In x xs -&gt; B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">list B</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -317,7 +298,7 @@ proof script:</p>
   | x :: xs =&gt;
       <span class="kr">fun</span> <span class="nv">f</span> =&gt; f x (or_introl eq_refl) :: map xs (<span class="kr">fun</span> <span class="nv">y</span> <span class="nv">h</span> =&gt; f y (or_intror h))
   <span class="kr">end</span>.</span></span></pre><p>In either case, the result is nice: I can use this function in
-<tt class="docutils literal">mapTree</tt>, i.e.</p>
+<span class="docutils literal">mapTree</span>, i.e.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Fixpoint</span> <span class="nf">mapTree</span> (<span class="nv">f</span> : nat -&gt; nat) (<span class="nv">t</span> : Tree)
         {<span class="nv">measure</span> (height t)} : Tree :=
   <span class="kr">match</span> t <span class="kr">with</span>
@@ -325,10 +306,9 @@ proof script:</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1a"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
 <span class="kr">forall</span> <span class="nv">t</span> : Tree,
-height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt; height (Node x ts)</div></blockquote></div></div></small></span></pre><p>and I don't have to do anything with the new argument to <tt class="docutils literal">f</tt>, but it
-shows up in the the termination proof obligation, as <tt class="docutils literal">In t ts <span class="pre">-&gt;</span>
-height t &lt; height (Node x ts)</tt> as desired. So I can prove that and
-define <tt class="docutils literal">mapTree</tt>:</p>
+height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt; height (Node x ts)</div></blockquote></div></div></small></span></pre><p>and I don't have to do anything with the new argument to <span class="docutils literal">f</span>, but it
+shows up in the the termination proof obligation, as <span class="docutils literal">In t ts <span class="pre">-&gt;</span> height t &lt; height (Node x ts)</span> as desired. So I can prove that and
+define <span class="docutils literal">mapTree</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="nested-recursion-and-program-fixpoint-or-function-v-chk1b" style="display: none" type="checkbox"><label class="alectryon-input" for="nested-recursion-and-program-fixpoint-or-function-v-chk1b"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>nat -&gt; nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ts</var><span class="hyp-type"><b>: </b><span>list Tree</span></span></span><br><span><var>mapTree</var><span class="hyp-type"><b>: </b><span>(nat -&gt; nat) -&gt;
 <span class="kr">forall</span> <span class="nv">t</span> : Tree,
 height t &lt; height (Node x ts) -&gt; Tree</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>Tree</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">height t &lt;
@@ -357,16 +337,16 @@ height t &lt;=
 fold_right Nat.max <span class="mi">0</span> (List.map height ts)</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>In t ts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">fold_right Nat.max <span class="mi">0</span> (List.map height ts) &lt;=
 fold_right Nat.max <span class="mi">0</span> (List.map height (a :: ts))</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> PeanoNat.Nat.le_max_r.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>It only works with <tt class="docutils literal">Program Fixpoint</tt>, not with <tt class="docutils literal">Function</tt>,
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>It only works with <span class="docutils literal">Program Fixpoint</span>, not with <span class="docutils literal">Function</span>,
 unfortunately.</p>
-</div>
-<div class="section" id="answer-matthieu-sozeau">
-<h1>Answer (Matthieu Sozeau)</h1>
+</section>
+<section id="answer-matthieu-sozeau">
+<h2>Answer (Matthieu Sozeau)</h2>
 <p>You can now do this with Equations and get the right elimination
 principle automatically, using either <a class="reference external" href="http://mattam82.github.io/Coq-Equations/examples/Examples.nested_mut_rec.html">structural nested recursion</a>
 or <a class="reference external" href="http://mattam82.github.io/Coq-Equations/examples/Examples.RoseTree.html">well-founded recursion</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

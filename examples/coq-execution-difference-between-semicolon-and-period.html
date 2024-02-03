@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq execution difference between semicolon ; and period .</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,77 +14,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-execution-difference-between-semicolon-and-period">
-<h1 class="title">Coq execution difference between semicolon <tt class="docutils literal">;</tt> and period <tt class="docutils literal">.</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36292552">https://stackoverflow.com/q/36292552</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-execution-difference-between-semicolon-and-period">
+<h1 class="title">Coq execution difference between semicolon <span class="docutils literal">;</span> and period <span class="docutils literal">.</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/36292552">https://stackoverflow.com/q/36292552</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Given a valid Coq proof using the <tt class="docutils literal">;</tt> tactical, is there a general
-formula for converting it to a valid equivalent proof with <tt class="docutils literal">.</tt>
-substituted for <tt class="docutils literal">;</tt>?</p>
-<p>Many Coq proofs use the <tt class="docutils literal">;</tt> or tactic sequencing tactical. As a
+<section id="question">
+<h2>Question</h2>
+<p>Given a valid Coq proof using the <span class="docutils literal">;</span> tactical, is there a general
+formula for converting it to a valid equivalent proof with <span class="docutils literal">.</span>
+substituted for <span class="docutils literal">;</span>?</p>
+<p>Many Coq proofs use the <span class="docutils literal">;</span> or tactic sequencing tactical. As a
 beginner, I want to watch the individual steps execute, so I want to
-substitute <tt class="docutils literal">.</tt> for <tt class="docutils literal">;</tt>, but to my surprise I find that this may
+substitute <span class="docutils literal">.</span> for <span class="docutils literal">;</span>, but to my surprise I find that this may
 break proof.</p>
-<p>Documentation on <tt class="docutils literal">;</tt> is sparse, and I haven't found an explicit
-discussion of <tt class="docutils literal">.</tt> anywhere. I did see a <a class="reference external" href="http://www.ii.uni.wroc.pl/~mabi/papers/PPDP13.pdf">paper</a> that says
-informal meaning of <tt class="docutils literal">t1; t2</tt> is</p>
+<p>Documentation on <span class="docutils literal">;</span> is sparse, and I haven't found an explicit
+discussion of <span class="docutils literal">.</span> anywhere. I did see a <a class="reference external" href="http://www.ii.uni.wroc.pl/~mabi/papers/PPDP13.pdf">paper</a> that says
+informal meaning of <span class="docutils literal">t1; t2</span> is</p>
 <blockquote>
-apply <tt class="docutils literal">t2</tt> to every subgoal produced by the execution of <tt class="docutils literal">t1</tt>
-in the current proof context,</blockquote>
-<p>and I wonder if <tt class="docutils literal">.</tt> only operates on the current subgoal and that
+<p>apply <span class="docutils literal">t2</span> to every subgoal produced by the execution of <span class="docutils literal">t1</span>
+in the current proof context,</p>
+</blockquote>
+<p>and I wonder if <span class="docutils literal">.</span> only operates on the current subgoal and that
 explains the different behavior? But especially I want to know if
 there is a general solution to repairing the breakage caused by
-substituting <tt class="docutils literal">.</tt> for <tt class="docutils literal">;</tt>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The semantics of <tt class="docutils literal">tac1; tac2</tt> is to run <tt class="docutils literal">tac1</tt> the and then run
-<tt class="docutils literal">tac2</tt> on <em>all</em> the subgoals created by <tt class="docutils literal">tac1</tt>. So you may face a
+substituting <span class="docutils literal">.</span> for <span class="docutils literal">;</span>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The semantics of <span class="docutils literal">tac1; tac2</span> is to run <span class="docutils literal">tac1</span> the and then run
+<span class="docutils literal">tac2</span> on <em>all</em> the subgoals created by <span class="docutils literal">tac1</span>. So you may face a
 variety of cases:</p>
-<div class="section" id="there-are-no-goals-left-after-running-tac1">
-<h2>There are no goals left after running <tt class="docutils literal">tac1</tt></h2>
-<p>If there are no goals left after running <tt class="docutils literal">tac1</tt> then <tt class="docutils literal">tac2</tt> is
+<section id="there-are-no-goals-left-after-running-tac1">
+<h3>There are no goals left after running <span class="docutils literal">tac1</span></h3>
+<p>If there are no goals left after running <span class="docutils literal">tac1</span> then <span class="docutils literal">tac2</span> is
 never run and Coq simply silently succeeds. For instance, in this
-first derivation we have a useless <tt class="docutils literal">; intros</tt> at the end of the
+first derivation we have a useless <span class="docutils literal">; intros</span> at the end of the
 (valid) proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; (A /\ A /\ A /\ A /\ A).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; A /\ A /\ A /\ A /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span>; <span class="kp">repeat</span> <span class="nb">split</span>; <span class="bp">assumption</span>; <span class="nb">intros</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>If we isolate it, then we get an <tt class="docutils literal">Error: No such goal.</tt> because we
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>If we isolate it, then we get an <span class="docutils literal">Error: No such goal.</span> because we
 are trying to run a tactics when there is nothing to prove!</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chk1"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; (A /\ A /\ A /\ A /\ A).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; A /\ A /\ A /\ A /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span>; <span class="kp">repeat</span> <span class="nb">split</span>; <span class="bp">assumption</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-execution-difference-between-semicolon-and-period-v-chk2"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">No such goal.</blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
-<div class="section" id="there-is-exactly-one-goal-left-after-running-tac1">
-<h2>There is exactly one goal left after running <tt class="docutils literal">tac1</tt></h2>
-<p>If there is precisely one goal left after running <tt class="docutils literal">tac1</tt> then
-<tt class="docutils literal">tac1; tac2</tt> behaves a bit like <tt class="docutils literal">tac1. tac2</tt>. The main difference
-is that if <tt class="docutils literal">tac2</tt> fails then so does the whole of <tt class="docutils literal">tac1; tac2</tt>
+</span></span></pre></section>
+<section id="there-is-exactly-one-goal-left-after-running-tac1">
+<h3>There is exactly one goal left after running <span class="docutils literal">tac1</span></h3>
+<p>If there is precisely one goal left after running <span class="docutils literal">tac1</span> then
+<span class="docutils literal">tac1; tac2</span> behaves a bit like <span class="docutils literal">tac1. tac2</span>. The main difference
+is that if <span class="docutils literal">tac2</span> fails then so does the whole of <span class="docutils literal">tac1; tac2</span>
 because the sequence of two tactics is seen as a unit that can either
-succeed as a whole or fail as a whole. But if <tt class="docutils literal">tac2</tt> succeeds, then
+succeed as a whole or fail as a whole. But if <span class="docutils literal">tac2</span> succeeds, then
 it's pretty much equivalent.</p>
 <p>E.g. the following proof is a valid one:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chk3"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; (A /\ A /\ A /\ A /\ A).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; A /\ A /\ A /\ A /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chk4"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A /\ A /\ A /\ A /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="nb">split</span>; <span class="bp">assumption</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="running-tac1-generates-more-than-one-goal">
-<h2>Running <tt class="docutils literal">tac1</tt> generates more than one goal</h2>
-<p>Finally, if multiple goals are generated by running <tt class="docutils literal">tac1</tt> then
-<tt class="docutils literal">tac2</tt> is applied to all of the generated subgoals. In our running
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="running-tac1-generates-more-than-one-goal">
+<h3>Running <span class="docutils literal">tac1</span> generates more than one goal</h3>
+<p>Finally, if multiple goals are generated by running <span class="docutils literal">tac1</span> then
+<span class="docutils literal">tac2</span> is applied to all of the generated subgoals. In our running
 example, we can observe that if we cut off the sequence of tactics
-after <tt class="docutils literal">repeat split</tt> then we have 5 goals on our hands. Which means
-that we need to copy / paste <tt class="docutils literal">assumption</tt> five times to replicate
-the proof given earlier using <tt class="docutils literal">;</tt>:</p>
+after <span class="docutils literal">repeat split</span> then we have 5 goals on our hands. Which means
+that we need to copy / paste <span class="docutils literal">assumption</span> five times to replicate
+the proof given earlier using <span class="docutils literal">;</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chk5"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; (A /\ A /\ A /\ A /\ A).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Prop</span>, A -&gt; A /\ A /\ A /\ A /\ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chk6"><span class="nb">intros</span>; <span class="kp">repeat</span> <span class="nb">split</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk7" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><label class="goal-separator" for="coq-execution-difference-between-semicolon-and-period-v-chk7"><hr></label><div class="goal-conclusion">A</div></blockquote><input class="alectryon-extra-goal-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk8" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><label class="goal-separator" for="coq-execution-difference-between-semicolon-and-period-v-chk8"><hr></label><div class="goal-conclusion">A</div></blockquote><input class="alectryon-extra-goal-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chk9" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><label class="goal-separator" for="coq-execution-difference-between-semicolon-and-period-v-chk9"><hr></label><div class="goal-conclusion">A</div></blockquote><input class="alectryon-extra-goal-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chka" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><label class="goal-separator" for="coq-execution-difference-between-semicolon-and-period-v-chka"><hr></label><div class="goal-conclusion">A</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-execution-difference-between-semicolon-and-period-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-execution-difference-between-semicolon-and-period-v-chkb">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
@@ -95,16 +93,16 @@ the proof given earlier using <tt class="docutils literal">;</tt>:</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
 <p><strong>A:</strong> I'll point out that probably the most <em>important</em> difference,
 aside from applying the tactic in every branch, is that Coq will
-backtrack through <tt class="docutils literal">;</tt>. E.g. even if <tt class="docutils literal">tac1</tt> only ever generates one
+backtrack through <span class="docutils literal">;</span>. E.g. even if <span class="docutils literal">tac1</span> only ever generates one
 goal, if there are multiple ways for it to do so (an important example
-would be <tt class="docutils literal">constructor</tt>), then <tt class="docutils literal">tac1. tac2</tt> will commit to the
-first success and run <tt class="docutils literal">tac2</tt> on it. <tt class="docutils literal">tac1; tac2</tt> will make
-<tt class="docutils literal">tac1</tt> try one thing, then try <tt class="docutils literal">tac2</tt> after that, and if that
-fails try <tt class="docutils literal">tac1</tt> another way, and then try <tt class="docutils literal">tac2</tt> after that, and
-if that fails try <tt class="docutils literal">tac1</tt> another <em>another</em> way, etc.</p>
+would be <span class="docutils literal">constructor</span>), then <span class="docutils literal">tac1. tac2</span> will commit to the
+first success and run <span class="docutils literal">tac2</span> on it. <span class="docutils literal">tac1; tac2</span> will make
+<span class="docutils literal">tac1</span> try one thing, then try <span class="docutils literal">tac2</span> after that, and if that
+fails try <span class="docutils literal">tac1</span> another way, and then try <span class="docutils literal">tac2</span> after that, and
+if that fails try <span class="docutils literal">tac1</span> another <em>another</em> way, etc.</p>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

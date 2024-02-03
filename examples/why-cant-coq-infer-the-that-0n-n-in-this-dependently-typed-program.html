@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why can't Coq infer the that 0 + n = n in this dependently typed program?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-can-t-coq-infer-the-that-0-n-n-in-this-dependently-typed-program">
-<h1 class="title">Why can't Coq infer the that <tt class="docutils literal">0 + n = n</tt> in this dependently typed program?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35989122">https://stackoverflow.com/q/35989122</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="why-can-t-coq-infer-the-that-0-n-n-in-this-dependently-typed-program">
+<h1 class="title">Why can't Coq infer the that <span class="docutils literal">0 + n = n</span> in this dependently typed program?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/35989122">https://stackoverflow.com/q/35989122</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm starting to use Coq and I'd like to define some dependently typed
 programs. Consider the following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">natlist</span> : nat -&gt; <span class="kt">Type</span> :=
@@ -49,8 +46,8 @@ m : nat
 l2 : natlist m
 The term <span class="s2">&quot;l2&quot;</span> has type <span class="s2">&quot;natlist m&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
- <span class="s2">&quot;natlist (?n@{n1:=0} + m)&quot;</span>.</blockquote></div></div></small></span></pre><p>So <tt class="docutils literal">natlist k</tt> would be a list of <tt class="docutils literal">nat</tt>s of length <tt class="docutils literal">k</tt>. The
-problem with the definition of concatenation as <tt class="docutils literal">natappend</tt> is the
+ <span class="s2">&quot;natlist (?n@{n1:=0} + m)&quot;</span>.</blockquote></div></div></small></span></pre><p>So <span class="docutils literal">natlist k</span> would be a list of <span class="docutils literal">nat</span>s of length <span class="docutils literal">k</span>. The
+problem with the definition of concatenation as <span class="docutils literal">natappend</span> is the
 following error:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-cant-coq-infer-the-that-0n-n-in-this-dependently-typed-program-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
@@ -65,17 +62,15 @@ l2 : natlist m
 The term <span class="s2">&quot;l2&quot;</span> has type <span class="s2">&quot;natlist m&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
  <span class="s2">&quot;natlist (?n@{n1:=0} + m)&quot;</span>.</blockquote></div></div></small></span></pre><p>As you can see it has a problem with the clause:</p>
-<pre class="code literal-block">
-| natnil =&gt; l2
-</pre>
-<p>because it claims that the type of <tt class="docutils literal">l2</tt> is <tt class="docutils literal">natlist m</tt> while the
-result type must be <tt class="docutils literal">natlist (n + m) = natlist (0 + m)</tt>.</p>
+<pre class="code literal-block"><code>| natnil =&gt; l2</code></pre>
+<p>because it claims that the type of <span class="docutils literal">l2</span> is <span class="docutils literal">natlist m</span> while the
+result type must be <span class="docutils literal">natlist (n + m) = natlist (0 + m)</span>.</p>
 <p>I know that Coq cannot resolve arbitrary expressions at the type level
 to avoid non-terminating computations, but I find strange that even
 this simple case isn't handled.</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>The problem is that you had a type error in your second branch. Here
 is a version that works:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">natappend</span> {<span class="nv">n</span> <span class="nv">m</span> : nat} (<span class="nv">l1</span> : natlist n) (<span class="nv">l2</span> : natlist m) :
@@ -84,40 +79,40 @@ is a version that works:</p>
   | natnil =&gt; l2
   | natcons n&#39; x rest =&gt; natcons (n&#39; + m) x (natappend rest l2)
   <span class="kr">end</span>.</span></span></pre><p>The crucial difference between this version and the original one is
-the parameter passed to <tt class="docutils literal">natcons</tt>: here, it is <tt class="docutils literal">n' + m</tt>, whereas
-before it was <tt class="docutils literal">n + m</tt>.</p>
+the parameter passed to <span class="docutils literal">natcons</span>: here, it is <span class="docutils literal">n' + m</span>, whereas
+before it was <span class="docutils literal">n + m</span>.</p>
 <p>This example illustrates very well a general issue with non-locality
 of error messages in Coq, in particular when writing dependently typed
 programs. Even though Coq complained about the first branch, the
 problem was actually in the second branch. Adding annotations in your
-<tt class="docutils literal">match</tt> statement, as suggested by &#64;jbapple, can be useful when
+<span class="docutils literal">match</span> statement, as suggested by &#64;jbapple, can be useful when
 trying to diagnose what is going wrong.</p>
-</div>
-<div class="section" id="answer-jbapple">
-<h1>Answer (jbapple)</h1>
-<p>You need <tt class="docutils literal">match ... as ... in ... return ...</tt> to do more
+</section>
+<section id="answer-jbapple">
+<h2>Answer (jbapple)</h2>
+<p>You need <span class="docutils literal">match ... as ... in ... return ...</span> to do more
 sophisticated type annotations. See <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">Adam Chlipala's chapter &quot;Library
 MoreDep&quot; in his Book &quot;Certified Programming with Dependent Types&quot;</a> or <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual020.html">&quot;Chapter 17:
 Extended pattern-matching&quot; in the Coq manual</a>. Both have
-the <tt class="docutils literal">concat</tt> example you are working on.</p>
+the <span class="docutils literal">concat</span> example you are working on.</p>
 <p>You could also just delay the dependent type bit until the end:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">natlist</span> <span class="nv">n</span> := { x : list nat &amp; n = length x }.</span></span></pre><p>Then prove that non-dependently-typed <tt class="docutils literal">concat</tt> preserves length
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">natlist</span> <span class="nv">n</span> := { x : list nat &amp; n = length x }.</span></span></pre><p>Then prove that non-dependently-typed <span class="docutils literal">concat</span> preserves length
 sums.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> I much support &#64;jbapple's definition of <tt class="docutils literal">natlist</tt> as a
+<p><strong>A:</strong> I much support &#64;jbapple's definition of <span class="docutils literal">natlist</span> as a
 dependent record instead of the original one, however I'd suggest
 using</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">natlist</span> <span class="nv">n</span> := { x : list nat &amp; Is_true (n =? length x) }.</span></span></pre><p>where <tt class="docutils literal">=?</tt> is the boolean equality on <tt class="docutils literal">nat</tt>, for reasons of proof
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">natlist</span> <span class="nv">n</span> := { x : list nat &amp; Is_true (n =? length x) }.</span></span></pre><p>where <span class="docutils literal">=?</span> is the boolean equality on <span class="docutils literal">nat</span>, for reasons of proof
 irrelevance.</p>
-<p><strong>A:</strong> In general using a <tt class="docutils literal">bool</tt> makes it easier to prove
+<p><strong>A:</strong> In general using a <span class="docutils literal">bool</span> makes it easier to prove
 injectivity of the first projection, see:
 <a class="reference external" href="http://stackoverflow.com/questions/35290012/inductive-subset-of-an-inductive-set-in-coq/35300521#35300521">http://stackoverflow.com/questions/35290012/inductive-subset-of-an-inductive-set-in-coq/35300521#35300521</a></p>
-<p><strong>A:</strong> By the way, I learned about this by reading the <tt class="docutils literal">tuple.v</tt>, a
+<p><strong>A:</strong> By the way, I learned about this by reading the <span class="docutils literal">tuple.v</span>, a
 very good example of a complete sized list library is
 <a class="reference external" href="http://ssr.msr-inria.inria.fr/~jenkins/current/mathcomp.ssreflect.tuple.html">http://ssr.msr-inria.inria.fr/~jenkins/current/mathcomp.ssreflect.tuple.html</a>,
 I really learned a lot from trying to understand it.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

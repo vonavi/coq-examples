@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Induction on record member in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="induction-on-record-member-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="induction-on-record-member-in-coq">
 <h1 class="title">Induction on record member in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48840413">https://stackoverflow.com/q/48840413</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48840413">https://stackoverflow.com/q/48840413</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider a simple example of induction on a record member:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Foo</span> : <span class="kt">Type</span> := mkFoo { foo: nat }.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -58,17 +55,15 @@
 <span class="mi">2</span> * foo {| foo := foo0 |}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foo (double {| foo := S foo0 |}) =
 <span class="mi">2</span> * foo {| foo := S foo0 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-on-record-member-in-coq-v-chkf"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>foo0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHfoo0</var><span class="hyp-type"><b>: </b><span>foo (double {| foo := foo0 |}) =
 <span class="mi">2</span> * foo {| foo := foo0 |}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S (foo0 + S (foo0 + <span class="mi">0</span>)) = S (foo0 + S (foo0 + <span class="mi">0</span>))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>At <tt class="docutils literal">induction (foo f)</tt>, I am stuck with the goal <tt class="docutils literal">foo (double f) =
-2 * 0</tt>.</p>
-<p>I have somehow lost information that I am perform induction on <tt class="docutils literal">foo
-f</tt> (I have no hypothesis stating that <tt class="docutils literal">foo f = 0</tt>).</p>
-<p>However, <tt class="docutils literal">destruct f</tt> is unsatisfying, because I have ~5 member
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>At <span class="docutils literal">induction (foo f)</span>, I am stuck with the goal <span class="docutils literal">foo (double f) = 2 * 0</span>.</p>
+<p>I have somehow lost information that I am perform induction on <span class="docutils literal">foo f</span> (I have no hypothesis stating that <span class="docutils literal">foo f = 0</span>).</p>
+<p>However, <span class="docutils literal">destruct f</span> is unsatisfying, because I have ~5 member
 records that look very ugly in the hypothesis section when expanded
 out.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can use the <tt class="docutils literal">remember</tt> tactic to give a name to an expression,
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can use the <span class="docutils literal">remember</span> tactic to give a name to an expression,
 yielding a variable that you can analyze inductively. The tactic
 generates an equation connecting the variable to the remembered
 expression, allowing you to keep track of the information you need.</p>
@@ -83,31 +78,31 @@ expression, allowing you to keep track of the information you need.</p>
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-on-record-member-in-coq-v-chk11"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">f</span> : Foo, foo (double f) = <span class="mi">2</span> * foo f</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-on-record-member-in-coq-v-chk12"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>Foo</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foo (double f) = <span class="mi">2</span> * foo f</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-on-record-member-in-coq-v-chk13"><span class="nb">remember</span> (foo f) <span class="kr">as</span> n <span class="nb">eqn</span>:E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>Foo</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = foo f</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">foo (double f) = <span class="mi">2</span> * n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-on-record-member-in-coq-v-chk14"><span class="nb">revert</span> f E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">f</span> : Foo, n = foo f -&gt; foo (double f) = <span class="mi">2</span> * n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-on-record-member-in-coq-v-chk15"><span class="nb">induction</span> n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">f</span> : Foo, <span class="mi">0</span> = foo f -&gt; foo (double f) = <span class="mi">2</span> * <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="induction-on-record-member-in-coq-v-chk16" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">f</span> : Foo, n = foo f -&gt; foo (double f) = <span class="mi">2</span> * n</span></span></span><br></div><label class="goal-separator" for="induction-on-record-member-in-coq-v-chk16"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">f</span> : Foo,
-S n = foo f -&gt; foo (double f) = <span class="mi">2</span> * S n</div></blockquote></div></div></div></small></span></pre><p>After calling <tt class="docutils literal">remember</tt>, the goal becomes:</p>
+S n = foo f -&gt; foo (double f) = <span class="mi">2</span> * S n</div></blockquote></div></div></div></small></span></pre><p>After calling <span class="docutils literal">remember</span>, the goal becomes:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-on-record-member-in-coq-v-chk17" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   f : Foo
   n : nat
   E : n = foo f
   ============================
-  foo (double f) = <span class="mi">2</span> * n</blockquote></div></div></small></span></pre><p>If you do induction on <tt class="docutils literal">n</tt> directly after <tt class="docutils literal">remember</tt>, it is
+  foo (double f) = <span class="mi">2</span> * n</blockquote></div></div></small></span></pre><p>If you do induction on <span class="docutils literal">n</span> directly after <span class="docutils literal">remember</span>, it is
 possible that you won't be able to complete your proof, because the
 induction hypothesis you will get will not be general enough. If you
 run into this problem, you might need to generalize some of the
-variables that appear in the expression defining <tt class="docutils literal">n</tt>. In the script
-above, the call <tt class="docutils literal">revert f E</tt> puts <tt class="docutils literal">f</tt> and <tt class="docutils literal">E</tt> back into the
+variables that appear in the expression defining <span class="docutils literal">n</span>. In the script
+above, the call <span class="docutils literal">revert f E</span> puts <span class="docutils literal">f</span> and <span class="docutils literal">E</span> back into the
 goal, which solves this problem.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> Thanks! is there a difference between <tt class="docutils literal">revert</tt> and
-<tt class="docutils literal">generalize dependent</tt>?</p>
-<p><strong>A:</strong> <tt class="docutils literal">revert</tt> will give you an error if you try to revert
+<p><strong>Q:</strong> Thanks! is there a difference between <span class="docutils literal">revert</span> and
+<span class="docutils literal">generalize dependent</span>?</p>
+<p><strong>A:</strong> <span class="docutils literal">revert</span> will give you an error if you try to revert
 something that appears in the type of another term or hypothesis in
-the context. <tt class="docutils literal">generalize dependent</tt> will compute all the terms whose
+the context. <span class="docutils literal">generalize dependent</span> will compute all the terms whose
 types depend on the generalized one, and will put those back as well.</p>
-<p><strong>Q:</strong> And between <tt class="docutils literal">revert dependent</tt> and <tt class="docutils literal">generalize dependent</tt>?</p>
+<p><strong>Q:</strong> And between <span class="docutils literal">revert dependent</span> and <span class="docutils literal">generalize dependent</span>?</p>
 <p><strong>A:</strong> Good question. I do not know.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

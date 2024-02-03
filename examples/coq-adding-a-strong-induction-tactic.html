@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: adding a &quot;strong induction&quot; tactic</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,42 +14,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-adding-a-strong-induction-tactic">
+<div class="alectryon-root alectryon-centered"><main id="coq-adding-a-strong-induction-tactic">
 <h1 class="title">Coq: adding a &quot;strong induction&quot; tactic</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/20883855">https://stackoverflow.com/q/20883855</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/20883855">https://stackoverflow.com/q/20883855</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>&quot;Strong&quot; (or &quot;complete&quot;) induction on the natural number means that
-when proving the induction step on <tt class="docutils literal">n</tt>, you can assume the property
-holds for any <tt class="docutils literal">k</tt></p>
+when proving the induction step on <span class="docutils literal">n</span>, you can assume the property
+holds for any <span class="docutils literal">k</span></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-strong-induction-tactic-v-chk0"><span class="kn">Theorem</span> <span class="nf">strong_induction</span> :
   <span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>,
     (<span class="kr">forall</span> <span class="nv">n</span> : nat, (<span class="kr">forall</span> <span class="nv">k</span> : nat, (k &lt; n -&gt; P k)) -&gt; P n) -&gt;
     <span class="kr">forall</span> <span class="nv">n</span> : nat, P n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>,
 (<span class="kr">forall</span> <span class="nv">n</span> : nat, (<span class="kr">forall</span> <span class="nv">k</span> : nat, k &lt; n -&gt; P k) -&gt; P n) -&gt;
 <span class="kr">forall</span> <span class="nv">n</span> : nat, P n</div></blockquote></div></div></small></span></pre><p>I have managed to prove this theorem without too many difficulties.
-Now I want to use it in a new tactic, <tt class="docutils literal">strong_induction</tt>, which
-should be similar to the standard <tt class="docutils literal">induction n</tt> technique on the
-natural numbers. Recall that when using <tt class="docutils literal">induction n</tt> when <tt class="docutils literal">n</tt> is
-a natural number and the goal is <tt class="docutils literal">P(n)</tt>, we get two goals: one of
-the form <tt class="docutils literal">P(0)</tt> and the second of the form <tt class="docutils literal">P(S(n))</tt>, where for
-the second goal we get <tt class="docutils literal">P(n)</tt> as assumption.</p>
-<p>So I want, when the current goal is <tt class="docutils literal">P(n)</tt>, to get one new goal,
-also <tt class="docutils literal">P(n)</tt>, but the new assumption <tt class="docutils literal">forall k : nat, (k &lt; n <span class="pre">-&gt;</span>
-<span class="pre">P(k)))</span></tt>.</p>
+Now I want to use it in a new tactic, <span class="docutils literal">strong_induction</span>, which
+should be similar to the standard <span class="docutils literal">induction n</span> technique on the
+natural numbers. Recall that when using <span class="docutils literal">induction n</span> when <span class="docutils literal">n</span> is
+a natural number and the goal is <span class="docutils literal">P(n)</span>, we get two goals: one of
+the form <span class="docutils literal">P(0)</span> and the second of the form <span class="docutils literal">P(S(n))</span>, where for
+the second goal we get <span class="docutils literal">P(n)</span> as assumption.</p>
+<p>So I want, when the current goal is <span class="docutils literal">P(n)</span>, to get one new goal,
+also <span class="docutils literal">P(n)</span>, but the new assumption <span class="docutils literal">forall k : nat, (k &lt; n <span class="pre">-&gt;</span> <span class="pre">P(k)))</span></span>.</p>
 <p>The problem is I don't know how to do it technically. My main problem
-is this: suppose <tt class="docutils literal">P</tt> is a complex statement, i.e.</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">q</span> <span class="nv">r</span> : nat, a = b * q + r</div></blockquote></div></div></small></span></pre><p>with <tt class="docutils literal">a b : nat</tt> in the context; how can I tell Coq to do the strong
-induction on <tt class="docutils literal">a</tt> and not on <tt class="docutils literal">b</tt>? Simply doing <tt class="docutils literal">apply
-strong_induction</tt> results in</p>
+is this: suppose <span class="docutils literal">P</span> is a complex statement, i.e.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">q</span> <span class="nv">r</span> : nat, a = b * q + r</div></blockquote></div></div></small></span></pre><p>with <span class="docutils literal">a b : nat</span> in the context; how can I tell Coq to do the strong
+induction on <span class="docutils literal">a</span> and not on <span class="docutils literal">b</span>? Simply doing <span class="docutils literal">apply strong_induction</span> results in</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">2</span> subgoals
 
   a, b, n : nat
@@ -59,12 +54,12 @@ strong_induction</tt> results in</p>
   <span class="kr">exists</span> <span class="nv">q</span> <span class="nv">r</span> : nat, a = b * q + r
 
 subgoal <span class="mi">2</span> <span class="kr">is</span>:
- nat</blockquote></div></div></small></span></pre><p>where the assumption is useless (since <tt class="docutils literal">n</tt> does not relate to <tt class="docutils literal">a</tt>)
+ nat</blockquote></div></div></small></span></pre><p>where the assumption is useless (since <span class="docutils literal">n</span> does not relate to <span class="docutils literal">a</span>)
 and I have no idea what the second goal means.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>In this case, to <tt class="docutils literal">apply strong_induction</tt> you need to <tt class="docutils literal">change</tt> the
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>In this case, to <span class="docutils literal">apply strong_induction</span> you need to <span class="docutils literal">change</span> the
 conclusion of the goal so that it better matches the conclusion of the
 theorem.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-strong-induction-tactic-v-chk3"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>, b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r, a = q * b + r /\ r &lt; b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat,
@@ -82,8 +77,8 @@ b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r 
  b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, k = q * b + r /\ r &lt; b) -&gt;
 <span class="kr">forall</span> <span class="nv">b</span> : nat,
 b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, n = q * b + r /\ r &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>You could also use more directly the <tt class="docutils literal">refine</tt> tactic. This tactic is
-similar to the <tt class="docutils literal">apply</tt> tactic.</p>
+</span></span></pre><p>You could also use more directly the <span class="docutils literal">refine</span> tactic. This tactic is
+similar to the <span class="docutils literal">apply</span> tactic.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-strong-induction-tactic-v-chk6"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>, b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r, a = q * b + r /\ r &lt; b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat,
 b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, a = q * b + r /\ r &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-strong-induction-tactic-v-chk7"><span class="nb">refine</span> (strong_induction _ _).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat,
@@ -93,7 +88,7 @@ b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r 
  b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, k = q * b + r /\ r &lt; b) -&gt;
 <span class="kr">forall</span> <span class="nv">b</span> : nat,
 b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, n = q * b + r /\ r &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>But the <tt class="docutils literal">induction</tt> tactic already handles arbitrary induction
+</span></span></pre><p>But the <span class="docutils literal">induction</span> tactic already handles arbitrary induction
 principles.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-adding-a-strong-induction-tactic-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-adding-a-strong-induction-tactic-v-chk8"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>, b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r, a = q * b + r /\ r &lt; b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat,
 b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, a = q * b + r /\ r &lt; b</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -103,15 +98,15 @@ k &lt; a -&gt;
 b &lt;&gt; <span class="mi">0</span> -&gt;
 <span class="kr">exists</span> ! q r : nat, k = q * b + r /\ r &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">b</span> : nat,
 b &lt;&gt; <span class="mi">0</span> -&gt; <span class="kr">exists</span> ! q r : nat, a = q * b + r /\ r &lt; b</div></blockquote></div></div></small></span></pre><p>More on these tactics <a class="reference external" href="http://coq.inria.fr/refman/tactic-index.html">here</a>. You should probably
-use <tt class="docutils literal">induction</tt> before <tt class="docutils literal">intro</tt>-ing and <tt class="docutils literal">split</tt>-ing.</p>
+use <span class="docutils literal">induction</span> before <span class="docutils literal">intro</span>-ing and <span class="docutils literal">split</span>-ing.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> <tt class="docutils literal">induction a using strong_induction</tt> works great! On the
-other hand, the <tt class="docutils literal">change</tt> tactic fails with &quot;Error: Not convertible.&quot;</p>
+<p><strong>Q:</strong> <span class="docutils literal">induction a using strong_induction</span> works great! On the
+other hand, the <span class="docutils literal">change</span> tactic fails with &quot;Error: Not convertible.&quot;</p>
 <p><strong>A:</strong> when the change is too complex, you can try with the
-<tt class="docutils literal">replace</tt> tactic, which will ask for a proof of equality. <tt class="docutils literal">change</tt>
-is just <tt class="docutils literal">replace</tt> when the proof is trivially reflexivity.</p>
+<span class="docutils literal">replace</span> tactic, which will ask for a proof of equality. <span class="docutils literal">change</span>
+is just <span class="docutils literal">replace</span> when the proof is trivially reflexivity.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

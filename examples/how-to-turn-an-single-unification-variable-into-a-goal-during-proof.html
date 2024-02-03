@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to turn an single unification variable into a goal, during proof</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof">
+<div class="alectryon-root alectryon-centered"><main id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof">
 <h1 class="title">How to turn an single unification variable into a goal, during proof</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/53549618">https://stackoverflow.com/q/53549618</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/53549618">https://stackoverflow.com/q/53549618</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I want to construct an existential variable interactively. I can't use
 <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/proof-handling.html#coq:cmd.grab-existential-variables">Grab Existential Variables</a>
 because I need to fill the existential before I complete the goal.</p>
@@ -46,24 +43,22 @@ Q b -&gt;
 (Q b -&gt; P a) -&gt;
 <span class="kr">exists</span> (<span class="nv">a0</span> : A) (<span class="nv">H</span> : P a0), P (filter H)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk2"><span class="nb">intros</span> ?? H H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Q b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Q b -&gt; P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> (<span class="nv">a</span> : A) (<span class="nv">H</span> : P a), P (filter H)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk3"><span class="kp">do</span> <span class="mi">2</span> <span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Q b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Q b -&gt; P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P (filter <span class="nl">?H</span>)</div></blockquote></div></div></small></span></pre><p>At this point, there are two solutions that don't answer my questions:
-(1) I could run (<tt class="docutils literal">eauto</tt>) and then do <tt class="docutils literal">Grab Existential
-Variables</tt>, but suppose that <tt class="docutils literal">eauto</tt> doesn't succeed until I
+(1) I could run (<span class="docutils literal">eauto</span>) and then do <span class="docutils literal">Grab Existential Variables</span>, but suppose that <span class="docutils literal">eauto</span> doesn't succeed until I
 instantiate the unification variable; (2) I could just pass the proof
-term explicitly with <tt class="docutils literal">instantiate (1 := H0 H)</tt> (or even
-<tt class="docutils literal">instantiate (1:= <span class="pre">ltac:(eauto))</span></tt>), but assume that the proof of the
+term explicitly with <span class="docutils literal">instantiate (1 := H0 H)</span> (or even
+<span class="docutils literal">instantiate (1:= <span class="pre">ltac:(eauto))</span></span>), but assume that the proof of the
 xistential was tedious and we wished to do it interactively.</p>
-<p>What else can we do? We can try to use <tt class="docutils literal">cut</tt> or <tt class="docutils literal">assert</tt>, like so:</p>
+<p>What else can we do? We can try to use <span class="docutils literal">cut</span> or <span class="docutils literal">assert</span>, like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk4"><span class="kr">match goal with</span>
   | [|- P (filter <span class="nl">?x</span>)] =&gt;
     <span class="kr">match</span> <span class="kp">type of</span> x <span class="kr">with</span>
     | <span class="nl">?T</span> =&gt; <span class="nb">assert</span> (HH : T) <span class="bp">by</span> <span class="nb">eauto</span>
     <span class="kr">end</span>
-  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Q b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Q b -&gt; P a</span></span></span><br><span><var>HH</var><span class="hyp-type"><b>: </b><span>P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P (filter <span class="nl">?H</span>)</div></blockquote></div></div></small></span></pre><p>But <tt class="docutils literal">HH</tt> is not in the context of the unification variable, so it
+  <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Q b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Q b -&gt; P a</span></span></span><br><span><var>HH</var><span class="hyp-type"><b>: </b><span>P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P (filter <span class="nl">?H</span>)</div></blockquote></div></div></small></span></pre><p>But <span class="docutils literal">HH</span> is not in the context of the unification variable, so it
 can't be instantiated.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk5"><span class="kn">Fail</span> <span class="nb">instantiate</span> (<span class="mi">1</span> := HH).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 <span class="kn">Instance</span> <span class="nf">is</span> <span class="nv">not</span> <span class="nv">well</span>-typed <span class="kr">in</span> the environment of <span class="nl">?H</span>.</blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>As far as I can tell, the only way to solve this is to use <tt class="docutils literal">Show
-Existentials</tt>, see the type of the variable copy it by hand, roll
+</span></span></pre><p>As far as I can tell, the only way to solve this is to use <span class="docutils literal">Show Existentials</span>, see the type of the variable copy it by hand, roll
 back the proof to before the unification was introduced and construct
 the variable there. In the example it looks like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chk6"><span class="kn">Lemma</span> <span class="nf">my_lemma</span>:
@@ -94,18 +89,18 @@ Q b -&gt;
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chke"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Q b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Q b -&gt; P a</span></span></span><br><span><var>HH</var><span class="hyp-type"><b>: </b><span>P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">H1</span> : P <span class="nl">?a</span>, P (filter H1)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-turn-an-single-unification-variable-into-a-goal-during-proof-v-chkf"><span class="kr">exists</span> <span class="nv">HH</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Q b</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>Q b -&gt; P a</span></span></span><br><span><var>HH</var><span class="hyp-type"><b>: </b><span>P a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P (filter HH)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Obviously, I would like to avoid this workflow. So, anyway to turn the
 existential variables into subgoals?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Your best bet is probably to avoid creating the existential variable
 as an evar in the first place. You don't have to construct the
 variable by hand to do this; if you can identify where it's created,
-you can wrap the offending tactic with <tt class="docutils literal">unshelve t</tt>, which turns all
-evars created by <tt class="docutils literal">t</tt> into goals. Where this might be difficult is if
+you can wrap the offending tactic with <span class="docutils literal">unshelve t</span>, which turns all
+evars created by <span class="docutils literal">t</span> into goals. Where this might be difficult is if
 the relevant tactic is deep inside some automation and difficult to
 identify or change.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Wellfounded induction in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,41 +14,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="wellfounded-induction-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="wellfounded-induction-in-coq">
 <h1 class="title">Wellfounded induction in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/37514716">https://stackoverflow.com/q/37514716</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/37514716">https://stackoverflow.com/q/37514716</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Let's say that I know certain natural numbers are <em>good</em>. I know <tt class="docutils literal">1</tt>
-is good, if <tt class="docutils literal">n</tt> is good then <tt class="docutils literal">3n</tt> is, and if <tt class="docutils literal">n</tt> is good then
-<tt class="docutils literal">n+5</tt> is, and those are only ways of constructing good numbers. It
+<section id="question">
+<h2>Question</h2>
+<p>Let's say that I know certain natural numbers are <em>good</em>. I know <span class="docutils literal">1</span>
+is good, if <span class="docutils literal">n</span> is good then <span class="docutils literal">3n</span> is, and if <span class="docutils literal">n</span> is good then
+<span class="docutils literal">n+5</span> is, and those are only ways of constructing good numbers. It
 seems to me that the adequate formalization of this in Coq is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">good</span> : nat -&gt; <span class="kt">Prop</span> :=
 | g1 : good <span class="mi">1</span>
 | g3 : <span class="kr">forall</span> <span class="nv">n</span>, good n -&gt; good (n * <span class="mi">3</span>)
-| g5 : <span class="kr">forall</span> <span class="nv">n</span>, good n -&gt; good (n + <span class="mi">5</span>).</span></span></pre><p>However, despite being obvious, the fact that <tt class="docutils literal">0</tt> is not good seems
+| g5 : <span class="kr">forall</span> <span class="nv">n</span>, good n -&gt; good (n + <span class="mi">5</span>).</span></span></pre><p>However, despite being obvious, the fact that <span class="docutils literal">0</span> is not good seems
 not being provable using this definition (because when I invert, in
-case of <tt class="docutils literal">g3</tt> I only get the same thing in the hypothesis).</p>
+case of <span class="docutils literal">g3</span> I only get the same thing in the hypothesis).</p>
 <p>Now it isn't so obvious what <em>exactly</em> are good numbers. And it really
 seems that I don't need to characterize them totally in order to know
-that <tt class="docutils literal">0</tt> is not good. For example, I can know that <tt class="docutils literal">2</tt> is not good
+that <span class="docutils literal">0</span> is not good. For example, I can know that <span class="docutils literal">2</span> is not good
 just by doing few inversions.</p>
-</div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
-<p>Indeed <tt class="docutils literal">g3</tt> can be applied an unbounded number of times when trying
-to disprove <tt class="docutils literal">good 0</tt>. That is why we can think this proof requires
-<tt class="docutils literal">induction</tt> (and we can see that the auxiliary lemma needed in the
+</section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
+<p>Indeed <span class="docutils literal">g3</span> can be applied an unbounded number of times when trying
+to disprove <span class="docutils literal">good 0</span>. That is why we can think this proof requires
+<span class="docutils literal">induction</span> (and we can see that the auxiliary lemma needed in the
 solution of &#64;AntonTrunov uses induction). The same idea is used in
-theorem <tt class="docutils literal">loop_never_stop</tt> of
+theorem <span class="docutils literal">loop_never_stop</span> of
 <a class="reference external" href="http://www.cis.upenn.edu/~bcpierce/sf/current/Imp.html#lab428">http://www.cis.upenn.edu/~bcpierce/sf/current/Imp.html#lab428</a>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lia.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -59,22 +56,20 @@ theorem <tt class="docutils literal">loop_never_stop</tt> of
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk8">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heqn</var><span class="hyp-type"><b>: </b><span>n * <span class="mi">3</span> = <span class="mi">0</span></span></span></span><br><span><var>contra</var><span class="hyp-type"><b>: </b><span>good n</span></span></span><br><span><var>IHcontra</var><span class="hyp-type"><b>: </b><span>n = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk9"><span class="nb">apply</span> IHcontra.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heqn</var><span class="hyp-type"><b>: </b><span>n * <span class="mi">3</span> = <span class="mi">0</span></span></span></span><br><span><var>contra</var><span class="hyp-type"><b>: </b><span>good n</span></span></span><br><span><var>IHcontra</var><span class="hyp-type"><b>: </b><span>n = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chka">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Heqn</var><span class="hyp-type"><b>: </b><span>n + <span class="mi">5</span> = <span class="mi">0</span></span></span></span><br><span><var>contra</var><span class="hyp-type"><b>: </b><span>good n</span></span></span><br><span><var>IHcontra</var><span class="hyp-type"><b>: </b><span>n = <span class="mi">0</span> -&gt; <span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
-<p><strong>A:</strong> And <tt class="docutils literal">remember 0 as n</tt> is a crucial component of this
-solution. It <em>sort of</em> replaces the original statement with <tt class="docutils literal">forall
-n, n = 0 <span class="pre">-&gt;</span> ~ good n.</tt>. Great answer!</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
-<p>This problem needs induction. And induction needs some predicate <tt class="docutils literal">P :
-nat <span class="pre">-&gt;</span> Prop</tt> to work with. A primitive (constant) predicate like
-<tt class="docutils literal">(fun n =&gt; ~good 0)</tt> doesn't give you much: you won't be able to
-prove the base case for <tt class="docutils literal">1</tt> (which corresponds to the constructor
-<tt class="docutils literal">g1</tt>), because the predicate &quot;forgets&quot; its argument.</p>
+<p><strong>A:</strong> And <span class="docutils literal">remember 0 as n</span> is a crucial component of this
+solution. It <em>sort of</em> replaces the original statement with <span class="docutils literal">forall n, n = 0 <span class="pre">-&gt;</span> ~ good n.</span>. Great answer!</p>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
+<p>This problem needs induction. And induction needs some predicate <span class="docutils literal">P : nat <span class="pre">-&gt;</span> Prop</span> to work with. A primitive (constant) predicate like
+<span class="docutils literal">(fun n =&gt; ~good 0)</span> doesn't give you much: you won't be able to
+prove the base case for <span class="docutils literal">1</span> (which corresponds to the constructor
+<span class="docutils literal">g1</span>), because the predicate &quot;forgets&quot; its argument.</p>
 <p>So you need to prove some logically equivalent (or stronger) statement
 which readily will give you the necessary predicate. An example of
-such equivalent statement is <tt class="docutils literal">forall n, good n <span class="pre">-&gt;</span> n &gt; 0</tt>, which you
-can later use to disprove <tt class="docutils literal">good 0</tt>. The corresponding predicate
-<tt class="docutils literal">P</tt> is <tt class="docutils literal">(fun n =&gt; n &gt; 0)</tt>.</p>
+such equivalent statement is <span class="docutils literal">forall n, good n <span class="pre">-&gt;</span> n &gt; 0</span>, which you
+can later use to disprove <span class="docutils literal">good 0</span>. The corresponding predicate
+<span class="docutils literal">P</span> is <span class="docutils literal">(fun n =&gt; n &gt; 0)</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.micromega.Lia.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -97,16 +92,15 @@ can later use to disprove <tt class="docutils literal">good 0</tt>. The correspo
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk12"><span class="nb">split</span>; <span class="nb">intros</span> ? ?.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, good n -&gt; n &gt; <span class="mi">0</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>good <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="wellfounded-induction-in-coq-v-chk13" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>~ good <span class="mi">0</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><label class="goal-separator" for="wellfounded-induction-in-coq-v-chk13"><hr></label><div class="goal-conclusion">good n -&gt; n &gt; <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk14">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, good n -&gt; n &gt; <span class="mi">0</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>good <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk15"><span class="nb">apply</span> H <span class="kr">in</span> H0.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, good n -&gt; n &gt; <span class="mi">0</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk16">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>~ good <span class="mi">0</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">good n -&gt; n &gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> n; [<span class="bp">tauto</span> | <span class="bp">lia</span>].</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>And it's easy to show that <tt class="docutils literal">forall n, n = 0 <span class="pre">-&gt;</span> ~ good n</tt> which
-implicitly appears in &#64;eponier's answer is equivalent to <tt class="docutils literal">~ good 0</tt>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>And it's easy to show that <span class="docutils literal">forall n, n = 0 <span class="pre">-&gt;</span> ~ good n</span> which
+implicitly appears in &#64;eponier's answer is equivalent to <span class="docutils literal">~ good 0</span>
 too.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk17"><span class="kn">Lemma</span> <span class="nf">not_good0_eq_zero_equiv_not_good0</span> :
   (<span class="kr">forall</span> <span class="nv">n</span>, n = <span class="mi">0</span> -&gt; ~ good n) &lt;-&gt; ~ good <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">n</span> : nat, n = <span class="mi">0</span> -&gt; ~ good n) &lt;-&gt; ~ good <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk18"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">n</span> : nat, n = <span class="mi">0</span> -&gt; ~ good n) &lt;-&gt; ~ good <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">split</span>; <span class="nb">intros</span>; <span class="nb">subst</span>; <span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now, the corresponding predicate used to prove <tt class="docutils literal">forall n, n = 0 <span class="pre">-&gt;</span> ~
-good n</tt> is <tt class="docutils literal">fun n =&gt; n = 0 <span class="pre">-&gt;</span> False</tt>. This can be shown by using
-manual application of the <tt class="docutils literal">goal_ind</tt> induction principle,
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now, the corresponding predicate used to prove <span class="docutils literal">forall n, n = 0 <span class="pre">-&gt;</span> ~ good n</span> is <span class="docutils literal">fun n =&gt; n = 0 <span class="pre">-&gt;</span> False</span>. This can be shown by using
+manual application of the <span class="docutils literal">goal_ind</span> induction principle,
 automatically generated by Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk19"><span class="kn">Example</span> <span class="nf">not_good_0_manual</span> : <span class="kr">forall</span> <span class="nv">n</span>, n = <span class="mi">0</span> -&gt; ~ good n.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n = <span class="mi">0</span> -&gt; ~ good n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk1a"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> : nat, n = <span class="mi">0</span> -&gt; ~ good n</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -114,11 +108,11 @@ automatically generated by Coq:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="wellfounded-induction-in-coq-v-chk1c" style="display: none" type="checkbox"><label class="alectryon-input" for="wellfounded-induction-in-coq-v-chk1c"><span class="nb">generalize</span> Eq.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Eq</var><span class="hyp-type"><b>: </b><span>n = <span class="mi">0</span></span></span></span><br><span><var>contra</var><span class="hyp-type"><b>: </b><span>good n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = <span class="mi">0</span> -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (good_ind (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n = <span class="mi">0</span> -&gt; <span class="kt">False</span>) _ _ _ _ _);
     <span class="kp">try</span> <span class="bp">eassumption</span>; <span class="nb">intros</span>; <span class="bp">lia</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><tt class="docutils literal">generalize Eq.</tt> introduces <tt class="docutils literal">n = 0</tt> as a premise to the current
-goal. Without it the goal to prove would be <tt class="docutils literal">False</tt> and the
-corresponding predicate would be the boring <tt class="docutils literal">fun n =&gt; False</tt> again.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p><span class="docutils literal">generalize Eq.</span> introduces <span class="docutils literal">n = 0</span> as a premise to the current
+goal. Without it the goal to prove would be <span class="docutils literal">False</span> and the
+corresponding predicate would be the boring <span class="docutils literal">fun n =&gt; False</span> again.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

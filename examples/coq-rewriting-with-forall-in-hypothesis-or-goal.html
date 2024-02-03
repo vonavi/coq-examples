@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: Rewriting with forall in hypothesis or goal</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-rewriting-with-forall-in-hypothesis-or-goal">
-<h1 class="title">Coq: Rewriting with <tt class="docutils literal">forall</tt> in hypothesis or goal</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52602536">https://stackoverflow.com/q/52602536</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-rewriting-with-forall-in-hypothesis-or-goal">
+<h1 class="title">Coq: Rewriting with <span class="docutils literal">forall</span> in hypothesis or goal</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52602536">https://stackoverflow.com/q/52602536</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have proved 'correctness' of the reverse function on polymorphic
-<tt class="docutils literal">Lists</tt> in Coq. The following proof works just fine, but I have a
-few questions about how the <tt class="docutils literal">rewrite</tt> tactic works.</p>
+<span class="docutils literal">Lists</span> in Coq. The following proof works just fine, but I have a
+few questions about how the <span class="docutils literal">rewrite</span> tactic works.</p>
 <p>Here's the code:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -69,69 +66,62 @@ rev (h :: l&#39;) ++ k = rev_acc (h :: l&#39;) k</div></blockquote></div></div><
 <span class="c">       &quot;rewrite -&gt; IHl&#39;&quot; works regardless of &quot;intro k&quot;. generalize</span>
 <span class="c">       (rev l&#39;), [h], k. *)</span>
 </span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkb"><span class="nb">rewrite</span> -&gt; app_assoc.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">k</span> : list T, rev l&#39; ++ k = rev_acc l&#39; k</span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev l&#39; ++ [h] ++ k = rev_acc l&#39; (h :: k)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkc"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">k</span> : list T, rev l&#39; ++ k = rev_acc l&#39; k</span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev l&#39; ++ h :: k = rev_acc l&#39; (h :: k)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkd"><span class="nb">rewrite</span> -&gt; IHl&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">k</span> : list T, rev l&#39; ++ k = rev_acc l&#39; k</span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev_acc l&#39; (h :: k) = rev_acc l&#39; (h :: k)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span></span></pre><p>In the inductive step of the proof for <tt class="docutils literal">rev_acc_correct</tt> if I skip
-<tt class="docutils literal">intro k</tt>, then rewriting with <tt class="docutils literal">app_assoc</tt> complains that it
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chkd"><span class="nb">rewrite</span> -&gt; IHl&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>l'</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>IHl'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">k</span> : list T, rev l&#39; ++ k = rev_acc l&#39; k</span></span></span><br><span><var>k</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev_acc l&#39; (h :: k) = rev_acc l&#39; (h :: k)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span></span></pre><p>In the inductive step of the proof for <span class="docutils literal">rev_acc_correct</span> if I skip
+<span class="docutils literal">intro k</span>, then rewriting with <span class="docutils literal">app_assoc</span> complains that it
 cannot find a matching subterm.</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found no subterm matching <span class="s2">&quot;(?M929 ++ ?M930) ++ ?M931&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div></div></small></span></pre><p>Here, I presume that the <tt class="docutils literal">?</tt> before the placeholder names denote
-that the terms are constrained, in this case to be of type <tt class="docutils literal">List T</tt>
-for some type <tt class="docutils literal">T</tt>; and since <tt class="docutils literal">rev l'</tt> and <tt class="docutils literal">[h]</tt> in the goal are
-instances of <tt class="docutils literal">List T</tt>, one would expect a match in the goal.</p>
-<p>On the other hand, rewriting with inductive hypothesis (<tt class="docutils literal">rewrite <span class="pre">-&gt;</span>
-IHl'</tt>) instead of <tt class="docutils literal">app_assoc</tt> goes through without needing an
-<tt class="docutils literal">intro k</tt> before.</p>
-<p>I find this behaviour of <tt class="docutils literal">rewrite</tt> a bit confusing and the Coq
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-rewriting-with-forall-in-hypothesis-or-goal-v-chke" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found no subterm matching <span class="s2">&quot;(?M929 ++ ?M930) ++ ?M931&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div></div></small></span></pre><p>Here, I presume that the <span class="docutils literal">?</span> before the placeholder names denote
+that the terms are constrained, in this case to be of type <span class="docutils literal">List T</span>
+for some type <span class="docutils literal">T</span>; and since <span class="docutils literal">rev l'</span> and <span class="docutils literal">[h]</span> in the goal are
+instances of <span class="docutils literal">List T</span>, one would expect a match in the goal.</p>
+<p>On the other hand, rewriting with inductive hypothesis (<span class="docutils literal">rewrite <span class="pre">-&gt;</span> IHl'</span>) instead of <span class="docutils literal">app_assoc</span> goes through without needing an
+<span class="docutils literal">intro k</span> before.</p>
+<p>I find this behaviour of <span class="docutils literal">rewrite</span> a bit confusing and the Coq
 manual doesn't provide any details. I don't want to have to read
 through the implementation but I need a good operational understanding
 of what the rewrite tactic does, especially with regards to how term
 matching works. Any answers/references in this direction are highly
 appreciated.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The complication with this rewrite is that there's a <em>binder</em> (the
-<tt class="docutils literal">forall k</tt>), which can complicate things. If you just want things to
-work, use <tt class="docutils literal">setoid_rewrite</tt> instead of <tt class="docutils literal">rewrite</tt> and it will
+<span class="docutils literal">forall k</span>), which can complicate things. If you just want things to
+work, use <span class="docutils literal">setoid_rewrite</span> instead of <span class="docutils literal">rewrite</span> and it will
 rewrite under binders.</p>
 <ul>
-<li><p class="first"><tt class="docutils literal">rewrite IHl'</tt> looks like it happens under a binder, but the
+<li><p><span class="docutils literal">rewrite IHl'</span> looks like it happens under a binder, but the
 pattern being re-written doesn't actually involve the bound
 variable, so the binder isn't actually important. Here's what I
 mean: the goal is</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">k</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">,</span> <span class="o">(</span><span class="n">rev</span> <span class="n">l'</span> <span class="o">++</span> <span class="o">[</span><span class="n">h</span><span class="o">])</span> <span class="o">++</span> <span class="n">k</span> <span class="o">=</span> <span class="n">rev_acc</span> <span class="n">l'</span> <span class="o">(</span><span class="n">h</span> <span class="o">::</span> <span class="n">k</span><span class="o">)</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">k</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">,</span> <span class="o">(</span><span class="n">rev</span> <span class="n">l'</span> <span class="o">++</span> <span class="o">[</span><span class="n">h</span><span class="o">])</span> <span class="o">++</span> <span class="n">k</span> <span class="o">=</span> <span class="n">rev_acc</span> <span class="n">l'</span> <span class="o">(</span><span class="n">h</span> <span class="o">::</span> <span class="n">k</span><span class="o">)</span></code></pre>
 <p>which is the same thing as (that is, equal to):</p>
-<pre class="code coq literal-block">
-<span class="o">(</span><span class="kr">fun</span> <span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span> <span class="o">=&gt;</span> <span class="kr">forall</span> <span class="nv">k</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">,</span>
-     <span class="n">l</span> <span class="o">++</span> <span class="n">k</span> <span class="o">=</span> <span class="n">rev_acc</span> <span class="n">l'</span> <span class="o">(</span><span class="n">h</span> <span class="o">::</span> <span class="n">k</span><span class="o">))</span> <span class="o">(</span><span class="n">rev</span> <span class="n">l'</span> <span class="o">++</span> <span class="o">[</span><span class="n">h</span><span class="o">])</span>
-</pre>
-<p>which I got using <tt class="docutils literal">pattern (rev l' ++ [h])</tt> in Ltac. Now it's
+<pre class="code coq literal-block"><code><span class="o">(</span><span class="kr">fun</span> <span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span> <span class="o">=&gt;</span> <span class="kr">forall</span> <span class="nv">k</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">,</span>
+     <span class="n">l</span> <span class="o">++</span> <span class="n">k</span> <span class="o">=</span> <span class="n">rev_acc</span> <span class="n">l'</span> <span class="o">(</span><span class="n">h</span> <span class="o">::</span> <span class="n">k</span><span class="o">))</span> <span class="o">(</span><span class="n">rev</span> <span class="n">l'</span> <span class="o">++</span> <span class="o">[</span><span class="n">h</span><span class="o">])</span></code></pre>
+<p>which I got using <span class="docutils literal">pattern (rev l' ++ [h])</span> in Ltac. Now it's
 clear that you can just rewrite the part being applied to and ignore
-the binder. When you do <tt class="docutils literal">rewrite IHl'</tt> Coq easily figures out that
-<tt class="docutils literal">IHl</tt> should be specialized to <tt class="docutils literal">[h]</tt> and the rewrite proceeds.</p>
+the binder. When you do <span class="docutils literal">rewrite IHl'</span> Coq easily figures out that
+<span class="docutils literal">IHl</span> should be specialized to <span class="docutils literal">[h]</span> and the rewrite proceeds.</p>
 </li>
-<li><p class="first"><tt class="docutils literal">rewrite app_assoc</tt>, on the other hand, needs to be specialized to
-three lists, specifically <tt class="docutils literal">rev l'</tt>, <tt class="docutils literal">[h]</tt>, and <tt class="docutils literal">k</tt>. It can't
-be specialized in the current context because the variable <tt class="docutils literal">k</tt> is
-only bound underneath the <tt class="docutils literal">forall</tt>. This is why the pattern <tt class="docutils literal"><span class="pre">(?x</span>
-++ <span class="pre">?y)</span> ++ <span class="pre">?z</span></tt> doesn't appear in the goal.</p>
-</li>
+<li><p><span class="docutils literal">rewrite app_assoc</span>, on the other hand, needs to be specialized to
+three lists, specifically <span class="docutils literal">rev l'</span>, <span class="docutils literal">[h]</span>, and <span class="docutils literal">k</span>. It can't
+be specialized in the current context because the variable <span class="docutils literal">k</span> is
+only bound underneath the <span class="docutils literal">forall</span>. This is why the pattern <span class="docutils literal"><span class="pre">(?x</span> ++ <span class="pre">?y)</span> ++ <span class="pre">?z</span></span> doesn't appear in the goal.</p></li>
 </ul>
-<p>So what do you actually do? You can of course introduce <tt class="docutils literal">k</tt> so there
+<p>So what do you actually do? You can of course introduce <span class="docutils literal">k</span> so there
 is no binder, but there's a simpler and more general technique: Coq
 has generalized rewriting that can rewrite under binders, which you
-can use by instead calling <tt class="docutils literal">setoid_rewrite</tt> (see <a class="reference external" href="https://coq.inria.fr/refman/addendum/generalized-rewriting.html#extensions">Rewriting under
+can use by instead calling <span class="docutils literal">setoid_rewrite</span> (see <a class="reference external" href="https://coq.inria.fr/refman/addendum/generalized-rewriting.html#extensions">Rewriting under
 binders</a>
 in the Coq reference manual). The manual tells you you need to declare
 morphisms, but the relevant ones have all been implemented for you in
-this case for <tt class="docutils literal">forall</tt>, so <tt class="docutils literal">setoid_rewrite app_assoc</tt> will just
+this case for <span class="docutils literal">forall</span>, so <span class="docutils literal">setoid_rewrite app_assoc</span> will just
 work.</p>
-<p>Note that while you can always introduce a <tt class="docutils literal">forall</tt> to get rid of
-the binder, <tt class="docutils literal">setoid_rewrite</tt> can be really handy when your goal is
-an <tt class="docutils literal">exists</tt>. Rather than using <tt class="docutils literal">eexists</tt> you can just rewrite
+<p>Note that while you can always introduce a <span class="docutils literal">forall</span> to get rid of
+the binder, <span class="docutils literal">setoid_rewrite</span> can be really handy when your goal is
+an <span class="docutils literal">exists</span>. Rather than using <span class="docutils literal">eexists</span> you can just rewrite
 under the binder.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

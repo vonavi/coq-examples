@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: Recursive Smart Constructors and Sigma types, how to avoid axioms</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms">
+<div class="alectryon-root alectryon-centered"><main id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms">
 <h1 class="title">Coq: Recursive Smart Constructors and Sigma types, how to avoid axioms</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1048">https://proofassistants.stackexchange.com/q/1048</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://proofassistants.stackexchange.com/q/1048">https://proofassistants.stackexchange.com/q/1048</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am using a recursive smart constructor to return a sigma type, which
 includes the property that the type was constructed in a smart way.
 This is very basic compared to the smart constructors and number of
@@ -36,9 +33,7 @@ and sigma properties. Here is my current example with the problem I
 ran into.</p>
 <p>We want to represent some nested function calls for a very restricted
 language, for example:</p>
-<pre class="literal-block">
-and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;))
-</pre>
+<pre class="literal-block">and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;))</pre>
 <p>We represent the parsed ast, like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Func</span> : <span class="kt">Type</span> :=
   mkFunc :
@@ -46,24 +41,18 @@ and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;))
       (<span class="nv">name</span> : nat)
       (<span class="nv">params</span> : list Func)
       (<span class="nv">hash</span> : nat),
-      Func.</span></span></pre><p>We are still using <tt class="docutils literal">nat</tt> instead of string to represent the names,
+      Func.</span></span></pre><p>We are still using <span class="docutils literal">nat</span> instead of string to represent the names,
 please ignore this, this is just for temporary simplicity. The
-<tt class="docutils literal">hash</tt> field is important, because it is used to efficiently compare
+<span class="docutils literal">hash</span> field is important, because it is used to efficiently compare
 functions calls, so that we can reorder and simplify. For example:</p>
 <ul>
-<li><pre class="first literal-block">
-and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;)) =&gt; and(contains(&quot;abcd&quot;,
-&quot;bc&quot;), lt(3, 5))
-</pre>
+<li><pre class="literal-block">and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;)) =&gt; and(contains(&quot;abcd&quot;,
+&quot;bc&quot;), lt(3, 5))</pre>
 </li>
-<li><pre class="first literal-block">
-and(lt(3, 5), lt(3, 5)) =&gt; lt(3, 5)
-</pre>
+<li><pre class="literal-block">and(lt(3, 5), lt(3, 5)) =&gt; lt(3, 5)</pre>
 </li>
-<li><pre class="first literal-block">
-or(and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;)), and(contains(&quot;abcd&quot;,
-&quot;bc&quot;), lt(3, 5))) =&gt; and(contains(&quot;abcd&quot;, &quot;bc&quot;), lt(3, 5))
-</pre>
+<li><pre class="literal-block">or(and(lt(3, 5), contains(&quot;abcd&quot;, &quot;bc&quot;)), and(contains(&quot;abcd&quot;,
+&quot;bc&quot;), lt(3, 5))) =&gt; and(contains(&quot;abcd&quot;, &quot;bc&quot;), lt(3, 5))</pre>
 </li>
 </ul>
 <p>For this hash field to mean anything, it needs an associated property
@@ -224,26 +213,26 @@ list SmartFunc</span></span></span><br><span><var>p</var><span class="hyp-type">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chkd"><span class="nb">destruct</span> s <span class="kr">as</span> [f <span class="kr">is</span>].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>Func</span></span></span><br><span><var>is</var><span class="hyp-type"><b>: </b><span>IsSmart f</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{params : list Func | Forall IsSmart params}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chke" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chke"><span class="nb">destruct</span> <span class="kr">is</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Case analysis on sort <span class="kt">Set</span> <span class="kr">is</span> not allowed <span class="kr">for</span> inductive
 definition IsSmart.</blockquote></div></div></small></span></pre><p>I have seen that it is possible to use
-<tt class="docutils literal">constructive_indefinite_description</tt>, but this uses an axiom. I was
+<span class="docutils literal">constructive_indefinite_description</span>, but this uses an axiom. I was
 wondering if there was a way to better work with recursive smart
 constructors and sigma types to avoid needing axioms?</p>
 <p>Note in <a class="reference external" href="https://github.com/katydid/proofs/issues/10">this GitHub issue</a> you will find copy
 and paste-able code, that you can play around with, if that helps.</p>
-</div>
-<div class="section" id="answer-li-yao-xia">
-<h1>Answer (Li-yao Xia)</h1>
+</section>
+<section id="answer-li-yao-xia">
+<h2>Answer (Li-yao Xia)</h2>
 <p>You can first instantiate the proof-relevant part of the goal using
-<tt class="docutils literal">exists</tt>, leaving you with a goal in <tt class="docutils literal">Prop</tt> so you can then
-destruct hypotheses in <tt class="docutils literal">Prop</tt>.</p>
+<span class="docutils literal">exists</span>, leaving you with a goal in <span class="docutils literal">Prop</span> so you can then
+destruct hypotheses in <span class="docutils literal">Prop</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chkf"><span class="kr">exists</span> (<span class="nv">get_params</span> <span class="nv">f</span>). <span class="c">(* or: apply (exist _ (get_params f)). *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>Func</span></span></span><br><span><var>is</var><span class="hyp-type"><b>: </b><span>IsSmart f</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Forall IsSmart (get_params f)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk10"><span class="nb">destruct</span> <span class="kr">is</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f</var><span class="hyp-type"><b>: </b><span>Func</span></span></span><br><span><var>name</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>params</var><span class="hyp-type"><b>: </b><span>list Func</span></span></span><br><span><var>hash</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>f = mkFunc name params hash</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>hash = hash_from_func f</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>Forall IsSmart params</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Forall IsSmart (get_params f)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<div class="section" id="some-simpler-examples-to-show-when-we-can-and-cannot-destruct-a-prop">
-<h2>Some simpler examples to show when we can and cannot destruct a <tt class="docutils literal">Prop</tt>.</h2>
-<div class="section" id="we-can-t-destruct-a-prop-when-our-goal-contains-something-in-set">
-<h3>We can't destruct a <tt class="docutils literal">Prop</tt>, when our goal contains something in <tt class="docutils literal">Set</tt>:</h3>
+</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<section id="some-simpler-examples-to-show-when-we-can-and-cannot-destruct-a-prop">
+<h3>Some simpler examples to show when we can and cannot destruct a <span class="docutils literal">Prop</span>.</h3>
+<section id="we-can-t-destruct-a-prop-when-our-goal-contains-something-in-set">
+<h4>We can't destruct a <span class="docutils literal">Prop</span>, when our goal contains something in <span class="docutils literal">Set</span>:</h4>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk11"><span class="kn">Theorem</span> <span class="nf">case_and_point_1</span> : <span class="kr">forall</span> (<span class="nv">m</span> : nat), m &gt; <span class="mi">0</span> -&gt; { n | n &gt; <span class="mi">0</span> }.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> : nat, m &gt; <span class="mi">0</span> -&gt; {n : nat | n &gt; <span class="mi">0</span>}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk12"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> : nat, m &gt; <span class="mi">0</span> -&gt; {n : nat | n &gt; <span class="mi">0</span>}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk13"><span class="nb">intros</span> m H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>m &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{n : nat | n &gt; <span class="mi">0</span>}</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -260,9 +249,9 @@ elimination of the inductive definition le on sort <span class="kt">Set</span>
 <span class="c">    destruct a Prop.</span>
 <span class="c">   *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk16"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">1</span> &gt; <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk17" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt;= m</span></span></span><br><span><var>IHle</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &gt; <span class="mi">0</span></span></span></span><br></div><label class="goal-separator" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk17"><hr></label><div class="goal-conclusion"><span class="mi">1</span> &gt; <span class="mi">0</span></div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
-<div class="section" id="we-can-t-destruct-a-prop-when-our-goal-is-in-set">
-<h3>We can't destruct a <tt class="docutils literal">Prop</tt>, when our goal is in <tt class="docutils literal">Set</tt>:</h3>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></section>
+<section id="we-can-t-destruct-a-prop-when-our-goal-is-in-set">
+<h4>We can't destruct a <span class="docutils literal">Prop</span>, when our goal is in <span class="docutils literal">Set</span>:</h4>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk18" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk18"><span class="kn">Theorem</span> <span class="nf">case_and_point_2</span> : <span class="mi">3</span> &gt; <span class="mi">2</span> -&gt; nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> &gt; <span class="mi">2</span> -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk19" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk19"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> &gt; <span class="mi">2</span> -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk1a"><span class="nb">intros</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> &gt; <span class="mi">2</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -274,9 +263,9 @@ elimination of the inductive definition le on sort <span class="kt">Set</span>
 <span class="c">    We can&#39;t destruct a Prop, when our goal is in Set.</span>
 <span class="c">   *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> <span class="mi">1</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="we-can-destruct-a-prop-when-our-goal-does-not-contain-something-in-set-even-if-it-is-in-type">
-<h3>We can destruct a <tt class="docutils literal">Prop</tt>, when our goal does not contain something in <tt class="docutils literal">Set</tt>, even if it is in <tt class="docutils literal">Type</tt>:</h3>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="we-can-destruct-a-prop-when-our-goal-does-not-contain-something-in-set-even-if-it-is-in-type">
+<h4>We can destruct a <span class="docutils literal">Prop</span>, when our goal does not contain something in <span class="docutils literal">Set</span>, even if it is in <span class="docutils literal">Type</span>:</h4>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">myType</span> : <span class="kt">Type</span> :=
   mkMyType: myType.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -292,9 +281,9 @@ elimination of the inductive definition le on sort <span class="kt">Set</span>
 <span class="c">    in Set, even if it is in Type.</span>
 <span class="c">   *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk1f"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">{t : myType | myPropOnType t}</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk20" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> &lt;= m</span></span></span><br><span><var>IHle</var><span class="hyp-type"><b>: </b><span>{t : myType | myPropOnType t}</span></span></span><br></div><label class="goal-separator" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk20"><hr></label><div class="goal-conclusion">{t : myType | myPropOnType t}</div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
-<div class="section" id="we-can-t-destruct-a-prop-when-our-goal-contains-something-in-set-1">
-<h3>We can't destruct a <tt class="docutils literal">Prop</tt>, when our goal contains something in <tt class="docutils literal">Set</tt>:</h3>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></section>
+<section id="we-can-t-destruct-a-prop-when-our-goal-contains-something-in-set-1">
+<h4>We can't destruct a <span class="docutils literal">Prop</span>, when our goal contains something in <span class="docutils literal">Set</span>:</h4>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">mySet</span> : <span class="kt">Set</span> :=
   mkMySet : mySet.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -311,9 +300,9 @@ elimination of the inductive definition le on sort <span class="kt">Set</span>
 Cannot find the elimination combinator le_rec, the
 elimination of the inductive definition le on sort <span class="kt">Set</span>
 <span class="kr">is</span> probably not allowed.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> &gt; <span class="mi">2</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{s : mySet | myPropOnSet s}</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
-<div class="section" id="we-can-destruct-a-prop-if-it-is-guaranteed-to-only-return-a-prop">
-<h3>We can destruct a <tt class="docutils literal">Prop</tt>, if it is guaranteed to only return a <tt class="docutils literal">Prop</tt>.</h3>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></section>
+<section id="we-can-destruct-a-prop-if-it-is-guaranteed-to-only-return-a-prop">
+<h4>We can destruct a <span class="docutils literal">Prop</span>, if it is guaranteed to only return a <span class="docutils literal">Prop</span>.</h4>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk25" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk25"><span class="kn">Theorem</span> <span class="nf">case_and_point_6</span> : <span class="mi">3</span> &gt; <span class="mi">2</span> /\ <span class="mi">1</span> &gt; <span class="mi">0</span> -&gt; nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> &gt; <span class="mi">2</span> /\ <span class="mi">1</span> &gt; <span class="mi">0</span> -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk26" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk26"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> &gt; <span class="mi">2</span> /\ <span class="mi">1</span> &gt; <span class="mi">0</span> -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk27" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk27"><span class="nb">intros</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> &gt; <span class="mi">2</span> /\ <span class="mi">1</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -328,9 +317,9 @@ elimination of the inductive definition le on sort <span class="kt">Set</span>
 Case analysis on sort <span class="kt">Set</span> <span class="kr">is</span> not allowed <span class="kr">for</span> inductive
 definition le.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H0</var><span class="hyp-type"><b>: </b><span><span class="mi">3</span> &gt; <span class="mi">2</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &gt; <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> <span class="mi">1</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="we-can-use-theorems-to-destruct-a-prop-other-props">
-<h3>We can use theorems to destruct a <tt class="docutils literal">Prop</tt> other <tt class="docutils literal">Prop</tt>s.</h3>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="we-can-use-theorems-to-destruct-a-prop-other-props">
+<h4>We can use theorems to destruct a <span class="docutils literal">Prop</span> other <span class="docutils literal">Prop</span>s.</h4>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk2a" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk2a"><span class="kn">Lemma</span> <span class="nf">seven</span> : <span class="mi">3</span> &gt; <span class="mi">2</span> /\ <span class="mi">1</span> &gt; <span class="mi">0</span> -&gt; <span class="mi">7</span> = <span class="mi">7</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">3</span> &gt; <span class="mi">2</span> /\ <span class="mi">1</span> &gt; <span class="mi">0</span> -&gt; <span class="mi">7</span> = <span class="mi">7</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -341,10 +330,10 @@ definition le.</blockquote></div><div class="alectryon-goals"><blockquote class=
 <span class="c">    We can use theorems to destruct a Prop other Props.</span>
 <span class="c">   *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk2e" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-recursive-smart-constructors-and-sigma-types-how-to-avoid-axioms-v-chk2e"><span class="nb">apply</span> seven <span class="kr">in</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="mi">7</span> = <span class="mi">7</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></section>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

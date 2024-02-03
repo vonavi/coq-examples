@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: typeclasses vs dependent records</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-typeclasses-vs-dependent-records">
+<div class="alectryon-root alectryon-centered"><main id="coq-typeclasses-vs-dependent-records">
 <h1 class="title">Coq: typeclasses vs dependent records</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29872260">https://stackoverflow.com/q/29872260</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/29872260">https://stackoverflow.com/q/29872260</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I can't understand the difference between typeclasses and dependent
 records in Coq. The reference manual gives the syntax of typeclasses,
 but says nothing about what they really are and how should you use
@@ -37,16 +34,16 @@ parameters. It seems that the algorithm for typeclasses works better
 when there is more or a less only one possible instance of it in any
 given context, but that's not a big issue since we can always move all
 fields of typeclass to its parameters, removing ambiguity. Also the
-<tt class="docutils literal">Instance</tt> declaration is automatically added to the Hints database
+<span class="docutils literal">Instance</span> declaration is automatically added to the Hints database
 which can often ease the proofs but will also sometimes break them, if
 the instances were too general and caused proof search loops or
 explosions. Are there any other issues I should be aware of? What is
 the heuristic for choosing between the two? E.g. would I lose anything
 if I use only records and set their instances as implicit parameters
 whenever possible?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You are right: type classes in Coq are just records with special
 plumbing and inference (there's also the special case of single-method
 type classes, but it doesn't really affect this answer in any way).
@@ -75,10 +72,10 @@ type class, instantiating it with natural numbers:</p>
     idL := plus_O_n;
     idR := <span class="kr">fun</span> <span class="nv">n</span> =&gt; eq_sym (plus_n_O n)
   |}.</span></span></pre><p>Using type class inference, we can use any definitions that work for
-any monoid directly with <tt class="docutils literal">nat</tt>, without supplying the type class
+any monoid directly with <span class="docutils literal">nat</span>, without supplying the type class
 argument, e.g.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">times_3</span> (<span class="nv">n</span> : nat) := op n (op n n).</span></span></pre><p>However, if you make the above definition into a regular record by
-replacing <tt class="docutils literal">Class</tt> and <tt class="docutils literal">Instance</tt> by <tt class="docutils literal">Record</tt> and <tt class="docutils literal">Definition</tt>,
+replacing <span class="docutils literal">Class</span> and <span class="docutils literal">Instance</span> by <span class="docutils literal">Record</span> and <span class="docutils literal">Definition</span>,
 the same definition fails:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-typeclasses-vs-dependent-records-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
@@ -89,8 +86,8 @@ engine gets a bit lost sometimes, causing hard-to-understand error
 messages to appear. That being said, it's not really a disadvantage
 over dependent records, given that this possibility isn't even
 available there.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

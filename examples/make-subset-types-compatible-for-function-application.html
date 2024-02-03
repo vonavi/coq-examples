@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>make subset types compatible for function application</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="make-subset-types-compatible-for-function-application">
+<div class="alectryon-root alectryon-centered"><main id="make-subset-types-compatible-for-function-application">
 <h1 class="title">make subset types compatible for function application</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/49620573">https://stackoverflow.com/q/49620573</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/49620573">https://stackoverflow.com/q/49620573</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to get familiar with subset types in Coq and I've come
 across a kind of use case where I don't know how to proceed. Consider
 a function that expects a natural number greater than 2, and another
@@ -40,17 +37,17 @@ type suitable for function application. This is what I'm trying to do:</p>
 i : {i1 : nat | i1 &gt; <span class="mi">2</span> /\ i1 &lt; <span class="mi">10</span>}
 The term <span class="s2">&quot;i&quot;</span> has type <span class="s2">&quot;{i1 : nat | i1 &gt; 2 /\ i1 &lt; 10}&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
- <span class="s2">&quot;{i1 : nat | i1 &gt; 2}&quot;</span>.</blockquote></div></div></small></span></pre><p>What's missing in <tt class="docutils literal">add_one_if_gt_2_and_lt_10</tt> to make it typecheck?
+ <span class="s2">&quot;{i1 : nat | i1 &gt; 2}&quot;</span>.</blockquote></div></div></small></span></pre><p>What's missing in <span class="docutils literal">add_one_if_gt_2_and_lt_10</span> to make it typecheck?
 In general, for more complicated subset types that might be
 compatible, what's the usual way to proceed?</p>
-<p>Also, I'm using <tt class="docutils literal">i1</tt> in the subset type specification just in case,
-but it seems it also works if I use <tt class="docutils literal">i</tt>, although I don't know if
+<p>Also, I'm using <span class="docutils literal">i1</span> in the subset type specification just in case,
+but it seems it also works if I use <span class="docutils literal">i</span>, although I don't know if
 there's any potential issue there since the parameter name is also
-<tt class="docutils literal">i</tt>. Would using <tt class="docutils literal">i</tt> for both variables be problematic?</p>
-</div>
-<div class="section" id="answer-daniel-schepler">
-<h1>Answer (Daniel Schepler)</h1>
-<p>One possibility would be to use the <tt class="docutils literal">Program</tt> functionality:</p>
+<span class="docutils literal">i</span>. Would using <span class="docutils literal">i</span> for both variables be problematic?</p>
+</section>
+<section id="answer-daniel-schepler">
+<h2>Answer (Daniel Schepler)</h2>
+<p>One possibility would be to use the <span class="docutils literal">Program</span> functionality:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Program Definition</span> <span class="nf">add_one_if_gt_2</span> (<span class="nv">i</span> : {i1 : nat | i1 &gt; <span class="mi">2</span>}) :=
@@ -62,20 +59,20 @@ generating messages about &quot;obligations&quot; - but in this example, all the
 obligations were simple enough that the system could automatically
 resolve them on its own, and the definitions immediately completed.
 (In this case, the obligation generated by the second definition is
-that <tt class="docutils literal">i &gt; 2 /\ i &lt; 10</tt> implies <tt class="docutils literal">i &gt; 2</tt>.)</p>
+that <span class="docutils literal">i &gt; 2 /\ i &lt; 10</span> implies <span class="docutils literal">i &gt; 2</span>.)</p>
 <p>In other situations where it cannot solve the obligations so easily,
 you might get pending obligations. In this case, you can use Gallina
-directives such as <tt class="docutils literal">Next Obligation.</tt> to enter proof mode and prove
+directives such as <span class="docutils literal">Next Obligation.</span> to enter proof mode and prove
 them yourself. (For more information, see the appropriate chapter of
 the Coq documentation.)</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>You do this manually because it's not hard to destruct a term of type
-<tt class="docutils literal">{i1 : nat | i1 &gt; 2 /\ i1 &lt; 10}</tt> which is basically a triple of a
-<tt class="docutils literal">nat</tt> (<tt class="docutils literal">i1</tt>) and two proofs: <tt class="docutils literal">i1 &gt; 2</tt> and <tt class="docutils literal">i2 &lt; 10</tt>. What we
+<span class="docutils literal">{i1 : nat | i1 &gt; 2 /\ i1 &lt; 10}</span> which is basically a triple of a
+<span class="docutils literal">nat</span> (<span class="docutils literal">i1</span>) and two proofs: <span class="docutils literal">i1 &gt; 2</span> and <span class="docutils literal">i2 &lt; 10</span>. What we
 are going to do is to destruct this triple, throw away the third
-component and repack it into a term of type <tt class="docutils literal">{i1 : nat | i1 &gt; 2}</tt>,
+component and repack it into a term of type <span class="docutils literal">{i1 : nat | i1 &gt; 2}</span>,
 which is a pair:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">add_one_if_gt_2</span> (<span class="nv">i</span> : {i1 : nat | i1 &gt; <span class="mi">2</span>}) :=
   S (proj1_sig i).</span><span class="alectryon-wsp">
@@ -85,7 +82,7 @@ which is a pair:</p>
   add_one_if_gt_2 (exist _ i1 i1_gt2).</span></span></pre><p>We can do it with projections as well:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">add_one_if_gt_2_and_lt_10&#39;</span> (<span class="nv">i</span> : {i1 : nat | i1 &gt; <span class="mi">2</span> /\ i1 &lt; <span class="mi">10</span>}) :=
   add_one_if_gt_2 (exist _ (proj1_sig i)
-                         (proj1 (proj2_sig i))).</span></span></pre><p>Another approach is to use <tt class="docutils literal">sig2</tt> type for your special case:</p>
+                         (proj1 (proj2_sig i))).</span></span></pre><p>Another approach is to use <span class="docutils literal">sig2</span> type for your special case:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">add_one_if_gt_2_and_lt_10_sig2</span> (<span class="nv">i</span> : {i1 : nat | i1 &gt; <span class="mi">2</span> &amp; i1 &lt; <span class="mi">10</span>}) :=
   add_one_if_gt_2 (sig_of_sig2 i).</span></span></pre><p>And using the coercion mechanism you can simplify the above definition
 into:</p>
@@ -95,10 +92,10 @@ into:</p>
            (<span class="nv">i</span> : {i1 : nat | i1 &gt; <span class="mi">2</span> &amp; i1 &lt; <span class="mi">10</span>}) :=
   add_one_if_gt_2 i.</span></span></pre><p>Which is exactly the solution you were trying to apply!</p>
 <p>In case you are not familiar with coercions: this mechanism inserts
-<tt class="docutils literal">sig_of_sig2</tt> (or some other suitable coercion) automatically if it
+<span class="docutils literal">sig_of_sig2</span> (or some other suitable coercion) automatically if it
 encounters a type error which can be mended.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

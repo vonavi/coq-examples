@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursive partial functions in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="recursive-partial-functions-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="recursive-partial-functions-in-coq">
 <h1 class="title">Recursive partial functions in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35696496">https://stackoverflow.com/q/35696496</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/35696496">https://stackoverflow.com/q/35696496</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I would like to know which is the best way to define a partial
 recursive function in Coq.</p>
 <p>Suppose that I want to define a function that returns the maximum
@@ -38,9 +35,9 @@ to be defined only for non-empty lists.</p>
   | [n] =&gt; n
   | n :: l&#39; =&gt; max n (MaxValueList l&#39;)
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found a <span class="nb">constructor</span> of inductive type list
- while a <span class="nb">constructor</span> of sig <span class="kr">is</span> expected.</blockquote></div></div></small></span></pre><p>However, this is not going to work since <tt class="docutils literal">::</tt> is a constructor for
-list and not for <tt class="docutils literal">{l : list nat | l &lt;&gt; []}</tt>.</p>
-<p>My other attempt was using <tt class="docutils literal">option</tt>. In this case I tried the
+ while a <span class="nb">constructor</span> of sig <span class="kr">is</span> expected.</blockquote></div></div></small></span></pre><p>However, this is not going to work since <span class="docutils literal">::</span> is a constructor for
+list and not for <span class="docutils literal">{l : list nat | l &lt;&gt; []}</span>.</p>
+<p>My other attempt was using <span class="docutils literal">option</span>. In this case I tried the
 following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="recursive-partial-functions-in-coq-v-chk1"><span class="kn">Fixpoint</span> <span class="nf">MaxValueList</span> (<span class="nv">l</span> : list nat) : option nat :=
   <span class="kr">match</span> l <span class="kr">with</span>
@@ -56,17 +53,16 @@ n0 : nat
 l0 : list nat
 l&#39;0 := n0 :: l0 : list nat
 The term <span class="s2">&quot;MaxValueList l&#39;0&quot;</span> has type <span class="s2">&quot;option nat&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This did not work either since <tt class="docutils literal">max : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt> and
-<tt class="docutils literal">MaxValueList l' : option nat</tt>.</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This did not work either since <span class="docutils literal">max : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</span> and
+<span class="docutils literal">MaxValueList l' : option nat</span>.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> Personally, I would favor Arthur's choice of <tt class="docutils literal">max</tt> with a
-neutral element. One comment thou, the type <tt class="docutils literal">T = {l : list nat | l &lt;&gt;
-[]}</tt> is definitively speaking trouble, why? Because given two lists
-<tt class="docutils literal">l1 l2 : T</tt> in order to prove their equality you must prove that the
-<tt class="docutils literal">l &lt;&gt; []</tt> proofs are equal too, which is usually very hard...</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+<p><strong>A:</strong> Personally, I would favor Arthur's choice of <span class="docutils literal">max</span> with a
+neutral element. One comment thou, the type <span class="docutils literal">T = {l : list nat | l &lt;&gt; []}</span> is definitively speaking trouble, why? Because given two lists
+<span class="docutils literal">l1 l2 : T</span> in order to prove their equality you must prove that the
+<span class="docutils literal">l &lt;&gt; []</span> proofs are equal too, which is usually very hard...</p>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>Here's a possible solution to your problem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -78,28 +74,28 @@ neutral element. One comment thou, the type <tt class="docutils literal">T = {l 
   <span class="kr">match</span> l <span class="kr">with</span>
   | []      =&gt; <span class="kr">fun</span> <span class="nv">H</span> =&gt; <span class="kr">match</span> H eq_refl <span class="kr">with</span> <span class="kr">end</span>
   | n :: l&#39; =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; MaxValueListAux n l&#39;
-  <span class="kr">end</span>.</span></span></pre><p>Here, I've split the original <tt class="docutils literal">MaxValueList</tt> into two parts: a
-<tt class="docutils literal">MaxValueListAux</tt> function that computes the greatest element of a
-list given a default value, and <tt class="docutils literal">MaxValueListNE</tt>, which is a wrapper
+  <span class="kr">end</span>.</span></span></pre><p>Here, I've split the original <span class="docutils literal">MaxValueList</span> into two parts: a
+<span class="docutils literal">MaxValueListAux</span> function that computes the greatest element of a
+list given a default value, and <span class="docutils literal">MaxValueListNE</span>, which is a wrapper
 to the first function and takes a proof argument. This second function
 merely discharges the impossible case and calls the first one with the
 appropriate arguments; I'll explain how exactly this works shortly.
 Because of this split, we don't run into the issue of constructing a
-proof argument in the nonempty branch of <tt class="docutils literal">MaxValueListNE</tt>; the only
+proof argument in the nonempty branch of <span class="docutils literal">MaxValueListNE</span>; the only
 proof work that we have to do is to get rid of the empty case.</p>
 <p>Notice that the second function is written in a weird way: instead of
-declaring <tt class="docutils literal">l &lt;&gt; []</tt> as another argument to <tt class="docutils literal">MaxValueListNE</tt>, I've
+declaring <span class="docutils literal">l &lt;&gt; []</span> as another argument to <span class="docutils literal">MaxValueListNE</span>, I've
 put it in the return type of that function. This is because of the way
 dependent pattern matching works in Coq; roughly speaking, whenever
-you need to combine information that you obtain on a <tt class="docutils literal">match</tt> (such
-as the fact that the <tt class="docutils literal">l</tt> is empty on the <tt class="docutils literal">[]</tt> branch) with
+you need to combine information that you obtain on a <span class="docutils literal">match</span> (such
+as the fact that the <span class="docutils literal">l</span> is empty on the <span class="docutils literal">[]</span> branch) with
 information that comes from &quot;outside&quot; the match (such as the proof of
-<tt class="docutils literal">l &lt;&gt; []</tt>), you need to make your <tt class="docutils literal">match</tt> statement return a
+<span class="docutils literal">l &lt;&gt; []</span>), you need to make your <span class="docutils literal">match</span> statement return a
 function. This leads to a trick that Adam Chlipala calls the <em>convoy
 pattern</em>, which you can learn more about <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">here</a>. Putting that
 argument as part of the return type allows Coq to infer type
-annotations that are required by the <tt class="docutils literal">match</tt> statement.</p>
-<p>So, how exactly does <tt class="docutils literal">MaxValueListNE</tt> work? To understand this, we
+annotations that are required by the <span class="docutils literal">match</span> statement.</p>
+<p>So, how exactly does <span class="docutils literal">MaxValueListNE</span> work? To understand this, we
 must talk a little bit about how dependent pattern matching works in
 Coq. As I mentioned earlier, we wrote this function in this particular
 way so that Coq could infer some missing type annotations. But we can
@@ -109,31 +105,29 @@ add those by hand as well:</p>
   | []      =&gt; <span class="kr">fun</span> (<span class="nv">H</span> : [] &lt;&gt; [])      =&gt; <span class="kr">match</span> H eq_refl <span class="kr">with</span> <span class="kr">end</span>
   | n :: l&#39; =&gt; <span class="kr">fun</span> (<span class="nv">_</span> : n :: l&#39; &lt;&gt; []) =&gt; MaxValueListAux n l&#39;
   <span class="kr">end</span>.</span></span></pre><p>When Coq reads this definition, it tries to type check the function,
-and, in particular, make sure that every branch of the <tt class="docutils literal">match</tt>
+and, in particular, make sure that every branch of the <span class="docutils literal">match</span>
 returns an element of the type it promises to return. But when doing
 so, it is allowed to replace every occurrence of the discriminee (in
-this case, <tt class="docutils literal">l</tt>) by whatever value corresponds to that branch. In the
-first branch above, this means replacing <tt class="docutils literal">l</tt> by <tt class="docutils literal">[]</tt>, which in
-turn implies that the returned function takes an argument of type <tt class="docutils literal">[]
-&lt;&gt; []</tt>. Recall that in Coq, <tt class="docutils literal">[] &lt;&gt; []</tt> is the same thing as <tt class="docutils literal">[] =
-[] <span class="pre">-&gt;</span> False</tt>. Since <tt class="docutils literal">False</tt> has no constructors, we can get rid of
-that contradictory branch by pattern-matching on <tt class="docutils literal">H eq_refl</tt>, where
-<tt class="docutils literal">eq_refl</tt> is the only constructor of the equality type, and is taken
-to have type <tt class="docutils literal">[] = []</tt> in that particular case.</p>
+this case, <span class="docutils literal">l</span>) by whatever value corresponds to that branch. In the
+first branch above, this means replacing <span class="docutils literal">l</span> by <span class="docutils literal">[]</span>, which in
+turn implies that the returned function takes an argument of type <span class="docutils literal">[] &lt;&gt; []</span>. Recall that in Coq, <span class="docutils literal">[] &lt;&gt; []</span> is the same thing as <span class="docutils literal">[] = [] <span class="pre">-&gt;</span> False</span>. Since <span class="docutils literal">False</span> has no constructors, we can get rid of
+that contradictory branch by pattern-matching on <span class="docutils literal">H eq_refl</span>, where
+<span class="docutils literal">eq_refl</span> is the only constructor of the equality type, and is taken
+to have type <span class="docutils literal">[] = []</span> in that particular case.</p>
 <p>Now, it is worth noting that adding more type information is not
 necessarily good. In the case of your function, I prefer to omit the
 proof argument and write simply</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">MaxValueList</span> <span class="nv">l</span> := fold_left max l <span class="mi">0</span>.</span></span></pre><p>Note that <tt class="docutils literal">0</tt> is a neutral element for <tt class="docutils literal">max</tt>, thus it makes sense
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">MaxValueList</span> <span class="nv">l</span> := fold_left max l <span class="mi">0</span>.</span></span></pre><p>Note that <span class="docutils literal">0</span> is a neutral element for <span class="docutils literal">max</span>, thus it makes sense
 to return that value on the empty case. It allows us for instance to
 prove a result like</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk2"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span>,
     MaxValueList (l1 ++ l2) = max (MaxValueList l1) (MaxValueList l2).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> : list nat,
 MaxValueList (l1 ++ l2) =
 Nat.max (MaxValueList l1) (MaxValueList l2)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Of course, this doesn't work for every case: if we replaced <tt class="docutils literal">max</tt> by
-<tt class="docutils literal">min</tt>, the above theorem wouldn't hold anymore. Still, I think it
+</span></span></pre><p>Of course, this doesn't work for every case: if we replaced <span class="docutils literal">max</span> by
+<span class="docutils literal">min</span>, the above theorem wouldn't hold anymore. Still, I think it
 would still be easier to program with and reason about a
-<tt class="docutils literal">MinValueList</tt> function that works for arbitrary lists: if some
+<span class="docutils literal">MinValueList</span> function that works for arbitrary lists: if some
 result about that function only works for nonempty elements, we can
 add those hypotheses to our theorem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk3"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span>,
@@ -143,14 +137,14 @@ l1 &lt;&gt; [] -&gt;
 MinValueList (l1 ++ l2) =
 Nat.min (MinValueList l1) (MinValueList l2)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>This is how people usually define division in Coq. Instead of having a
-partial function <tt class="docutils literal">div : forall (n1 n2 : nat), n2 &lt;&gt; 0 <span class="pre">-&gt;</span> nat</tt>, we
-write instead a total function <tt class="docutils literal">div : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt>, and prove
+partial function <span class="docutils literal">div : forall (n1 n2 : nat), n2 &lt;&gt; 0 <span class="pre">-&gt;</span> nat</span>, we
+write instead a total function <span class="docutils literal">div : nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</span>, and prove
 <em>theorems</em> about that function assuming that its second argument is
 not zero.</p>
-</div>
-<div class="section" id="answer-rodrigo-ribeiro">
-<h1>Answer (Rodrigo Ribeiro)</h1>
-<p>One alternative is to use <tt class="docutils literal">refine</tt> tactic to construct functions
+</section>
+<section id="answer-rodrigo-ribeiro">
+<h2>Answer (Rodrigo Ribeiro)</h2>
+<p>One alternative is to use <span class="docutils literal">refine</span> tactic to construct functions
 using a theorem proving like style.</p>
 <p>Whenever I need to construct terms with proofs (like your function) I
 prefer to use definitions and refine tactic, since it provides a more
@@ -159,7 +153,7 @@ clear and easy way to automate proofs about propositions.</p>
 formalisation. You can modify it easily to enforce the non-empty list
 input requirement. The idea is to use refine tactic to provide the
 structure of the function and the proof terms for function properties
-are marked with holes <tt class="docutils literal">_</tt> and latter filled with tactics.</p>
+are marked with holes <span class="docutils literal">_</span> and latter filled with tactics.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk4"><span class="kn">Definition</span> <span class="nf">max_list</span> : <span class="kr">forall</span> <span class="nv">l</span> : list nat, {n | <span class="kr">forall</span> <span class="nv">n&#39;</span>, In n&#39; l -&gt; n &gt; n&#39;}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l</span> : list nat,
 {n : nat | <span class="kr">forall</span> <span class="nv">n&#39;</span> : nat, In n&#39; l -&gt; n &gt; n&#39;}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (<span class="kr">fix</span> max_list (l : list nat) : {n | <span class="kr">forall</span> <span class="nv">n&#39;</span>, In n&#39; l -&gt; n &gt; n&#39;} :=
@@ -181,17 +175,17 @@ are marked with holes <tt class="docutils literal">_</tt> and latter filled with
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>There are the so called <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual027.html">Program</a>
 functionality that eases writing functions with dependent types. Maybe
 is worth checking it. My experience is that it generate some
-complicated hypothesis and, because of it, I prefer to use <tt class="docutils literal">refine</tt>.</p>
-</div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
+complicated hypothesis and, because of it, I prefer to use <span class="docutils literal">refine</span>.</p>
+</section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
 <p>The convoy pattern is a must to understand, but some of its reasoning
-can be avoided by using <tt class="docutils literal">Program</tt>. <tt class="docutils literal">Program</tt> also lets you write
+can be avoided by using <span class="docutils literal">Program</span>. <span class="docutils literal">Program</span> also lets you write
 more normal looking programs. I haven't really used it so I'll take
 this chance to try it.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Wf.</span></span></pre><p>From <tt class="docutils literal">False</tt> you can derive a value of any type that you need.
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Program.Wf.</span></span></pre><p>From <span class="docutils literal">False</span> you can derive a value of any type that you need.
 Useful in impossible branches in a match statement.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">IMPOSSIBLE</span> {<span class="nv">T</span>} (<span class="nv">f</span> : <span class="kt">False</span>) : T := <span class="kr">match</span> f <span class="kr">with</span> <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -200,8 +194,7 @@ Useful in impossible branches in a match statement.</p>
      | []           =&gt; IMPOSSIBLE _
      | [a]          =&gt; a
      | a :: b :: l&#39; =&gt; max a (maxval (b :: l&#39;) _)
-     <span class="kr">end</span>.</span></span></pre><p>EDIT: As <tt class="docutils literal">eponier</tt> points out, if we include <tt class="docutils literal">Require Import
-Arith.</tt> before we define <tt class="docutils literal">maxval</tt>, we will be done here. Otherwise
+     <span class="kr">end</span>.</span></span></pre><p>EDIT: As <span class="docutils literal">eponier</span> points out, if we include <span class="docutils literal">Require Import Arith.</span> before we define <span class="docutils literal">maxval</span>, we will be done here. Otherwise
 we will have to prove the remaining obligations, like this: (END EDIT)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="recursive-partial-functions-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="recursive-partial-functions-in-coq-v-chk5"><span class="kn">Next Obligation</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">well_founded
   (MR lt
@@ -213,10 +206,10 @@ we will have to prove the remaining obligations, like this: (END EDIT)</p>
   well_founded
     (MR lt
        (<span class="kr">fun</span> <span class="nv">recarg</span> : {l : list nat | l &lt;&gt; []} =&gt;
-        length (proj1_sig recarg)))</blockquote></div></div></small></span></pre><p>EDIT: <tt class="docutils literal">eponier</tt> points out that this is easily proved by</p>
+        length (proj1_sig recarg)))</blockquote></div></div></small></span></pre><p>EDIT: <span class="docutils literal">eponier</span> points out that this is easily proved by</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> measure_wf, PeanoNat.Nat.lt_wf_0.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

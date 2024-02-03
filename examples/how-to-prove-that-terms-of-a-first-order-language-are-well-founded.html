@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to prove that terms of a first-order language are well-founded?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-prove-that-terms-of-a-first-order-language-are-well-founded">
+<div class="alectryon-root alectryon-centered"><main id="how-to-prove-that-terms-of-a-first-order-language-are-well-founded">
 <h1 class="title">How to prove that terms of a first-order language are well-founded?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/52087304">https://stackoverflow.com/q/52087304</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/52087304">https://stackoverflow.com/q/52087304</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Currently, I've started working on proving theorems about first-order
 logic in Coq (<a class="reference external" href="https://github.com/georgydunaev/VerifiedMathFoundations">VerifiedMathFoundations</a>). I've
 proved deduction theorem, but then I got stuck with lemma 1 for
 theorem of correctness. So I've formulated one elegant piece of the
 lemma compactly and I invite the community to look at it. That is an
 incomplete the proof of well-foundness of the terms. How to get rid of
-the pair of <tt class="docutils literal">admit</tt>s properly?</p>
+the pair of <span class="docutils literal">admit</span>s properly?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* PUBLIC DOMAIN *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Coq.Vectors.Vector.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Coq.Lists.List.</span><span class="alectryon-wsp">
@@ -149,11 +146,11 @@ Vector.fold_left
   (<span class="kr">fun</span> (<span class="nv">Q</span> : <span class="kt">Prop</span>) (<span class="nv">e</span> : Terms) =&gt; Q \/ rela c e) <span class="kt">False</span>
   t</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    <span class="c">(* ... *)</span>
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can do it by defining a height function on <tt class="docutils literal">Terms</tt>, and showing
-that decreasing <tt class="docutils literal">rela</tt> implies decreasing heights:</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can do it by defining a height function on <span class="docutils literal">Terms</span>, and showing
+that decreasing <span class="docutils literal">rela</span> implies decreasing heights:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Coq.Vectors.Vector.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Bool.Bool.</span><span class="alectryon-wsp">
@@ -659,12 +656,11 @@ because of the nested inductives.)</p>
 <p>This style of development, however, is too complicated. Avoiding
 certain pitfalls would greatly simplify it:</p>
 <ol class="arabic">
-<li><p class="first">The Coq standard vector library is too hard to use. The issue here
+<li><p>The Coq standard vector library is too hard to use. The issue here
 is exacerbated because of the nested inductives. It would probably
 be better to use plain lists and have a separate well-formedness
-predicate on terms.</p>
-</li>
-<li><p class="first">Defining a relation such as <tt class="docutils literal">rela</tt> in proof mode makes it harder
+predicate on terms.</p></li>
+<li><p>Defining a relation such as <span class="docutils literal">rela</span> in proof mode makes it harder
 to read. Consider, for instance, the following simpler alternative:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">rela</span> <span class="nv">x</span> <span class="nv">y</span> :=
   <span class="kr">match</span> y <span class="kr">with</span>
@@ -673,14 +669,13 @@ to read. Consider, for instance, the following simpler alternative:</p>
     Vector.In x v \/
     Vector.fold_right (<span class="kr">fun</span> <span class="nv">z</span> <span class="nv">P</span> =&gt; rela x z \/ P) v <span class="kt">False</span>
   <span class="kr">end</span>.</span></span></pre></li>
-<li><p class="first">Folding left has a poor reduction behavior, because it forces us to
+<li><p>Folding left has a poor reduction behavior, because it forces us to
 generalize over the accumulator argument to get the induction to go
 through. This is why in my proof I had to switch to a
-<tt class="docutils literal">fold_right</tt>.</p>
-</li>
+<span class="docutils literal">fold_right</span>.</p></li>
 </ol>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

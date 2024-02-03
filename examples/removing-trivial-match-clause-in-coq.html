@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Removing trivial match clause in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="removing-trivial-match-clause-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="removing-trivial-match-clause-in-coq">
 <h1 class="title">Removing trivial match clause in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/66179133">https://stackoverflow.com/q/66179133</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/66179133">https://stackoverflow.com/q/66179133</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">cast</span> {<span class="nv">A</span> : <span class="kt">Set</span>} (<span class="nv">B</span> : <span class="kt">Set</span>) (<span class="nv">prf</span> : A = B) (<span class="nv">x</span> : A) : B.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>A = B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="removing-trivial-match-clause-in-coq-v-chk1"><span class="nb">rewrite</span> prf <span class="kr">in</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>prf</var><span class="hyp-type"><b>: </b><span>A = B</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -48,8 +45,8 @@ subgoal</p>
   <span class="kr">match</span> prf <span class="kr">in</span> (_ = y) <span class="kr">return</span> y <span class="kr">with</span>
   | eq_refl =&gt; x
   <span class="kr">end</span> = x</blockquote></div></div></small></span></pre><p>Clearly the left hand side and right hand side are equal. But I am not
-sure how to get rid of the annoying <tt class="docutils literal">match</tt> clause on the left hand
-side. In particular, trying to <tt class="docutils literal">destruct prf</tt> yields the following
+sure how to get rid of the annoying <span class="docutils literal">match</span> clause on the left hand
+side. In particular, trying to <span class="docutils literal">destruct prf</span> yields the following
 error</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="removing-trivial-match-clause-in-coq-v-chk7" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Abstracting <span class="nb">over</span> the terms <span class="s2">&quot;A&quot;</span> <span class="kn">and</span> <span class="s2">&quot;prf&quot;</span>
 leads to a term
@@ -60,22 +57,22 @@ leads to a term
 Reason <span class="kr">is</span>: In <span class="nb">pattern</span>-matching on term <span class="s2">&quot;prf0&quot;</span> the
 branch <span class="kr">for</span> <span class="nb">constructor</span> <span class="s2">&quot;eq_refl&quot;</span> has type <span class="s2">&quot;A&quot;</span>
 which should be <span class="s2">&quot;A0&quot;</span>.</blockquote></div></div></small></span></pre><p>Is there a way to get rid of this match clause?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>This is not provable in Coq without assuming an extra axiom, usually
-<tt class="docutils literal">eq_rect_eq</tt> or something equivalent (Uniqueness of Identity Proofs
+<span class="docutils literal">eq_rect_eq</span> or something equivalent (Uniqueness of Identity Proofs
 (UIP) or Axiom K).</p>
-<p>If you restrict <tt class="docutils literal">castLemma0</tt> to the <tt class="docutils literal">eq_refl</tt> case, that is
-<tt class="docutils literal">forall (x : A), cast A eq_refl x = x</tt>, this is provable by
+<p>If you restrict <span class="docutils literal">castLemma0</span> to the <span class="docutils literal">eq_refl</span> case, that is
+<span class="docutils literal">forall (x : A), cast A eq_refl x = x</span>, this is provable by
 reflexivity.</p>
 <p>One way to understand why this is not provable, is to accept that it
-is consistant to assume an axiom <tt class="docutils literal">bool_eq_not : bool = bool</tt> such
-that <tt class="docutils literal">cast bool bool_eq_not x = not x</tt>. Plugging in <tt class="docutils literal">bool_eq_not</tt>
-for <tt class="docutils literal">prf</tt> in <tt class="docutils literal">castLemma0</tt> would imply that <tt class="docutils literal">not x = x</tt>, which is
+is consistant to assume an axiom <span class="docutils literal">bool_eq_not : bool = bool</span> such
+that <span class="docutils literal">cast bool bool_eq_not x = not x</span>. Plugging in <span class="docutils literal">bool_eq_not</span>
+for <span class="docutils literal">prf</span> in <span class="docutils literal">castLemma0</span> would imply that <span class="docutils literal">not x = x</span>, which is
 certainly wrong.</p>
 <p>Proving that this is possible requires demonstrating a model of type
-theory where <tt class="docutils literal">bool_eq_nat</tt> is constructible. This was first done in
+theory where <span class="docutils literal">bool_eq_nat</span> is constructible. This was first done in
 the paper &quot;The groupoid interpretation of type theory&quot;, by Martin
 Hofmann and Thomas Streicher. There have since been several other
 models, including a model in simplicial sets by Voevodsky, and several
@@ -84,9 +81,9 @@ aspect of the field of Homotopy Type Theory (HoTT).</p>
 <hr class="docutils" />
 <p>As a side note, there is a somewhat recently added (and still
 experimental) feature <a class="reference external" href="https://coq.inria.fr/refman/addendum/sprop.html">SProp (documentation)</a> that if you also
-<tt class="docutils literal">Set Definitional UIP</tt> lets you prove this.</p>
+<span class="docutils literal">Set Definitional UIP</span> lets you prove this.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

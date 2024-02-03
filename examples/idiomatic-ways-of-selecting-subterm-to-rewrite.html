@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Idiomatic ways of selecting subterm to rewrite</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="idiomatic-ways-of-selecting-subterm-to-rewrite">
+<div class="alectryon-root alectryon-centered"><main id="idiomatic-ways-of-selecting-subterm-to-rewrite">
 <h1 class="title">Idiomatic ways of selecting subterm to rewrite</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44516470">https://stackoverflow.com/q/44516470</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44516470">https://stackoverflow.com/q/44516470</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Suppose we have a conclusion of form: <tt class="docutils literal">a + b + c + d + e</tt>. We also
+<section id="question">
+<h2>Question</h2>
+<p>Suppose we have a conclusion of form: <span class="docutils literal">a + b + c + d + e</span>. We also
 have a lemma:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk0"><span class="kn">Lemma</span> <span class="nf">plus_assoc</span> : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> <span class="nv">p</span> : nat, n + (m + p) = n + m + p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> <span class="nv">p</span> : nat, n + (m + p) = n + m + p</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>What are idiomatic ways to arbitrarily &quot;insert a pair of parentheses&quot;
@@ -36,52 +33,48 @@ there's more than one available place.</p>
 <p>What I generally end up doing is the following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk1"><span class="nb">replace</span> (a + b + c + d + e) <span class="kr">with</span> (a + b + c + (d + e))
     <span class="bp">by</span> <span class="bp">now</span> <span class="nb">rewrite</span> plus_assoc.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a + b + c + (d + e) = a + b + c + (d + e)</div></blockquote></div></div></small></span></pre><p>And while this formulation does state exactly what I want to do, it
-gets extremely long-winded for formulations more complicated than <tt class="docutils literal">a
-+ b + c + ...</tt>.</p>
-</div>
-<div class="section" id="answer-gilles-so-stop-being-evil">
-<h1>Answer (Gilles 'SO- stop being evil')</h1>
-<p><tt class="docutils literal">rewrite &lt;- lemma</tt> expects <tt class="docutils literal">lemma</tt> to be an equality, that is, a
-term whose type is of the form <tt class="docutils literal">something1 = something2</tt>. Like with
+gets extremely long-winded for formulations more complicated than <span class="docutils literal">a + b + c + ...</span>.</p>
+</section>
+<section id="answer-gilles-so-stop-being-evil">
+<h2>Answer (Gilles 'SO- stop being evil')</h2>
+<p><span class="docutils literal">rewrite &lt;- lemma</span> expects <span class="docutils literal">lemma</span> to be an equality, that is, a
+term whose type is of the form <span class="docutils literal">something1 = something2</span>. Like with
 most other tactics, you can also pass it a function that returns an
-equality, that is, a term whose type is of the form <tt class="docutils literal">forall param1
-... paramN, something1 = something2</tt>, in which case Coq will look for
+equality, that is, a term whose type is of the form <span class="docutils literal">forall param1 ... paramN, something1 = something2</span>, in which case Coq will look for
 a place where it can apply the lemma to parameters to form a subterm
 of the goal. Coq's algorithm is deterministic, but letting it choose
 is not particularly useful except when performing repeated rewrites
 that eventually exhaust all possibilities. Here Coq happens to choose
-your desired goal with <tt class="docutils literal">rewrite &lt;- plus_assoc</tt>, but I assume that
+your desired goal with <span class="docutils literal">rewrite &lt;- plus_assoc</span>, but I assume that
 this was just an example and you're after a general technique.</p>
 <p>You can get more control over where to perform the rewrite by
 supplying more parameters to the lemma, to get a more specific
-equality. For example, if you want to specify that <tt class="docutils literal"><span class="pre">(((a</span> + b) + c) +
-d) + e</tt> should be turned into <tt class="docutils literal">((a + b) + c) + (d + e)</tt>, i.e. that
-the associativity lemma should be applied to the parameters <tt class="docutils literal">(a + b)
-+ c</tt>, <tt class="docutils literal">d</tt> and <tt class="docutils literal">e</tt>, you can write</p>
+equality. For example, if you want to specify that <span class="docutils literal"><span class="pre">(((a</span> + b) + c) + d) + e</span> should be turned into <span class="docutils literal">((a + b) + c) + (d + e)</span>, i.e. that
+the associativity lemma should be applied to the parameters <span class="docutils literal">(a + b) + c</span>, <span class="docutils literal">d</span> and <span class="docutils literal">e</span>, you can write</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk2"><span class="nb">rewrite</span> &lt;- (plus_assoc ((a + b) + c) d e).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a + b + c + (d + e) = a + b + c + (d + e)</div></blockquote></div></div></small></span></pre><p>You don't need to supply all the parameters, just enough to pinpoint
 the place where you want to apply the lemma. For example, here, it's
-enough to specify <tt class="docutils literal">d</tt> as the second argument. You can do this by
+enough to specify <span class="docutils literal">d</span> as the second argument. You can do this by
 leaving the third parameter out altogether and specifying the wildcard
-<tt class="docutils literal">_</tt> as the first parameter.</p>
+<span class="docutils literal">_</span> as the first parameter.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk3"><span class="nb">rewrite</span> &lt;- (plus_assoc _ d).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a + b + c + (d + e) = a + b + c + (d + e)</div></blockquote></div></div></small></span></pre><p>Occasionally there are identical subterms and you only want to rewrite
-one of them. In this case you can't use the <tt class="docutils literal">rewrite</tt> family of
-tactics alone. One approach is to use <tt class="docutils literal">replace</tt> with a bigger term
-where you pick what you want to change, or event <tt class="docutils literal">assert</tt> to replace
-the whole goal. Another approach is to use the <tt class="docutils literal">set</tt> tactics, which
+one of them. In this case you can't use the <span class="docutils literal">rewrite</span> family of
+tactics alone. One approach is to use <span class="docutils literal">replace</span> with a bigger term
+where you pick what you want to change, or event <span class="docutils literal">assert</span> to replace
+the whole goal. Another approach is to use the <span class="docutils literal">set</span> tactics, which
 lets you give a name to a specific occurrence of a subterm, then rely
-on that name to identify specific subterms, and finally call <tt class="docutils literal">subst</tt>
+on that name to identify specific subterms, and finally call <span class="docutils literal">subst</span>
 to get rid of the name when you're done.</p>
 <p>An alternative approach is to forget about which lemmas to apply, and
 just specify how you want to change the goal with something like
-<tt class="docutils literal">assert</tt> or a plain <tt class="docutils literal">replace ... with ... .</tt>. Then let automated
-tactics such as <tt class="docutils literal">congruence</tt>, <tt class="docutils literal">lia</tt>, <tt class="docutils literal">solve [firstorder]</tt>, etc.
+<span class="docutils literal">assert</span> or a plain <span class="docutils literal">replace ... with ... .</span>. Then let automated
+tactics such as <span class="docutils literal">congruence</span>, <span class="docutils literal">lia</span>, <span class="docutils literal">solve [firstorder]</span>, etc.
 find parameters that make the proof work. With this approach, you do
 have to write down big parts of the goal, but you save on specifying
 lemmas. Which approach works best depends on where you are on a big
 proof and what tends to be stable during development and what isn't.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>IMO your best option is to use the ssreflect pattern selection
 language, available in Coq 8.7 or by installing math-comp in earlier
 versions. This language is documented in the manual:
@@ -95,9 +88,9 @@ versions. This language is documented in the manual:
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk6"><span class="kn">Lemma</span> <span class="nf">example</span> <span class="nv">m</span> <span class="nv">n</span> <span class="nv">o</span> <span class="nv">p</span> : n + o + p + m = m + n + o + p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n, o, p</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n + o + p + m = m + n + o + p</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="idiomatic-ways-of-selecting-subterm-to-rewrite-v-chk7"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>m, n, o, p</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n + o + p + m = m + n + o + p</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">by</span> <span class="nb">rewrite</span> -[_ + _ + o]addnA -[m + _ + p]addnA [m + _]addnC.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>If you don't want to prove a helper lemma, then one of your choices is
 using Ltac to pattern match on the structure of the equality on your
 hands. This way you can bind arbitrary complex subexpressions to
@@ -117,19 +110,17 @@ a + <span class="mi">1</span> + <span class="mi">2</span> + (b + c + d) + e</spa
            <span class="bp">by</span> <span class="bp">now</span> <span class="nb">rewrite</span> &lt;- <span class="nl">?plus_assoc</span>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b, c, d, e</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>a + <span class="mi">1</span> + <span class="mi">2</span> + (b + c + d) + e =
 a + <span class="mi">1</span> + <span class="mi">2</span> + (b + c + d) + e</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>In the above piece of code <tt class="docutils literal"><span class="pre">?a</span></tt> stands for <tt class="docutils literal">a + 1 + 2</tt>. This, of
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>In the above piece of code <span class="docutils literal"><span class="pre">?a</span></span> stands for <span class="docutils literal">a + 1 + 2</span>. This, of
 course, doesn't improve anything if you are dealing with simple
 variables, it helps only when you are dealing with complex nested
 expressions.</p>
 <p>Also, if you need to rewrite things in the goal, then you can use
 something like this:</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="o">|-</span> <span class="nl">?a</span> <span class="o">+</span> <span class="nl">?b</span> <span class="o">+</span> <span class="nl">?c</span> <span class="o">+</span> <span class="nl">?d</span> <span class="o">+</span> <span class="nl">?e</span> <span class="o">=</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="n">call</span> <span class="n">your</span> <span class="n">tactics</span> <span class="n">here</span><span class="o">&gt;</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

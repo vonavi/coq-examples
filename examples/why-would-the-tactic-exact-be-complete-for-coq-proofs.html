@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why would the tactic exact be complete for Coq proofs?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,29 +14,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-would-the-tactic-exact-be-complete-for-coq-proofs">
-<h1 class="title">Why would the tactic <tt class="docutils literal">exact</tt> be complete for Coq proofs?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46386249">https://stackoverflow.com/q/46386249</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="why-would-the-tactic-exact-be-complete-for-coq-proofs">
+<h1 class="title">Why would the tactic <span class="docutils literal">exact</span> be complete for Coq proofs?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46386249">https://stackoverflow.com/q/46386249</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In the question <a class="reference external" href="https://stackoverflow.com/questions/32682544/is-there-a-minimal-complete-set-of-tactics-in-coq">Is there a minimal complete set of tactics in Coq?</a>,
-the answers mentioned that <tt class="docutils literal">exact</tt> would be enough to prove all
+the answers mentioned that <span class="docutils literal">exact</span> would be enough to prove all
 goals. Could someone explain and give an example? For example, how
-would the goal <tt class="docutils literal">A \/ B <span class="pre">-&gt;</span> B \/ A</tt> with <tt class="docutils literal">A</tt>, <tt class="docutils literal">B</tt> being <tt class="docutils literal">Prop</tt>
-be proven by merely a bunch of <tt class="docutils literal">exact</tt>? If you have other better
+would the goal <span class="docutils literal">A \/ B <span class="pre">-&gt;</span> B \/ A</span> with <span class="docutils literal">A</span>, <span class="docutils literal">B</span> being <span class="docutils literal">Prop</span>
+be proven by merely a bunch of <span class="docutils literal">exact</span>? If you have other better
 examples, please don't hesitate to answer as well. The point is to
 give some explanation on this issue and give a non-trivial example.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>Recall that proofs in Coq are just terms in the (lambda) Calculus of
 Inductive Constructions. Thus, your lemma is proven as:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk0"><span class="kn">Lemma</span> <span class="nf">test</span> <span class="nv">A</span> <span class="nv">B</span> : A \/ B -&gt; B \/ A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A \/ B -&gt; B \/ A</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -51,9 +48,8 @@ Inductive Constructions. Thus, your lemma is proven as:</p>
            | or_introl p =&gt; or_intror p
            | or_intror p =&gt; or_introl p
            <span class="kr">end</span>.</span></span></pre><p>[they differ in &quot;opacity&quot;, don't worry about that, but Coq 8.8 will
-likely support the <tt class="docutils literal">Lemma foo := term</tt> syntax, closer to <tt class="docutils literal">exact
-term</tt>.]</p>
-<p>A more convenient tactic to build proofs is <tt class="docutils literal">refine</tt>, which allows
+likely support the <span class="docutils literal">Lemma foo := term</span> syntax, closer to <span class="docutils literal">exact term</span>.]</p>
+<p>A more convenient tactic to build proofs is <span class="docutils literal">refine</span>, which allows
 you to specify partial terms:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk2"><span class="kn">Lemma</span> <span class="nf">test&#39;&#39;</span> <span class="nv">A</span> <span class="nv">B</span> : A \/ B -&gt; B \/ A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A \/ B -&gt; B \/ A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">A \/ B -&gt; B \/ A</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -61,12 +57,12 @@ you to specify partial terms:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk5"><span class="nb">refine</span> (<span class="kr">match</span> x <span class="kr">with</span> | or_introl _ =&gt; _ | or_intror _ =&gt; _ <span class="kr">end</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A \/ B</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B \/ A</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk6" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A \/ B</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><label class="goal-separator" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk6"><hr></label><div class="goal-conclusion">B \/ A</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk7">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A \/ B</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B \/ A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (or_intror a).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="why-would-the-tactic-exact-be-complete-for-coq-proofs-v-chk8">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A, B</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A \/ B</span></span></span><br><span><var>b</var><span class="hyp-type"><b>: </b><span>B</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">B \/ A</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (or_introl b).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In fact, <tt class="docutils literal">refine</tt> is the basic tactic of the Coq proof engine;
-<tt class="docutils literal">exact T</tt> basically executes <tt class="docutils literal">refine T</tt> and checks that no goals
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In fact, <span class="docutils literal">refine</span> is the basic tactic of the Coq proof engine;
+<span class="docutils literal">exact T</span> basically executes <span class="docutils literal">refine T</span> and checks that no goals
 remain open.</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>Because of its theoretical foundations, the logic of Coq does not rely
 on tactics as a primitive way to construct proofs. In fact, you could
 use Coq and construct what would be considered as legitimate proofs
@@ -85,28 +81,28 @@ that makes it possible to perform proofs without having a thorough
 knowledge of Coq's theoretical foundations. My favorite set of tactics
 is:</p>
 <ul class="simple">
-<li><tt class="docutils literal">intros</tt>, <tt class="docutils literal">apply</tt> (to deal with universal quantification and
-implication);</li>
-<li><tt class="docutils literal">destruct</tt> (to deal with logical connectives <tt class="docutils literal">and</tt>, also written
-<tt class="docutils literal">/\</tt> and <tt class="docutils literal">or</tt>, also written <tt class="docutils literal">\/</tt>, and existential
-quantification, when in hypotheses);</li>
-<li><tt class="docutils literal">split</tt> to deal with <tt class="docutils literal">and</tt> when in a goal's conclusion;</li>
-<li><tt class="docutils literal">left</tt>, <tt class="docutils literal">right</tt> to deal with <tt class="docutils literal">or</tt> when in a goal's conclusion;</li>
-<li><tt class="docutils literal">exists</tt> to deal with an existential quantification when in the
-conclusion;</li>
-<li><tt class="docutils literal">assert</tt> to establish intermediate facts (not needed for
-completeness, but it really helps you write more readable proofs);</li>
-<li><tt class="docutils literal">exact</tt> and <tt class="docutils literal">assumption</tt> when what you want to prove is really
-obvious from the context.</li>
+<li><p><span class="docutils literal">intros</span>, <span class="docutils literal">apply</span> (to deal with universal quantification and
+implication);</p></li>
+<li><p><span class="docutils literal">destruct</span> (to deal with logical connectives <span class="docutils literal">and</span>, also written
+<span class="docutils literal">/\</span> and <span class="docutils literal">or</span>, also written <span class="docutils literal">\/</span>, and existential
+quantification, when in hypotheses);</p></li>
+<li><p><span class="docutils literal">split</span> to deal with <span class="docutils literal">and</span> when in a goal's conclusion;</p></li>
+<li><p><span class="docutils literal">left</span>, <span class="docutils literal">right</span> to deal with <span class="docutils literal">or</span> when in a goal's conclusion;</p></li>
+<li><p><span class="docutils literal">exists</span> to deal with an existential quantification when in the
+conclusion;</p></li>
+<li><p><span class="docutils literal">assert</span> to establish intermediate facts (not needed for
+completeness, but it really helps you write more readable proofs);</p></li>
+<li><p><span class="docutils literal">exact</span> and <span class="docutils literal">assumption</span> when what you want to prove is really
+obvious from the context.</p></li>
 </ul>
 <p>When reasoning about natural numbers, you will undoubtedly define
 functions by pattern-matching and recursively and reason about their
-behavior, so it is important to also know the tactics <tt class="docutils literal">change</tt>,
-<tt class="docutils literal">simpl</tt>, <tt class="docutils literal">case</tt>, <tt class="docutils literal">case_eq</tt>, <tt class="docutils literal">injection</tt>, and <tt class="docutils literal">discriminate</tt>.
+behavior, so it is important to also know the tactics <span class="docutils literal">change</span>,
+<span class="docutils literal">simpl</span>, <span class="docutils literal">case</span>, <span class="docutils literal">case_eq</span>, <span class="docutils literal">injection</span>, and <span class="docutils literal">discriminate</span>.
 Last, when you start making proofs that are advanced enough you need
-tools for automated proofs like <tt class="docutils literal">ring</tt> and <tt class="docutils literal">lia</tt>.</p>
+tools for automated proofs like <span class="docutils literal">ring</span> and <span class="docutils literal">lia</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

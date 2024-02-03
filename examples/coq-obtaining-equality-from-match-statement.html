@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq - Obtaining equality from match statement</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,32 +14,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-obtaining-equality-from-match-statement">
-<h1 class="title">Coq - Obtaining equality from <tt class="docutils literal">match</tt> statement</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/70946233">https://stackoverflow.com/q/70946233</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-obtaining-equality-from-match-statement">
+<h1 class="title">Coq - Obtaining equality from <span class="docutils literal">match</span> statement</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/70946233">https://stackoverflow.com/q/70946233</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Here's a simplified version of something I'm trying to implement in
-Coq. I have an inductive type, say <tt class="docutils literal">foo</tt>, whose constructor takes in
-another type <tt class="docutils literal">A</tt>, and a function with inputs in <tt class="docutils literal">A</tt>.</p>
+Coq. I have an inductive type, say <span class="docutils literal">foo</span>, whose constructor takes in
+another type <span class="docutils literal">A</span>, and a function with inputs in <span class="docutils literal">A</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">foo</span> :=
-| <span class="nb">constructor</span> (A : <span class="kt">Type</span>) (f : A -&gt; bool).</span></span></pre><p>I also have a function which, given an object of type <tt class="docutils literal">foo</tt>, tells
+| <span class="nb">constructor</span> (A : <span class="kt">Type</span>) (f : A -&gt; bool).</span></span></pre><p>I also have a function which, given an object of type <span class="docutils literal">foo</span>, tells
 me what type was used to construct it.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">foo_type</span> (<span class="nv">x</span> : foo) :=
   <span class="kr">match</span> x <span class="kr">with</span>
   | <span class="nb">constructor</span> A f =&gt; A
   <span class="kr">end</span>.</span></span></pre><p>So far so good. But now, I want to define a function which takes in an
-object <tt class="docutils literal">x</tt> of type <tt class="docutils literal">foo</tt> and an object <tt class="docutils literal">y</tt> of type <tt class="docutils literal">foo_type
-x</tt>, and returns the <tt class="docutils literal">f y</tt>, where <tt class="docutils literal">f</tt> is the function used in the
-constructor of <tt class="docutils literal">x</tt>.</p>
+object <span class="docutils literal">x</span> of type <span class="docutils literal">foo</span> and an object <span class="docutils literal">y</span> of type <span class="docutils literal">foo_type x</span>, and returns the <span class="docutils literal">f y</span>, where <span class="docutils literal">f</span> is the function used in the
+constructor of <span class="docutils literal">x</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-obtaining-equality-from-match-statement-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-obtaining-equality-from-match-statement-v-chk0"><span class="kn">Definition</span> <span class="nf">foo_func</span> (<span class="nv">x</span> : foo) (<span class="nv">y</span> : (foo_type x)) :=
   <span class="kr">match</span> x <span class="kr">with</span>
   | <span class="nb">constructor</span> A f =&gt; f y
@@ -50,31 +46,27 @@ A : <span class="kt">Type</span>
 f : A -&gt; bool
 The term <span class="s2">&quot;y&quot;</span> has type <span class="s2">&quot;foo_type x&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;A&quot;</span>.</blockquote></div></div></small></span></pre><p>However, this doesn't work. Coq tells me that there is a type error:
-<tt class="docutils literal">y</tt> is of type <tt class="docutils literal">foo_type x</tt>, when it should be of type <tt class="docutils literal">A</tt>.</p>
-<p>Now, I know that <tt class="docutils literal">foo_type x</tt> evaluates to <tt class="docutils literal">A</tt> in this situation.
+<span class="docutils literal">y</span> is of type <span class="docutils literal">foo_type x</span>, when it should be of type <span class="docutils literal">A</span>.</p>
+<p>Now, I know that <span class="docutils literal">foo_type x</span> evaluates to <span class="docutils literal">A</span> in this situation.
 Using <a class="reference external" href="https://stackoverflow.com/questions/52514957">this stackoverflow question</a>, I found a function
-I can use that takes as input an equality of types <tt class="docutils literal">A = B</tt> and an
-element <tt class="docutils literal">a : A</tt> and returns <tt class="docutils literal">a</tt>, but of type <tt class="docutils literal">B</tt>. However, to
-make use of this, I need to be able to obtain the equality <tt class="docutils literal">foo_type
-x = A</tt> within the <tt class="docutils literal">match</tt> part of my function definition. This
-boils down to obtaining the equality <tt class="docutils literal">x = constructor A f</tt>.</p>
-<p>So: within a <tt class="docutils literal">match x with</tt> statement in my definition, is it
-possible to extract the equality <tt class="docutils literal">x = constructor A f</tt>? How can I do
+I can use that takes as input an equality of types <span class="docutils literal">A = B</span> and an
+element <span class="docutils literal">a : A</span> and returns <span class="docutils literal">a</span>, but of type <span class="docutils literal">B</span>. However, to
+make use of this, I need to be able to obtain the equality <span class="docutils literal">foo_type x = A</span> within the <span class="docutils literal">match</span> part of my function definition. This
+boils down to obtaining the equality <span class="docutils literal">x = constructor A f</span>.</p>
+<p>So: within a <span class="docutils literal">match x with</span> statement in my definition, is it
+possible to extract the equality <span class="docutils literal">x = constructor A f</span>? How can I do
 this? Or is there another way to get around this issue?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You need to use dependent pattern matching (an give some information
 to Coq) to get an equality proof between a term and its
 pattern-matched content:</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">x</span> <span class="kr">as</span> <span class="n">x0</span> <span class="kr">return</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-&gt;</span> <span class="o">...</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">x</span> <span class="kr">as</span> <span class="n">x0</span> <span class="kr">return</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-&gt;</span> <span class="o">...</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">pat</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="o">(</span><span class="nv">e</span> <span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">pat</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="o">...</span>
 <span class="o">|</span> <span class="o">...</span>
-<span class="kr">end</span> <span class="n">eq_refl</span>
-</pre>
-<p>On the outside of the match construct, you can build a term <tt class="docutils literal">eq_refl
-: x = x</tt> that is refined during pattern matching. This is called the
+<span class="kr">end</span> <span class="n">eq_refl</span></code></pre>
+<p>On the outside of the match construct, you can build a term <span class="docutils literal">eq_refl : x = x</span> that is refined during pattern matching. This is called the
 convoy pattern in <a class="reference external" href="http://adam.chlipala.net/cpdt/">Certified programming with dependent types</a>.</p>
 <p>In your case however there is a related, slightly simpler alternative,
 still using dependent pattern matching:</p>
@@ -87,8 +79,8 @@ need to write particularly bad code. Use the second version! (And you
 would need about the same thing anyway, whether explicit or folded
 into an existing lemma, to actually rewrite the equality you get from
 the first version in the type of any term.)</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

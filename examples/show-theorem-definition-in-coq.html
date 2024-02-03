@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Show theorem definition in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,34 +14,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="show-theorem-definition-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="show-theorem-definition-in-coq">
 <h1 class="title">Show theorem definition in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/62939436">https://stackoverflow.com/q/62939436</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/62939436">https://stackoverflow.com/q/62939436</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'd like to view the definition of a Standard Library theorem which I
-found through <tt class="docutils literal">Search</tt>. I think seeing the definition will help me
+found through <span class="docutils literal">Search</span>. I think seeing the definition will help me
 complete a similar theorem.</p>
-<p>Doing <tt class="docutils literal">Print Rdiv_lt_0_compat.</tt> yields:</p>
+<p>Doing <span class="docutils literal">Print Rdiv_lt_0_compat.</span> yields:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="show-theorem-definition-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Rdiv_lt_0_compat = 
 <span class="kr">fun</span> (<span class="nv">a</span> <span class="nv">b</span> : R) (<span class="nv">H</span> : (<span class="mi">0</span> &lt; a)%R) (<span class="nv">H0</span> : (<span class="mi">0</span> &lt; b)%R) =&gt;
 Rmult_lt_0_compat a (/ b) H (Rinv_0_lt_compat b H0)
      : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : R,
        (<span class="mi">0</span> &lt; a)%R -&gt; (<span class="mi">0</span> &lt; b)%R -&gt; (<span class="mi">0</span> &lt; a / b)%R
 
-<span class="kn">Arguments</span> Rdiv_lt_0_compat (_ _)%R_scope _ _</blockquote></div></div></small></span></pre><p>Setting <tt class="docutils literal">Set Printing All.</tt> doesn't help. There's nothing extra
+<span class="kn">Arguments</span> Rdiv_lt_0_compat (_ _)%R_scope _ _</blockquote></div></div></small></span></pre><p>Setting <span class="docutils literal">Set Printing All.</span> doesn't help. There's nothing extra
 available in <a class="reference external" href="https://coq.inria.fr/library/Coq.Reals.RIneq.html#Rdiv_lt_0_compat">the docs page</a>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The whole Coq system is based on the idea <em>Proofs are programs,
 logical formulas are types</em>. When you consider a theorem, it is a
 proof (a program) and its statement is a logical formula (the type of
@@ -52,16 +49,16 @@ defining a program.</p>
 entirely by hand was long and tiresome, so a tactic language was
 invented to explain how to construct the <em>proof-programs</em> in a shorter
 and less difficult way. But what is recorded and eventually checked
-are still the programs that you see using <tt class="docutils literal">Print</tt>.</p>
-<p>When building a proof-program, the tactic <tt class="docutils literal">intros</tt> constructs
+are still the programs that you see using <span class="docutils literal">Print</span>.</p>
+<p>When building a proof-program, the tactic <span class="docutils literal">intros</span> constructs
 anonymous function expressions (also known as lambdas, usually written
-with the keyword <tt class="docutils literal">fun</tt>, and <tt class="docutils literal">apply</tt> constructs an application of a
-function to a certain number arguments, which <tt class="docutils literal">apply</tt> infers or
-leaves to the user as goals. The tactics <tt class="docutils literal">induction</tt> and <tt class="docutils literal">rewrite</tt>
+with the keyword <span class="docutils literal">fun</span>, and <span class="docutils literal">apply</span> constructs an application of a
+function to a certain number arguments, which <span class="docutils literal">apply</span> infers or
+leaves to the user as goals. The tactics <span class="docutils literal">induction</span> and <span class="docutils literal">rewrite</span>
 are similar, but they apply theorems that are not given by the user.
-The tactic <tt class="docutils literal">destruct</tt> essentially produces a piece of programs that
+The tactic <span class="docutils literal">destruct</span> essentially produces a piece of programs that
 is a pattern-matching construct.</p>
-<p>With <tt class="docutils literal">Rdiv_lt_0_compat</tt>, you are lucky that the proof built by the
+<p>With <span class="docutils literal">Rdiv_lt_0_compat</span>, you are lucky that the proof built by the
 tactic is quite short. Often, proofs written using tactics produce
 programs that are much longer.</p>
 <p>If instead of the program, you want to see the sequence of tactics
@@ -71,25 +68,25 @@ are the clues.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Reals.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="show-theorem-definition-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="show-theorem-definition-in-coq-v-chk1"><span class="kn">Locate</span> Rdiv_lt_0_compat.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Constant Coq.Reals.RIneq.Rdiv_lt_0_compat</blockquote></div></div></small></span></pre><p>This sequence of names indicates the hierarchy of modules in which the
-theorem is kept. The first name <tt class="docutils literal">Coq</tt> expresses that this theorem is
-in the Coq sources, essentially in directory <tt class="docutils literal"><span class="pre">...theories/</span></tt>, the
-second name <tt class="docutils literal">Reals</tt>, indicates that you should look in tge sub
-directory <tt class="docutils literal"><span class="pre">...theories/Reals</span></tt>. The fourth name should not be used as
+theorem is kept. The first name <span class="docutils literal">Coq</span> expresses that this theorem is
+in the Coq sources, essentially in directory <span class="docutils literal"><span class="pre">...theories/</span></span>, the
+second name <span class="docutils literal">Reals</span>, indicates that you should look in tge sub
+directory <span class="docutils literal"><span class="pre">...theories/Reals</span></span>. The fourth name should not be used as
 a directory name, but as file name. So you should look in the file
-<tt class="docutils literal">RIneq.v</tt></p>
+<span class="docutils literal">RIneq.v</span></p>
 <p>So go an look in
 <a class="reference external" href="https://github.com/coq/coq/tree/v8.12/theories/Reals/RIneq.v">https://github.com/coq/coq/tree/v8.12/theories/Reals/RIneq.v</a> and you
 will probably find the script fragment that was used to generate your
 theorem (for the 8.12 version of Coq). I just checked, the theorem
 appears at line
 <a class="reference external" href="https://github.com/coq/coq/blob/c95bd4cf015a3084a8bddf6d3640458c9c25b455/theories/Reals/RIneq.v#L2106">https://github.com/coq/coq/blob/c95bd4cf015a3084a8bddf6d3640458c9c25b455/theories/Reals/RIneq.v#L2106</a></p>
-<p>The sequence of names provided by <tt class="docutils literal">Locate</tt> is not a sure way to find
+<p>The sequence of names provided by <span class="docutils literal">Locate</span> is not a sure way to find
 the file where the script for a theorem is stored. The correspondence
 between the long name and the file path is broken when the theorem is
 defined using modules and functor instantiation. In that case, you
 have to rely on stronger knowledge of how the Coq system works.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

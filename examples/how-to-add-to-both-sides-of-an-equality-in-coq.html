@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to add to both sides of an equality in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,54 +14,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-add-to-both-sides-of-an-equality-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-add-to-both-sides-of-an-equality-in-coq">
 <h1 class="title">How to add to both sides of an equality in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36996408">https://stackoverflow.com/q/36996408</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/36996408">https://stackoverflow.com/q/36996408</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>This seems like a really simple question, but I wasn't able to find
 anything useful.</p>
 <p>I have the statement</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n - x = n</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>and would like to prove</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">n - x + x = n + x</div></blockquote></div></div></small></span></pre><p>I haven't been able to find what theorem allows for this.</p>
-</div>
-<div class="section" id="answer-vinz">
-<h1>Answer (Vinz)</h1>
-<p>You should have a look at the <tt class="docutils literal">rewrite</tt> tactic (and then maybe
-<tt class="docutils literal">reflexivity</tt>).</p>
+</section>
+<section id="answer-vinz">
+<h2>Answer (Vinz)</h2>
+<p>You should have a look at the <span class="docutils literal">rewrite</span> tactic (and then maybe
+<span class="docutils literal">reflexivity</span>).</p>
 <p>EDIT: more info about rewrite:</p>
 <ul>
-<li><p class="first">You can <tt class="docutils literal">rewrite H</tt> (<tt class="docutils literal">rewrite <span class="pre">-&gt;</span> H</tt>) to rewrite from left to
-right</p>
-</li>
-<li><p class="first">You can <tt class="docutils literal">rewrite &lt;- H</tt> to rewrite from right to left</p>
-</li>
-<li><p class="first">You can use the <tt class="docutils literal">pattern</tt> tactic to only select specific instances
+<li><p>You can <span class="docutils literal">rewrite H</span> (<span class="docutils literal">rewrite <span class="pre">-&gt;</span> H</span>) to rewrite from left to
+right</p></li>
+<li><p>You can <span class="docutils literal">rewrite &lt;- H</span> to rewrite from right to left</p></li>
+<li><p>You can use the <span class="docutils literal">pattern</span> tactic to only select specific instances
 of the goal to rewrite. For example, to only rewrite the second
-<tt class="docutils literal">n</tt>, you can perform the following steps</p>
-<pre class="code coq literal-block">
-<span class="nb">pattern</span> <span class="n">n</span> <span class="nb">at</span> <span class="mi">2</span><span class="o">.</span> <span class="nb">rewrite</span> <span class="o">&lt;-</span> <span class="n">H</span><span class="o">.</span>
-</pre>
+<span class="docutils literal">n</span>, you can perform the following steps</p>
+<pre class="code coq literal-block"><code><span class="nb">pattern</span> <span class="n">n</span> <span class="nb">at</span> <span class="mi">2</span><span class="o">.</span> <span class="nb">rewrite</span> <span class="o">&lt;-</span> <span class="n">H</span><span class="o">.</span></code></pre>
 </li>
 </ul>
 <p>In your case, the solution is much simpler.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> In that case, how do I rewrite onto only one side of an
 equation?</p>
-<p><strong>A:</strong> One can also combine <tt class="docutils literal">pattern n at 2. rewrite &lt;- H.</tt> into
-<tt class="docutils literal">rewrite &lt;- H at 2.</tt></p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
-<p>Building on &#64;gallais' suggestion on using <tt class="docutils literal">f_equal</tt>. We start in the
+<p><strong>A:</strong> One can also combine <span class="docutils literal">pattern n at 2. rewrite &lt;- H.</span> into
+<span class="docutils literal">rewrite &lt;- H at 2.</span></p>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
+<p>Building on &#64;gallais' suggestion on using <span class="docutils literal">f_equal</span>. We start in the
 following state:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
@@ -69,18 +62,18 @@ following state:</p>
   H : n - x = n
   ============================
   n - x + x = n + x</blockquote></div></div></small></span></pre><ol class="arabic">
-<li><p class="first">First variant via &quot;forward&quot; reasoning (where one applies theorems
-to hypotheses) using the <tt class="docutils literal">f_equal</tt> lemma.</p>
+<li><p>First variant via &quot;forward&quot; reasoning (where one applies theorems
+to hypotheses) using the <span class="docutils literal">f_equal</span> lemma.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk3"><span class="kn">Check</span> <span class="nb">f_equal</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="nb">f_equal</span>
      : <span class="kr">forall</span> (<span class="nv">A</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A -&gt; B) (<span class="nv">x</span> <span class="nv">y</span> : A),
-       x = y -&gt; f x = f y</blockquote></div></div></small></span></pre><p>It needs the function <tt class="docutils literal">f</tt>, so</p>
+       x = y -&gt; f x = f y</blockquote></div></div></small></span></pre><p>It needs the function <span class="docutils literal">f</span>, so</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk4"><span class="nb">apply</span> <span class="nb">f_equal</span> <span class="kr">with</span> (f := <span class="kr">fun</span> <span class="nv">t</span> =&gt; t + x) <span class="kr">in</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n - x + x = n + x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n - x + x = n + x</div></blockquote></div></div></small></span></pre><p>This will give you:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n - x + x = n + x</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>This can be solved via <tt class="docutils literal">apply H.</tt> or <tt class="docutils literal">exact H.</tt> or
-<tt class="docutils literal">assumption.</tt> or <tt class="docutils literal">auto.</tt> ... or some other way which suits you
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n - x + x = n + x</span></span></span><br></div><span class="goal-separator"><hr></span></blockquote></div></div></small></span></pre><p>This can be solved via <span class="docutils literal">apply H.</span> or <span class="docutils literal">exact H.</span> or
+<span class="docutils literal">assumption.</span> or <span class="docutils literal">auto.</span> ... or some other way which suits you
 the most.</p>
 </li>
-<li><p class="first">Or you can use &quot;backward&quot; reasoning (where one applies theorems to
-the goal). There is also the <tt class="docutils literal">f_equal2</tt> lemma:</p>
+<li><p>Or you can use &quot;backward&quot; reasoning (where one applies theorems to
+the goal). There is also the <span class="docutils literal">f_equal2</span> lemma:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk6"><span class="kn">Check</span> f_equal2.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">f_equal2
      : <span class="kr">forall</span> (<span class="nv">A1</span> <span class="nv">A2</span> <span class="nv">B</span> : <span class="kt">Type</span>) (<span class="nv">f</span> : A1 -&gt; A2 -&gt; B)
          (<span class="nv">x1</span> <span class="nv">y1</span> : A1) (<span class="nv">x2</span> <span class="nv">y2</span> : A2),
@@ -88,7 +81,7 @@ the goal). There is also the <tt class="docutils literal">f_equal2</tt> lemma:</
 subgoals.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> f_equal2; [<span class="bp">assumption</span> | <span class="bp">reflexivity</span>].</span></span></pre><p>or just</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> f_equal2; <span class="nb">trivial</span>.</span></span></pre></li>
-<li><p class="first">There is also the more specialized lemma <tt class="docutils literal">f_equal2_plus</tt>:</p>
+<li><p>There is also the more specialized lemma <span class="docutils literal">f_equal2_plus</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-add-to-both-sides-of-an-equality-in-coq-v-chk7"><span class="kn">Check</span> f_equal2_plus.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">f_equal2_plus
      : <span class="kr">forall</span> <span class="nv">x1</span> <span class="nv">y1</span> <span class="nv">x2</span> <span class="nv">y2</span> : nat,
        x1 = y1 -&gt; x2 = y2 -&gt; x1 + x2 = y1 + y2</blockquote></div></div></small></span></pre><p>Using this lemma we are able to solve the goal with the following
@@ -96,16 +89,16 @@ one-liner:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> (f_equal2_plus _ _ _ _ H eq_refl).</span></span></pre></li>
 </ol>
 <hr class="docutils" />
-<p><strong>A:</strong> Remark that <tt class="docutils literal">apply f_equal with (f := fun t =&gt; t + x).</tt> can
+<p><strong>A:</strong> Remark that <span class="docutils literal">apply f_equal with (f := fun t =&gt; t + x).</span> can
 also be used on the goal.</p>
-<p><strong>Q:</strong> Is there a version of <tt class="docutils literal">f_equal</tt> that works for Setoids?</p>
-<p><strong>A:</strong> To be able to prove the analogous lemma, we must have <tt class="docutils literal">f</tt>
-proper, but to prove <tt class="docutils literal">f</tt> is <tt class="docutils literal">Proper</tt> we need the lemma. Vicious
-circle :) BTW, there is a tactic called <tt class="docutils literal">f_equiv</tt>, which is a setoid
-analogue of the <tt class="docutils literal">f_equal</tt> tactic -- can be useful to do &quot;backward
+<p><strong>Q:</strong> Is there a version of <span class="docutils literal">f_equal</span> that works for Setoids?</p>
+<p><strong>A:</strong> To be able to prove the analogous lemma, we must have <span class="docutils literal">f</span>
+proper, but to prove <span class="docutils literal">f</span> is <span class="docutils literal">Proper</span> we need the lemma. Vicious
+circle :) BTW, there is a tactic called <span class="docutils literal">f_equiv</span>, which is a setoid
+analogue of the <span class="docutils literal">f_equal</span> tactic -- can be useful to do &quot;backward
 reasoning&quot;.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

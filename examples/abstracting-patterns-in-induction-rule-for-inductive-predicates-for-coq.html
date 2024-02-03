@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Abstracting patterns in induction rule for inductive predicates for Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq">
+<div class="alectryon-root alectryon-centered"><main id="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq">
 <h1 class="title">Abstracting patterns in induction rule for inductive predicates for Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/60027551">https://stackoverflow.com/q/60027551</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/60027551">https://stackoverflow.com/q/60027551</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following proposition in Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -58,28 +55,26 @@ subseq (x :: l1) l2 -&gt; subseq l1 l2</div></blockquote></div></div></small><sp
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk14">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: l1) l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x :: l1 = x :: l1</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I worked in Isabelle before Coq. There originally, the induction
 tactic could not solve directly this goal and the trick was to come up
-with a lemma like <tt class="docutils literal">subseq_remove_rewritten</tt> and then prove the
+with a lemma like <span class="docutils literal">subseq_remove_rewritten</span> and then prove the
 original goal. This is the situation in the manual Isabelle/HOL: A
 Proof Assistant for Higher-Order Logic. Later, the tactic became
 smarter and one can write patterns in which to abstract on. So the
 proof is written like this:</p>
-<pre class="code isabelle literal-block">
-<span class="kn">lemma</span><span class="w">
-  </span><span class="kp">assumes</span><span class="w"> </span><span class="s">&quot;subseq (x # l1) l2&quot;</span><span class="w">
-  </span><span class="kp">shows</span><span class="w"> </span><span class="s">&quot;subseq l1 l2&quot;</span><span class="w">
+<pre class="code isabelle literal-block"><code><span class="kn">lemma</span><span class="w">
+  </span><span class="kp">assumes</span><span class="w"> </span><s>&quot;subseq (x # l1) l2&quot;</s><span class="w">
+  </span><span class="kp">shows</span><span class="w"> </span><s>&quot;subseq l1 l2&quot;</s><span class="w">
   </span><span class="k">using</span><span class="w"> </span><span class="n">assms</span><span class="w">
-  </span><span class="kp">apply</span><span class="o">(</span><span class="n">induction</span><span class="w"> </span><span class="s">&quot;x # l1&quot;</span><span class="w"> </span><span class="s">&quot;l2&quot;</span><span class="w"> </span><span class="n">rule</span><span class="o">:</span><span class="w"> </span><span class="n">subseq.induct</span><span class="o">)</span><span class="w">
+  </span><span class="kp">apply</span><span class="o">(</span><span class="n">induction</span><span class="w"> </span><s>&quot;x # l1&quot;</s><span class="w"> </span><s>&quot;l2&quot;</s><span class="w"> </span><span class="n">rule</span><span class="o">:</span><span class="w"> </span><span class="n">subseq.induct</span><span class="o">)</span><span class="w">
     </span><span class="kp">apply</span><span class="w"> </span><span class="n">simp</span><span class="w">
    </span><span class="kp">apply</span><span class="o">(</span><span class="n">intro</span><span class="w"> </span><span class="n">subseq.intros</span><span class="o">(</span><span class="n">3</span><span class="o">),</span><span class="n">simp</span><span class="o">)</span><span class="w">
-  </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="n">intro</span><span class="w"> </span><span class="n">subseq.intros</span><span class="o">(</span><span class="n">3</span><span class="o">))</span>
-</pre>
+  </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="n">intro</span><span class="w"> </span><span class="n">subseq.intros</span><span class="o">(</span><span class="n">3</span><span class="o">))</span></code></pre>
 <p>I was wondering if Coq has a similar way to avoid proving a lemma like
-<tt class="docutils literal">subseq_remove_rewritten</tt> and go directly to prove
-<tt class="docutils literal">subseq_remove</tt>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can use the <tt class="docutils literal">dependent induction</tt> tactic (documented <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction">here</a>).
+<span class="docutils literal">subseq_remove_rewritten</span> and go directly to prove
+<span class="docutils literal">subseq_remove</span>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can use the <span class="docutils literal">dependent induction</span> tactic (documented <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.dependent-induction">here</a>).
 For example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -109,7 +104,7 @@ future. It has a few deficiencies, such as not allowing the user to
 name the variables and hypotheses used in the induction proof. I
 personally prefer to add the equality assumptions to the proof myself,
 as in your first attempt, or to reformulate the definition of
-<tt class="docutils literal">subseq</tt> as a <tt class="docutils literal">Fixpoint</tt>, so that you can invert the hypothesis by
+<span class="docutils literal">subseq</span> as a <span class="docutils literal">Fixpoint</span>, so that you can invert the hypothesis by
 simplification. For example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -132,8 +127,8 @@ subseq (x :: l1) l2 -&gt; subseq l1 l2</div></blockquote></div></div></small><sp
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk20"><span class="nb">intros</span> x l1 l2 H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: l1) l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq l1 l2</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-patterns-in-induction-rule-for-inductive-predicates-for-coq-v-chk21"><span class="nb">induction</span> l2 <span class="kr">as</span> [|x2 l2 IH]; <span class="kp">try</span> <span class="bp">easy</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l1</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq (x :: l1) (x2 :: l2)</span></span></span><br><span><var>IH</var><span class="hyp-type"><b>: </b><span>subseq (x :: l1) l2 -&gt; subseq l1 l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq l1 (x2 :: l2)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> H <span class="kr">as</span> [[&lt;- H]|H]; <span class="nb">eauto using</span> subseq_nin.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

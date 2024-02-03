@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to do induction on the length of a list in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,56 +14,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-do-induction-on-the-length-of-a-list-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-do-induction-on-the-length-of-a-list-in-coq">
 <h1 class="title">How to do induction on the length of a list in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45872719">https://stackoverflow.com/q/45872719</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/45872719">https://stackoverflow.com/q/45872719</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>When reasoning on paper, I often use arguments by induction on the
 length of some list. I want to formalized these arguments in Coq, but
 there doesn't seem to be any built in way to do induction on the
 length of a list.</p>
 <p>How should I perform such an induction?</p>
 <p>More concretely, I am trying to prove <a class="reference external" href="http://pastebin.ubuntu.com/25386445/">this theorem</a>. On paper, I proved it by
-induction on the length of <tt class="docutils literal">w</tt>. My goal is to formalize this proof
+induction on the length of <span class="docutils literal">w</span>. My goal is to formalize this proof
 in Coq.</p>
-</div>
-<div class="section" id="answer-yves">
-<h1>Answer (Yves)</h1>
+</section>
+<section id="answer-yves">
+<h2>Answer (Yves)</h2>
 <p>There are many general patterns of induction like this one that can be
 covered by the existing library on well founded induction. In this
 case, you can prove any property P by induction on length of lists by
-using <tt class="docutils literal">well_founded_induction</tt>, <tt class="docutils literal">wf_inverse_image</tt>, and
-<tt class="docutils literal">PeanoNat.Nat.lt_wf_0</tt>, as in the following command:</p>
+using <span class="docutils literal">well_founded_induction</span>, <span class="docutils literal">wf_inverse_image</span>, and
+<span class="docutils literal">PeanoNat.Nat.lt_wf_0</span>, as in the following command:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk0"><span class="nb">induction</span> l <span class="nb">using</span> (well_founded_induction
                        (wf_inverse_image _ nat _ (@length _)
                                          PeanoNat.Nat.lt_wf_0)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>list T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : list T, length y &lt; length l -&gt; P y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P l</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>if you are working with lists of type <tt class="docutils literal">T</tt> and proving a goal <tt class="docutils literal">P
-l</tt>, this generates an hypothesis of the form</p>
-<pre class="code coq literal-block">
-<span class="n">H</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">,</span> <span class="n">length</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">y</span>
-</pre>
+</span></span></pre><p>if you are working with lists of type <span class="docutils literal">T</span> and proving a goal <span class="docutils literal">P l</span>, this generates an hypothesis of the form</p>
+<pre class="code coq literal-block"><code><span class="n">H</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">y</span> <span class="o">:</span> <span class="n">list</span> <span class="n">T</span><span class="o">,</span> <span class="n">length</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">P</span> <span class="n">y</span></code></pre>
 <p>This will apply to any other datatype (like trees for instance) as
-long as you can map that other datatype to <tt class="docutils literal">nat</tt> using any size
-function from that datatype to <tt class="docutils literal">nat</tt> instead of <tt class="docutils literal">length</tt>.</p>
-<p>Note that you need to add <tt class="docutils literal">Require Import Wellfounded.</tt> at the head
+long as you can map that other datatype to <span class="docutils literal">nat</span> using any size
+function from that datatype to <span class="docutils literal">nat</span> instead of <span class="docutils literal">length</span>.</p>
+<p>Note that you need to add <span class="docutils literal">Require Import Wellfounded.</span> at the head
 of your development for this to work.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Here is a slightly shorter variant:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk1"><span class="nb">induction</span> xs <span class="nb">using</span> (induction_ltof1 _ (@length _)); <span class="nb">unfold</span> ltof <span class="kr">in</span> *.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>list T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : list T, length y &lt; length xs -&gt; P y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P xs</div></blockquote></div></div></small></span></pre><p>But I'd prefer explicit naming:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk2"><span class="nb">induction</span> xs <span class="kr">as</span> [xs IHxs] <span class="nb">using</span> (induction_ltof1 _ (@length _));
     <span class="nb">unfold</span> ltof <span class="kr">in</span> IHxs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>list T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list T</span></span></span><br><span><var>IHxs</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : list T, length y &lt; length xs -&gt; P y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P xs</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
-<div class="section" id="answer-james-wilcox">
-<h1>Answer (James Wilcox)</h1>
+</span></span></pre></section>
+<section id="answer-james-wilcox">
+<h2>Answer (James Wilcox)</h2>
 <p>Here is how to prove a general list-length induction principle.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List Lia.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -117,12 +111,10 @@ P xs</span></span></span><br><span><var>H_ind</var><span class="hyp-type"><b>: <
 length l &lt;= length xs -&gt; P l</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length xs &lt;= length xs</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">list_length_ind</span>.</span></span></pre><p>You can use it like this</p>
-<pre class="code coq literal-block">
-<span class="kn">Theorem</span> <span class="nf">foo</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">,</span> <span class="o">...</span>
+<pre class="code coq literal-block"><code><span class="kn">Theorem</span> <span class="nf">foo</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">,</span> <span class="o">...</span>
 <span class="kn">Proof</span><span class="o">.</span>
   <span class="nb">induction</span> <span class="n">l</span> <span class="nb">using</span> <span class="n">list_length_ind</span><span class="o">.</span>
-  <span class="o">...</span>
-</pre>
+  <span class="o">...</span></code></pre>
 <p>That said, your concrete example example does not necessarily need
 induction on the length. You just need a sufficiently general
 induction hypothesis.</p>
@@ -221,9 +213,9 @@ extend_delta s w =
 (<span class="kr">if</span> Nat.odd (one_num w) <span class="kr">then</span> flip_state s <span class="kr">else</span> s)</span></span></span><br><span><var>w</var><span class="hyp-type"><b>: </b><span>list input</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> Nat.odd (one_num w) <span class="kr">then</span> B <span class="kr">else</span> A) = B &lt;-&gt;
 Nat.odd (one_num w) = true</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> (Nat.odd (one_num w)); <span class="nb">intuition</span> <span class="bp">congruence</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>In case like this, it is often faster to generalize your lemma
 directly:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk25" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk25"><span class="kn">From</span> mathcomp <span class="kn">Require Import</span> all_ssreflect.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;[ rel _ _ | _ ]&quot;</span> was already used <span class="kr">in</span> scope
@@ -258,10 +250,10 @@ nat_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryo
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk27" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk27"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>seq T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>seq T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P s</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk28" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk28"><span class="nb">move</span>: {<span class="mi">2</span>}(size _) (leqnn (size s)) =&gt; ss; <span class="nb">elim</span>: ss s =&gt; [|ss ihss] s hs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>seq T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>seq T</span></span></span><br><span><var>hs</var><span class="hyp-type"><b>: </b><span>size s &lt;= <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P s</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk29" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>seq T -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>ss</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ihss</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">s</span>, size s &lt;= ss -&gt; P s</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>seq T</span></span></span><br><span><var>hs</var><span class="hyp-type"><b>: </b><span>size s &lt;= ss.+<span class="mi">1</span></span></span></span><br></div><label class="goal-separator" for="how-to-do-induction-on-the-length-of-a-list-in-coq-v-chk29"><hr></label><div class="goal-conclusion">P s</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">SO</span>.</span></span></pre><p>Just introduce a fresh <tt class="docutils literal">nat</tt> for the size of the list, and regular
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">SO</span>.</span></span></pre><p>Just introduce a fresh <span class="docutils literal">nat</span> for the size of the list, and regular
 induction will work.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

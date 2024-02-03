@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to write to a file, from Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,39 +14,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-write-to-a-file-from-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-write-to-a-file-from-coq">
 <h1 class="title">How to write to a file, from Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/49746424">https://stackoverflow.com/q/49746424</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/49746424">https://stackoverflow.com/q/49746424</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>This is probably a strange question to ask since Coq is supposed to be
-a purely functional language, but <tt class="docutils literal">Extraction</tt> exists and it clearly
+a purely functional language, but <span class="docutils literal">Extraction</span> exists and it clearly
 has side effects, so I'd assume there's probably a more basic command
 to just output a string or some constant to a file, something like
 this:</p>
-<pre class="code coq literal-block">
-<span class="kn">Extraction</span> <span class="s2">&quot;file.txt&quot;</span> <span class="s2">&quot;hello&quot;</span><span class="o">%</span><span class="n">string</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Extraction</span> <span class="s2">&quot;file.txt&quot;</span> <span class="s2">&quot;hello&quot;</span><span class="o">%</span><span class="n">string</span><span class="o">.</span></code></pre>
 <p>Is this possible? Would it require writing a custom extractor (I don't
 even know if that's possible)?</p>
 <p>The practical reason for this question is related to the motivation
 for the extraction mechanism that is already present in Coq, but let's
 say I want to output C code or something else that's not currently
-supported. I could still write a function in Coq <tt class="docutils literal">extract : Expr <span class="pre">-&gt;</span>
-string</tt> for a custom syntax that I formalize in an inductive type
-<tt class="docutils literal">Expr</tt>. How can I get this string out to a file?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can use <tt class="docutils literal">Redirect</tt> with <tt class="docutils literal">Eval</tt> to get close:</p>
+supported. I could still write a function in Coq <span class="docutils literal">extract : Expr <span class="pre">-&gt;</span> string</span> for a custom syntax that I formalize in an inductive type
+<span class="docutils literal">Expr</span>. How can I get this string out to a file?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can use <span class="docutils literal">Redirect</span> with <span class="docutils literal">Eval</span> to get close:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> String.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> string_scope.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -55,18 +49,18 @@ string</tt> for a custom syntax that I formalize in an inductive type
 <span class="c">(* file.txt.out now contains:</span>
 <span class="c">     = &quot;hello&quot;</span>
 <span class="c">     : string</span>
-<span class="c">*)</span></span></pre><p>Alternately, write your function <tt class="docutils literal">extract</tt> in Coq, then use the
-extraction mechanism to extract <tt class="docutils literal">extract e</tt> for some <tt class="docutils literal">e</tt> of
+<span class="c">*)</span></span></pre><p>Alternately, write your function <span class="docutils literal">extract</span> in Coq, then use the
+extraction mechanism to extract <span class="docutils literal">extract e</span> for some <span class="docutils literal">e</span> of
 interest, and finally write an OCaml program that imports this
 (string) constant and prints it. The reason to go this route is that
 building up strings in Coq is so slow that you might not be able to
-run <tt class="docutils literal">Eval compute extract e</tt> but you might be able to run it in
+run <span class="docutils literal">Eval compute extract e</span> but you might be able to run it in
 OCaml. You can also then (in an unverified manner) replace Coq strings
 with OCaml native strings so this process is actually efficient; this
-is easy to do by importing <tt class="docutils literal">ExtrOcamlString</tt> in Coq before
+is easy to do by importing <span class="docutils literal">ExtrOcamlString</span> in Coq before
 extraction.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

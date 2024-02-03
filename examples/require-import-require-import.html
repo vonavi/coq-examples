@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Require, Import, Require Import</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,39 +14,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="require-import-require-import">
-<h1 class="title"><tt class="docutils literal">Require</tt>, <tt class="docutils literal">Import</tt>, <tt class="docutils literal">Require Import</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47973317">https://stackoverflow.com/q/47973317</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="require-import-require-import">
+<h1 class="title"><span class="docutils literal">Require</span>, <span class="docutils literal">Import</span>, <span class="docutils literal">Require Import</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47973317">https://stackoverflow.com/q/47973317</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In Coq, what's the difference between ... ?</p>
 <ul class="simple">
-<li><tt class="docutils literal">Require X.</tt></li>
-<li><tt class="docutils literal">Import X.</tt></li>
-<li><tt class="docutils literal">Require Import X.</tt></li>
+<li><p><span class="docutils literal">Require X.</span></p></li>
+<li><p><span class="docutils literal">Import X.</span></p></li>
+<li><p><span class="docutils literal">Require Import X.</span></p></li>
 </ul>
 <p>I have basically memorized some common patterns. I usually see code
-using <tt class="docutils literal">Require Import X</tt>. Then there's <tt class="docutils literal">Import ListNotation</tt>. And
-I just noticed it's also possible to write just <tt class="docutils literal">Require X</tt>. What's
+using <span class="docutils literal">Require Import X</span>. Then there's <span class="docutils literal">Import ListNotation</span>. And
+I just noticed it's also possible to write just <span class="docutils literal">Require X</span>. What's
 the difference? Some practical examples would be appreciated.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">Require</tt> loads a library whereas <tt class="docutils literal">Import</tt> brings its definitions
-into scope. <tt class="docutils literal">Require Import</tt> does both. If you only have the library
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">Require</span> loads a library whereas <span class="docutils literal">Import</span> brings its definitions
+into scope. <span class="docutils literal">Require Import</span> does both. If you only have the library
 loaded, you'll need to refer to names fully qualified. Coq allows
 top-level modules corresponding to files to define modules; these have
 to be imported separately to bring all of their definitions into
-scope, and they can't be <tt class="docutils literal">Require</tt>d - that's what's going on with
-<tt class="docutils literal">ListNotations</tt>:</p>
+scope, and they can't be <span class="docutils literal">Require</span>d - that's what's going on with
+<span class="docutils literal">ListNotations</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* List is not loaded by default *)</span>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="require-import-require-import-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="require-import-require-import-v-chk0"><span class="kn">Check</span> List.map.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The reference List.map was not found <span class="kr">in</span> the current
 environment.</blockquote></div></div></small><span class="alectryon-wsp">
@@ -89,21 +86,21 @@ environment.</blockquote></div></div></small><span class="alectryon-wsp">
   _%list_scope</blockquote></div></div></small></span></pre><p>Note there are some quirks with how Coq handles modules, especially
 compared to other languages:</p>
 <ul class="simple">
-<li>Coq does not require a full path to a module, only an unambiguous
+<li><p>Coq does not require a full path to a module, only an unambiguous
 suffix. Indeed I rarely see full import paths, even to standard
-library modules.</li>
-<li>Notations cannot be used except by importing the module, and unlike
+library modules.</p></li>
+<li><p>Notations cannot be used except by importing the module, and unlike
 most objects there's no way to refer to a notation, fully qualified
-or otherwise.</li>
-<li>Importing a module can have side effects, for example changing
+or otherwise.</p></li>
+<li><p>Importing a module can have side effects, for example changing
 notation interpretation scopes or setting options if you use
-<tt class="docutils literal">Global Set</tt> in the module being imported.</li>
-<li>Importing is fairly limited (especially compared to Haskell) -
+<span class="docutils literal">Global Set</span> in the module being imported.</p></li>
+<li><p>Importing is fairly limited (especially compared to Haskell) -
 there's no way to rename a module at import time, or selectively
-import some definitions.</li>
+import some definitions.</p></li>
 </ul>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

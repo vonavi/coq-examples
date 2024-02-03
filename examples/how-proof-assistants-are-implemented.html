@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How proof assistants are implemented?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,18 +14,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-proof-assistants-are-implemented">
+<div class="alectryon-root alectryon-centered"><main id="how-proof-assistants-are-implemented">
 <h1 class="title">How proof assistants are implemented?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/58725547">https://stackoverflow.com/q/58725547</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/58725547">https://stackoverflow.com/q/58725547</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>What are the main blocks of a proof assistant?</p>
 <p>I am just interested in knowing the internal logic of proof checking.
 For example, topics about graphical user interfaces of such assistants
@@ -33,35 +30,35 @@ do not interest me.</p>
 <p>A similar question to mine has been asked for compilers:
 <a class="reference external" href="https://softwareengineering.stackexchange.com/questions/165543/how-to-write-a-very-basic-compiler">https://softwareengineering.stackexchange.com/questions/165543/how-to-write-a-very-basic-compiler</a></p>
 <p>My concern is the same but for proof checking systems.</p>
-</div>
-<div class="section" id="answer-manuel-eberl">
-<h1>Answer (Manuel Eberl)</h1>
+</section>
+<section id="answer-manuel-eberl">
+<h2>Answer (Manuel Eberl)</h2>
 <p>I'm hardly an expert on the matter (I'm only a user of these systems;
 I don't worry too <em>much</em> about their internals) and this will probably
 only be a vague partial answer, but the two main approaches that I
 know of are:</p>
 <ul class="simple">
-<li>Dependently-typed systems (e.g. Coq, Lean, Agda) that use the
+<li><p>Dependently-typed systems (e.g. Coq, Lean, Agda) that use the
 Curry–Howard isomorphism. Statements are just types, and proofs are
 terms that have that type, so checking the validity of a proof is
 essentially just a special case of type checking a term. I don't
 want to say too much about this approach because I don't know too
 much about it and am afraid I'll get something wrong. Théo
 Winterhalter linked something in the comments above that may provide
-more context on this approach.</li>
-<li>LCF-style theorems provers (e.g. Isabelle, HOL Light, HOL 4). Here a
-theorem is (roughly speaking) an opaque value of type <tt class="docutils literal">thm</tt> in the
+more context on this approach.</p></li>
+<li><p>LCF-style theorems provers (e.g. Isabelle, HOL Light, HOL 4). Here a
+theorem is (roughly speaking) an opaque value of type <span class="docutils literal">thm</span> in the
 implementation language. Only the comparatively small 'proof kernel'
-can create these <tt class="docutils literal">thm</tt> values and all other parts of the system
+can create these <span class="docutils literal">thm</span> values and all other parts of the system
 interact with this proof kernel. The kernel offers an interface
 consisting of various small functions that implement small inference
-steps such as <em>modus ponens</em> (if you have a theorem <tt class="docutils literal">A ⟹ B</tt> and a
-theorem <tt class="docutils literal">A</tt>, you can get the theorem <tt class="docutils literal">B</tt>) or ∀-introduction (if
-you have the theorem <tt class="docutils literal">P x</tt> for a fixed variable <tt class="docutils literal">x</tt>, you can get
-the theorem <tt class="docutils literal">∀x. P x</tt>) etc. The kernel also offers an interface
+steps such as <em>modus ponens</em> (if you have a theorem <span class="docutils literal">A ⟹ B</span> and a
+theorem <span class="docutils literal">A</span>, you can get the theorem <span class="docutils literal">B</span>) or ∀-introduction (if
+you have the theorem <span class="docutils literal">P x</span> for a fixed variable <span class="docutils literal">x</span>, you can get
+the theorem <span class="docutils literal">∀x. P x</span>) etc. The kernel also offers an interface
 for defining new constants. In principle, as long as you can trust
 that these functions faithfully implement the basic inference steps
-of the underlying logic, you can trust that any <tt class="docutils literal">thm</tt> value you
+of the underlying logic, you can trust that any <span class="docutils literal">thm</span> value you
 can produce really corresponds to a theorem in your logic. For
 LCF-style provers, the answer of what the actual proof is is a bit
 more difficult to answer because they usually don't build proof
@@ -69,7 +66,7 @@ terms (e.g. Isabelle has them, but they are disabled by default and
 not widely used). I think one could say that the history of how the
 kernel primitives are called constitute the proof, and if one were
 to record it, it could – <em>in principle</em> – be replayed and checked in
-another system.</li>
+another system.</p></li>
 </ul>
 <p>In both cases the idea is that you have a kernel (the type checker in
 the former case and the inference kernel in the latter) that you have
@@ -85,9 +82,9 @@ Light has a particularly small and simple kernel).</p>
 <p>There are also other systems that I believe do not fit into these two
 categories (e.g. Mizar, ACL2, PVS, Metamath, NuPRL) but I don't know
 anything about how these are implemented.</p>
-</div>
-<div class="section" id="answer-lawrence-paulson">
-<h1>Answer (Lawrence Paulson)</h1>
+</section>
+<section id="answer-lawrence-paulson">
+<h2>Answer (Lawrence Paulson)</h2>
 <p>In the case of LCF, HOL and Isabelle, you'll find an extensive answer
 to your question in the journal article &quot;<a class="reference external" href="https://link.springer.com/article/10.1007%2Fs00165-019-00492-1">From LCF to Isabelle/HOL</a>&quot;.
 (It's open access.)</p>
@@ -97,7 +94,7 @@ One significant difference is that such calculi incorporate full proof
 objects, so that one of the objectives of the LCF approach — to save
 space by not storing proofs — is abandoned. However, the objective of
 soundness is still met.</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

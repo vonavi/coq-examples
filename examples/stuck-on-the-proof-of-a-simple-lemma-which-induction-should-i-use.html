@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Stuck on the proof of a simple Lemma: which induction should I use?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="stuck-on-the-proof-of-a-simple-lemma-which-induction-should-i-use">
+<div class="alectryon-root alectryon-centered"><main id="stuck-on-the-proof-of-a-simple-lemma-which-induction-should-i-use">
 <h1 class="title">Stuck on the proof of a simple Lemma: which induction should I use?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/73018759">https://stackoverflow.com/q/73018759</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/73018759">https://stackoverflow.com/q/73018759</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have the following structures:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">instr</span> : <span class="kt">Set</span> :=
 | Select    : nat -&gt; instr
@@ -121,9 +118,9 @@ P tl -&gt; P (a :: b :: tl)</span></span></span><br><span><var>tsli</var><span c
 P tl -&gt; P (a :: b :: tl)</span></span></span><br><span><var>tsli</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l</span> : list A, P l</span></span></span><br><span><var>x, y</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>tl</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>Pl</var><span class="hyp-type"><b>: </b><span>P (y :: tl)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P tl</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (tsli tl).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>But I didn't manage to finalize the proof. There must be something
 obvious I don't see. Can't someone help me with this proof?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>There are two problems with your question. The first one is that the
 statement you want to prove is false, here is a proof of a counter
 example.</p>
@@ -168,21 +165,20 @@ Some (Select <span class="mi">1</span> :: Backspace :: Select <span class="mi">1
 <p>The second problem is that the function has a complicated shape and
 the proof by induction is difficult to organize. I cover this aspect
 just below.</p>
-<p>From the structure of the function <tt class="docutils literal">Forward</tt>, it is natural that you
-should perform your proof by induction over the <tt class="docutils literal">input</tt> argument,
+<p>From the structure of the function <span class="docutils literal">Forward</span>, it is natural that you
+should perform your proof by induction over the <span class="docutils literal">input</span> argument,
 because it is the argument where recursive calls occur on a subterm.
 However the proof is made complicated by the fact that recursive calls
-happen not only on direct subterms (as in <tt class="docutils literal">Forward rest ...</tt>) but
-also in subterms of subterms (as in <tt class="docutils literal">Forward rrest ...</tt>).</p>
+happen not only on direct subterms (as in <span class="docutils literal">Forward rest ...</span>) but
+also in subterms of subterms (as in <span class="docutils literal">Forward rrest ...</span>).</p>
 <p>There are several ways out of this difficulty, but all require some
 amount of explanation or learning.</p>
 <ol class="arabic">
-<li><p class="first">One way is to use the <tt class="docutils literal">Equations</tt> plugin to Coq and redefine your
-<tt class="docutils literal">Forward</tt> function using Equations. You can then use functional
+<li><p>One way is to use the <span class="docutils literal">Equations</span> plugin to Coq and redefine your
+<span class="docutils literal">Forward</span> function using Equations. You can then use functional
 induction to solve your problem: this will use an induction
-principle that especially tailored to your problem.</p>
-</li>
-<li><p class="first">A second way is to build a tailored induction principle by hand.
+principle that especially tailored to your problem.</p></li>
+<li><p>A second way is to build a tailored induction principle by hand.
 Here is an attempt.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-the-proof-of-a-simple-lemma-which-induction-should-i-use-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-the-proof-of-a-simple-lemma-which-induction-should-i-use-v-chk15"><span class="kn">Definition</span> <span class="nf">two_step_list_induction</span> {<span class="nv">A</span> : <span class="kt">Type</span>} :
   <span class="kr">forall</span> (<span class="nv">P</span> : list A -&gt; <span class="kt">Prop</span>),
@@ -1230,32 +1226,32 @@ Some (p ++ p&#39;)</span></span></span><br><span><var>p</var><span class="hyp-ty
 Some (Select x :: Backspace :: v ++ p&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">easy</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>A few comments on this solution:</p>
 <ul class="simple">
-<li>The code posted in the original function contains 3 recursive
-calls, one where the argument is the immediate sublist (<tt class="docutils literal">rest</tt>)
-and 2 where the argument is the second sublist (<tt class="docutils literal">rest</tt>). The
-first one is handled by induction hypothesis <tt class="docutils literal">Ih1</tt> and the
-other are handled by induction hypothesis <tt class="docutils literal">Ih2</tt>. For a reason I
+<li><p>The code posted in the original function contains 3 recursive
+calls, one where the argument is the immediate sublist (<span class="docutils literal">rest</span>)
+and 2 where the argument is the second sublist (<span class="docutils literal">rest</span>). The
+first one is handled by induction hypothesis <span class="docutils literal">Ih1</span> and the
+other are handled by induction hypothesis <span class="docutils literal">Ih2</span>. For a reason I
 have no time to investigate, my proof needs 4 uses of induction
 hypotheses instead of 3. This means that there is probably some
-duplication.</li>
-<li>Sometimes, the <tt class="docutils literal">simpl</tt> tactic is too eager to unroll the
+duplication.</p></li>
+<li><p>Sometimes, the <span class="docutils literal">simpl</span> tactic is too eager to unroll the
 recursive definition until it can no longer do anything. To
-counterbalance this bias of the <tt class="docutils literal">simpl</tt> tactic, I had to
+counterbalance this bias of the <span class="docutils literal">simpl</span> tactic, I had to
 perform one of the <em>unrolling steps</em> by hand, without relying on
-<tt class="docutils literal">simpl</tt>. This unrolling step is performed by the <tt class="docutils literal">change</tt>
-tactic call that appears in the middle of the script.</li>
-<li>Everytime that there is a recursive call in your function, the
-result is later analyzed by a <tt class="docutils literal">match</tt> construct. To account for
+<span class="docutils literal">simpl</span>. This unrolling step is performed by the <span class="docutils literal">change</span>
+tactic call that appears in the middle of the script.</p></li>
+<li><p>Everytime that there is a recursive call in your function, the
+result is later analyzed by a <span class="docutils literal">match</span> construct. To account for
 this, the proof perform case analysis on the results of recursive
-calls and uses the <tt class="docutils literal">destruct ... <span class="pre">eqn:...</span></tt> variant of the
-<tt class="docutils literal">destruct</tt> tactic to perform this analysis.</li>
-<li>Aside from these advanced techniques, the proof is just guided by
-the interaction with Coq.</li>
+calls and uses the <span class="docutils literal">destruct ... <span class="pre">eqn:...</span></span> variant of the
+<span class="docutils literal">destruct</span> tactic to perform this analysis.</p></li>
+<li><p>Aside from these advanced techniques, the proof is just guided by
+the interaction with Coq.</p></li>
 </ul>
-<p>This proof script was verified with coq-8.15 with the <tt class="docutils literal">List</tt> and
-<tt class="docutils literal">ZArith</tt> modules imported.</p>
+<p>This proof script was verified with coq-8.15 with the <span class="docutils literal">List</span> and
+<span class="docutils literal">ZArith</span> modules imported.</p>
 </li>
-<li><p class="first">You can avoid constructing a tailored induction principle by
+<li><p>You can avoid constructing a tailored induction principle by
 relying on much more powerful well founded induction. This will
 give you a more general induction hypothesis, which can be used for
 a much wider set of recursive arguments (even arguments that are
@@ -2267,26 +2263,26 @@ Forward input2 nil = Some p&#39; -&gt;
 Forward (y ++ input2) output = Some (p ++ p&#39;)</span></span></span><br><span><var>p</var><span class="hyp-type"><b>: </b><span>prog</span></span></span><br><span><var>input2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>rrestlt</var><span class="hyp-type"><b>: </b><span>length rrest &lt; length (x :: xx :: rrest)</span></span></span><br><span><var>restlt</var><span class="hyp-type"><b>: </b><span>length (xx :: rrest) &lt;
 length (x :: xx :: rrest)</span></span></span><br><span><var>eqnrest</var><span class="hyp-type"><b>: </b><span>Forward (xx :: rrest) r = None</span></span></span><br><span><var>xeqy</var><span class="hyp-type"><b>: </b><span>(x =? y) = false</span></span></span><br><span><var>v</var><span class="hyp-type"><b>: </b><span>prog</span></span></span><br><span><var>eqnrrest</var><span class="hyp-type"><b>: </b><span>Forward rrest (y :: r) = Some v</span></span></span><br><span><var>v2</var><span class="hyp-type"><b>: </b><span>Forward input2 nil = Some p&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Some (Select x :: Backspace :: v ++ p&#39;) =
 Some (Select x :: Backspace :: v ++ p&#39;)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">easy</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>A careful scrutiny of the script for lemma <tt class="docutils literal">app_forward2</tt> shows
-that the script is almost the same as for <tt class="docutils literal">app_forward</tt>. Three
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>A careful scrutiny of the script for lemma <span class="docutils literal">app_forward2</span> shows
+that the script is almost the same as for <span class="docutils literal">app_forward</span>. Three
 main hints:</p>
 <ul class="simple">
-<li><tt class="docutils literal">well_founded_induction</tt> combined with <tt class="docutils literal">wf_inverse_image</tt>,
-<tt class="docutils literal">length</tt> and <tt class="docutils literal">lt_wf</tt> gives a general induction hypothesis
-that can be use for every case where <tt class="docutils literal">input1</tt> is replaced with
-a list that is shorter in length.</li>
-<li><tt class="docutils literal">destruct input1</tt> replaces every instance of <tt class="docutils literal">input1</tt> with a
+<li><p><span class="docutils literal">well_founded_induction</span> combined with <span class="docutils literal">wf_inverse_image</span>,
+<span class="docutils literal">length</span> and <span class="docutils literal">lt_wf</span> gives a general induction hypothesis
+that can be use for every case where <span class="docutils literal">input1</span> is replaced with
+a list that is shorter in length.</p></li>
+<li><p><span class="docutils literal">destruct input1</span> replaces every instance of <span class="docutils literal">input1</span> with a
 variety of cases, including the instance that appears in the
-induction hypothesis.</li>
-<li>all calls to induction hypotheses <tt class="docutils literal">Ih1</tt> and <tt class="docutils literal">Ih2</tt> in the
-previous solution have simply been replaced by calls to <tt class="docutils literal">Ih</tt>,
-using hypotheses <tt class="docutils literal">restlt</tt> and <tt class="docutils literal">rrestlt</tt> to guarantee length
-decrease.</li>
+induction hypothesis.</p></li>
+<li><p>all calls to induction hypotheses <span class="docutils literal">Ih1</span> and <span class="docutils literal">Ih2</span> in the
+previous solution have simply been replaced by calls to <span class="docutils literal">Ih</span>,
+using hypotheses <span class="docutils literal">restlt</span> and <span class="docutils literal">rrestlt</span> to guarantee length
+decrease.</p></li>
 </ul>
 </li>
 </ol>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

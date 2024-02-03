@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Function- and Type substitutions or Views in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,74 +14,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="function-and-type-substitutions-or-views-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="function-and-type-substitutions-or-views-in-coq">
 <h1 class="title">Function- and Type substitutions or Views in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29870487">https://stackoverflow.com/q/29870487</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/29870487">https://stackoverflow.com/q/29870487</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I proved some theorems about lists, and extracted algorithms from
 them. Now I want to use heaps instead, because lookup and
 concatenation are faster. What I currently do to achieve this is to
 just use custom definitions for the extracted list type. I would like
 to do this in a more formal way, but ideally without having to redo
 all of my proofs. Lets say I have a type</p>
-<pre class="code coq literal-block">
-<span class="n">Heap</span> <span class="o">:</span> <span class="kt">Set</span> <span class="o">-&gt;</span> <span class="kt">Set</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">Heap</span> <span class="o">:</span> <span class="kt">Set</span> <span class="o">-&gt;</span> <span class="kt">Set</span></code></pre>
 <p>and an isomorphism</p>
-<pre class="code coq literal-block">
-<span class="n">f</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">A</span><span class="o">,</span> <span class="n">Heap</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">List</span> <span class="n">A</span><span class="o">.</span>
-</pre>
-<p>Furthermore, I have functions <tt class="docutils literal">H_app</tt> and <tt class="docutils literal">H_nth</tt>, such that</p>
-<pre class="code coq literal-block">
-<span class="n">H_app</span> <span class="o">(</span><span class="n">f</span> <span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">f</span> <span class="n">b</span><span class="o">)</span> <span class="o">=</span> <span class="n">f</span> <span class="o">(</span><span class="n">a</span> <span class="o">++</span> <span class="n">b</span><span class="o">)</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">f</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">A</span><span class="o">,</span> <span class="n">Heap</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">List</span> <span class="n">A</span><span class="o">.</span></code></pre>
+<p>Furthermore, I have functions <span class="docutils literal">H_app</span> and <span class="docutils literal">H_nth</span>, such that</p>
+<pre class="code coq literal-block"><code><span class="n">H_app</span> <span class="o">(</span><span class="n">f</span> <span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">f</span> <span class="n">b</span><span class="o">)</span> <span class="o">=</span> <span class="n">f</span> <span class="o">(</span><span class="n">a</span> <span class="o">++</span> <span class="n">b</span><span class="o">)</span></code></pre>
 <p>and</p>
-<pre class="code coq literal-block">
-<span class="n">H_nth</span> <span class="o">(</span><span class="n">f</span> <span class="n">a</span><span class="o">)</span> <span class="o">=</span> <span class="n">nth</span> <span class="n">a</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">H_nth</span> <span class="o">(</span><span class="n">f</span> <span class="n">a</span><span class="o">)</span> <span class="o">=</span> <span class="n">nth</span> <span class="n">a</span></code></pre>
 <p>On the one hand, I would have to replace every list-recursion by a
 specialized function that mimics list recursion. On the other hand,
-beforehand I would want to replace <tt class="docutils literal">++</tt> and <tt class="docutils literal">nth</tt> by <tt class="docutils literal">H_app</tt> and
-<tt class="docutils literal">H_nth</tt>, so the extracted algorithms would be faster. The problem is
-that I use tactics like <tt class="docutils literal">simpl</tt> and <tt class="docutils literal">compute</tt> in some places,
+beforehand I would want to replace <span class="docutils literal">++</span> and <span class="docutils literal">nth</span> by <span class="docutils literal">H_app</span> and
+<span class="docutils literal">H_nth</span>, so the extracted algorithms would be faster. The problem is
+that I use tactics like <span class="docutils literal">simpl</span> and <span class="docutils literal">compute</span> in some places,
 which will probably fail if I just replace everything in the proof
 code. It would be good to have a possibility to &quot;overload&quot; the
 functions afterwards.</p>
 <p>Is something like this possible?</p>
 <p>Edit: To clarify, a similar problem arises with numbers: I have some
-old proofs that use <tt class="docutils literal">nat</tt>, but the numbers are getting too large.
-Using <tt class="docutils literal">BinNat</tt> would be better, but is it possible to use <tt class="docutils literal">BinNat</tt>
-instead of <tt class="docutils literal">nat</tt> also in the old proofs without too much
-modification? (And especially, replace inefficient usages of <tt class="docutils literal">+</tt> by
-the more efficient definition for <tt class="docutils literal">BinNat</tt>?)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Just for the sake of clarity, I take it that <tt class="docutils literal">Heap</tt> must look like
+old proofs that use <span class="docutils literal">nat</span>, but the numbers are getting too large.
+Using <span class="docutils literal">BinNat</span> would be better, but is it possible to use <span class="docutils literal">BinNat</span>
+instead of <span class="docutils literal">nat</span> also in the old proofs without too much
+modification? (And especially, replace inefficient usages of <span class="docutils literal">+</span> by
+the more efficient definition for <span class="docutils literal">BinNat</span>?)</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Just for the sake of clarity, I take it that <span class="docutils literal">Heap</span> must look like
 this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Heap</span> <span class="nv">A</span> : <span class="kt">Type</span> :=
 | Node : Heap A -&gt; A -&gt; Heap A -&gt; Heap A
-| Leaf : Heap A.</span></span></pre><p>with <tt class="docutils literal">f</tt> being defined as</p>
+| Leaf : Heap A.</span></span></pre><p>with <span class="docutils literal">f</span> being defined as</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">f</span> <span class="nv">A</span> (<span class="nv">h</span> : Heap A) : list A :=
   <span class="kr">match</span> h <span class="kr">with</span>
   | Node h1 a h2 =&gt; f h1 ++ a :: f h2
   | Leaf _ =&gt; []
-  <span class="kr">end</span>.</span></span></pre><p>If this is the case, then <tt class="docutils literal">f</tt> does <em>not</em> define an isomorphism
-between <tt class="docutils literal">Heap A</tt> and <tt class="docutils literal">list A</tt> for all <tt class="docutils literal">A</tt>. Instead, we can find
-a function <tt class="docutils literal">g : forall A, list A <span class="pre">-&gt;</span> Heap A</tt> such that</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">A</span> <span class="o">(</span><span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">),</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">l</span><span class="o">)</span> <span class="o">=</span> <span class="n">l</span>
-</pre>
-<p>Nevertheless, we would like to say that both <tt class="docutils literal">Heap</tt> and <tt class="docutils literal">list</tt> are
+  <span class="kr">end</span>.</span></span></pre><p>If this is the case, then <span class="docutils literal">f</span> does <em>not</em> define an isomorphism
+between <span class="docutils literal">Heap A</span> and <span class="docutils literal">list A</span> for all <span class="docutils literal">A</span>. Instead, we can find
+a function <span class="docutils literal">g : forall A, list A <span class="pre">-&gt;</span> Heap A</span> such that</p>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">A</span> <span class="o">(</span><span class="nv">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">A</span><span class="o">),</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">l</span><span class="o">)</span> <span class="o">=</span> <span class="n">l</span></code></pre>
+<p>Nevertheless, we would like to say that both <span class="docutils literal">Heap</span> and <span class="docutils literal">list</span> are
 equivalent in some sense when they are used to implement the same
 abstraction, namely sets of elements of some type.</p>
 <p>There is a precise and formal way in which we can validate this idea
@@ -90,10 +77,10 @@ Coq. This principle, known as <a class="reference external" href="http://en.wiki
 parametrically polymorphic functions respect relations that we impose
 on types we instantiate them with.</p>
 <p>This is a little bit abstract, so let's try to make it more concrete.
-Suppose that you have a function over lists (say, <tt class="docutils literal">foo</tt>) that uses
-only <tt class="docutils literal">++</tt> and <tt class="docutils literal">nth</tt>. To be able to replace <tt class="docutils literal">foo</tt> by an
-equivalent version on <tt class="docutils literal">Heap</tt> using parametricity, we need to make
-<tt class="docutils literal">foo</tt>'s definition polymorphic, abstracting over the functions over
+Suppose that you have a function over lists (say, <span class="docutils literal">foo</span>) that uses
+only <span class="docutils literal">++</span> and <span class="docutils literal">nth</span>. To be able to replace <span class="docutils literal">foo</span> by an
+equivalent version on <span class="docutils literal">Heap</span> using parametricity, we need to make
+<span class="docutils literal">foo</span>'s definition polymorphic, abstracting over the functions over
 lists:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="function-and-type-substitutions-or-views-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="function-and-type-substitutions-or-views-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">foo</span> (<span class="nv">T</span> : <span class="kt">Set</span> -&gt; <span class="kt">Set</span>)
            (<span class="nv">app</span> : <span class="kr">forall</span> <span class="nv">A</span>, T A -&gt; T A -&gt; T A)
@@ -101,57 +88,51 @@ lists:</p>
            <span class="nv">A</span> (<span class="nv">l</span> : T A) : T A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span> -&gt; <span class="kt">Set</span></span></span></span><br><span><var>app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Set</span>, T A -&gt; T A -&gt; T A</span></span></span><br><span><var>nth</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Set</span>, T A -&gt; nat -&gt; option A</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>T A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">T A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span>
 </span></pre><p>You would first prove properties of foo by instantiating it over lists:</p>
-<pre class="code coq literal-block">
-<span class="kn">Definition</span> <span class="nf">list_foo</span> <span class="o">:=</span> <span class="n">foo</span> <span class="n">list</span> <span class="n">app</span> <span class="n">nth_error</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Definition</span> <span class="nf">list_foo</span> <span class="o">:=</span> <span class="n">foo</span> <span class="n">list</span> <span class="n">app</span> <span class="n">nth_error</span><span class="o">.</span>
 
-<span class="kn">Lemma</span> <span class="nf">list_foo_lemma</span> <span class="o">:</span> <span class="c">(* Some statement *)</span><span class="o">.</span>
-</pre>
-<p>Now, because we now that <tt class="docutils literal">H_app</tt> and <tt class="docutils literal">H_nth</tt> are compatible with
-their list counterparts, and because <tt class="docutils literal">foo</tt> is polymorphic, the
+<span class="kn">Lemma</span> <span class="nf">list_foo_lemma</span> <span class="o">:</span> <span class="c">(* Some statement *)</span><span class="o">.</span></code></pre>
+<p>Now, because we now that <span class="docutils literal">H_app</span> and <span class="docutils literal">H_nth</span> are compatible with
+their list counterparts, and because <span class="docutils literal">foo</span> is polymorphic, the
 theory of parametricity says that we can prove</p>
-<pre class="code coq literal-block">
-<span class="kn">Definition</span> <span class="nf">H_foo</span> <span class="o">:=</span> <span class="n">foo</span> <span class="n">Heap</span> <span class="n">H_app</span> <span class="n">H_nth</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Definition</span> <span class="nf">H_foo</span> <span class="o">:=</span> <span class="n">foo</span> <span class="n">Heap</span> <span class="n">H_app</span> <span class="n">H_nth</span><span class="o">.</span>
 
 <span class="kn">Lemma</span> <span class="nf">foo_param</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="o">(</span><span class="nv">h</span> <span class="o">:</span> <span class="n">Heap</span> <span class="n">A</span><span class="o">),</span>
-    <span class="n">f</span> <span class="o">(</span><span class="n">H_foo</span> <span class="n">h</span><span class="o">)</span> <span class="o">=</span> <span class="n">list_foo</span> <span class="o">(</span><span class="n">f</span> <span class="n">h</span><span class="o">).</span>
-</pre>
+    <span class="n">f</span> <span class="o">(</span><span class="n">H_foo</span> <span class="n">h</span><span class="o">)</span> <span class="o">=</span> <span class="n">list_foo</span> <span class="o">(</span><span class="n">f</span> <span class="n">h</span><span class="o">).</span></code></pre>
 <p>with this lemma in hand, it should be possible to transport properties
-of <tt class="docutils literal">list_foo</tt> to similar properties of <tt class="docutils literal">H_foo</tt>. For instance, as a
-trivial example, we can show that <tt class="docutils literal">H_app</tt> is associative, up to
+of <span class="docutils literal">list_foo</span> to similar properties of <span class="docutils literal">H_foo</span>. For instance, as a
+trivial example, we can show that <span class="docutils literal">H_app</span> is associative, up to
 conversion to a list:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">A</span> <span class="o">(</span><span class="nv">h1</span> <span class="nv">h2</span> <span class="nv">h3</span> <span class="o">:</span> <span class="n">Heap</span> <span class="n">A</span><span class="o">),</span>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">A</span> <span class="o">(</span><span class="nv">h1</span> <span class="nv">h2</span> <span class="nv">h3</span> <span class="o">:</span> <span class="n">Heap</span> <span class="n">A</span><span class="o">),</span>
   <span class="n">list_foo</span> <span class="o">(</span><span class="n">H_app</span> <span class="n">h1</span> <span class="o">(</span><span class="n">H_app</span> <span class="n">h2</span> <span class="n">h3</span><span class="o">))</span> <span class="o">=</span>
-    <span class="n">list_foo</span> <span class="o">(</span><span class="n">H_app</span> <span class="o">(</span><span class="n">H_app</span> <span class="n">h1</span> <span class="n">h2</span><span class="o">)</span> <span class="n">h3</span><span class="o">).</span>
-</pre>
+    <span class="n">list_foo</span> <span class="o">(</span><span class="n">H_app</span> <span class="o">(</span><span class="n">H_app</span> <span class="n">h1</span> <span class="n">h2</span><span class="o">)</span> <span class="n">h3</span><span class="o">).</span></code></pre>
 <p>What's nice about parametricity is that it applies to <em>any</em>
 parametrically polymorphic function: as long as appropriate
 compatibility conditions hold of your types, it should be possible to
 relate two instantiations of a given function in a similar fashion to
-<tt class="docutils literal">foo_param</tt>.</p>
+<span class="docutils literal">foo_param</span>.</p>
 <p>There are two problems, however. The first one is having to change
 your base definitions to polymorphic ones, which is probably not so
 bad. What's worse, though, is that even though parametricity ensures
-that it is always possible to prove lemmas such as <tt class="docutils literal">foo_param</tt> under
+that it is always possible to prove lemmas such as <span class="docutils literal">foo_param</span> under
 certain conditions, Coq does not give you that for free, and you still
 need to show these lemmas by hand. There are two things that could
 help alleviate your pain:</p>
 <ol class="arabic simple">
-<li>There's a <a class="reference external" href="https://github.com/mlasson/paramcoq">parametricity plugin</a> for Coq (CoqParam) which
+<li><p>There's a <a class="reference external" href="https://github.com/mlasson/paramcoq">parametricity plugin</a> for Coq (CoqParam) which
 should help deriving the boilerplate proofs for you automatically.
 I have never used it, though, so I can't really say how easy it is
-to use.</li>
-<li>The Coq Effective Algebra Library (or <a class="reference external" href="https://github.com/CoqEAL/CoqEAL">CoqEAL</a>, for short) uses
+to use.</p></li>
+<li><p>The Coq Effective Algebra Library (or <a class="reference external" href="https://github.com/CoqEAL/CoqEAL">CoqEAL</a>, for short) uses
 parametricity to prove things about efficient algorithms while
 reasoning over more convenient ones. In particular, they define
-refinements that allow one to switch between <tt class="docutils literal">nat</tt> and
-<tt class="docutils literal">BinNat</tt>, as you suggested. Internally, they use an
+refinements that allow one to switch between <span class="docutils literal">nat</span> and
+<span class="docutils literal">BinNat</span>, as you suggested. Internally, they use an
 infrastructure based on type-class inference, which you could adapt
 to your original example, but I heard that they are currently
-migrating their implementation to use CoqParam instead.</li>
+migrating their implementation to use CoqParam instead.</p></li>
 </ol>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

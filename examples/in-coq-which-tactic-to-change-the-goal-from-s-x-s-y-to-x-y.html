@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>In Coq, which tactic to change the goal from S x = S y to x = y</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,45 +14,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y">
-<h1 class="title">In Coq, which tactic to change the goal from <tt class="docutils literal">S x = S y</tt> to <tt class="docutils literal">x = y</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/13749403">https://stackoverflow.com/q/13749403</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y">
+<h1 class="title">In Coq, which tactic to change the goal from <span class="docutils literal">S x = S y</span> to <span class="docutils literal">x = y</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/13749403">https://stackoverflow.com/q/13749403</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I want to change the goal from <tt class="docutils literal">S x = S y</tt> to <tt class="docutils literal">x = y</tt>. It's like
-<tt class="docutils literal">inversion</tt>, but for the goal instead of a hypothesis.</p>
-<p>Such a tactic seems legit, because when we have <tt class="docutils literal">x = y</tt>, we can
-simply use <tt class="docutils literal">rewrite</tt> and <tt class="docutils literal">reflexivity</tt> to prove the goal.</p>
-<p>Currently I always find myself using <tt class="docutils literal">assert (x = y)</tt> to introduce a
-new subgoal, but it's tedious to write when <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> are
+<section id="question">
+<h2>Question</h2>
+<p>I want to change the goal from <span class="docutils literal">S x = S y</span> to <span class="docutils literal">x = y</span>. It's like
+<span class="docutils literal">inversion</span>, but for the goal instead of a hypothesis.</p>
+<p>Such a tactic seems legit, because when we have <span class="docutils literal">x = y</span>, we can
+simply use <span class="docutils literal">rewrite</span> and <span class="docutils literal">reflexivity</span> to prove the goal.</p>
+<p>Currently I always find myself using <span class="docutils literal">assert (x = y)</span> to introduce a
+new subgoal, but it's tedious to write when <span class="docutils literal">x</span> and <span class="docutils literal">y</span> are
 complex expression.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The tactic <tt class="docutils literal">apply f_equal.</tt> will do what you want, for any
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The tactic <span class="docutils literal">apply f_equal.</span> will do what you want, for any
 constructor or function.</p>
-<p>The lema <tt class="docutils literal">f_equal</tt> shows that for any function <tt class="docutils literal">f</tt>, you always
-have <tt class="docutils literal">x = y <span class="pre">-&gt;</span> f x = f y</tt>. This allows you to reduce the goal from
-<tt class="docutils literal">f x = f y</tt> to <tt class="docutils literal">x = y</tt>:</p>
+<p>The lema <span class="docutils literal">f_equal</span> shows that for any function <span class="docutils literal">f</span>, you always
+have <span class="docutils literal">x = y <span class="pre">-&gt;</span> f x = f y</span>. This allows you to reduce the goal from
+<span class="docutils literal">f x = f y</span> to <span class="docutils literal">x = y</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y-v-chk0"><span class="kn">Proposition</span> <span class="nf">myprop</span> (<span class="nv">x</span> <span class="nv">y</span> : nat) (<span class="nv">H</span> : x = y) : S x = S y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>x = y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S x = S y</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>x = y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S x = S y</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-which-tactic-to-change-the-goal-from-s-x-s-y-to-x-y-v-chk2"><span class="nb">apply</span> <span class="nb">f_equal</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>x = y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>(The <tt class="docutils literal">injection</tt> tactic implements the converse implication --- that
-for some functions, and in particular for constructors, <tt class="docutils literal">f x = f y <span class="pre">-&gt;</span>
-x = y</tt>.)</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>(The <span class="docutils literal">injection</span> tactic implements the converse implication --- that
+for some functions, and in particular for constructors, <span class="docutils literal">f x = f y <span class="pre">-&gt;</span> x = y</span>.)</p>
 <hr class="docutils" />
-<p><strong>A:</strong> You can also use the <tt class="docutils literal">f_equal</tt> tactic, which saves some
+<p><strong>A:</strong> You can also use the <span class="docutils literal">f_equal</span> tactic, which saves some
 typing.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

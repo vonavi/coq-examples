@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Non-positive occurrence due to polymorphic function</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="non-positive-occurrence-due-to-polymorphic-function">
+<div class="alectryon-root alectryon-centered"><main id="non-positive-occurrence-due-to-polymorphic-function">
 <h1 class="title">Non-positive occurrence due to polymorphic function</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50222311">https://stackoverflow.com/q/50222311</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/50222311">https://stackoverflow.com/q/50222311</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to define a data type with a constructor that takes a
 list, and include propositions about this list.</p>
 <p>This works fine:</p>
@@ -38,28 +35,26 @@ list, and include propositions about this list.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Foo</span> :=  MkFoo : <span class="kr">forall</span> (<span class="nv">l</span> : list Foo), Foo.</span><span class="alectryon-wsp">
 </span></span></pre><p>But this fails</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="non-positive-occurrence-due-to-polymorphic-function-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="non-positive-occurrence-due-to-polymorphic-function-v-chk0"><span class="kn">Inductive</span> <span class="nf">Foo</span> := MkFoo : <span class="kr">forall</span> (<span class="nv">l</span> : list Foo), l &lt;&gt; [] -&gt; Foo.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non strictly positive occurrence of <span class="s2">&quot;Foo&quot;</span> <span class="kr">in</span>
- <span class="s2">&quot;forall l : list Foo, l &lt;&gt; [] -&gt; Foo&quot;</span>.</blockquote></div></div></small></span></pre><p>I assume that this is because <tt class="docutils literal">[]</tt> is actually <tt class="docutils literal">&#64;nil Foo</tt> and Coq
-does not like this occurrence of <tt class="docutils literal">Foo</tt>.</p>
+ <span class="s2">&quot;forall l : list Foo, l &lt;&gt; [] -&gt; Foo&quot;</span>.</blockquote></div></div></small></span></pre><p>I assume that this is because <span class="docutils literal">[]</span> is actually <span class="docutils literal">&#64;nil Foo</span> and Coq
+does not like this occurrence of <span class="docutils literal">Foo</span>.</p>
 <p>I am currently working my way around it using vector, like so</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Vectors.Vector.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Foo</span> := MkFoo : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">l</span> : Vector.t Foo n), n &lt;&gt; <span class="mi">0</span> -&gt; Foo.</span></span></pre><p>but the complications that arise due to the use of dependent data
 structures in Coq make me wonder:</p>
-<p>Is there a way I can use plain lists in <tt class="docutils literal">MkFoo</tt> and still include
+<p>Is there a way I can use plain lists in <span class="docutils literal">MkFoo</span> and still include
 propositions about that list?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>I think there isn't a way of including that constraint directly in the
 definition, unfortunately. I see two paths forward:</p>
 <ol class="arabic">
-<li><p class="first">Change the definition of <tt class="docutils literal">mkFoo</tt> so that it takes the head of the
+<li><p>Change the definition of <span class="docutils literal">mkFoo</span> so that it takes the head of the
 list as an additional argument:</p>
-<pre class="code coq literal-block">
-<span class="n">mkFoo</span> <span class="o">:</span> <span class="n">Foo</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">Foo</span> <span class="o">-&gt;</span> <span class="n">Foo</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">mkFoo</span> <span class="o">:</span> <span class="n">Foo</span> <span class="o">-&gt;</span> <span class="n">list</span> <span class="n">Foo</span> <span class="o">-&gt;</span> <span class="n">Foo</span></code></pre>
 </li>
-<li><p class="first">Define <tt class="docutils literal">Foo</tt> without any restrictions, and define a separate
+<li><p>Define <span class="docutils literal">Foo</span> without any restrictions, and define a separate
 well-formedness predicate:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -74,19 +69,17 @@ well-formedness predicate:</p>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">wfFoo</span> (<span class="nv">x</span> : Foo) : bool :=
   <span class="kr">match</span> x <span class="kr">with</span>
   | mkFoo xs =&gt; negb (isEmpty xs) &amp;&amp; forallb wfFoo xs
-  <span class="kr">end</span>.</span></span></pre><p>You can then show that all the functions on <tt class="docutils literal">Foo</tt> that you care
-about respect <tt class="docutils literal">wfFoo</tt>. It is also possible to use subset types to
-pack members of <tt class="docutils literal">Foo</tt> with proofs of <tt class="docutils literal">wfFoo</tt>, guaranteeing that
-clients of <tt class="docutils literal">Foo</tt> never have to touch ill-formed elements. Since
-<tt class="docutils literal">wfFoo</tt> is defined as a boolean property, the equation <tt class="docutils literal">wfFoo x
-= true</tt> is proof-irrelevant, which guarantees that the type <tt class="docutils literal">{ x
-: Foo | wfFoo x = true }</tt> is well-behaved. The <a class="reference external" href="https://github.com/math-comp/math-comp">Mathematical
+  <span class="kr">end</span>.</span></span></pre><p>You can then show that all the functions on <span class="docutils literal">Foo</span> that you care
+about respect <span class="docutils literal">wfFoo</span>. It is also possible to use subset types to
+pack members of <span class="docutils literal">Foo</span> with proofs of <span class="docutils literal">wfFoo</span>, guaranteeing that
+clients of <span class="docutils literal">Foo</span> never have to touch ill-formed elements. Since
+<span class="docutils literal">wfFoo</span> is defined as a boolean property, the equation <span class="docutils literal">wfFoo x = true</span> is proof-irrelevant, which guarantees that the type <span class="docutils literal">{ x : Foo | wfFoo x = true }</span> is well-behaved. The <a class="reference external" href="https://github.com/math-comp/math-comp">Mathematical
 Components library</a>
 provides good support for this kind of construction.</p>
 </li>
 </ol>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

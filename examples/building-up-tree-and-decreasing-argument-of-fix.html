@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Building up tree and decreasing argument of fix</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="building-up-tree-and-decreasing-argument-of-fix">
+<div class="alectryon-root alectryon-centered"><main id="building-up-tree-and-decreasing-argument-of-fix">
 <h1 class="title">Building up tree and decreasing argument of fix</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/56132183">https://stackoverflow.com/q/56132183</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/56132183">https://stackoverflow.com/q/56132183</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm attempting to implement a function to build up a Braun tree with
-<tt class="docutils literal">n</tt> elements using the following function in Coq, but Coq gives me
+<span class="docutils literal">n</span> elements using the following function in Coq, but Coq gives me
 the error that it cannot guess decreasing argument of fix:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="building-up-tree-and-decreasing-argument-of-fix-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="building-up-tree-and-decreasing-argument-of-fix-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
   <span class="kr">let</span>
@@ -63,16 +60,15 @@ cases:</p>
   <span class="kr">match</span> copy2 x n <span class="kr">with</span>
   | (_, snd) =&gt; snd
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot guess decreasing argument of <span class="kr">fix</span>.</blockquote></div></div></small></span></pre><p>How can I convince Coq that i is in fact a decreasing argument?</p>
-<p><strong>EDIT</strong> Type of <tt class="docutils literal">BraunTree</tt>:</p>
+<p><strong>EDIT</strong> Type of <span class="docutils literal">BraunTree</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">BraunTree</span> : <span class="kt">Type</span> :=
 | E : BraunTree
-| T : V -&gt; BraunTree -&gt; BraunTree -&gt; BraunTree.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">Fixpoint</tt>/<tt class="docutils literal">fix</tt> only allows recursive calls on a <em>syntactically</em>
+| T : V -&gt; BraunTree -&gt; BraunTree -&gt; BraunTree.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">Fixpoint</span>/<span class="docutils literal">fix</span> only allows recursive calls on a <em>syntactically</em>
 smaller argument.</p>
-<pre class="code coq literal-block">
-<span class="kn">Fixpoint</span> <span class="nf">example</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:=</span>
+<pre class="code coq literal-block"><code><span class="kn">Fixpoint</span> <span class="nf">example</span> <span class="o">(</span><span class="nv">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:=</span>
   <span class="o">...</span> <span class="c">(* There must be a match on [n] somewhere *)</span>
     <span class="o">...</span> <span class="kr">match</span> <span class="n">n</span> <span class="kr">with</span>
         <span class="o">|</span> <span class="n">O</span> <span class="o">=&gt;</span> <span class="n">base_case</span> <span class="c">(* no recursive call allowed *)</span>
@@ -80,44 +76,42 @@ smaller argument.</p>
           <span class="o">...</span> <span class="o">(</span><span class="n">example</span> <span class="n">m</span><span class="o">)</span>
           <span class="c">(* We can only call [example] on [m], or some even
              smaller value obtained by matching on [m] *)</span>
-        <span class="kr">end</span> <span class="o">...</span>
-</pre>
+        <span class="kr">end</span> <span class="o">...</span></code></pre>
 <p>In particular, it's not allowed to make a recursive call on a value
-obtained via some arbitrary function (in this case, <tt class="docutils literal">div</tt> and
-<tt class="docutils literal">sub</tt> in <tt class="docutils literal">copy2 a ((i - 1) / 2)</tt>).</p>
+obtained via some arbitrary function (in this case, <span class="docutils literal">div</span> and
+<span class="docutils literal">sub</span> in <span class="docutils literal">copy2 a ((i - 1) / 2)</span>).</p>
 <p>Here are three options:</p>
 <ol class="arabic simple">
-<li>Pick another representation of natural numbers so that
+<li><p>Pick another representation of natural numbers so that
 pattern-matching on it naturally decomposes into the different
-branches of the desired definition (base case (zero), even, odd).</li>
-<li>Use the fact that the recursion depth is actually bounded by <tt class="docutils literal">n</tt>,
-so we can use <tt class="docutils literal">n</tt> as &quot;fuel&quot;, which we know will not actually
-deplete before we are done.</li>
-<li>Cunningly extract a subterm of the decreasing argument to make the
+branches of the desired definition (base case (zero), even, odd).</p></li>
+<li><p>Use the fact that the recursion depth is actually bounded by <span class="docutils literal">n</span>,
+so we can use <span class="docutils literal">n</span> as &quot;fuel&quot;, which we know will not actually
+deplete before we are done.</p></li>
+<li><p>Cunningly extract a subterm of the decreasing argument to make the
 recursive call. This solution is less general and robust than the
 previous ones; it's a much harder fight against the termination
-checker.</li>
+checker.</p></li>
 </ol>
 <hr class="docutils" />
-<div class="section" id="alternative-representation">
-<h2>Alternative representation</h2>
+<section id="alternative-representation">
+<h3>Alternative representation</h3>
 <p>We have three cases: zero, even, and odd. Luckily the standard library
-has a type with almost the same structure, <tt class="docutils literal">positive</tt>:</p>
+has a type with almost the same structure, <span class="docutils literal">positive</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">positive</span> :=    <span class="c">(* p &gt; 0 *)</span>
 | xH                     <span class="c">(* 1 *)</span>
 | xI (p : positive)      <span class="c">(* 2p + 1 *)</span>
-| xO (p : positive).     <span class="c">(* 2p     *)</span></span></span></pre><p>Pointing the type <tt class="docutils literal">positive</tt> with an additional zero, we get <tt class="docutils literal">N</tt>:</p>
+| xO (p : positive).     <span class="c">(* 2p     *)</span></span></span></pre><p>Pointing the type <span class="docutils literal">positive</span> with an additional zero, we get <span class="docutils literal">N</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">N</span> :=
 | N0                      <span class="c">(* 0 *)</span>
-| Npos (p : positive).    <span class="c">(* p &gt; 0 *)</span></span></span></pre><p>There is also a conversion function <tt class="docutils literal">N.of_nat : nat <span class="pre">-&gt;</span> N</tt>, although
-it might also be a good idea to use <tt class="docutils literal">N</tt> everywhere instead of
-<tt class="docutils literal">nat</tt>, if the conversions become too annoying.</p>
-<p>The final definition starts by case analysis on <tt class="docutils literal">N</tt>, and the case
-revealing a <tt class="docutils literal">positive</tt> number is handled with a <tt class="docutils literal">fix</tt>-point, where
-the base case is <tt class="docutils literal">1</tt> instead of <tt class="docutils literal">0</tt>. We have to shift some
-details, because the even case is <tt class="docutils literal">2p</tt> instead of <tt class="docutils literal">2p + 2</tt>, so
-instead of a pair of trees of size <tt class="docutils literal">(i+1, i)</tt> we have to do <tt class="docutils literal"><span class="pre">(i-1,</span>
-i)</tt>. But overall the recursive cases still naturally match an
+| Npos (p : positive).    <span class="c">(* p &gt; 0 *)</span></span></span></pre><p>There is also a conversion function <span class="docutils literal">N.of_nat : nat <span class="pre">-&gt;</span> N</span>, although
+it might also be a good idea to use <span class="docutils literal">N</span> everywhere instead of
+<span class="docutils literal">nat</span>, if the conversions become too annoying.</p>
+<p>The final definition starts by case analysis on <span class="docutils literal">N</span>, and the case
+revealing a <span class="docutils literal">positive</span> number is handled with a <span class="docutils literal">fix</span>-point, where
+the base case is <span class="docutils literal">1</span> instead of <span class="docutils literal">0</span>. We have to shift some
+details, because the even case is <span class="docutils literal">2p</span> instead of <span class="docutils literal">2p + 2</span>, so
+instead of a pair of trees of size <span class="docutils literal">(i+1, i)</span> we have to do <span class="docutils literal"><span class="pre">(i-1,</span> i)</span>. But overall the recursive cases still naturally match an
 informal specification:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> NArith PArith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -149,12 +143,12 @@ informal specification:</p>
     <span class="kr">match</span> copy2 x p <span class="kr">with</span>
     | (_, snd) =&gt; snd
     <span class="kr">end</span>
-  <span class="kr">end</span>.</span></span></pre></div>
+  <span class="kr">end</span>.</span></span></pre></section>
 <hr class="docutils" />
-<div class="section" id="just-enough-fuel">
-<h2>Just enough fuel</h2>
-<p>We add fuel to the <tt class="docutils literal">fix</tt> as the decreasing argument. We can only run
-out if <tt class="docutils literal">n = i = 0</tt>, so we know what the result should be then.</p>
+<section id="just-enough-fuel">
+<h3>Just enough fuel</h3>
+<p>We add fuel to the <span class="docutils literal">fix</span> as the decreasing argument. We can only run
+out if <span class="docutils literal">n = i = 0</span>, so we know what the result should be then.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* note: This doesn&#39;t need to be a Fixpoint *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
   <span class="kr">let</span>
@@ -181,32 +175,32 @@ out if <tt class="docutils literal">n = i = 0</tt>, so we know what the result s
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span></pre><p>This works nicely when:</p>
 <ul class="simple">
-<li>we can compute the amount of fuel needed;</li>
-<li>and there is a predictable answer to give when we run out of fuel.</li>
+<li><p>we can compute the amount of fuel needed;</p></li>
+<li><p>and there is a predictable answer to give when we run out of fuel.</p></li>
 </ul>
 <p>If either of those assumption does <em>not</em> hold, we need to litter our
-code with <tt class="docutils literal">option</tt>.</p>
-</div>
+code with <span class="docutils literal">option</span>.</p>
+</section>
 <hr class="docutils" />
-<div class="section" id="nested-recursion">
-<h2>Nested recursion</h2>
+<section id="nested-recursion">
+<h3>Nested recursion</h3>
 <p>As mentioned earlier, Coq has strict rules about decreasing arguments.
 The usual explanation is that we can only make a recursive call on a
 subterm obtained through pattern-matching on the decreasing argument
 (or transitively, one of its subterms).</p>
 <p>One apparent restriction is that, because the condition is syntactic
 (i.e., Coq looks at the definition to track the provenance of the
-decreasing argument), the argument <tt class="docutils literal">n</tt> can only decrease by a
-constant at most (constant with respect to <tt class="docutils literal">n</tt>), since there are
-only finitely many <tt class="docutils literal">match</tt> in a definition. In particular, there is
+decreasing argument), the argument <span class="docutils literal">n</span> can only decrease by a
+constant at most (constant with respect to <span class="docutils literal">n</span>), since there are
+only finitely many <span class="docutils literal">match</span> in a definition. In particular, there is
 no way to make a recursive call on the result of a division by two, as
-that represents a decrease by <tt class="docutils literal">n/2</tt>, a value linear in <tt class="docutils literal">n</tt>.</p>
+that represents a decrease by <span class="docutils literal">n/2</span>, a value linear in <span class="docutils literal">n</span>.</p>
 <p>For better or for worse, Coq's termination criterion is actually a bit
 smarter than that: one can pass the decreasing argument to a nested
 fixpoint, and the &quot;subterm&quot; relation will be tracked through it.</p>
-<div class="section" id="cons-free-division">
-<h3>Cons-free division</h3>
-<p>And indeed, the division of a Peano <tt class="docutils literal">nat</tt> can be defined in such a
+<section id="cons-free-division">
+<h4>Cons-free division</h4>
+<p>And indeed, the division of a Peano <span class="docutils literal">nat</span> can be defined in such a
 way that Coq can tell that the result is a subterm of the dividend:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">div2</span> (<span class="nv">n</span> : nat) :=
   <span class="kr">let fix</span> <span class="nv">d2</span> (<span class="nv">n1</span> : nat) (<span class="nv">n2</span> : nat) {<span class="nv">struct</span> <span class="nv">n1</span>} :=
@@ -218,20 +212,20 @@ way that Coq can tell that the result is a subterm of the dividend:</p>
         <span class="kr">end</span>
       | _ =&gt; n1
       <span class="kr">end</span>
-  <span class="kr">in</span> d2 n n.</span></span></pre><p>The idea is to write a <tt class="docutils literal">fix</tt>-point of two arguments (somewhat like
-the fuel solution), which start out equal (<tt class="docutils literal">d2 n n</tt>), and we remove
-<strong>two</strong> <tt class="docutils literal">S</tt> constructors from one (<tt class="docutils literal">n2</tt>) of them for every <strong>one</strong>
-<tt class="docutils literal">S</tt> we remove from the other (<tt class="docutils literal">n1</tt>). Important details:</p>
+  <span class="kr">in</span> d2 n n.</span></span></pre><p>The idea is to write a <span class="docutils literal">fix</span>-point of two arguments (somewhat like
+the fuel solution), which start out equal (<span class="docutils literal">d2 n n</span>), and we remove
+<strong>two</strong> <span class="docutils literal">S</span> constructors from one (<span class="docutils literal">n2</span>) of them for every <strong>one</strong>
+<span class="docutils literal">S</span> we remove from the other (<span class="docutils literal">n1</span>). Important details:</p>
 <ul class="simple">
-<li>In all the non-recursing cases, we return <tt class="docutils literal">n1</tt> (and <em>not</em> <tt class="docutils literal">0</tt> in
+<li><p>In all the non-recursing cases, we return <span class="docutils literal">n1</span> (and <em>not</em> <span class="docutils literal">0</span> in
 any case), which is then guaranteed to be a subterm of the topmost
-<tt class="docutils literal">n</tt>.</li>
-<li>And the function must be decreasing in <tt class="docutils literal">n1</tt> (the term we return),
-rather than <tt class="docutils literal">n2</tt> (Coq only keeps track of subterms of decreasing
-arguments).</li>
+<span class="docutils literal">n</span>.</p></li>
+<li><p>And the function must be decreasing in <span class="docutils literal">n1</span> (the term we return),
+rather than <span class="docutils literal">n2</span> (Coq only keeps track of subterms of decreasing
+arguments).</p></li>
 </ul>
-<p>All that ensures that <tt class="docutils literal">div2 n</tt> is a subterm of <tt class="docutils literal">n</tt> (not a <em>strict
-subterm</em> (or <em>proper subterm</em>), because <tt class="docutils literal">n</tt> could be <tt class="docutils literal">O</tt>).</p>
+<p>All that ensures that <span class="docutils literal">div2 n</span> is a subterm of <span class="docutils literal">n</span> (not a <em>strict
+subterm</em> (or <em>proper subterm</em>), because <span class="docutils literal">n</span> could be <span class="docutils literal">O</span>).</p>
 <p>This has similarities to the previous fuel-based solution, but here
 the decreasing argument is a lot more relevant than just a device to
 trick the type checker.</p>
@@ -240,15 +234,15 @@ that the constraints are not quite the same as what is discussed in
 the literature, for example when the focus is on avoiding <em>memory
 allocations</em> rather than ensuring <em>termination</em> by structural
 well-foundedness.)</p>
-</div>
-<div class="section" id="conclusion-definition-of-copy">
-<h3>Conclusion: definition of <tt class="docutils literal">copy</tt></h3>
-<p>Once we have <tt class="docutils literal">div2</tt>, we can define <tt class="docutils literal">copy</tt> with a few tweaks to
-obtain <tt class="docutils literal"><span class="pre">i-1</span></tt> and <tt class="docutils literal"><span class="pre">i-2</span></tt> as <em>proper subterms</em> of <tt class="docutils literal">i</tt>, again by
-pattern-matching. Below, <tt class="docutils literal">i'</tt> and <tt class="docutils literal">i''</tt> are proper subterms of
-<tt class="docutils literal">i</tt> (by visual inspection), and <tt class="docutils literal">div2 i'</tt> and <tt class="docutils literal">div2 i''</tt> are
-subterms of <tt class="docutils literal">i'</tt> and <tt class="docutils literal">i''</tt> (by the definition of <tt class="docutils literal">div2</tt>). By
-transitivity they are proper subterms of <tt class="docutils literal">i</tt>, so the termination
+</section>
+<section id="conclusion-definition-of-copy">
+<h4>Conclusion: definition of <span class="docutils literal">copy</span></h4>
+<p>Once we have <span class="docutils literal">div2</span>, we can define <span class="docutils literal">copy</span> with a few tweaks to
+obtain <span class="docutils literal"><span class="pre">i-1</span></span> and <span class="docutils literal"><span class="pre">i-2</span></span> as <em>proper subterms</em> of <span class="docutils literal">i</span>, again by
+pattern-matching. Below, <span class="docutils literal">i'</span> and <span class="docutils literal">i''</span> are proper subterms of
+<span class="docutils literal">i</span> (by visual inspection), and <span class="docutils literal">div2 i'</span> and <span class="docutils literal">div2 i''</span> are
+subterms of <span class="docutils literal">i'</span> and <span class="docutils literal">i''</span> (by the definition of <span class="docutils literal">div2</span>). By
+transitivity they are proper subterms of <span class="docutils literal">i</span>, so the termination
 checker accepts.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">copy</span> (<span class="nv">x</span> : V) (<span class="nv">n</span> : nat) : BraunTree :=
   <span class="kr">let</span>
@@ -272,10 +266,10 @@ checker accepts.</p>
   <span class="kr">in</span>
   <span class="kr">match</span> copy2 x n <span class="kr">with</span>
   | (_, snd) =&gt; snd
-  <span class="kr">end</span>.</span></span></pre></div>
+  <span class="kr">end</span>.</span></span></pre></section>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Equality in Coq for enumerated types</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,46 +14,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="equality-in-coq-for-enumerated-types">
+<div class="alectryon-root alectryon-centered"><main id="equality-in-coq-for-enumerated-types">
 <h1 class="title">Equality in Coq for enumerated types</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/33708965">https://stackoverflow.com/q/33708965</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/33708965">https://stackoverflow.com/q/33708965</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have a finite enumerated type (say <tt class="docutils literal">T</tt>) in Coq and want to check
+<section id="question">
+<h2>Question</h2>
+<p>I have a finite enumerated type (say <span class="docutils literal">T</span>) in Coq and want to check
 elements for equality. This means, I need a function</p>
-<pre class="code coq literal-block">
-<span class="n">beq_T</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="n">y</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">:</span> <span class="n">bool</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">beq_T</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="n">y</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">:</span> <span class="n">bool</span></code></pre>
 <p>The only way I managed to define such a function, is with a case by
 case analysis. This results in lots of match statements and looks very
 cumbersome. Therefore, I wonder if there is not a simpler way to
 achieve this.</p>
-</div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
-<p>Even simpler: <tt class="docutils literal">Scheme Equality for ...</tt> generates two functions
+</section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
+<p>Even simpler: <span class="docutils literal">Scheme Equality for ...</span> generates two functions
 returning respectively a boolean and a sumbool.</p>
-</div>
-<div class="section" id="answer-konstantin-weitz">
-<h1>Answer (Konstantin Weitz)</h1>
-<p>The bad news is that the program that implements <tt class="docutils literal">beq_T</tt> must
+</section>
+<section id="answer-konstantin-weitz">
+<h2>Answer (Konstantin Weitz)</h2>
+<p>The bad news is that the program that implements <span class="docutils literal">beq_T</span> must
 necessarily consist of a large match statement on both of its
 arguments. The good news is that you can automatically
 generate/synthesize this program using Coq's <em>tactic language</em>. For
 example, given the type:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> := t0 | t1 | t2 | t3.</span></span></pre><p>You can define <tt class="docutils literal">beq_T</tt> as follows. The first two <tt class="docutils literal">destruct</tt>
-tactics synthesize the code necessary to match on both <tt class="docutils literal">x</tt> and
-<tt class="docutils literal">y</tt>. The <tt class="docutils literal">match</tt> tactic inspects the branch of the match that it
-is in, and depending on whether <tt class="docutils literal">x = y</tt>, the tactic either
-synthesises the program that returns <tt class="docutils literal">true</tt> or <tt class="docutils literal">false</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> := t0 | t1 | t2 | t3.</span></span></pre><p>You can define <span class="docutils literal">beq_T</span> as follows. The first two <span class="docutils literal">destruct</span>
+tactics synthesize the code necessary to match on both <span class="docutils literal">x</span> and
+<span class="docutils literal">y</span>. The <span class="docutils literal">match</span> tactic inspects the branch of the match that it
+is in, and depending on whether <span class="docutils literal">x = y</span>, the tactic either
+synthesises the program that returns <span class="docutils literal">true</span> or <span class="docutils literal">false</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-in-coq-for-enumerated-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-in-coq-for-enumerated-types-v-chk0"><span class="kn">Definition</span> <span class="nf">beq_T</span> (<span class="nv">x</span> <span class="nv">y</span> : T) : bool.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">bool</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> x, y;
     <span class="kr">match goal with</span>
@@ -69,15 +64,15 @@ synthesises the program that returns <tt class="docutils literal">true</tt> or <
             <span class="kr">end</span>
 <span class="kr">end</span>
      : T -&gt; T -&gt; bool</blockquote></div></div></small></span></pre><p>Thankfully, Coq already comes with a tactic that does almost what you
-want. It is called <tt class="docutils literal">decide equality</tt>. It automatically synthesizes a
-program that decides whether two elements of a type <tt class="docutils literal">T</tt> are equal.
+want. It is called <span class="docutils literal">decide equality</span>. It automatically synthesizes a
+program that decides whether two elements of a type <span class="docutils literal">T</span> are equal.
 But instead of just returning a boolean value, the synthesized program
 returns a proof of the (in)equality of the two elements.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-in-coq-for-enumerated-types-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-in-coq-for-enumerated-types-v-chk2"><span class="kn">Definition</span> <span class="nf">eqDec_T</span> (<span class="nv">x</span> <span class="nv">y</span> : T) : {x = y} + {x &lt;&gt; y}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x, y</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">decide equality</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>With that program synthesized, it is easy to implement <tt class="docutils literal">beq_T</tt>.</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">beq_T&#39;</span> {<span class="nv">x</span> <span class="nv">y</span> : T} : bool := <span class="kr">if</span> eqDec_T x y <span class="kr">then</span> true <span class="kr">else</span> false.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>With that program synthesized, it is easy to implement <span class="docutils literal">beq_T</span>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">beq_T&#39;</span> {<span class="nv">x</span> <span class="nv">y</span> : T} : bool := <span class="kr">if</span> eqDec_T x y <span class="kr">then</span> true <span class="kr">else</span> false.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

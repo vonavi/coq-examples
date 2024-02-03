@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>I need help defining a concatenation in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,36 +14,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="i-need-help-defining-a-concatenation-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="i-need-help-defining-a-concatenation-in-coq">
 <h1 class="title">I need help defining a concatenation in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35947749">https://stackoverflow.com/q/35947749</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/35947749">https://stackoverflow.com/q/35947749</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I need to define a concatenation function, first some context, I
 define the set &quot;accepts&quot;</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">accepts</span> : <span class="kt">Set</span> :=
 | <span class="kt">True</span>  : accepts
 | fun_m : accepts -&gt; accepts -&gt; accepts
 | n_fun : nat -&gt; accepts -&gt; accepts.</span></span></pre><p>Then I need to be able to manipulate a very specific subset of
-accepts: the first and last ones on the list, so <tt class="docutils literal">True</tt> and
-<tt class="docutils literal">n_fun</tt> only. I do it with a mix of inductive and record like this:</p>
+accepts: the first and last ones on the list, so <span class="docutils literal">True</span> and
+<span class="docutils literal">n_fun</span> only. I do it with a mix of inductive and record like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">n_sub</span> : accepts -&gt; <span class="kt">Prop</span> :=
 | a1 : n_sub <span class="kt">True</span>
 | a2 : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">A</span> : accepts), n_sub A -&gt; n_sub (n_fun n A).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">sub</span> : <span class="kt">Set</span> := mk_s {A : accepts ; WS : n_sub A}.</span></span></pre><p>As you might see this will give me strings of natural numbers followed
-by <tt class="docutils literal">True</tt>, exclusively, so I want to deal with the subset of accepts
-that yields <tt class="docutils literal">n ... k True</tt>. Consider I have two of this strings, I
-want to define the function that sends <tt class="docutils literal"><span class="pre">ab...</span> True</tt> and <tt class="docutils literal"><span class="pre">xy...</span>
-True</tt> into <tt class="docutils literal"><span class="pre">ab...xy...</span> True</tt>.</p>
+by <span class="docutils literal">True</span>, exclusively, so I want to deal with the subset of accepts
+that yields <span class="docutils literal">n ... k True</span>. Consider I have two of this strings, I
+want to define the function that sends <span class="docutils literal"><span class="pre">ab...</span> True</span> and <span class="docutils literal"><span class="pre">xy...</span> True</span> into <span class="docutils literal"><span class="pre">ab...xy...</span> True</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="i-need-help-defining-a-concatenation-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">concatenate</span> (<span class="nv">A0</span> <span class="nv">A1</span> : accepts) (<span class="nv">x</span> : n_sub A0) (<span class="nv">y</span> : n_sub A1) : accepts
   := <span class="kr">match</span> x, y <span class="kr">with</span>
      | a1, q =&gt; B
@@ -54,11 +50,11 @@ using the accepts directly and sending the things to void, using the
 record inside, mixing the accepts and the sub in different variations,
 etc, etc... I'm just out of ideas and need someone to help me fix this
 concatenate, please! Thank you in advance for your help!</p>
-</div>
-<div class="section" id="answer-jbapple">
-<h1>Answer (jbapple)</h1>
+</section>
+<section id="answer-jbapple">
+<h2>Answer (jbapple)</h2>
 <p>Sometimes it is helpful to write computable predicates, rather than
-inductive ones (my <tt class="docutils literal">ok</tt>, below, vs. your <tt class="docutils literal">n_sub</tt>).</p>
+inductive ones (my <span class="docutils literal">ok</span>, below, vs. your <span class="docutils literal">n_sub</span>).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">accepts</span> :=
 | valid : accepts
 | fun_m : accepts -&gt; accepts -&gt; accepts
@@ -69,7 +65,7 @@ inductive ones (my <tt class="docutils literal">ok</tt>, below, vs. your <tt cla
   | valid =&gt; true
   | n_fun _ y =&gt; ok y
   | _ =&gt; false
-  <span class="kr">end</span>.</span></span></pre><p>Since <tt class="docutils literal">ok</tt> is computable, you can use it for all sorts of things
+  <span class="kr">end</span>.</span></span></pre><p>Since <span class="docutils literal">ok</span> is computable, you can use it for all sorts of things
 later you might care about, but you can also use it in proofs (see
 below).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">concat</span> <span class="nv">x</span> <span class="nv">y</span> :=
@@ -77,8 +73,8 @@ below).</p>
   | valid =&gt; y
   | n_fun z zs =&gt; n_fun z (concat zs y)
   | _ =&gt; y
-  <span class="kr">end</span>.</span></span></pre><p><tt class="docutils literal">concat</tt> punts on non-<tt class="docutils literal">ok</tt> input. Later, I'll show a more
-strictly-typed version, <tt class="docutils literal">concatLegit</tt>.</p>
+  <span class="kr">end</span>.</span></span></pre><p><span class="docutils literal">concat</span> punts on non-<span class="docutils literal">ok</span> input. Later, I'll show a more
+strictly-typed version, <span class="docutils literal">concatLegit</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chk1"><span class="kn">Lemma</span> <span class="nf">concatOk</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span>,
     ok x = true -&gt; ok y = true -&gt; ok (concat x y) = true.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : accepts,
 ok x = true -&gt; ok y = true -&gt; ok (concat x y) = true</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -100,21 +96,21 @@ ok x = true -&gt; ok y = true -&gt; ok (concat x y) = true</div></blockquote></d
 <span class="kr">let</span> (<span class="nv">y0</span>, q) := y <span class="kr">in</span>
 existT (<span class="kr">fun</span> <span class="nv">x1</span> : accepts =&gt; ok x1 = true)
   (concat x0 y0) (concatOk x0 y0 p q)
-     : legit -&gt; legit -&gt; legit</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-galas">
-<h1>Answer (galas)</h1>
+     : legit -&gt; legit -&gt; legit</blockquote></div></div></small></span></pre></section>
+<section id="answer-galas">
+<h2>Answer (galas)</h2>
 <p>The problem here is that you are trying to pattern-match on a thing
-whose type lives in <tt class="docutils literal">Prop</tt> to generate something of type <tt class="docutils literal">accepts</tt>
-which lives in <tt class="docutils literal">Set</tt>. This is not allowed by Coq's type system. What
-you have to do is pattern-match on the things of type <tt class="docutils literal">accepts</tt> and
+whose type lives in <span class="docutils literal">Prop</span> to generate something of type <span class="docutils literal">accepts</span>
+which lives in <span class="docutils literal">Set</span>. This is not allowed by Coq's type system. What
+you have to do is pattern-match on the things of type <span class="docutils literal">accepts</span> and
 then use the properties to dismiss the impossible cases.</p>
 <p>Here I'll use the interactive mode. This allows me to only define the
-part of the computation I am interested in using <tt class="docutils literal">refine</tt> and
-leaving blank (using <tt class="docutils literal">_</tt>) the parts I will deal with later on.</p>
-<p>Because some irrelevant branches might appear when inspecting <tt class="docutils literal">A0</tt>,
+part of the computation I am interested in using <span class="docutils literal">refine</span> and
+leaving blank (using <span class="docutils literal">_</span>) the parts I will deal with later on.</p>
+<p>Because some irrelevant branches might appear when inspecting <span class="docutils literal">A0</span>,
 I need to generalise the return type: instead of building an
-<tt class="docutils literal">accepts</tt>, I'll build a proof that <tt class="docutils literal">n_sub a <span class="pre">-&gt;</span> accepts</tt> where
-<tt class="docutils literal">a</tt> is whatever <tt class="docutils literal">A0</tt> was matched to.</p>
+<span class="docutils literal">accepts</span>, I'll build a proof that <span class="docutils literal">n_sub a <span class="pre">-&gt;</span> accepts</span> where
+<span class="docutils literal">a</span> is whatever <span class="docutils literal">A0</span> was matched to.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chk9"><span class="kn">Fixpoint</span> <span class="nf">concatenate</span> (<span class="nv">A0</span> <span class="nv">A1</span> : accepts) (<span class="nv">x</span> : n_sub A0) (<span class="nv">y</span> : n_sub A1) : accepts.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">accepts</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chka"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
@@ -127,23 +123,23 @@ n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1<
       <span class="kr">end</span>) x).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>a, a0</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n_sub (fun_m a a0) -&gt; accepts</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A0'</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>Hn_fun</var><span class="hyp-type"><b>: </b><span>n_sub (n_fun n A0&#39;)</span></span></span><br></div><label class="goal-separator" for="i-need-help-defining-a-concatenation-in-coq-v-chkc"><hr></label><div class="goal-conclusion">n_sub A0&#39;</div></blockquote></div></div></div></small></span></pre><p>I now am left with two proofs: I need to define the case I left empty
-but that is rather easy: the assumption <tt class="docutils literal">n_sub (fun_m a a0)</tt> is
-contradictory! I can prove <tt class="docutils literal">False</tt> by inverting it:</p>
+but that is rather easy: the assumption <span class="docutils literal">n_sub (fun_m a a0)</span> is
+contradictory! I can prove <span class="docutils literal">False</span> by inverting it:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chkd">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>a, a0</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n_sub (fun_m a a0) -&gt; accepts</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chke"><span class="nb">intro</span> Hf.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>a, a0</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>Hf</var><span class="hyp-type"><b>: </b><span>n_sub (fun_m a a0)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">accepts</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chkf"><span class="nb">apply</span> False_rec.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
-n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>a, a0</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>Hf</var><span class="hyp-type"><b>: </b><span>n_sub (fun_m a a0)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">inversion</span> Hf.</span></span></pre><p>Now, I have to prove that <tt class="docutils literal">n_sub A0'</tt> holds given the assumption
-<tt class="docutils literal">Hn_fun</tt> that <tt class="docutils literal">n_sub (n_fun n A0')</tt> holds true. Once more
-<tt class="docutils literal">inversion</tt> will do the trick:</p>
+n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>a, a0</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>Hf</var><span class="hyp-type"><b>: </b><span>n_sub (fun_m a a0)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">inversion</span> Hf.</span></span></pre><p>Now, I have to prove that <span class="docutils literal">n_sub A0'</span> holds given the assumption
+<span class="docutils literal">Hn_fun</span> that <span class="docutils literal">n_sub (n_fun n A0')</span> holds true. Once more
+<span class="docutils literal">inversion</span> will do the trick:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chk10">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A0'</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>Hn_fun</var><span class="hyp-type"><b>: </b><span>n_sub (n_fun n A0&#39;)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n_sub A0&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="i-need-help-defining-a-concatenation-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="i-need-help-defining-a-concatenation-in-coq-v-chk11"><span class="nb">inversion</span> Hn_fun.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>concatenate</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">A0</span> <span class="nv">A1</span> : accepts,
 n_sub A0 -&gt; n_sub A1 -&gt; accepts</span></span></span><br><span><var>A0, A1</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>n_sub A0</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>n_sub A1</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A0'</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>Hn_fun</var><span class="hyp-type"><b>: </b><span>n_sub (n_fun n A0&#39;)</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>A</var><span class="hyp-type"><b>: </b><span>accepts</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>n_sub A0&#39;</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n0 = n</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>A = A0&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n_sub A0&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">assumption</span>.</span></span></pre><p>And that's it! The tricky part here is to identify the hypothesis that
-needs to be generalised and use the appropriate <tt class="docutils literal">as ... return ...</tt>
+needs to be generalised and use the appropriate <span class="docutils literal">as ... return ...</span>
 in the <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual020.html#sec644">dependent pattern-matching</a>. The
 rest is made quite convenient by the use of the interactive mode and
-the help of <tt class="docutils literal">refine</tt> to build incomplete proof terms.</p>
+the help of <span class="docutils literal">refine</span> to build incomplete proof terms.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

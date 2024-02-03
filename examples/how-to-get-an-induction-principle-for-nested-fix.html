@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to get an induction principle for nested fix</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-get-an-induction-principle-for-nested-fix">
-<h1 class="title">How to get an induction principle for nested <tt class="docutils literal">fix</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/19205839">https://stackoverflow.com/q/19205839</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="how-to-get-an-induction-principle-for-nested-fix">
+<h1 class="title">How to get an induction principle for nested <span class="docutils literal">fix</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/19205839">https://stackoverflow.com/q/19205839</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am working with a function that searches through a range of values.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> FunInd.</span><span class="alectryon-wsp">
@@ -90,11 +87,11 @@ to mutual recursion? Are there easier ways to reason about the cases,
 not involving making separate induction theorems? Since I haven't
 found a way to generate it automatically, I guess I'm stuck with
 writing the induction principle directly.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>There's a trick for avoiding mutual recursion in this case: you can
-compute <tt class="docutils literal">f i1</tt> inside <tt class="docutils literal">f</tt> and pass the result to <tt class="docutils literal">g</tt>.</p>
+compute <span class="docutils literal">f i1</span> inside <span class="docutils literal">f</span> and pass the result to <span class="docutils literal">g</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">g</span> (<span class="nv">f_n_i1</span> : list nat -&gt; bool) (<span class="nv">j</span> : nat) (<span class="nv">l1</span> : list nat) : bool :=
   <span class="kr">match</span> j <span class="kr">with</span>
   | <span class="mi">0</span> =&gt; false
@@ -114,11 +111,11 @@ original code? What about well founded induction?</p>
 the captured variables into curried arguments is a good idea. Now, I
 have separate functions, and probably can just use plain induction
 without extra fuss. Ideally I'd want to be able to say something like:
-<tt class="docutils literal">induction n</tt>, <tt class="docutils literal">SearchCountList n</tt> and have all of the extra
+<span class="docutils literal">induction n</span>, <span class="docutils literal">SearchCountList n</span> and have all of the extra
 premises and loop invariant, etc. But, with this hint, I should be
 able to get there more easily and directly.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to prove non-equality of terms produced by two different constructors of the same inductive in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,28 +14,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the-same-inductive-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the-same-inductive-in-coq">
 <h1 class="title">How to prove non-equality of terms produced by two different constructors of the same inductive in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/60616748">https://stackoverflow.com/q/60616748</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/60616748">https://stackoverflow.com/q/60616748</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider I have an inductive:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">DirectSum</span> {<span class="nv">L</span> <span class="nv">R</span>: <span class="kt">Type</span>}: <span class="kt">Type</span> :=
 | Left: L -&gt; @DirectSum L R
 | Right: R -&gt; @DirectSum L R.</span></span></pre><p>How do I prove that</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">L</span> <span class="nv">R</span>: <span class="kt">Type</span>, <span class="kr">forall</span> <span class="nv">l</span>: L, <span class="kr">forall</span> <span class="nv">r</span>: R, Left L &lt;&gt; Right R.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">L</span> <span class="nv">R</span> : <span class="kt">Type</span>, L -&gt; R -&gt; Left L &lt;&gt; Right R</div></blockquote></div></div></small></span></pre><p>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal">easy</tt> tactic is powerful enough to solve this:</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal">easy</span> tactic is powerful enough to solve this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">DirectSum</span> (<span class="nv">L</span> <span class="nv">R</span>: <span class="kt">Type</span>): <span class="kt">Type</span> :=
 | Left: L -&gt; DirectSum L R
 | Right: R -&gt; DirectSum L R.</span><span class="alectryon-wsp">
@@ -46,11 +43,11 @@
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-prove-non-equality-of-terms-produced-by-two-different-constructors-of-the-v-chk1"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">L</span> <span class="nv">R</span>: <span class="kt">Type</span>, <span class="kr">forall</span> <span class="nv">l</span>: L, <span class="kr">forall</span> <span class="nv">r</span>: R, Left l &lt;&gt; Right r.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">L</span> <span class="nv">R</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : L) (<span class="nv">r</span> : R), Left l &lt;&gt; Right r</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">easy</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The reason this works, internally, is pattern matching. We can write a
-function that returns <tt class="docutils literal">True</tt> on <tt class="docutils literal">Left</tt> and <tt class="docutils literal">False</tt> on <tt class="docutils literal">Right</tt>.
-If the terms were equal, we would get <tt class="docutils literal">True = False</tt>, which entails
+function that returns <span class="docutils literal">True</span> on <span class="docutils literal">Left</span> and <span class="docutils literal">False</span> on <span class="docutils literal">Right</span>.
+If the terms were equal, we would get <span class="docutils literal">True = False</span>, which entails
 a contradiction.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

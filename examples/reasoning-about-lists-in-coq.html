@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Reasoning about lists in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="reasoning-about-lists-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="reasoning-about-lists-in-coq">
 <h1 class="title">Reasoning about lists in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34493687">https://stackoverflow.com/q/34493687</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34493687">https://stackoverflow.com/q/34493687</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm try to solve some theorems, based on Pierce's &quot;Software
 Foundations&quot;.</p>
 <p>First of all I create a couple of useful functions:</p>
@@ -55,26 +52,27 @@ Foundations&quot;.</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-lists-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-lists-in-coq-v-chk6">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn'</var><span class="hyp-type"><b>: </b><span>length (<span class="kp">repeat</span> n&#39; n&#39;) = n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (<span class="kp">repeat</span> (S n&#39;) (S n&#39;)) = S n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-lists-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-lists-in-coq-v-chk7"><span class="nb">simpl</span>. <span class="c">(* and here I can&#39;t continue... *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHn'</var><span class="hyp-type"><b>: </b><span>length (<span class="kp">repeat</span> n&#39; n&#39;) = n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S (length (<span class="kp">repeat</span> (S n&#39;) n&#39;)) = S n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>I want to follow Pierce's advice:</p>
 <blockquote>
-Note that, since this problem is somewhat open-ended, it's
+<p>Note that, since this problem is somewhat open-ended, it's
 possible that you may come up with a theorem which is true, but
 whose proof requires techniques you haven't learned yet. Feel free
-to ask for help if you get stuck!</blockquote>
+to ask for help if you get stuck!</p>
+</blockquote>
 <p>So, could you please advice some proof techniques for me?</p>
 <hr class="docutils" />
-<p><strong>A (eponier):</strong> The two arguments of <tt class="docutils literal">repeat</tt> do not have the same
+<p><strong>A (eponier):</strong> The two arguments of <span class="docutils literal">repeat</span> do not have the same
 meaning at all. In particular, in your theorem, the values of the list
 are not important. You should try to prove a more general lemma using
 distinct variables for the values and the length.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>As &#64;eponier said, you should try to prove a more general lemma, like</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-lists-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-lists-in-coq-v-chk8"><span class="kn">Theorem</span> <span class="nf">count_repeat_gen</span> : <span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, length (<span class="kp">repeat</span> n m) = m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, length (<span class="kp">repeat</span> n m) = m</div></blockquote></div></div></small></span></pre><p>Using <tt class="docutils literal">repeat n n</tt> creates an implicit link between the value of the
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="reasoning-about-lists-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="reasoning-about-lists-in-coq-v-chk8"><span class="kn">Theorem</span> <span class="nf">count_repeat_gen</span> : <span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, length (<span class="kp">repeat</span> n m) = m.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">n</span> : nat, length (<span class="kp">repeat</span> n m) = m</div></blockquote></div></div></small></span></pre><p>Using <span class="docutils literal">repeat n n</span> creates an implicit link between the value of the
 element and the size of the list which makes your statement impossible
-to prove directly. Once you proved <tt class="docutils literal">count_repeat_gen</tt>, you'll be
+to prove directly. Once you proved <span class="docutils literal">count_repeat_gen</span>, you'll be
 able to prove your theorem.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

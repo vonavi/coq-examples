@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Improving dependently typed reverse function</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="improving-dependently-typed-reverse-function">
+<div class="alectryon-root alectryon-centered"><main id="improving-dependently-typed-reverse-function">
 <h1 class="title">Improving dependently typed reverse function</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/63051692">https://stackoverflow.com/q/63051692</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/63051692">https://stackoverflow.com/q/63051692</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Here is the code I have thus far:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">ilist</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Variable</span> <span class="nv">A</span>: <span class="kt">Set</span>.</span><span class="alectryon-wsp">
@@ -63,23 +60,23 @@
 there are a couple less than desirable aspects that I'd like to try
 and refine.</p>
 <p>First, having a bunch of proofs hanging out to munge equivalent types
-seems...annoying. Basically, <tt class="docutils literal">same_length</tt>, <tt class="docutils literal">same_length'</tt>,
-<tt class="docutils literal">same_length''</tt>. Perhaps this is an issue with how I defined
-<tt class="docutils literal">irev_aux</tt>, but I tried some definitions and others required a type
+seems...annoying. Basically, <span class="docutils literal">same_length</span>, <span class="docutils literal">same_length'</span>,
+<span class="docutils literal">same_length''</span>. Perhaps this is an issue with how I defined
+<span class="docutils literal">irev_aux</span>, but I tried some definitions and others required a type
 level match which seemed about as annoying.</p>
-<p>I tried using <tt class="docutils literal">refine</tt>, but got a type error...is there a way to
-invoke <tt class="docutils literal">refine</tt>, where you then have to prove that the types are in
+<p>I tried using <span class="docutils literal">refine</span>, but got a type error...is there a way to
+invoke <span class="docutils literal">refine</span>, where you then have to prove that the types are in
 fact equivalent? In a sense that's what I did, but who wants those
 lemmas hanging out.</p>
 <p>Beyond that, I realize there are probably ways to get rid of the
 equality lemmas, but I'm curious how I can make use of
-<tt class="docutils literal">same_length</tt>. I've seen cases of matching on equality proofs before
+<span class="docutils literal">same_length</span>. I've seen cases of matching on equality proofs before
 to get the typer to unify types...I tried that here but it didn't seem
 to work.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>There is no way of programming <tt class="docutils literal">irev</tt> without a cast. This is one of
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>There is no way of programming <span class="docutils literal">irev</span> without a cast. This is one of
 the many reasons why Coq users generally avoid indexed data types like
 this :)</p>
 <p>Here is one possibility for writing this function:</p>
@@ -121,12 +118,12 @@ this :)</p>
     cast (<span class="nb">f_equal</span> ilist (eq_trans (irev_length_plus i <span class="mi">0</span>) (Nat.add_comm _ _)))
          (irev_aux l Nil).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ilist</span>.</span></span></pre><p>If you want to prove anything about <tt class="docutils literal">irev</tt>, the easiest is probably
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ilist</span>.</span></span></pre><p>If you want to prove anything about <span class="docutils literal">irev</span>, the easiest is probably
 to convert the indexed lists to normal lists and reasoning about
-reversal of normal lists. Fun exercise: try showing that <tt class="docutils literal">irev</tt> is
+reversal of normal lists. Fun exercise: try showing that <span class="docutils literal">irev</span> is
 its own inverse.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

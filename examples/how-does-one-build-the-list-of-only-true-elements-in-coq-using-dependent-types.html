@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How does one build the list of only true elements in Coq using dependent types?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types">
+<div class="alectryon-root alectryon-centered"><main id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types">
 <h1 class="title">How does one build the list of only true elements in Coq using dependent types?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71518511">https://stackoverflow.com/q/71518511</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71518511">https://stackoverflow.com/q/71518511</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I was going through the Coq book <a class="reference external" href="https://math-comp.github.io/mcb/">from the maths perspective</a>. I was trying to define a
-dependently typed function that returned a length list with <tt class="docutils literal">n</tt>
+dependently typed function that returned a length list with <span class="docutils literal">n</span>
 trues depending on the number trues we want. Coq complains that things
 don't have the right type but when I see it if it were to unfold my
 definitions when doing the type comparison it should have worked but
@@ -66,12 +63,12 @@ In environment
 g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
 n : nat
 The term <span class="s2">&quot;vnil&quot;</span> has type <span class="s2">&quot;Vector 0&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;t ?n@{n1:=0}&quot;</span>.</blockquote></div></div></small></span></pre><p>i.e. <tt class="docutils literal">t <span class="pre">?n&#64;{n1:=0}</span></tt> is <tt class="docutils literal">Vector 0</tt>... no?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;t ?n@{n1:=0}&quot;</span>.</blockquote></div></div></small></span></pre><p>i.e. <span class="docutils literal">t <span class="pre">?n&#64;{n1:=0}</span></span> is <span class="docutils literal">Vector 0</span>... no?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>In this case, it looks like Coq does not manage to infer the return
-type of the <tt class="docutils literal">match</tt> expression, so the best thing to do is to give
+type of the <span class="docutils literal">match</span> expression, so the best thing to do is to give
 it explicitly:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk4"><span class="kn">Fixpoint</span> <span class="nf">g</span> (<span class="nv">n</span> : nat) : t n :=
     <span class="kr">match</span> n <span class="kr">return</span> t n <span class="kr">with</span>
@@ -82,7 +79,7 @@ g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
 n : nat
 n&#39; : nat
 The term <span class="s2">&quot;g n&#39;&quot;</span> has type <span class="s2">&quot;t n&#39;&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Vector n&#39;&quot;</span>.</blockquote></div></div></small></span></pre><p>Note the added <tt class="docutils literal">return</tt> clause.</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Vector n&#39;&quot;</span>.</blockquote></div></div></small></span></pre><p>Note the added <span class="docutils literal">return</span> clause.</p>
 <p>Then the real error message appears:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-does-one-build-the-list-of-only-true-elements-in-coq-using-dependent-types-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
@@ -90,11 +87,11 @@ g : <span class="kr">forall</span> <span class="nv">n</span> : nat, t n
 n : nat
 n&#39; : nat
 The term <span class="s2">&quot;g n&#39;&quot;</span> has type <span class="s2">&quot;t n&#39;&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Vector n&#39;&quot;</span>.</blockquote></div></div></small></span></pre><p>And this time it is true that in general <tt class="docutils literal">t n'</tt> is not the same as
-<tt class="docutils literal">Vector n'</tt> because <tt class="docutils literal">t n'</tt> is stuck (it does not know yet whether
-<tt class="docutils literal">n'</tt> is <tt class="docutils literal">0</tt> or some <tt class="docutils literal">S n''</tt>).</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Vector n&#39;&quot;</span>.</blockquote></div></div></small></span></pre><p>And this time it is true that in general <span class="docutils literal">t n'</span> is not the same as
+<span class="docutils literal">Vector n'</span> because <span class="docutils literal">t n'</span> is stuck (it does not know yet whether
+<span class="docutils literal">n'</span> is <span class="docutils literal">0</span> or some <span class="docutils literal">S n''</span>).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

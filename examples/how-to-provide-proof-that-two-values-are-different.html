@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to provide proof that two values are different?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,35 +14,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-provide-proof-that-two-values-are-different">
+<div class="alectryon-root alectryon-centered"><main id="how-to-provide-proof-that-two-values-are-different">
 <h1 class="title">How to provide proof that two values are different?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/62779463">https://stackoverflow.com/q/62779463</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/62779463">https://stackoverflow.com/q/62779463</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am looking for an example in Coq for difference between two
 statements. True is equal to false and true is not equal to true. I do
-not find how to finish the proof, if have this expression <tt class="docutils literal">true &lt;&gt;
-true</tt>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+not find how to finish the proof, if have this expression <span class="docutils literal">true &lt;&gt; true</span>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Let's check a casual example when you have:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk0"><span class="kn">Theorem</span> <span class="nf">easily</span> : true &lt;&gt; false.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; false</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>you can just desugar the <tt class="docutils literal">&lt;&gt;</tt> negation to some <tt class="docutils literal">Prop <span class="pre">-&gt;</span> False</tt>,</p>
+</span></span></pre><p>you can just desugar the <span class="docutils literal">&lt;&gt;</span> negation to some <span class="docutils literal">Prop <span class="pre">-&gt;</span> False</span>,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk1"><span class="kn">Theorem</span> <span class="nf">easily</span> : true &lt;&gt; false.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; false</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk2"><span class="nb">intro</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>true = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>As <tt class="docutils literal">H</tt> is a contradiction, you can just use <tt class="docutils literal">inversion H</tt> and
+</span></span></pre><p>As <span class="docutils literal">H</span> is a contradiction, you can just use <span class="docutils literal">inversion H</span> and
 finish the proof, dependently typed talking you just have to provide
 anti-congruence absurd between the values, in Coq it can be done with
-<tt class="docutils literal">eq_rect</tt>.</p>
+<span class="docutils literal">eq_rect</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk3"><span class="kn">Theorem</span> <span class="nf">easily</span> : true &lt;&gt; false.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; false</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk4"><span class="nb">intro</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>true = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* check eq_rect with Compute eq_rect *)</span>
@@ -59,15 +55,15 @@ eq_rect true
   (<span class="kr">fun</span> <span class="nv">x</span> : bool =&gt; <span class="kr">if</span> x <span class="kr">then</span> <span class="kt">True</span> <span class="kr">else</span> <span class="kt">False</span>) h
   false H</span></span><span class="hyp-type"><b>: </b><span><span class="kt">True</span> -&gt; <span class="kt">False</span></span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (c I).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In your example, you just have to provide proof that <tt class="docutils literal">true = true</tt>.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In your example, you just have to provide proof that <span class="docutils literal">true = true</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk7"><span class="kn">Theorem</span> <span class="nf">easily</span> : true &lt;&gt; true -&gt; <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; true -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk8"><span class="nb">intro</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>true &lt;&gt; true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chk9"><span class="nb">cbv</span> <span class="kr">in</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>true = true -&gt; <span class="kt">False</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (H eq_refl).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-provide-proof-that-two-values-are-different-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-provide-proof-that-two-values-are-different-v-chka"><span class="kn">Restart</span>. <span class="c">(* or just contradiction *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">true &lt;&gt; true -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">contradiction</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Remember with easily you can finish any goal that has <tt class="docutils literal">true &lt;&gt; true</tt>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Remember with easily you can finish any goal that has <span class="docutils literal">true &lt;&gt; true</span>
 as a premise.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

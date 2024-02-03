@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why can I use the constructor tactic to prove reflexivity?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-can-i-use-the-constructor-tactic-to-prove-reflexivity">
+<div class="alectryon-root alectryon-centered"><main id="why-can-i-use-the-constructor-tactic-to-prove-reflexivity">
 <h1 class="title">Why can I use the constructor tactic to prove reflexivity?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/65959309">https://stackoverflow.com/q/65959309</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/65959309">https://stackoverflow.com/q/65959309</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>The constructor tactic allows you to discharge a goal which is an
 inductive datatype by automatically applying constructors. However,
 definitional equality is not an inductive product in Coq. Then why
 does Coq accept this proof?</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-can-i-use-the-constructor-tactic-to-prove-reflexivity-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-can-i-use-the-constructor-tactic-to-prove-reflexivity-v-chk0"><span class="kn">Example</span> <span class="nf">zeqz</span> : <span class="mi">0</span> = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">constructor</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-can-i-use-the-constructor-tactic-to-prove-reflexivity-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-can-i-use-the-constructor-tactic-to-prove-reflexivity-v-chk0"><span class="kn">Example</span> <span class="nf">zeqz</span> : <span class="mi">0</span> = <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">constructor</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The equality type in Coq is defined as follows</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-can-i-use-the-constructor-tactic-to-prove-reflexivity-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-can-i-use-the-constructor-tactic-to-prove-reflexivity-v-chk1"><span class="kn">Inductive</span> <span class="nf">eq</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Prop</span> :=
   eq_refl : x = x :&gt; A
@@ -41,25 +38,25 @@ does Coq accept this proof?</p>
 <span class="kn">where</span> <span class="s2">&quot;x = y :&gt; A&quot;</span> := (@eq A x y) : type_scope.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ = _ :&gt; _&quot;</span> was already used <span class="kr">in</span> scope
 type_scope. [notation-overridden,parsing]</blockquote><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;_ = _ :&gt; _&quot;</span> was already used <span class="kr">in</span> scope
 type_scope. [notation-overridden,parsing]</blockquote></div></div></small></span></pre><p>that is it has a single reflexivity constructor.</p>
-<p>To prove that <tt class="docutils literal">0 = 0</tt> you need to construct a term of this type. The
-only way to do this is to invoke <tt class="docutils literal">eq_refl</tt>. However in order to
-invoke <tt class="docutils literal">eq_refl</tt> the type checker needs to know that <tt class="docutils literal">0</tt> is
-convertible to <tt class="docutils literal">0</tt> (that is they are definitionally equal).</p>
+<p>To prove that <span class="docutils literal">0 = 0</span> you need to construct a term of this type. The
+only way to do this is to invoke <span class="docutils literal">eq_refl</span>. However in order to
+invoke <span class="docutils literal">eq_refl</span> the type checker needs to know that <span class="docutils literal">0</span> is
+convertible to <span class="docutils literal">0</span> (that is they are definitionally equal).</p>
 <hr class="docutils" />
-<p>The type <tt class="docutils literal">eq</tt> is a semantic notion of equality, whereas definitional
+<p>The type <span class="docutils literal">eq</span> is a semantic notion of equality, whereas definitional
 equality is a syntactic notion. <strong>This means that the proof assistant
 cannot distinguish between definitionally equal terms, but it can
 distinguish between semantically equal terms.</strong> So the constructor
-<tt class="docutils literal">eq_refl</tt> can be seen as a guarantee that definitional (syntactic)
+<span class="docutils literal">eq_refl</span> can be seen as a guarantee that definitional (syntactic)
 equality <em>subsumes</em> semantic equality.</p>
 <p>It is fruitful to ask whether terms may be semantically equal without
 being syntactically equal. Such examples may only be obtained through
-an axiom. For example, by the definition of the recursor (<tt class="docutils literal">nat_rec</tt>,
-or more technically, <tt class="docutils literal">nat_ind</tt>) for the natural numbers, or by an
+an axiom. For example, by the definition of the recursor (<span class="docutils literal">nat_rec</span>,
+or more technically, <span class="docutils literal">nat_ind</span>) for the natural numbers, or by an
 <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html">extensionality</a>
 axiom.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

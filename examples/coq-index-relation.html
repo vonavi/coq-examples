@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq Index Relation</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-index-relation">
+<div class="alectryon-root alectryon-centered"><main id="coq-index-relation">
 <h1 class="title">Coq Index Relation</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47565160">https://stackoverflow.com/q/47565160</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47565160">https://stackoverflow.com/q/47565160</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm defining an indexed inductive type in Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Typ</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* My index -- a t is a `t H` or a `t Z`. *)</span>
@@ -45,19 +42,19 @@
   | Cursor : t H -&gt; t Z
   | Arrow : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span>, t a -&gt; t b -&gt; t c
   | Sum : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span>, t a -&gt; t b -&gt; t c.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Typ</span>.</span></span></pre><p>How can I constrain my <tt class="docutils literal">Arrow</tt> / <tt class="docutils literal">Sum</tt> indices to be the same
-shape as the <tt class="docutils literal">maxHZ</tt> relation (short of creating more constructors,
-like <tt class="docutils literal">ArrowHZ : t H <span class="pre">-&gt;</span> t Z <span class="pre">-&gt;</span> t Z</tt>).</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Typ</span>.</span></span></pre><p>How can I constrain my <span class="docutils literal">Arrow</span> / <span class="docutils literal">Sum</span> indices to be the same
+shape as the <span class="docutils literal">maxHZ</span> relation (short of creating more constructors,
+like <span class="docutils literal">ArrowHZ : t H <span class="pre">-&gt;</span> t Z <span class="pre">-&gt;</span> t Z</span>).</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Depending on your final use case, you could either create a
-subtype of <tt class="docutils literal">t</tt> and make <tt class="docutils literal">Arrow</tt> satisfy the <tt class="docutils literal">maxHZ</tt> predicate,
+subtype of <span class="docutils literal">t</span> and make <span class="docutils literal">Arrow</span> satisfy the <span class="docutils literal">maxHZ</span> predicate,
 or alternatively, you could add the relation to the constructor
-<tt class="docutils literal">Arrow : forall a b c, maxHZ a b c <span class="pre">-&gt;</span> t a <span class="pre">-&gt;</span> t b <span class="pre">-&gt;</span> t c</tt>. In all
-cases, you want to make <tt class="docutils literal">maxHZ</tt> irrelevant so it doesn't bug you in
+<span class="docutils literal">Arrow : forall a b c, maxHZ a b c <span class="pre">-&gt;</span> t a <span class="pre">-&gt;</span> t b <span class="pre">-&gt;</span> t c</span>. In all
+cases, you want to make <span class="docutils literal">maxHZ</span> irrelevant so it doesn't bug you in
 proofs. Making it a boolean is likely a good idea.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>One approach:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Bring the coercion is_true into scope *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> ssreflect ssrfun ssrbool.</span><span class="alectryon-wsp">
@@ -99,13 +96,13 @@ proofs. Making it a boolean is likely a good idea.</p>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">t&#39;</span> <span class="nv">x</span> := { m : t x | t_wf x m }.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  <span class="c">(* This is automatically a subtype. *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Typ</span>.</span></span></pre><hr class="docutils" />
-<p><strong>Q:</strong> Why do you redefine <tt class="docutils literal">maxHZ</tt> as a function to <tt class="docutils literal">bool</tt> instead
-of keeping it like it is and having the constraint <tt class="docutils literal">maxHZ a b c</tt> in
-the <tt class="docutils literal">Arrow</tt> constructor?</p>
-<p><strong>A:</strong> To get irrelevance for free, I don't want equality on <tt class="docutils literal">t</tt> to
+<p><strong>Q:</strong> Why do you redefine <span class="docutils literal">maxHZ</span> as a function to <span class="docutils literal">bool</span> instead
+of keeping it like it is and having the constraint <span class="docutils literal">maxHZ a b c</span> in
+the <span class="docutils literal">Arrow</span> constructor?</p>
+<p><strong>A:</strong> To get irrelevance for free, I don't want equality on <span class="docutils literal">t</span> to
 depend on the concrete shape / proof of the relation.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>mutual recursion on an inductive type and nat</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="mutual-recursion-on-an-inductive-type-and-nat">
-<h1 class="title">mutual recursion on an inductive type and <tt class="docutils literal">nat</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50477918">https://stackoverflow.com/q/50477918</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="mutual-recursion-on-an-inductive-type-and-nat">
+<h1 class="title">mutual recursion on an inductive type and <span class="docutils literal">nat</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/50477918">https://stackoverflow.com/q/50477918</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider this example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">T</span> :=
 | foo : T
@@ -58,12 +55,12 @@ Recursive definition <span class="kr">is</span>:
 <span class="s2"> | bar n x =&gt; evalBar x n</span>
 <span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre><p>Coq rejects it.</p>
 <p>I understand that termination checker got confused by two unrelated
-inductive types (<tt class="docutils literal">T</tt> and <tt class="docutils literal">nat</tt>). However, it looks like the
+inductive types (<span class="docutils literal">T</span> and <span class="docutils literal">nat</span>). However, it looks like the
 function I am trying to define will indeed terminate. How can I make
 Coq accept it?</p>
-</div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
+</section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
 <p>Another solution is to use a nested fixpoint.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">evalT</span> (<span class="nv">t</span> : T) {<span class="nv">struct</span> <span class="nv">t</span>} : nat :=
   <span class="kr">match</span> t <span class="kr">with</span>
@@ -74,25 +71,24 @@ Coq accept it?</p>
                    | S n&#39; =&gt; evalT x + evalBar n&#39;
                    <span class="kr">end</span>
                <span class="kr">in</span> evalBar n
-  <span class="kr">end</span>.</span></span></pre><p>The important point is to remove the argument <tt class="docutils literal">x</tt> from <tt class="docutils literal">evalBar</tt>.
-Thus the recursive call to <tt class="docutils literal">evalT</tt> is done on the <tt class="docutils literal">x</tt> from <tt class="docutils literal">bar n
-x</tt>, not the <tt class="docutils literal">x</tt> given as an argument to <tt class="docutils literal">evalBar</tt>, and thus the
-termination checker can validate the definition of <tt class="docutils literal">evalT</tt>.</p>
-<p>This is the same idea that makes the version with <tt class="docutils literal">nat_rec</tt> proposed
+  <span class="kr">end</span>.</span></span></pre><p>The important point is to remove the argument <span class="docutils literal">x</span> from <span class="docutils literal">evalBar</span>.
+Thus the recursive call to <span class="docutils literal">evalT</span> is done on the <span class="docutils literal">x</span> from <span class="docutils literal">bar n x</span>, not the <span class="docutils literal">x</span> given as an argument to <span class="docutils literal">evalBar</span>, and thus the
+termination checker can validate the definition of <span class="docutils literal">evalT</span>.</p>
+<p>This is the same idea that makes the version with <span class="docutils literal">nat_rec</span> proposed
 in another answer work.</p>
-</div>
-<div class="section" id="answer-krokodil">
-<h1>Answer (krokodil)</h1>
-<p>One solution I found is to use <tt class="docutils literal">nat_rec</tt> instead of <tt class="docutils literal">evalBar</tt>:</p>
+</section>
+<section id="answer-krokodil">
+<h2>Answer (krokodil)</h2>
+<p>One solution I found is to use <span class="docutils literal">nat_rec</span> instead of <span class="docutils literal">evalBar</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">evalT</span> (<span class="nv">t</span> : T) {<span class="nv">struct</span> <span class="nv">t</span>} : nat :=
   <span class="kr">match</span> t <span class="kr">with</span>
   | foo =&gt; <span class="mi">1</span>
   | bar n x =&gt; @nat_rec _ <span class="mi">0</span> (<span class="kr">fun</span> <span class="nv">n&#39;</span> <span class="nv">t&#39;</span> =&gt; evalT x + t&#39;) n
-  <span class="kr">end</span>.</span></span></pre><p>It works but I wish I could hide <tt class="docutils literal">nat_rec</tt> under <tt class="docutils literal">evalBar</tt>
+  <span class="kr">end</span>.</span></span></pre><p>It works but I wish I could hide <span class="docutils literal">nat_rec</span> under <span class="docutils literal">evalBar</span>
 definition to hide details. In my real project, such construct is used
 several times.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

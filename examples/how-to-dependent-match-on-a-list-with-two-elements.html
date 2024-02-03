@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to dependent match on a list with two elements?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-dependent-match-on-a-list-with-two-elements">
+<div class="alectryon-root alectryon-centered"><main id="how-to-dependent-match-on-a-list-with-two-elements">
 <h1 class="title">How to dependent match on a list with two elements?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71919638">https://stackoverflow.com/q/71919638</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71919638">https://stackoverflow.com/q/71919638</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to understand dependent types and dependent match in Coq, I
-have the code below, at the bottom I have the <tt class="docutils literal">add_pair</tt> function,
+have the code below, at the bottom I have the <span class="docutils literal">add_pair</span> function,
 the idea is that I want to receive a (dependent) list with exactly two
 elements and return the sum of the two elements in the list. Since the
 size of the list is encoded in the type, I should be able to define it
-as a total function, but I got an error saying that the <tt class="docutils literal">match</tt> is
-not <tt class="docutils literal">exaustive</tt></p>
+as a total function, but I got an error saying that the <span class="docutils literal">match</span> is
+not <span class="docutils literal">exaustive</span></p>
 <p>Here is the code</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -80,16 +77,16 @@ list_scope. [notation-overridden,parsing]</blockquote></div></div></small><span 
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
 [_]</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">IList</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">IList</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Indeed, it is true that the match you provided is exhaustive, but the
 pattern-matching algorithm of Coq is limited, and not able to detect
 it. The issue, I think, is that it compiles a nested pattern-matching
-such as yours (you have two imbricated <tt class="docutils literal">cons</tt>) down to a successions
+such as yours (you have two imbricated <span class="docutils literal">cons</span>) down to a successions
 of elementary pattern-matching (which have patterns of depth at most
-one). But in the <tt class="docutils literal">cons</tt> branch of the outer <tt class="docutils literal">match</tt>, the
-information that the index should be <tt class="docutils literal">1</tt> is lost if you do not
+one). But in the <span class="docutils literal">cons</span> branch of the outer <span class="docutils literal">match</span>, the
+information that the index should be <span class="docutils literal">1</span> is lost if you do not
 record it explicitly with an equality --- something the current
 algorithm is not smart enough to do.</p>
 <p>As a possible solution that avoids fiddling with impossible branches,
@@ -122,20 +119,20 @@ branches and records the information of the index using equalities
                                   <span class="kr">end</span> <span class="kp">ltac</span>:(<span class="bp">lia</span>)
                  <span class="kr">end</span> <span class="kp">ltac</span>:(<span class="bp">lia</span>)
   <span class="kr">end</span> eq_refl.</span></span></pre><p>The interesting part is the use of explicit equalities to record the
-value of the index (these are used by the <tt class="docutils literal">lia</tt> tactic to discard
+value of the index (these are used by the <span class="docutils literal">lia</span> tactic to discard
 impossible branches).</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> Thank you, this is so cool! I didn't know that you can discard
-impossible branches using ltac and never saw this <tt class="docutils literal"><span class="pre">ltac:...</span></tt>, thank
+impossible branches using ltac and never saw this <span class="docutils literal"><span class="pre">ltac:...</span></span>, thank
 you so much!</p>
-<p><strong>Q:</strong> The <tt class="docutils literal"><span class="pre">ltac:(lia)</span></tt> after <tt class="docutils literal">end</tt> are the application of the
-<tt class="docutils literal">fun e =&gt; ...</tt> functions returned by the match?</p>
+<p><strong>Q:</strong> The <span class="docutils literal"><span class="pre">ltac:(lia)</span></span> after <span class="docutils literal">end</span> are the application of the
+<span class="docutils literal">fun e =&gt; ...</span> functions returned by the match?</p>
 <p><strong>A:</strong> Yes! They are used to generate the right equalities from the
 one available in context. For instance the lowest one constructs a
-proof of <tt class="docutils literal">m = 1</tt> from the proof of <tt class="docutils literal">S m = 2</tt> available in context
-(<tt class="docutils literal">e</tt>).</p>
+proof of <span class="docutils literal">m = 1</span> from the proof of <span class="docutils literal">S m = 2</span> available in context
+(<span class="docutils literal">e</span>).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: controlling subst when we have many equalities</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,59 +14,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-controlling-subst-when-we-have-many-equalities">
-<h1 class="title">Coq: controlling <tt class="docutils literal">subst</tt> when we have many equalities</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48840457">https://stackoverflow.com/q/48840457</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
-<p>If one has <em>many</em> hypothesis of the form <tt class="docutils literal">a = b</tt> (I find that this
-happens often when we use <tt class="docutils literal">inversion</tt>), is there some way to
+<div class="alectryon-root alectryon-centered"><main id="coq-controlling-subst-when-we-have-many-equalities">
+<h1 class="title">Coq: controlling <span class="docutils literal">subst</span> when we have many equalities</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48840457">https://stackoverflow.com/q/48840457</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
+<p>If one has <em>many</em> hypothesis of the form <span class="docutils literal">a = b</span> (I find that this
+happens often when we use <span class="docutils literal">inversion</span>), is there some way to
 <em>prevent</em> a substitution from happening?</p>
-<p>I often have <tt class="docutils literal">Hypothesis</tt> that look like</p>
-<pre class="code literal-block">
-H0: rec = someLargeRecord { field := val1; ...; fieldn := valn }
+<p>I often have <span class="docutils literal">Hypothesis</span> that look like</p>
+<pre class="code literal-block"><code>H0: rec = someLargeRecord { field := val1; ...; fieldn := valn }
 rel1: some_relation rec rec'
 rel2: some_relation rec rec''
 equal1: a = b
 equal2: b = c
 ...
-equal3: y = z
-</pre>
-<p>On running <tt class="docutils literal">subst</tt> at this point, <tt class="docutils literal">rel1</tt>, <tt class="docutils literal">rel2</tt> and the like
+equal3: y = z</code></pre>
+<p>On running <span class="docutils literal">subst</span> at this point, <span class="docutils literal">rel1</span>, <span class="docutils literal">rel2</span> and the like
 blow up, become something of the form</p>
-<pre class="code literal-block">
-rel1: some_relation someLargeRecord { field := val1; ...; fieldn := valn } rel'
-rel2: some_relation someLargeRecord { field := val1; ...; fieldn := valn } rel''
-</pre>
+<pre class="code literal-block"><code>rel1: some_relation someLargeRecord { field := val1; ...; fieldn := valn } rel'
+rel2: some_relation someLargeRecord { field := val1; ...; fieldn := valn } rel''</code></pre>
 <p>This is horrible to work with.</p>
-<p>I wish to somehow control <tt class="docutils literal">subst</tt>, preferably to ask it to not
-consider <tt class="docutils literal">H0</tt>. Is this at all possible?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can tell <tt class="docutils literal">subst</tt> what variables to substitute. For instance, the
+<p>I wish to somehow control <span class="docutils literal">subst</span>, preferably to ask it to not
+consider <span class="docutils literal">H0</span>. Is this at all possible?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can tell <span class="docutils literal">subst</span> what variables to substitute. For instance, the
 call</p>
-<pre class="code coq literal-block">
-<span class="nb">subst</span> <span class="n">a</span> <span class="n">b</span> <span class="n">y</span><span class="o">.</span>
-</pre>
-<p>would substitute <tt class="docutils literal">a</tt>, <tt class="docutils literal">b</tt> and <tt class="docutils literal">c</tt>, but not <tt class="docutils literal">rec</tt>. This might
+<pre class="code coq literal-block"><code><span class="nb">subst</span> <span class="n">a</span> <span class="n">b</span> <span class="n">y</span><span class="o">.</span></code></pre>
+<p>would substitute <span class="docutils literal">a</span>, <span class="docutils literal">b</span> and <span class="docutils literal">c</span>, but not <span class="docutils literal">rec</span>. This might
 not be convenient if you are trying to substitute several variables;
 in this case, you can put the equation that you want to keep back into
-the goal before calling <tt class="docutils literal">subst</tt>. For example, the following snippet
-would substitute every variable in your context except for <tt class="docutils literal">rec</tt>.</p>
-<pre class="code coq literal-block">
-<span class="nb">revert</span> <span class="n">H0</span><span class="o">.</span>
+the goal before calling <span class="docutils literal">subst</span>. For example, the following snippet
+would substitute every variable in your context except for <span class="docutils literal">rec</span>.</p>
+<pre class="code coq literal-block"><code><span class="nb">revert</span> <span class="n">H0</span><span class="o">.</span>
 <span class="nb">subst</span><span class="o">.</span>
-<span class="nb">intros</span> <span class="n">H0</span><span class="o">.</span>
-</pre>
-</div>
-</div>
+<span class="nb">intros</span> <span class="n">H0</span><span class="o">.</span></code></pre>
+</section>
+</main>
 </div></body>
 </html>

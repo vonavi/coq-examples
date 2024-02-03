@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to use a custom induction principle in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-use-a-custom-induction-principle-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-use-a-custom-induction-principle-in-coq">
 <h1 class="title">How to use a custom induction principle in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/33071903">https://stackoverflow.com/q/33071903</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/33071903">https://stackoverflow.com/q/33071903</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I read that the induction principle for a type is just a theorem about
-a proposition <tt class="docutils literal">P</tt>. So I constructed an induction principle for
-<tt class="docutils literal">List</tt> based on the right (or reverse) list constructor.</p>
+a proposition <span class="docutils literal">P</span>. So I constructed an induction principle for
+<span class="docutils literal">List</span> based on the right (or reverse) list constructor.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">rcons</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">l</span> : list X) (<span class="nv">x</span> : X) : list X :=
   l ++ x :: nil.</span></span></pre><p>The induction principle itself is:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">true_for_nil</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">P</span> : list X -&gt; <span class="kt">Prop</span>) : <span class="kt">Prop</span> :=
@@ -51,7 +48,7 @@ preserved_by_rcons P -&gt; true_for_list P</div></blockquote></div></div></small
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-a-custom-induction-principle-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-a-custom-induction-principle-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : list X -&gt; <span class="kt">Prop</span>),
 true_for_nil P -&gt;
 preserved_by_rcons P -&gt; true_for_list P</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>But now, I am having trouble using the theorem. I don't how to invoke
-it to achieve the same as the <tt class="docutils literal">induction</tt> tactic.</p>
+it to achieve the same as the <span class="docutils literal">induction</span> tactic.</p>
 <p>For example, I tried:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-a-custom-induction-principle-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-a-custom-induction-principle-in-coq-v-chk2"><span class="kn">Theorem</span> <span class="nf">rev_app_dist</span> : <span class="kr">forall</span> {<span class="nv">X</span>} (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
     rev (l1 ++ l2) = rev l2 ++ rev l1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
@@ -62,12 +59,12 @@ rev (l1 ++ l2) = rev l2 ++ rev l1</div></blockquote></div></div></small><span cl
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-a-custom-induction-principle-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-use-a-custom-induction-principle-in-coq-v-chk5"><span class="nb">induction</span> l2 <span class="nb">using</span> list_ind_rcons.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cannot recognize an <span class="nb">induction</span> scheme.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev (l1 ++ l2) = rev l2 ++ rev l1</div></blockquote></div></div></small></span></pre><p>But in the last line, I got:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-to-use-a-custom-induction-principle-in-coq-v-chk6" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Cannot recognize an <span class="nb">induction</span> scheme.</blockquote></div></div></small></span></pre><p>What are the correct steps to define and apply a custom induction
-principle like <tt class="docutils literal">list_ind_rcons</tt>?</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+principle like <span class="docutils literal">list_ind_rcons</span>?</p>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>If one would like to preserve the intermediate definitions, then one
-could use the <tt class="docutils literal">Section</tt> mechanism, like so:</p>
+could use the <span class="docutils literal">Section</span> mechanism, like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">rcons</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">l</span> : list X) (<span class="nv">x</span> : X) : list X :=
@@ -83,8 +80,8 @@ could use the <tt class="docutils literal">Section</tt> mechanism, like so:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-a-custom-induction-principle-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-a-custom-induction-principle-in-coq-v-chk7"><span class="kn">Fixpoint</span> <span class="nf">list_ind_rcons</span> (<span class="nv">xs</span> : list X) : P xs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>X</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>P</var><span class="hyp-type"><b>: </b><span>list X -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>true_for_nil</var><span class="hyp-type"><b>: </b><span>P []</span></span></span><br><span><var>true_for_list</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">xs</span> : list X, P xs</span></span></span><br><span><var>preserved_by_rcons</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">xs&#39;</span> : list X) (<span class="nv">x</span> : X),
 P xs&#39; -&gt; P (rcons xs&#39; x)</span></span></span><br><span><var>list_ind_rcons</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">xs</span> : list X, P xs</span></span></span><br><span><var>xs</var><span class="hyp-type"><b>: </b><span>list X</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P xs</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">custom_induction_principle</span>.</span></span></pre><p>Coq substitutes the definitions and <tt class="docutils literal">list_ind_rcons</tt> has the needed
-type and <tt class="docutils literal">induction ... using ...</tt> works:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">custom_induction_principle</span>.</span></span></pre><p>Coq substitutes the definitions and <span class="docutils literal">list_ind_rcons</span> has the needed
+type and <span class="docutils literal">induction ... using ...</span> works:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-use-a-custom-induction-principle-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-use-a-custom-induction-principle-in-coq-v-chk8"><span class="kn">Theorem</span> <span class="nf">rev_app_dist</span> : <span class="kr">forall</span> {<span class="nv">X</span>} (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
     rev (l1 ++ l2) = rev l2 ++ rev l1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">X</span> : <span class="kt">Type</span>) (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
 rev (l1 ++ l2) = rev l2 ++ rev l1</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -99,9 +96,9 @@ module):</p>
      : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : list A -&gt; <span class="kt">Prop</span>),
        P [] -&gt;
        (<span class="kr">forall</span> (<span class="nv">x</span> : A) (<span class="nv">l</span> : list A),
-        P l -&gt; P (l ++ [x])) -&gt; <span class="kr">forall</span> <span class="nv">l</span> : list A, P l</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+        P l -&gt; P (l ++ [x])) -&gt; <span class="kr">forall</span> <span class="nv">l</span> : list A, P l</blockquote></div></div></small></span></pre></section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>What you did was mostly correct. The problem is that Coq has some
 trouble recognizing that what you wrote is an induction principle,
 because of the intermediate definitions. This, for instance, works
@@ -133,8 +130,8 @@ least there is a workaround.</p>
 equality in the implementation of tactics. Whilst this is
 questionable, ideologically, it is far too late to do anything about
 it in practice.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

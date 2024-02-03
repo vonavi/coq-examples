@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Equality on inductive types</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,25 +14,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="equality-on-inductive-types">
+<div class="alectryon-root alectryon-centered"><main id="equality-on-inductive-types">
 <h1 class="title">Equality on inductive types</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26246441">https://stackoverflow.com/q/26246441</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/26246441">https://stackoverflow.com/q/26246441</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>How do I prove the following trivial lemma:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Vector.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-on-inductive-types-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-on-inductive-types-v-chk0"><span class="kn">Lemma</span> <span class="nf">t0_nil</span> : <span class="kr">forall</span> <span class="nv">A</span> (<span class="nv">x</span> : t A <span class="mi">0</span>), x = nil A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : t A <span class="mi">0</span>), x = nil A</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-on-inductive-types-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-on-inductive-types-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : t A <span class="mi">0</span>), x = nil A</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>FAQ recommends <tt class="docutils literal">decide equality</tt> and <tt class="docutils literal">discriminate</tt> tactics but I
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>FAQ recommends <span class="docutils literal">decide equality</span> and <span class="docutils literal">discriminate</span> tactics but I
 could not find a way to apply either of them. For the reference, here
 is inductive definition:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="equality-on-inductive-types-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">t</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : nat -&gt; <span class="kt">Type</span> :=
@@ -41,10 +38,10 @@ is inductive definition:</p>
 
 <span class="kn">Arguments</span> t _%type_scope _%nat_scope
 <span class="kn">Arguments</span> nil _%type_scope
-<span class="kn">Arguments</span> cons _%type_scope _ _%nat_scope _</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>What you want to do is to invert on <tt class="docutils literal">x</tt>. Unfortunately, it turns out
+<span class="kn">Arguments</span> cons _%type_scope _ _%nat_scope _</blockquote></div></div></small></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<p>What you want to do is to invert on <span class="docutils literal">x</span>. Unfortunately, it turns out
 that general inversion of dependently typed hypotheses is undecidable,
 see Adam Chlipala's CPDT. You can pattern match on the structure
 manually though, e.g. with:</p>
@@ -60,18 +57,16 @@ manually though, e.g. with:</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>In many cases you can also use <a class="reference external" href="http://adam.chlipala.net/cpdt/repo/file/977b425331c3/src/CpdtTactics.v">the tactic dep_destruct provided by
 CPDT</a>.
 In that case your proof simply becomes:</p>
-<pre class="code coq literal-block">
-<span class="kn">Require Import</span> <span class="n">CpdtTactics</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Require Import</span> <span class="n">CpdtTactics</span><span class="o">.</span>
 
 <span class="kn">Lemma</span> <span class="nf">t0_nil</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">A</span> <span class="o">(</span><span class="nv">x</span> <span class="o">:</span> <span class="n">t</span> <span class="n">A</span> <span class="mi">0</span><span class="o">),</span> <span class="n">x</span> <span class="o">=</span> <span class="n">nil</span> <span class="n">A</span><span class="o">.</span>
   <span class="nb">intros</span><span class="o">.</span> <span class="n">dep_destruct</span> <span class="n">x</span><span class="o">.</span> <span class="bp">reflexivity</span><span class="o">.</span>
-<span class="kn">Qed</span><span class="o">.</span>
-</pre>
+<span class="kn">Qed</span><span class="o">.</span></code></pre>
 <hr class="docutils" />
 <p><strong>A:</strong> An elegant solution by Pierre Boutillier, taken from this
 <a class="reference external" href="http://coq-club.inria.narkive.com/wrDwvaNY/how-to-prove-that-all-vectors-of-0-length-are-equal-to-vector-nil#post2">Coq-club post</a>:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">t0_nil</span> <span class="nv">A</span> (<span class="nv">x</span> : t A <span class="mi">0</span>) : x = nil A := <span class="kr">match</span> x <span class="kr">with</span> nil _ =&gt; eq_refl <span class="kr">end</span>.</span></span></pre></div>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">t0_nil</span> <span class="nv">A</span> (<span class="nv">x</span> : t A <span class="mi">0</span>) : x = nil A := <span class="kr">match</span> x <span class="kr">with</span> nil _ =&gt; eq_refl <span class="kr">end</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

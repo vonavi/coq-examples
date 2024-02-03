@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Apply rewrite tactic to sub-expression</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="apply-rewrite-tactic-to-sub-expression">
+<div class="alectryon-root alectryon-centered"><main id="apply-rewrite-tactic-to-sub-expression">
 <h1 class="title">Apply rewrite tactic to sub-expression</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55786746">https://stackoverflow.com/q/55786746</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55786746">https://stackoverflow.com/q/55786746</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>How can I apply <tt class="docutils literal">rewrite <span class="pre">-&gt;</span></tt> targetting only a sub-expression? For
+<section id="question">
+<h2>Question</h2>
+<p>How can I apply <span class="docutils literal">rewrite <span class="pre">-&gt;</span></span> targetting only a sub-expression? For
 example, consider this theorem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">add</span> : nat -&gt; nat -&gt; nat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">comm</span> : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span>, add a b = add b a.</span><span class="alectryon-wsp">
@@ -36,54 +33,54 @@ example, consider this theorem:</p>
     add (add a b) (add a (add a b)) = add (add a b) (add a (add b a)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat,
 add (add a b) (add a (add a b)) =
 add (add a b) (add a (add b a))</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Intuitively, it requires commuting only one <tt class="docutils literal">(add a b)</tt>
-sub-expression, but if I do <tt class="docutils literal">rewrite <span class="pre">-&gt;</span> (comm a b)</tt>, it rewrites all
+</span></span></pre><p>Intuitively, it requires commuting only one <span class="docutils literal">(add a b)</span>
+sub-expression, but if I do <span class="docutils literal">rewrite <span class="pre">-&gt;</span> (comm a b)</span>, it rewrites all
 the occurrences. How can I target a particular sub-expression?</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>This is a case where the ssreflect matching facilities will usually be
-more convenient than &quot;<tt class="docutils literal">at</tt>&quot; [I'd dare to say sub-term rewrites are
+more convenient than &quot;<span class="docutils literal">at</span>&quot; [I'd dare to say sub-term rewrites are
 often a cause of people switching to ssreflect's rewrite]. In
 particular:</p>
 <ul class="simple">
-<li><tt class="docutils literal">rewrite <span class="pre">{pos}[pat]lemma</span></tt> will select occurrences <tt class="docutils literal">pos</tt> of
-pattern <tt class="docutils literal">pat</tt> to rewrite,</li>
-<li><tt class="docutils literal">pat</tt> can be a <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/proof-engine/ssreflect-proof-language.html#contextual-patterns">contextual pattern</a>
-that may allow you improve the robustness of your scripts.</li>
+<li><p><span class="docutils literal">rewrite <span class="pre">{pos}[pat]lemma</span></span> will select occurrences <span class="docutils literal">pos</span> of
+pattern <span class="docutils literal">pat</span> to rewrite,</p></li>
+<li><p><span class="docutils literal">pat</span> can be a <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/proof-engine/ssreflect-proof-language.html#contextual-patterns">contextual pattern</a>
+that may allow you improve the robustness of your scripts.</p></li>
 </ul>
-</div>
-<div class="section" id="answer-gilles-so-stop-being-evil">
-<h1>Answer (Gilles 'SO- stop being evil')</h1>
-<p>You can target a specific occurrence with the <tt class="docutils literal">rewrite</tt> tactic using
-the suffix <tt class="docutils literal">at N</tt>. Occurrences are numbered from 1 in left-to-right
+</section>
+<section id="answer-gilles-so-stop-being-evil">
+<h2>Answer (Gilles 'SO- stop being evil')</h2>
+<p>You can target a specific occurrence with the <span class="docutils literal">rewrite</span> tactic using
+the suffix <span class="docutils literal">at N</span>. Occurrences are numbered from 1 in left-to-right
 order. You can rewrite multiple occurrencess by separating their
-indices with spaces. You need <tt class="docutils literal">Require Import Setoid</tt>. The <tt class="docutils literal">at</tt>
+indices with spaces. You need <span class="docutils literal">Require Import Setoid</span>. The <span class="docutils literal">at</span>
 suffix is also available with some other tactics that target
 occurrences of a term, including many tactics that perform conversions
-(<tt class="docutils literal">change</tt>, <tt class="docutils literal">unfold</tt>, <tt class="docutils literal">fold</tt>, etc.), <tt class="docutils literal">set</tt>, <tt class="docutils literal">destruct</tt>, etc.</p>
+(<span class="docutils literal">change</span>, <span class="docutils literal">unfold</span>, <span class="docutils literal">fold</span>, etc.), <span class="docutils literal">set</span>, <span class="docutils literal">destruct</span>, etc.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="apply-rewrite-tactic-to-sub-expression-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="apply-rewrite-tactic-to-sub-expression-v-chk1"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">add (add a b) (add a (add a b)) =
 add (add a b) (add a (add b a))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="apply-rewrite-tactic-to-sub-expression-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="apply-rewrite-tactic-to-sub-expression-v-chk2"><span class="nb">rewrite</span> -&gt; (comm a b) <span class="nb">at</span> <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">add (add a b) (add a (add b a)) =
 add (add a b) (add a (add b a))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span></pre><p>There are other possible approaches, especially if all you need is to
-apply equalities. The <tt class="docutils literal">congruence</tt> tactic can find what to rewrite
+apply equalities. The <span class="docutils literal">congruence</span> tactic can find what to rewrite
 and apply symmetry and transitivity on its own, but you need to prime
 it by adding all equivalences to the context (in the form of
 universally-quantified equalities), it won't query hint databases.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="apply-rewrite-tactic-to-sub-expression-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="apply-rewrite-tactic-to-sub-expression-v-chk3"><span class="nb">assert</span> (Comm := comm).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Comm</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, add a b = add b a</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">add (add a b) (add a (add a b)) =
 add (add a b) (add a (add b a))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp">
-</span></span></pre><p>To get more automation, <tt class="docutils literal">Hint Rewrite</tt> creates a database of
-theorems which the tactic <tt class="docutils literal">autorewrite</tt> will try applying. For more
+</span></span></pre><p>To get more automation, <span class="docutils literal">Hint Rewrite</span> creates a database of
+theorems which the tactic <span class="docutils literal">autorewrite</span> will try applying. For more
 advanced automation, look up <a class="reference external" href="https://coq.inria.fr/refman/addendum/generalized-rewriting.html">generalized rewriting</a>
 with setoids, which I'm not sufficiently familiar with to expound on.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> In cases like this one, we can target the right subexpression
-by choosing the arguments of <tt class="docutils literal">comm</tt>:</p>
+by choosing the arguments of <span class="docutils literal">comm</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="apply-rewrite-tactic-to-sub-expression-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="apply-rewrite-tactic-to-sub-expression-v-chk4"><span class="nb">intros</span> a b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">add (add a b) (add a (add a b)) =
 add (add a b) (add a (add b a))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="apply-rewrite-tactic-to-sub-expression-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="apply-rewrite-tactic-to-sub-expression-v-chk5"><span class="nb">rewrite</span> (comm b a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">add (add a b) (add a (add a b)) =
 add (add a b) (add a (add a b))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span></pre></div>
+</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Classical axioms implies every proposition is decidable?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="classical-axioms-implies-every-proposition-is-decidable">
+<div class="alectryon-root alectryon-centered"><main id="classical-axioms-implies-every-proposition-is-decidable">
 <h1 class="title">Classical axioms implies every proposition is decidable?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/61316612">https://stackoverflow.com/q/61316612</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/61316612">https://stackoverflow.com/q/61316612</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In the Lean manual 'Theorem proving in Lean' I read: &quot;With the
 classical axioms, we can prove that every proposition is decidable&quot;.</p>
 <p>I would like to seek clarification about this statement and I am
@@ -41,36 +38,35 @@ a function):</p>
 | isFalse : ~p -&gt; Dec p
 | isTrue  :  p -&gt; Dec p.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="classical-axioms-implies-every-proposition-is-decidable-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="classical-axioms-implies-every-proposition-is-decidable-v-chk0"><span class="kn">Definition</span> <span class="nf">decide</span> (<span class="nv">p</span> : <span class="kt">Prop</span>) : Dec p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Dec p</div></blockquote></div></div></small></span></pre><p>Yet, with what I know of Coq, I cannot implement <tt class="docutils literal">decide</tt> as I
-cannot destruct <tt class="docutils literal">(LEM p)</tt> (of sort <tt class="docutils literal">Prop</tt>) to return something
-other than a <tt class="docutils literal">Prop</tt>.</p>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="classical-axioms-implies-every-proposition-is-decidable-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="classical-axioms-implies-every-proposition-is-decidable-v-chk0"><span class="kn">Definition</span> <span class="nf">decide</span> (<span class="nv">p</span> : <span class="kt">Prop</span>) : Dec p.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Dec p</div></blockquote></div></div></small></span></pre><p>Yet, with what I know of Coq, I cannot implement <span class="docutils literal">decide</span> as I
+cannot destruct <span class="docutils literal">(LEM p)</span> (of sort <span class="docutils literal">Prop</span>) to return something
+other than a <span class="docutils literal">Prop</span>.</p>
 <p>So my question is: assuming there is no mistake and the statement
 &quot;With the classical axioms, we can prove that every proposition is
 decidable&quot; is justified, I would like to know how I should understand
 it so I get out of the paradox I have highlighted. Is it maybe that we
-can prove the existence of the function <tt class="docutils literal">decide</tt> (using <tt class="docutils literal">LEM</tt>) but
+can prove the existence of the function <span class="docutils literal">decide</span> (using <span class="docutils literal">LEM</span>) but
 cannot actually provide a witness of this existence?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>In the calculus of constructions without any axioms, there is
-<em>meta-theoretical</em> property that every proof of <tt class="docutils literal">A \/ B</tt> is
-necessarily a proof that <tt class="docutils literal">A</tt> holds (packaged using the constructor
-<tt class="docutils literal">or_introl</tt>) or a proof that <tt class="docutils literal">B</tt> holds (using the other
-constructor). So a proof of <tt class="docutils literal">A \/ ~ A</tt> is either a proof that <tt class="docutils literal">A</tt>
-holds or a proof that <tt class="docutils literal">~ A</tt> holds.</p>
+<em>meta-theoretical</em> property that every proof of <span class="docutils literal">A \/ B</span> is
+necessarily a proof that <span class="docutils literal">A</span> holds (packaged using the constructor
+<span class="docutils literal">or_introl</span>) or a proof that <span class="docutils literal">B</span> holds (using the other
+constructor). So a proof of <span class="docutils literal">A \/ ~ A</span> is either a proof that <span class="docutils literal">A</span>
+holds or a proof that <span class="docutils literal">~ A</span> holds.</p>
 <p>Following this meta-theoretical property, in <strong>Coq without any
-axioms</strong>, all proofs of propositions of the form <tt class="docutils literal">forall x, P x \/ ~P
-x</tt> actually are proofs that <tt class="docutils literal">P</tt> is decidable. In this paragraph,
-the meaning of <tt class="docutils literal">decidable</tt> is the commonly accepted meaning, as used
+axioms</strong>, all proofs of propositions of the form <span class="docutils literal">forall x, P x \/ ~P x</span> actually are proofs that <span class="docutils literal">P</span> is decidable. In this paragraph,
+the meaning of <span class="docutils literal">decidable</span> is the commonly accepted meaning, as used
 by computability books.</p>
-<p>Some users started using the word <tt class="docutils literal">decidable</tt> for any predicate
-<tt class="docutils literal">P</tt> so that there exists a proof of <tt class="docutils literal">forall x, P x \/ ~ P x</tt>. But
+<p>Some users started using the word <span class="docutils literal">decidable</span> for any predicate
+<span class="docutils literal">P</span> so that there exists a proof of <span class="docutils literal">forall x, P x \/ ~ P x</span>. But
 they are actually talking about a different thing. To make it clearer,
-I will call this notion <tt class="docutils literal"><span class="pre">abuse-of-terminology-decidable</span></tt>.</p>
+I will call this notion <span class="docutils literal"><span class="pre">abuse-of-terminology-decidable</span></span>.</p>
 <p>Now, if you add an axiom like LEM in Coq, you basically state that
-every predicate <tt class="docutils literal">P</tt> becomes <tt class="docutils literal"><span class="pre">abuse-of-terminology-decidable</span></tt>. Of
-course, you cannot change the meaning of <tt class="docutils literal"><span class="pre">conventionally-decidable</span></tt>
+every predicate <span class="docutils literal">P</span> becomes <span class="docutils literal"><span class="pre">abuse-of-terminology-decidable</span></span>. Of
+course, you cannot change the meaning of <span class="docutils literal"><span class="pre">conventionally-decidable</span></span>
 by just adding an axiom in you Coq development, so there is no
 inclusion anymore.</p>
 <p>I have been fighting against this abuse of terminology for years, but
@@ -78,11 +74,9 @@ without success.</p>
 <p>To be more precise, in Coq terminology, the term decidable is not used
 for propositions or predicates that enjoy LEM, but for propositions or
 predicates that enjoy the stronger following statement:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="o">{</span><span class="n">P</span> <span class="n">x</span><span class="o">}</span> <span class="o">+</span> <span class="o">{~</span><span class="n">P</span> <span class="n">x</span><span class="o">}</span>
-</pre>
-<p>Proofs of such propositions are often named with <tt class="docutils literal">_dec</tt> suffix,
-where <tt class="docutils literal">_dec</tt> directly refers to <em>decidable</em>. This abuse is less
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="o">{</span><span class="n">P</span> <span class="n">x</span><span class="o">}</span> <span class="o">+</span> <span class="o">{~</span><span class="n">P</span> <span class="n">x</span><span class="o">}</span></code></pre>
+<p>Proofs of such propositions are often named with <span class="docutils literal">_dec</span> suffix,
+where <span class="docutils literal">_dec</span> directly refers to <em>decidable</em>. This abuse is less
 strong, but it is still an abuse of terminology.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> Do you mean external vs internal decidability in the
@@ -97,8 +91,8 @@ sense that is stronger and refers to the existence of an algorithm
 taking inputs (programs in the case of the halting problem),
 terminating for all inputs, deciding for each input whether the
 property (the program halts) holds or not.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

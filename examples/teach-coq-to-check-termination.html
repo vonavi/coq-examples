@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Teach Coq to check termination</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="teach-coq-to-check-termination">
+<div class="alectryon-root alectryon-centered"><main id="teach-coq-to-check-termination">
 <h1 class="title">Teach Coq to check termination</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48173854">https://stackoverflow.com/q/48173854</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48173854">https://stackoverflow.com/q/48173854</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Coq, unlike many others, accepts an optional explicit parameter, which
 can be used to indicate the decreasing structure of a fixpoint
 definition.</p>
 <p>From Gallina specification, 1.3.4,</p>
-<pre class="code coq literal-block">
-<span class="kn">Fixpoint</span> <span class="nf">ident</span> <span class="nv">params</span> <span class="o">{</span><span class="nv">struct</span> <span class="nv">ident0</span><span class="o">}</span> <span class="o">:</span> <span class="n">type0</span> <span class="o">:=</span> <span class="n">term0</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Fixpoint</span> <span class="nf">ident</span> <span class="nv">params</span> <span class="o">{</span><span class="nv">struct</span> <span class="nv">ident0</span><span class="o">}</span> <span class="o">:</span> <span class="n">type0</span> <span class="o">:=</span> <span class="n">term0</span></code></pre>
 <p>defines the syntax. but from it, we've known that it must be an
 identifier, instead of a general measure.</p>
 <p>However, in general, there are recursive functions, that the
@@ -54,25 +49,24 @@ h : A
 t : list A
 The term <span class="s2">&quot;l2&quot;</span> has type <span class="s2">&quot;list A&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Set&quot;</span>.</blockquote></div></div></small></span></pre><p>This function clearly terminates, while Coq just couldn't figure it
-out. The reason is neither <tt class="docutils literal">l1</tt> nor <tt class="docutils literal">l2</tt> are decreasing every
-cycle. But what if we consider a measure, defined to be <tt class="docutils literal">length l1 +
-length l2</tt>? Then this measure clearly decreases every recursion.</p>
+out. The reason is neither <span class="docutils literal">l1</span> nor <span class="docutils literal">l2</span> are decreasing every
+cycle. But what if we consider a measure, defined to be <span class="docutils literal">length l1 + length l2</span>? Then this measure clearly decreases every recursion.</p>
 <p>So my question is, in the case of sophisticated situation, where code
 is not straightforward to be organized in a termination checkable way,
 how do you educate Coq and convince it to accept the fixpoint
 definition?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You have multiple options and all of them boil down to structural
 recursion in the end.</p>
-<div class="section" id="preamble">
-<h2>Preamble</h2>
+<section id="preamble">
+<h3>Preamble</h3>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span></span></pre></div>
-<div class="section" id="structural-recursion">
-<h2>Structural recursion</h2>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span></span></pre></section>
+<section id="structural-recursion">
+<h3>Structural recursion</h3>
 <p>Sometimes you can reformulate your algorithm in a structurally
 recursive way:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">interleave1</span> {<span class="nv">A</span>} (<span class="nv">l1</span> <span class="nv">l2</span> : list A) {<span class="nv">struct</span> <span class="nv">l1</span>} : list A :=
@@ -80,12 +74,12 @@ recursive way:</p>
   | [], _ =&gt; l2
   | _, [] =&gt; l1
   | h1 :: t1, h2 :: t2 =&gt; h1 :: h2 :: interleave1 t1 t2
-  <span class="kr">end</span>.</span></span></pre><p>Incidentally, in some cases you can use a trick with nested <tt class="docutils literal">fix</tt>es -- see <a class="reference external" href="https://stackoverflow.com/a/10303475/2747511">this definition of Ackermann function</a> (it wouldn't work
-with just <tt class="docutils literal">Fixpoint</tt>).</p>
-</div>
-<div class="section" id="program-fixpoint">
-<h2><tt class="docutils literal">Program Fixpoint</tt></h2>
-<p>You can use <tt class="docutils literal">Program Fixpoint</tt> mechanism which lets you write your
+  <span class="kr">end</span>.</span></span></pre><p>Incidentally, in some cases you can use a trick with nested <span class="docutils literal">fix</span>es -- see <a class="reference external" href="https://stackoverflow.com/a/10303475/2747511">this definition of Ackermann function</a> (it wouldn't work
+with just <span class="docutils literal">Fixpoint</span>).</p>
+</section>
+<section id="program-fixpoint">
+<h3><span class="docutils literal">Program Fixpoint</span></h3>
+<p>You can use <span class="docutils literal">Program Fixpoint</span> mechanism which lets you write your
 program naturally and later prove that it always terminates.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Program Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -104,11 +98,11 @@ length (h :: t) + length l2 -&gt;
 list A0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l2 + length t &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chk3"><span class="nb">rewrite</span> Nat.add_comm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>interleave2</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">A0</span> : <span class="kt">Type</span>) (<span class="nv">l1</span> <span class="nv">l3</span> : list A0),
 length l1 + length l3 &lt;
 length (h :: t) + length l2 -&gt; 
-list A0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t + length l2 &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial with</span> arith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="function">
-<h2><tt class="docutils literal">Function</tt></h2>
-<p>Another option is to use the <tt class="docutils literal">Function</tt> command which can be
-somewhat limited compared to <tt class="docutils literal">Program Fixpoint</tt>. You can find out
+list A0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t + length l2 &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial with</span> arith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="function">
+<h3><span class="docutils literal">Function</span></h3>
+<p>Another option is to use the <span class="docutils literal">Function</span> command which can be
+somewhat limited compared to <span class="docutils literal">Program Fixpoint</span>. You can find out
 more about their differences <a class="reference external" href="https://stackoverflow.com/q/44606245/2747511">here</a>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require</span> Recdef.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -133,9 +127,9 @@ sum_len (l2, t) &lt; sum_len (h :: t, l2)</div></blockquote></div></div></small>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chk6"><span class="nb">intros</span> A ls l1 l2 h t -&gt; -&gt;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sum_len (l2, t) &lt; sum_len (h :: t, l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chk7"><span class="nb">unfold</span> sum_len.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (fst (l2, t)) + length (snd (l2, t)) &lt;
 length (fst (h :: t, l2)) + length (snd (h :: t, l2))</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chk8"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l2 + length t &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chk9"><span class="nb">rewrite</span> Nat.add_comm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l2</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t + length l2 &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial with</span> arith.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
-<div class="section" id="equations-plugin">
-<h2><a class="reference external" href="http://mattam82.github.io/Coq-Equations/">Equations</a> plugin</h2>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></section>
+<section id="equations-plugin">
+<h3><a class="reference external" href="http://mattam82.github.io/Coq-Equations/">Equations</a> plugin</h3>
 <p>This is an external plugin which addresses many issues with defining
 functions in Coq, including dependent types and termination.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> <span class="kn">Equations</span> <span class="nf">Require</span> <span class="nv">Import</span> <span class="nv">Equations</span>.</span><span class="alectryon-wsp">
@@ -150,15 +144,15 @@ S (length t + length l2) -&gt;
 list x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length l2 + length t &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chkb"><span class="nb">rewrite</span> Nat.add_comm.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>t, l2</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>interleave4</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> (<span class="nv">x</span> : <span class="kt">Type</span>) (<span class="nv">x0</span> <span class="nv">x1</span> : list x),
 length x0 + length x1 &lt;
 S (length t + length l2) -&gt; 
-list x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t + length l2 &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial with</span> arith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="fix-fix-f-2-combinators">
-<h2><tt class="docutils literal">Fix</tt> / <tt class="docutils literal">Fix_F_2</tt> combinators</h2>
+list x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length t + length l2 &lt; S (length t + length l2)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial with</span> arith.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="fix-fix-f-2-combinators">
+<h3><span class="docutils literal">Fix</span> / <span class="docutils literal">Fix_F_2</span> combinators</h3>
 <p>You can learn more about this (manual) approach if you follow the
-links from <a class="reference external" href="https://stackoverflow.com/q/42285235/2747511">this question</a> about <tt class="docutils literal">mergeSort</tt>
-function. By the way, the <tt class="docutils literal">mergeSort</tt> function can be defined
-without using <tt class="docutils literal">Fix</tt> if you apply the nested <tt class="docutils literal">fix</tt> trick I
-mentioned earlier. Here is a solution which uses <tt class="docutils literal">Fix_F_2</tt>
-combinator since we have two arguments and not one like <tt class="docutils literal">mergeSort</tt>:</p>
+links from <a class="reference external" href="https://stackoverflow.com/q/42285235/2747511">this question</a> about <span class="docutils literal">mergeSort</span>
+function. By the way, the <span class="docutils literal">mergeSort</span> function can be defined
+without using <span class="docutils literal">Fix</span> if you apply the nested <span class="docutils literal">fix</span> trick I
+mentioned earlier. Here is a solution which uses <span class="docutils literal">Fix_F_2</span>
+combinator since we have two arguments and not one like <span class="docutils literal">mergeSort</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">ordering</span> {<span class="nv">A</span>} (<span class="nv">l1</span> <span class="nv">l2</span> : list A * list A) : <span class="kt">Prop</span> :=
   length (fst l1) + length (snd l1) &lt; length (fst l2) + length (snd l2).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -256,9 +250,9 @@ length (fst (l1, l2)) + length (snd (l1, l2))</div></blockquote></div></div></sm
 ordering (l1&#39;, l2&#39;) (l1, l2) -&gt; list A</span></span></span><br><span><var>pf</var><span class="hyp-type"><b>: </b><span>{x : A &amp; {tl : list A | l1 = x :: tl}}</span></span></span><br><span><var>h</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>{tl : list A | l1 = h :: tl}</span></span></span><br><span><var>tl</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>eq</var><span class="hyp-type"><b>: </b><span>l1 = h :: tl</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">length (snd (l2, tl)) + length (fst (l2, tl)) &lt;
 length (fst (h :: tl, l2)) +
 length (snd (h :: tl, l2))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></div>
-<div class="section" id="evaluation-tests">
-<h2>Evaluation tests</h2>
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre></section>
+<section id="evaluation-tests">
+<h3>Evaluation tests</h3>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="teach-coq-to-check-termination-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="teach-coq-to-check-termination-v-chk21"><span class="kn">Check</span> eq_refl : interleave1 [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>] [<span class="mi">4</span>; <span class="mi">5</span>; <span class="mi">6</span>] = [<span class="mi">1</span>; <span class="mi">4</span>; <span class="mi">2</span>; <span class="mi">5</span>; <span class="mi">3</span>; <span class="mi">6</span>].</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_refl
 :
 interleave1 [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>] [<span class="mi">4</span>; <span class="mi">5</span>; <span class="mi">6</span>] = [<span class="mi">1</span>; <span class="mi">4</span>; <span class="mi">2</span>; <span class="mi">5</span>; <span class="mi">3</span>; <span class="mi">6</span>]
@@ -285,10 +279,10 @@ interleave4 [<span class="mi">1</span>; <span class="mi">2</span>; <span class="
 interleave5 [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>] [<span class="mi">4</span>; <span class="mi">5</span>; <span class="mi">6</span>] = [<span class="mi">1</span>; <span class="mi">4</span>; <span class="mi">2</span>; <span class="mi">5</span>; <span class="mi">3</span>; <span class="mi">6</span>]
      : interleave5 [<span class="mi">1</span>; <span class="mi">2</span>; <span class="mi">3</span>] [<span class="mi">4</span>; <span class="mi">5</span>; <span class="mi">6</span>] =
        [<span class="mi">1</span>; <span class="mi">4</span>; <span class="mi">2</span>; <span class="mi">5</span>; <span class="mi">3</span>; <span class="mi">6</span>]</blockquote></div></div></small></span></pre><p>Exercise: what happens with this last check if you comment out
-<tt class="docutils literal">destruct_list</tt> lemma?</p>
+<span class="docutils literal">destruct_list</span> lemma?</p>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

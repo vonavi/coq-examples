@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to improve this proof?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-improve-this-proof">
+<div class="alectryon-root alectryon-centered"><main id="how-to-improve-this-proof">
 <h1 class="title">How to improve this proof?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/72635620">https://stackoverflow.com/q/72635620</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/72635620">https://stackoverflow.com/q/72635620</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I work on mereology and I wanted to prove that a given theorem
 (Extensionality) follows from the four axioms I had.</p>
 <p>This is my code:</p>
@@ -87,9 +84,9 @@ it quite messy. And I don't know how to improve it. (The only thing I
 think of is to use patterns instead of destruct.) It is possible to
 improve this proof? If so, please do not use super complex tactics: I
 would like to understand the upgrades you will propose.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Here is a refactoring of your proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Classical.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">Entity</span>: <span class="kt">Set</span>.</span><span class="alectryon-wsp">
@@ -135,31 +132,29 @@ would like to understand the upgrades you will propose.</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> P_refl.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The main changes are:</p>
 <ol class="arabic simple">
-<li>Give explicit and informative names to all the intermediate
-hypotheses (i.e., avoid doing <tt class="docutils literal">destruct foo as [x []]</tt>)</li>
-<li>Use curly braces to separate the proofs of the intermediate
-assertions from the main proof.</li>
-<li>Use the <tt class="docutils literal">congruence</tt> tactic to automate some of the low-level
+<li><p>Give explicit and informative names to all the intermediate
+hypotheses (i.e., avoid doing <span class="docutils literal">destruct foo as [x []]</span>)</p></li>
+<li><p>Use curly braces to separate the proofs of the intermediate
+assertions from the main proof.</p></li>
+<li><p>Use the <span class="docutils literal">congruence</span> tactic to automate some of the low-level
 equality reasoning. Roughly speaking, this tactic solves goals that
 can be established just by rewriting with equalities and pruning
-subgoals with contradictory statements like <tt class="docutils literal">x &lt;&gt; x</tt>.</li>
-<li>Condense trivial proof steps using the <tt class="docutils literal">assert ... by tactic</tt>,
-which does not generate new subgoals.</li>
-<li>Use the <tt class="docutils literal">(a &amp; b &amp; c)</tt> destruct patterns rather than <tt class="docutils literal">[a [b
-c]]</tt>, which are harder to read.</li>
-<li>Rewrite with <tt class="docutils literal">x_equiv_y</tt> to avoid doing sequences such as
-<tt class="docutils literal"><span class="pre">specialize...</span> <span class="pre">destruct...</span> apply H0 in H1</tt></li>
-<li>Avoid some unnecessary uses of classical reasoning.</li>
+subgoals with contradictory statements like <span class="docutils literal">x &lt;&gt; x</span>.</p></li>
+<li><p>Condense trivial proof steps using the <span class="docutils literal">assert ... by tactic</span>,
+which does not generate new subgoals.</p></li>
+<li><p>Use the <span class="docutils literal">(a &amp; b &amp; c)</span> destruct patterns rather than <span class="docutils literal">[a [b c]]</span>, which are harder to read.</p></li>
+<li><p>Rewrite with <span class="docutils literal">x_equiv_y</span> to avoid doing sequences such as
+<span class="docutils literal"><span class="pre">specialize...</span> <span class="pre">destruct...</span> apply H0 in H1</span></p></li>
+<li><p>Avoid some unnecessary uses of classical reasoning.</p></li>
 </ol>
 <hr class="docutils" />
-<p><strong>Q:</strong> Is <tt class="docutils literal">destruct (strong_supp x y NPyx) as (z &amp; Pzy &amp; NOzx).</tt>
-equivalent to <tt class="docutils literal">pose proof (strong_supp x y NPyx) as (z &amp; Pzy &amp;
-NOzx).</tt>? I tried and its the same result. Is there a difference?</p>
+<p><strong>Q:</strong> Is <span class="docutils literal">destruct (strong_supp x y NPyx) as (z &amp; Pzy &amp; NOzx).</span>
+equivalent to <span class="docutils literal">pose proof (strong_supp x y NPyx) as (z &amp; Pzy &amp; NOzx).</span>? I tried and its the same result. Is there a difference?</p>
 <p><strong>A:</strong> In this particular case, yes, they are equivalent.</p>
 <p><strong>A:</strong> Classical reasoning can be replaced with an extra assumption
-that equality of <tt class="docutils literal">Entity</tt> is decidable.</p>
+that equality of <span class="docutils literal">Entity</span> is decidable.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

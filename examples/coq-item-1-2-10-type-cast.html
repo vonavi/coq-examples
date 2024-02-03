@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq item 1.2.10 Type cast</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-item-1-2-10-type-cast">
+<div class="alectryon-root alectryon-centered"><main id="coq-item-1-2-10-type-cast">
 <h1 class="title">Coq item 1.2.10 Type cast</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47072904">https://stackoverflow.com/q/47072904</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47072904">https://stackoverflow.com/q/47072904</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Not sure what the following means in the Coq manual v8.7.0 item
 <a class="reference external" href="https://coq.inria.fr/distrib/V8.7.0/refman/gallina.html#typecast">1.2.10</a>:</p>
 <ul class="simple">
-<li>The expression <tt class="docutils literal">term : type</tt> is a type cast expression. It
-enforces the type of term to be type.</li>
-<li><tt class="docutils literal">term &lt;: type</tt> locally sets up the virtual machine for checking
-that term has type type.</li>
+<li><p>The expression <span class="docutils literal">term : type</span> is a type cast expression. It
+enforces the type of term to be type.</p></li>
+<li><p><span class="docutils literal">term &lt;: type</span> locally sets up the virtual machine for checking
+that term has type type.</p></li>
 </ul>
 <p>My understanding is that the type check of the first one is done by
 Coq (some default), whereas the second one is done by a chosen Coq's
@@ -45,12 +42,12 @@ while it <span class="kr">is</span> expected to <span class="nb">have</span> typ
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-item-1-2-10-type-cast-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-item-1-2-10-type-cast-v-chk1"><span class="kn">Check</span> (<span class="mi">3</span> &lt;: bool).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The term <span class="s2">&quot;3&quot;</span> has type <span class="s2">&quot;nat&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;bool&quot;</span>.</blockquote></div></div></small></span></pre><p>My question is that: might be this is the case where the default and
 VM behaves the same?</p>
-<p>Moreover, it would be nice to have an example where the <tt class="docutils literal">:</tt> and
-<tt class="docutils literal">&lt;:</tt> behaves differently, so people could be more careful of
+<p>Moreover, it would be nice to have an example where the <span class="docutils literal">:</span> and
+<span class="docutils literal">&lt;:</span> behaves differently, so people could be more careful of
 choosing one from the other.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>As far as I know, the default reduction machinery and the VM reduction
 machinery are designed to enforce the same typing rules.</p>
 <p>But they don't behave the same in the sense that, for some
@@ -63,8 +60,8 @@ magnitude.</p>
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-item-1-2-10-type-cast-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-item-1-2-10-type-cast-v-chk3"><span class="kn">Time</span> <span class="kn">Check</span> (refl_equal <span class="mi">1</span> &lt;: (<span class="mi">10</span> ^ <span class="mi">6</span> - <span class="mi">9</span> * <span class="mi">10</span> ^ <span class="mi">5</span>) / <span class="mi">10</span> ^ <span class="mi">5</span> = <span class="mi">1</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_refl &lt;: (<span class="mi">10</span> ^ <span class="mi">6</span> - <span class="mi">9</span> * <span class="mi">10</span> ^ <span class="mi">5</span>) / <span class="mi">10</span> ^ <span class="mi">5</span> = <span class="mi">1</span>
      : (<span class="mi">10</span> ^ <span class="mi">6</span> - <span class="mi">9</span> * <span class="mi">10</span> ^ <span class="mi">5</span>) / <span class="mi">10</span> ^ <span class="mi">5</span> = <span class="mi">1</span></blockquote><blockquote class="alectryon-message">Finished transaction <span class="kr">in</span> <span class="mi">0</span>.<span class="mi">433</span> secs (<span class="mi">0</span>.<span class="mi">425</span>u,<span class="mi">0</span>.<span class="mi">008</span>s) (successful)</blockquote></div></div></small></span></pre><p>This matters because large computations can occur in the middle of
 proofs.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

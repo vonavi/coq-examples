@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: Testing partial convertibilty</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-testing-partial-convertibilty">
+<div class="alectryon-root alectryon-centered"><main id="coq-testing-partial-convertibilty">
 <h1 class="title">Coq: Testing partial convertibilty</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47838883">https://stackoverflow.com/q/47838883</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47838883">https://stackoverflow.com/q/47838883</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In the following example, unification (unsurprisingly) doesn't infer a
 canonical structure:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Structure</span> <span class="nf">Pn</span> := sr {gs: nat}.</span><span class="alectryon-wsp">
@@ -47,14 +44,14 @@ redundant <span class="kr">with</span> Pn_1
 <span class="kn">where</span>
 <span class="nl">?T</span> : [ |- <span class="kt">Type</span>]
 <span class="nl">?Goal</span> : [ |- <span class="nl">?T</span>]</blockquote></div></div></small></span></pre><p>Is it possible to make the first unification to succeed, e.g. with
-<tt class="docutils literal">unify ... with ...</tt>? Or is there a better tactic instead of <a class="reference external" href="https://coq.inria.fr/refman/tactics.html#sec431">unify</a> for testing the
-partial convertibility of <tt class="docutils literal">2</tt> and <tt class="docutils literal">(gs _)</tt>? Feel free to use e.g.
+<span class="docutils literal">unify ... with ...</span>? Or is there a better tactic instead of <a class="reference external" href="https://coq.inria.fr/refman/tactics.html#sec431">unify</a> for testing the
+partial convertibility of <span class="docutils literal">2</span> and <span class="docutils literal">(gs _)</span>? Feel free to use e.g.
 type classes instead of canonical structures to make this work</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Instance inference for canonical structures is dispatched on a term's
-head. The numbers 1 and 2 have the same head (<tt class="docutils literal">S</tt>), leading to
+head. The numbers 1 and 2 have the same head (<span class="docutils literal">S</span>), leading to
 overlapping instances that break inference. (Indeed, Coq gives an
 error message once you declare the second instance.)</p>
 <p>One solution is to use separate definitions, since those change the
@@ -66,7 +63,7 @@ term's head:</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Canonical Structure</span> <span class="nf">Pn_2</span> := sr two. <span class="c">(* Now the error message goes away *)</span></span></span></pre><p>(There is even a <a class="reference external" href="https://people.mpi-sws.org/~beta/lessadhoc/">paper</a> by Georges Gonthier
 and collaborators showing how to program the inference mechanism in
 this way.)</p>
-<p>As for the ltac, it seems that <tt class="docutils literal">unify</tt> type-checks its arguments
+<p>As for the ltac, it seems that <span class="docutils literal">unify</span> type-checks its arguments
 separately, which prevents canonical-structure inference from
 triggering. We can fix this problem by putting two terms in a context
 that forces the checker to unify them.</p>
@@ -88,13 +85,13 @@ inference problem, because it is not dispatched on the head of a term.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> &quot;We can fix this problem by putting two terms in a context that
 forces the checker to unify them.&quot; -- Do I understand correctly that
-defining <tt class="docutils literal">p</tt> is instrumental for creating the context?</p>
-<p><strong>A:</strong> I wouldn't say that defining <tt class="docutils literal">p</tt> is the important bit by
-itself, but calling into the type checker. Defining <tt class="docutils literal">p</tt> is one way
+defining <span class="docutils literal">p</span> is instrumental for creating the context?</p>
+<p><strong>A:</strong> I wouldn't say that defining <span class="docutils literal">p</span> is the important bit by
+itself, but calling into the type checker. Defining <span class="docutils literal">p</span> is one way
 of doing it, but there could be also be another tactic that
 accomplishes that directly.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

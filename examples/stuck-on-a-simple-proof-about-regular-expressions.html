@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Stuck on a simple proof about regular expressions</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="stuck-on-a-simple-proof-about-regular-expressions">
+<div class="alectryon-root alectryon-centered"><main id="stuck-on-a-simple-proof-about-regular-expressions">
 <h1 class="title">Stuck on a simple proof about regular expressions</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/40796214">https://stackoverflow.com/q/40796214</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/40796214">https://stackoverflow.com/q/40796214</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to formalize some properties on regular expressions (REs)
 using Coq. But, I've got some troubles to prove a rather simple
 property:</p>
 <blockquote>
-For all strings <tt class="docutils literal">s</tt>, if <tt class="docutils literal">s</tt> is in the language of
-<tt class="docutils literal">(epsilon)*</tt> RE, then <tt class="docutils literal">s = &quot;&quot;</tt>, where <tt class="docutils literal">epsilon</tt> and <tt class="docutils literal">*</tt>
-denotes the empty string RE and Kleene star operation.</blockquote>
+<p>For all strings <span class="docutils literal">s</span>, if <span class="docutils literal">s</span> is in the language of
+<span class="docutils literal">(epsilon)*</span> RE, then <span class="docutils literal">s = &quot;&quot;</span>, where <span class="docutils literal">epsilon</span> and <span class="docutils literal">*</span>
+denotes the empty string RE and Kleene star operation.</p>
+</blockquote>
 <p>This seems to be an obvious application of induction / inversion
 tactics, but I couldn't make it work.</p>
 <p>The minimal working code with the problematic lemma is in the
@@ -54,17 +52,17 @@ Any tip on how should I proceed will be appreciated.</p>
   H1 : s&#39; &lt;&lt;- (#<span class="mi">1</span> ^*)
   ============================
   s&#39; = <span class="s2">&quot;&quot;</span></blockquote></div></div></small></span></pre><p>At least to me, it appears that using induction would finish the
-proof, since I could use <tt class="docutils literal">H1</tt> in induction hypothesis to finish the
+proof, since I could use <span class="docutils literal">H1</span> in induction hypothesis to finish the
 proof, but when I start the proof using</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chkf"><span class="nb">induction</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="s2">&quot;&quot;</span> = <span class="s2">&quot;&quot;</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk10" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>c</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br></div><label class="goal-separator" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk10"><hr></label><div class="goal-conclusion">String c <span class="s2">&quot;&quot;</span> = <span class="s2">&quot;&quot;</span></div></blockquote><input class="alectryon-extra-goal-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk11" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>e, e'</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>s, s', s1</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s &lt;&lt;- e</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>s&#39; &lt;&lt;- e&#39;</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>s1 = s ++ s&#39;</span></span></span><br><span><var>IHin_regex1</var><span class="hyp-type"><b>: </b><span>s = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>IHin_regex2</var><span class="hyp-type"><b>: </b><span>s&#39; = <span class="s2">&quot;&quot;</span></span></span></span><br></div><label class="goal-separator" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk11"><hr></label><div class="goal-conclusion">s1 = <span class="s2">&quot;&quot;</span></div></blockquote><input class="alectryon-extra-goal-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk12" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>e, e'</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s &lt;&lt;- e</span></span></span><br><span><var>IHin_regex</var><span class="hyp-type"><b>: </b><span>s = <span class="s2">&quot;&quot;</span></span></span></span><br></div><label class="goal-separator" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk12"><hr></label><div class="goal-conclusion">s = <span class="s2">&quot;&quot;</span></div></blockquote><input class="alectryon-extra-goal-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk13" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s'</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>e, e'</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s&#39; &lt;&lt;- e&#39;</span></span></span><br><span><var>IHin_regex</var><span class="hyp-type"><b>: </b><span>s&#39; = <span class="s2">&quot;&quot;</span></span></span></span><br></div><label class="goal-separator" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk13"><hr></label><div class="goal-conclusion">s&#39; = <span class="s2">&quot;&quot;</span></div></blockquote><input class="alectryon-extra-goal-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk14" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s &lt;&lt;- #<span class="mi">1</span> :+: e @ (e ^*)</span></span></span><br><span><var>IHin_regex</var><span class="hyp-type"><b>: </b><span>s = <span class="s2">&quot;&quot;</span></span></span></span><br></div><label class="goal-separator" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk14"><hr></label><div class="goal-conclusion">s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></div></small></span></pre><p>instead of</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk15"><span class="nb">inversion_clear</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>s &lt;&lt;- #<span class="mi">1</span> :+: #<span class="mi">1</span> @ (#<span class="mi">1</span> ^*)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>I got some (at least for me) senseless goals. In Idris / Agda, such
 proof just follows by pattern matching and recursion over the
-structure of <tt class="docutils literal">s &lt;&lt;- (#1 ^*)</tt>. My point is how to do such recursion
+structure of <span class="docutils literal">s &lt;&lt;- (#1 ^*)</span>. My point is how to do such recursion
 in Coq.</p>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>Here is one possible solution of the original problem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk16"><span class="kn">Lemma</span> <span class="nf">star_lemma</span> : <span class="kr">forall</span> <span class="nv">s</span>, s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : string, s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk17"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : string, s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -86,28 +84,28 @@ s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&qu
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The main idea is to introduce a term in the context which will
 resemble the recursive call in a typical Idris proof. The approaches
-with <tt class="docutils literal">remember</tt> and <tt class="docutils literal">dependent induction</tt> don't work well (without
-modifications of <tt class="docutils literal">in_regex</tt>) because they introduce impossible to
+with <span class="docutils literal">remember</span> and <span class="docutils literal">dependent induction</span> don't work well (without
+modifications of <span class="docutils literal">in_regex</span>) because they introduce impossible to
 satisfy equations as induction hypotheses' premises.</p>
 <p><em>Note</em>: it can take a while to check this lemma (around 40 seconds on
 my machine under Coq 8.5pl3). I think it's due to the fact that the
-<tt class="docutils literal">inversion</tt> tactic tends to generate big proof terms.</p>
+<span class="docutils literal">inversion</span> tactic tends to generate big proof terms.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Nice! I really don't see how to prove it without using an
 hand-crafted fixpoint. Following your example, <a class="reference external" href="https://gist.github.com/gallais/58b42d5d9571ff0e6a432a9f40cf06c9">I factored the proof</a>
-through a <tt class="docutils literal">star_unfold</tt> lemma which says that if <tt class="docutils literal">s &lt;&lt;- (e ^*)</tt>
-then <tt class="docutils literal">exists n, s &lt;&lt;- ntimes n e</tt>. In the case of a full-blown
-library, this should isolate the expensive check to <tt class="docutils literal">star_unfold</tt>
+through a <span class="docutils literal">star_unfold</span> lemma which says that if <span class="docutils literal">s &lt;&lt;- (e ^*)</span>
+then <span class="docutils literal">exists n, s &lt;&lt;- ntimes n e</span>. In the case of a full-blown
+library, this should isolate the expensive check to <span class="docutils literal">star_unfold</span>
 alone given that later proofs can simply use induction on a natural
 number.</p>
 <p><strong>A:</strong> Very good point! Please consider making your comment into an
 answer -- I hear comments are not very reliable on SO. You could've
-also used <tt class="docutils literal">Nat.iter</tt> instead of <tt class="docutils literal">ntimes</tt> to make the code shorter:
-<tt class="docutils literal">exists n, s &lt;&lt;- Nat.iter n (Cat e) #1.</tt> (But maybe it hurts
+also used <span class="docutils literal">Nat.iter</span> instead of <span class="docutils literal">ntimes</span> to make the code shorter:
+<span class="docutils literal">exists n, s &lt;&lt;- Nat.iter n (Cat e) #1.</span> (But maybe it hurts
 readability a bit).</p>
-</div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
+</section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
 <p>This problem has obsessed me for a week, and I have finally found a
 solution that I find elegant.</p>
 <p>I had already read that when an induction principle does not fit your
@@ -255,12 +253,12 @@ s &lt;&lt;- r -&gt; P s r</span></span></span><br><span><var>s</var><span class=
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H_InStar_Cat; <span class="kp">try</span> <span class="bp">assumption</span>; <span class="nb">apply</span> in_regex_ind2; <span class="bp">assumption</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">induction_principle</span>.</span></span></pre><p>And it turned out that the <tt class="docutils literal">Qed</tt> of this proof was not instantaneous
-(probably due to <tt class="docutils literal">inversion</tt> producing large terms as in <a class="reference external" href="https://stackoverflow.com/a/40807209/5153939">this
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">induction_principle</span>.</span></span></pre><p>And it turned out that the <span class="docutils literal">Qed</span> of this proof was not instantaneous
+(probably due to <span class="docutils literal">inversion</span> producing large terms as in <a class="reference external" href="https://stackoverflow.com/a/40807209/5153939">this
 answer</a>), but took
 less than 1s (maybe because the lemma is more abstract).</p>
-<p>The <tt class="docutils literal">star_lemma</tt> becomes nearly trivial to prove (as soon as we know
-the <tt class="docutils literal">remember</tt> trick), as with the natural definition.</p>
+<p>The <span class="docutils literal">star_lemma</span> becomes nearly trivial to prove (as soon as we know
+the <span class="docutils literal">remember</span> trick), as with the natural definition.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk2a" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk2a"><span class="kn">Lemma</span> <span class="nf">star_lemma</span> : <span class="kr">forall</span> <span class="nv">s</span>, s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : string, s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk2b" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk2b"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : string, s &lt;&lt;- (#<span class="mi">1</span> ^*) -&gt; s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk2c" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk2c"><span class="nb">intros</span> s H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s &lt;&lt;- (#<span class="mi">1</span> ^*)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk2d" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk2d"><span class="nb">remember</span> (#<span class="mi">1</span> ^*) <span class="kr">as</span> r.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>r</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>Heqr</var><span class="hyp-type"><b>: </b><span>r = #<span class="mi">1</span> ^*</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s &lt;&lt;- r</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -268,9 +266,9 @@ the <tt class="docutils literal">remember</tt> trick), as with the natural defin
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk30" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk30">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>e</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>Heqr</var><span class="hyp-type"><b>: </b><span>e ^* = #<span class="mi">1</span> ^*</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="s2">&quot;&quot;</span> = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk31" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk31">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>e</var><span class="hyp-type"><b>: </b><span>regex</span></span></span><br><span><var>Heqr</var><span class="hyp-type"><b>: </b><span>e ^* = #<span class="mi">1</span> ^*</span></span></span><br><span><var>s1, s2</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s1 &lt;&lt;- e</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>s2 &lt;&lt;- (e ^*)</span></span></span><br><span><var>IHin_regex1</var><span class="hyp-type"><b>: </b><span>e = #<span class="mi">1</span> ^* -&gt; s1 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>IHin_regex2</var><span class="hyp-type"><b>: </b><span>e ^* = #<span class="mi">1</span> ^* -&gt; s2 = <span class="s2">&quot;&quot;</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s1 ++ s2 = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk32" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk32"><span class="nb">inversion</span> Heqr; <span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>Heqr</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> ^* = #<span class="mi">1</span> ^*</span></span></span><br><span><var>s1, s2</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>IHin_regex2</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> ^* = #<span class="mi">1</span> ^* -&gt; s2 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>IHin_regex1</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> = #<span class="mi">1</span> ^* -&gt; s1 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>s2 &lt;&lt;- (#<span class="mi">1</span> ^*)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s1 &lt;&lt;- #<span class="mi">1</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s1 ++ s2 = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk33" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk33"><span class="nb">inversion</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>Heqr</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> ^* = #<span class="mi">1</span> ^*</span></span></span><br><span><var>s1, s2</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>IHin_regex2</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> ^* = #<span class="mi">1</span> ^* -&gt; s2 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>IHin_regex1</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> = #<span class="mi">1</span> ^* -&gt; s1 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>s2 &lt;&lt;- (#<span class="mi">1</span> ^*)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s1 &lt;&lt;- #<span class="mi">1</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="s2">&quot;&quot;</span> = s1</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="s2">&quot;&quot;</span> ++ s2 = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stuck-on-a-simple-proof-about-regular-expressions-v-chk34" style="display: none" type="checkbox"><label class="alectryon-input" for="stuck-on-a-simple-proof-about-regular-expressions-v-chk34"><span class="nb">rewrite</span> IHin_regex2 <span class="bp">by</span> <span class="bp">reflexivity</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>Heqr</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> ^* = #<span class="mi">1</span> ^*</span></span></span><br><span><var>s1, s2</var><span class="hyp-type"><b>: </b><span>string</span></span></span><br><span><var>IHin_regex2</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> ^* = #<span class="mi">1</span> ^* -&gt; s2 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>IHin_regex1</var><span class="hyp-type"><b>: </b><span>#<span class="mi">1</span> = #<span class="mi">1</span> ^* -&gt; s1 = <span class="s2">&quot;&quot;</span></span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>s2 &lt;&lt;- (#<span class="mi">1</span> ^*)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s1 &lt;&lt;- #<span class="mi">1</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="s2">&quot;&quot;</span> = s1</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="s2">&quot;&quot;</span> ++ <span class="s2">&quot;&quot;</span> = <span class="s2">&quot;&quot;</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-zimm-i48">
-<h1>Answer (Zimm i48)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-zimm-i48">
+<h2>Answer (Zimm i48)</h2>
 <p>I modified a bit the definition of your in_regex predicate:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">in_regex</span> : string -&gt; regex -&gt; <span class="kt">Prop</span> :=
 | InEps : <span class="s2">&quot;&quot;</span> &lt;&lt;- #<span class="mi">1</span>
@@ -292,25 +290,25 @@ the <tt class="docutils literal">remember</tt> trick), as with the natural defin
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">inversion</span> H; <span class="nb">trivial</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Some explanations are necessary.</p>
 <ol class="arabic simple">
-<li>I did an induction on <tt class="docutils literal">H</tt>. The reasoning is: if I have a proof of
-<tt class="docutils literal">s &lt;&lt;- (#1 ^*)</tt> then this proof must have the following form...</li>
-<li>The tactic <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacv.remember">remember</a>
-create a new hypothesis <tt class="docutils literal">Heqr</tt> which, combined with <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.inversion">inversion</a>
+<li><p>I did an induction on <span class="docutils literal">H</span>. The reasoning is: if I have a proof of
+<span class="docutils literal">s &lt;&lt;- (#1 ^*)</span> then this proof must have the following form...</p></li>
+<li><p>The tactic <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacv.remember">remember</a>
+create a new hypothesis <span class="docutils literal">Heqr</span> which, combined with <a class="reference external" href="https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.inversion">inversion</a>
 will help get rid of cases which cannot possibly give this proof
-(in fact all the cases minus the ones where <tt class="docutils literal">^*</tt> is in the
-conclusion).</li>
-<li>Unfortunately, this path of reasoning does not work with the
-definition you had for the <tt class="docutils literal">in_regex</tt> predicate because it will
+(in fact all the cases minus the ones where <span class="docutils literal">^*</span> is in the
+conclusion).</p></li>
+<li><p>Unfortunately, this path of reasoning does not work with the
+definition you had for the <span class="docutils literal">in_regex</span> predicate because it will
 create an unsatisfiable condition to the induction hypothesis.
-That's why I modified your inductive predicate as well.</li>
-<li>The modified inductive tries to give a more basic definition of
-being in <tt class="docutils literal">(e ^*)</tt>. Semantically, I think this is equivalent.</li>
+That's why I modified your inductive predicate as well.</p></li>
+<li><p>The modified inductive tries to give a more basic definition of
+being in <span class="docutils literal">(e ^*)</span>. Semantically, I think this is equivalent.</p></li>
 </ol>
 <p>I would be interested to read a proof on the original problem.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> The proof of the original problem is <a class="reference external" href="http://stackoverflow.com/a/40807209/2747511">here</a> :).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving decidability for a datatype that includes a vector</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-decidability-for-a-datatype-that-includes-a-vector">
+<div class="alectryon-root alectryon-centered"><main id="proving-decidability-for-a-datatype-that-includes-a-vector">
 <h1 class="title">Proving decidability for a datatype that includes a vector</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55335098">https://stackoverflow.com/q/55335098</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55335098">https://stackoverflow.com/q/55335098</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to work with a datatype that represents expressions in a
 sort of universal algebra context. The usual way to express this in
 (pen and paper) maths is that you have a set of function symbols, F,
@@ -37,8 +34,8 @@ variables that get injected explicitly as terms.</p>
 <p>It's pretty clear how to write this down with Coq (I've got a snippet
 of code at the bottom), but I'd like to prove some sort of
 decidability result. I've managed to prove decidability for vectors
-(&quot;If I have decidability on <tt class="docutils literal">A</tt>, then I can get decidability on
-<tt class="docutils literal">VectorDef.t A n</tt>&quot;), but I can't work out how to do the same for my
+(&quot;If I have decidability on <span class="docutils literal">A</span>, then I can get decidability on
+<span class="docutils literal">VectorDef.t A n</span>&quot;), but I can't work out how to do the same for my
 tree type.</p>
 <p>I tried doing an explicit recursion over the structure of a tree, but
 I ended up needing to call out to my &quot;decidable vector&quot; function,
@@ -78,20 +75,20 @@ sort of thing?</p>
 <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">v</span> <span class="nv">v&#39;</span> : vec A n),
 {v = v&#39;} + {v &lt;&gt; v&#39;}</span></span></span><br><span><var>V, F</var><span class="hyp-type"><b>: </b><span><span class="kt">Set</span></span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>F -&gt; nat</span></span></span><br><span><var>decV</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : V, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>decF</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : F, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : VTree, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">      <span class="c">(* ??? *)</span>
-</span></pre></div>
-<div class="section" id="answer-li-yao-xia">
-<h1>Answer (Li-yao Xia)</h1>
+</span></pre></section>
+<section id="answer-li-yao-xia">
+<h2>Answer (Li-yao Xia)</h2>
 <p>There are two challenging aspects to this problem.</p>
 <ol class="arabic simple">
-<li>Dependently typed programming with indexed types in Coq</li>
-<li>Nested recursive types</li>
+<li><p>Dependently typed programming with indexed types in Coq</p></li>
+<li><p>Nested recursive types</p></li>
 </ol>
-<div class="section" id="dependently-typed-programming-with-indexed-types-in-coq">
-<h2>Dependently typed programming with indexed types in Coq</h2>
+<section id="dependently-typed-programming-with-indexed-types-in-coq">
+<h3>Dependently typed programming with indexed types in Coq</h3>
 <p>By &quot;indexed type&quot; I am referring here specifically to inductive types
-like <tt class="docutils literal">Vector.t</tt>, where the constructors refine some of the type
+like <span class="docutils literal">Vector.t</span>, where the constructors refine some of the type
 arguments. These arguments are called indices, and must appear between
-<tt class="docutils literal">:</tt> and <tt class="docutils literal">:=</tt> in the type signature:</p>
+<span class="docutils literal">:</span> and <span class="docutils literal">:=</span> in the type signature:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Vector</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : nat <span class="c">(* &lt;- index *)</span> -&gt; <span class="kt">Type</span> :=
 | nil : Vector A <span class="mi">0</span>
 | cons : A -&gt; <span class="kr">forall</span> <span class="nv">n</span>, Vector A n -&gt; Vector A (S n).</span></span></pre><p>Indexed inductive types are very useful to define propositions, where
@@ -103,17 +100,16 @@ For example, see this blogpost:
 <a class="reference external" href="https://homes.cs.washington.edu/~jrw12/dep-destruct.html">https://homes.cs.washington.edu/~jrw12/dep-destruct.html</a></p>
 <p>A less extreme solution is to give up on other &quot;dependently-typed&quot;
 aspects of this program. The next candidate on the chopping block here
-is <tt class="docutils literal">sumbool ({ _ } + { _ })</tt>. If the functions (and parameters)
-return <tt class="docutils literal">bool</tt> instead, this makes them reasonably easy to define (<em>cough</em>, see next section). Proving their correctness is still a
+is <span class="docutils literal">sumbool ({ _ } + { _ })</span>. If the functions (and parameters)
+return <span class="docutils literal">bool</span> instead, this makes them reasonably easy to define (<em>cough</em>, see next section). Proving their correctness is still a
 problem but at least you have something to compute with.</p>
 <p>Two general alternatives to inductive indexed types are:</p>
 <ul>
-<li><p class="first">Just use the flat version (<tt class="docutils literal">list</tt> instead of <tt class="docutils literal">vec</tt>), giving up
-some &quot;by construction&quot; guarantees.</p>
-</li>
-<li><p class="first">Make the type a function of the indices as a <tt class="docutils literal">Definition</tt> (or
-<tt class="docutils literal">Fixpoint</tt>), instead of <tt class="docutils literal">Inductive</tt>. Here we use <tt class="docutils literal">unit</tt> and
-<tt class="docutils literal">prod</tt> as building blocks for such types, but you may have to make
+<li><p>Just use the flat version (<span class="docutils literal">list</span> instead of <span class="docutils literal">vec</span>), giving up
+some &quot;by construction&quot; guarantees.</p></li>
+<li><p>Make the type a function of the indices as a <span class="docutils literal">Definition</span> (or
+<span class="docutils literal">Fixpoint</span>), instead of <span class="docutils literal">Inductive</span>. Here we use <span class="docutils literal">unit</span> and
+<span class="docutils literal">prod</span> as building blocks for such types, but you may have to make
 up your own for more elaborate types. A lot of dependent
 pattern-matching will be necessary.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">vec</span> (<span class="nv">A</span> : <span class="kt">Set</span>) (<span class="nv">n</span> : nat) :=
@@ -126,23 +122,23 @@ you want to implement. For example, do you really want to represent
 arities as explicitly as a function on symbols? (That could certainly
 be the case.) For example, could you not restrict this to symbols of
 arities 0, 1, 2?</p>
-</div>
-<div class="section" id="nested-recursive-types">
-<h2>Nested recursive types</h2>
+</section>
+<section id="nested-recursive-types">
+<h3>Nested recursive types</h3>
 <p>These are recursive types whose recursive occurrences are inside other
 data types (which may be recursive). To simplify the discussion, to
 unclutter the code, and because of the aforementioned issues with
-dependent types in Coq, consider the following type using <tt class="docutils literal">list</tt>
-instead of <tt class="docutils literal">vec</tt> and with one fewer constructor:</p>
+dependent types in Coq, consider the following type using <span class="docutils literal">list</span>
+instead of <span class="docutils literal">vec</span> and with one fewer constructor:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">LTree</span> : <span class="kt">Type</span> :=
-| funTerm : list LTree -&gt; LTree.</span></span></pre><p>You can define recursive functions on such a type with <tt class="docutils literal">Fixpoint</tt>,
+| funTerm : list LTree -&gt; LTree.</span></span></pre><p>You can define recursive functions on such a type with <span class="docutils literal">Fixpoint</span>,
 but you have to be particularly careful about how recursive calls are
 nested. Of course, this actually matters with any recursive type, but
 the pattern is much more natural when the recursion is not nested, so
 the problem is less noticeable.</p>
-<p>Below is how we can decide equality for <tt class="docutils literal">LTree</tt>. We give up the
-dependent <tt class="docutils literal">sumbool</tt>, returning a <tt class="docutils literal">bool</tt> instead. The definition of
-<tt class="docutils literal">dec_list</tt> is standard and generic.</p>
+<p>Below is how we can decide equality for <span class="docutils literal">LTree</span>. We give up the
+dependent <span class="docutils literal">sumbool</span>, returning a <span class="docutils literal">bool</span> instead. The definition of
+<span class="docutils literal">dec_list</span> is standard and generic.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -158,31 +154,31 @@ dependent <tt class="docutils literal">sumbool</tt>, returning a <tt class="docu
   | _, _ =&gt; false
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">List</span>.</span></span></pre><p>Then equality of <tt class="docutils literal">LTree</tt> looks innocent...</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">List</span>.</span></span></pre><p>Then equality of <span class="docutils literal">LTree</span> looks innocent...</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">decLTree</span> (<span class="nv">x</span> <span class="nv">y</span> : LTree) : bool :=
   <span class="kr">match</span> x, y <span class="kr">with</span>
   | funTerm lx, funTerm ly =&gt;
     dec_list decLTree lx ly
   <span class="kr">end</span>.</span></span></pre><p>... but there are very subtle details that one needs to be aware of to convince Coq that the recursion is structurally decreasing.</p>
-<p>The well-formedness of <tt class="docutils literal">decLTree</tt> specifically depends in a very
-delicate way on how <tt class="docutils literal">dec_list</tt> uses its argument <tt class="docutils literal">decA</tt>, so
-<tt class="docutils literal">dec_list</tt> must be a transparent definition:</p>
+<p>The well-formedness of <span class="docutils literal">decLTree</span> specifically depends in a very
+delicate way on how <span class="docutils literal">dec_list</span> uses its argument <span class="docutils literal">decA</span>, so
+<span class="docutils literal">dec_list</span> must be a transparent definition:</p>
 <ol class="arabic simple">
-<li>It is only being applied to a subterm of the first list (you could
-make it the second if you want, with some <tt class="docutils literal">struct</tt> annotations).</li>
-<li><tt class="docutils literal">decA</tt> is bound <em>outside</em> of <tt class="docutils literal">Fixpoint dec_list</tt>. The function
-<tt class="docutils literal">decLTree</tt> would not be well-formed if that line instead read
-<tt class="docutils literal">Fixpoint dec_list {A : Type} (decA : A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> bool)</tt>.</li>
+<li><p>It is only being applied to a subterm of the first list (you could
+make it the second if you want, with some <span class="docutils literal">struct</span> annotations).</p></li>
+<li><p><span class="docutils literal">decA</span> is bound <em>outside</em> of <span class="docutils literal">Fixpoint dec_list</span>. The function
+<span class="docutils literal">decLTree</span> would not be well-formed if that line instead read
+<span class="docutils literal">Fixpoint dec_list {A : Type} (decA : A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> bool)</span>.</p></li>
 </ol>
 <p>It's also possible to package these tricks up by writing some general
-recursion/induction schemes for <tt class="docutils literal">LTree</tt>/<tt class="docutils literal">VTree</tt>.</p>
-</div>
-</div>
-<div class="section" id="answer-rupert-swarbrick">
-<h1>Answer (Rupert Swarbrick)</h1>
+recursion/induction schemes for <span class="docutils literal">LTree</span>/<span class="docutils literal">VTree</span>.</p>
+</section>
+</section>
+<section id="answer-rupert-swarbrick">
+<h2>Answer (Rupert Swarbrick)</h2>
 <p>While Li-yao made some useful points, the dependent types aren't that
 bad! It turns out that the reason my previous script didn't work is
-that I'd used <tt class="docutils literal">Qed</tt> rather than <tt class="docutils literal">Defined</tt> to finish my
+that I'd used <span class="docutils literal">Qed</span> rather than <span class="docutils literal">Defined</span> to finish my
 decidability proof for vectors.</p>
 <p>Here's a complete working proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Vectors.VectorDef.</span><span class="alectryon-wsp">
@@ -304,8 +300,8 @@ existT (<span class="kr">fun</span> <span class="nv">f</span> : F =&gt; vec VTre
 </span></span><span class="alectryon-wsp">          </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">injection</span>; <span class="bp">tauto</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">DecVTree</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">VTree</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">VTree</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

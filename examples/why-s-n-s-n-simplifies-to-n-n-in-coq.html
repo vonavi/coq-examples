@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why S n' =? S n' simplifies to n' =? n' in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-s-n-s-n-simplifies-to-n-n-in-coq">
-<h1 class="title">Why <tt class="docutils literal">S n' =? S n'</tt> simplifies to <tt class="docutils literal">n' =? n'</tt> in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/73085923">https://stackoverflow.com/q/73085923</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="why-s-n-s-n-simplifies-to-n-n-in-coq">
+<h1 class="title">Why <span class="docutils literal">S n' =? S n'</span> simplifies to <span class="docutils literal">n' =? n'</span> in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/73085923">https://stackoverflow.com/q/73085923</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm a beginner in Coq, and I've seen other examples when, if you have
-<tt class="docutils literal">S n'</tt> on both sides of an equality, using the tactics <tt class="docutils literal">simpl</tt>
+<span class="docutils literal">S n'</span> on both sides of an equality, using the tactics <span class="docutils literal">simpl</span>
 removes the successor function of both sides and simplifies them to
-<tt class="docutils literal">n'</tt>.</p>
+<span class="docutils literal">n'</span>.</p>
 <p>Although it seems &quot;obvious&quot;, I'm wondering why it happens with this
 specific function (successor). Is this behavior stated by any axiom or
 something like that?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>That's because <tt class="docutils literal">_ =? _</tt> is defined by structural recursion on both
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>That's because <span class="docutils literal">_ =? _</span> is defined by structural recursion on both
 arguments.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-s-n-s-n-simplifies-to-n-n-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="why-s-n-s-n-simplifies-to-n-n-in-coq-v-chk0"><span class="kn">Locate</span> <span class="s2">&quot;_ =? _&quot;</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Notation</span> <span class="s2">&quot;x =? y&quot;</span> := (Nat.eqb x y) : nat_scope
@@ -57,29 +54,28 @@ arguments.</p>
   <span class="kr">end</span>
      : nat -&gt; nat -&gt; bool
 
-<span class="kn">Arguments</span> Nat.eqb (_ _)%nat_scope</blockquote></div></div></small></span></pre><p>When you use <tt class="docutils literal">simpl</tt>, you're computing <tt class="docutils literal">_ =? _</tt>, same as you're
+<span class="kn">Arguments</span> Nat.eqb (_ _)%nat_scope</blockquote></div></div></small></span></pre><p>When you use <span class="docutils literal">simpl</span>, you're computing <span class="docutils literal">_ =? _</span>, same as you're
 computing every other function that simplifies.</p>
-<p>Note that there are two equalities for natural numbers: <tt class="docutils literal">_ = _</tt>
-lives in <tt class="docutils literal">Prop</tt> and checks whether two terms are exactly the same,
-&quot;character for character&quot;, so to say. <tt class="docutils literal">_ =? _</tt> is defined as above.
-They behave exactly the same <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[*]</a>, as the following theorem states:</p>
+<p>Note that there are two equalities for natural numbers: <span class="docutils literal">_ = _</span>
+lives in <span class="docutils literal">Prop</span> and checks whether two terms are exactly the same,
+&quot;character for character&quot;, so to say. <span class="docutils literal">_ =? _</span> is defined as above.
+They behave exactly the same <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a>, as the following theorem states:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-s-n-s-n-simplifies-to-n-n-in-coq-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Nat.eqb_eq
      : <span class="kr">forall</span> <span class="nv">n</span> <span class="nv">m</span> : nat, (n =? m) = true &lt;-&gt; n = m</blockquote></div></div></small></span></pre><p>However, they aren't defined in the same way (they don't even have the
 same type signature).</p>
-<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[*]</a></td><td>This wasn't predetermined. You can define equivalence relations
-on types that don't behave like <tt class="docutils literal">_ = _</tt>. For example, rational
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">*</a><span class="fn-bracket">]</span></span>
+<p>This wasn't predetermined. You can define equivalence relations
+on types that don't behave like <span class="docutils literal">_ = _</span>. For example, rational
 numbers can be represented as pairs of a natural number and a
-positive natural number. Thus, <tt class="docutils literal">&lt;1,2&gt;</tt> can represent <tt class="docutils literal">1/2</tt> and
-yet <tt class="docutils literal">&lt;2,4&gt;</tt> also represents <tt class="docutils literal">1/2</tt>. So we can define a relation
-on these pairs where <tt class="docutils literal">(1,2) =? (2,4) = true</tt>, and yet <tt class="docutils literal">(1,2) &lt;&gt;
-(2,4)</tt>.</td></tr>
-</tbody>
-</table>
+positive natural number. Thus, <span class="docutils literal">&lt;1,2&gt;</span> can represent <span class="docutils literal">1/2</span> and
+yet <span class="docutils literal">&lt;2,4&gt;</span> also represents <span class="docutils literal">1/2</span>. So we can define a relation
+on these pairs where <span class="docutils literal">(1,2) =? (2,4) = true</span>, and yet <span class="docutils literal">(1,2) &lt;&gt; (2,4)</span>.</p>
+</aside>
+</aside>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

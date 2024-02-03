@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How do I provide implicit arguments explicitly in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,51 +14,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-do-i-provide-implicit-arguments-explicitly-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-do-i-provide-implicit-arguments-explicitly-in-coq">
 <h1 class="title">How do I provide implicit arguments explicitly in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47874422">https://stackoverflow.com/q/47874422</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47874422">https://stackoverflow.com/q/47874422</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Suppose I have a definition <tt class="docutils literal">f : x <span class="pre">-&gt;</span> y <span class="pre">-&gt;</span> z</tt> where <tt class="docutils literal">x</tt> can be
-easily inferred. I therefore choose to make <tt class="docutils literal">x</tt> an implicit argument
-using <tt class="docutils literal">Arguments</tt>.</p>
+<section id="question">
+<h2>Question</h2>
+<p>Suppose I have a definition <span class="docutils literal">f : x <span class="pre">-&gt;</span> y <span class="pre">-&gt;</span> z</span> where <span class="docutils literal">x</span> can be
+easily inferred. I therefore choose to make <span class="docutils literal">x</span> an implicit argument
+using <span class="docutils literal">Arguments</span>.</p>
 <p>Consider the following example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">id</span> : <span class="kr">forall</span> (<span class="nv">S</span> : <span class="kt">Set</span>), S -&gt; S := <span class="kr">fun</span> <span class="nv">S</span> <span class="nv">s</span> =&gt; s.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> id {_} s.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk0"><span class="kn">Check</span> (id <span class="mi">1</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">id <span class="mi">1</span>
-     : nat</blockquote></div></div></small></span></pre><p>Clearly <tt class="docutils literal">S = nat</tt> can be and is inferred by Coq, and Coq replies:</p>
+     : nat</blockquote></div></div></small></span></pre><p>Clearly <span class="docutils literal">S = nat</span> can be and is inferred by Coq, and Coq replies:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">id <span class="mi">1</span>
      : nat</blockquote></div></div></small></span></pre><p>However, at a later time, I want to make the implicit argument
 explicit, say, for readability.</p>
 <p>In other words, I would like something like:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* We want to make it clear that the 2nd argument is nat *)</span>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk2"><span class="kn">Definition</span> <span class="nf">foo</span> := id {nat} <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Unknown interpretation <span class="kr">for</span> notation <span class="s2">&quot;{ _ }&quot;</span>.</blockquote></div></div></small></span></pre><p>Is this possible at all? If so, what is the appropriate syntax?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can prepend the name with <tt class="docutils literal">&#64;</tt> to remove all implicits and
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can prepend the name with <span class="docutils literal">&#64;</span> to remove all implicits and
 provide them explicitly:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk3"><span class="kn">Check</span> @id nat <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">id <span class="mi">1</span>
-     : nat</blockquote></div></div></small></span></pre><p>You can also use <tt class="docutils literal"><span class="pre">(a:=v)</span></tt> to pass an implicit argument by name. This
+     : nat</blockquote></div></div></small></span></pre><p>You can also use <span class="docutils literal"><span class="pre">(a:=v)</span></span> to pass an implicit argument by name. This
 can both clarify what argument is being passed and also allows you to
-pass some implicits without passing <tt class="docutils literal">_</tt> for the others:</p>
+pass some implicits without passing <span class="docutils literal">_</span> for the others:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk4"><span class="kn">Check</span> id (S:=nat) <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">id <span class="mi">1</span>
      : nat</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">third</span> {<span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span> : <span class="kt">Type</span>} (<span class="nv">a</span> : A) (<span class="nv">b</span> : B) (<span class="nv">c</span> : C) := c.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-i-provide-implicit-arguments-explicitly-in-coq-v-chk5"><span class="kn">Check</span> third (B:=nat) (A:=unit) tt <span class="mi">1</span> <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">third tt <span class="mi">1</span> <span class="mi">2</span>
-     : nat</blockquote></div></div></small></span></pre></div>
+     : nat</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

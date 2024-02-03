@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>About the refine tactic in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="about-the-refine-tactic-in-coq">
-<h1 class="title">About the <tt class="docutils literal">refine</tt> tactic in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28484450">https://stackoverflow.com/q/28484450</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="about-the-refine-tactic-in-coq">
+<h1 class="title">About the <span class="docutils literal">refine</span> tactic in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/28484450">https://stackoverflow.com/q/28484450</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following lines (in Coq):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chk0"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Type</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
 declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
@@ -43,38 +40,36 @@ declaration which shall not be available without
 qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">t</span> : g a = g b.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chk3"><span class="kn">Goal</span> f a = g b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f a = g b</div></blockquote></div></div></small></span></pre><p>The tactic</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (eq_trans (Hfg _) t).</span></span></pre><p>solves the goal. That is, Coq is able to replace the hole by <tt class="docutils literal">a</tt>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (eq_trans (Hfg _) t).</span></span></pre><p>solves the goal. That is, Coq is able to replace the hole by <span class="docutils literal">a</span>
 without help. But the tactic</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chk4"><span class="nb">refine</span> (eq_trans (Hfg a) _).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">g a = g b</div></blockquote></div></div></small></span></pre><p>replaces the above goal by the goal</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chk5" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
   ============================
-  g a = g b</blockquote></div></div></small></span></pre><p>But, Coq is unable to find <tt class="docutils literal">t</tt> alone. Idem for the tactic <tt class="docutils literal">refine
-(eq_trans (Hfg _) _)</tt>.</p>
+  g a = g b</blockquote></div></div></small></span></pre><p>But, Coq is unable to find <span class="docutils literal">t</span> alone. Idem for the tactic <span class="docutils literal">refine (eq_trans (Hfg _) _)</span>.</p>
 <p>Is there a particular reason for Coq to be able to guess the first
 hole and not the second hole?</p>
-</div>
-<div class="section" id="answer-vinz">
-<h1>Answer (Vinz)</h1>
+</section>
+<section id="answer-vinz">
+<h2>Answer (Vinz)</h2>
 <p>(I'm not 100% sure of what I'm writing here, but) Coq never 'guess'
 anything, but it can infer information from more complex ones. Your
 general scheme here is that you ask Coq to use transitivity of
 equality to solve your goal. Therefore, Coq needs two statements of
 equality to succeed.</p>
 <p>In the first case, you give Coq everything it needs to solve the goal,
-namely <tt class="docutils literal">t : g a = g b</tt> and <tt class="docutils literal">Hfg _ : f _ = g _</tt>. Since <tt class="docutils literal">eq_trans</tt>
-forces the <tt class="docutils literal">_</tt> to be <tt class="docutils literal">a</tt>, there is nothing left to prove.</p>
-<p>In the second case, you only feed coq <tt class="docutils literal">Hfg a : f a = g a</tt> so it
-misses <tt class="docutils literal">g a = g b</tt> to solve the goal. Yes it is in the context, but
+namely <span class="docutils literal">t : g a = g b</span> and <span class="docutils literal">Hfg _ : f _ = g _</span>. Since <span class="docutils literal">eq_trans</span>
+forces the <span class="docutils literal">_</span> to be <span class="docutils literal">a</span>, there is nothing left to prove.</p>
+<p>In the second case, you only feed coq <span class="docutils literal">Hfg a : f a = g a</span> so it
+misses <span class="docutils literal">g a = g b</span> to solve the goal. Yes it is in the context, but
 Coq will not use automation unless you ask it explicitly.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> And how is it possible to use automation in this case?</p>
-<p><strong>A:</strong> In your particular case, you would have to add your axiom <tt class="docutils literal">t</tt>
-to a hint data base, in order to do something like <tt class="docutils literal">refine (eq_trans
-(Hfg _) _); auto with your_database_name</tt> (I'm not familiar with hint
+<p><strong>A:</strong> In your particular case, you would have to add your axiom <span class="docutils literal">t</span>
+to a hint data base, in order to do something like <span class="docutils literal">refine (eq_trans (Hfg _) _); auto with your_database_name</span> (I'm not familiar with hint
 databases, you should look at the manual). In more common cases where
 the missing statement is in the context, you can happen
-<tt class="docutils literal">;intuition</tt>, <tt class="docutils literal">;auto</tt>, or <tt class="docutils literal">;assumption</tt> to your refine, and it
+<span class="docutils literal">;intuition</span>, <span class="docutils literal">;auto</span>, or <span class="docutils literal">;assumption</span> to your refine, and it
 will use the current context to try to solve the remaining goals.</p>
 <p><strong>A:</strong> From what I remember:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chk6"><span class="kn">Hint Resolve</span> t.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Adding <span class="kn">and</span> removing hints <span class="kr">in</span> the core database
@@ -88,27 +83,25 @@ deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&q
 possible.
 [deprecated-hint-without-locality,deprecated]</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f a = g b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (eq_trans (Hfg _) _); <span class="nb">auto</span>.</span><span class="alectryon-wsp">
 </span></span></pre><p>should be enough here.</p>
-</div>
-<div class="section" id="answer-gilles-so-stop-being-evil">
-<h1>Answer (Gilles 'SO- stop being evil')</h1>
-<p>Your goal requires the two axioms <tt class="docutils literal">Hfg</tt> and <tt class="docutils literal">t</tt>. Coq will only
+</section>
+<section id="answer-gilles-so-stop-being-evil">
+<h2>Answer (Gilles 'SO- stop being evil')</h2>
+<p>Your goal requires the two axioms <span class="docutils literal">Hfg</span> and <span class="docutils literal">t</span>. Coq will only
 ever use an axiom in a proof if it's given explicitly or if it finds
-the axiom in a hint database. So your proof needs to make both <tt class="docutils literal">Hfg</tt>
-and <tt class="docutils literal">t</tt> appear.</p>
-<p><tt class="docutils literal">refine (eq_trans (Hfg _) t)</tt> contains both axioms. The argument to
-<tt class="docutils literal">Hfg</tt> is imposed by the type of the term:</p>
+the axiom in a hint database. So your proof needs to make both <span class="docutils literal">Hfg</span>
+and <span class="docutils literal">t</span> appear.</p>
+<p><span class="docutils literal">refine (eq_trans (Hfg _) t)</span> contains both axioms. The argument to
+<span class="docutils literal">Hfg</span> is imposed by the type of the term:</p>
 <ul class="simple">
-<li><tt class="docutils literal">eq_trans</tt> has a type of the form <tt class="docutils literal"><span class="pre">?1</span> = <span class="pre">?2</span> <span class="pre">-&gt;</span> <span class="pre">?2</span> = <span class="pre">?3</span> <span class="pre">-&gt;</span> <span class="pre">?1</span> =
-<span class="pre">?3</span></tt>, and unifying the type of <tt class="docutils literal">t</tt> with <tt class="docutils literal"><span class="pre">?2</span> = <span class="pre">?3</span></tt> yields <tt class="docutils literal"><span class="pre">?2</span> :=
-g a</tt> and <tt class="docutils literal"><span class="pre">?3</span> := g b</tt>.</li>
-<li><tt class="docutils literal">Hfg _</tt> has a type of the form <tt class="docutils literal">f <span class="pre">?4</span> = g <span class="pre">?4</span></tt>, and unifying that
-with <tt class="docutils literal"><span class="pre">?1</span> = <span class="pre">?2</span></tt> yields <tt class="docutils literal"><span class="pre">?4</span> := a</tt> and thence <tt class="docutils literal"><span class="pre">?1</span> := f a</tt>.</li>
+<li><p><span class="docutils literal">eq_trans</span> has a type of the form <span class="docutils literal"><span class="pre">?1</span> = <span class="pre">?2</span> <span class="pre">-&gt;</span> <span class="pre">?2</span> = <span class="pre">?3</span> <span class="pre">-&gt;</span> <span class="pre">?1</span> = <span class="pre">?3</span></span>, and unifying the type of <span class="docutils literal">t</span> with <span class="docutils literal"><span class="pre">?2</span> = <span class="pre">?3</span></span> yields <span class="docutils literal"><span class="pre">?2</span> := g a</span> and <span class="docutils literal"><span class="pre">?3</span> := g b</span>.</p></li>
+<li><p><span class="docutils literal">Hfg _</span> has a type of the form <span class="docutils literal">f <span class="pre">?4</span> = g <span class="pre">?4</span></span>, and unifying that
+with <span class="docutils literal"><span class="pre">?1</span> = <span class="pre">?2</span></span> yields <span class="docutils literal"><span class="pre">?4</span> := a</span> and thence <span class="docutils literal"><span class="pre">?1</span> := f a</span>.</p></li>
 </ul>
 <p>Coq is able to make this type inference, so the term is fully typed
 and completes the proof.</p>
-<p>In contrast, with <tt class="docutils literal">refine (eq_trans (Hfg a) _)</tt>, Coq applies what
+<p>In contrast, with <span class="docutils literal">refine (eq_trans (Hfg a) _)</span>, Coq applies what
 it's given, and sees that there is a hole left in the proof: it
-requires a proof of <tt class="docutils literal">g a = g b</tt>. This is an axiom, but Coq won't
+requires a proof of <span class="docutils literal">g a = g b</span>. This is an axiom, but Coq won't
 apply it automatically: it leaves you the choice of deciding whether
 to use this proof or, perhaps, some other proof of that fact.</p>
 <p>A natural way to prove this goal would be to use the <a class="reference external" href="http://coq.inria.fr/distrib/8.4/refman/Reference-Manual010.html#hevea_tactic109">rewrite tactic</a>.</p>
@@ -117,7 +110,7 @@ to use this proof or, perhaps, some other proof of that fact.</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>You can let Coq find the right equalities to apply by declaring the
 axioms with <a class="reference external" href="http://coq.inria.fr/distrib/8.4/refman/Reference-Manual010.html#hevea_command235">Hint Rewrite</a>
 then applying <a class="reference external" href="http://coq.inria.fr/distrib/8.4/refman/Reference-Manual010.html#hevea_tactic145">autorewrite</a>.
-Note that <tt class="docutils literal">autorewrite</tt> applies equalities blindly, it is not
+Note that <span class="docutils literal">autorewrite</span> applies equalities blindly, it is not
 influenced by the goal.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Hint Rewrite</span> Hfg t : my_equalities.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chka"><span class="kn">Goal</span> f a = g b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f a = g b</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -127,8 +120,8 @@ which takes care of chaining multiple equalities. You'll need to get
 the axioms into the hypotheses first.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chkc"><span class="kn">Goal</span> f a = g b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">f a = g b</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chkd"><span class="nb">generalize</span> Hfg t.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : A, f x = g x) -&gt; g a = g b -&gt; f a = g b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="about-the-refine-tactic-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="about-the-refine-tactic-in-coq-v-chke"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : A, f x = g x</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>g a = g b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">f a = g b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

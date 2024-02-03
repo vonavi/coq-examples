@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Problems with missing information in Obligations when defining using Program in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="problems-with-missing-information-in-obligations-when-defining-using-program-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="problems-with-missing-information-in-obligations-when-defining-using-program-in-coq">
 <h1 class="title">Problems with missing information in Obligations when defining using Program in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69138674">https://stackoverflow.com/q/69138674</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/69138674">https://stackoverflow.com/q/69138674</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I am new to Coq and trying to figure out how to use <tt class="docutils literal">Program</tt> to
+<section id="question">
+<h2>Question</h2>
+<p>I am new to Coq and trying to figure out how to use <span class="docutils literal">Program</span> to
 more easily define things and then solve obligations, however,
 sometimes I am left with obligations that cannot be solved because
 some information have been lost.</p>
@@ -44,17 +41,17 @@ is what I am left with</p>
   k1, k2 : nat
   ============================
   k1 + k2 = k2 + k2</blockquote></div></div></small></span></pre><p>witch can clearly not be solved, as I have lost the information about
-<tt class="docutils literal">k1 + k1 = k2 + k2</tt>, and I am left proving that two arbitrary
+<span class="docutils literal">k1 + k1 = k2 + k2</span>, and I am left proving that two arbitrary
 natural numbers are equal.</p>
 <p>Why does this happen, and what do you do in that situation to make Coq
 remember &quot;<em>all the assumptions</em>&quot;?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>This the work of the <tt class="docutils literal">program_simpl</tt> tactic, which is the default
-<tt class="docutils literal">Obligation Tactic</tt> applied whenever you open an <tt class="docutils literal">Obligation</tt> (and
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>This the work of the <span class="docutils literal">program_simpl</span> tactic, which is the default
+<span class="docutils literal">Obligation Tactic</span> applied whenever you open an <span class="docutils literal">Obligation</span> (and
 also to completely solve obligations before you open them). You can
-turn it off by setting it to <tt class="docutils literal">idtac</tt>. If that's too drastic, you can
+turn it off by setting it to <span class="docutils literal">idtac</span>. If that's too drastic, you can
 just throw away its results if it fails to solve the obligation
 outright (so obligations that can be solved automatically are).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Psatz.</span><span class="alectryon-wsp">
@@ -69,8 +66,8 @@ proj1_sig (exist (<span class="kr">fun</span> <span class="nv">j</span> : nat =&
 </span></span><span class="alectryon-wsp">  <span class="c">(* program_simpl is responsible for the usual automatic intros, but</span>
 <span class="c">  now we have to do it *)</span>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="problems-with-missing-information-in-obligations-when-defining-using-program-in-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="problems-with-missing-information-in-obligations-when-defining-using-program-in-v-chk4"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, k1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>k1 + k1 = n</span></span></span><br><span><var>k2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>e0</var><span class="hyp-type"><b>: </b><span>k2 + k2 = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">k1 + k2 = n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">lia</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

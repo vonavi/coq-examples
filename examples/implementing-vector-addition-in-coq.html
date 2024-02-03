@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Implementing vector addition in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,33 +14,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="implementing-vector-addition-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="implementing-vector-addition-in-coq">
 <h1 class="title">Implementing vector addition in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28487158">https://stackoverflow.com/q/28487158</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/28487158">https://stackoverflow.com/q/28487158</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Implementing vector addition in some of the dependently typed
 languages (such as Idris) is fairly straightforward. As per the
 <a class="reference external" href="http://en.wikipedia.org/wiki/Idris_%28programming_language%29#Dependent_types">example on Wikipedia</a>:</p>
-<pre class="code idris literal-block">
-<span class="kr">import</span><span class="w"> </span><span class="nn">Data.Vect</span><span class="w">
+<pre class="code idris literal-block"><code><span class="kr">import</span><span class="w"> </span><span class="nn">Data.Vect</span><span class="w">
 
 </span><span class="kr">%default</span><span class="w"> </span><span class="kr">total</span><span class="w">
 
 </span><span class="nf">pairAdd</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span>a<span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>n<span class="w"> </span>a<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>n<span class="w"> </span>a<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>n<span class="w"> </span>a<span class="w">
 </span>pairAdd<span class="w"> </span><span class="kt">Nil</span><span class="w">       </span><span class="kt">Nil</span><span class="w">       </span><span class="ow">=</span><span class="w"> </span><span class="kt">Nil</span><span class="w">
-</span>pairAdd<span class="w"> </span><span class="ow">(</span>x<span class="w"> </span><span class="ow">::</span><span class="w"> </span>xs<span class="ow">)</span><span class="w"> </span><span class="ow">(</span>y<span class="w"> </span><span class="ow">::</span><span class="w"> </span>ys<span class="ow">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>x<span class="w"> </span><span class="ow">+</span><span class="w"> </span>y<span class="w"> </span><span class="ow">::</span><span class="w"> </span>pairAdd<span class="w"> </span>xs<span class="w"> </span>ys
-</pre>
+</span>pairAdd<span class="w"> </span><span class="ow">(</span>x<span class="w"> </span><span class="ow">::</span><span class="w"> </span>xs<span class="ow">)</span><span class="w"> </span><span class="ow">(</span>y<span class="w"> </span><span class="ow">::</span><span class="w"> </span>ys<span class="ow">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>x<span class="w"> </span><span class="ow">+</span><span class="w"> </span>y<span class="w"> </span><span class="ow">::</span><span class="w"> </span>pairAdd<span class="w"> </span>xs<span class="w"> </span>ys</code></pre>
 <p>(Note how Idris' totality checker automatically infers that addition
-of <tt class="docutils literal">Nil</tt> and non-<tt class="docutils literal">Nil</tt> vectors is a logical impossibility.)</p>
+of <span class="docutils literal">Nil</span> and non-<span class="docutils literal">Nil</span> vectors is a logical impossibility.)</p>
 <p>I am trying to implement the equivalent functionality in Coq, using a
 custom vector implementation, albeit very similar to the one provided
 in the official <a class="reference external" href="https://coq.inria.fr/library/Coq.Vectors.VectorDef.html">Coq libraries</a>:</p>
@@ -72,21 +67,21 @@ n1 : nat
 x2 : nat
 v2&#39; : vector nat n1
 The term <span class="s2">&quot;v2&#39;&quot;</span> has type <span class="s2">&quot;vector nat n1&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;vector nat n0&quot;</span>.</blockquote></div></div></small></span></pre><p>Note that, I use <tt class="docutils literal">False_rect</tt> to specify the impossible case,
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;vector nat n0&quot;</span>.</blockquote></div></div></small></span></pre><p>Note that, I use <span class="docutils literal">False_rect</span> to specify the impossible case,
 otherwise the totality check wouldn't pass. However, for some reason
-the type checker doesn't manage to unify <tt class="docutils literal">n0</tt> with <tt class="docutils literal">n1</tt>.</p>
+the type checker doesn't manage to unify <span class="docutils literal">n0</span> with <span class="docutils literal">n1</span>.</p>
 <p>What am I doing wrong?</p>
 <hr class="docutils" />
 <p><strong>A:</strong> This development contains a complete example:
 <a class="reference external" href="http://www.cs.nott.ac.uk/~pszvc/g54dtp/vectors.v">http://www.cs.nott.ac.uk/~pszvc/g54dtp/vectors.v</a></p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>It's not possible to implement this function so easily in plain Coq:
 you need to rewrite your function using the <em>convoy pattern</em>. There
 was a <a class="reference external" href="https://stackoverflow.com/questions/16952524/structural-recursion-on-a-dependent-parameter">similar question</a>
 posted a while ago about this. The idea is that you need to make your
-<tt class="docutils literal">match</tt> return a function in order to propagate the relation between
+<span class="docutils literal">match</span> return a function in order to propagate the relation between
 the indices:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -109,8 +104,8 @@ the indices:</p>
   <span class="kr">match</span> v1 <span class="kr">in</span> vector _ n <span class="kr">return</span> vector nat n -&gt; vector nat n <span class="kr">with</span>
   | vnul         =&gt; <span class="kr">fun</span> <span class="nv">_</span>  =&gt; vnul
   | vcons x1 v1&#39; =&gt; <span class="kr">fun</span> <span class="nv">v2</span> =&gt; vcons (x1 + vhd v2) (vpadd v1&#39; (vtl v2))
-  <span class="kr">end</span> v2.</span></span></pre></div>
+  <span class="kr">end</span> v2.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

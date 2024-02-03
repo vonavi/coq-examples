@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using typeclass instances within typeclasses</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,23 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-typeclass-instances-within-typeclasses">
+<div class="alectryon-root alectryon-centered"><main id="using-typeclass-instances-within-typeclasses">
 <h1 class="title">Using typeclass instances within typeclasses</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44638611">https://stackoverflow.com/q/44638611</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44638611">https://stackoverflow.com/q/44638611</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to define two instances of a type class, one of which will
 use the other's instance. However, unless I bind the function's name
 outside of the second definition Coq is unable to determine it should
-use the type class instance from <tt class="docutils literal">bexp</tt> (take a look at the comment
+use the type class instance from <span class="docutils literal">bexp</span> (take a look at the comment
 for dirty hack). Is there a way to avoid this sort of hack in Coq?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Compilable</span> (<span class="nv">A</span> : <span class="kt">Type</span>) := { compile : A -&gt; bool }.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -57,11 +54,11 @@ for dirty hack). Is there a way to avoid this sort of hack in Coq?</p>
       | COr x y =&gt; compile x || compile y
       | CProp e =&gt; compile2 e <span class="c">(* &lt;-- dirty hack *)</span>
       <span class="kr">end</span>
-  }.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>This can be fixed if we replace <tt class="docutils literal">compile</tt> with some other name
-(<tt class="docutils literal">rec</tt>) like so:</p>
+  }.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<p>This can be fixed if we replace <span class="docutils literal">compile</span> with some other name
+(<span class="docutils literal">rec</span>) like so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Instance</span> : Compilable cexp :=
   { compile :=
     <span class="kr">fix</span> rec c :=
@@ -72,7 +69,7 @@ for dirty hack). Is there a way to avoid this sort of hack in Coq?</p>
       <span class="kr">end</span>
   }.</span></span></pre><p>In this comment the OP pointed out that Haskell easily deals with this
 situation. To understand the reason why Coq does not do it let us take
-a look at the type of <tt class="docutils literal">compile</tt>:</p>
+a look at the type of <span class="docutils literal">compile</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="using-typeclass-instances-within-typeclasses-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-typeclass-instances-within-typeclasses-v-chk0"><span class="kn">About</span> compile.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">compile : <span class="kr">forall</span> {<span class="nv">A</span> : <span class="kt">Type</span>}, Compilable A -&gt; A -&gt; bool
 
 compile <span class="kr">is</span> not universe polymorphic
@@ -80,12 +77,12 @@ compile <span class="kr">is</span> not universe polymorphic
 compile <span class="kr">is</span> transparent
 Expands to: Constant
 using_typeclass_instances_within_typeclasses.compile</blockquote></div></div></small></span></pre><p>We can see that Coq is more explicit about how typeclasses work. When
-you call <tt class="docutils literal">compile e</tt> Coq sort of inserts placeholders standing for
-the implicit arguments like so <tt class="docutils literal">&#64;compile _ _ e</tt> (see <a class="reference external" href="https://www.cis.upenn.edu/~bcpierce/courses/670Fall12/slides.pdf">these slides</a>,
-pages 21-25 for more detail). But with <tt class="docutils literal">fix compile c</tt> you shadowed
+you call <span class="docutils literal">compile e</span> Coq sort of inserts placeholders standing for
+the implicit arguments like so <span class="docutils literal">&#64;compile _ _ e</span> (see <a class="reference external" href="https://www.cis.upenn.edu/~bcpierce/courses/670Fall12/slides.pdf">these slides</a>,
+pages 21-25 for more detail). But with <span class="docutils literal">fix compile c</span> you shadowed
 the previous binding, hence the type error.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

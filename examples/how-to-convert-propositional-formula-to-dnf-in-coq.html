@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to convert propositional formula to DNF in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-convert-propositional-formula-to-dnf-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-convert-propositional-formula-to-dnf-in-coq">
 <h1 class="title">How to convert propositional formula to DNF in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/35507853">https://stackoverflow.com/q/35507853</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/35507853">https://stackoverflow.com/q/35507853</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have defined my propositional formulas as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">propForm</span> : <span class="kt">Set</span> :=
 | top : propForm
@@ -50,7 +47,7 @@ distributes terms using the distributive law:</p>
     <span class="kr">end</span>.</span></span></pre><p>This function works fine. However, I still need to define a function
 which transforms the propositional formula to DNF. The following
 function would do what I want, however it is not accepted by Coq
-because the function is not structurally decreasing in <tt class="docutils literal">f'</tt> for the
+because the function is not structurally decreasing in <span class="docutils literal">f'</span> for the
 last case. Any hints and tips would be appreciated.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-to-convert-propositional-formula-to-dnf-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">toDNF</span> (<span class="nv">f&#39;</span> : propForm) : propForm :=
   <span class="kr">match</span> f&#39; <span class="kr">with</span>
@@ -75,9 +72,9 @@ Recursive definition <span class="kr">is</span>:
 <span class="s2"> | f1 \/p f2 =&gt; toDNF f1 \/p toDNF f2</span>
 <span class="s2"> | f1 /\p f2 =&gt; toDNF (distribute f1 f2)</span>
 <span class="s2"> | _ =&gt; f&#39;</span>
-<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<span class="s2"> end&quot;</span>.</blockquote></div></div></small></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Your function is a special case of normalizing an expression from a
 semi-ring. I wrote a <a class="reference external" href="http://poleiro.info/posts/2015-04-13-writing-reflective-tactics.html">post</a>
 explaining how to do that in the case of arithmetic expressions, using
@@ -128,13 +125,12 @@ optionally <span class="kn">Import</span> it <span class="kn">inside</span> anot
 : dnfForm</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Sol1</span>.</span></span></pre><p>There are two things to note here. First, I factored variables and
-constants as a separate <tt class="docutils literal">propAtom</tt> type, and I have called
-<tt class="docutils literal">distribute</tt> <tt class="docutils literal">andd</tt>, because you can think of it as computing the
+constants as a separate <span class="docutils literal">propAtom</span> type, and I have called
+<span class="docutils literal">distribute</span> <span class="docutils literal">andd</span>, because you can think of it as computing the
 AND of two expressions in DNF.</p>
 <p>Here's another solution that is based on your original code. It seems
-that your <tt class="docutils literal">distribute</tt> function preserves the invariant of being in
-DNF; that is, if <tt class="docutils literal">f1</tt> and <tt class="docutils literal">f2</tt> are in DNF, then so is <tt class="docutils literal">distribute
-f1 f2</tt>. Thus, you can just flip the order of the calls:</p>
+that your <span class="docutils literal">distribute</span> function preserves the invariant of being in
+DNF; that is, if <span class="docutils literal">f1</span> and <span class="docutils literal">f2</span> are in DNF, then so is <span class="docutils literal">distribute f1 f2</span>. Thus, you can just flip the order of the calls:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Module</span> <span class="nf">Sol2</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="nf">propVar</span> := nat.</span><span class="alectryon-wsp">
@@ -185,8 +181,8 @@ back to a generic one. If you have a good infrastructure to reason
 about lists and algebraic structures (as Ssreflect provides), then the
 amount of code that you'll save definitely justifies using this
 approach.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

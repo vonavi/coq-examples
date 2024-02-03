@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proof leaking in Coq extraction?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,23 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proof-leaking-in-coq-extraction">
+<div class="alectryon-root alectryon-centered"><main id="proof-leaking-in-coq-extraction">
 <h1 class="title">Proof leaking in Coq extraction?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/51844640">https://stackoverflow.com/q/51844640</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/51844640">https://stackoverflow.com/q/51844640</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>In order to understand how general recursive <tt class="docutils literal">Function</tt> definitions
+<section id="question">
+<h2>Question</h2>
+<p>In order to understand how general recursive <span class="docutils literal">Function</span> definitions
 works, and how they comply with Coq's structural recursion constraint,
 I tried to reimplement it on the Peano natural numbers. I want to
-define recursive <tt class="docutils literal">nat <span class="pre">-&gt;</span> nat</tt> functions that can use any previous
+define recursive <span class="docutils literal">nat <span class="pre">-&gt;</span> nat</span> functions that can use any previous
 values, not just the predecessor. Here is what I did:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-leaking-in-coq-extraction-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-leaking-in-coq-extraction-v-chk0"><span class="kn">Definition</span> <span class="nf">nat_strong_induction_set</span>
            (* erased <span class="nb">at</span> extraction, type specification *)
@@ -74,9 +71,9 @@ values, not just the predecessor. Here is what I did:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-leaking-in-coq-extraction-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-leaking-in-coq-extraction-v-chk14">{</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kt">Set</span></span></span></span><br><span><var>ind_step</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat,
 (<span class="kr">forall</span> <span class="nv">k</span> : nat, k &lt; n -&gt; P k) -&gt; P n</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>partial_build</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">k</span> : nat, k &lt; m -&gt; P k</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proof-leaking-in-coq-extraction-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="proof-leaking-in-coq-extraction-v-chk15"><span class="nb">apply</span> (partial_build (S n) n).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span>nat -&gt; <span class="kt">Set</span></span></span></span><br><span><var>ind_step</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat,
 (<span class="kr">forall</span> <span class="nv">k</span> : nat, k &lt; n -&gt; P k) -&gt; P n</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>partial_build</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">m</span> <span class="nv">k</span> : nat, k &lt; m -&gt; P k</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &lt; S n</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Nat.lt_succ_diag_r.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input">}</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>I used some custom lemmas on <tt class="docutils literal">nat</tt>s that I didn't paste here. It
-works, I managed to define the euclidean division <tt class="docutils literal">div a b</tt> with it,
-which recursively uses <tt class="docutils literal">div <span class="pre">(a-b)</span> b</tt>. The extraction is almost what
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>I used some custom lemmas on <span class="docutils literal">nat</span>s that I didn't paste here. It
+works, I managed to define the euclidean division <span class="docutils literal">div a b</span> with it,
+which recursively uses <span class="docutils literal">div <span class="pre">(a-b)</span> b</span>. The extraction is almost what
 I expected:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="proof-leaking-in-coq-extraction-v-chk16" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="sd">(** val nat_strong_induction_set :</span>
 <span class="sd">    (nat -&gt; (nat -&gt; __ -&gt; &#39;a1) -&gt; &#39;a1) -&gt; nat -&gt; &#39;a1 **)</span>
@@ -87,36 +84,33 @@ I expected:</p>
     <span class="kr">match</span> n0 <span class="kr">with</span>
     | O -&gt; <span class="nb">assert</span> false <span class="c">(* absurd case *)</span>
     | S n1 -&gt; ind_step k (<span class="kr">fun</span> <span class="nv">k0</span> <span class="nv">_</span> -&gt; f n1 k0)
-  <span class="kr">in</span> f m n</blockquote></div></div></small></span></pre><p>Except for the <tt class="docutils literal">n0</tt> parameter. We see that the only effect of this
-parameter is to stop the recursion at the <tt class="docutils literal">S n</tt>-nth step. The
-extraction also mentions that this <tt class="docutils literal">assert false</tt> should not happen.
+  <span class="kr">in</span> f m n</blockquote></div></div></small></span></pre><p>Except for the <span class="docutils literal">n0</span> parameter. We see that the only effect of this
+parameter is to stop the recursion at the <span class="docutils literal">S n</span>-nth step. The
+extraction also mentions that this <span class="docutils literal">assert false</span> should not happen.
 So why is it extracted? This seems better</p>
-<pre class="code ocaml literal-block">
-<span class="k">let</span> <span class="n">nat_strong_induction_set</span> <span class="n">ind_step</span> <span class="n">n</span> <span class="o">=</span>
+<pre class="code ocaml literal-block"><code><span class="k">let</span> <span class="n">nat_strong_induction_set</span> <span class="n">ind_step</span> <span class="n">n</span> <span class="o">=</span>
   <span class="k">let</span> <span class="k">rec</span> <span class="n">f</span> <span class="n">k</span> <span class="o">=</span> <span class="n">ind_step</span> <span class="n">k</span> <span class="o">(</span><span class="k">fun</span> <span class="n">k0</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">k0</span><span class="o">)</span>
-  <span class="k">in</span> <span class="n">f</span> <span class="n">n</span>
-</pre>
+  <span class="k">in</span> <span class="n">f</span> <span class="n">n</span></code></pre>
 <p>It looks like a glitch of Coq's structural recursion constraint, to
 ensure the termination of all recursions. The Coq definition of
-<tt class="docutils literal">nat_strong_induction_set</tt> writes <tt class="docutils literal">lt k n</tt>, so Coq knows only
-previous <tt class="docutils literal">P k</tt>'s will be queried. This makes a decreasing chain in
-the nats, which is forced to terminate in less than <tt class="docutils literal">S n</tt> steps.
+<span class="docutils literal">nat_strong_induction_set</span> writes <span class="docutils literal">lt k n</span>, so Coq knows only
+previous <span class="docutils literal">P k</span>'s will be queried. This makes a decreasing chain in
+the nats, which is forced to terminate in less than <span class="docutils literal">S n</span> steps.
 This allows a structural recursive definition on an additional fuel
-parameter <tt class="docutils literal">n0</tt> starting at <tt class="docutils literal">S n</tt>, it won't affect the result. So
+parameter <span class="docutils literal">n0</span> starting at <span class="docutils literal">S n</span>, it won't affect the result. So
 if it is only a part of the termination proof, why is it not erased by
 the extraction?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Your match is not erased because your definition mixes two things: the
 termination argument, where the match is needed, and the
 computationally relevant recursive call, where it isn't.</p>
 <p>To force erasure, you need to convince Coq that the match is
 computationally irrelevant. You can do so by making the termination
-argument -- that is, the induction on <tt class="docutils literal">m</tt> -- produce the proof of a
-proposition instead of a function of type <tt class="docutils literal">forall m k, lt k m <span class="pre">-&gt;</span> P
-k</tt>. Luckily, the standard library provides an easy way of doing so,
-with the <tt class="docutils literal">Fix</tt> combined:</p>
+argument -- that is, the induction on <span class="docutils literal">m</span> -- produce the proof of a
+proposition instead of a function of type <span class="docutils literal">forall m k, lt k m <span class="pre">-&gt;</span> P k</span>. Luckily, the standard library provides an easy way of doing so,
+with the <span class="docutils literal">Fix</span> combined:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Wf_nat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">nat_strong_induction_set</span>
@@ -124,7 +118,7 @@ with the <tt class="docutils literal">Fix</tt> combined:</p>
            (<span class="nv">ind_step</span> : <span class="kr">forall</span> <span class="nv">n</span> : nat, (<span class="kr">forall</span> <span class="nv">k</span> : nat, (lt k n -&gt; P k)) -&gt; P n)
            (<span class="nv">n</span> : nat) :
   P n :=
-  Fix Nat.lt_wf_0 P ind_step n.</span></span></pre><p>Here, <tt class="docutils literal">Nat.lt_wf_0</tt> is a proof that <tt class="docutils literal">lt</tt> is well-founded. When you
+  Fix Nat.lt_wf_0 P ind_step n.</span></span></pre><p>Here, <span class="docutils literal">Nat.lt_wf_0</span> is a proof that <span class="docutils literal">lt</span> is well-founded. When you
 extract this function, you get</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="proof-leaking-in-coq-extraction-v-chk17" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="sd">(** val nat_strong_induction_set :</span>
 <span class="sd">    (nat -&gt; (nat -&gt; __ -&gt; &#39;a1) -&gt; &#39;a1) -&gt; nat -&gt; &#39;a1 **)</span>
@@ -135,8 +129,8 @@ extract this function, you get</p>
 <p>(As an aside, note that you don't need well-founded recursion to
 define division -- check for instance how it is defined in the
 <a class="reference external" href="http://ssr.msr-inria.inria.fr/doc/mathcomp-1.5/MathComp.div.html">Mathematical Components library</a>.)</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

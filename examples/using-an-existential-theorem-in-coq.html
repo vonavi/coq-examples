@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using an existential theorem in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,31 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-an-existential-theorem-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="using-an-existential-theorem-in-coq">
 <h1 class="title">Using an existential theorem in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/12214778">https://stackoverflow.com/q/12214778</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/12214778">https://stackoverflow.com/q/12214778</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have the following theorem in Coq: <tt class="docutils literal">Theorem T : exists x : A, P
-x.</tt> I want to be able to use this value in a subsequent proof. I.E. I
-want to say something like: &quot;let <tt class="docutils literal">o</tt> represent a value such that <tt class="docutils literal">P
-o</tt>. I know that <tt class="docutils literal">o</tt> exists by theorem <tt class="docutils literal">T</tt>...&quot;</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<section id="question">
+<h2>Question</h2>
+<p>I have the following theorem in Coq: <span class="docutils literal">Theorem T : exists x : A, P x.</span> I want to be able to use this value in a subsequent proof. I.E. I
+want to say something like: &quot;let <span class="docutils literal">o</span> represent a value such that <span class="docutils literal">P o</span>. I know that <span class="docutils literal">o</span> exists by theorem <span class="docutils literal">T</span>...&quot;</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Mathematically speaking, you need to apply an elimination rule for the
-∃ constructor. The generic elimination tactic <tt class="docutils literal">elim</tt> works.</p>
-<pre class="code coq literal-block">
-<span class="nb">elim</span> <span class="n">T</span><span class="o">;</span> <span class="nb">intro</span> <span class="n">o</span><span class="o">.</span>
-</pre>
+∃ constructor. The generic elimination tactic <span class="docutils literal">elim</span> works.</p>
+<pre class="code coq literal-block"><code><span class="nb">elim</span> <span class="n">T</span><span class="o">;</span> <span class="nb">intro</span> <span class="n">o</span><span class="o">.</span></code></pre>
 <p>Silly example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">A</span> : <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">P</span> : A -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
@@ -49,8 +42,8 @@ o</tt>. I know that <tt class="docutils literal">o</tt> exists by theorem <tt cl
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-an-existential-theorem-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="using-an-existential-theorem-in-coq-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">G</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-an-existential-theorem-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="using-an-existential-theorem-in-coq-v-chk2"><span class="nb">elim</span> T; <span class="nb">intro</span> o.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>o</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">P o -&gt; G</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> U.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

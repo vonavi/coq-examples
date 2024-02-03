@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why does Coq's typechecker reject my map definition?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-does-coq-s-typechecker-reject-my-map-definition">
+<div class="alectryon-root alectryon-centered"><main id="why-does-coq-s-typechecker-reject-my-map-definition">
 <h1 class="title">Why does Coq's typechecker reject my map definition?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55969021">https://stackoverflow.com/q/55969021</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55969021">https://stackoverflow.com/q/55969021</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I try to experiment with list's definition. For example let's see this
 definition:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">list1</span> : <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
@@ -57,43 +54,42 @@ v : T
 ys : list1 T
 The term <span class="s2">&quot;v&quot;</span> has type <span class="s2">&quot;T&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;A&quot;</span>.</blockquote></div></div></small></span></pre><p>?</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>This is indeed a confusing aspect of datatype definitions. The problem
-is that <tt class="docutils literal">list1</tt> is <em>not</em> equivalent to <tt class="docutils literal">list0</tt>, because of how
+is that <span class="docutils literal">list1</span> is <em>not</em> equivalent to <span class="docutils literal">list0</span>, because of how
 <em>indices</em> and <em>parameters</em> are treated in these definitions. In Coq
 jargon, an &quot;index&quot; means an argument declared to the right of the
-colon, as in <tt class="docutils literal">list1</tt>. A &quot;parameter&quot;, by contrast, is an argument
-declared to the left of the colon, as <tt class="docutils literal">A</tt> in <tt class="docutils literal">list0</tt>.</p>
-<p>When you use an index, the return type of <tt class="docutils literal">match</tt> expressions must
+colon, as in <span class="docutils literal">list1</span>. A &quot;parameter&quot;, by contrast, is an argument
+declared to the left of the colon, as <span class="docutils literal">A</span> in <span class="docutils literal">list0</span>.</p>
+<p>When you use an index, the return type of <span class="docutils literal">match</span> expressions must
 be generic with respect to the index. This can be seen in the type of
-<tt class="docutils literal">list1_rec</tt>, a combinator for writing recursive definitions on
+<span class="docutils literal">list1_rec</span>, a combinator for writing recursive definitions on
 lists:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-does-coqs-typechecker-reject-my-map-definition-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-coqs-typechecker-reject-my-map-definition-v-chk1"><span class="kn">Check</span> list1_rec.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">list1_rec
      : <span class="kr">forall</span> <span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">T</span> : <span class="kt">Type</span>, list1 T -&gt; <span class="kt">Set</span>,
        (<span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, P A (nil1 A)) -&gt;
        (<span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">a</span> : A) (<span class="nv">l</span> : list1 A),
         P A l -&gt; P A (cons1 A a l)) -&gt;
-       <span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list1 T), P T l</blockquote></div></div></small></span></pre><p>This type says that given a generic type <tt class="docutils literal">P</tt> indexed by lists and an
-element <tt class="docutils literal">l : list1 A</tt>, you can produce a result of type <tt class="docutils literal">P A l</tt> by
-telling Coq what to return on <tt class="docutils literal">nil1</tt> and <tt class="docutils literal">cons1</tt>. However, the
-type of the <tt class="docutils literal">cons1</tt> branch (the third argument of <tt class="docutils literal">list1</tt>) says
-that the branch must work not only for the <tt class="docutils literal">A</tt> that appears in the
-type of <tt class="docutils literal">l</tt>, but also for all <em>other</em> types <tt class="docutils literal">A'</tt>. Compare this to
-the type of <tt class="docutils literal">list0_rec</tt>:</p>
+       <span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list1 T), P T l</blockquote></div></div></small></span></pre><p>This type says that given a generic type <span class="docutils literal">P</span> indexed by lists and an
+element <span class="docutils literal">l : list1 A</span>, you can produce a result of type <span class="docutils literal">P A l</span> by
+telling Coq what to return on <span class="docutils literal">nil1</span> and <span class="docutils literal">cons1</span>. However, the
+type of the <span class="docutils literal">cons1</span> branch (the third argument of <span class="docutils literal">list1</span>) says
+that the branch must work not only for the <span class="docutils literal">A</span> that appears in the
+type of <span class="docutils literal">l</span>, but also for all <em>other</em> types <span class="docutils literal">A'</span>. Compare this to
+the type of <span class="docutils literal">list0_rec</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-does-coqs-typechecker-reject-my-map-definition-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-coqs-typechecker-reject-my-map-definition-v-chk2"><span class="kn">Check</span> list0_rec.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">list0_rec
      : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">P</span> : list0 A -&gt; <span class="kt">Set</span>),
        P (nil0 A) -&gt;
        (<span class="kr">forall</span> (<span class="nv">a</span> : A) (<span class="nv">l</span> : list0 A),
         P l -&gt; P (cons0 A a l)) -&gt;
-       <span class="kr">forall</span> <span class="nv">l</span> : list0 A, P l</blockquote></div></div></small></span></pre><p>The branch of <tt class="docutils literal">cons0</tt> does not have the <tt class="docutils literal">forall A</tt> bit, which
-means that the branch only has to work for the type <tt class="docutils literal">A</tt> in <tt class="docutils literal">l :
-list0 A</tt>.</p>
-<p>This makes a difference when writing a function such as <tt class="docutils literal">map</tt>. In
-<tt class="docutils literal">map0</tt>, we are allowed to apply <tt class="docutils literal">f : A <span class="pre">-&gt;</span> B</tt> because we know that
-the argument of <tt class="docutils literal">cons0</tt> has type <tt class="docutils literal">A</tt>. In <tt class="docutils literal">map1</tt>, the argument of
-<tt class="docutils literal">cons1</tt> has a different generic type <tt class="docutils literal">A'</tt>, leading to this error
+       <span class="kr">forall</span> <span class="nv">l</span> : list0 A, P l</blockquote></div></div></small></span></pre><p>The branch of <span class="docutils literal">cons0</span> does not have the <span class="docutils literal">forall A</span> bit, which
+means that the branch only has to work for the type <span class="docutils literal">A</span> in <span class="docutils literal">l : list0 A</span>.</p>
+<p>This makes a difference when writing a function such as <span class="docutils literal">map</span>. In
+<span class="docutils literal">map0</span>, we are allowed to apply <span class="docutils literal">f : A <span class="pre">-&gt;</span> B</span> because we know that
+the argument of <span class="docutils literal">cons0</span> has type <span class="docutils literal">A</span>. In <span class="docutils literal">map1</span>, the argument of
+<span class="docutils literal">cons1</span> has a different generic type <span class="docutils literal">A'</span>, leading to this error
 message:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-does-coqs-typechecker-reject-my-map-definition-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="why-does-coqs-typechecker-reject-my-map-definition-v-chk3"><span class="kn">Fail</span> <span class="kn">Fixpoint</span> <span class="nf">map1</span> {<span class="nv">A</span> : <span class="kt">Type</span>} {<span class="nv">B</span> : <span class="kt">Type</span>} (<span class="nv">f</span> : A -&gt; B) (<span class="nv">xs</span> : list1 A) :=
   <span class="kr">match</span> xs <span class="kr">with</span>
@@ -111,21 +107,21 @@ A&#39; : <span class="kt">Type</span>
 v : A&#39;
 ys : list1 A&#39;
 The term <span class="s2">&quot;v&quot;</span> has type <span class="s2">&quot;A&#39;&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;A&quot;</span>.</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-eponier">
-<h1>Answer (eponier)</h1>
-<p>To be complete, you can define function <tt class="docutils literal">map</tt> over <tt class="docutils literal">list1</tt>:</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;A&quot;</span>.</blockquote></div></div></small></span></pre></section>
+<section id="answer-eponier">
+<h2>Answer (eponier)</h2>
+<p>To be complete, you can define function <span class="docutils literal">map</span> over <span class="docutils literal">list1</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">map1</span> {<span class="nv">A</span> : <span class="kt">Type</span>} {<span class="nv">B</span> : <span class="kt">Type</span>} (<span class="nv">f</span> : A -&gt; B) (<span class="nv">xs</span> : list1 A) :=
   <span class="kr">match</span> xs <span class="kr">with</span>
   | nil1 A&#39; =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; nil1 B
   | cons1 A&#39; v ys =&gt; <span class="kr">fun</span> <span class="nv">f</span> =&gt; cons1 B (f v) (map1 f ys)
   <span class="kr">end</span> f.</span></span></pre><p>This is an example of the so-called <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">convoy pattern</a>. Usually, one
-needs to add a <tt class="docutils literal">return</tt> clause to the <tt class="docutils literal">match</tt> construct so that it
+needs to add a <span class="docutils literal">return</span> clause to the <span class="docutils literal">match</span> construct so that it
 typechecks, but here Coq is smart enough to infer it.</p>
 <p>However, I certainly discourage using this definition of lists as it
 will be cumbersome to use in similar cases.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why can't I define the following CoFixpoint?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-can-t-i-define-the-following-cofixpoint">
-<h1 class="title">Why can't I define the following <tt class="docutils literal">CoFixpoint</tt>?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/30023530">https://stackoverflow.com/q/30023530</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="why-can-t-i-define-the-following-cofixpoint">
+<h1 class="title">Why can't I define the following <span class="docutils literal">CoFixpoint</span>?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/30023530">https://stackoverflow.com/q/30023530</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I defined the following <tt class="docutils literal">CoInductive</tt> type, <tt class="docutils literal">stream</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>I defined the following <span class="docutils literal">CoInductive</span> type, <span class="docutils literal">stream</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">CoInductive</span> <span class="nf">stream</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
 | Cons : A -&gt; stream A -&gt; stream A.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -35,46 +32,42 @@
      : <span class="kt">Type</span> -&gt; <span class="kt">Type</span></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="why-cant-i-define-the-following-cofixpoint-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="why-cant-i-define-the-following-cofixpoint-v-chk1"><span class="kn">Check</span> Cons.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Cons
-     : <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, A -&gt; stream A -&gt; stream A</blockquote></div></div></small></span></pre><p>Then, I tried to define the following <tt class="docutils literal">CoFixpoint</tt> definition, <tt class="docutils literal">zeros</tt>:</p>
+     : <span class="kr">forall</span> <span class="nv">A</span> : <span class="kt">Type</span>, A -&gt; stream A -&gt; stream A</blockquote></div></div></small></span></pre><p>Then, I tried to define the following <span class="docutils literal">CoFixpoint</span> definition, <span class="docutils literal">zeros</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="why-cant-i-define-the-following-cofixpoint-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="why-cant-i-define-the-following-cofixpoint-v-chk2"><span class="kn">CoFixpoint</span> <span class="nf">zeros</span> : stream nat := Cons <span class="mi">0</span> zeros.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
 zeros : stream nat
 The term <span class="s2">&quot;0&quot;</span> has type <span class="s2">&quot;nat&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Type&quot;</span>.</blockquote></div></div></small></span></pre><p>I figured out that I have to explicitly instantiate the variable A:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">CoFixpoint</span> <span class="nf">zeros</span> : stream nat := Cons nat <span class="mi">0</span> zeros.</span></span></pre><p>Why doesn't the Coq infer the type of <tt class="docutils literal">A</tt> by itself? How do I make
-it infer the type of <tt class="docutils literal">A</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You need to declare <tt class="docutils literal">A</tt> as implicit to ask Coq to infer it for you.
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">CoFixpoint</span> <span class="nf">zeros</span> : stream nat := Cons nat <span class="mi">0</span> zeros.</span></span></pre><p>Why doesn't the Coq infer the type of <span class="docutils literal">A</span> by itself? How do I make
+it infer the type of <span class="docutils literal">A</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You need to declare <span class="docutils literal">A</span> as implicit to ask Coq to infer it for you.
 There are a few ways of doing it:</p>
 <ol class="arabic">
-<li><p class="first">Add the following declaration to your file: <tt class="docutils literal">Set Implicit
-Arguments.</tt>. This will cause Coq to turn on automatic inference
-for arguments such as <tt class="docutils literal">A</tt> for <tt class="docutils literal">Cons</tt>, allowing you to write
-<tt class="docutils literal">Cons 0 zeros</tt>.</p>
-</li>
-<li><p class="first">Turn on implicit arguments just for <tt class="docutils literal">Cons</tt>, without affecting the
+<li><p>Add the following declaration to your file: <span class="docutils literal">Set Implicit Arguments.</span>. This will cause Coq to turn on automatic inference
+for arguments such as <span class="docutils literal">A</span> for <span class="docutils literal">Cons</span>, allowing you to write
+<span class="docutils literal">Cons 0 zeros</span>.</p></li>
+<li><p>Turn on implicit arguments just for <span class="docutils literal">Cons</span>, without affecting the
 rest of the file:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> Cons {A} _ _.</span></span></pre><p>This declaration marks <tt class="docutils literal">A</tt> as implicit and leaves the other two
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Arguments</span> Cons {A} _ _.</span></span></pre><p>This declaration marks <span class="docutils literal">A</span> as implicit and leaves the other two
 arguments as explicit.</p>
 </li>
-<li><p class="first">Mark <tt class="docutils literal">A</tt> as implicit in the definition of <tt class="docutils literal">stream</tt>:</p>
+<li><p>Mark <span class="docutils literal">A</span> as implicit in the definition of <span class="docutils literal">stream</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">CoInductive</span> <span class="nf">stream</span> {<span class="nv">A</span> : <span class="kt">Type</span>} : <span class="kt">Type</span> :=
 | Cons : A -&gt; stream -&gt; stream.</span></span></pre><p>I personally do not recommend doing this, however, as it will mark
-<tt class="docutils literal">A</tt> as implicit for <tt class="docutils literal">stream</tt> as well.</p>
+<span class="docutils literal">A</span> as implicit for <span class="docutils literal">stream</span> as well.</p>
 </li>
 </ol>
 <p>You can find more information about implicit arguments in the
 <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual004.html#sec100">reference manual</a></p>
 <hr class="docutils" />
-<p><strong>A:</strong> Side note: items 2. and 3. declare <tt class="docutils literal">A</tt> as a
+<p><strong>A:</strong> Side note: items 2. and 3. declare <span class="docutils literal">A</span> as a
 <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual004.html#Implicit%20Arguments">maximally-inserted</a>
-argument. Implicit arguments inferred with the <tt class="docutils literal">Set Implicit
-Arguments</tt> directive are not declared to be insertable maximally. So,
-when applicable, one might want to add <tt class="docutils literal">Set Maximal Implicit
-Insertion.</tt>.</p>
+argument. Implicit arguments inferred with the <span class="docutils literal">Set Implicit Arguments</span> directive are not declared to be insertable maximally. So,
+when applicable, one might want to add <span class="docutils literal">Set Maximal Implicit Insertion.</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

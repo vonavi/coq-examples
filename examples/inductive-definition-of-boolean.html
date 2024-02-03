@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Inductive definition of boolean</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,51 +14,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="inductive-definition-of-boolean">
+<div class="alectryon-root alectryon-centered"><main id="inductive-definition-of-boolean">
 <h1 class="title">Inductive definition of boolean</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/54728450">https://stackoverflow.com/q/54728450</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/54728450">https://stackoverflow.com/q/54728450</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Trivially, I'm trying to define my own bool type as:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">mybool</span> : <span class="kt">Type</span> :=
 | true
-| false.</span></span></pre><p>Then I do a <tt class="docutils literal">Print mybool.</tt> but the output says</p>
+| false.</span></span></pre><p>Then I do a <span class="docutils literal">Print mybool.</span> but the output says</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="inductive-definition-of-boolean-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">mybool</span> : <span class="kt">Set</span> :=
-    true : mybool | false : mybool</blockquote></div></div></small></span></pre><p>How come the type of <tt class="docutils literal">mybool</tt> is <tt class="docutils literal">Set</tt> but not <tt class="docutils literal">Type</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+    true : mybool | false : mybool</blockquote></div></div></small></span></pre><p>How come the type of <span class="docutils literal">mybool</span> is <span class="docutils literal">Set</span> but not <span class="docutils literal">Type</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Coq uses what is called &quot;Universe Minimization&quot; to put inductive types
-in the smallest possible universe. Since <tt class="docutils literal">mybool</tt> doesn't depend on
+in the smallest possible universe. Since <span class="docutils literal">mybool</span> doesn't depend on
 any other types and doesn't do any universal quantification, it can
-safely be put in the (second) lowest level of <tt class="docutils literal">Type</tt>, which is
-<tt class="docutils literal">Set</tt>. The lowest level is <tt class="docutils literal">Prop</tt>, but inductive types are only
-placed in <tt class="docutils literal">Prop</tt> if they only have one constructor (there are some
+safely be put in the (second) lowest level of <span class="docutils literal">Type</span>, which is
+<span class="docutils literal">Set</span>. The lowest level is <span class="docutils literal">Prop</span>, but inductive types are only
+placed in <span class="docutils literal">Prop</span> if they only have one constructor (there are some
 exceptions to this), or if it's explicitly annotated.</p>
-<p>Note that Coq's universes are cumulative, so <tt class="docutils literal">mybool</tt> is really in
-every level of <tt class="docutils literal">Type</tt>, but it only shows the minimal level.</p>
+<p>Note that Coq's universes are cumulative, so <span class="docutils literal">mybool</span> is really in
+every level of <span class="docutils literal">Type</span>, but it only shows the minimal level.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> I thought <tt class="docutils literal">Set</tt> is the lowest level of <tt class="docutils literal">Type</tt>, and second
-lowest is <tt class="docutils literal">Prop</tt> (<tt class="docutils literal">Prop</tt> is higher than <tt class="docutils literal">Set</tt>). I thought
-<tt class="docutils literal">Prop</tt> is for propositions. In my bool, we have two constructors.
+<p><strong>Q:</strong> I thought <span class="docutils literal">Set</span> is the lowest level of <span class="docutils literal">Type</span>, and second
+lowest is <span class="docutils literal">Prop</span> (<span class="docutils literal">Prop</span> is higher than <span class="docutils literal">Set</span>). I thought
+<span class="docutils literal">Prop</span> is for propositions. In my bool, we have two constructors.
 Not sure I understand this part.</p>
-<p><strong>A:</strong> <tt class="docutils literal">Prop</tt> indeed is for propositions, and can be thought of as
-types that have at most one element. That means that <tt class="docutils literal">Prop</tt> doesn't
-contain &quot;large&quot; types that are normally found in <tt class="docutils literal">Set</tt>, like <tt class="docutils literal">nat</tt>
-or <tt class="docutils literal">bool</tt>. But on the other hand, everything in <tt class="docutils literal">Prop</tt> fits in
-<tt class="docutils literal">Set</tt>, so <tt class="docutils literal">Prop</tt> is a lower level than <tt class="docutils literal">Set</tt>. You can check this
-with something like <tt class="docutils literal">Axiom P: Prop. Check P: Set.</tt> (which works) vs
-<tt class="docutils literal">Axiom P: Set. Check P: Prop.</tt> (which doesn't).</p>
+<p><strong>A:</strong> <span class="docutils literal">Prop</span> indeed is for propositions, and can be thought of as
+types that have at most one element. That means that <span class="docutils literal">Prop</span> doesn't
+contain &quot;large&quot; types that are normally found in <span class="docutils literal">Set</span>, like <span class="docutils literal">nat</span>
+or <span class="docutils literal">bool</span>. But on the other hand, everything in <span class="docutils literal">Prop</span> fits in
+<span class="docutils literal">Set</span>, so <span class="docutils literal">Prop</span> is a lower level than <span class="docutils literal">Set</span>. You can check this
+with something like <span class="docutils literal">Axiom P: Prop. Check P: Set.</span> (which works) vs
+<span class="docutils literal">Axiom P: Set. Check P: Prop.</span> (which doesn't).</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

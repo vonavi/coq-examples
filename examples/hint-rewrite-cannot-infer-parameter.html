@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hint Rewrite cannot infer parameter</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,63 +14,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="hint-rewrite-cannot-infer-parameter">
-<h1 class="title"><tt class="docutils literal">Hint Rewrite</tt> cannot infer parameter</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45425591">https://stackoverflow.com/q/45425591</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I'm trying to create a <tt class="docutils literal">Hint Rewrite</tt> database for a matrix library
+<div class="alectryon-root alectryon-centered"><main id="hint-rewrite-cannot-infer-parameter">
+<h1 class="title"><span class="docutils literal">Hint Rewrite</span> cannot infer parameter</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/45425591">https://stackoverflow.com/q/45425591</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
+<p>I'm trying to create a <span class="docutils literal">Hint Rewrite</span> database for a matrix library
 I've written. However when I write</p>
-<pre class="code coq literal-block">
-<span class="kn">Hint Rewrite</span> <span class="n">kron_1_r</span> <span class="o">:</span> <span class="n">M_db</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Hint Rewrite</span> <span class="n">kron_1_r</span> <span class="o">:</span> <span class="n">M_db</span><span class="o">.</span></code></pre>
 <p>I get the following error:</p>
 <blockquote>
-Cannot infer the implicit parameter <tt class="docutils literal">m</tt> of <tt class="docutils literal">kron_1_r</tt> whose
-type is <tt class="docutils literal">nat</tt>.</blockquote>
-<p><tt class="docutils literal">kron_1_r</tt> has the type <tt class="docutils literal">forall {m n : nat} (A : Matrix m n), A ⊗
-Id 1 = A</tt>, so <tt class="docutils literal">m</tt> and <tt class="docutils literal">n</tt> should be inferred based on the context
-when <tt class="docutils literal">autorewrite</tt> is called. I'm not sure why it wants a parameter
+<p>Cannot infer the implicit parameter <span class="docutils literal">m</span> of <span class="docutils literal">kron_1_r</span> whose
+type is <span class="docutils literal">nat</span>.</p>
+</blockquote>
+<p><span class="docutils literal">kron_1_r</span> has the type <span class="docutils literal">forall {m n : nat} (A : Matrix m n), A ⊗ Id 1 = A</span>, so <span class="docutils literal">m</span> and <span class="docutils literal">n</span> should be inferred based on the context
+when <span class="docutils literal">autorewrite</span> is called. I'm not sure why it wants a parameter
 here, or how to tell it to hold off.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> Replacing <tt class="docutils literal">kron_1_r</tt> with <tt class="docutils literal">&#64;kron_1_r</tt> seems to solve the
+<p><strong>Q:</strong> Replacing <span class="docutils literal">kron_1_r</span> with <span class="docutils literal">&#64;kron_1_r</span> seems to solve the
 problem, but the behavior still strikes me as pretty weird. (And in
-context, it means that I have to put <tt class="docutils literal">&#64;</tt> signs everywhere.)</p>
+context, it means that I have to put <span class="docutils literal">&#64;</span> signs everywhere.)</p>
 <p><strong>A (Anton Trunov):</strong> You are using maximally inserted implicit
 arguments. This means Coq is trying to insert them even if you haven't
 supplied any argument at all (right at the point you are trying to add
 hints to the database). Try making them non-maximally inserted.</p>
-<p><strong>Q:</strong> Any suggestions on how to do that? I've tried <tt class="docutils literal">Unset Maximal
-Implicit Insertion</tt> without success. <tt class="docutils literal">Arguments kron_1_r : clear
-implicits</tt> works, but I don't want to clear implicits altogether.</p>
-<p><strong>A (Anton Trunov):</strong> Try something like <tt class="docutils literal">Arguments kron_1_r [m n]
-_.</tt> See the examples at the end of <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual004.html#sec112">sect. 2.7.4</a>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<p><strong>Q:</strong> Any suggestions on how to do that? I've tried <span class="docutils literal">Unset Maximal Implicit Insertion</span> without success. <span class="docutils literal">Arguments kron_1_r : clear implicits</span> works, but I don't want to clear implicits altogether.</p>
+<p><strong>A (Anton Trunov):</strong> Try something like <span class="docutils literal">Arguments kron_1_r [m n] _.</span> See the examples at the end of <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual004.html#sec112">sect. 2.7.4</a>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You're running into the difference between <em>maximally inserted
 implicit arguments</em> and normal implicit arguments. The difference is
 exactly when you use a definition without giving any arguments, the
-way you are in <tt class="docutils literal">Hint Rewrite kron_1_r</tt>. One solution is of course to
-use <tt class="docutils literal">&#64;kron_1_r</tt>, which gives the identifier without any implicit
+way you are in <span class="docutils literal">Hint Rewrite kron_1_r</span>. One solution is of course to
+use <span class="docutils literal">&#64;kron_1_r</span>, which gives the identifier without any implicit
 arguments.</p>
 <p>Unfortunately there's no syntax when creating a definition to give it
-non-maximally inserted implicit arguments; you can only use <tt class="docutils literal">{m :
-nat}</tt>. Instead, you'll need to use <tt class="docutils literal">Arguments kron_1_r [m n] _.</tt>
-after creating <tt class="docutils literal">kron_1_r</tt> to change the implicit behavior of the
+non-maximally inserted implicit arguments; you can only use <span class="docutils literal">{m : nat}</span>. Instead, you'll need to use <span class="docutils literal">Arguments kron_1_r [m n] _.</span>
+after creating <span class="docutils literal">kron_1_r</span> to change the implicit behavior of the
 first two arguments (as suggested by Anton Trunov above).</p>
-<p>It's often helpful to use <tt class="docutils literal">About</tt>, which reports the status of
-implicit arguments (you get these with <tt class="docutils literal">Print</tt> as well, but you
+<p>It's often helpful to use <span class="docutils literal">About</span>, which reports the status of
+implicit arguments (you get these with <span class="docutils literal">Print</span> as well, but you
 usually get too much output when you print theorems since proof terms
 are large).</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

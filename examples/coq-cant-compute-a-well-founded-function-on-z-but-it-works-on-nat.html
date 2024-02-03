@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq can't compute a well-founded function on Z, but it works on nat</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-can-t-compute-a-well-founded-function-on-z-but-it-works-on-nat">
-<h1 class="title">Coq can't compute a well-founded function on <tt class="docutils literal">Z</tt>, but it works on <tt class="docutils literal">nat</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44186751">https://stackoverflow.com/q/44186751</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-can-t-compute-a-well-founded-function-on-z-but-it-works-on-nat">
+<h1 class="title">Coq can't compute a well-founded function on <span class="docutils literal">Z</span>, but it works on <span class="docutils literal">nat</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44186751">https://stackoverflow.com/q/44186751</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm writing (for myself) an explanation of how to do well-founded
 recursion in Coq. (see i.e. the Coq'Art book, chapter 15.2). First I
-made an example function based on <tt class="docutils literal">nat</tt> and that worked fine, but
-then I did it again for <tt class="docutils literal">Z</tt>, and when I use <tt class="docutils literal">Compute</tt> to evaluate
-it, it doesn't reduce all the way down to a <tt class="docutils literal">Z</tt> value. Why?</p>
+made an example function based on <span class="docutils literal">nat</span> and that worked fine, but
+then I did it again for <span class="docutils literal">Z</span>, and when I use <span class="docutils literal">Compute</span> to evaluate
+it, it doesn't reduce all the way down to a <span class="docutils literal">Z</span> value. Why?</p>
 <p>Here is my example (I put the text inside comments so one can
 copy-paste the whole thing into your editor):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Test of well-founded recursion *)</span>
@@ -1435,22 +1432,22 @@ copy-paste the whole thing into your editor):</p>
      <span class="kr">end</span>) <span class="mi">1</span> (Zwf_well_founded <span class="mi">0</span> <span class="mi">1</span>)
 : (<span class="kr">fun</span> <span class="nv">_</span> : Z =&gt; Z) <span class="mi">1</span></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-<span class="c">(* We just get a huge a term *)</span></span></pre><p>Comment: I noticed that <tt class="docutils literal">Zwf_well_founded</tt> is defined as <tt class="docutils literal">Opaque</tt>
-in the library, so I tried to make it <tt class="docutils literal">Transparent</tt> by copying the
-proof and ending the lemma with <tt class="docutils literal">Defined.</tt> instead of <tt class="docutils literal">Qed.</tt> but
+<span class="c">(* We just get a huge a term *)</span></span></pre><p>Comment: I noticed that <span class="docutils literal">Zwf_well_founded</span> is defined as <span class="docutils literal">Opaque</span>
+in the library, so I tried to make it <span class="docutils literal">Transparent</span> by copying the
+proof and ending the lemma with <span class="docutils literal">Defined.</span> instead of <span class="docutils literal">Qed.</span> but
 that didn't help...</p>
 <p>Added observation:</p>
-<p>If I define <tt class="docutils literal">f'</tt> for <tt class="docutils literal">nat</tt> with <tt class="docutils literal">Fixpoint</tt> instead, and recurse
-on the accesibility proof, <em>and end with</em> <tt class="docutils literal">Defined</tt>. then it
-computes. But if I end with <tt class="docutils literal">Qed.</tt>. it doesn't reduce. Is this
+<p>If I define <span class="docutils literal">f'</span> for <span class="docutils literal">nat</span> with <span class="docutils literal">Fixpoint</span> instead, and recurse
+on the accesibility proof, <em>and end with</em> <span class="docutils literal">Defined</span>. then it
+computes. But if I end with <span class="docutils literal">Qed.</span>. it doesn't reduce. Is this
 related? I guess there is an issue of transparency in the definition
-of <tt class="docutils literal">G</tt> or <tt class="docutils literal">g</tt> somewhere... Or am I completely mistaken?</p>
+of <span class="docutils literal">G</span> or <span class="docutils literal">g</span> somewhere... Or am I completely mistaken?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chkc"><span class="kn">Fixpoint</span> <span class="nf">f&#39;</span> (<span class="nv">n</span> : nat) (<span class="nv">H</span>: Acc lt n) : nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Acc lt n -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Acc lt n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chkd"><span class="nb">refine</span> (<span class="kr">if</span> dec (n &lt;=? <span class="mi">0</span>) <span class="kr">then</span> <span class="mi">0</span> <span class="kr">else</span> n + (f&#39; (n - <span class="mi">1</span>) (Acc_inv H _))).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Acc lt n -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Acc lt n</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>(n &lt;=? <span class="mi">0</span>) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n - <span class="mi">1</span> &lt; n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chke"><span class="nb">apply</span> Nat.leb_gt <span class="kr">in</span> e.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>f'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : nat, Acc lt n -&gt; nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Acc lt n</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n - <span class="mi">1</span> &lt; n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Nat.sub_lt; <span class="nb">auto with</span> *.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp"><span class="c">(* Compute (f&#39; 10 (lt_wf 10)). doesn&#39;t evaluate to a nat if ended with Qed. *)</span></span></pre><p>Anyway, my problem persists for <tt class="docutils literal">Z</tt>.</p>
+</span></span><span class="alectryon-wsp"><span class="c">(* Compute (f&#39; 10 (lt_wf 10)). doesn&#39;t evaluate to a nat if ended with Qed. *)</span></span></pre><p>Anyway, my problem persists for <span class="docutils literal">Z</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chkf"><span class="kn">Fixpoint</span> <span class="nf">g&#39;</span> (<span class="nv">n</span> : Z) (<span class="nv">H</span> : Acc (Zwf <span class="mi">0</span>) n) : Z.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>g'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : Z, Acc (Zwf <span class="mi">0</span>) n -&gt; Z</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Acc (Zwf <span class="mi">0</span>) n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Z</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chk10"><span class="nb">refine</span> (<span class="kr">if</span> dec (n &lt;=? <span class="mi">0</span>) <span class="kr">then</span> <span class="mi">0</span> <span class="kr">else</span> n + (g&#39; (n - <span class="mi">1</span>) (Acc_inv H _))).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>g'</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">n</span> : Z, Acc (Zwf <span class="mi">0</span>) n -&gt; Z</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Acc (Zwf <span class="mi">0</span>) n</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>(n &lt;=? <span class="mi">0</span>) = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Zwf <span class="mi">0</span> (n - <span class="mi">1</span>) n</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">split</span>; <span class="bp">now</span> <span class="nb">apply</span> Z.leb_gt <span class="kr">in</span> e; <span class="nb">auto with</span> *.</span><span class="alectryon-wsp">
@@ -2719,32 +2716,28 @@ of <tt class="docutils literal">G</tt> or <tt class="docutils literal">g</tt> so
 <p><strong>A:</strong> This is a related <a class="reference external" href="https://stackoverflow.com/questions/32354286/compute-with-a-recursive-function-defined-by-well-defined-induction">question</a>.</p>
 <p><strong>A:</strong> This <a class="reference external" href="https://stackoverflow.com/questions/28478445/">one</a> is
 somewhat related as well.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Making <a class="reference external" href="https://coq.inria.fr/library/Coq.ZArith.Zwf.html#Zwf_well_founded">Zwf_well_founded</a>
 transparent won't help, because of the way it is defined in the
 standard library:</p>
-<pre class="code coq literal-block">
-<span class="kn">Lemma</span> <span class="nf">Zwf_well_founded</span> <span class="o">:</span> <span class="n">well_founded</span> <span class="o">(</span><span class="n">Zwf</span> <span class="n">c</span><span class="o">).</span>
+<pre class="code coq literal-block"><code><span class="kn">Lemma</span> <span class="nf">Zwf_well_founded</span> <span class="o">:</span> <span class="n">well_founded</span> <span class="o">(</span><span class="n">Zwf</span> <span class="n">c</span><span class="o">).</span>
   <span class="o">...</span>
   <span class="nb">case</span> <span class="o">(</span><span class="n">Z</span><span class="o">.</span><span class="n">le_gt_cases</span> <span class="n">c</span> <span class="n">y</span><span class="o">);</span> <span class="nb">intro</span><span class="o">;</span> <span class="nb">auto with</span> <span class="n">zarith</span><span class="o">.</span>
   <span class="o">...</span>
-<span class="kn">Qed</span><span class="o">.</span>
-</pre>
+<span class="kn">Qed</span><span class="o">.</span></code></pre>
 <p>If you replace the line in the proof above with</p>
-<pre class="code coq literal-block">
-<span class="nb">case</span> <span class="o">(</span><span class="n">Z_le_gt_dec</span> <span class="n">c</span> <span class="n">y</span><span class="o">);</span> <span class="nb">intro</span><span class="o">;</span> <span class="nb">auto with</span> <span class="n">zarith</span><span class="o">.</span>
-</pre>
-<p>and replace <tt class="docutils literal">Qed.</tt> with <tt class="docutils literal">Defined.</tt> (which you already did)
+<pre class="code coq literal-block"><code><span class="nb">case</span> <span class="o">(</span><span class="n">Z_le_gt_dec</span> <span class="n">c</span> <span class="n">y</span><span class="o">);</span> <span class="nb">intro</span><span class="o">;</span> <span class="nb">auto with</span> <span class="n">zarith</span><span class="o">.</span></code></pre>
+<p>and replace <span class="docutils literal">Qed.</span> with <span class="docutils literal">Defined.</span> (which you already did)
 everything should work. This is due the fact that the original proof
 depends on a logical term, and that prevents the evaluator from doing
-pattern-matching, because logical entity <tt class="docutils literal">Z.le_gt_cases</tt> is opaque,
-while computational entity <tt class="docutils literal">Z_le_gt_dec</tt> is transparent. See <a class="reference external" href="http://gallium.inria.fr/blog/coq-eval/">Using
+pattern-matching, because logical entity <span class="docutils literal">Z.le_gt_cases</span> is opaque,
+while computational entity <span class="docutils literal">Z_le_gt_dec</span> is transparent. See <a class="reference external" href="http://gallium.inria.fr/blog/coq-eval/">Using
 Coq's evaluation mechanisms in anger</a> blog post by Xavier Leroy.
 You might also find useful <a class="reference external" href="https://gmalecha.github.io/reflections/2017/qed-considered-harmful">Qed Considered Harmful</a>
 post by Gregory Malecha.</p>
-<p>Instead of modifying the proof of <tt class="docutils literal">Zwf_well_founded</tt> you can reuse
+<p>Instead of modifying the proof of <span class="docutils literal">Zwf_well_founded</span> you can reuse
 <a class="reference external" href="https://coq.inria.fr/library/Coq.ZArith.Wf_Z.html#Zlt_0_rec">Zlt_0_rec</a> like
 so:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.ZArith.ZArith.</span><span class="alectryon-wsp">
@@ -2762,9 +2755,9 @@ so:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-cant-compute-a-well-founded-function-on-z-but-it-works-on-nat-v-chk14"><span class="kn">Check</span> eq_refl : h <span class="mi">100</span> = <span class="mi">5050</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_refl : h <span class="mi">100</span> = <span class="mi">5050</span>
      : h <span class="mi">100</span> = <span class="mi">5050</span></blockquote></div></div></small></span></pre><p>It's a bit less convenient because now we have to deal with negative
-numbers in <tt class="docutils literal">h</tt>.</p>
+numbers in <span class="docutils literal">h</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

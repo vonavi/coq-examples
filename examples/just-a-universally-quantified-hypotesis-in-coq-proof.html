@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Just a universally quantified hypotesis in Coq proof</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="just-a-universally-quantified-hypotesis-in-coq-proof">
+<div class="alectryon-root alectryon-centered"><main id="just-a-universally-quantified-hypotesis-in-coq-proof">
 <h1 class="title">Just a universally quantified hypotesis in Coq proof</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/19053778">https://stackoverflow.com/q/19053778</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/19053778">https://stackoverflow.com/q/19053778</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Another hard goal (for me, of course) is the following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk0"><span class="kn">Goal</span> ~(<span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : nat -&gt; <span class="kt">Prop</span>,
           (<span class="kr">exists</span> <span class="nv">x</span>, P x) /\ (<span class="kr">exists</span> <span class="nv">x</span>, Q x) -&gt; (<span class="kr">exists</span> <span class="nv">x</span>, P x /\ Q x)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">~
@@ -42,19 +39,17 @@ something, I get a universal quantifier in the hypotesis, and then I
 can't do anything with it.</p>
 <p>I suppose that it exists a standard way for managing such kind of
 situations, but I was not able to find it out.</p>
-</div>
-<div class="section" id="answer-ptival">
-<h1>Answer (Ptival)</h1>
+</section>
+<section id="answer-ptival">
+<h2>Answer (Ptival)</h2>
 <p>To progress in that proof, you will have to exhibit an instance of
-<tt class="docutils literal">P</tt> and an instance of <tt class="docutils literal">Q</tt> such that your hypothesis produces a
+<span class="docutils literal">P</span> and an instance of <span class="docutils literal">Q</span> such that your hypothesis produces a
 contradiction.</p>
 <p>A simple way to go is to use:</p>
-<pre class="code coq literal-block">
-<span class="n">P</span> <span class="o">:</span> <span class="kr">fun</span> <span class="nv">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">Q</span> <span class="o">:</span> <span class="kr">fun</span> <span class="nv">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">P</span> <span class="o">:</span> <span class="kr">fun</span> <span class="nv">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">Q</span> <span class="o">:</span> <span class="kr">fun</span> <span class="nv">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span></code></pre>
 <p>In order to work with the hypothesis introduced, you might want to use
-the tactic <tt class="docutils literal">specialize</tt>:</p>
+the tactic <span class="docutils literal">specialize</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk2"><span class="kn">Goal</span> ~(<span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : nat -&gt; <span class="kt">Prop</span>,
           (<span class="kr">exists</span> <span class="nv">x</span>, P x) /\ (<span class="kr">exists</span> <span class="nv">x</span>, Q x) -&gt; (<span class="kr">exists</span> <span class="nv">x</span>, P x /\ Q x)).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">~
 (<span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : nat -&gt; <span class="kt">Prop</span>,
@@ -74,7 +69,7 @@ the tactic <tt class="docutils literal">specialize</tt>:</p>
   (<span class="kr">fun</span> <span class="nv">x0</span> : nat =&gt; x0 = <span class="mi">1</span>) x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small></span></pre><p>It allows you to apply one of your hypothesis on some input (when the
 hypothesis is a function). From now on, you should be able to derive a
 contradiction easily.</p>
-<p>Alternatively to <tt class="docutils literal">specialize</tt>, you can also do:</p>
+<p>Alternatively to <span class="docutils literal">specialize</span>, you can also do:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk6"><span class="nb">pose proof</span> (H (<span class="kr">fun</span> <span class="nv">x</span> =&gt; x = <span class="mi">0</span>) (<span class="kr">fun</span> <span class="nv">x</span> =&gt; x = <span class="mi">1</span>)) <span class="kr">as</span> Happlied.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : nat -&gt; <span class="kt">Prop</span>,
 (<span class="kr">exists</span> <span class="nv">x</span> : nat, P x) /\ (<span class="kr">exists</span> <span class="nv">x</span> : nat, Q x) -&gt;
 <span class="kr">exists</span> <span class="nv">x</span> : nat, P x /\ Q x</span></span></span><br><span><var>Happlied</var><span class="hyp-type"><b>: </b><span>(<span class="kr">exists</span> <span class="nv">x</span> : nat, (<span class="kr">fun</span> <span class="nv">x0</span> : nat =&gt; x0 = <span class="mi">0</span>) x) /\
@@ -82,11 +77,11 @@ contradiction easily.</p>
 <span class="kr">exists</span> <span class="nv">x</span> : nat,
   (<span class="kr">fun</span> <span class="nv">x0</span> : nat =&gt; x0 = <span class="mi">0</span>) x /\
   (<span class="kr">fun</span> <span class="nv">x0</span> : nat =&gt; x0 = <span class="mi">1</span>) x</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Which will conserve <tt class="docutils literal">H</tt> and give you another term <tt class="docutils literal">Happlied</tt> (you
+</span></span></pre><p>Which will conserve <span class="docutils literal">H</span> and give you another term <span class="docutils literal">Happlied</span> (you
 choose the name) for the application.</p>
-</div>
-<div class="section" id="answer-matteo-zanchi">
-<h1>Answer (Matteo Zanchi)</h1>
+</section>
+<section id="answer-matteo-zanchi">
+<h2>Answer (Matteo Zanchi)</h2>
 <p>The answer of Ptival did the trick. Here is the code of the complete
 proof:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk7"><span class="kn">Goal</span> ~(<span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : nat -&gt; <span class="kt">Prop</span>,
@@ -132,8 +127,8 @@ proof:</p>
 <span class="kr">exists</span> <span class="nv">x</span> : nat, P x /\ Q x</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>x = <span class="mi">0</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>x = <span class="mi">1</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="just-a-universally-quantified-hypotesis-in-coq-proof-v-chk16"><span class="nb">rewrite</span> H0 <span class="kr">in</span> H1.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">P</span> <span class="nv">Q</span> : nat -&gt; <span class="kt">Prop</span>,
 (<span class="kr">exists</span> <span class="nv">x</span> : nat, P x) /\ (<span class="kr">exists</span> <span class="nv">x</span> : nat, Q x) -&gt;
 <span class="kr">exists</span> <span class="nv">x</span> : nat, P x /\ Q x</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>x = <span class="mi">0</span></span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> = <span class="mi">1</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">inversion</span> H1.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

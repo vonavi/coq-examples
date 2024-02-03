@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>rewrite works for = but not for &lt;-&gt; (iff) in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="rewrite-works-for-but-not-for-iff-in-coq">
-<h1 class="title"><tt class="docutils literal">rewrite</tt> works for <tt class="docutils literal">=</tt> but not for <tt class="docutils literal"><span class="pre">&lt;-&gt;</span></tt> (<tt class="docutils literal">iff</tt>) in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/34239906">https://stackoverflow.com/q/34239906</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="rewrite-works-for-but-not-for-iff-in-coq">
+<h1 class="title"><span class="docutils literal">rewrite</span> works for <span class="docutils literal">=</span> but not for <span class="docutils literal"><span class="pre">&lt;-&gt;</span></span> (<span class="docutils literal">iff</span>) in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/34239906">https://stackoverflow.com/q/34239906</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Adapting &#64;Matt's example,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Export</span> Coq.Setoids.Setoid.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -58,21 +55,21 @@
   <span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</blockquote></div></div></small></span></pre><p>Is this failure related to functional extensionality?</p>
 <p>The error message is particularly confusing:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chkd" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-Found no subterm matching <span class="s2">&quot;R1 ?P ?P0&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div></div></small></span></pre><p>There is exactly one subterm matching <tt class="docutils literal">R1 _ _</tt>, namely <tt class="docutils literal">R1 x x</tt>.</p>
-<p>Also, per &#64;larsr, the rewrite works if <tt class="docutils literal">eexists</tt> is used</p>
+Found no subterm matching <span class="s2">&quot;R1 ?P ?P0&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div></div></small></span></pre><p>There is exactly one subterm matching <span class="docutils literal">R1 _ _</span>, namely <span class="docutils literal">R1 x x</span>.</p>
+<p>Also, per &#64;larsr, the rewrite works if <span class="docutils literal">eexists</span> is used</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chke"><span class="kn">Theorem</span> <span class="nf">test1</span> : <span class="kr">forall</span> <span class="nv">y</span>, R2 y y -&gt; <span class="kr">exists</span> <span class="nv">x</span>, R1 x x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : <span class="kt">Prop</span>, R2 y y -&gt; <span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chkf"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : <span class="kt">Prop</span>, R2 y y -&gt; <span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk10"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk11"><span class="nb">eexists</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">R1 <span class="nl">?x</span> <span class="nl">?x</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk12"><span class="nb">rewrite</span> Requiv. <span class="c">(*works as well*)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">R2 <span class="nl">?x</span> <span class="nl">?x</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>What did <tt class="docutils literal">eexists</tt> add here?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal">rewrite</tt> cannot go under the existential quantifier. You'll
-need to instantiate <tt class="docutils literal">t'</tt> first before you can do the rewrite. Note
-that <tt class="docutils literal">econstructor</tt> may be a useful tactic in this case, which can
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>What did <span class="docutils literal">eexists</span> add here?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal">rewrite</span> cannot go under the existential quantifier. You'll
+need to instantiate <span class="docutils literal">t'</span> first before you can do the rewrite. Note
+that <span class="docutils literal">econstructor</span> may be a useful tactic in this case, which can
 replace the existential quantifier with a unification variable.</p>
-<div class="section" id="edit-in-response-to-op-s-comment">
-<h2>EDIT in response to OP's comment</h2>
+<section id="edit-in-response-to-op-s-comment">
+<h3>EDIT in response to OP's comment</h3>
 <p>This will still not work for equality. As an example, try:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">R1</span> : <span class="kt">Prop</span> -&gt; <span class="kt">Prop</span> -&gt; <span class="kt">Prop</span> :=
 | T1_refl : <span class="kr">forall</span> <span class="nv">P</span>, R1 P P.</span><span class="alectryon-wsp">
@@ -85,22 +82,21 @@ replace the existential quantifier with a unification variable.</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk14"><span class="kn">Theorem</span> <span class="nf">test</span> : <span class="kr">forall</span> <span class="nv">y</span>, R2 y y -&gt; <span class="kr">exists</span> <span class="nv">x</span>, R1 x x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : <span class="kt">Prop</span>, R2 y y -&gt; <span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk15"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : <span class="kt">Prop</span>, R2 y y -&gt; <span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk16"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk17"><span class="nb">rewrite</span> Req. <span class="c">(*rewrite still fails*)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found no subterm matching <span class="s2">&quot;R1 ?M160 ?M161&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small></span></pre><p>The issue is not actually about equality vs. <tt class="docutils literal">iff</tt>, the issue
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk16"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="rewrite-works-for-but-not-for-iff-in-coq-v-chk17" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="rewrite-works-for-but-not-for-iff-in-coq-v-chk17"><span class="nb">rewrite</span> Req. <span class="c">(*rewrite still fails*)</span></label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found no subterm matching <span class="s2">&quot;R1 ?M160 ?M161&quot;</span> <span class="kr">in</span> the current goal.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>R2 y y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : <span class="kt">Prop</span>, R1 x x</div></blockquote></div></div></small></span></pre><p>The issue is not actually about equality vs. <span class="docutils literal">iff</span>, the issue
 relates to rewriting under a binding (in this case a lambda). <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Logic.html">The
 implementation</a>
-of <tt class="docutils literal">exists x : A, P</tt> is really just syntax for <tt class="docutils literal">ex A (fun x =&gt; P
-x)</tt>, so the rewrite is failing not because of the <tt class="docutils literal">iff</tt>, but
-because the <tt class="docutils literal">rewrite</tt> tactic does not want to go under the binding
-for <tt class="docutils literal">x</tt> in <tt class="docutils literal">(fun x =&gt; P x)</tt>. It seems as though there might be a
+of <span class="docutils literal">exists x : A, P</span> is really just syntax for <span class="docutils literal">ex A (fun x =&gt; P x)</span>, so the rewrite is failing not because of the <span class="docutils literal">iff</span>, but
+because the <span class="docutils literal">rewrite</span> tactic does not want to go under the binding
+for <span class="docutils literal">x</span> in <span class="docutils literal">(fun x =&gt; P x)</span>. It seems as though there might be a
 way to do this with <a class="reference external" href="https://coq.inria.fr/refman/Reference-Manual029.html#sec756">setoid_rewrite</a>,
 however, I don't have any experience with this.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> <tt class="docutils literal">Require Import Coq.Setoids.Setoid.</tt> and then
-<tt class="docutils literal">setoid_rewrite Requiv.</tt> should work under the existential
+<p><strong>A:</strong> <span class="docutils literal">Require Import Coq.Setoids.Setoid.</span> and then
+<span class="docutils literal">setoid_rewrite Requiv.</span> should work under the existential
 quantifier.</p>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

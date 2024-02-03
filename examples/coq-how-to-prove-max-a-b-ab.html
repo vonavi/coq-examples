@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: How to prove max a b &lt;= a + b?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-how-to-prove-max-a-b-a-b">
-<h1 class="title">Coq: How to prove <tt class="docutils literal">max a b &lt;= a + b</tt>?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/46410116">https://stackoverflow.com/q/46410116</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-how-to-prove-max-a-b-a-b">
+<h1 class="title">Coq: How to prove <span class="docutils literal">max a b &lt;= a + b</span>?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/46410116">https://stackoverflow.com/q/46410116</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question-re3el">
-<h1>Question (re3el)</h1>
-<p>I am unable to prove the simple logic <tt class="docutils literal">max a b &lt;= a + b</tt> using coq's
+<section id="question-re3el">
+<h2>Question (re3el)</h2>
+<p>I am unable to prove the simple logic <span class="docutils literal">max a b &lt;= a + b</span> using coq's
 tactics. How should I go about solving it? Below is the code that I
-worked on till now. <tt class="docutils literal">s_le_n</tt> is proved but not mentioned here for
+worked on till now. <span class="docutils literal">s_le_n</span> is proved but not mentioned here for
 the sake of simplicity.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-max-a-b-ab-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-max-a-b-ab-v-chk0"><span class="kn">Theorem</span> <span class="nf">s_le_n</span>: <span class="kr">forall</span> (<span class="nv">a</span> <span class="nv">b</span>: nat),  a &lt;= b -&gt; S a &lt;= S b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, a &lt;= b -&gt; S a &lt;= S b</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-max-a-b-ab-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-max-a-b-ab-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, a &lt;= b -&gt; S a &lt;= S b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span><span class="alectryon-wsp">
@@ -45,19 +42,16 @@ the sake of simplicity.</p>
 <p><strong>Q (ejgallego):</strong> The proof is less than 40 characters using the
 library, I could post it; however, let me ask you something, how would
 you prove this lemma using pen and paper?</p>
-<p><strong>A (re3el):</strong> &#64;ejgallego <tt class="docutils literal">if (a &gt; b) then max a b = a, a &lt; a + b;
-else max a b = b, b &lt; a + b</tt>. I am unable to use this logic in coq.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+<p><strong>A (re3el):</strong> &#64;ejgallego <span class="docutils literal">if (a &gt; b) then max a b = a, a &lt; a + b; else max a b = b, b &lt; a + b</span>. I am unable to use this logic in coq.</p>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>Taking into account &#64;re3el comment, we start from their &quot;pen and paper
 proof&quot;:</p>
-<pre class="code literal-block">
-if (a &gt; b) then max a b = a, a &lt; a + b; else max a b = b, b &lt; a + b
-</pre>
+<pre class="code literal-block"><code>if (a &gt; b) then max a b = a, a &lt; a + b; else max a b = b, b &lt; a + b</code></pre>
 <p>Let's now translate that into Coq! In fact, the first thing we need to
-do is case on the decidability of <tt class="docutils literal">&lt;</tt>, this is done using the
-<tt class="docutils literal">le_lt_dec a b</tt> lemma. The rest is routine:</p>
+do is case on the decidability of <span class="docutils literal">&lt;</span>, this is done using the
+<span class="docutils literal">le_lt_dec a b</span> lemma. The rest is routine:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-max-a-b-ab-v-chk15" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-max-a-b-ab-v-chk15"><span class="kn">Theorem</span> <span class="nf">max_sum</span> (<span class="nv">a</span> <span class="nv">b</span>: nat) : max a b &lt;= a + b.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Init.Nat.max a b &lt;= a + b</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -99,19 +93,18 @@ even needed in the first place.</p>
 <p>edit: &#64;Jason Gross mentions another style of proof a more seasoned
 used would use:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-to-prove-max-a-b-ab-v-chk21" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-to-prove-max-a-b-ab-v-chk21"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Nat.max a b &lt;= a + b</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Max.max_case_strong; <span class="bp">lia</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>However, this proof involves the use of a heavyweight automation
-tactic, <tt class="docutils literal">lia</tt>; I strongly advise all beginners to avoid such tactics
+tactic, <span class="docutils literal">lia</span>; I strongly advise all beginners to avoid such tactics
 for a while, and learn how to do proofs more &quot;manually&quot;. In fact,
 using any of the SMT-enabled tactics, the original goal can be simply
 solved with a call to a SMT.</p>
 <hr class="docutils" />
-<p><strong>A (Jason Gross):</strong> There's also a short proof without ssr: <tt class="docutils literal">Require
-Import Lia. apply Max.max_case_strong; lia</tt>. It might be nice to
+<p><strong>A (Jason Gross):</strong> There's also a short proof without ssr: <span class="docutils literal">Require Import Lia. apply Max.max_case_strong; lia</span>. It might be nice to
 mention this in the answer.</p>
-<p><strong>A (ejgallego):</strong> Thanks Jason; I tend to prefer not to teach <tt class="docutils literal">lia</tt>
+<p><strong>A (ejgallego):</strong> Thanks Jason; I tend to prefer not to teach <span class="docutils literal">lia</span>
 and other automated tactics to beginners, IMHO it is very important
 that they learn how to do proofs without automation first.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

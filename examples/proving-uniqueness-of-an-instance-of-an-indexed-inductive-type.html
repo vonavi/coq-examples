@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving uniqueness of an instance of an indexed inductive type</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type">
+<div class="alectryon-root alectryon-centered"><main id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type">
 <h1 class="title">Proving uniqueness of an instance of an indexed inductive type</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1246">https://proofassistants.stackexchange.com/q/1246</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://proofassistants.stackexchange.com/q/1246">https://proofassistants.stackexchange.com/q/1246</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the simple indexed inductive type</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Single</span> : nat -&gt; <span class="kt">Set</span> :=
 | single_O : Single O
-| single_S {n} : Single n -&gt; Single (S n).</span></span></pre><p>Intuitively, I thought that <tt class="docutils literal">Single n</tt> has a unique value for each
-<tt class="docutils literal">n : nat</tt>. I started by trying to prove that <tt class="docutils literal">forall s : Single O,
-s = single_O</tt>. However, the usual tactics <tt class="docutils literal">inversion</tt>,
-<tt class="docutils literal">destruct</tt>, and <tt class="docutils literal">induction</tt> did not work:</p>
+| single_S {n} : Single n -&gt; Single (S n).</span></span></pre><p>Intuitively, I thought that <span class="docutils literal">Single n</span> has a unique value for each
+<span class="docutils literal">n : nat</span>. I started by trying to prove that <span class="docutils literal">forall s : Single O, s = single_O</span>. However, the usual tactics <span class="docutils literal">inversion</span>,
+<span class="docutils literal">destruct</span>, and <span class="docutils literal">induction</span> did not work:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk0"><span class="kn">Lemma</span> <span class="nf">single_O_unique</span> (<span class="nv">s</span> : Single O) : s = single_O.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = single_O</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1"><span class="nb">inversion</span> s. <span class="c">(* No effect *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = single_O</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk2"><span class="kn">Fail</span> <span class="nb">destruct</span> s.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
@@ -74,7 +70,7 @@ cannot be applied to the terms
  <span class="s2">&quot;s0&quot;</span> : <span class="s2">&quot;Single n0&quot;</span>
  <span class="s2">&quot;single_O&quot;</span> : <span class="s2">&quot;Single 0&quot;</span>
 The <span class="mi">3</span>rd term has type <span class="s2">&quot;Single 0&quot;</span>
-which should be coercible to <span class="s2">&quot;Single n0&quot;</span>.</blockquote></div></div></small></span></pre><p>So I resorted to a manual <tt class="docutils literal">match</tt> expression:</p>
+which should be coercible to <span class="s2">&quot;Single n0&quot;</span>.</blockquote></div></div></small></span></pre><p>So I resorted to a manual <span class="docutils literal">match</span> expression:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk5"><span class="nb">refine</span> <span class="kr">match</span> s <span class="kr">with</span>
          | single_O =&gt; _
          | single_S _ =&gt; _
@@ -91,11 +87,11 @@ subgoal <span class="mi">2</span> <span class="kr">is</span>:
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk9">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>Single n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">IDProp</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> idProp.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Questions:</p>
 <ul class="simple">
-<li>Why was <tt class="docutils literal">inversion</tt> unable to recognize that <tt class="docutils literal">s</tt> could only be
-<tt class="docutils literal">single_O</tt> and substitute accordingly?</li>
-<li>Why did the <tt class="docutils literal">refine</tt> tactic produce the subgoal <tt class="docutils literal">IDProp</tt>?</li>
-<li>Is there a way to get <tt class="docutils literal">inversion</tt> or <tt class="docutils literal">destruct</tt> to work in this
-case? Or, what would a better way to prove <tt class="docutils literal">s = single_O</tt>?</li>
+<li><p>Why was <span class="docutils literal">inversion</span> unable to recognize that <span class="docutils literal">s</span> could only be
+<span class="docutils literal">single_O</span> and substitute accordingly?</p></li>
+<li><p>Why did the <span class="docutils literal">refine</span> tactic produce the subgoal <span class="docutils literal">IDProp</span>?</p></li>
+<li><p>Is there a way to get <span class="docutils literal">inversion</span> or <span class="docutils literal">destruct</span> to work in this
+case? Or, what would a better way to prove <span class="docutils literal">s = single_O</span>?</p></li>
 </ul>
 <p>Full example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Single</span> : nat -&gt; <span class="kt">Set</span> :=
@@ -136,20 +132,21 @@ which should be coercible to <span class="s2">&quot;Single n0&quot;</span>.</blo
          <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">single_O = single_O</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chkf" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>Single n</span></span></span><br></div><label class="goal-separator" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chkf"><hr></label><div class="goal-conclusion">IDProp</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk10">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">single_O = single_O</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk11">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s0</var><span class="hyp-type"><b>: </b><span>Single n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">IDProp</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> idProp.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-gallais">
-<h1>Answer (gallais)</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-gallais">
+<h2>Answer (gallais)</h2>
 <blockquote>
-Or, what would a better way to prove <tt class="docutils literal">s = single_O</tt>?</blockquote>
-<p>I would define a function that, given a nat <tt class="docutils literal">n</tt>, computes the
-canonical proof <tt class="docutils literal">Single n</tt>.</p>
+<p>Or, what would a better way to prove <span class="docutils literal">s = single_O</span>?</p>
+</blockquote>
+<p>I would define a function that, given a nat <span class="docutils literal">n</span>, computes the
+canonical proof <span class="docutils literal">Single n</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">Canonical</span> (<span class="nv">n</span> : nat) : Single n :=
   <span class="kr">match</span> n <span class="kr">with</span>
   | O =&gt; single_O
   | S n =&gt; single_S (<span class="kn">Canonical</span> <span class="nf">n</span>)
-  <span class="kr">end</span>.</span></span></pre><p>You can then easily prove that any <tt class="docutils literal">Single n</tt> proof is equal to the
+  <span class="kr">end</span>.</span></span></pre><p>You can then easily prove that any <span class="docutils literal">Single n</span> proof is equal to the
 canonical one by induction. Here the abstraction won't fail because
-the equality is already generic over <tt class="docutils literal">n</tt>.</p>
+the equality is already generic over <span class="docutils literal">n</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk12"><span class="kn">Lemma</span> <span class="nf">single_canonical</span> (<span class="nv">n</span> : nat) (<span class="nv">s</span> : Single n) : s = <span class="kn">Canonical</span> <span class="nf">n</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>Single n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = <span class="kn">Canonical</span> <span class="nf">n</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk13"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>Single n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = <span class="kn">Canonical</span> <span class="nf">n</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk14" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk14"><span class="nb">induction</span> s.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">single_O = <span class="kn">Canonical</span> <span class="mi">0</span></div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk15" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>Single n</span></span></span><br><span><var>IHs</var><span class="hyp-type"><b>: </b><span>s = <span class="kn">Canonical</span> <span class="nf">n</span></span></span></span><br></div><label class="goal-separator" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk15"><hr></label><div class="goal-conclusion">single_S s = <span class="kn">Canonical</span> (S n)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
@@ -158,24 +155,24 @@ the equality is already generic over <tt class="docutils literal">n</tt>.</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Your original lemma is then a direct corollary.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1a" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1a"><span class="kn">Lemma</span> <span class="nf">single_O_unique</span> (<span class="nv">s</span> : Single O) : s = single_O.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = single_O</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> single_canonical <span class="kr">with</span> (n := O).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-meven-lennon-bertrand">
-<h1>Answer (Meven Lennon-Bertrand)</h1>
-<p>Regarding <tt class="docutils literal">IDProp</tt>, this is the pattern-matching compilation of Coq
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-meven-lennon-bertrand">
+<h2>Answer (Meven Lennon-Bertrand)</h2>
+<p>Regarding <span class="docutils literal">IDProp</span>, this is the pattern-matching compilation of Coq
 at work. Basically, because you scrutinee has a type that can only
-correspond to the <tt class="docutils literal">single_O</tt> branch, Coq was smart enough to craft a
+correspond to the <span class="docutils literal">single_O</span> branch, Coq was smart enough to craft a
 return predicate that gave you an interesting goal only in that
-branch, the other being replaced by the trivially inhabited <tt class="docutils literal">IDProp</tt>
-(as you noticed in your proof). So <tt class="docutils literal">match</tt> was smart enough &quot;to
-recognize that <tt class="docutils literal">s</tt> could only be <tt class="docutils literal">single_O</tt>&quot;. If you wish to see
-what exactly happened, you can use the <tt class="docutils literal">Show Proof.</tt> command.</p>
-<p>I'm a bit suprised that <tt class="docutils literal">destruct</tt>, <tt class="docutils literal">inversion</tt> and friends, which
+branch, the other being replaced by the trivially inhabited <span class="docutils literal">IDProp</span>
+(as you noticed in your proof). So <span class="docutils literal">match</span> was smart enough &quot;to
+recognize that <span class="docutils literal">s</span> could only be <span class="docutils literal">single_O</span>&quot;. If you wish to see
+what exactly happened, you can use the <span class="docutils literal">Show Proof.</span> command.</p>
+<p>I'm a bit suprised that <span class="docutils literal">destruct</span>, <span class="docutils literal">inversion</span> and friends, which
 are supposed to be built on top of pattern-matching, were not able to
-succeed where the simpler <tt class="docutils literal">refine (match …)</tt> was. In such cases with
-complex dependencies, <tt class="docutils literal">dependent inversion</tt> works better than
-<tt class="docutils literal">inversion</tt>, but it still fails here, sadly.</p>
-<p>If you wish to have <tt class="docutils literal">inversion</tt> work here, you'd have to replace
-<tt class="docutils literal">single_O</tt> by something generic enough. Using gallais' solution, you
+succeed where the simpler <span class="docutils literal">refine (match …)</span> was. In such cases with
+complex dependencies, <span class="docutils literal">dependent inversion</span> works better than
+<span class="docutils literal">inversion</span>, but it still fails here, sadly.</p>
+<p>If you wish to have <span class="docutils literal">inversion</span> work here, you'd have to replace
+<span class="docutils literal">single_O</span> by something generic enough. Using gallais' solution, you
 can do</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">Canonical</span> (<span class="nv">n</span> : nat) : Single n :=
   <span class="kr">match</span> n <span class="kr">with</span>
@@ -188,10 +185,10 @@ can do</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1d" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1d"><span class="nb">change</span> single_O <span class="kr">with</span> (<span class="kn">Canonical</span> <span class="mi">0</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">s = <span class="kn">Canonical</span> <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-uniqueness-of-an-instance-of-an-indexed-inductive-type-v-chk1e"><span class="nb">dependent inversion</span> s.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s</var><span class="hyp-type"><b>: </b><span>Single <span class="mi">0</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">single_O = <span class="kn">Canonical</span> <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now <tt class="docutils literal">dependent inversion</tt> succeeds because <tt class="docutils literal">Canonical 0</tt> can
-successfully be abstracted over <tt class="docutils literal">0</tt>, while <tt class="docutils literal">single_O</tt> could not.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now <span class="docutils literal">dependent inversion</span> succeeds because <span class="docutils literal">Canonical 0</span> can
+successfully be abstracted over <span class="docutils literal">0</span>, while <span class="docutils literal">single_O</span> could not.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

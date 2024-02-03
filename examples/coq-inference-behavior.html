@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq inference behavior</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,29 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-inference-behavior">
+<div class="alectryon-root alectryon-centered"><main id="coq-inference-behavior">
 <h1 class="title">Coq inference behavior</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36996020">https://stackoverflow.com/q/36996020</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/36996020">https://stackoverflow.com/q/36996020</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to write the following Agda snippet in Coq.</p>
-<pre class="code agda literal-block">
-<span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Fin</span><span class="w"> </span><span class="kr">using</span><span class="w"> </span><span class="o">(</span>Fin;<span class="w"> </span>suc;<span class="w"> </span>zero<span class="o">)</span><span class="w">
+<pre class="code agda literal-block"><code><span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Fin</span><span class="w"> </span><span class="kr">using</span><span class="w"> </span><span class="o">(</span>Fin;<span class="w"> </span>suc;<span class="w"> </span>zero<span class="o">)</span><span class="w">
 </span><span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Nat</span><span class="w"> </span><span class="kr">using</span><span class="w"> </span><span class="o">(</span>ℕ;<span class="w"> </span>suc;<span class="w"> </span>zero<span class="o">)</span><span class="w">
 
 </span><span class="nf">thin</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="o">{</span>n<span class="w"> </span><span class="ow">:</span><span class="w"> </span>ℕ<span class="o">}</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Fin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>n<span class="o">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Fin<span class="w"> </span>n<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span>Fin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>n<span class="o">)</span><span class="w">
 </span>thin<span class="w"> </span>zero<span class="w">    </span>y<span class="w">       </span><span class="ow">=</span><span class="w"> </span>suc<span class="w"> </span>y<span class="w">
 </span>thin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>x<span class="o">)</span><span class="w"> </span>zero<span class="w">    </span><span class="ow">=</span><span class="w"> </span>zero<span class="w">
-</span>thin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>x<span class="o">)</span><span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>y<span class="o">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>suc<span class="w"> </span><span class="o">(</span>thin<span class="w"> </span>x<span class="w"> </span>y<span class="o">)</span>
-</pre>
+</span>thin<span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>x<span class="o">)</span><span class="w"> </span><span class="o">(</span>suc<span class="w"> </span>y<span class="o">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>suc<span class="w"> </span><span class="o">(</span>thin<span class="w"> </span>x<span class="w"> </span>y<span class="o">)</span></code></pre>
 <p>I thought this could be straightforwardly translated to Coq as:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Fin</span> : nat -&gt; <span class="kt">Type</span> :=
 | fz {n : nat} : Fin (S n)
@@ -58,12 +53,12 @@ n1 : nat
 y&#39; : Fin n1
 The term <span class="s2">&quot;x&#39;&quot;</span> has type <span class="s2">&quot;Fin n0&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Fin (S ?n1)&quot;</span>.</blockquote></div></div></small></span></pre><p>I believe Coq should be able to figure out the implicit parameter
-<tt class="docutils literal">n</tt> so I have no idea what is going on. I think I am unaware of a
+<span class="docutils literal">n</span> so I have no idea what is going on. I think I am unaware of a
 difference between the type systems of Agda and Coq since the former
 typechecks fine.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>When pattern matching with dependent types, Coq does not usually
 consider some essential relations between the variables in the context
 and the variables introduced in the branches.</p>
@@ -107,7 +102,7 @@ how to define it directly. This could give:</p>
   <span class="kr">end</span> Heqn1
      : <span class="kr">forall</span> <span class="nv">n</span> : nat, Fin (S n) -&gt; Fin n -&gt; Fin (S n)
 
-<span class="kn">Arguments</span> thin {n}%nat_scope _ _</blockquote></div></div></small></span></pre><p>The <tt class="docutils literal">return</tt> clauses of the pattern matchings is used to solve the
+<span class="kn">Arguments</span> thin {n}%nat_scope _ _</blockquote></div></div></small></span></pre><p>The <span class="docutils literal">return</span> clauses of the pattern matchings is used to solve the
 problem presented above: they connect the variables introduced in the
 branches and the ones in the context. This is discussed more deeply
 here: <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">http://adam.chlipala.net/cpdt/html/MoreDep.html</a>.</p>
@@ -120,13 +115,13 @@ book before actually trying to do stuff in Coq. One more question I
 have: is it considered bad practice to define functions in proof mode?</p>
 <p><strong>A:</strong> I don't really know. Usually, I do that to check the lambda
 term and write it myself. Anyway, I try to use mostly low-level
-tactics to create a readable lambda term. Tactics like <tt class="docutils literal">inversion</tt>
+tactics to create a readable lambda term. Tactics like <span class="docutils literal">inversion</span>
 create</p>
-<p><strong>A:</strong> Tactics like <tt class="docutils literal">inversion</tt> create non-natural terms and should
+<p><strong>A:</strong> Tactics like <span class="docutils literal">inversion</span> create non-natural terms and should
 be avoided. Maybe other users have stronger opinions on this
 particular subject.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proofs of structural properties of arguments in match in coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proofs-of-structural-properties-of-arguments-in-match-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="proofs-of-structural-properties-of-arguments-in-match-in-coq">
 <h1 class="title">Proofs of structural properties of arguments in match in coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/66064683">https://stackoverflow.com/q/66064683</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/66064683">https://stackoverflow.com/q/66064683</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I would like to write a safe zip function in coq that accepts the
 argument length equality as an argument.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="proofs-of-structural-properties-of-arguments-in-match-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="proofs-of-structural-properties-of-arguments-in-match-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">zip</span> {<span class="nv">b</span> <span class="nv">a</span>:<span class="kt">Type</span>} (<span class="nv">l1</span> : list a) (<span class="nv">l2</span> : list b)
@@ -52,9 +49,9 @@ The term <span class="s2">&quot;zip b a a&#39; b&#39;&quot;</span> has type
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;list (a * b)&quot;</span>.</blockquote></div></div></small></span></pre><p>what is the general approach to this kind of problem? I would
 appreciate comments and resources on using refinement types in the
 context of coq functions generally.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Here is the best approach to this particular problem, in my opinion:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -66,10 +63,10 @@ context of coq functions generally.</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">zip</span> {<span class="nv">A</span> <span class="nv">B</span>} (<span class="nv">xs</span> : list A) (<span class="nv">ys</span> : list B) (<span class="nv">_</span> : length xs = length ys) :=
-  zip_pre xs ys.</span></span></pre><p>In words, we first define a version of <tt class="docutils literal">zip</tt> that does not care
+  zip_pre xs ys.</span></span></pre><p>In words, we first define a version of <span class="docutils literal">zip</span> that does not care
 about lengths, and then we use that to define the function you're
 looking for.</p>
-<p>This might feel like cheating; after all, the <tt class="docutils literal">zip</tt> function doesn't
+<p>This might feel like cheating; after all, the <span class="docutils literal">zip</span> function doesn't
 even use its proof argument! Here is another version that is perhaps
 closer to what you were originally looking for:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">zip&#39;</span> {<span class="nv">A</span> <span class="nv">B</span>} (<span class="nv">xs</span> : list A) (<span class="nv">ys</span> : list B) :
@@ -81,59 +78,57 @@ closer to what you were originally looking for:</p>
   | [], [] =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; []
   | x :: xs, [] =&gt; <span class="kr">fun</span> <span class="nv">H</span> : S (length xs) = <span class="mi">0</span> =&gt; <span class="kp">ltac</span>:(<span class="bp">easy</span>)
   | [], y :: ys =&gt; <span class="kr">fun</span> <span class="nv">H</span> : <span class="mi">0</span> = S (length ys) =&gt; <span class="kp">ltac</span>:(<span class="bp">easy</span>)
-  <span class="kr">end</span>.</span></span></pre><p>Unlike <tt class="docutils literal">zip</tt>, <tt class="docutils literal">zip'</tt> uses its proof argument in two ways. In the
-contradictory cases, it invokes some tactic code (<tt class="docutils literal"><span class="pre">ltac:(easy)</span></tt>) to
+  <span class="kr">end</span>.</span></span></pre><p>Unlike <span class="docutils literal">zip</span>, <span class="docutils literal">zip'</span> uses its proof argument in two ways. In the
+contradictory cases, it invokes some tactic code (<span class="docutils literal"><span class="pre">ltac:(easy)</span></span>) to
 argue that this case cannot arise. In the recursive case, it needs to
-find a proof of <tt class="docutils literal">length xs = length ys</tt> to apply the recursive call;
-for this, it uses the <tt class="docutils literal">congruence</tt> tactic.</p>
-<p>Why is <tt class="docutils literal">zip</tt> better than <tt class="docutils literal">zip'</tt>? Its code is shorter and easier to
-read. In particular, note how <tt class="docutils literal">zip'</tt> has a match returning a
+find a proof of <span class="docutils literal">length xs = length ys</span> to apply the recursive call;
+for this, it uses the <span class="docutils literal">congruence</span> tactic.</p>
+<p>Why is <span class="docutils literal">zip</span> better than <span class="docutils literal">zip'</span>? Its code is shorter and easier to
+read. In particular, note how <span class="docutils literal">zip'</span> has a match returning a
 function. This idiom, known as the <em>convoy pattern</em>, is needed
 whenever we need to refine the type of an argument in a pattern
-matching branch. Actually, <tt class="docutils literal">zip'</tt> is even worse than what you might
+matching branch. Actually, <span class="docutils literal">zip'</span> is even worse than what you might
 think, because the tactics that discharge the proof obligations
-generate code. Try printing <tt class="docutils literal">zip'</tt> to see what the definition really
+generate code. Try printing <span class="docutils literal">zip'</span> to see what the definition really
 looks like! Sadly, this ugliness is not just cosmetic: these more
 complicated definitions are much harder to reason about. For instance,
-it is possible to prove that <tt class="docutils literal">zip</tt> and <tt class="docutils literal">zip'</tt> always produce the
+it is possible to prove that <span class="docutils literal">zip</span> and <span class="docutils literal">zip'</span> always produce the
 same outputs. Try it to see how fun it is!</p>
 <p>To be fair, there are Coq plugins that make it easier to write this
 sort of code (e.g. the <a class="reference external" href="https://github.com/mattam82/Coq-Equations">Equations</a> plugin). But at the end
 of the day they will still generate code that is equivalent to
-<tt class="docutils literal">zip'</tt>. And in this case, the length hypothesis doesn't buy us much.</p>
+<span class="docutils literal">zip'</span>. And in this case, the length hypothesis doesn't buy us much.</p>
 <p>In general, one is better off avoiding dependent types in Coq, unless
 there is a strong argument that justifies the additional complexity.
-For instance, in the case of <tt class="docutils literal">zip</tt>, suppose that you have some code
-that uses a lot of different lists of the same length <tt class="docutils literal">n</tt>. You might
-want to argue that <tt class="docutils literal">zip</tt> has an inverse:</p>
-<pre class="code coq literal-block">
-<span class="kr">let</span> <span class="nv">xys</span> <span class="o">:=</span> <span class="n">zip</span> <span class="n">xs</span> <span class="n">ys</span> <span class="kr">in</span>
-<span class="o">(</span><span class="n">map</span> <span class="n">fst</span> <span class="n">xys</span><span class="o">,</span> <span class="n">map</span> <span class="n">snd</span> <span class="n">xys</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">).</span>
-</pre>
-<p>It is not possible to prove this result unless we know that <tt class="docutils literal">xs</tt> and
-<tt class="docutils literal">ys</tt> have the same length. We can add an additional hypothesis to
+For instance, in the case of <span class="docutils literal">zip</span>, suppose that you have some code
+that uses a lot of different lists of the same length <span class="docutils literal">n</span>. You might
+want to argue that <span class="docutils literal">zip</span> has an inverse:</p>
+<pre class="code coq literal-block"><code><span class="kr">let</span> <span class="nv">xys</span> <span class="o">:=</span> <span class="n">zip</span> <span class="n">xs</span> <span class="n">ys</span> <span class="kr">in</span>
+<span class="o">(</span><span class="n">map</span> <span class="n">fst</span> <span class="n">xys</span><span class="o">,</span> <span class="n">map</span> <span class="n">snd</span> <span class="n">xys</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">).</span></code></pre>
+<p>It is not possible to prove this result unless we know that <span class="docutils literal">xs</span> and
+<span class="docutils literal">ys</span> have the same length. We can add an additional hypothesis to
 our lemma, or we can work with length-indexed lists. Here is one
 possible definition:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">vec</span> <span class="nv">A</span> <span class="nv">n</span> := {l : list A | length l = n}.</span></span></pre><p>The <tt class="docutils literal">{.. | ..}</tt> is Coq's notation for refinement, or subset types.
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">vec</span> <span class="nv">A</span> <span class="nv">n</span> := {l : list A | length l = n}.</span></span></pre><p>The <span class="docutils literal">{.. | ..}</span> is Coq's notation for refinement, or subset types.
 We can then repackage some of the functions over lists to work over
-<tt class="docutils literal">vec</tt>. For instance, we can show that <tt class="docutils literal">map</tt> takes <tt class="docutils literal">vec A n</tt> to
-<tt class="docutils literal">vec B n</tt>. This approach pays off if you don't use many functions
-that require you to change the length index <tt class="docutils literal">n</tt>, because in those
+<span class="docutils literal">vec</span>. For instance, we can show that <span class="docutils literal">map</span> takes <span class="docutils literal">vec A n</span> to
+<span class="docutils literal">vec B n</span>. This approach pays off if you don't use many functions
+that require you to change the length index <span class="docutils literal">n</span>, because in those
 cases you need to reason about the equality of complicated length
-expressions on types, which Coq is not very good at. For <tt class="docutils literal">vec</tt> in
-particular, I would recommend you to have a look at the <tt class="docutils literal">tuple</tt>
+expressions on types, which Coq is not very good at. For <span class="docutils literal">vec</span> in
+particular, I would recommend you to have a look at the <span class="docutils literal">tuple</span>
 library of mathcomp (available <a class="reference external" href="https://math-comp.github.io/htmldoc/mathcomp.ssreflect.tuple.html">here</a>),
 which provides a good example of how this pattern can be used at
 scale.</p>
 <p><strong>Edit</strong></p>
 <ul class="simple">
-<li>More on the <tt class="docutils literal">easy</tt> tactic:
-<a class="reference external" href="https://coq.inria.fr/refman/proofs/automatic-tactics/auto.html#coq:tacn.easy">https://coq.inria.fr/refman/proofs/automatic-tactics/auto.html#coq:tacn.easy</a></li>
-<li>Calling tactic code to build terms:
-<a class="reference external" href="https://coq.github.io/doc/V8.11.1/refman/language/gallina-extensions.html#solving-existential-variables-using-tactics">https://coq.github.io/doc/V8.11.1/refman/language/gallina-extensions.html#solving-existential-variables-using-tactics</a></li>
+<li><p>More on the <span class="docutils literal">easy</span> tactic:
+<a class="reference external" href="https://coq.inria.fr/refman/proofs/automatic-tactics/auto.html#coq:tacn.easy">https://coq.inria.fr/refman/proofs/automatic-tactics/auto.html#coq:tacn.easy</a></p></li>
+<li><p>Calling tactic code to build terms:
+<a class="reference external" href="https://coq.github.io/doc/V8.11.1/refman/language/gallina-extensions.html#solving-existential-variables-using-tactics">https://coq.github.io/doc/V8.11.1/refman/language/gallina-extensions.html#solving-existential-variables-using-tactics</a></p></li>
 </ul>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

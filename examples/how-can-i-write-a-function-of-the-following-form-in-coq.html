@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How can I write a function of the following form in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,32 +14,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-write-a-function-of-the-following-form-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-can-i-write-a-function-of-the-following-form-in-coq">
 <h1 class="title">How can I write a function of the following form in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47947777">https://stackoverflow.com/q/47947777</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47947777">https://stackoverflow.com/q/47947777</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<pre class="code coq literal-block">
-<span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">subtermOfX</span><span class="o">)</span>
-</pre>
+<section id="question">
+<h2>Question</h2>
+<pre class="code coq literal-block"><code><span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="o">(</span><span class="n">g</span> <span class="n">subtermOfX</span><span class="o">)</span></code></pre>
 <p>Is recursion only allowed if the arg to the function is a direct
 subterm of the arg passed so that Coq can see that it actually
 terminates?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>It's possible to write such function <tt class="docutils literal">f</tt> if function <tt class="docutils literal">g</tt> preserves
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>It's possible to write such function <span class="docutils literal">f</span> if function <span class="docutils literal">g</span> preserves
 the property of being a subterm.</p>
-<p>Some of the standard functions have this property, e.g. <tt class="docutils literal">pred</tt>,
-<tt class="docutils literal">sub</tt>:</p>
+<p>Some of the standard functions have this property, e.g. <span class="docutils literal">pred</span>,
+<span class="docutils literal">sub</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Arith List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -49,7 +44,7 @@ the property of being a subterm.</p>
   | S x&#39; =&gt; foo (pred x&#39;)       <span class="c">(* foo (x&#39; - 1) works too *)</span>
   <span class="kr">end</span>.</span></span></pre><p>On the other hand some (standard) functions do not have this property,
 but can be rewritten to remedy this deficiency. E.g. the standard
-<tt class="docutils literal">tl</tt> function does not preserve the subterm property, so the
+<span class="docutils literal">tl</span> function does not preserve the subterm property, so the
 following fails:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-write-a-function-of-the-following-form-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="how-can-i-write-a-function-of-the-following-form-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">bar</span> (<span class="nv">xs</span> : list nat) : list nat :=
   <span class="kr">match</span> xs <span class="kr">with</span>
@@ -79,11 +74,11 @@ Recursive definition <span class="kr">is</span>:
   <span class="kr">match</span> xs <span class="kr">with</span>
   | [] =&gt; []
   | x :: xs&#39; =&gt; bar (new_tl xs&#39;)
-  <span class="kr">end</span>.</span></span></pre><p>The only difference between <tt class="docutils literal">tl</tt> and <tt class="docutils literal">new_tl</tt> is that in the case
-of empty input list <tt class="docutils literal">tl</tt> returns <tt class="docutils literal">[]</tt>, but <tt class="docutils literal">new_tl</tt> returns the
+  <span class="kr">end</span>.</span></span></pre><p>The only difference between <span class="docutils literal">tl</span> and <span class="docutils literal">new_tl</span> is that in the case
+of empty input list <span class="docutils literal">tl</span> returns <span class="docutils literal">[]</span>, but <span class="docutils literal">new_tl</span> returns the
 original list.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

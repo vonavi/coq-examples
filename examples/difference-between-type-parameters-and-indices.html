@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Difference between type parameters and indices?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,18 +14,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="difference-between-type-parameters-and-indices">
+<div class="alectryon-root alectryon-centered"><main id="difference-between-type-parameters-and-indices">
 <h1 class="title">Difference between type parameters and indices?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/24600256">https://stackoverflow.com/q/24600256</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/24600256">https://stackoverflow.com/q/24600256</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>I am new to dependent types and am confused about the difference
 between the two. It seems people usually say a type is <em>parameterized
 by another type</em> and <em>indexed by some value</em>. But isn't there no
@@ -33,19 +30,19 @@ distinction between types and terms in a dependently typed language?
 Is the distinction between parameters and indices fundamental? Can you
 show me examples showing difference in their meanings in both
 programming and theorem proving?</p>
-</div>
-<div class="section" id="answer-ptival">
-<h1>Answer (Ptival)</h1>
+</section>
+<section id="answer-ptival">
+<h2>Answer (Ptival)</h2>
 <p>When you see a family of types, you may wonder whether each of the
 arguments it has are <em>parameters</em> or <em>indices</em>.</p>
 <hr class="docutils" />
 <p><strong>Parameters</strong> are merely indicative that the type is somewhat
 generic, and behaves <em>parametrically</em> with regards to the argument
 supplied.</p>
-<p>What this means for instance, is that the type <tt class="docutils literal">List T</tt> will have
-the same shapes regardless of which <tt class="docutils literal">T</tt> you consider: <tt class="docutils literal">nil</tt>,
-<tt class="docutils literal">cons t0 nil</tt>, <tt class="docutils literal">cons t1 (cons t2 nil)</tt>, etc. The choice of <tt class="docutils literal">T</tt>
-only affects which values can be plugged for <tt class="docutils literal">t0</tt>, <tt class="docutils literal">t1</tt>, <tt class="docutils literal">t2</tt>.</p>
+<p>What this means for instance, is that the type <span class="docutils literal">List T</span> will have
+the same shapes regardless of which <span class="docutils literal">T</span> you consider: <span class="docutils literal">nil</span>,
+<span class="docutils literal">cons t0 nil</span>, <span class="docutils literal">cons t1 (cons t2 nil)</span>, etc. The choice of <span class="docutils literal">T</span>
+only affects which values can be plugged for <span class="docutils literal">t0</span>, <span class="docutils literal">t1</span>, <span class="docutils literal">t2</span>.</p>
 <hr class="docutils" />
 <p><strong>Indices</strong> on the other hand may affect which inhabitants you may
 find in the type! That's why we say they <em>index</em> a family of types,
@@ -53,9 +50,9 @@ that is, each index tells you which one of the types (within the
 family of types) you are looking at (in that sense, a parameter is a
 degenerate case where all the indices point to the same set of
 &quot;shapes&quot;).</p>
-<p>For instance, the type family <tt class="docutils literal">Fin n</tt> or finite sets of size <tt class="docutils literal">n</tt>
-contains very different structures depending on your choice of <tt class="docutils literal">n</tt>.</p>
-<p>The index <tt class="docutils literal">0</tt> indices an empty set. The index <tt class="docutils literal">1</tt> indices a set
+<p>For instance, the type family <span class="docutils literal">Fin n</span> or finite sets of size <span class="docutils literal">n</span>
+contains very different structures depending on your choice of <span class="docutils literal">n</span>.</p>
+<p>The index <span class="docutils literal">0</span> indices an empty set. The index <span class="docutils literal">1</span> indices a set
 with one element.</p>
 <p>In that sense, the knowledge of the value of the index may carry
 important information! Usually, you can learn which constructors may
@@ -69,23 +66,21 @@ define the parameters for the entire type, but you have to specify the
 indices for each constructor (since you are allowed to specify, for
 each constructor, what indices it lives at).</p>
 <p>For instance I can define:</p>
-<pre class="code agda literal-block">
-F<span class="w"> </span><span class="o">(</span>T<span class="w"> </span><span class="ow">:</span><span class="w"> </span>Type<span class="o">)</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>ℕ<span class="w"> </span><span class="ow">→</span><span class="w"> </span>Type<span class="w">
+<pre class="code agda literal-block"><code>F<span class="w"> </span><span class="o">(</span>T<span class="w"> </span><span class="ow">:</span><span class="w"> </span>Type<span class="o">)</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>ℕ<span class="w"> </span><span class="ow">→</span><span class="w"> </span>Type<span class="w">
 </span><span class="nf">C1</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>F<span class="w"> </span>T<span class="w"> </span><span class="mi">0</span><span class="w">
 </span><span class="nf">C2</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>F<span class="w"> </span>T<span class="w"> </span><span class="mi">1</span><span class="w">
-</span><span class="nf">C3</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>F<span class="w"> </span>T<span class="w"> </span><span class="mi">0</span>
-</pre>
-<p>Here, <tt class="docutils literal">T</tt> is a parameter, while <tt class="docutils literal">0</tt> and <tt class="docutils literal">1</tt> are indices. When
-you receive some <tt class="docutils literal">x</tt> of type <tt class="docutils literal">F T n</tt>, looking at what <tt class="docutils literal">T</tt> is
-will not reveal anything about <tt class="docutils literal">x</tt>. But looking at <tt class="docutils literal">n</tt> will tell
+</span><span class="nf">C3</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>F<span class="w"> </span>T<span class="w"> </span><span class="mi">0</span></code></pre>
+<p>Here, <span class="docutils literal">T</span> is a parameter, while <span class="docutils literal">0</span> and <span class="docutils literal">1</span> are indices. When
+you receive some <span class="docutils literal">x</span> of type <span class="docutils literal">F T n</span>, looking at what <span class="docutils literal">T</span> is
+will not reveal anything about <span class="docutils literal">x</span>. But looking at <span class="docutils literal">n</span> will tell
 you:</p>
 <ul class="simple">
-<li>that <tt class="docutils literal">x</tt> must be <tt class="docutils literal">C1</tt> or <tt class="docutils literal">C3</tt> when <tt class="docutils literal">n</tt> is <tt class="docutils literal">0</tt></li>
-<li>that <tt class="docutils literal">x</tt> must be <tt class="docutils literal">C2</tt> when <tt class="docutils literal">n</tt> is <tt class="docutils literal">1</tt></li>
-<li>that <tt class="docutils literal">x</tt> must have been forged from a contradiction otherwise</li>
+<li><p>that <span class="docutils literal">x</span> must be <span class="docutils literal">C1</span> or <span class="docutils literal">C3</span> when <span class="docutils literal">n</span> is <span class="docutils literal">0</span></p></li>
+<li><p>that <span class="docutils literal">x</span> must be <span class="docutils literal">C2</span> when <span class="docutils literal">n</span> is <span class="docutils literal">1</span></p></li>
+<li><p>that <span class="docutils literal">x</span> must have been forged from a contradiction otherwise</p></li>
 </ul>
-<p>Similarly, if you receive a <tt class="docutils literal">y</tt> of type <tt class="docutils literal">F T 0</tt>, you know that you
-need only pattern-match against <tt class="docutils literal">C1</tt> and <tt class="docutils literal">C3</tt>.</p>
+<p>Similarly, if you receive a <span class="docutils literal">y</span> of type <span class="docutils literal">F T 0</span>, you know that you
+need only pattern-match against <span class="docutils literal">C1</span> and <span class="docutils literal">C3</span>.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> Is there any advantage other than readability to declaring
 parameters as parameters (e.g. left of the colon) as opposed to as
@@ -96,12 +91,11 @@ eliminators generated by Coq, as well as the type-checking for
 depedent pattern-matching. It is &quot;better&quot; to put parameters on the
 left, as it indicates to Coq that the type is &quot;uniform&quot; in the choice
 of those parameters, which simplifies things for you down the road.</p>
-</div>
-<div class="section" id="answer-user3237465">
-<h1>Answer (user3237465)</h1>
+</section>
+<section id="answer-user3237465">
+<h2>Answer (user3237465)</h2>
 <p>Here is an example of a type paramerised by some value:</p>
-<pre class="code agda literal-block">
-<span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Nat</span><span class="w">
+<pre class="code agda literal-block"><code><span class="kr">open</span><span class="w"> </span><span class="kr">import</span><span class="w"> </span><span class="n">Data.Nat</span><span class="w">
 
 </span><span class="kr">infixr</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span>_∷_<span class="w">
 
@@ -116,16 +110,15 @@ of those parameters, which simplifies things for you down the road.</p>
 </span><span class="mi">3</span>≤3<span class="w"> </span><span class="ow">=</span><span class="w"> </span>s≤s<span class="w"> </span><span class="o">(</span>s≤s<span class="w"> </span><span class="o">(</span>s≤s<span class="w"> </span>z≤n<span class="o">))</span><span class="w">
 
 </span><span class="nf">example</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span>≤List<span class="w"> </span><span class="mi">3</span><span class="w">
-</span>example<span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="mi">3</span>≤3<span class="w"> </span>∷<span class="w"> </span><span class="mi">1</span>≤3<span class="w"> </span>∷<span class="w"> </span>[]
-</pre>
-<p>It's a type of lists with every element less or equal <tt class="docutils literal">n</tt>. The general intuition is: if some property holds for every inhabitant of a type, then you can abstract it into parameter. There is a mechanical rule also: &quot;The first index can be turned into a new parameter if each constructor has the same variable on the first index position (in the result type).&quot; This quote is from <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[*]</a>, you should read it.</p>
-<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[*]</a></td><td><a class="reference external" href="http://people.inf.elte.hu/divip/AgdaTutorial/Sets.Parameters_vs_Indices.html">http://people.inf.elte.hu/divip/AgdaTutorial/Sets.Parameters_vs_Indices.html</a></td></tr>
-</tbody>
-</table>
-</div>
-</div>
+</span>example<span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="mi">3</span>≤3<span class="w"> </span>∷<span class="w"> </span><span class="mi">1</span>≤3<span class="w"> </span>∷<span class="w"> </span>[]</code></pre>
+<p>It's a type of lists with every element less or equal <span class="docutils literal">n</span>. The general intuition is: if some property holds for every inhabitant of a type, then you can abstract it into parameter. There is a mechanical rule also: &quot;The first index can be turned into a new parameter if each constructor has the same variable on the first index position (in the result type).&quot; This quote is from <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a>, you should read it.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">*</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://people.inf.elte.hu/divip/AgdaTutorial/Sets.Parameters_vs_Indices.html">http://people.inf.elte.hu/divip/AgdaTutorial/Sets.Parameters_vs_Indices.html</a></p>
+</aside>
+</aside>
+</section>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Transform casual list into dependently typed list in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="transform-casual-list-into-dependently-typed-list-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="transform-casual-list-into-dependently-typed-list-in-coq">
 <h1 class="title">Transform casual list into dependently typed list in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55150915">https://stackoverflow.com/q/55150915</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55150915">https://stackoverflow.com/q/55150915</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have following definition of list in Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="transform-casual-list-into-dependently-typed-list-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="transform-casual-list-into-dependently-typed-list-in-coq-v-chk0"><span class="kn">Variable</span> <span class="nv">A</span> : <span class="kt">Set</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
 declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
@@ -44,11 +41,11 @@ qualification when imported. [local-declaration,scope]</blockquote></div></div><
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">plist</span> : nat -&gt; <span class="kt">Set</span> :=
 | pnil : plist O
 | pcons : A -&gt; <span class="kr">forall</span> <span class="nv">n</span>, plist n -&gt; plist n
-| pconsp : <span class="kr">forall</span> (<span class="nv">a</span> : A) <span class="nv">n</span>, plist n -&gt; P a -&gt; plist (S n).</span></span></pre><p>It describes &quot;list of elements of type <tt class="docutils literal">A</tt> where at least <tt class="docutils literal">n</tt> of
-them fulfill predicate <tt class="docutils literal">P</tt>&quot;.</p>
+| pconsp : <span class="kr">forall</span> (<span class="nv">a</span> : A) <span class="nv">n</span>, plist n -&gt; P a -&gt; plist (S n).</span></span></pre><p>It describes &quot;list of elements of type <span class="docutils literal">A</span> where at least <span class="docutils literal">n</span> of
+them fulfill predicate <span class="docutils literal">P</span>&quot;.</p>
 <p>My task is to create function that will convert casual list into
-<tt class="docutils literal">plist</tt> (with maximum possible <tt class="docutils literal">n</tt>). My attempt was to first count
-all elements that match <tt class="docutils literal">P</tt> and then set the output type according
+<span class="docutils literal">plist</span> (with maximum possible <span class="docutils literal">n</span>). My attempt was to first count
+all elements that match <span class="docutils literal">P</span> and then set the output type according
 to the result:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">pcount</span> (<span class="nv">l</span> : list A) : nat :=
   <span class="kr">match</span> l <span class="kr">with</span>
@@ -68,20 +65,19 @@ plistIn : <span class="kr">forall</span> <span class="nv">l</span> : list A, pli
 l : list A
 The term <span class="s2">&quot;pnil&quot;</span> has type <span class="s2">&quot;plist 0&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
- <span class="s2">&quot;plist (pcount ?l@{l1:=[]})&quot;</span>.</blockquote></div></div></small></span></pre><p>However, I get an error in the line with <tt class="docutils literal">left proof</tt>.</p>
-<p>The problem is that Coq cannot see that <tt class="docutils literal">S (pcount t)</tt> equals
-<tt class="docutils literal">pcount (h :: t)</tt> knowing that <tt class="docutils literal">P h</tt>, which was already proven. I
+ <span class="s2">&quot;plist (pcount ?l@{l1:=[]})&quot;</span>.</blockquote></div></div></small></span></pre><p>However, I get an error in the line with <span class="docutils literal">left proof</span>.</p>
+<p>The problem is that Coq cannot see that <span class="docutils literal">S (pcount t)</span> equals
+<span class="docutils literal">pcount (h :: t)</span> knowing that <span class="docutils literal">P h</span>, which was already proven. I
 cannot let Coq know this truth.</p>
 <p>How to define this function correctly? Is it even possible to do so?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can use dependent pattern-matching, as the result type <tt class="docutils literal">plist
-(pcount (h :: t))</tt> depends on whether <tt class="docutils literal">P_dec h</tt> is <tt class="docutils literal">left</tt> or
-<tt class="docutils literal">right</tt>.</p>
-<p>Below, the keyword <tt class="docutils literal">as</tt> introduces a new variable <tt class="docutils literal">p</tt>, and
-<tt class="docutils literal">return</tt> tells the type of the whole <tt class="docutils literal">match</tt> expression,
-parameterized by <tt class="docutils literal">p</tt>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can use dependent pattern-matching, as the result type <span class="docutils literal">plist (pcount (h :: t))</span> depends on whether <span class="docutils literal">P_dec h</span> is <span class="docutils literal">left</span> or
+<span class="docutils literal">right</span>.</p>
+<p>Below, the keyword <span class="docutils literal">as</span> introduces a new variable <span class="docutils literal">p</span>, and
+<span class="docutils literal">return</span> tells the type of the whole <span class="docutils literal">match</span> expression,
+parameterized by <span class="docutils literal">p</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">plistIn</span> (<span class="nv">l</span> : list A) : plist (pcount l) :=
   <span class="kr">match</span> l <span class="kr">with</span>
   | nil =&gt; pnil
@@ -89,29 +85,24 @@ parameterized by <tt class="docutils literal">p</tt>.</p>
               | <span class="nb">left</span> proof =&gt; pconsp h (pcount t) (plistIn t) proof
               | <span class="nb">right</span> _ =&gt; pcons h _ (plistIn t)
               <span class="kr">end</span>
-  <span class="kr">end</span>.</span></span></pre><p>The type <tt class="docutils literal">plist (if p then _ else _)</tt> must be equal to <tt class="docutils literal">plist
-(pcount (h :: t))</tt> when substituting <tt class="docutils literal">p := P_dec h</tt>. Then in each
-branch, say <tt class="docutils literal">left proof</tt>, you need to produce <tt class="docutils literal">plist (if left proof
-then _ else _)</tt> (which reduces to the left branch).</p>
+  <span class="kr">end</span>.</span></span></pre><p>The type <span class="docutils literal">plist (if p then _ else _)</span> must be equal to <span class="docutils literal">plist (pcount (h :: t))</span> when substituting <span class="docutils literal">p := P_dec h</span>. Then in each
+branch, say <span class="docutils literal">left proof</span>, you need to produce <span class="docutils literal">plist (if left proof then _ else _)</span> (which reduces to the left branch).</p>
 <p>It's a bit magical that Coq can infer what goes in the underscores
-here, but to be safe you can always spell it out: <tt class="docutils literal">if p then S
-(pcount t) else pcount t</tt> (which is meant to exactly match the
-definition of <tt class="docutils literal">pcount</tt>).</p>
+here, but to be safe you can always spell it out: <span class="docutils literal">if p then S (pcount t) else pcount t</span> (which is meant to exactly match the
+definition of <span class="docutils literal">pcount</span>).</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> Could you explain why <tt class="docutils literal">return if p then plist (S (pcount t))
-else plist (pcount t) with</tt> doesn't work here, or should I ask
+<p><strong>Q:</strong> Could you explain why <span class="docutils literal">return if p then plist (S (pcount t)) else plist (pcount t) with</span> doesn't work here, or should I ask
 another question?</p>
 <p><strong>A:</strong> That's fine here. This doesn't work because when checking
-whether <tt class="docutils literal">if P_dec h then plist (S (pcount t)) else plist (pcount t)</tt>
-is equal to <tt class="docutils literal">plist (if P_dec h then S (pcount t) else pcount t)</tt>,
+whether <span class="docutils literal">if P_dec h then plist (S (pcount t)) else plist (pcount t)</span>
+is equal to <span class="docutils literal">plist (if P_dec h then S (pcount t) else pcount t)</span>,
 the typechecker only considers beta-equivalence, but these two terms
-are not beta-equivalent. You may prove <tt class="docutils literal">(if ... then pcount ... else
-pcount ... ) = pcount (if ... then ... else <span class="pre">...)</span></tt> as a theorem, but
-this <tt class="docutils literal">=</tt> (&quot;propositional equality&quot;) is a much weaker notion of
+are not beta-equivalent. You may prove <span class="docutils literal">(if ... then pcount ... else pcount ... ) = pcount (if ... then ... else <span class="pre">...)</span></span> as a theorem, but
+this <span class="docutils literal">=</span> (&quot;propositional equality&quot;) is a much weaker notion of
 equality than beta-equivalence (or more precisely, &quot;definitional
 equality&quot;) which is used by the typechecker.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

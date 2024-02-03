@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Equality of dependent types and dependent values</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="equality-of-dependent-types-and-dependent-values">
+<div class="alectryon-root alectryon-centered"><main id="equality-of-dependent-types-and-dependent-values">
 <h1 class="title">Equality of dependent types and dependent values</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48227116">https://stackoverflow.com/q/48227116</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48227116">https://stackoverflow.com/q/48227116</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider a dependent type</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">dep</span> (<span class="nv">n</span> : nat) := mkDep : dep n.</span></span></pre><p>Now, consider a simple theorem I wish to prove:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-of-dependent-types-and-dependent-values-v-chk0"><span class="kn">Theorem</span> <span class="nf">equalTypes</span> (<span class="nv">n</span> <span class="nv">n&#39;</span> : nat) : n = n&#39; -&gt; dep n = dep n&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n = n&#39; -&gt; dep n = dep n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -40,46 +37,41 @@ n : nat
 n&#39; : nat
 The term <span class="s2">&quot;mkDep n&#39;&quot;</span> has type <span class="s2">&quot;dep n&#39;&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;dep n&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>This very <strong>statement</strong> is wrong, because the types <tt class="docutils literal">mkDep n</tt> and
-<tt class="docutils literal">mkDep n'</tt> don't match. However, in some sense, this statement is
-<strong>true</strong>, because they <em>are</em> the same value under the assumption <tt class="docutils literal">n =
-n'</tt>.</p>
+</span></span></pre><p>This very <strong>statement</strong> is wrong, because the types <span class="docutils literal">mkDep n</span> and
+<span class="docutils literal">mkDep n'</span> don't match. However, in some sense, this statement is
+<strong>true</strong>, because they <em>are</em> the same value under the assumption <span class="docutils literal">n = n'</span>.</p>
 <p>I wish to understand how to formalize and prove statements about
 dependent types (specifically, their equality and notions thereof)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <blockquote>
-How do I show that two dependent types are equal?</blockquote>
-<p>In this case, you can prove it with <tt class="docutils literal">apply f_equal; assumption</tt> or
-<tt class="docutils literal">subst; reflexivity</tt> (or <tt class="docutils literal">destruct H; reflexivity</tt> or <tt class="docutils literal">case H;
-reflexivity</tt> or <tt class="docutils literal">induction H; reflexivity</tt> or <tt class="docutils literal">exact (eq_rect n
-(fun n' =&gt; dep n = dep n') eq_refl n' H)</tt>).</p>
+<p>How do I show that two dependent types are equal?</p>
+</blockquote>
+<p>In this case, you can prove it with <span class="docutils literal">apply f_equal; assumption</span> or
+<span class="docutils literal">subst; reflexivity</span> (or <span class="docutils literal">destruct H; reflexivity</span> or <span class="docutils literal">case H; reflexivity</span> or <span class="docutils literal">induction H; reflexivity</span> or <span class="docutils literal">exact (eq_rect n (fun n' =&gt; dep n = dep n') eq_refl n' H)</span>).</p>
 <blockquote>
-What is a notion of type equality?</blockquote>
-<p>The same as any other equality; <tt class="docutils literal">Print eq.</tt> gives:</p>
+<p>What is a notion of type equality?</p>
+</blockquote>
+<p>The same as any other equality; <span class="docutils literal">Print eq.</span> gives:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">eq</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) : A -&gt; <span class="kt">Prop</span> :=
     eq_refl : x = x
 
 <span class="kn">Arguments</span> eq {A}%type_scope _ _
 <span class="kn">Arguments</span> eq_refl {A}%type_scope {x}, [_] _</blockquote></div></div></small></span></pre><p>which says that the only special fact you have to construct a proof of
-equality is that <tt class="docutils literal">x = x</tt> for any <tt class="docutils literal">x</tt>. The way to use a proof of
-equality, <tt class="docutils literal">eq_rect</tt>, is that, if you have <tt class="docutils literal">x = y</tt>, to prove a
-property <tt class="docutils literal">P</tt> of <tt class="docutils literal">y</tt>, it suffices to prove <tt class="docutils literal">P</tt> of <tt class="docutils literal">x</tt>. In this
-case, since we have <tt class="docutils literal">n = n'</tt>, to prove <tt class="docutils literal">dep n = dep n'</tt>, it
-suffices to prove <tt class="docutils literal">dep n = dep n</tt> (where <tt class="docutils literal">P := fun n' =&gt; dep n =
-dep n'</tt>).</p>
+equality is that <span class="docutils literal">x = x</span> for any <span class="docutils literal">x</span>. The way to use a proof of
+equality, <span class="docutils literal">eq_rect</span>, is that, if you have <span class="docutils literal">x = y</span>, to prove a
+property <span class="docutils literal">P</span> of <span class="docutils literal">y</span>, it suffices to prove <span class="docutils literal">P</span> of <span class="docutils literal">x</span>. In this
+case, since we have <span class="docutils literal">n = n'</span>, to prove <span class="docutils literal">dep n = dep n'</span>, it
+suffices to prove <span class="docutils literal">dep n = dep n</span> (where <span class="docutils literal">P := fun n' =&gt; dep n = dep n'</span>).</p>
 <p>There is a deeper sense in which this question can be asked, because
 it turns out that equality of types in Coq is under-constrained. Given</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">unit1</span> := tt1.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">unit2</span> := tt2.</span></span></pre><p>you can not prove <tt class="docutils literal">unit1 = unit2</tt>, nor can you prove <tt class="docutils literal">unit1 &lt;&gt;
-unit2</tt>. In fact, it turns out that the only type inequalities <tt class="docutils literal">T1 &lt;&gt;
-T2</tt> that you can prove are cases where you can prove that <tt class="docutils literal">T1</tt> and
-<tt class="docutils literal">T2</tt> are not isomorphic. The Univalence axiom is a way of &quot;filling
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">unit2</span> := tt2.</span></span></pre><p>you can not prove <span class="docutils literal">unit1 = unit2</span>, nor can you prove <span class="docutils literal">unit1 &lt;&gt; unit2</span>. In fact, it turns out that the only type inequalities <span class="docutils literal">T1 &lt;&gt; T2</span> that you can prove are cases where you can prove that <span class="docutils literal">T1</span> and
+<span class="docutils literal">T2</span> are not isomorphic. The Univalence axiom is a way of &quot;filling
 in the details&quot; of type equality to say that any isomorphic types are
 equal. There are other consistent interpretations, though (for
-example, I believe that it's consistent to assume <tt class="docutils literal">A * B = C * D <span class="pre">-&gt;</span> A
-= C /\ B = D</tt>, though this contradicts univalence).</p>
+example, I believe that it's consistent to assume <span class="docutils literal">A * B = C * D <span class="pre">-&gt;</span> A = C /\ B = D</span>, though this contradicts univalence).</p>
 <blockquote>
 <p>Worse, consider this &quot;theorem&quot; (which does not compile)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="equality-of-dependent-types-and-dependent-values-v-chk5"><span class="kn">Theorem</span> <span class="nf">equalInhabitants</span> (<span class="nv">n</span> <span class="nv">n&#39;</span> : nat): n = n&#39; -&gt; mkDep n = mkDep n&#39;.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
@@ -91,20 +83,20 @@ while it <span class="kr">is</span> expected to <span class="nb">have</span> typ
 <p>Right. This is because we do not have an equality reflection rule in
 Coq, and judgmental/definitional equality is not the same as
 propositional equality. The way to state this is to &quot;cast&quot; the term
-<tt class="docutils literal">mkDep n</tt> across the proof of equality.</p>
+<span class="docutils literal">mkDep n</span> across the proof of equality.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> EqNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-of-dependent-types-and-dependent-values-v-chk6"><span class="kn">Theorem</span> <span class="nf">equalInhabitants</span> (<span class="nv">n</span> <span class="nv">n&#39;</span> : nat) : <span class="kr">forall</span> <span class="nv">H</span> : n = n&#39;,
     rew H <span class="kr">in</span> mkDep n = mkDep n&#39;.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">H</span> : n = n&#39;, rew [dep] H <span class="kr">in</span> mkDep n = mkDep n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-of-dependent-types-and-dependent-values-v-chk7"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">H</span> : n = n&#39;, rew [dep] H <span class="kr">in</span> mkDep n = mkDep n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-of-dependent-types-and-dependent-values-v-chk8"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>n = n&#39;</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rew [dep] H <span class="kr">in</span> mkDep n = mkDep n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="equality-of-dependent-types-and-dependent-values-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="equality-of-dependent-types-and-dependent-values-v-chk9"><span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n'</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rew [dep] eq_refl <span class="kr">in</span> mkDep n&#39; = mkDep n&#39;</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Note that <tt class="docutils literal">rew</tt> binds more tightly than <tt class="docutils literal">=</tt>, and is a notation for
-<tt class="docutils literal">eq_rect</tt>. This says that for any proof <tt class="docutils literal">H</tt> of <tt class="docutils literal">n = n'</tt>, the
-term <tt class="docutils literal">mkDep n</tt>, when transported across <tt class="docutils literal">H</tt> to become a term of
-type <tt class="docutils literal">dep n'</tt>, is equal to <tt class="docutils literal">mkDep n'</tt>. (Note also that we could
-just as well have used <tt class="docutils literal">destruct H</tt> or <tt class="docutils literal">induction H</tt> or <tt class="docutils literal">case H</tt>
-(but not <tt class="docutils literal">apply f_equal</tt>) instead of <tt class="docutils literal">subst</tt>.)</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Note that <span class="docutils literal">rew</span> binds more tightly than <span class="docutils literal">=</span>, and is a notation for
+<span class="docutils literal">eq_rect</span>. This says that for any proof <span class="docutils literal">H</span> of <span class="docutils literal">n = n'</span>, the
+term <span class="docutils literal">mkDep n</span>, when transported across <span class="docutils literal">H</span> to become a term of
+type <span class="docutils literal">dep n'</span>, is equal to <span class="docutils literal">mkDep n'</span>. (Note also that we could
+just as well have used <span class="docutils literal">destruct H</span> or <span class="docutils literal">induction H</span> or <span class="docutils literal">case H</span>
+(but not <span class="docutils literal">apply f_equal</span>) instead of <span class="docutils literal">subst</span>.)</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

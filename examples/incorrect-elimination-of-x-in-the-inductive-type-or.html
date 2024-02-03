@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Incorrect elimination of X in the inductive type or</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="incorrect-elimination-of-x-in-the-inductive-type-or">
-<h1 class="title">Incorrect elimination of <tt class="docutils literal">X</tt> in the inductive type <tt class="docutils literal">or</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/32261254">https://stackoverflow.com/q/32261254</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="incorrect-elimination-of-x-in-the-inductive-type-or">
+<h1 class="title">Incorrect elimination of <span class="docutils literal">X</span> in the inductive type <span class="docutils literal">or</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/32261254">https://stackoverflow.com/q/32261254</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to define a relatively simple function on Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Preliminaries *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Vector.</span><span class="alectryon-wsp">
@@ -68,36 +65,34 @@ The term <span class="s2">&quot;f&#39; n = fn -&gt; option A&quot;</span> has ty
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Prop&quot;</span>
 (universe inconsistency: Cannot enforce <span class="kt">Set</span> = <span class="kt">Prop</span>).</blockquote></div></div></small></span></pre><p>I think I understand the reason for this limitation, but I am having
 difficulty coming up with a workaround. How something like this could
-be implemented? Basically I have a function <tt class="docutils literal">f'</tt> for which I have a
-separate proof that values less than <tt class="docutils literal">o</tt> it either returns <tt class="docutils literal">None</tt>
-or a <tt class="docutils literal">Some z</tt> where <tt class="docutils literal">z</tt> is less than <tt class="docutils literal">i</tt> and I am trying to use
+be implemented? Basically I have a function <span class="docutils literal">f'</span> for which I have a
+separate proof that values less than <span class="docutils literal">o</span> it either returns <span class="docutils literal">None</span>
+or a <span class="docutils literal">Some z</span> where <span class="docutils literal">z</span> is less than <span class="docutils literal">i</span> and I am trying to use
 it in my definition.</p>
-</div>
-<div class="section" id="answer-vinz">
-<h1>Answer (Vinz)</h1>
+</section>
+<section id="answer-vinz">
+<h2>Answer (Vinz)</h2>
 <p>The issue is that you want to build a term by inspecting the content
-of <tt class="docutils literal">f'_spec</tt>. This disjunction lives in <tt class="docutils literal">Prop</tt>, so it can only
-build other <tt class="docutils literal">Prop</tt>. You want to build more, something in <tt class="docutils literal">Type</tt>.
+of <span class="docutils literal">f'_spec</span>. This disjunction lives in <span class="docutils literal">Prop</span>, so it can only
+build other <span class="docutils literal">Prop</span>. You want to build more, something in <span class="docutils literal">Type</span>.
 Therefore you need a version of disjunction that lives at least in
-<tt class="docutils literal">Set</tt> (more generally in <tt class="docutils literal">Type</tt>). I advise you replace your <tt class="docutils literal">Foo
-\/ Bar</tt> statement with the usage of <tt class="docutils literal">sumbool</tt>, which uses the
-notation <tt class="docutils literal">{Foo} + {Bar}</tt>.</p>
+<span class="docutils literal">Set</span> (more generally in <span class="docutils literal">Type</span>). I advise you replace your <span class="docutils literal">Foo \/ Bar</span> statement with the usage of <span class="docutils literal">sumbool</span>, which uses the
+notation <span class="docutils literal">{Foo} + {Bar}</span>.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> What would be the other implications of using <tt class="docutils literal">sumbool</tt>
-instead of <tt class="docutils literal">\/</tt>? Any potential problems?</p>
-<p><strong>A:</strong> Basically if I give you <tt class="docutils literal">P : A \/ B</tt>, you can't tell if it
-<tt class="docutils literal">A</tt> or <tt class="docutils literal">B</tt> that its true. You just know one of them is. With <tt class="docutils literal">{A}
-+ {B}</tt>, you also get to know which one is true (because you can
+<p><strong>Q:</strong> What would be the other implications of using <span class="docutils literal">sumbool</span>
+instead of <span class="docutils literal">\/</span>? Any potential problems?</p>
+<p><strong>A:</strong> Basically if I give you <span class="docutils literal">P : A \/ B</span>, you can't tell if it
+<span class="docutils literal">A</span> or <span class="docutils literal">B</span> that its true. You just know one of them is. With <span class="docutils literal">{A} + {B}</span>, you also get to know which one is true (because you can
 destruct the term).</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>There are two approaches to a problem like this: the <em>easy way</em> and
 the <em>hard way</em>.</p>
 <p>The easy way is to think whether you're doing anything more
 complicated than you have to. In this case, if you look carefully, you
-will see that your <tt class="docutils literal">f'_spec</tt> is equivalent to the following
-statement, which avoids <tt class="docutils literal">\/</tt>:</p>
+will see that your <span class="docutils literal">f'_spec</span> is equivalent to the following
+statement, which avoids <span class="docutils literal">\/</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chk2"><span class="kn">Lemma</span> <span class="nf">f&#39;_spec_equiv</span> <span class="nv">i</span> <span class="nv">o</span> (<span class="nv">f&#39;</span> : nat -&gt; option nat) :
   (<span class="kr">forall</span> <span class="nv">x</span>, x &lt; o -&gt; (<span class="kr">forall</span> <span class="nv">z</span>, f&#39; x = Some z -&gt; z &lt; i) \/ f&#39; x = None)
   &lt;-&gt; (<span class="kr">forall</span> <span class="nv">x</span>, x &lt; o -&gt; <span class="kr">forall</span> <span class="nv">z</span>, f&#39; x = Some z -&gt; z &lt; i).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">forall</span> <span class="nv">x</span> : nat,
@@ -145,8 +140,8 @@ f&#39; x = None</div></blockquote></div></div></small><span class="alectryon-wsp
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="incorrect-elimination-of-x-in-the-inductive-type-or-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="incorrect-elimination-of-x-in-the-inductive-type-or-v-chka"><span class="nb">left</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i, o</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>f'</var><span class="hyp-type"><b>: </b><span>nat -&gt; option nat</span></span></span><br><span><var>f'_spec</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> : nat,
 x &lt; o -&gt;
 <span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>Hx</var><span class="hyp-type"><b>: </b><span>x &lt; o</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">z</span> : nat, f&#39; x = Some z -&gt; z &lt; i</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">eauto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Thus, you could have rephrased the type of <tt class="docutils literal">f'_spec</tt> in
-<tt class="docutils literal">VnthIndexedMapped</tt> and used the proof directly.</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Thus, you could have rephrased the type of <span class="docutils literal">f'_spec</span> in
+<span class="docutils literal">VnthIndexedMapped</span> and used the proof directly.</p>
 <p>Of course, sometimes there's no way of making things simpler. Then you
 need to follow the hard way, and try to understand the nitty-gritty
 details of Coq to make it accept what you want.</p>
@@ -168,14 +163,14 @@ instance, you can write this:</p>
   | Some z =&gt; <span class="kr">fun</span> <span class="nv">p</span> =&gt;
                 <span class="kr">let</span> <span class="nv">p&#39;</span> := proj1 (f&#39;_spec_equiv i o f&#39;) f&#39;_spec n np z p <span class="kr">in</span>
                 Vnth x z p&#39;
-  <span class="kr">end</span> eq_refl.</span></span></pre><p>This definition uses the proof that both formulations of <tt class="docutils literal">f'_spec</tt>
+  <span class="kr">end</span> eq_refl.</span></span></pre><p>This definition uses the proof that both formulations of <span class="docutils literal">f'_spec</span>
 are equivalent, but the same idea would apply if they weren't, and you
 had some lemma allowing you to go from one to the other.</p>
 <p>I personally don't like this style very much, as it is hard to use and
 lends itself to programs that are complicated to read. But it can have
 its uses...</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

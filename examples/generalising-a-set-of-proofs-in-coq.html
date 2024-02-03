@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Generalising a set of proofs in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="generalising-a-set-of-proofs-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="generalising-a-set-of-proofs-in-coq">
 <h1 class="title">Generalising a set of proofs in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/53204593">https://stackoverflow.com/q/53204593</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/53204593">https://stackoverflow.com/q/53204593</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to complete the first part lab of the 6.826 MIT course,
 but I am unsure about a comment above one of the exercises that says I
 can solve a bunch of examples using the same proof. here is what i
@@ -115,8 +112,8 @@ mean:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generalising-a-set-of-proofs-in-coq-v-chk3a" style="display: none" type="checkbox"><label class="alectryon-input" for="generalising-a-set-of-proofs-in-coq-v-chk3a"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">0</span> = <span class="mi">3</span> \/
 (<span class="mi">3</span> = <span class="mi">3</span> \/ <span class="kt">False</span> \/ <span class="mi">1</span> = <span class="mi">3</span> \/ <span class="kt">False</span> \/ <span class="kt">False</span>) \/
 <span class="mi">2</span> = <span class="mi">3</span> \/ <span class="kt">False</span> \/ <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The code under the comments <tt class="docutils literal">EXERCISE</tt> have been completed as an
-exercise (though <tt class="docutils literal">ex7</tt> required some googling...), the hint for the
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The code under the comments <span class="docutils literal">EXERCISE</span> have been completed as an
+exercise (though <span class="docutils literal">ex7</span> required some googling...), the hint for the
 second exercise says 'Hint: The same proof will work for every
 example.' but i'm unsure how to write a proof for each one that isn't
 specific to that case.</p>
@@ -126,19 +123,18 @@ specific to that case.</p>
 direction as opposed to just being given a solution. If there is a
 particular tactic that would be useful here that I am perhaps missing
 it would be good to be pointed towards that...</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>I think you're just missing the <tt class="docutils literal">intuition</tt> tactic, which <tt class="docutils literal">intro</tt>s hypotheses when it sees <tt class="docutils literal">A <span class="pre">-&gt;</span> B</tt>, unfolds <tt class="docutils literal">~ P</tt> to <tt class="docutils literal">P <span class="pre">-&gt;</span>
-False</tt> and <tt class="docutils literal">intro</tt>'s that, splits <tt class="docutils literal">/\</tt>s and <tt class="docutils literal">\/</tt>s in the
-hypotheses, breaks <tt class="docutils literal">/\</tt>s in the goal into multiple subgoals, and
-uses <tt class="docutils literal">auto</tt> to search both branches of <tt class="docutils literal">\/</tt>s in the goal. That
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>I think you're just missing the <span class="docutils literal">intuition</span> tactic, which <span class="docutils literal">intro</span>s hypotheses when it sees <span class="docutils literal">A <span class="pre">-&gt;</span> B</span>, unfolds <span class="docutils literal">~ P</span> to <span class="docutils literal">P <span class="pre">-&gt;</span> False</span> and <span class="docutils literal">intro</span>'s that, splits <span class="docutils literal">/\</span>s and <span class="docutils literal">\/</span>s in the
+hypotheses, breaks <span class="docutils literal">/\</span>s in the goal into multiple subgoals, and
+uses <span class="docutils literal">auto</span> to search both branches of <span class="docutils literal">\/</span>s in the goal. That
 may seem like a lot but note that these are all basic strategies from
-logic (other than the call to <tt class="docutils literal">auto</tt>).</p>
+logic (other than the call to <span class="docutils literal">auto</span>).</p>
 <p>After you run simpl on each of these exercises you'll see it fits this
-form and then <tt class="docutils literal">intuition</tt> will work.</p>
+form and then <span class="docutils literal">intuition</span> will work.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

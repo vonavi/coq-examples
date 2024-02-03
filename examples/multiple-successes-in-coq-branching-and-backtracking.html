@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Multiple successes in Coq branching and backtracking?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,49 +14,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="multiple-successes-in-coq-branching-and-backtracking">
+<div class="alectryon-root alectryon-centered"><main id="multiple-successes-in-coq-branching-and-backtracking">
 <h1 class="title">Multiple successes in Coq branching and backtracking?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/38256705">https://stackoverflow.com/q/38256705</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/38256705">https://stackoverflow.com/q/38256705</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I am having trouble understanding the concept of <tt class="docutils literal">multiple
-successes</tt> in Coq's (8.5p1, ch9.2) branching and backtracking
+<section id="question">
+<h2>Question</h2>
+<p>I am having trouble understanding the concept of <span class="docutils literal">multiple successes</span> in Coq's (8.5p1, ch9.2) branching and backtracking
 behavior. For example, from the documentation:</p>
 <blockquote>
 <p><strong>Backtracking branching</strong></p>
 <p>We can branch with the following structure:</p>
-<pre class="code literal-block">
-expr1 + expr2
-</pre>
+<pre class="code literal-block"><code>expr1 + expr2</code></pre>
 <p>Tactics can be seen as having several successes. When a tactic
-fails it asks for more successes of the prior tactics. <tt class="docutils literal">expr1 +
-expr2</tt> has all the successes of <tt class="docutils literal">v1</tt> followed by all the
-successes of <tt class="docutils literal">v2</tt>.</p>
+fails it asks for more successes of the prior tactics. <span class="docutils literal">expr1 + expr2</span> has all the successes of <span class="docutils literal">v1</span> followed by all the
+successes of <span class="docutils literal">v2</span>.</p>
 </blockquote>
 <p>What I don't understand, is why do we need multiple successes in the
 first place? Isn't one success good enough to finish a proof?</p>
 <p>Also from the documentation, it seems that there are less costly
 branching rules that are somehow &quot;biased&quot;, including</p>
-<pre class="code coq literal-block">
-<span class="kp">first</span> <span class="o">[</span> <span class="n">expr1</span> <span class="o">|</span> <span class="o">:::</span> <span class="o">|</span> <span class="n">exprn</span> <span class="o">]</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kp">first</span> <span class="o">[</span> <span class="n">expr1</span> <span class="o">|</span> <span class="o">:::</span> <span class="o">|</span> <span class="n">exprn</span> <span class="o">]</span></code></pre>
 <p>and</p>
-<pre class="code coq literal-block">
-<span class="n">expr1</span> <span class="o">||</span> <span class="n">expr2</span>
-</pre>
-<p>Why do we need the more costly option <tt class="docutils literal">+</tt> and not always use the
+<pre class="code coq literal-block"><code><span class="n">expr1</span> <span class="o">||</span> <span class="n">expr2</span></code></pre>
+<p>Why do we need the more costly option <span class="docutils literal">+</span> and not always use the
 latter, more efficient tacticals?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The problem is that you are sometimes trying to discharge a goal but
 further subgoals might lead to a solution you thought would work to be
 rejected. If you accumulate all the successes then you can backtrack
@@ -65,20 +54,20 @@ search tree.</p>
 <p>Here is a silly example. let's say I want to prove this goal:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="multiple-successes-in-coq-branching-and-backtracking-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="multiple-successes-in-coq-branching-and-backtracking-v-chk0"><span class="kn">Goal</span> <span class="kr">exists</span> <span class="nv">m</span>, m = <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">m</span> : nat, m = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>Now, it's a fairly simple goal so I could do it manually but let's
-not. Let's write a tactic that, when confronted with an <tt class="docutils literal">exists</tt>,
+not. Let's write a tactic that, when confronted with an <span class="docutils literal">exists</span>,
 tries all the possible natural numbers. If I write:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">existNatFrom</span> n :=
   <span class="kr">exists</span> <span class="nv">n</span> || existNatFrom (S n).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">existNat</span> := existNatFrom O.</span></span></pre><p>then as soon as I have run <tt class="docutils literal">existNat</tt>, the system commits to the
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">existNat</span> := existNatFrom O.</span></span></pre><p>then as soon as I have run <span class="docutils literal">existNat</span>, the system commits to the
 first successful choice. In particular this means that despite the
-recursive definition of <tt class="docutils literal">existNatFrom</tt>, when calling <tt class="docutils literal">existNat</tt>
-I'll always get <tt class="docutils literal">O</tt> and only <tt class="docutils literal">O</tt>.</p>
+recursive definition of <span class="docutils literal">existNatFrom</span>, when calling <span class="docutils literal">existNat</span>
+I'll always get <span class="docutils literal">O</span> and only <span class="docutils literal">O</span>.</p>
 <p>The goal cannot be solved:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="multiple-successes-in-coq-branching-and-backtracking-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="multiple-successes-in-coq-branching-and-backtracking-v-chk1"><span class="kn">Goal</span> <span class="kr">exists</span> <span class="nv">m</span>, m = <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">m</span> : nat, m = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="multiple-successes-in-coq-branching-and-backtracking-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="multiple-successes-in-coq-branching-and-backtracking-v-chk2"><span class="kn">Fail</span> (existNat; <span class="bp">reflexivity</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Unable to <span class="nb">unify</span> <span class="s2">&quot;1&quot;</span> <span class="kr">with</span> <span class="s2">&quot;0&quot;</span>.</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">m</span> : nat, m = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>On the other hand, if I use <tt class="docutils literal">(+)</tt> instead of <tt class="docutils literal"><span class="pre">(||)</span></tt>, I'll go
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre><p>On the other hand, if I use <span class="docutils literal">(+)</span> instead of <span class="docutils literal"><span class="pre">(||)</span></span>, I'll go
 through all possible natural numbers (in a lazy manner, by using
 backtracking). So writing:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">existNatFrom&#39;</span> n :=
@@ -87,8 +76,8 @@ backtracking). So writing:</p>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Ltac</span> <span class="nf">existNat&#39;</span> := existNatFrom&#39; O.</span></span></pre><p>means that I can now prove the goal:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="multiple-successes-in-coq-branching-and-backtracking-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="multiple-successes-in-coq-branching-and-backtracking-v-chk3"><span class="kn">Goal</span> <span class="kr">exists</span> <span class="nv">m</span>, m = <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">m</span> : nat, m = <span class="mi">1</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input">existNat&#39;; <span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

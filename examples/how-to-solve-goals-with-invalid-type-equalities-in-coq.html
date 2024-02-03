@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to solve goals with invalid type equalities in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,42 +14,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-solve-goals-with-invalid-type-equalities-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-solve-goals-with-invalid-type-equalities-in-coq">
 <h1 class="title">How to solve goals with invalid type equalities in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/12224318">https://stackoverflow.com/q/12224318</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/12224318">https://stackoverflow.com/q/12224318</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>My proof scripts are giving me stupid type equalities like <tt class="docutils literal">nat =
-bool</tt> or <tt class="docutils literal">nat = list unit</tt> which I need to use to solve
-contradictory goals.</p>
-<p>In normal math, this would be trivial. Given sets <tt class="docutils literal">bool := { true,
-false }</tt> and <tt class="docutils literal">nat := { 0, 1, 2, ... }</tt> I know that <tt class="docutils literal">true ∈ bool</tt>,
-but <tt class="docutils literal">true ∉ nat</tt>, hence <tt class="docutils literal">bool ≠ nat</tt>. In Coq, I don't even know
-how to state that <tt class="docutils literal">true :̸ nat</tt>.</p>
-<div class="section" id="question-1">
+<section id="question">
 <h2>Question</h2>
+<p>My proof scripts are giving me stupid type equalities like <span class="docutils literal">nat = bool</span> or <span class="docutils literal">nat = list unit</span> which I need to use to solve
+contradictory goals.</p>
+<p>In normal math, this would be trivial. Given sets <span class="docutils literal">bool := { true, false }</span> and <span class="docutils literal">nat := { 0, 1, 2, ... }</span> I know that <span class="docutils literal">true ∈ bool</span>,
+but <span class="docutils literal">true ∉ nat</span>, hence <span class="docutils literal">bool ≠ nat</span>. In Coq, I don't even know
+how to state that <span class="docutils literal">true :̸ nat</span>.</p>
+<section id="question-1">
+<h3>Question</h3>
 <p>Is there a way to show that these equalities are false? Or maybe, is
 it impossible?</p>
-</div>
-</div>
-<div class="section" id="answer-pigworker">
-<h1>Answer (pigworker)</h1>
+</section>
+</section>
+<section id="answer-pigworker">
+<h2>Answer (pigworker)</h2>
 <p><strong>tl;dr</strong> Cardinality arguments are the only way to show types
 unequal. You can certainly automate cardinality arguments more
 effectively with a bit of reflection. If you want to go further, give
 your types a syntactic representation by constructing a universe,
 ensuring your proof obligations are framed as syntactic inequality of
 representations rather than semantic inequality of types.</p>
-<div class="section" id="isomorphism-as-equality">
-<h2>Isomorphism as Equality</h2>
+<section id="isomorphism-as-equality">
+<h3>Isomorphism as Equality</h3>
 <p>It's widely believed (and there may even be a proof of it somewhere)
 that Coq's logic is consistent with the axiom that <em>isomorphic</em> sets
 are <em>propositionally equal</em>. Indeed, this is a consequence of the
@@ -63,65 +58,56 @@ of the isomorphism is needed at any given moment.</p>
 inequality in the logic as it stands can hold by only refuting the
 existence of type isomorphism. As a result, your partial solution is,
 at least in principle, where it's at. Enumerability is rather key to
-showing non-isomorphism. I'm not sure what the status of <tt class="docutils literal">nat = (nat
-<span class="pre">-&gt;</span> nat)</tt> might be, but it is clear <em>from outside the system</em> that
-every inhabitant of <tt class="docutils literal">nat <span class="pre">-&gt;</span> nat</tt> has a normal form, and that there
+showing non-isomorphism. I'm not sure what the status of <span class="docutils literal">nat = (nat <span class="pre">-&gt;</span> nat)</span> might be, but it is clear <em>from outside the system</em> that
+every inhabitant of <span class="docutils literal">nat <span class="pre">-&gt;</span> nat</span> has a normal form, and that there
 are countably many normal forms: it's at least plausible that there
 are consistent axioms or reflection principles which make the logic
 more <em>intensional</em> and which validate that hypothesis.</p>
-</div>
-<div class="section" id="automating-cardinality-arguments">
-<h2>Automating Cardinality Arguments</h2>
+</section>
+<section id="automating-cardinality-arguments">
+<h3>Automating Cardinality Arguments</h3>
 <p>I can see two steps you might take to improve on the present
 situation. The less radical step is to improve your generic technology
 for making these cardinality arguments by better use of reflection.
 You're ideally placed to do so, because in general, you're looking to
 show that a finite set is distinct from some larger set. Suppose we
-have some notion of <tt class="docutils literal">DList A</tt>, a list of distinct elements of <tt class="docutils literal">A</tt>.
-If you can construct an <em>exhaustive</em> <tt class="docutils literal">DList A</tt> and a <em>longer</em>
-<tt class="docutils literal">DList B</tt>, then you can disprove <tt class="docutils literal">A = B</tt>.</p>
-<p>There's a lovely definition of <tt class="docutils literal">DList</tt> by <em>induction-recursion</em>, but
+have some notion of <span class="docutils literal">DList A</span>, a list of distinct elements of <span class="docutils literal">A</span>.
+If you can construct an <em>exhaustive</em> <span class="docutils literal">DList A</span> and a <em>longer</em>
+<span class="docutils literal">DList B</span>, then you can disprove <span class="docutils literal">A = B</span>.</p>
+<p>There's a lovely definition of <span class="docutils literal">DList</span> by <em>induction-recursion</em>, but
 Coq doesn't have induction-recursion. Fortunately, it's one of those
 definitions we can simulate by careful use of indexing. Forgive my
 informal syntax, but let's have</p>
-<pre class="code literal-block">
-Parameters
+<pre class="code literal-block"><code>Parameters
   A   : Set
   d   : A -&gt; A -&gt; bool
-  dok : forall x y, d x y = true -&gt; x = y -&gt; False
-</pre>
-<p>That's <tt class="docutils literal">d</tt> for &quot;distinct&quot;. If a set already has decidable equality,
-you can equip it with <tt class="docutils literal">d</tt> very easily. A large set can be equipped
-with an adequate <tt class="docutils literal">d</tt> for our purposes with not much work. And
+  dok : forall x y, d x y = true -&gt; x = y -&gt; False</code></pre>
+<p>That's <span class="docutils literal">d</span> for &quot;distinct&quot;. If a set already has decidable equality,
+you can equip it with <span class="docutils literal">d</span> very easily. A large set can be equipped
+with an adequate <span class="docutils literal">d</span> for our purposes with not much work. And
 actually, that's the crucial step: following the wisdom of the
 SSReflect team, we take advantage of the smallness of our domain by
-working with <tt class="docutils literal">bool</tt> rather than <tt class="docutils literal">Prop</tt>, and make the computer do
+working with <span class="docutils literal">bool</span> rather than <span class="docutils literal">Prop</span>, and make the computer do
 the heavy lifting.</p>
 <p>Now, let us have</p>
-<pre class="code literal-block">
-DListBody : (A -&gt; bool) -&gt; Set
-</pre>
+<pre class="code literal-block"><code>DListBody : (A -&gt; bool) -&gt; Set</code></pre>
 <p>where the index is the <em>freshness test</em> for the list</p>
-<pre class="code literal-block">
-dnil  : DListBody (const true) (* any element is fresh for the empty list *)
+<pre class="code literal-block"><code>dnil  : DListBody (const true) (* any element is fresh for the empty list *)
 dsnoc : forall f, (xs : DListBody f) -&gt; (x : A) -&gt; is_true (f x) -&gt;
-          DListBody (fun y =&gt; f y /\ d x y)
-</pre>
-<p>And if you like, you can define <tt class="docutils literal">DList</tt> wrapping <tt class="docutils literal">DListBody</tt>
+          DListBody (fun y =&gt; f y /\ d x y)</code></pre>
+<p>And if you like, you can define <span class="docutils literal">DList</span> wrapping <span class="docutils literal">DListBody</span>
 existentially. Perhaps that's actually hiding information we want,
 though, because to show such a thing exhaustive goes like this:</p>
-<pre class="code literal-block">
-Exhaustive (f : A -&gt; bool) (mylist : DListBody f) = forall x : A, is_false (f x)
-</pre>
-<p>So if you can write down a <tt class="docutils literal">DListBody</tt> for a finite enumeration, you
+<pre class="code literal-block"><code>Exhaustive (f : A -&gt; bool) (mylist : DListBody f) = forall x : A, is_false (f x)</code></pre>
+<p>So if you can write down a <span class="docutils literal">DListBody</span> for a finite enumeration, you
 can prove it exhaustive just by a case analysis with trivial subgoals.</p>
 <p>You then need only make the pigeonholing argument once. When you want
 to disprove an equality between types (assuming you already have
-suitable candidates for <tt class="docutils literal">d</tt>), you exhaustively enumerate the smaller
+suitable candidates for <span class="docutils literal">d</span>), you exhaustively enumerate the smaller
 and exhibit a longer list from the larger, and that's it.</p>
-</div>
-<div class="section" id="working-in-a-universe">
-<h2>Working in a Universe</h2>
+</section>
+<section id="working-in-a-universe">
+<h3>Working in a Universe</h3>
 <p>The more radical alternative is to question why you are getting these
 goals in the first place, and whether they really mean what you want
 them to. What are types supposed to be, really? There are multiple
@@ -137,49 +123,43 @@ constructor discrimination.</p>
 <p>The snag is that universe constructions can be a bit tricky in Coq,
 again because induction-recursion is unsupported. It depends heavily
 on what types you need to consider. Maybe you can define inductively
-some <tt class="docutils literal">U : Set</tt> then implement a recursive decoder <tt class="docutils literal">T : U <span class="pre">-&gt;</span> Set</tt>.
+some <span class="docutils literal">U : Set</span> then implement a recursive decoder <span class="docutils literal">T : U <span class="pre">-&gt;</span> Set</span>.
 That's certainly plausible for universes of simple types. If you want
 a universe of dependent types, things get a bit sweatier. You can at
 least do this much</p>
-<pre class="code literal-block">
-U : Type   (* note that we've gone up a size *)
+<pre class="code literal-block"><code>U : Type   (* note that we've gone up a size *)
 NAT : U
 PI : forall (A : Set), (A -&gt; U) -&gt; U
 
 T : U -&gt; Set
 T NAT = nat
-T (PI A B) = forall (a : A), T (B a)
-</pre>
-<p>but note that the domain of <tt class="docutils literal">PI</tt> is unencoded in <tt class="docutils literal">Set</tt>, not in
-<tt class="docutils literal">U</tt>. The inductive-recursive Agdans can get over this, defining
-<tt class="docutils literal">U</tt> and <tt class="docutils literal">T</tt> simultaneously</p>
-<pre class="code literal-block">
-U : Set   (* nice and small *)
+T (PI A B) = forall (a : A), T (B a)</code></pre>
+<p>but note that the domain of <span class="docutils literal">PI</span> is unencoded in <span class="docutils literal">Set</span>, not in
+<span class="docutils literal">U</span>. The inductive-recursive Agdans can get over this, defining
+<span class="docutils literal">U</span> and <span class="docutils literal">T</span> simultaneously</p>
+<pre class="code literal-block"><code>U : Set   (* nice and small *)
 NAT : U
 PI : forall (A : U), (T A -&gt; U) -&gt; U   (* note the use of T *)
 
 T : U -&gt; Set
 T NAT = nat
-T (PI A B) = forall (a : T A), T (B a)
-</pre>
+T (PI A B) = forall (a : T A), T (B a)</code></pre>
 <p>but Coq won't have that. Again, the workaround is to use indexing.
-Here the cost is that <tt class="docutils literal">U</tt> is inevitably large.</p>
-<pre class="code literal-block">
-U : Set -&gt; Type
+Here the cost is that <span class="docutils literal">U</span> is inevitably large.</p>
+<pre class="code literal-block"><code>U : Set -&gt; Type
 NAT : U nat
 PI : forall (A : Set) (B : A -&gt; Set),
-       U A -&gt; (forall a, U (B a)) -&gt; U (forall a, B a)
-</pre>
+       U A -&gt; (forall a, U (B a)) -&gt; U (forall a, B a)</code></pre>
 <p>But you can still get a lot of stuff done with a universe built that
 way. For example, one can equip such a universe with a computationally
 effective <a class="reference external" href="https://personal.cis.strath.ac.uk/conor.mcbride/pub/JOTT/coq/ott.v">extensional equality</a>.</p>
-</div>
-</div>
-<div class="section" id="answer-nobody">
-<h1>Answer (nobody)</h1>
-<div class="section" id="expanded-partial-solution">
-<h2>expanded <em>partial</em> solution</h2>
-<p>For reference, here is my proof for <tt class="docutils literal">nat = bool <span class="pre">-&gt;</span> False</tt>. (It's
+</section>
+</section>
+<section id="answer-nobody">
+<h2>Answer (nobody)</h2>
+<section id="expanded-partial-solution">
+<h3>expanded <em>partial</em> solution</h3>
+<p>For reference, here is my proof for <span class="docutils literal">nat = bool <span class="pre">-&gt;</span> False</span>. (It's
 quite long but I hope it's easy to see the general structure of this
 proof.)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-solve-goals-with-invalid-type-equalities-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-solve-goals-with-invalid-type-equalities-in-coq-v-chk0"><span class="kn">Goal</span> nat = bool -&gt; <span class="kt">False</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">nat = bool -&gt; <span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -227,9 +207,9 @@ phi m = phi n \/ phi n = phi o \/ phi m = phi o</span></span></span><br></div><s
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>As you can see, this is not really usable for large finite types (even
 if automated) -- the terms are too big. Any improvement on this would
 be great.</p>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

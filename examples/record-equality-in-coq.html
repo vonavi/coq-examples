@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Record equality in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="record-equality-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="record-equality-in-coq">
 <h1 class="title">Record equality in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/50924127">https://stackoverflow.com/q/50924127</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/50924127">https://stackoverflow.com/q/50924127</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>For example I have this sample record:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">Sample</span> := {
     SA :&gt; nat;
@@ -39,28 +36,27 @@
   ============================
   <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : Sample, a = b &lt;-&gt; a = b /\ a = b</blockquote></div></div></small></span></pre><p>Question 1: How to force Coq to show SA a instead of a?</p>
 <p>Question 2: How to proof this Lemma?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<div class="section" id="question-1">
-<h2>Question 1</h2>
-<p>Coq prints <tt class="docutils literal">SA</tt> because you declared it as a coercion. You can
-prevent this by adding the option <tt class="docutils literal">Set Printing Coercions.</tt> to your
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<section id="question-1">
+<h3>Question 1</h3>
+<p>Coq prints <span class="docutils literal">SA</span> because you declared it as a coercion. You can
+prevent this by adding the option <span class="docutils literal">Set Printing Coercions.</span> to your
 file. As far as I know, there is no way of just making Coq print only
-<tt class="docutils literal">SA</tt> but not other coercions such as <tt class="docutils literal">SB</tt>. You can, however,
-replace the <tt class="docutils literal">:&gt;</tt> by <tt class="docutils literal">:</tt> to prevent <tt class="docutils literal">SA</tt> from being declared as a
+<span class="docutils literal">SA</span> but not other coercions such as <span class="docutils literal">SB</span>. You can, however,
+replace the <span class="docutils literal">:&gt;</span> by <span class="docutils literal">:</span> to prevent <span class="docutils literal">SA</span> from being declared as a
 coercion.</p>
-</div>
-<div class="section" id="question-2">
-<h2>Question 2</h2>
+</section>
+<section id="question-2">
+<h3>Question 2</h3>
 <p>Your lemma cannot be proved without assuming extra axioms into Coq's
 theory. The problem is that you need to show that two proofs of
-<tt class="docutils literal">Z.abs_nat SB &lt;&gt; SA</tt> are equal in order to show that two records of
-type <tt class="docutils literal">Sample</tt> are equal, and there is nothing in Coq's theory that
+<span class="docutils literal">Z.abs_nat SB &lt;&gt; SA</span> are equal in order to show that two records of
+type <span class="docutils literal">Sample</span> are equal, and there is nothing in Coq's theory that
 can help you with that. You have two options:</p>
 <ol class="arabic">
-<li><p class="first">Use the axiom of proof irrelevance, which says <tt class="docutils literal">forall (P : Prop)
-(p1 p2 : P), p1 = p2</tt>. For example:</p>
+<li><p>Use the axiom of proof irrelevance, which says <span class="docutils literal">forall (P : Prop) (p1 p2 : P), p1 = p2</span>. For example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.ZArith.ZArith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Logic.ProofIrrelevance.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -91,12 +87,12 @@ y1 = y2 -&gt;
 {| SA := x1; SB := y1; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="record-equality-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="record-equality-in-coq-v-chk9"><span class="nb">intros</span> p1 p2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x1</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y1</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>x2</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>y2</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>e1</var><span class="hyp-type"><b>: </b><span>x1 = x2</span></span></span><br><span><var>e2</var><span class="hyp-type"><b>: </b><span>y1 = y2</span></span></span><br><span><var>p1, p2</var><span class="hyp-type"><b>: </b><span>Z.abs_nat y1 &lt;&gt; x1</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">{| SA := x1; SB := y1; SCond := p1 |} =
 {| SA := x1; SB := y1; SCond := p2 |}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> (proof_irrelevance _ p1 p2).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>(Note the calls to <tt class="docutils literal">revert</tt>: they are needed to prevent dependent
-type errors when rewriting with <tt class="docutils literal">e1</tt> and <tt class="docutils literal">e2</tt>.)</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>(Note the calls to <span class="docutils literal">revert</span>: they are needed to prevent dependent
+type errors when rewriting with <span class="docutils literal">e1</span> and <span class="docutils literal">e2</span>.)</p>
 </li>
-<li><p class="first">Replace inequality with a proposition for which proof irrelevance
+<li><p>Replace inequality with a proposition for which proof irrelevance
 is valid without extra axioms. A typical solution is to use a
-boolean version of the proposition. The <tt class="docutils literal">DecidableEqDepSet</tt>
+boolean version of the proposition. The <span class="docutils literal">DecidableEqDepSet</span>
 module shows that the proofs of equality for a type that has
 decidable equality, such as the booleans, satisfies proof
 irrelevance.</p>
@@ -142,9 +138,9 @@ y1 = y2 -&gt;
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> (BoolDecidableEqDepSet.UIP _ _ p1 p2).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></li>
 </ol>
+</section>
+</section>
 </div>
-</div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

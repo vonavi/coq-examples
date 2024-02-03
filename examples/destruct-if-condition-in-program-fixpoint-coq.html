@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Destruct if condition in program fixpoint Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="destruct-if-condition-in-program-fixpoint-coq">
+<div class="alectryon-root alectryon-centered"><main id="destruct-if-condition-in-program-fixpoint-coq">
 <h1 class="title">Destruct if condition in program fixpoint Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/51017689">https://stackoverflow.com/q/51017689</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/51017689">https://stackoverflow.com/q/51017689</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I want to proof the factor function correctness in <a class="reference external" href="https://stackoverflow.com/questions/51012942/use-proof-of-if-expression-true-in-then-part-coq">Use proof of if
 expression = true in then part coq</a></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> ZArith Znumtheory.</span><span class="alectryon-wsp">
@@ -82,7 +79,7 @@ expression = true in then part coq</a></p>
         (exist (<span class="kr">fun</span> <span class="nv">b</span> : Z =&gt; <span class="kr">exists</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a, <span class="mi">1</span> &lt; b)
            b
            (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
-              bgt1))) | a)</div></blockquote></div></div></small></span></pre><p>after <tt class="docutils literal">unfold</tt> I expected see a <tt class="docutils literal">if</tt> and destruct its condition,
+              bgt1))) | a)</div></blockquote></div></div></small></span></pre><p>after <span class="docutils literal">unfold</span> I expected see a <span class="docutils literal">if</span> and destruct its condition,
 but now I see this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chkb" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
@@ -100,13 +97,13 @@ but now I see this:</p>
              b
              (ex_intro (<span class="kr">fun</span> <span class="nv">_</span> : <span class="mi">0</span> &lt; a =&gt; <span class="mi">1</span> &lt; b) agt0
                 bgt1))) | a)</blockquote></div></div></small></span></pre><p>How I can complete the proof?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p><tt class="docutils literal">Program</tt> gives you terms that are difficult to work with, so you
-should prove a lemma that <tt class="docutils literal">factor</tt> is equal to its body, and then
-rewrite with that, instead of unfolding. (I used <tt class="docutils literal">match</tt> instead of
-<tt class="docutils literal">if</tt> to get hold of the <tt class="docutils literal">dvd</tt> proof term.)</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p><span class="docutils literal">Program</span> gives you terms that are difficult to work with, so you
+should prove a lemma that <span class="docutils literal">factor</span> is equal to its body, and then
+rewrite with that, instead of unfolding. (I used <span class="docutils literal">match</span> instead of
+<span class="docutils literal">if</span> to get hold of the <span class="docutils literal">dvd</span> proof term.)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chkc"><span class="kn">Lemma</span> <span class="nf">factor_lemma</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">agt0</span> <span class="nv">bgt1</span>:
   factor a b agt0 bgt1 =
   <span class="kr">match</span> Zdivide_dec b a <span class="kr">with</span>
@@ -1120,15 +1117,15 @@ g
         (projT1 x) (proj1_sig (projT2 x))
         (ex_proj1 (proj2_sig (projT2 x)))
         (ex_proj2 (proj2_sig (projT2 x))) d))</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">congruence</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>When you unfold and rewrite with <tt class="docutils literal">Fix_eq</tt> you get such a horrible
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>When you unfold and rewrite with <span class="docutils literal">Fix_eq</span> you get such a horrible
 goal term to look at that it's best to fold it quickly! :-) It can be
-handled with <tt class="docutils literal">reflexivity</tt> or <tt class="docutils literal">auto</tt> anyway.</p>
-<p>The second goal typically requires algebraic manipulation with <tt class="docutils literal">lia</tt>
+handled with <span class="docutils literal">reflexivity</span> or <span class="docutils literal">auto</span> anyway.</p>
+<p>The second goal typically requires algebraic manipulation with <span class="docutils literal">lia</span>
 or similar to show that the LHS equals RHS, but in this case it was
-sufficient with <tt class="docutils literal">congruence</tt>.</p>
-<p>How did I know to use <tt class="docutils literal">Fix_eq</tt>? When I unfolded <tt class="docutils literal">factor_func</tt> I
-saw it contained <tt class="docutils literal">Wf.Fix_sub</tt>, so I searched for lemmas with
-<tt class="docutils literal">Search (Wf.Fix_sub).</tt> and found a few.</p>
+sufficient with <span class="docutils literal">congruence</span>.</p>
+<p>How did I know to use <span class="docutils literal">Fix_eq</span>? When I unfolded <span class="docutils literal">factor_func</span> I
+saw it contained <span class="docutils literal">Wf.Fix_sub</span>, so I searched for lemmas with
+<span class="docutils literal">Search (Wf.Fix_sub).</span> and found a few.</p>
 <p>Now you should continue your proof by rewriting with the lemma:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="destruct-if-condition-in-program-fixpoint-coq-v-chk16" style="display: none" type="checkbox"><label class="alectryon-input" for="destruct-if-condition-in-program-fixpoint-coq-v-chk16"><span class="kn">Lemma</span> <span class="nf">factor_div</span> (<span class="nv">a</span> <span class="nv">b</span> : Z) (<span class="nv">agt0</span> : <span class="mi">0</span> &lt; a) (<span class="nv">bgt1</span> : <span class="mi">1</span> &lt; b) :
   (b ^ (factor a b agt0 bgt1) | a).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a, b</var><span class="hyp-type"><b>: </b><span>Z</span></span></span><br><span><var>agt0</var><span class="hyp-type"><b>: </b><span><span class="mi">0</span> &lt; a</span></span></span><br><span><var>bgt1</var><span class="hyp-type"><b>: </b><span><span class="mi">1</span> &lt; b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">(b ^ factor a b agt0 bgt1 | a)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -1157,8 +1154,8 @@ saw it contained <tt class="docutils literal">Wf.Fix_sub</tt>, so I searched for
    ^ (<span class="mi">1</span> +
       factor (a / b) b (divgt0 a b agt0 bgt1 d) bgt1)
   | a)</blockquote></div></div></small></span></pre><p>which probably makes more sense.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

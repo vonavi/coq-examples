@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Problems with dependent types in Coq proof assistant</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="problems-with-dependent-types-in-coq-proof-assistant">
+<div class="alectryon-root alectryon-centered"><main id="problems-with-dependent-types-in-coq-proof-assistant">
 <h1 class="title">Problems with dependent types in Coq proof assistant</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/43453365">https://stackoverflow.com/q/43453365</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/43453365">https://stackoverflow.com/q/43453365</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following simple expression language:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Exp</span> : <span class="kt">Set</span> :=
 | EConst : nat -&gt; Exp
@@ -41,7 +38,7 @@
                          Forall (WF env) es -&gt;
                          WF env (EFun n es).</span></span></pre><p>which basically states that every variable and function symbols must
 be defined in the environment. Now, I want to define a function that
-states the decidability of <tt class="docutils literal">WF</tt> predicate:</p>
+states the decidability of <span class="docutils literal">WF</span> predicate:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="problems-with-dependent-types-in-coq-proof-assistant-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="problems-with-dependent-types-in-coq-proof-assistant-v-chk0"><span class="kn">Definition</span> <span class="nf">WFDec</span> (<span class="nv">env</span> : Env) : <span class="kr">forall</span> <span class="nv">e</span>, {WF env e} + {~ WF env e}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>Env</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">e</span> : Exp, {WF env e} + {~ WF env e}</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="problems-with-dependent-types-in-coq-proof-assistant-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="problems-with-dependent-types-in-coq-proof-assistant-v-chk1"><span class="nb">refine</span> (<span class="kr">fix</span> wfdec e : {WF env e} + {~ WF env e} :=
             <span class="kr">match</span> e <span class="kr">as</span> e&#39; <span class="kr">return</span> e = e&#39; -&gt; {WF env e&#39;} + {~ WF env e&#39;} <span class="kr">with</span>
@@ -57,22 +54,20 @@ states the decidability of <tt class="docutils literal">WF</tt> predicate:</p>
                              | <span class="nb">right</span> _ _ =&gt; <span class="nb">right</span> _ _
                              <span class="kr">end</span>
             <span class="kr">end</span> (eq_refl e)); <span class="nb">clear</span> wfdec; <span class="nb">subst</span>; <span class="nb">eauto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>Env</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">WF env (EConst n)</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="problems-with-dependent-types-in-coq-proof-assistant-v-chk2" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>Env</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>i</var><span class="hyp-type"><b>: </b><span>In n env</span></span></span><br></div><label class="goal-separator" for="problems-with-dependent-types-in-coq-proof-assistant-v-chk2"><hr></label><div class="goal-conclusion">WF env (EVar n)</div></blockquote><input class="alectryon-extra-goal-toggle" id="problems-with-dependent-types-in-coq-proof-assistant-v-chk3" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>Env</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>~ In n env</span></span></span><br></div><label class="goal-separator" for="problems-with-dependent-types-in-coq-proof-assistant-v-chk3"><hr></label><div class="goal-conclusion">~ WF env (EVar n)</div></blockquote><input class="alectryon-extra-goal-toggle" id="problems-with-dependent-types-in-coq-proof-assistant-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>Env</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>es</var><span class="hyp-type"><b>: </b><span>list Exp</span></span></span><br><span><var>i</var><span class="hyp-type"><b>: </b><span>In n env</span></span></span><br></div><label class="goal-separator" for="problems-with-dependent-types-in-coq-proof-assistant-v-chk4"><hr></label><div class="goal-conclusion">{WF env (EFun n es)} + {~ WF env (EFun n es)}</div></blockquote><input class="alectryon-extra-goal-toggle" id="problems-with-dependent-types-in-coq-proof-assistant-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>Env</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>es</var><span class="hyp-type"><b>: </b><span>list Exp</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>~ In n env</span></span></span><br></div><label class="goal-separator" for="problems-with-dependent-types-in-coq-proof-assistant-v-chk5"><hr></label><div class="goal-conclusion">~ WF env (EFun n es)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>The trouble is how to state that <tt class="docutils literal">WF</tt> predicate holds or not for a
-list of expressions in the <tt class="docutils literal">EFun</tt> case. My obvious guess was:</p>
-<pre class="code coq literal-block">
-<span class="o">...</span>
+</span></span></pre><p>The trouble is how to state that <span class="docutils literal">WF</span> predicate holds or not for a
+list of expressions in the <span class="docutils literal">EFun</span> case. My obvious guess was:</p>
+<pre class="code coq literal-block"><code><span class="o">...</span>
 <span class="kr">match</span> <span class="n">Forall_dec</span> <span class="o">(</span><span class="n">WF</span> <span class="n">env</span><span class="o">)</span> <span class="n">wfdec</span> <span class="n">es</span> <span class="kr">with</span>
-<span class="o">...</span>
-</pre>
-<p>But Coq refuses it, arguing that the recursive call <tt class="docutils literal">wfdec</tt> is
+<span class="o">...</span></code></pre>
+<p>But Coq refuses it, arguing that the recursive call <span class="docutils literal">wfdec</span> is
 ill-formed. My question is: Is it possible to define decidability of
 such wellformedness predicate without changing the expression
 representation?</p>
 <p>The complete working code is at the following <a class="reference external" href="https://gist.github.com/rodrigogribeiro/132e4feca910f40198242d3da3eca040">gist</a>.</p>
-</div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
-<p>As a temporal workaround you can define <tt class="docutils literal">wf</tt> as:</p>
+</section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
+<p>As a temporal workaround you can define <span class="docutils literal">wf</span> as:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">wf</span> (<span class="nv">env</span> : Env) := <span class="kr">fix</span> <span class="kn">wf</span> (e : Exp) : bool :=
     <span class="kr">match</span> e <span class="kr">with</span>
     | EConst _ =&gt; true
@@ -80,7 +75,7 @@ representation?</p>
     | EFun v l =&gt; [&amp;&amp; v \<span class="kr">in</span> env &amp; <span class="kp">all</span> <span class="kn">wf</span> l]
     <span class="kr">end</span>.</span></span></pre><p>which is usually way more convenient to use. However, this definition
 will be pretty useless due to Coq generating the wrong induction
-principle for <tt class="docutils literal">exp</tt>, as it doesn't detect the list. What I usually
+principle for <span class="docutils literal">exp</span>, as it doesn't detect the list. What I usually
 do is to fix the induction principle manually, but this is costly.
 Example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
@@ -222,13 +217,13 @@ In x l -&gt; reflect (WF env x) (<span class="kn">wf</span> env x)</span></span>
  (<span class="kr">forall</span> <span class="nv">x</span> : Exp, In x l -&gt; reflect (WF env x) (b x)) -&gt;
  <span class="kp">all</span> b l) -&gt; n \<span class="kr">in</span> env /\ <span class="kp">all</span> (<span class="kn">wf</span> env) l</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">by</span> <span class="nb">auto</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
-<p>The problem is that <tt class="docutils literal">Forall_dec</tt> is defined as opaque in the
-standard library (that is, with <tt class="docutils literal">Qed</tt> instead of <tt class="docutils literal">Defined</tt>).
-Because of that, Coq does not know that the use of <tt class="docutils literal">wfdec</tt> is valid.</p>
-<p>The immediate solution to your problem is to redefine <tt class="docutils literal">Forall_dec</tt>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
+<p>The problem is that <span class="docutils literal">Forall_dec</span> is defined as opaque in the
+standard library (that is, with <span class="docutils literal">Qed</span> instead of <span class="docutils literal">Defined</span>).
+Because of that, Coq does not know that the use of <span class="docutils literal">wfdec</span> is valid.</p>
+<p>The immediate solution to your problem is to redefine <span class="docutils literal">Forall_dec</span>
 so that it is transparent. You can do this by printing the proof term
 that Coq generates and pasting it in your source file. I've added a
 <a class="reference external" href="https://gist.github.com/anonymous/5b3fdc11871e42b3e9cfe006f6d8cc76">gist</a>
@@ -236,15 +231,15 @@ here with a complete solution.</p>
 <p>Needless to say, this approach lends itself to bloated, hard to read,
 and hard to maintain code. As ejgallego was pointing out in his
 answer, your best bet in this case is probably to define a Boolean
-function that decides <tt class="docutils literal">WF</tt>, and use that instead of <tt class="docutils literal">WFDec</tt>. The
+function that decides <span class="docutils literal">WF</span>, and use that instead of <span class="docutils literal">WFDec</span>. The
 only problem with his approach, as he said, is that you will need to
-write your own induction principle to <tt class="docutils literal">Exp</tt> in order to prove that
+write your own induction principle to <span class="docutils literal">Exp</span> in order to prove that
 the Boolean version indeed decides the inductive definition. Adam
 Chlipala's CPDT has a <a class="reference external" href="http://adam.chlipala.net/cpdt/html/InductiveTypes.html">chapter</a> on
 inductive types that gives an example of such an induction principle;
 just look for &quot;nested inductive types&quot;.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

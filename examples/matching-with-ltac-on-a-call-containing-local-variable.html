@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Matching with Ltac on a call containing local variable</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,78 +14,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="matching-with-ltac-on-a-call-containing-local-variable">
+<div class="alectryon-root alectryon-centered"><main id="matching-with-ltac-on-a-call-containing-local-variable">
 <h1 class="title">Matching with Ltac on a call containing local variable</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48568716">https://stackoverflow.com/q/48568716</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48568716">https://stackoverflow.com/q/48568716</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have a goal that contains a call to some lemma <tt class="docutils literal">foo</tt> within branch
-of a match. That call uses as one of its arguments a variable <tt class="docutils literal">R</tt>
+<section id="question">
+<h2>Question</h2>
+<p>I have a goal that contains a call to some lemma <span class="docutils literal">foo</span> within branch
+of a match. That call uses as one of its arguments a variable <span class="docutils literal">R</span>
 local to the branch:</p>
-<pre class="code coq literal-block">
-<span class="o">|</span> <span class="n">SomeConstr</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">R</span> <span class="o">=&gt;</span> <span class="o">...</span> <span class="o">(</span><span class="n">foo</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="n">R</span><span class="o">)</span> <span class="o">...</span>
-</pre>
-<p>I would like to perform beta expansion on <tt class="docutils literal">foo</tt> so that the call
+<pre class="code coq literal-block"><code><span class="o">|</span> <span class="n">SomeConstr</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">R</span> <span class="o">=&gt;</span> <span class="o">...</span> <span class="o">(</span><span class="n">foo</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="n">R</span><span class="o">)</span> <span class="o">...</span></code></pre>
+<p>I would like to perform beta expansion on <span class="docutils literal">foo</span> so that the call
 becomes:</p>
-<pre class="code coq literal-block">
-<span class="o">|</span> <span class="n">SomeConstr</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">R</span> <span class="o">=&gt;</span> <span class="o">...</span> <span class="o">((</span><span class="kr">fun</span> <span class="nv">d</span> <span class="o">=&gt;</span> <span class="n">foo</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="n">d</span><span class="o">)</span> <span class="n">R</span><span class="o">)</span> <span class="o">...</span>
-</pre>
-<p>This will allow me to further generalize <tt class="docutils literal">(fun d =&gt; foo a b c d)</tt>,
+<pre class="code coq literal-block"><code><span class="o">|</span> <span class="n">SomeConstr</span> <span class="o">=&gt;</span> <span class="kr">fun</span> <span class="nv">R</span> <span class="o">=&gt;</span> <span class="o">...</span> <span class="o">((</span><span class="kr">fun</span> <span class="nv">d</span> <span class="o">=&gt;</span> <span class="n">foo</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="n">d</span><span class="o">)</span> <span class="n">R</span><span class="o">)</span> <span class="o">...</span></code></pre>
+<p>This will allow me to further generalize <span class="docutils literal">(fun d =&gt; foo a b c d)</span>,
 which will no loner rely on variables local to a branch. Since I am
 dealing with very large proofs I would like to write this using Ltac.
 Here's an attempt:</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="o">[</span> <span class="o">|-</span> <span class="kp">context</span><span class="o">[(</span><span class="n">foo</span> <span class="nl">?A</span> <span class="nl">?B</span> <span class="nl">?C</span> <span class="nl">?R</span><span class="o">)]</span> <span class="o">]</span> <span class="o">=&gt;</span>
   <span class="kr">let</span> <span class="nv">d</span> <span class="o">:=</span> <span class="kp">fresh</span> <span class="s2">&quot;d&quot;</span> <span class="kr">in</span>
   <span class="nb">replace</span> <span class="o">(</span><span class="n">foo</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span> <span class="n">R</span><span class="o">)</span> <span class="kr">with</span> <span class="o">((</span><span class="kr">fun</span> <span class="nv">d</span> <span class="o">=&gt;</span> <span class="n">foo</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span> <span class="n">d</span><span class="o">)</span> <span class="n">R</span><span class="o">)</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
 <p>That however fails with &quot;No matching clause for match&quot;. If I replace
-body of the <tt class="docutils literal">match</tt> branch with <tt class="docutils literal">idtac</tt> it still fails, so the
+body of the <span class="docutils literal">match</span> branch with <span class="docutils literal">idtac</span> it still fails, so the
 problem is clearly cause by failing to match a given expression.
 However, if I match one argument less then the match succeeds. For
 example:</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="o">[</span> <span class="o">|-</span> <span class="kp">context</span><span class="o">[(</span><span class="n">foo</span> <span class="nl">?A</span> <span class="nl">?B</span> <span class="nl">?C</span><span class="o">)]</span> <span class="o">]</span> <span class="o">=&gt;</span>
   <span class="kp">idtac</span> <span class="n">A</span><span class="o">;</span> <span class="kp">idtac</span> <span class="n">B</span><span class="o">;</span> <span class="kp">idtac</span> <span class="n">C</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
 <p>prints &quot;a&quot;, &quot;b&quot; and &quot;c&quot; in consequtive lines. I can also say:</p>
-<pre class="code coq literal-block">
-<span class="kr">match goal with</span>
+<pre class="code coq literal-block"><code><span class="kr">match goal with</span>
 <span class="o">|</span> <span class="o">[</span> <span class="o">|-</span> <span class="kp">context</span><span class="o">[(</span><span class="n">foo</span> <span class="nl">?A</span> <span class="nl">?B</span> <span class="nl">?C</span><span class="o">)]</span> <span class="o">]</span> <span class="o">=&gt;</span>
   <span class="kr">let</span> <span class="nv">d</span> <span class="o">:=</span> <span class="kp">fresh</span> <span class="s2">&quot;d&quot;</span> <span class="kr">in</span>
   <span class="nb">replace</span> <span class="o">(</span><span class="n">foo</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span><span class="o">)</span> <span class="kr">with</span> <span class="o">(</span><span class="kr">fun</span> <span class="nv">d</span> <span class="o">=&gt;</span> <span class="n">foo</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span> <span class="n">d</span><span class="o">)</span> <span class="bp">by</span> <span class="nb">auto</span>
-<span class="kr">end</span><span class="o">.</span>
-</pre>
+<span class="kr">end</span><span class="o">.</span></code></pre>
 <p>and this succeeds, but interestingly the goal remains unchaged, i.e.
-the call is still in the form <tt class="docutils literal">(foo a b c R)</tt> and not <tt class="docutils literal">((fun d =&gt;
-foo a b c d) R)</tt>. What am I doing wrong here?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The <tt class="docutils literal">replace</tt> tactic performs β reduction. You can see this by
+the call is still in the form <span class="docutils literal">(foo a b c R)</span> and not <span class="docutils literal">((fun d =&gt; foo a b c d) R)</span>. What am I doing wrong here?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The <span class="docutils literal">replace</span> tactic performs β reduction. You can see this by
 writing</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-with-ltac-on-a-call-containing-local-variable-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-with-ltac-on-a-call-containing-local-variable-v-chk0"><span class="kn">Goal</span> <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-with-ltac-on-a-call-containing-local-variable-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-with-ltac-on-a-call-containing-local-variable-v-chk1"><span class="nb">replace</span> <span class="kt">True</span> <span class="kr">with</span> ((<span class="kr">fun</span> <span class="nv">x</span> =&gt; x) <span class="kt">True</span>) <span class="bp">by</span> <span class="nb">auto</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>If you instead use the <tt class="docutils literal">change</tt> tactic (which only works when
-side-condition of <tt class="docutils literal">replace</tt> could be solved by <tt class="docutils literal">reflexivity</tt>),
+</span></span></pre><p>If you instead use the <span class="docutils literal">change</span> tactic (which only works when
+side-condition of <span class="docutils literal">replace</span> could be solved by <span class="docutils literal">reflexivity</span>),
 then it should work. For example,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-with-ltac-on-a-call-containing-local-variable-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-with-ltac-on-a-call-containing-local-variable-v-chk2"><span class="kn">Goal</span> <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-with-ltac-on-a-call-containing-local-variable-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-with-ltac-on-a-call-containing-local-variable-v-chk3"><span class="nb">change</span> <span class="kt">True</span> <span class="kr">with</span> ((<span class="kr">fun</span> <span class="nv">x</span> =&gt; x) <span class="kt">True</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">x</span> : <span class="kt">Prop</span> =&gt; x) <span class="kt">True</span></div></blockquote></div></div></small></span></pre><p>changes the goal to <tt class="docutils literal">(fun x : Prop =&gt; x) True</tt>.</p>
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="matching-with-ltac-on-a-call-containing-local-variable-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="matching-with-ltac-on-a-call-containing-local-variable-v-chk3"><span class="nb">change</span> <span class="kt">True</span> <span class="kr">with</span> ((<span class="kr">fun</span> <span class="nv">x</span> =&gt; x) <span class="kt">True</span>).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">fun</span> <span class="nv">x</span> : <span class="kt">Prop</span> =&gt; x) <span class="kt">True</span></div></blockquote></div></div></small></span></pre><p>changes the goal to <span class="docutils literal">(fun x : Prop =&gt; x) True</span>.</p>
 <p>This is undocumented, and I have reported it as <a class="reference external" href="https://github.com/coq/coq/issues/6684">an issue on GitHub</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

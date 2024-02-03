@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Fail to use let-destruct for tuple in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="fail-to-use-let-destruct-for-tuple-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="fail-to-use-let-destruct-for-tuple-in-coq">
 <h1 class="title">Fail to use let-destruct for tuple in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/30197166">https://stackoverflow.com/q/30197166</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/30197166">https://stackoverflow.com/q/30197166</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm a new user for Coq. I have defined some functions:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">p</span> (<span class="nv">a</span> : nat) := (a + <span class="mi">1</span>, a + <span class="mi">2</span>, a + <span class="mi">3</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -38,17 +35,17 @@ Destructing <span class="kr">let</span> <span class="nv">on</span> <span class="
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">q&#39;</span> :=
   <span class="kr">match</span> p <span class="mi">1</span> <span class="kr">with</span>
   | (s, r, t) =&gt; s + r + t
-  <span class="kr">end</span>.</span></span></pre><p>I'm trying to destruct the result of <tt class="docutils literal">p</tt> into a tuple
-representation. However coqc complains on <tt class="docutils literal">q</tt>:</p>
+  <span class="kr">end</span>.</span></span></pre><p>I'm trying to destruct the result of <span class="docutils literal">p</span> into a tuple
+representation. However coqc complains on <span class="docutils literal">q</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="fail-to-use-let-destruct-for-tuple-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
-Destructing <span class="kr">let</span> <span class="nv">on</span> <span class="nv">this</span> <span class="nv">type</span> <span class="nv">expects</span> <span class="mi">2</span> <span class="nv">variables</span>.</blockquote></div></div></small></span></pre><p>while <tt class="docutils literal">q'</tt> can pass the compilation. If I change <tt class="docutils literal">p</tt> to return a
-pair <tt class="docutils literal">(a + 1, a + 2)</tt>, the corresponding <tt class="docutils literal">q</tt> and <tt class="docutils literal">q'</tt> both work
+Destructing <span class="kr">let</span> <span class="nv">on</span> <span class="nv">this</span> <span class="nv">type</span> <span class="nv">expects</span> <span class="mi">2</span> <span class="nv">variables</span>.</blockquote></div></div></small></span></pre><p>while <span class="docutils literal">q'</span> can pass the compilation. If I change <span class="docutils literal">p</span> to return a
+pair <span class="docutils literal">(a + 1, a + 2)</span>, the corresponding <span class="docutils literal">q</span> and <span class="docutils literal">q'</span> both work
 fine.</p>
 <p><strong>Why let-destruct only allows pair? Or have I made any error in
 syntax?</strong> I've checked with Coq manual but found no clue.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>What is a bit confusing in Coq is that there are <em>two</em> different forms
 of destructing let. The one you are looking for needs a quote before
 the pattern:</p>
@@ -63,8 +60,8 @@ notations, or refer to constructor names in your patterns.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> So the 3-member tuple should be regarded as destructing again
 on the first member of pair, then I have to use 'quote'?</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

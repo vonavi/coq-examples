@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Existential instantiation and generalization in coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,40 +14,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="existential-instantiation-and-generalization-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="existential-instantiation-and-generalization-in-coq">
 <h1 class="title">Existential instantiation and generalization in coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/10686164">https://stackoverflow.com/q/10686164</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/10686164">https://stackoverflow.com/q/10686164</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Can someone please give me a simple example of existential
 instantiation and existential generalization in Coq? When I want to
-prove <tt class="docutils literal">exists x, P</tt>, where <tt class="docutils literal">P</tt> is some <tt class="docutils literal">Prop</tt> that uses <tt class="docutils literal">x</tt>, I
-often want to name <tt class="docutils literal">x</tt> (as <tt class="docutils literal">x0</tt> or some such), and manipulate
-<tt class="docutils literal">P</tt>. Can this be one in Coq?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+prove <span class="docutils literal">exists x, P</span>, where <span class="docutils literal">P</span> is some <span class="docutils literal">Prop</span> that uses <span class="docutils literal">x</span>, I
+often want to name <span class="docutils literal">x</span> (as <span class="docutils literal">x0</span> or some such), and manipulate
+<span class="docutils literal">P</span>. Can this be one in Coq?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>If you're going to prove the existential directly and not through a
-lemma, you can use <tt class="docutils literal">eapply ex_intro</tt>. This introduces an existential
-variable (written <tt class="docutils literal"><span class="pre">?42</span></tt>). You can then manipulate the term. To
+lemma, you can use <span class="docutils literal">eapply ex_intro</span>. This introduces an existential
+variable (written <span class="docutils literal"><span class="pre">?42</span></span>). You can then manipulate the term. To
 complete the proof, you need to eventually provide a way to construct
 a value for that variable. You can do this explicitly with the
-<tt class="docutils literal">instantiate</tt> tactic, or implicitly through tactics such as
-<tt class="docutils literal">eauto</tt>.</p>
+<span class="docutils literal">instantiate</span> tactic, or implicitly through tactics such as
+<span class="docutils literal">eauto</span>.</p>
 <p>Beware that it is often cumbersome to work with existential variables.
 Many tactics assume that all terms are instantiated and may hide
-existentials in subgoals; you'll only find out when <tt class="docutils literal">Qed</tt> tells you
+existentials in subgoals; you'll only find out when <span class="docutils literal">Qed</span> tells you
 &quot;Error: Attempt to save an incomplete proof&quot;. You should only use
 existential variables when you have a plan to instantiate them soon.</p>
-<p>Here's a silly example that illustrates the use of <tt class="docutils literal">eapply</tt>.</p>
+<p>Here's a silly example that illustrates the use of <span class="docutils literal">eapply</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-instantiation-and-generalization-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-instantiation-and-generalization-in-coq-v-chk0"><span class="kn">Goal</span> <span class="kr">exists</span> <span class="nv">x</span>, <span class="mi">1</span> + x = <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : nat, <span class="mi">1</span> + x = <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-instantiation-and-generalization-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-instantiation-and-generalization-in-coq-v-chk1"><span class="kn">Proof</span>.                        <span class="c">(* ⊢ exists x, 1 + x = 3 *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">exists</span> <span class="nv">x</span> : nat, <span class="mi">1</span> + x = <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="existential-instantiation-and-generalization-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="existential-instantiation-and-generalization-in-coq-v-chk2"><span class="nb">eapply</span> ex_intro.            <span class="c">(* ⊢ 1 + ?42 = 3 *)</span></label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">1</span> + <span class="nl">?x</span> = <span class="mi">3</span></div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -59,9 +56,9 @@ existential variables when you have a plan to instantiate them soon.</p>
 subgoals at the end of the proof - which is something I wished for for
 a long time.</p>
 <p><strong>A:</strong> An addition to the previous comment: this can be done with
-<tt class="docutils literal">Grab Existential Variables.</tt></p>
+<span class="docutils literal">Grab Existential Variables.</span></p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

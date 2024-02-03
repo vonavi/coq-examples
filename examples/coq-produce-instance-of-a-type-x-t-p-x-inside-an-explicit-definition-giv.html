@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq produce instance of a type {x : T | P x} inside an explicit definition given an x of type T</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,34 +14,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-given-an-x-of-type-t">
-<h1 class="title">Coq produce instance of a type <tt class="docutils literal">{x : T | P x}</tt> inside an explicit definition given an <tt class="docutils literal">x</tt> of type <tt class="docutils literal">T</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/885">https://proofassistants.stackexchange.com/q/885</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-given-an-x-of-type-t">
+<h1 class="title">Coq produce instance of a type <span class="docutils literal">{x : T | P x}</span> inside an explicit definition given an <span class="docutils literal">x</span> of type <span class="docutils literal">T</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://proofassistants.stackexchange.com/q/885">https://proofassistants.stackexchange.com/q/885</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to formalize a simple type system in Coq as an exercise.</p>
-<p>I have a type <tt class="docutils literal">Item</tt> and a type <tt class="docutils literal">{x : Item | IsNormal Item}</tt>. If
-<tt class="docutils literal">Sort</tt> is a constructor of <tt class="docutils literal">Item</tt> and <tt class="docutils literal">Sort</tt> satisfies
-<tt class="docutils literal">IsNormal</tt>, what's the most natural way to produce an instance of
-<tt class="docutils literal">{x : Item | IsNormal Item}</tt> where the <tt class="docutils literal">Item</tt> in question is
-<tt class="docutils literal">Sort</tt>?</p>
+<p>I have a type <span class="docutils literal">Item</span> and a type <span class="docutils literal">{x : Item | IsNormal Item}</span>. If
+<span class="docutils literal">Sort</span> is a constructor of <span class="docutils literal">Item</span> and <span class="docutils literal">Sort</span> satisfies
+<span class="docutils literal">IsNormal</span>, what's the most natural way to produce an instance of
+<span class="docutils literal">{x : Item | IsNormal Item}</span> where the <span class="docutils literal">Item</span> in question is
+<span class="docutils literal">Sort</span>?</p>
 <hr class="docutils" />
-<p>I have an inductive type called <tt class="docutils literal">Item</tt> which might be a read of a
-free variable (in this case a free variable is an <tt class="docutils literal">N</tt>).</p>
+<p>I have an inductive type called <span class="docutils literal">Item</span> which might be a read of a
+free variable (in this case a free variable is an <span class="docutils literal">N</span>).</p>
 <p>I want to introduce a distinction between terms that are headed by a
 variable read and terms that are definitely not headed by a variable.</p>
-<p>I'm trying to use <tt class="docutils literal">sig types</tt> for this (see <a class="reference external" href="https://proofassistants.stackexchange.com/a/731">this answer</a> and <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Specif.html">this link</a>).</p>
+<p>I'm trying to use <span class="docutils literal">sig types</span> for this (see <a class="reference external" href="https://proofassistants.stackexchange.com/a/731">this answer</a> and <a class="reference external" href="https://coq.inria.fr/library/Coq.Init.Specif.html">this link</a>).</p>
 <p>The thing I am having problems with is this definition. (I also tried
-a shorter version with <tt class="docutils literal">match x with | Read x' =&gt; env x' | _ =&gt; x
-end</tt> as the body)</p>
+a shorter version with <span class="docutils literal">match x with | Read x' =&gt; env x' | _ =&gt; x end</span> as the body)</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk0"><span class="kn">Definition</span> <span class="nf">in_env</span> (<span class="nv">env</span> : nat -&gt; NormalItem) (<span class="nv">x</span> : Item) : NormalItem :=
   <span class="kr">match</span> x <span class="kr">with</span>
   | Read x&#39; =&gt; env x&#39;
@@ -53,20 +49,20 @@ end</tt> as the body)</p>
 env : nat -&gt; NormalItem
 x : Item
 The term <span class="s2">&quot;Sort&quot;</span> has type <span class="s2">&quot;Item&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;NormalItem&quot;</span>.</blockquote></div></div></small></span></pre><p><tt class="docutils literal">NormalItem</tt> is defined as <tt class="docutils literal">{ x : Item | IsNormal x }</tt>, where
-<tt class="docutils literal">IsNormal</tt> picks out the members of <tt class="docutils literal">Item</tt> that are not headed by
-<tt class="docutils literal">Read</tt>.</p>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;NormalItem&quot;</span>.</blockquote></div></div></small></span></pre><p><span class="docutils literal">NormalItem</span> is defined as <span class="docutils literal">{ x : Item | IsNormal x }</span>, where
+<span class="docutils literal">IsNormal</span> picks out the members of <span class="docutils literal">Item</span> that are not headed by
+<span class="docutils literal">Read</span>.</p>
 <p>This definition doesn't type check (error shown below).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
 env : nat -&gt; NormalItem
 x : Item
 The term <span class="s2">&quot;Sort&quot;</span> has type <span class="s2">&quot;Item&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;NormalItem&quot;</span>.</blockquote></div></div></small></span></pre><p>I think this is because <tt class="docutils literal">Sort</tt> needs to instead be a pair consisting
-of an <tt class="docutils literal">Item</tt> and a proof that the item in question satisfies
-<tt class="docutils literal">isNormal</tt>. I cannot figure out, however, how to write such a thing.</p>
-<div class="section" id="appendix-a">
-<h2>Appendix A</h2>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;NormalItem&quot;</span>.</blockquote></div></div></small></span></pre><p>I think this is because <span class="docutils literal">Sort</span> needs to instead be a pair consisting
+of an <span class="docutils literal">Item</span> and a proof that the item in question satisfies
+<span class="docutils literal">isNormal</span>. I cannot figure out, however, how to write such a thing.</p>
+<section id="appendix-a">
+<h3>Appendix A</h3>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Specif.</span><span class="alectryon-wsp">
@@ -87,16 +83,15 @@ of an <tt class="docutils literal">Item</tt> and a proof that the item in questi
   | _ =&gt; <span class="kt">True</span>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">NormalItem</span> : <span class="kt">Type</span> := { x : Item | IsNormal x }.</span></span></pre></div>
-</div>
-<div class="section" id="answer-meven-lennon-bertrand">
-<h1>Answer (Meven Lennon-Bertrand)</h1>
-<p>If you look at how <tt class="docutils literal">{ x : A | P }</tt> is defined (for instance using
-<tt class="docutils literal">Locate &quot;{&quot;</tt>. to find out it's a notation for <tt class="docutils literal">sig</tt> and <tt class="docutils literal">Print
-sig</tt>. to see the definition of <tt class="docutils literal">sig</tt>), you can see that to
-construct an inhabitant of <tt class="docutils literal">NormalItem</tt> you indeed need to provide a
-pair (or, rather, two arguments) to the unique constructor <tt class="docutils literal">exists</tt>
-of <tt class="docutils literal">sig</tt>.</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">NormalItem</span> : <span class="kt">Type</span> := { x : Item | IsNormal x }.</span></span></pre></section>
+</section>
+<section id="answer-meven-lennon-bertrand">
+<h2>Answer (Meven Lennon-Bertrand)</h2>
+<p>If you look at how <span class="docutils literal">{ x : A | P }</span> is defined (for instance using
+<span class="docutils literal">Locate &quot;{&quot;</span>. to find out it's a notation for <span class="docutils literal">sig</span> and <span class="docutils literal">Print sig</span>. to see the definition of <span class="docutils literal">sig</span>), you can see that to
+construct an inhabitant of <span class="docutils literal">NormalItem</span> you indeed need to provide a
+pair (or, rather, two arguments) to the unique constructor <span class="docutils literal">exists</span>
+of <span class="docutils literal">sig</span>.</p>
 <p>There are two ways to do this. The first one is to simply alter your
 definition to the following (I took the liberty of factoring out the
 branches as you suggested)</p>
@@ -104,13 +99,12 @@ branches as you suggested)</p>
   <span class="kr">match</span> x <span class="kr">with</span>
   | Read x&#39; =&gt; env x&#39;
   | y =&gt; exist _ y I
-  <span class="kr">end</span>.</span></span></pre><p>here <tt class="docutils literal">I</tt> is the only constructor of <tt class="docutils literal">True</tt>, to which <tt class="docutils literal">IsNormal
-y</tt> reduces to in those branches.</p>
+  <span class="kr">end</span>.</span></span></pre><p>here <span class="docutils literal">I</span> is the only constructor of <span class="docutils literal">True</span>, to which <span class="docutils literal">IsNormal y</span> reduces to in those branches.</p>
 <p>Now this works on this simple example because the proof you have to
 write by hand is very simple, but often you want to do a &quot;mixed&quot;
 definition, where you give some part of it in a direct way, but write
 down proofs interactively. You can do this by hand, relying on the
-<tt class="docutils literal">refine</tt> tactic:</p>
+<span class="docutils literal">refine</span> tactic:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk2"><span class="kn">Definition</span> <span class="nf">in_env&#39;</span> (<span class="nv">env</span> : nat -&gt; NormalItem) (<span class="nv">x</span> : Item) : NormalItem.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>nat -&gt; NormalItem</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Item</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">NormalItem</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk3"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>env</var><span class="hyp-type"><b>: </b><span>nat -&gt; NormalItem</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>Item</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">NormalItem</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-produce-instance-of-a-type-x-t-p-x-inside-an-explicit-definition-giv-v-chk4"><span class="nb">refine</span> (
@@ -126,11 +120,11 @@ down proofs interactively. You can do this by hand, relying on the
 <a class="reference external" href="https://coq.inria.fr/refman/addendum/program.html">Program</a> and
 <a class="reference external" href="https://coq.inria.fr/refman/addendum/program.html">Equations</a> can
 help making this kind of definitions more natural.</p>
-</div>
-<div class="section" id="answer-andrej-bauer">
-<h1>Answer (Andrej Bauer)</h1>
+</section>
+<section id="answer-andrej-bauer">
+<h2>Answer (Andrej Bauer)</h2>
 <p>It is very unlikely that you really want to organize your
-formalization using predicates such as <tt class="docutils literal">IsNormal</tt>. Instead you
+formalization using predicates such as <span class="docutils literal">IsNormal</span>. Instead you
 should define types that already carry precisely the correct
 information and use those.</p>
 <p>I am guessing what you are doing, so for a better answer, please
@@ -149,8 +143,8 @@ explain in your question what the Grand Plan of your formalization is.</p>
   <span class="kr">match</span> x <span class="kr">with</span>
   | Read x&#39; =&gt; env x&#39;
   | Normal y =&gt; y
-  <span class="kr">end</span>.</span></span></pre></div>
+  <span class="kr">end</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

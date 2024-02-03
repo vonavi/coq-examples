@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: How are the equality tactics symmetry and transitivity defined?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,51 +14,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-how-are-the-equality-tactics-symmetry-and-transitivity-defined">
-<h1 class="title">Coq: How are the equality tactics <tt class="docutils literal">symmetry</tt> and <tt class="docutils literal">transitivity</tt> defined?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71024340">https://stackoverflow.com/q/71024340</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-how-are-the-equality-tactics-symmetry-and-transitivity-defined">
+<h1 class="title">Coq: How are the equality tactics <span class="docutils literal">symmetry</span> and <span class="docutils literal">transitivity</span> defined?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71024340">https://stackoverflow.com/q/71024340</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I'm interested in how the Coq tactics <tt class="docutils literal">symmetry</tt> and
-<tt class="docutils literal">transitivity</tt> actually work. I've read the Coq manual but this only
+<section id="question">
+<h2>Question</h2>
+<p>I'm interested in how the Coq tactics <span class="docutils literal">symmetry</span> and
+<span class="docutils literal">transitivity</span> actually work. I've read the Coq manual but this only
 describes what they do, not how they operate on a proof and change the
 proof states. As an example of what I'm looking for, in <em>Interactive
 Theorem Proving and Program Development</em>, the authors state that &quot;The
-reflexivity tactic actually is synonymous with <tt class="docutils literal">apply refl_equal</tt>&quot;
+reflexivity tactic actually is synonymous with <span class="docutils literal">apply refl_equal</span>&quot;
 (p. 124). But, the author refers the reader to the reference manual
-for <tt class="docutils literal">symmetry</tt> and <tt class="docutils literal">transitivity</tt>. I haven't found a good
+for <span class="docutils literal">symmetry</span> and <span class="docutils literal">transitivity</span>. I haven't found a good
 description of things that these two tactics are synonymous with in
 the same way.</p>
 <p>For clarification, the reason why I ask is that I have defined a path
-space <tt class="docutils literal">paths {A : UU} : A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> UU</tt> notated <tt class="docutils literal">a = b</tt> (like in
-<tt class="docutils literal">UniMath</tt>) which acts like an equivalence relation except for that
-<tt class="docutils literal">a = b</tt> is not a proposition but a type. For this reason I was
-unable to add this relation as an equivalence relation using <tt class="docutils literal">Add
-Parametric Relation</tt>. I'm trying to cook up a version of <tt class="docutils literal">symmetry</tt>
-and <tt class="docutils literal">transitivity</tt> with Ltac for this path space relation but I
-don't know how to change the proof state; knowing how <tt class="docutils literal">symmetry</tt> and
-<tt class="docutils literal">transitivity</tt> actually work might help.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+space <span class="docutils literal">paths {A : UU} : A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> UU</span> notated <span class="docutils literal">a = b</span> (like in
+<span class="docutils literal">UniMath</span>) which acts like an equivalence relation except for that
+<span class="docutils literal">a = b</span> is not a proposition but a type. For this reason I was
+unable to add this relation as an equivalence relation using <span class="docutils literal">Add Parametric Relation</span>. I'm trying to cook up a version of <span class="docutils literal">symmetry</span>
+and <span class="docutils literal">transitivity</span> with Ltac for this path space relation but I
+don't know how to change the proof state; knowing how <span class="docutils literal">symmetry</span> and
+<span class="docutils literal">transitivity</span> actually work might help.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>These tactics only apply the lemmas corresponding to symmetry and
 transitivity of the relation it finds in the goal. These are found
 using the type classes mechanism.</p>
 <p>For instance you could declare</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> RelationClasses.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-are-the-equality-tacticts-symmetry-and-transitivity-defined-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-are-the-equality-tacticts-symmetry-and-transitivity-defined-v-chk0"><span class="kn">Instance</span> <span class="nf">trans</span> : Transitive R.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">Transitive R</div></blockquote></div></div></small></span></pre><p>which would ask you to prove <tt class="docutils literal">R</tt> is transitive and then you would be
-able to use the tactic <tt class="docutils literal">transitivity</tt> to prove <tt class="docutils literal">R x y</tt>.</p>
+</span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-how-are-the-equality-tacticts-symmetry-and-transitivity-defined-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-how-are-the-equality-tacticts-symmetry-and-transitivity-defined-v-chk0"><span class="kn">Instance</span> <span class="nf">trans</span> : Transitive R.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">Transitive R</div></blockquote></div></div></small></span></pre><p>which would ask you to prove <span class="docutils literal">R</span> is transitive and then you would be
+able to use the tactic <span class="docutils literal">transitivity</span> to prove <span class="docutils literal">R x y</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

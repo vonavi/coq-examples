@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Agda-like programming in Coq/Proof General?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,38 +14,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="agda-like-programming-in-coq-proof-general">
+<div class="alectryon-root alectryon-centered"><main id="agda-like-programming-in-coq-proof-general">
 <h1 class="title">Agda-like programming in Coq/Proof General?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41837820">https://stackoverflow.com/q/41837820</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/41837820">https://stackoverflow.com/q/41837820</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Unlike Agda, Coq tends to separate proofs from functions. The tactics
 Coq gives are great for writing proofs, but I'm wondering if there is
 a way to replicate some Agda-mode functionality.</p>
 <p>Specifically, I'd like:</p>
 <ul class="simple">
-<li>Some equivalent of Agda's <tt class="docutils literal">?</tt> or Haskell's <tt class="docutils literal">_</tt>, where I can omit
+<li><p>Some equivalent of Agda's <span class="docutils literal">?</span> or Haskell's <span class="docutils literal">_</span>, where I can omit
 part of a function while I'm writing it, and (hopefully) have Coq
-tell me the type I need to put there</li>
-<li>An equivalent of <tt class="docutils literal"><span class="pre">C-c</span> <span class="pre">C-r</span></tt> in Agda mode (<tt class="docutils literal">reify</tt>), where you
-fill a <tt class="docutils literal">?</tt> block with a function, and it will make new <tt class="docutils literal">?</tt>
-blocks for the needed arguments</li>
-<li>When I'm doing a <tt class="docutils literal">match</tt> in a function, having Coq automatically
-write expand out the possible branches (like <tt class="docutils literal"><span class="pre">C-c</span> <span class="pre">C-a</span></tt> in
-Agda-mode)</li>
+tell me the type I need to put there</p></li>
+<li><p>An equivalent of <span class="docutils literal"><span class="pre">C-c</span> <span class="pre">C-r</span></span> in Agda mode (<span class="docutils literal">reify</span>), where you
+fill a <span class="docutils literal">?</span> block with a function, and it will make new <span class="docutils literal">?</span>
+blocks for the needed arguments</p></li>
+<li><p>When I'm doing a <span class="docutils literal">match</span> in a function, having Coq automatically
+write expand out the possible branches (like <span class="docutils literal"><span class="pre">C-c</span> <span class="pre">C-a</span></span> in
+Agda-mode)</p></li>
 </ul>
 <p>Is this possible, in CoqIde or Proof General?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Let me teach you one weird trick. It may not be the answer to all your
 concerns, but it might help, at least conceptually.</p>
 <p>Let's implement addition for natural numbers, the latter being given
@@ -64,10 +61,10 @@ by</p>
 subgoal <span class="mi">2</span> <span class="kr">is</span>:
  nat -&gt; nat</blockquote></div></div></small></span></pre><p>you can't see what you're doing.</p>
 <p>The trick is to look more closely at what you're doing. We can
-introduce a gratuitously dependent type, cloning <tt class="docutils literal">nat</tt>.</p>
+introduce a gratuitously dependent type, cloning <span class="docutils literal">nat</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">PLUS</span> (<span class="nv">x</span> <span class="nv">y</span> : nat) : <span class="kt">Set</span> :=
-| defPLUS : nat -&gt; PLUS x y.</span></span></pre><p>The idea is that <tt class="docutils literal">PLUS x y</tt> is the type of &quot;the way to compute
-<tt class="docutils literal">plus x y</tt>&quot;. We'll need a projection, allowing us to extract the
+| defPLUS : nat -&gt; PLUS x y.</span></span></pre><p>The idea is that <span class="docutils literal">PLUS x y</span> is the type of &quot;the way to compute
+<span class="docutils literal">plus x y</span>&quot;. We'll need a projection, allowing us to extract the
 result of such a computation.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk5"><span class="kn">Theorem</span> <span class="nf">usePLUS</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span>, PLUS x y -&gt; nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, PLUS x y -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, PLUS x y -&gt; nat</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -79,7 +76,7 @@ result of such a computation.</p>
 
   ============================
   <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, PLUS x y</blockquote></div></div></small></span></pre><p>The conclusion of the goal shows us our current left-hand side and
-context. The analogue of <tt class="docutils literal"><span class="pre">C-c</span> <span class="pre">C-c</span></tt> in Agda is...</p>
+context. The analogue of <span class="docutils literal"><span class="pre">C-c</span> <span class="pre">C-c</span></span> in Agda is...</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chkb"><span class="nb">induction</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS zero y</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="agda-like-programming-in-coq-proof-general-v-chkc" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHx</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS x y</span></span></span><br></div><label class="goal-separator" for="agda-like-programming-in-coq-proof-general-v-chkc"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS (suc x) y</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chkd" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">2</span> subgoals
 
@@ -90,12 +87,12 @@ subgoal <span class="mi">2</span> <span class="kr">is</span>:
  <span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS (suc x) y</blockquote></div></div></small></span></pre><p>And you can see it has done a case split! Let's knock off the base
 case.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chke"><span class="nb">intros</span> y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">PLUS zero y</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="agda-like-programming-in-coq-proof-general-v-chkf" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHx</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS x y</span></span></span><br></div><label class="goal-separator" for="agda-like-programming-in-coq-proof-general-v-chkf"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS (suc x) y</div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk10">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">PLUS zero y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (defPLUS zero y y).</span></span></pre><p>Invoking the constructor of <tt class="docutils literal">PLUS</tt> is like writing an equation.
-Imagine an <tt class="docutils literal">=</tt> sign before its third argument. For the step case, we
+</span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk10">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">PLUS zero y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> (defPLUS zero y y).</span></span></pre><p>Invoking the constructor of <span class="docutils literal">PLUS</span> is like writing an equation.
+Imagine an <span class="docutils literal">=</span> sign before its third argument. For the step case, we
 need to make a recursive call.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk11">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHx</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS x y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS (suc x) y</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk12"><span class="nb">intros</span> y.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHx</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS x y</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">PLUS (suc x) y</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk13"><span class="nb">eapply</span> (<span class="kr">fun</span> <span class="nv">h</span> =&gt; (defPLUS (suc x) y (suc (usePLUS x y h)))).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHx</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS x y</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">PLUS x y</div></blockquote></div></div></small></span></pre><p>To make the recursive call, we invoke <tt class="docutils literal">usePLUS</tt> with the arguments
-we want, here <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>, but we abstract over the third
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="agda-like-programming-in-coq-proof-general-v-chk13"><span class="nb">eapply</span> (<span class="kr">fun</span> <span class="nv">h</span> =&gt; (defPLUS (suc x) y (suc (usePLUS x y h)))).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>x</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>IHx</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">y</span> : nat, PLUS x y</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">PLUS x y</div></blockquote></div></div></small></span></pre><p>To make the recursive call, we invoke <span class="docutils literal">usePLUS</span> with the arguments
+we want, here <span class="docutils literal">x</span> and <span class="docutils literal">y</span>, but we abstract over the third
 argument, which is the explanation of how actually to compute it. We
 are left with just that subgoal, effectively the termination check.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="agda-like-programming-in-coq-proof-general-v-chk14" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
@@ -131,8 +128,8 @@ defining addition.</p>
 interface showing you the program you're building and the key
 problem-simplifying tactics, you get a funny little programming
 language called Epigram 1.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

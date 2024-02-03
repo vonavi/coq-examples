@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Induction principle for le</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,29 +14,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="induction-principle-for-le">
-<h1 class="title">Induction principle for <tt class="docutils literal">le</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/55196816">https://stackoverflow.com/q/55196816</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="induction-principle-for-le">
+<h1 class="title">Induction principle for <span class="docutils literal">le</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/55196816">https://stackoverflow.com/q/55196816</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>For the inductive type <tt class="docutils literal">nat</tt>, the generated induction principle uses
-the constructors <tt class="docutils literal">O</tt> and <tt class="docutils literal">S</tt> in its statement:</p>
+<section id="question">
+<h2>Question</h2>
+<p>For the inductive type <span class="docutils literal">nat</span>, the generated induction principle uses
+the constructors <span class="docutils literal">O</span> and <span class="docutils literal">S</span> in its statement:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">nat</span> : <span class="kt">Set</span> :=  O : nat | S : nat -&gt; nat
 
 <span class="kn">Arguments</span> S _%nat_scope</blockquote></div></div></small></span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">nat_ind
      : <span class="kr">forall</span> <span class="nv">P</span> : nat -&gt; <span class="kt">Prop</span>,
        P <span class="mi">0</span> -&gt;
        (<span class="kr">forall</span> <span class="nv">n</span> : nat, P n -&gt; P (S n)) -&gt;
-       <span class="kr">forall</span> <span class="nv">n</span> : nat, P n</blockquote></div></div></small></span></pre><p>But for <tt class="docutils literal">le</tt>, the generated statement does not uses the constructors
-<tt class="docutils literal">le_n</tt> and <tt class="docutils literal">le_S</tt>:</p>
+       <span class="kr">forall</span> <span class="nv">n</span> : nat, P n</blockquote></div></div></small></span></pre><p>But for <span class="docutils literal">le</span>, the generated statement does not uses the constructors
+<span class="docutils literal">le_n</span> and <span class="docutils literal">le_S</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="induction-principle-for-le-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kn">Inductive</span> <span class="nf">le</span> (<span class="nv">n</span> : nat) : nat -&gt; <span class="kt">Prop</span> :=
     le_n : n &lt;= n
   | le_S : <span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; n &lt;= S m
@@ -48,7 +45,7 @@ the constructors <tt class="docutils literal">O</tt> and <tt class="docutils lit
        P n -&gt;
        (<span class="kr">forall</span> <span class="nv">m</span> : nat, n &lt;= m -&gt; P m -&gt; P (S m)) -&gt;
        <span class="kr">forall</span> <span class="nv">n0</span> : nat, n &lt;= n0 -&gt; P n0</blockquote></div></div></small></span></pre><p>However it is possible to state and prove an induction principle
-following the same shape as the one for <tt class="docutils literal">nat</tt>:</p>
+following the same shape as the one for <span class="docutils literal">nat</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="induction-principle-for-le-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="induction-principle-for-le-v-chk4"><span class="kn">Lemma</span> <span class="nf">le_ind&#39;</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">P</span> : <span class="kr">forall</span> <span class="nv">m</span>, le n m -&gt; <span class="kt">Prop</span>),
     P n (le_n n) -&gt;
     (<span class="kr">forall</span> <span class="nv">m</span> (<span class="nv">p</span> : le n m), P m p -&gt; P (S m) (le_S n m p)) -&gt;
@@ -128,24 +125,24 @@ P m p -&gt; P (S m) (le_S n m p)</div></blockquote></div></div></small><span cla
 the shape for its generated induction principle? If there is any rule,
 I cannot find them in the reference manual. What about other proof
 assistants such as Agda?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>You can manually generate an induction principle for an inductive type
-by using the command <tt class="docutils literal">Scheme</tt> (see the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/user-extensions/proof-schemes.html#generation-of-induction-principles-with-scheme">documentation</a>).</p>
+by using the command <span class="docutils literal">Scheme</span> (see the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/user-extensions/proof-schemes.html#generation-of-induction-principles-with-scheme">documentation</a>).</p>
 <p>The command comes in two flavours:</p>
 <ul class="simple">
-<li><tt class="docutils literal">Scheme scheme := Induction for Sort Prop</tt> generates the standard
-induction scheme.</li>
-<li><tt class="docutils literal">Scheme scheme := Minimality for Sort Prop</tt> generates a simplified
-induction scheme more suited to inductive predicates.</li>
+<li><p><span class="docutils literal">Scheme scheme := Induction for Sort Prop</span> generates the standard
+induction scheme.</p></li>
+<li><p><span class="docutils literal">Scheme scheme := Minimality for Sort Prop</span> generates a simplified
+induction scheme more suited to inductive predicates.</p></li>
 </ul>
-<p>If you define an inductive type in <tt class="docutils literal">Type</tt>, the generated induction
+<p>If you define an inductive type in <span class="docutils literal">Type</span>, the generated induction
 principle is of the first kind. If you define an inductive type in
-<tt class="docutils literal">Prop</tt> (i.e. an inductive predicate), the generated induction
+<span class="docutils literal">Prop</span> (i.e. an inductive predicate), the generated induction
 principle is of the second kind.</p>
-<p>To obtain the induction principle that you want in the case of <tt class="docutils literal">le</tt>,
-you can define it in <tt class="docutils literal">Type</tt>:</p>
+<p>To obtain the induction principle that you want in the case of <span class="docutils literal">le</span>,
+you can define it in <span class="docutils literal">Type</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">le</span> (<span class="nv">n</span> : nat) : nat -&gt; <span class="kt">Type</span> :=
 | le_n : le n n
 | le_S : <span class="kr">forall</span> <span class="nv">m</span> : nat, le n m -&gt; le n (S m).</span><span class="alectryon-wsp">
@@ -174,8 +171,8 @@ you can define it in <tt class="docutils literal">Type</tt>:</p>
        P n (le_n n) -&gt;
        (<span class="kr">forall</span> (<span class="nv">m</span> : nat) (<span class="nv">l</span> : le n m),
         P m l -&gt; P (S m) (le_S n m l)) -&gt;
-       <span class="kr">forall</span> (<span class="nv">n0</span> : nat) (<span class="nv">l</span> : le n n0), P n0 l</blockquote></div></div></small></span></pre></div>
+       <span class="kr">forall</span> (<span class="nv">n0</span> : nat) (<span class="nv">l</span> : le n n0), P n0 l</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

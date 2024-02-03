@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using Implicit Type Class Parameters in Coq Notation</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="using-implicit-type-class-parameters-in-coq-notation">
+<div class="alectryon-root alectryon-centered"><main id="using-implicit-type-class-parameters-in-coq-notation">
 <h1 class="title">Using Implicit Type Class Parameters in Coq Notation</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48394056">https://stackoverflow.com/q/48394056</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48394056">https://stackoverflow.com/q/48394056</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to wrap my head around type classes in Coq (I've dabbled
 with it in the past, but I'm a far cry from being an experienced
 user). As an exercise, I am trying to write a group theory library.
@@ -42,13 +39,13 @@ This is what I've come up with:</p>
   assoc {x y z} : op (op x y) z = op x (op y z);
 
   right_inv {x} : op x (inverse x) = id;
-}.</span></span></pre><p>I am particularly fond of the implicit <tt class="docutils literal">S</tt> and <tt class="docutils literal">op</tt> parameters
+}.</span></span></pre><p>I am particularly fond of the implicit <span class="docutils literal">S</span> and <span class="docutils literal">op</span> parameters
 (assuming I understand them correctly).</p>
 <p>Making some notation for inverses is easy:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-implicit-type-class-parameters-in-coq-notation-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="using-implicit-type-class-parameters-in-coq-notation-v-chk0"><span class="kn">Notation</span> <span class="s2">&quot;- x&quot;</span> :=
   (@inverse _ _ _ x) (<span class="kn">at level</span> <span class="mi">35</span>, <span class="kn">right associativity</span>) : group_scope.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Declaring a scope implicitly <span class="kr">is</span> deprecated; use <span class="kr">in</span>
 advance an explicit <span class="s2">&quot;Declare Scope group_scope.&quot;</span>.
-[undeclared-scope,deprecated]</blockquote></div></div></small></span></pre><p>Now, I would like to make <tt class="docutils literal">x * y</tt> a shorthand for <tt class="docutils literal">(op x y)</tt>. When
+[undeclared-scope,deprecated]</blockquote></div></div></small></span></pre><p>Now, I would like to make <span class="docutils literal">x * y</span> a shorthand for <span class="docutils literal">(op x y)</span>. When
 working with sections, this is straightforward enough:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Group</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">S</span>} {<span class="nv">op</span>} {<span class="nv">G</span> : @Group S op}.</span><span class="alectryon-wsp">
@@ -58,15 +55,15 @@ working with sections, this is straightforward enough:</p>
 </span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Group</span>.</span></span></pre><p>However, since this is declared within a section, the notation is
 inaccessible elsewhere. I would like to declare the notation globally
-if possible. The problem I am running into (as opposed to <tt class="docutils literal">inverse</tt>)
-is that, since <tt class="docutils literal">op</tt> is an implicit parameter to <tt class="docutils literal">Group</tt>, it
+if possible. The problem I am running into (as opposed to <span class="docutils literal">inverse</span>)
+is that, since <span class="docutils literal">op</span> is an implicit parameter to <span class="docutils literal">Group</span>, it
 doesn't actually exist anywhere in the global scope (so I cannot refer
-to it by <tt class="docutils literal">(&#64;op _ _ _ x y)</tt>). This problem indicates to me that I am
+to it by <span class="docutils literal">(&#64;op _ _ _ x y)</span>). This problem indicates to me that I am
 either using type classes wrong or don't understand how to integrate
 notation with implicit variables. Would someone be able to point me in
 the right direction?</p>
-<div class="section" id="answer-25-jan-2018">
-<h2>Answer (25 Jan 2018)</h2>
+<section id="answer-25-jan-2018">
+<h3>Answer (25 Jan 2018)</h3>
 <p>Based on <a class="reference external" href="https://stackoverflow.com/a/48398003/1451908">Anton Trunov's response</a>, I was able to write
 the following, which works:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Reserved Notation</span> <span class="s2">&quot;x * y&quot;</span> (<span class="kn">at level</span> <span class="mi">40</span>, <span class="kn">left associativity</span>).</span><span class="alectryon-wsp">
@@ -90,34 +87,34 @@ advance an explicit <span class="s2">&quot;Declare Scope group_scope.&quot;</spa
   assoc {x y z} : (x * y) * z = x * (y * z);
 
   right_inv {x} : x * (inverse x) = id;
-}.</span></span></pre></div>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+}.</span></span></pre></section>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>Here is how Pierre Castéran and Matthieu Sozeau solve this problem in
 <a class="reference external" href="http://www.labri.fr/perso/casteran/CoqArt/TypeClassesTut/typeclassestut.pdf">A Gentle Introduction to Type Classes and Relations in Coq</a>
 (§3.9.2):</p>
 <blockquote>
 <p>A solution from <em>ibid</em>. consists in declaring a singleton type
 class for representing binary operators:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">monoid_binop</span> (<span class="nv">A</span> : <span class="kt">Type</span>) := monoid_op : A -&gt; A -&gt; A.</span></span></pre><p><em>Nota</em>: Unlike multi-field class types, <tt class="docutils literal">monoid_op</tt> is not a
-constructor, but a transparent constant such that <tt class="docutils literal">monoid_op f</tt>
-can be δβ-reduced into <tt class="docutils literal">f</tt>.</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">monoid_binop</span> (<span class="nv">A</span> : <span class="kt">Type</span>) := monoid_op : A -&gt; A -&gt; A.</span></span></pre><p><em>Nota</em>: Unlike multi-field class types, <span class="docutils literal">monoid_op</span> is not a
+constructor, but a transparent constant such that <span class="docutils literal">monoid_op f</span>
+can be δβ-reduced into <span class="docutils literal">f</span>.</p>
 <p>It is now possible to declare an infix notation:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="using-implicit-type-class-parameters-in-coq-notation-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="using-implicit-type-class-parameters-in-coq-notation-v-chk2"><span class="kn">Delimit Scope</span> M_scope <span class="kr">with</span> M.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Declaring a scope implicitly <span class="kr">is</span> deprecated; use <span class="kr">in</span>
 advance an explicit <span class="s2">&quot;Declare Scope M_scope.&quot;</span>.
 [undeclared-scope,deprecated]</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Infix</span> <span class="s2">&quot;*&quot;</span> := monoid_op: M_scope.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> M_scope.</span></span></pre><p>We can now give a new definition of <tt class="docutils literal">Monoid</tt>, using the type
-<tt class="docutils literal">monoid_binop A</tt> instead of <tt class="docutils literal">A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> A</tt>, and the infix
-notation <tt class="docutils literal">x * y</tt> instead of <tt class="docutils literal">monoid_op x y</tt>:</p>
+</span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Open Scope</span> M_scope.</span></span></pre><p>We can now give a new definition of <span class="docutils literal">Monoid</span>, using the type
+<span class="docutils literal">monoid_binop A</span> instead of <span class="docutils literal">A <span class="pre">-&gt;</span> A <span class="pre">-&gt;</span> A</span>, and the infix
+notation <span class="docutils literal">x * y</span> instead of <span class="docutils literal">monoid_op x y</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Monoid</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">dot</span> : monoid_binop A) (<span class="nv">one</span> : A) : <span class="kt">Type</span> := {
       dot_assoc : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span> : A, x * (y * z) = x * y * z;
       one_left : <span class="kr">forall</span> <span class="nv">x</span>, one * x = x;
       one_right : <span class="kr">forall</span> <span class="nv">x</span>, x * one = x
     }.</span></span></pre></blockquote>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

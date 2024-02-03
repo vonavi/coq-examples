@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Abstracting leads to a term ill-typed... yet well-typed</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed">
+<div class="alectryon-root alectryon-centered"><main id="abstracting-leads-to-a-term-ill-typed-yet-well-typed">
 <h1 class="title">Abstracting leads to a term ill-typed... yet well-typed</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/14867685">https://stackoverflow.com/q/14867685</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/14867685">https://stackoverflow.com/q/14867685</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I was stuck on a problem for a while, for which I derived a smaller
 standalone example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">f</span> : nat -&gt; <span class="kt">Set</span>.</span><span class="alectryon-wsp">
@@ -37,7 +34,7 @@ standalone example:</p>
     <span class="kr">end</span> x.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">e</span> : n = n) (<span class="nv">x</span> : f n),
 <span class="kr">match</span> e <span class="kr">in</span> (_ = _n) <span class="kr">return</span> (f _n -&gt; <span class="kt">Prop</span>) <span class="kr">with</span>
 | eq_refl =&gt; <span class="kr">fun</span> <span class="nv">v</span> : f n =&gt; v = x
-<span class="kr">end</span> x</div></blockquote></div></div></small></span></pre><p>Now, if you try to <tt class="docutils literal">destruct e</tt>, you get the following error
+<span class="kr">end</span> x</div></blockquote></div></div></small></span></pre><p>Now, if you try to <span class="docutils literal">destruct e</span>, you get the following error
 message:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Cannot <span class="nb">instantiate</span> metavariable P of type
@@ -59,8 +56,7 @@ ill-typed in that term... So I tried this:</p>
      : <span class="kr">forall</span> <span class="nv">n</span> : nat, n = n -&gt; <span class="kt">Prop</span></blockquote></div></div></small></span></pre><p>So, what is wrong with this error message, and how could I solve/tweak
 my initial goal?</p>
 <hr class="docutils" />
-<p>EDIT: To address Robin Green's comment, here is the <tt class="docutils literal">Set Printing
-All</tt> versions of the error message:</p>
+<p>EDIT: To address Robin Green's comment, here is the <span class="docutils literal">Set Printing All</span> versions of the error message:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 Cannot <span class="nb">instantiate</span> metavariable P of type
 <span class="s2">&quot;forall (a : nat) (_ : @eq nat n a), Prop&quot;</span> <span class="kr">with</span>
@@ -74,9 +70,9 @@ abstraction
 <span class="s2"> end x&quot;</span>
 of incompatible type
 <span class="s2">&quot;forall (n : nat) (_ : @eq nat n n), Prop&quot;</span>.</blockquote></div></div></small></span></pre><p>It is a well-typed term, and nothing is implicit.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Here is a possible explanation of the problem. What happens when
 constructing a pattern-matching construct can also be described using
 a theorem. Here is my view of the theorem that is being used in your
@@ -84,16 +80,16 @@ case.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk4"><span class="kn">Check</span> eq_rect.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">eq_rect
      : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : A) (<span class="nv">P</span> : A -&gt; <span class="kt">Type</span>),
        P x -&gt; <span class="kr">forall</span> <span class="nv">y</span> : A, x = y -&gt; P y</blockquote></div></div></small></span></pre><p>So when pattern matching on an equality, you have to provide a formula
-<tt class="docutils literal">P</tt> parametrized on <strong>any value</strong> <tt class="docutils literal">y</tt> that happens to be provably
-equal to <tt class="docutils literal">x</tt>. Intuitively, you should be able to replace your
-pattern-matching expression by <tt class="docutils literal">apply eq_rect</tt>, but the property
-<tt class="docutils literal">P</tt> that should come up there is beyond the reach of what Coq can
-guess, because every occurrence of <tt class="docutils literal">x</tt> in your formula is bound to
-be in type <tt class="docutils literal">f n</tt> and cannot just be in type <tt class="docutils literal">f m</tt> where <tt class="docutils literal">m = n</tt>.
+<span class="docutils literal">P</span> parametrized on <strong>any value</strong> <span class="docutils literal">y</span> that happens to be provably
+equal to <span class="docutils literal">x</span>. Intuitively, you should be able to replace your
+pattern-matching expression by <span class="docutils literal">apply eq_rect</span>, but the property
+<span class="docutils literal">P</span> that should come up there is beyond the reach of what Coq can
+guess, because every occurrence of <span class="docutils literal">x</span> in your formula is bound to
+be in type <span class="docutils literal">f n</span> and cannot just be in type <span class="docutils literal">f m</span> where <span class="docutils literal">m = n</span>.
 The error message does not say that, it is probably a mistake.</p>
 <p>To perform your proof, I suggest rather to use the fact that proofs of
-equality are unique in certain classes of types, and <tt class="docutils literal">nat</tt> belongs
-to such a class. This is treated in the file <tt class="docutils literal">Eqdep_dec</tt>.</p>
+equality are unique in certain classes of types, and <span class="docutils literal">nat</span> belongs
+to such a class. This is treated in the file <span class="docutils literal">Eqdep_dec</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require</span> Eqdep_dec Arith.</span></span></pre><p>Now your proof goes through quite easily.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk5"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">x</span> : f n) (<span class="nv">e</span> : n = n),
     <span class="kr">match</span> e <span class="kr">in</span> _ = _n <span class="kr">return</span> f _n -&gt; <span class="kt">Prop</span> <span class="kr">with</span>
@@ -108,12 +104,12 @@ to such a class. This is treated in the file <tt class="docutils literal">Eqdep_
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chk9">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>f n</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>n = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">x = x</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="abstracting-leads-to-a-term-ill-typed-yet-well-typed-v-chka">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>f n</span></span></span><br><span><var>e</var><span class="hyp-type"><b>: </b><span>n = n</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">eq_refl = e</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Eqdep_dec.UIP_dec, PeanoNat.Nat.eq_dec.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Now, this solution may feel unsatisfactory. Where does this
-<tt class="docutils literal">UIP_dec</tt> come from? UIP stands for <em>uniqueness of identity proofs</em>
+<span class="docutils literal">UIP_dec</span> come from? UIP stands for <em>uniqueness of identity proofs</em>
 and unfortunately, this property is not guaranteed for all arbitrary
 types. It is guaranteed for all types where equality is decidable (as
-expressed by <tt class="docutils literal">UIP_dec</tt>), for instance <tt class="docutils literal">nat</tt>.</p>
+expressed by <span class="docutils literal">UIP_dec</span>), for instance <span class="docutils literal">nat</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

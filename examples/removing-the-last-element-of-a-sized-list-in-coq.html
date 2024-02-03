@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Removing the last element of a sized list in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,33 +14,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="removing-the-last-element-of-a-sized-list-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="removing-the-last-element-of-a-sized-list-in-coq">
 <h1 class="title">Removing the last element of a sized list in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71536389">https://stackoverflow.com/q/71536389</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71536389">https://stackoverflow.com/q/71536389</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following type definition of a sized list:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">listn</span> : nat -&gt; <span class="kt">Type</span> -&gt; <span class="kt">Type</span> :=
 | nil: <span class="kr">forall</span> {<span class="nv">A</span> : <span class="kt">Set</span>}, listn <span class="mi">0</span> A
 | cons: <span class="kr">forall</span> {<span class="nv">n</span> : nat} {<span class="nv">A</span> : <span class="kt">Set</span>}, A -&gt; listn n A -&gt; listn (S n) A.</span></span></pre><p>This is essentially the <a class="reference external" href="https://github.com/idris-lang/Idris-dev/blob/master/libs/base/Data/Vect.idr">Vect</a>
 type in Idris.</p>
-<p>I am trying to define the <tt class="docutils literal">init</tt> function for <tt class="docutils literal">listn</tt>, which
+<p>I am trying to define the <span class="docutils literal">init</span> function for <span class="docutils literal">listn</span>, which
 removes the last element.</p>
 <p>My attempted implementation was virtually identical to the definition
-of <tt class="docutils literal">init</tt> in Idris. Here it is in Idris:</p>
-<pre class="code idris literal-block">
-<span class="nf">init</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span><span class="ow">(</span><span class="kt">S</span><span class="w"> </span>len<span class="ow">)</span><span class="w"> </span>elem<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>len<span class="w"> </span>elem<span class="w">
+of <span class="docutils literal">init</span> in Idris. Here it is in Idris:</p>
+<pre class="code idris literal-block"><code><span class="nf">init</span><span class="w"> </span><span class="ow">:</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span><span class="ow">(</span><span class="kt">S</span><span class="w"> </span>len<span class="ow">)</span><span class="w"> </span>elem<span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Vect</span><span class="w"> </span>len<span class="w"> </span>elem<span class="w">
 </span>init<span class="w"> </span><span class="ow">(</span>x<span class="ow">::[])</span><span class="w">    </span><span class="ow">=</span><span class="w"> </span><span class="ow">[]</span><span class="w">
-</span>init<span class="w"> </span><span class="ow">(</span>x<span class="ow">::</span>y<span class="ow">::</span>ys<span class="ow">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>x<span class="w"> </span><span class="ow">::</span><span class="w"> </span>init<span class="w"> </span><span class="ow">(</span>y<span class="ow">::</span>ys<span class="ow">)</span>
-</pre>
+</span>init<span class="w"> </span><span class="ow">(</span>x<span class="ow">::</span>y<span class="ow">::</span>ys<span class="ow">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span>x<span class="w"> </span><span class="ow">::</span><span class="w"> </span>init<span class="w"> </span><span class="ow">(</span>y<span class="ow">::</span>ys<span class="ow">)</span></code></pre>
 <p>Transcribed into Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="removing-the-last-element-of-a-sized-list-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="removing-the-last-element-of-a-sized-list-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">init</span> {<span class="nv">n</span> : nat} {<span class="nv">A</span> : <span class="kt">Set</span>} (<span class="nv">l</span> : listn (S n) A): listn n A :=
   <span class="kr">match</span> l <span class="kr">with</span>
@@ -77,17 +72,17 @@ The term <span class="s2">&quot;nil&quot;</span> has type <span class="s2">&quot
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
  <span class="s2">&quot;listn ?n ?S@{a0:=S}&quot;</span> (<span class="s2">&quot;?n&quot;</span> has otherwise to <span class="nb">unify</span>
 <span class="kr">with</span> <span class="s2">&quot;n0&quot;</span> which <span class="kr">is</span> incompatible <span class="kr">with</span> <span class="s2">&quot;0&quot;</span>).</blockquote></div></div></small></span></pre><p>I take it that Coq isn't able to see that the case necessarily implies
-that <tt class="docutils literal">n</tt> is zero. This is a problem I keep running into – Coq isn't
-able to see the relationship between <tt class="docutils literal">n</tt> and the list itself.</p>
+that <span class="docutils literal">n</span> is zero. This is a problem I keep running into – Coq isn't
+able to see the relationship between <span class="docutils literal">n</span> and the list itself.</p>
 <p>Hence my questions:</p>
 <ul class="simple">
-<li>How can <tt class="docutils literal">init</tt> be implemented in Coq?</li>
-<li>Why does the Idris definition work in Idris but not in Coq? What is
-Idris doing behind the scenes that Coq isn't?</li>
+<li><p>How can <span class="docutils literal">init</span> be implemented in Coq?</p></li>
+<li><p>Why does the Idris definition work in Idris but not in Coq? What is
+Idris doing behind the scenes that Coq isn't?</p></li>
 </ul>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>By itself, Coq is not very good for writing this kind of code, but you
 can use the <a class="reference external" href="https://github.com/mattam82/Coq-Equations">Equations plugin</a> to make it simpler.
 Nevertheless, let us see how we can do it without external
@@ -107,33 +102,32 @@ dependencies:</p>
       | cons _ _ =&gt; <span class="kr">fun</span> <span class="nv">xs</span> =&gt; cons x (init xs)
       <span class="kr">end</span> xs
   <span class="kr">end</span>.</span></span></pre><p>This definition differs from yours in a few ways. First, we need to
-annotate the return type of <tt class="docutils literal">match</tt> to explain how it depends on the
-length of the vector. The <tt class="docutils literal">in Vector.t _ m</tt> part says that the
+annotate the return type of <span class="docutils literal">match</span> to explain how it depends on the
+length of the vector. The <span class="docutils literal">in Vector.t _ m</span> part says that the
 return type is <em>generic</em> on the length of the vector -- we <em>cannot</em>
-assume that the length is of the form <tt class="docutils literal">S n</tt>.</p>
-<p>Second, we have to enumerate all cases of the data type: <tt class="docutils literal">match</tt> is
+assume that the length is of the form <span class="docutils literal">S n</span>.</p>
+<p>Second, we have to enumerate all cases of the data type: <span class="docutils literal">match</span> is
 <em>always</em> exhaustive in Coq, even if some of the branches are
 unreachable due to typing information. Thus, I've included a case for
-<tt class="docutils literal">nil</tt> in the first match.</p>
-<p>Third, Coq cannot recognize that <tt class="docutils literal">init (cons y ys)</tt> is a valid
-recursive call. We fix this by giving <tt class="docutils literal">cons y ys</tt> a name, <tt class="docutils literal">xs</tt>,
-before destructing it, and using <tt class="docutils literal">init xs</tt> instead. There is a
-subtlelty, however. In <tt class="docutils literal">cons x xs</tt>, the type of <tt class="docutils literal">xs</tt> is <tt class="docutils literal">Vector.t
-A m</tt> for <em>some</em> <tt class="docutils literal">m</tt>, which may or may not be a successor, so we
-cannot call <tt class="docutils literal">init</tt> directly. Instead, we first destruct <tt class="docutils literal">xs</tt>, and
-perform the recursive call only on the <tt class="docutils literal">cons</tt> branch. But because
-<tt class="docutils literal">match</tt> is generic on its length argument, Coq does not see a
-connection between the length of <tt class="docutils literal">xs</tt> inside and outside of
-<tt class="docutils literal">match</tt>. The solution is to perform what Adam Chlipala calls the
+<span class="docutils literal">nil</span> in the first match.</p>
+<p>Third, Coq cannot recognize that <span class="docutils literal">init (cons y ys)</span> is a valid
+recursive call. We fix this by giving <span class="docutils literal">cons y ys</span> a name, <span class="docutils literal">xs</span>,
+before destructing it, and using <span class="docutils literal">init xs</span> instead. There is a
+subtlelty, however. In <span class="docutils literal">cons x xs</span>, the type of <span class="docutils literal">xs</span> is <span class="docutils literal">Vector.t A m</span> for <em>some</em> <span class="docutils literal">m</span>, which may or may not be a successor, so we
+cannot call <span class="docutils literal">init</span> directly. Instead, we first destruct <span class="docutils literal">xs</span>, and
+perform the recursive call only on the <span class="docutils literal">cons</span> branch. But because
+<span class="docutils literal">match</span> is generic on its length argument, Coq does not see a
+connection between the length of <span class="docutils literal">xs</span> inside and outside of
+<span class="docutils literal">match</span>. The solution is to perform what Adam Chlipala calls the
 <em>convoy pattern</em>: we make match return a function rather than a plain
-vector, and pass <tt class="docutils literal">xs</tt> as an argument outside of the match. This way,
+vector, and pass <span class="docutils literal">xs</span> as an argument outside of the match. This way,
 the connection between the two lengths is not lost.</p>
 <p>I don't know much about Idris, but my guess is that its type-checking
 algorithm is more complicated than Coq's, which is why it can tell
 that the analogous definition is valid. Coq's rules are quite simple
 (and limited), to be honest.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

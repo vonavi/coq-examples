@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ltac: optional arguments tactic</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,39 +14,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="ltac-optional-arguments-tactic">
+<div class="alectryon-root alectryon-centered"><main id="ltac-optional-arguments-tactic">
 <h1 class="title">Ltac: optional arguments tactic</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44840624">https://stackoverflow.com/q/44840624</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44840624">https://stackoverflow.com/q/44840624</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I want to make a Ltac tactic in coq which would take either 1 or 3
-arguments. I have read about <tt class="docutils literal">ltac_No_arg</tt> in the <a class="reference external" href="http://gallium.inria.fr/~fpottier/ssphs/LibTactics.html">LibTactics</a> module
+arguments. I have read about <span class="docutils literal">ltac_No_arg</span> in the <a class="reference external" href="http://gallium.inria.fr/~fpottier/ssphs/LibTactics.html">LibTactics</a> module
 but if I understood it correctly I would have to invoke my tactic
 with:</p>
-<pre class="code coq literal-block">
-<span class="n">mytactic</span> <span class="n">arg_1</span> <span class="n">ltac_no_arg</span> <span class="n">ltac_no_arg</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">mytactic</span> <span class="n">arg_1</span> <span class="n">ltac_no_arg</span> <span class="n">ltac_no_arg</span><span class="o">.</span></code></pre>
 <p>which is not very convenient.</p>
 <p>Is there any way to get a result like this:</p>
-<pre class="code coq literal-block">
-<span class="n">mytactic</span> <span class="n">arg_1</span><span class="o">.</span>
-<span class="n">mytactic</span> <span class="n">arg_1</span> <span class="n">arg_2</span> <span class="n">arg_3</span><span class="o">.</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<pre class="code coq literal-block"><code><span class="n">mytactic</span> <span class="n">arg_1</span><span class="o">.</span>
+<span class="n">mytactic</span> <span class="n">arg_1</span> <span class="n">arg_2</span> <span class="n">arg_3</span><span class="o">.</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>We can use the <a class="reference external" href="https://coq.inria.fr/refman/user-extensions/syntax-extensions.html#coq:cmd.tactic-notation">Tactic Notation</a>
 mechanism to try to solve your issue because it can handle variadic
 arguments.</p>
-<p>Let's reuse <tt class="docutils literal">ltac_No_arg</tt> and define a dummy tactic <tt class="docutils literal">mytactic</tt> for
+<p>Let's reuse <span class="docutils literal">ltac_No_arg</span> and define a dummy tactic <span class="docutils literal">mytactic</span> for
 the purposes of demonstration</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">ltac_No_arg</span> : <span class="kt">Set</span> :=
 | ltac_no_arg : ltac_No_arg.</span><span class="alectryon-wsp">
@@ -63,8 +56,8 @@ the purposes of demonstration</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="ltac-optional-arguments-tactic-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="ltac-optional-arguments-tactic-v-chk0"><span class="kn">Goal</span> <span class="kt">True</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="ltac-optional-arguments-tactic-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="ltac-optional-arguments-tactic-v-chk1">mytactic_notation <span class="mi">1</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">x = <span class="mi">1</span></blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="ltac-optional-arguments-tactic-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="ltac-optional-arguments-tactic-v-chk2">mytactic_notation <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">x = <span class="mi">1</span> ; y = <span class="mi">2</span> ; z = <span class="mi">3</span></blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">True</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Abort</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

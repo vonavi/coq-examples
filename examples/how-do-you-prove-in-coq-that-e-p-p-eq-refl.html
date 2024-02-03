@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How do you prove in Coq that (e: p = p) = eq_refl?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,23 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl">
-<h1 class="title">How do you prove in Coq that <tt class="docutils literal">(e: p = p) = eq_refl</tt>?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/60665385">https://stackoverflow.com/q/60665385</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="how-do-you-prove-in-coq-that-e-p-p-eq-refl">
+<h1 class="title">How do you prove in Coq that <span class="docutils literal">(e: p = p) = eq_refl</span>?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/60665385">https://stackoverflow.com/q/60665385</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to prove this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-do-you-prove-in-coq-that-e-p-p-eq-refl-v-chk0"><span class="kn">Lemma</span> <span class="nf">eq_eq</span>: <span class="kr">forall</span> (<span class="nv">U</span>: <span class="kt">Type</span>) (<span class="nv">p</span>: U) (<span class="nv">eqv</span>: p = p), eq_refl = eqv.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">eqv</span> : p = p), eq_refl = eqv</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>But there just seems to be no way to do it. The problem is the type
-<tt class="docutils literal">p = p</tt> being an equality on the same term, and then trying to match
+<span class="docutils literal">p = p</span> being an equality on the same term, and then trying to match
 its instance. If this were not the case, it is easy enough to prove
 that a term of a type with a single constructor is equal to that
 constructor.</p>
@@ -51,35 +48,33 @@ p&#39; : U
 e : p = p&#39;
 The term <span class="s2">&quot;e&quot;</span> has type <span class="s2">&quot;p = p&#39;&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;p = p&quot;</span>
-(cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">eqv</span> : p = p), eq_refl = eqv</div></blockquote></div></div></small></span></pre><p>The problem is that the <tt class="docutils literal">return</tt> clause here translates internally
+(cannot <span class="nb">unify</span> <span class="s2">&quot;p&#39;&quot;</span> <span class="kn">and</span> <span class="s2">&quot;p&quot;</span>).</blockquote></div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">U</span> : <span class="kt">Type</span>) (<span class="nv">p</span> : U) (<span class="nv">eqv</span> : p = p), eq_refl = eqv</div></blockquote></div></div></small></span></pre><p>The problem is that the <span class="docutils literal">return</span> clause here translates internally
 to a predicate function something like this:</p>
-<pre class="code coq literal-block">
-<span class="kr">fun</span> <span class="o">(</span><span class="nv">p'</span><span class="o">:</span> <span class="n">U</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p'</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="o">=</span> <span class="n">e</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">fun</span> <span class="o">(</span><span class="nv">p'</span><span class="o">:</span> <span class="n">U</span><span class="o">)</span> <span class="o">(</span><span class="nv">e</span><span class="o">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p'</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">eq_refl</span> <span class="o">=</span> <span class="n">e</span></code></pre>
 <p>which fails to typecheck because we have now lost the constraint
-between the 2 terms in <tt class="docutils literal">e</tt>'s equality and <tt class="docutils literal">eq_refl</tt> requires that
+between the 2 terms in <span class="docutils literal">e</span>'s equality and <span class="docutils literal">eq_refl</span> requires that
 constraint.</p>
 <p>Is there any way around this problem? Am I missing something?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Your proposed lemma is precisely the statement of <a class="reference external" href="https://ncatlab.org/nlab/show/axiom+UIP">uniqueness of
 identity proofs (UIP)</a>. It
 was first proven that the negation of UIP is consistent in MLTT with
 <a class="reference external" href="https://www.tcs.ifi.lmu.de/mitarbeiter/martin-hofmann/pdfs/agroupoidinterpretationoftypetheroy.pdf">Hofmann and Streicher's groupoid model</a>
 (pdf link). In this model, types are interpreted as groupoids, where
-the identity type <tt class="docutils literal">x = y</tt> is the set of morphisms from <tt class="docutils literal">x</tt> to
-<tt class="docutils literal">y</tt> in the groupoid. In this model, there can be more than one
-distinct <tt class="docutils literal">e: x = y</tt>.</p>
+the identity type <span class="docutils literal">x = y</span> is the set of morphisms from <span class="docutils literal">x</span> to
+<span class="docutils literal">y</span> in the groupoid. In this model, there can be more than one
+distinct <span class="docutils literal">e: x = y</span>.</p>
 <p>More recently, <a class="reference external" href="https://ncatlab.org/nlab/show/homotopy+type+theory">homotopy type theory</a> has embraced
 this point of view. Rather than mere groupoids, types are interpreted
 as ∞-groupoids, with not only the possibility of multiple equalities
-between <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt>, but also possibly multiple identities between
-identities <tt class="docutils literal">p q: x = y</tt>, etc.</p>
+between <span class="docutils literal">x</span> and <span class="docutils literal">y</span>, but also possibly multiple identities between
+identities <span class="docutils literal">p q: x = y</span>, etc.</p>
 <p>Suffice to say, your lemma isn't provable without an extra axiom such
 as UIP mentioned above or <a class="reference external" href="https://ncatlab.org/nlab/show/axiom+K+%28type+theory%29">Axiom K</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

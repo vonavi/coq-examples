@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to enumerate set in Coq Ensemble</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-enumerate-set-in-coq-ensemble">
-<h1 class="title">How to enumerate set in Coq <tt class="docutils literal">Ensemble</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/68789154">https://stackoverflow.com/q/68789154</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="how-to-enumerate-set-in-coq-ensemble">
+<h1 class="title">How to enumerate set in Coq <span class="docutils literal">Ensemble</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/68789154">https://stackoverflow.com/q/68789154</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>How do you prove <tt class="docutils literal">enumerateSingletonPowerset</tt>?</p>
+<section id="question">
+<h2>Question</h2>
+<p>How do you prove <span class="docutils literal">enumerateSingletonPowerset</span>?</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Sets.Ensembles.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">emptyOnly</span> <span class="nv">A</span> := Singleton _ (Empty_set A).</span><span class="alectryon-wsp">
@@ -35,12 +32,12 @@
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-enumerate-set-in-coq-ensemble-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-enumerate-set-in-coq-ensemble-v-chk0"><span class="kn">Theorem</span> <span class="nf">enumerateSingletonPowerset</span> <span class="nv">A</span> <span class="nv">s</span> (<span class="nv">inc</span> : Included _ s (emptyOnly A)):
   Same_set _ s (Empty_set _) \/ Same_set _ s (emptyOnly A).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>Ensemble (Ensemble A)</span></span></span><br><span><var>inc</var><span class="hyp-type"><b>: </b><span>Included (Ensemble A) s (emptyOnly A)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Same_set (Ensemble A) s (Empty_set (Ensemble A)) \/
 Same_set (Ensemble A) s (emptyOnly A)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>I'm using <tt class="docutils literal">Same_set</tt> to avoid extensionality. (Either way is fine.)</p>
-<p>Conceptually, it seems simple to just say I have <tt class="docutils literal"><span class="pre">{{}}</span></tt> so the
-powerset is <tt class="docutils literal"><span class="pre">{{},</span> <span class="pre">{{}}}</span></tt> and that's it. But, it's not clear how to
+</span></span></pre><p>I'm using <span class="docutils literal">Same_set</span> to avoid extensionality. (Either way is fine.)</p>
+<p>Conceptually, it seems simple to just say I have <span class="docutils literal"><span class="pre">{{}}</span></span> so the
+powerset is <span class="docutils literal"><span class="pre">{{},</span> <span class="pre">{{}}}</span></span> and that's it. But, it's not clear how to
 say anything like that with these primitives on their own.</p>
 <p>I'd be tempted to try destructing on if empty set was in the set
-<tt class="docutils literal">s</tt>. But, since <tt class="docutils literal">Ensemble</tt> is propositional, checking set
+<span class="docutils literal">s</span>. But, since <span class="docutils literal">Ensemble</span> is propositional, checking set
 membership is not generally decidable. A first thought is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">In_dec</span> : <span class="kr">forall</span> <span class="nv">A</span> <span class="nv">a</span> <span class="nv">e</span>, In A e a \/ ~In A e a.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -48,14 +45,14 @@ membership is not generally decidable. A first thought is</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> (In_dec _ tt (<span class="kr">fun</span> <span class="nv">_</span> =&gt; P)).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>But, that is too powerful and immediately puts me into classical
 logic. The finite case is easy, but I plan on dealing with larger sets
-(e.g. <tt class="docutils literal">Reals</tt>), so <tt class="docutils literal">In</tt> and <tt class="docutils literal">Included</tt> would not generally be
-computable. Are there axioms I could add that could allow <tt class="docutils literal">In</tt> and
-<tt class="docutils literal">Included</tt> to pretend to be decidable without making everything else
+(e.g. <span class="docutils literal">Reals</span>), so <span class="docutils literal">In</span> and <span class="docutils literal">Included</span> would not generally be
+computable. Are there axioms I could add that could allow <span class="docutils literal">In</span> and
+<span class="docutils literal">Included</span> to pretend to be decidable without making everything else
 decidable too?</p>
 <p>Edit: Changed from pair to singleton since quantity isn't important.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>I found a way to get it to work without any additional axioms using
 the &quot;not not&quot; technique from &quot;Classical Mathematics for a Constructive
 World&quot; <a class="reference external" href="https://arxiv.org/pdf/1008.1213.pdf">https://arxiv.org/pdf/1008.1213.pdf</a></p>
@@ -104,10 +101,10 @@ check. Sorry for weird phrasing in proofs.)</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-to-enumerate-set-in-coq-ensemble-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="how-to-enumerate-set-in-coq-ensemble-v-chk11"><span class="nb">destruct</span> (inc _ H).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>Ensemble (Ensemble A)</span></span></span><br><span><var>inc</var><span class="hyp-type"><b>: </b><span>Included (Ensemble A) s (emptyOnly A)</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>In (Ensemble A) s (Empty_set A)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In (Ensemble A) s (Empty_set A)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>So, by rephrasing the theorem to use weak or, it is now possible to
-prove it directly, and without appealing to the structure of <tt class="docutils literal">A</tt>,
+prove it directly, and without appealing to the structure of <span class="docutils literal">A</span>,
 that membership is decidable, or classical logic.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

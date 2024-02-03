@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pigeonhole proof without decidable equality or excluded middle</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle">
+<div class="alectryon-root alectryon-centered"><main id="pigeonhole-proof-without-decidable-equality-or-excluded-middle">
 <h1 class="title">Pigeonhole proof without decidable equality or excluded middle</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42585024">https://stackoverflow.com/q/42585024</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/42585024">https://stackoverflow.com/q/42585024</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In Software Foundations <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/lf-current/IndProp.html#lab244">IndProp.v</a>
 one is asked to prove the <strong>pigeonhole principle</strong>, and one may use
 <em>excluded middle</em>, but it is mentioned that it is not strictly
@@ -38,7 +35,7 @@ equality, where one can't easily reason by cases?</p>
 <p>I'd be very happy for a complete proof to look at, but please avoid
 posting it &quot;in the clear&quot;, so as to not spoil the exercise in the
 Software Foundations course.</p>
-<p>The definition uses two inductive predicates, <tt class="docutils literal">In</tt> and <tt class="docutils literal">repeats</tt>.</p>
+<p>The definition uses two inductive predicates, <span class="docutils literal">In</span> and <span class="docutils literal">repeats</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -81,30 +78,28 @@ length l2 &lt; length l1 -&gt;
 <p><strong>Q:</strong> Thanks, could you give an example?</p>
 <p><strong>A (gallais):</strong> Cf. <a class="reference external" href="https://github.com/gallais/potpourri/blob/master/agda/poc/PigeonHole.agda">this proof in Agda</a>
 for instance.</p>
-</div>
-<div class="section" id="answer-stewbasic">
-<h1>Answer (stewbasic)</h1>
+</section>
+<section id="answer-stewbasic">
+<h2>Answer (stewbasic)</h2>
 <p>I'll describe the thought process that led me to a solution, in case
 it helps. We may apply induction and it is straightforward to reduce
-to the case <tt class="docutils literal">l1 = a :: l1'</tt>, <tt class="docutils literal">l2 = a :: l2'</tt>. Now <tt class="docutils literal">l1'</tt> is a
-subset of <tt class="docutils literal">a :: l2'</tt>. My EM-trained intuition is that one of the
+to the case <span class="docutils literal">l1 = a :: l1'</span>, <span class="docutils literal">l2 = a :: l2'</span>. Now <span class="docutils literal">l1'</span> is a
+subset of <span class="docutils literal">a :: l2'</span>. My EM-trained intuition is that one of the
 following holds:</p>
 <ul class="simple">
-<li><tt class="docutils literal">a</tt> is in <tt class="docutils literal">l1'</tt>.</li>
-<li><tt class="docutils literal">a</tt> is not in <tt class="docutils literal">l1'</tt>.</li>
+<li><p><span class="docutils literal">a</span> is in <span class="docutils literal">l1'</span>.</p></li>
+<li><p><span class="docutils literal">a</span> is not in <span class="docutils literal">l1'</span>.</p></li>
 </ul>
-<p>In the latter case, each element of <tt class="docutils literal">l1'</tt> is in <tt class="docutils literal">a :: l2'</tt> but
-differs from <tt class="docutils literal">a</tt>, and therefore must be in <tt class="docutils literal">l2'</tt>. Thus <tt class="docutils literal">l1'</tt> is
-a subset of <tt class="docutils literal">l2'</tt>, and we can apply the inductive hypothesis.</p>
-<p>Unfortunately if <tt class="docutils literal">In</tt> is not decidable, the above can't be directly
+<p>In the latter case, each element of <span class="docutils literal">l1'</span> is in <span class="docutils literal">a :: l2'</span> but
+differs from <span class="docutils literal">a</span>, and therefore must be in <span class="docutils literal">l2'</span>. Thus <span class="docutils literal">l1'</span> is
+a subset of <span class="docutils literal">l2'</span>, and we can apply the inductive hypothesis.</p>
+<p>Unfortunately if <span class="docutils literal">In</span> is not decidable, the above can't be directly
 formalized. In particular if equality is not decidable for the given
 type, it's difficult to prove elements are unequal, and therefore
-difficult to prove a negative statement like <tt class="docutils literal">~(In a l1')</tt>. However,
+difficult to prove a negative statement like <span class="docutils literal">~(In a l1')</span>. However,
 we wanted to use that negative statement to prove a positive one,
 namely</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">In</span> <span class="n">x</span> <span class="n">l1'</span> <span class="o">-&gt;</span> <span class="n">In</span> <span class="n">x</span> <span class="n">l2'</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">x</span><span class="o">,</span> <span class="n">In</span> <span class="n">x</span> <span class="n">l1'</span> <span class="o">-&gt;</span> <span class="n">In</span> <span class="n">x</span> <span class="n">l2'</span></code></pre>
 <p>By analogy, suppose we wanted to prove</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
@@ -112,10 +107,10 @@ namely</p>
   H : P \/ Q
   H0 : Q -&gt; R
   ============================
-  P \/ R</blockquote></div></div></small></span></pre><p>The above intuitive argument is like starting from <tt class="docutils literal">P \/ ~P</tt>, and
-using <tt class="docutils literal">~P <span class="pre">-&gt;</span> Q <span class="pre">-&gt;</span> R</tt> in the second case. We can use a direct proof
+  P \/ R</blockquote></div></div></small></span></pre><p>The above intuitive argument is like starting from <span class="docutils literal">P \/ ~P</span>, and
+using <span class="docutils literal">~P <span class="pre">-&gt;</span> Q <span class="pre">-&gt;</span> R</span> in the second case. We can use a direct proof
 to avoid EM.</p>
-<p>Quantifying over the list <tt class="docutils literal">l1'</tt> makes this a bit more complicated,
+<p>Quantifying over the list <span class="docutils literal">l1'</span> makes this a bit more complicated,
 but still we can construct a direct proof using the following lemma,
 which can be proven by induction.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="pigeonhole-proof-without-decidable-equality-or-excluded-middle-v-chk3"><span class="kn">Lemma</span> <span class="nf">split_or</span> (<span class="nv">l</span> : list X) (<span class="nv">P</span> <span class="nv">Q</span> : X -&gt; <span class="kt">Prop</span>) :
@@ -132,20 +127,19 @@ has undecidable equality (note that it has a negative statement in the
 conclusion):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">pigeon2</span> : <span class="kt">Prop</span> := <span class="kr">forall</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
       length l2 &lt; length l1 -&gt;
-      (<span class="kr">exists</span> <span class="nv">x</span>, In x l1 /\ ~(In x l2)) \/ repeats l1.</span></span></pre></div>
-<div class="section" id="answer-andras-kovacs">
-<h1>Answer (András Kovács)</h1>
+      (<span class="kr">exists</span> <span class="nv">x</span>, In x l1 /\ ~(In x l2)) \/ repeats l1.</span></span></pre></section>
+<section id="answer-andras-kovacs">
+<h2>Answer (András Kovács)</h2>
 <p>A possible constructive proof goes like this:</p>
-<p>We prove <tt class="docutils literal">pigeonhole_principle_NO_EM</tt> by induction on <tt class="docutils literal">l1</tt>. Only
+<p>We prove <span class="docutils literal">pigeonhole_principle_NO_EM</span> by induction on <span class="docutils literal">l1</span>. Only
 the non-empty case is possible because of the length constraint. So,
-assume <tt class="docutils literal">l1 = x :: l1'</tt>. Now, check whether there is some element of
-<tt class="docutils literal">l1'</tt> which is mapped by <tt class="docutils literal">f : (forall x, In x l1 <span class="pre">-&gt;</span> In x l2)</tt> to
-the same membership proof as <tt class="docutils literal">x</tt>. If there is such an <tt class="docutils literal">x'</tt>
-element, then it follows that <tt class="docutils literal">x = x'</tt>, therefore <tt class="docutils literal">l1</tt> repeats. If
-there is no such element, then we can get <tt class="docutils literal">l2'</tt> by removing the
-element that <tt class="docutils literal">x</tt> is mapped to from <tt class="docutils literal">l2</tt>, and apply the induction
-hypothesis to <tt class="docutils literal">l2'</tt> and the appropriate <tt class="docutils literal">f' : forall x, In x l1' <span class="pre">-&gt;</span>
-In x l2'</tt> function.</p>
+assume <span class="docutils literal">l1 = x :: l1'</span>. Now, check whether there is some element of
+<span class="docutils literal">l1'</span> which is mapped by <span class="docutils literal">f : (forall x, In x l1 <span class="pre">-&gt;</span> In x l2)</span> to
+the same membership proof as <span class="docutils literal">x</span>. If there is such an <span class="docutils literal">x'</span>
+element, then it follows that <span class="docutils literal">x = x'</span>, therefore <span class="docutils literal">l1</span> repeats. If
+there is no such element, then we can get <span class="docutils literal">l2'</span> by removing the
+element that <span class="docutils literal">x</span> is mapped to from <span class="docutils literal">l2</span>, and apply the induction
+hypothesis to <span class="docutils literal">l2'</span> and the appropriate <span class="docutils literal">f' : forall x, In x l1' <span class="pre">-&gt;</span> In x l2'</span> function.</p>
 <p>That's it, but I note that actually formalizing this proof is not easy
 with the definitions given, because we need to prove heterogeneous or
 dependent equalities, since we have to compare membership proofs for
@@ -161,17 +155,16 @@ constructively.</p>
 <hr class="docutils" />
 <p><strong>Q:</strong> I follow what you mean (it is quite similar to the EM proof's
 structure), except for how to &quot;check whether there is some element of
-<tt class="docutils literal">l1'</tt> which is mapped by <tt class="docutils literal">f : (forall x, In x l1 <span class="pre">-&gt;</span> In x l2)</tt> to
-the same membership proof as <tt class="docutils literal">x</tt>&quot;. Sorry for being so slow...</p>
-<p><strong>Q:</strong> Perhaps a stupid question, but won't membership proofs of <tt class="docutils literal">In
-x L</tt> and <tt class="docutils literal">In x' L</tt> be different if the first one contains &quot;<tt class="docutils literal">x</tt> is
-at index 3 in the list&quot; and the other one contains &quot;<tt class="docutils literal">x'</tt> is at index
-8&quot;, even if <tt class="docutils literal">x = x'</tt>?</p>
+<span class="docutils literal">l1'</span> which is mapped by <span class="docutils literal">f : (forall x, In x l1 <span class="pre">-&gt;</span> In x l2)</span> to
+the same membership proof as <span class="docutils literal">x</span>&quot;. Sorry for being so slow...</p>
+<p><strong>Q:</strong> Perhaps a stupid question, but won't membership proofs of <span class="docutils literal">In x L</span> and <span class="docutils literal">In x' L</span> be different if the first one contains &quot;<span class="docutils literal">x</span> is
+at index 3 in the list&quot; and the other one contains &quot;<span class="docutils literal">x'</span> is at index
+8&quot;, even if <span class="docutils literal">x = x'</span>?</p>
 <p><strong>A:</strong> To the first question: iterate through the list and decide for
-each element whether it's mapped to the same index as <tt class="docutils literal">x</tt>. You first
+each element whether it's mapped to the same index as <span class="docutils literal">x</span>. You first
 have to implement dec. equality of membership proofs by induction on
 them, then implement this check by induction on lists. To the second:
-if <tt class="docutils literal">In x L</tt> and <tt class="docutils literal">In y L</tt> point to the same index, then <tt class="docutils literal">x = y</tt>.
+if <span class="docutils literal">In x L</span> and <span class="docutils literal">In y L</span> point to the same index, then <span class="docutils literal">x = y</span>.
 We don't decide anything about equalities of elements, we decide
 equality of indices, which implies equality of elements.</p>
 <p><strong>Q:</strong> &quot;You first have to implement dec. equality of membership proofs
@@ -181,19 +174,18 @@ In x l -&gt;
 <span class="kr">exists</span> <span class="nv">l1</span> <span class="nv">l2</span> : list X, l = l1 ++ x :: l2</span></span></span><br><span><var>in_app</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> (<span class="nv">l1</span> <span class="nv">l2</span> : list X),
 In x (l1 ++ l2) &lt;-&gt; In x l1 \/ In x l2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">l</span> : list X) <span class="nv">x</span> (<span class="nv">p</span> <span class="nv">q</span> : In x l),
 {p = q} + {p &lt;&gt; q}</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>Could you show how to do this, please? (Here <tt class="docutils literal">In</tt> is unfortunately a
+</span></span></pre><p>Could you show how to do this, please? (Here <span class="docutils literal">In</span> is unfortunately a
 function and not an inductive predicate, so I need to compare
 functions, which I can't, without assuming functional extensionality)</p>
-<p><strong>A:</strong> We'd like to decide <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.JMeq.html">heterogeneous</a> equality of <tt class="docutils literal">In
-x l</tt> and <tt class="docutils literal">In y l</tt>. That's done by induction on <tt class="docutils literal">l</tt> if <tt class="docutils literal">In</tt> is
-recursively defined on <tt class="docutils literal">l</tt>. Unfortunately I don't have immediately
+<p><strong>A:</strong> We'd like to decide <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.JMeq.html">heterogeneous</a> equality of <span class="docutils literal">In x l</span> and <span class="docutils literal">In y l</span>. That's done by induction on <span class="docutils literal">l</span> if <span class="docutils literal">In</span> is
+recursively defined on <span class="docutils literal">l</span>. Unfortunately I don't have immediately
 deployable Coq skills, so I can't write example code. You can look at
 the link in gallais' comment. He does a great job doing a simple proof
-in Agda, and he also avoids heterogeneous <tt class="docutils literal">In</tt> equalities. You can
+in Agda, and he also avoids heterogeneous <span class="docutils literal">In</span> equalities. You can
 certainly understand the types of the lemmas there even if you don't
 know Agda.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

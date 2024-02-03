@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>In Coq, &quot;if then else&quot; allows non-boolean first argument?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,58 +14,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="in-coq-if-then-else-allows-non-boolean-first-argument">
+<div class="alectryon-root alectryon-centered"><main id="in-coq-if-then-else-allows-non-boolean-first-argument">
 <h1 class="title">In Coq, &quot;if then else&quot; allows non-boolean first argument?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/47965062">https://stackoverflow.com/q/47965062</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/47965062">https://stackoverflow.com/q/47965062</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I read in a few tutorials that <tt class="docutils literal">if a then b else c</tt> stands for
-<tt class="docutils literal">match a with true =&gt; b | false =&gt; c end</tt>. However the former very
-strangely does not check the type of <tt class="docutils literal">a</tt>, while the latter of course
-makes sure that <tt class="docutils literal">a</tt> is a boolean. For instance,</p>
+<section id="question">
+<h2>Question</h2>
+<p>I read in a few tutorials that <span class="docutils literal">if a then b else c</span> stands for
+<span class="docutils literal">match a with true =&gt; b | false =&gt; c end</span>. However the former very
+strangely does not check the type of <span class="docutils literal">a</span>, while the latter of course
+makes sure that <span class="docutils literal">a</span> is a boolean. For instance,</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-coq-if-then-else-allows-non-boolean-first-argument-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="in-coq-if-then-else-allows-non-boolean-first-argument-v-chk0"><span class="kn">Check</span> <span class="kr">if</span> nil <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="kr">if</span> nil <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>
      : nat
 <span class="kn">where</span>
 <span class="nl">?A</span> : [ |- <span class="kt">Type</span>]</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="in-coq-if-then-else-allows-non-boolean-first-argument-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="in-coq-if-then-else-allows-non-boolean-first-argument-v-chk1"><span class="kn">Check</span> <span class="kr">match</span> nil <span class="kr">with</span> true =&gt; <span class="mi">1</span> | false =&gt; <span class="mi">2</span> <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Found a <span class="nb">constructor</span> of inductive type bool
- while a <span class="nb">constructor</span> of list <span class="kr">is</span> expected.</blockquote></div></div></small></span></pre><p>Why is <tt class="docutils literal">if ... then ... else ...</tt> allowing its first argument to be
+ while a <span class="nb">constructor</span> of list <span class="kr">is</span> expected.</blockquote></div></div></small></span></pre><p>Why is <span class="docutils literal">if ... then ... else ...</span> allowing its first argument to be
 anything else than a non-boolean? Is there some overloading going on?
-(<tt class="docutils literal">Locate &quot;if&quot;.</tt> gives no result.)</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+(<span class="docutils literal">Locate &quot;if&quot;.</span> gives no result.)</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Let me quote the <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/language/gallina-extensions.html#if-then-else">Coq Reference manual</a>:</p>
 <blockquote>
 <p>For inductive types with exactly two constructors and for
 pattern-matchings expressions which do not depend on the arguments
-of the constructors, it is possible to use a <tt class="docutils literal">if ... then ...
-else ...</tt> notation. More generally, for an inductive type with
-constructors <tt class="docutils literal">C1</tt> and <tt class="docutils literal">C2</tt>, we have the following equivalence:</p>
-<pre class="code coq literal-block">
-<span class="kr">if</span> <span class="n">term</span> <span class="o">[</span><span class="n">dep_ret_type</span><span class="o">]</span> <span class="kr">then</span> <span class="n">term1</span> <span class="kr">else</span> <span class="n">term2</span>
-</pre>
+of the constructors, it is possible to use a <span class="docutils literal">if ... then ... else ...</span> notation. More generally, for an inductive type with
+constructors <span class="docutils literal">C1</span> and <span class="docutils literal">C2</span>, we have the following equivalence:</p>
+<pre class="code coq literal-block"><code><span class="kr">if</span> <span class="n">term</span> <span class="o">[</span><span class="n">dep_ret_type</span><span class="o">]</span> <span class="kr">then</span> <span class="n">term1</span> <span class="kr">else</span> <span class="n">term2</span></code></pre>
 <p>is equivalent to</p>
-<pre class="code coq literal-block">
-<span class="kr">match</span> <span class="n">term</span> <span class="o">[</span><span class="n">dep_ret_type</span><span class="o">]</span> <span class="kr">with</span>
+<pre class="code coq literal-block"><code><span class="kr">match</span> <span class="n">term</span> <span class="o">[</span><span class="n">dep_ret_type</span><span class="o">]</span> <span class="kr">with</span>
 <span class="o">|</span> <span class="n">C1</span> <span class="n">_</span> <span class="o">...</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">term1</span>           <span class="c">(* we cannot bind the arguments *)</span>
 <span class="o">|</span> <span class="n">C2</span> <span class="n">_</span> <span class="o">...</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">term2</span>
-<span class="kr">end</span>
-</pre>
+<span class="kr">end</span></code></pre>
 </blockquote>
-<p>As you can see, the first constructor is treated as <tt class="docutils literal">true</tt> value.
+<p>As you can see, the first constructor is treated as <span class="docutils literal">true</span> value.
 Here is an example:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">is_empty</span> {<span class="nv">A</span> : <span class="kt">Type</span>} (<span class="nv">xs</span> : list A) : bool :=
-  <span class="kr">if</span> xs <span class="kr">then</span> true <span class="kr">else</span> false.</span></span></pre></div>
+  <span class="kr">if</span> xs <span class="kr">then</span> true <span class="kr">else</span> false.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

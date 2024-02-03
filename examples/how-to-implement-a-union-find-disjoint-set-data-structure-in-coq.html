@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to implement a union-find (disjoint set) data structure in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,18 +14,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-implement-a-union-find-disjoint-set-data-structure-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-implement-a-union-find-disjoint-set-data-structure-in-coq">
 <h1 class="title">How to implement a union-find (disjoint set) data structure in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/66630519">https://stackoverflow.com/q/66630519</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/66630519">https://stackoverflow.com/q/66630519</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>I am quite new to Coq, but for my project I have to use a union-find
 data structure in Coq. Are there any implementations of the union-find
 (disjoint set) data structure in Coq?</p>
@@ -34,36 +31,34 @@ doesn't have to be very efficient. (no need to do path compression or
 all the fancy optimizations) I just need a data structure that can
 hold an arbitrary data type (or nat if it's too hard) and perform:
 <strong>union</strong> and <strong>find</strong>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>If all you need is a mathematical model, with no concern for actual
 performance, I would go for the most straightforward one: a functional
 map (finite partial function) in which each element optionally links
 to another element with which it has been merged.</p>
 <ul class="simple">
-<li>If an element links to nothing, then its canonical representative is
-itself.</li>
-<li>If an element links to another element, then its canonical
+<li><p>If an element links to nothing, then its canonical representative is
+itself.</p></li>
+<li><p>If an element links to another element, then its canonical
 representative is the canonical representative of that other
-element.</li>
+element.</p></li>
 </ul>
 <p>Note: in the remaining of this answer, as is standard with union-find,
 I will assume that elements are simply natural numbers. If you want
 another type of elements, simply have another map that binds all
 elements to unique numbers.</p>
-<p>Then you would define a function <tt class="docutils literal">find : UnionFind <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</tt>
+<p>Then you would define a function <span class="docutils literal">find : UnionFind <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat</span>
 that returns the canonical representative of a given element, by
 following links as long as you can. Notice that the function would use
 recursion, whose termination argument is not trivial. To make it
 happen, I think that the easiest way is to maintain the invariant that
-a number only links to a lesser number (i.e. if <tt class="docutils literal">i</tt> links to <tt class="docutils literal">j</tt>,
-then <tt class="docutils literal">i &gt; j</tt>). Then the recursion terminates because, when following
+a number only links to a lesser number (i.e. if <span class="docutils literal">i</span> links to <span class="docutils literal">j</span>,
+then <span class="docutils literal">i &gt; j</span>). Then the recursion terminates because, when following
 links, the current element is a decreasing natural number.</p>
-<p>Defining the function <tt class="docutils literal">union : UnionFind <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> UnionFind</tt>
-is easier: <tt class="docutils literal">union m i j</tt> simply returns an updated map with <tt class="docutils literal">max i'
-j'</tt> linking to <tt class="docutils literal">min i' j'</tt>, where <tt class="docutils literal">i' = find m i</tt> and <tt class="docutils literal">j' = find
-m j</tt>.</p>
+<p>Defining the function <span class="docutils literal">union : UnionFind <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> nat <span class="pre">-&gt;</span> UnionFind</span>
+is easier: <span class="docutils literal">union m i j</span> simply returns an updated map with <span class="docutils literal">max i' j'</span> linking to <span class="docutils literal">min i' j'</span>, where <span class="docutils literal">i' = find m i</span> and <span class="docutils literal">j' = find m j</span>.</p>
 <p>[Side note on performance: maintaining the invariant means that you
 cannot adequately choose which of a pair of partitions to merge into
 the other, based on their ranks; however you can still implement path
@@ -80,23 +75,20 @@ list are the elements in <em>reverse order</em>. The values of the list are
 <em>offsets</em>, i.e. the number of positions to skip forward in order to
 reach the target of the link.</p>
 <ul class="simple">
-<li>For an element <tt class="docutils literal">i</tt> linking to <tt class="docutils literal">j</tt> (<tt class="docutils literal">i &gt; j</tt>), the offset is <tt class="docutils literal">i
-− j</tt>.</li>
-<li>For a canonical representative, the offset is zero.</li>
+<li><p>For an element <span class="docutils literal">i</span> linking to <span class="docutils literal">j</span> (<span class="docutils literal">i &gt; j</span>), the offset is <span class="docutils literal">i − j</span>.</p></li>
+<li><p>For a canonical representative, the offset is zero.</p></li>
 </ul>
 <p>With my best pseudo-ASCII-art skills, here is a map where the links
 are { 6↦2, 4↦2, 3↦0, 2↦1 } and the canonical representatives are { 5,
 1, 0 }:</p>
-<pre class="code literal-block">
-  6   5   4   3   2   1   0   element
+<pre class="code literal-block"><code>  6   5   4   3   2   1   0   element
   ↓  ↓  ↓  ↓  ↓  ↓  ↓
                /‾‾‾‾‾‾‾‾‾↘
 [ 4 ; 0 ; 2 ; 3 ; 1 ; 0 ; 0 ] map
    \       \___↗↗ \_↗
-    \___________/
-</pre>
+    \___________/</code></pre>
 <p>The motivation is that the invariant discussed above is then enforced
-<em>structurally</em>. Hence, there is hope that <tt class="docutils literal">find</tt> could actually be
+<em>structurally</em>. Hence, there is hope that <span class="docutils literal">find</span> could actually be
 defined by structural induction (on the structure of the list), and
 have termination for free.</p>
 <hr class="docutils" />
@@ -109,7 +101,7 @@ that they prove it correct in Coq, which implies that they have a Coq
 model for union-find. However, this model reflects the memory store
 for the imperative program that they seek to prove correct. I'm not
 sure how applicable it is to your problem.</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

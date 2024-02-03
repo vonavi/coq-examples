@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to name the assumption when remembering an expression?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,40 +14,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-name-the-assumption-when-remembering-an-expression">
+<div class="alectryon-root alectryon-centered"><main id="how-to-name-the-assumption-when-remembering-an-expression">
 <h1 class="title">How to name the assumption when remembering an expression?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/11504064">https://stackoverflow.com/q/11504064</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/11504064">https://stackoverflow.com/q/11504064</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>The documentation for Coq carries the general admonition <em>not</em> to rely
 on the builtin naming mechanism, but select one's own names, lest the
 changes in the naming mechanism render past proofs invalid.</p>
-<p>When considering expressions of the form <tt class="docutils literal">remember Expr as v</tt>, we
-set the variable <tt class="docutils literal">v</tt> to the expression <tt class="docutils literal">Expr</tt>. But the name of the
-assumption is selected automatically, and is something like <tt class="docutils literal">Heqv</tt>,
+<p>When considering expressions of the form <span class="docutils literal">remember Expr as v</span>, we
+set the variable <span class="docutils literal">v</span> to the expression <span class="docutils literal">Expr</span>. But the name of the
+assumption is selected automatically, and is something like <span class="docutils literal">Heqv</span>,
 so we have:</p>
-<pre class="code coq literal-block">
-<span class="n">Heqv</span><span class="o">:</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Expr</span>
-</pre>
-<p>How can I select my own name instead of <tt class="docutils literal">Heqv</tt>? I can always rename
-it to whatever I like using the <tt class="docutils literal">rename</tt> command, but that doesn't
+<pre class="code coq literal-block"><code><span class="n">Heqv</span><span class="o">:</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Expr</span></code></pre>
+<p>How can I select my own name instead of <span class="docutils literal">Heqv</span>? I can always rename
+it to whatever I like using the <span class="docutils literal">rename</span> command, but that doesn't
 keep my proofs independent of the hypothetical future changes in the
 builtin naming mechanism in Coq.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>If you may get rid of the separate equality, try <tt class="docutils literal">set (name :=
-val)</tt>. Use <tt class="docutils literal">unfold</tt> instead of <tt class="docutils literal">rewrite</tt> to get the value back in
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>If you may get rid of the separate equality, try <span class="docutils literal">set (name := val)</span>. Use <span class="docutils literal">unfold</span> instead of <span class="docutils literal">rewrite</span> to get the value back in
 place.</p>
-<p>If you need the equality for more than the <tt class="docutils literal">rewrite &lt;-</tt>, I know of
+<p>If you need the equality for more than the <span class="docutils literal">rewrite &lt;-</span>, I know of
 no built in tactic that does this. You can do it manually, though, or
 build a tactic / notation. I just threw this together. (Note: I'm not
 an expert, this might be done more easily.)</p>
@@ -58,19 +52,16 @@ an expert, this might be done more easily.)</p>
   <span class="nb">assert</span> (HHelp : sigT (<span class="kr">fun</span> <span class="nv">x</span> =&gt; x = v)) <span class="bp">by</span> (<span class="nb">apply</span> (existT _ v); <span class="bp">reflexivity</span>);
   <span class="nb">inversion</span> HHelp <span class="kr">as</span> [vname eqname];
   <span class="nb">unfold</span> v <span class="kr">in</span> *; <span class="nb">clear</span> v HHelp;
-  <span class="nb">rewrite</span> &lt;- eqname <span class="kr">in</span> *.</span></span></pre><p>Use as <tt class="docutils literal">remember_as_eq (2 + 2) four Heqfour</tt> to get the same result
-as with <tt class="docutils literal">remember (2 + 2) as four</tt>.</p>
+  <span class="nb">rewrite</span> &lt;- eqname <span class="kr">in</span> *.</span></span></pre><p>Use as <span class="docutils literal">remember_as_eq (2 + 2) four Heqfour</span> to get the same result
+as with <span class="docutils literal">remember (2 + 2) as four</span>.</p>
 <hr class="docutils" />
-<p><strong>A:</strong> Note that you can also define it as <tt class="docutils literal">Tactic Notation
-&quot;remember&quot; constr(expr) &quot;as&quot; ident(vname) &quot;withEq&quot; ident(eqname)</tt> if
-you prefer using it as <tt class="docutils literal">remember (2 + 2) as four withEq Heqfour</tt>,
-but this will bork the parser and shadow the builtin <tt class="docutils literal">remember _ as
-_.</tt>. If you use <tt class="docutils literal">Tactic Notation &quot;remember&quot; constr(expr) &quot;with&quot;
-ident(eqname) &quot;as&quot; ident(vname)</tt> (or <tt class="docutils literal">withEq</tt> instead of <tt class="docutils literal">with</tt>
-or ...), the ordering is weird but the old <tt class="docutils literal">remember</tt> will still be
+<p><strong>A:</strong> Note that you can also define it as <span class="docutils literal">Tactic Notation &quot;remember&quot; constr(expr) &quot;as&quot; ident(vname) &quot;withEq&quot; ident(eqname)</span> if
+you prefer using it as <span class="docutils literal">remember (2 + 2) as four withEq Heqfour</span>,
+but this will bork the parser and shadow the builtin <span class="docutils literal">remember _ as _.</span>. If you use <span class="docutils literal">Tactic Notation &quot;remember&quot; constr(expr) &quot;with&quot; ident(eqname) &quot;as&quot; ident(vname)</span> (or <span class="docutils literal">withEq</span> instead of <span class="docutils literal">with</span>
+or ...), the ordering is weird but the old <span class="docutils literal">remember</span> will still be
 accessible.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

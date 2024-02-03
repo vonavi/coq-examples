@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Transitivity of subsequence in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,29 +14,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="transitivity-of-subsequence-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="transitivity-of-subsequence-in-coq">
 <h1 class="title">Transitivity of subsequence in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/69797654">https://stackoverflow.com/q/69797654</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/69797654">https://stackoverflow.com/q/69797654</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I have been working my way through logical foundations and have gotten
 very stuck on the transitivity of subsequences exercise.</p>
-<div class="section" id="exercise-2-stars-advanced-subsequence">
-<h2>Exercise: 2 stars, advanced (subsequence)</h2>
+<section id="exercise-2-stars-advanced-subsequence">
+<h3>Exercise: 2 stars, advanced (subsequence)</h3>
 <p>A list is a <em>subsequence</em> of another list if all of the elements in
 the first list occur in the same order in the second list, possibly
 with some extra elements in between. For example,</p>
-<p>(Optional, harder) Prove <tt class="docutils literal">subseq_trans</tt> that subsequence is
-transitive -- that is, if <tt class="docutils literal">l1</tt> is a subsequence of <tt class="docutils literal">l2</tt> and <tt class="docutils literal">l2</tt>
-is a subsequence of <tt class="docutils literal">l3</tt>, then <tt class="docutils literal">l1</tt> is a subsequence of <tt class="docutils literal">l3</tt>.
+<p>(Optional, harder) Prove <span class="docutils literal">subseq_trans</span> that subsequence is
+transitive -- that is, if <span class="docutils literal">l1</span> is a subsequence of <span class="docutils literal">l2</span> and <span class="docutils literal">l2</span>
+is a subsequence of <span class="docutils literal">l3</span>, then <span class="docutils literal">l1</span> is a subsequence of <span class="docutils literal">l3</span>.
 Hint: choose your induction carefully!</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">subseq</span> : list nat -&gt; list nat -&gt; <span class="kt">Prop</span> :=
 | sseq_e (l2 : list nat) : subseq [] l2
@@ -69,15 +66,15 @@ subseq (n :: l1) l3</span></span></span><br><span><var>l0, l4</var><span class="
 </span></span></pre><p>I am having trouble getting the right induction hypothesis after
 having tried a couple of different approaches. I have tried a number
 of approaches and end up with a situation where, in my assumptions, I
-have something like <tt class="docutils literal">subseq l2 <span class="pre">(x::l3)</span></tt> but then I need to prove
-<tt class="docutils literal">subseq l2 l3</tt> which seems like a dead end. Any pointers in the
+have something like <span class="docutils literal">subseq l2 <span class="pre">(x::l3)</span></span> but then I need to prove
+<span class="docutils literal">subseq l2 l3</span> which seems like a dead end. Any pointers in the
 right direction would be much appreciated.</p>
-</div>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>That experience suggests generalizing the induction hypothesis over
-<tt class="docutils literal">l3</tt>.</p>
+<span class="docutils literal">l3</span>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="transitivity-of-subsequence-in-coq-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="transitivity-of-subsequence-in-coq-v-chk10"><span class="kn">Theorem</span> <span class="nf">subseq_trans</span> : <span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> <span class="nv">l3</span> : list nat,
     subseq l1 l2 -&gt; subseq l2 l3 -&gt; subseq l1 l3.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">l1</span> <span class="nv">l2</span> <span class="nv">l3</span> : list nat,
 subseq l1 l2 -&gt; subseq l2 l3 -&gt; subseq l1 l3</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -117,8 +114,8 @@ subseq l2 l3 -&gt; subseq l1 l3</span></span></span><br><span><var>a</var><span 
 </span></span><span class="alectryon-wsp">      </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="transitivity-of-subsequence-in-coq-v-chk2c" style="display: none" type="checkbox"><label class="alectryon-input" for="transitivity-of-subsequence-in-coq-v-chk2c">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq l1 l2</span></span></span><br><span><var>IHsubseq</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l3</span> : list nat,
 subseq l2 l3 -&gt; subseq l1 l3</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l3</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>subseq (n :: l2) (a :: l3)</span></span></span><br><span><var>IHl3</var><span class="hyp-type"><b>: </b><span>subseq (n :: l2) l3 -&gt; subseq l1 l3</span></span></span><br><span><var>l0, l4</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>subseq (n :: l2) l3</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>l0 = n :: l2</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>n0 = a</span></span></span><br><span><var>H4</var><span class="hyp-type"><b>: </b><span>l4 = l3</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq l1 (a :: l3)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="transitivity-of-subsequence-in-coq-v-chk2d" style="display: none" type="checkbox"><label class="alectryon-input" for="transitivity-of-subsequence-in-coq-v-chk2d"><span class="nb">specialize</span> (IHl3 H3).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>l1, l2</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>subseq l1 l2</span></span></span><br><span><var>IHsubseq</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">l3</span> : list nat,
 subseq l2 l3 -&gt; subseq l1 l3</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>l3</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>subseq (n :: l2) (a :: l3)</span></span></span><br><span><var>IHl3</var><span class="hyp-type"><b>: </b><span>subseq l1 l3</span></span></span><br><span><var>l0, l4</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>H3</var><span class="hyp-type"><b>: </b><span>subseq (n :: l2) l3</span></span></span><br><span><var>H2</var><span class="hyp-type"><b>: </b><span>l0 = n :: l2</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>n0 = a</span></span></span><br><span><var>H4</var><span class="hyp-type"><b>: </b><span>l4 = l3</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">subseq l1 (a :: l3)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> (sseq_nm l1 l3 a IHl3).</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

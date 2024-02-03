@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to set defaults for implicit arguments when they can't be inferred?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-set-defaults-for-implicit-arguments-when-they-can-t-be-inferred">
+<div class="alectryon-root alectryon-centered"><main id="how-to-set-defaults-for-implicit-arguments-when-they-can-t-be-inferred">
 <h1 class="title">How to set defaults for implicit arguments when they can't be inferred?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://proofassistants.stackexchange.com/q/1013">https://proofassistants.stackexchange.com/q/1013</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://proofassistants.stackexchange.com/q/1013">https://proofassistants.stackexchange.com/q/1013</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>If I had a module declared as follows in file <tt class="docutils literal">A.v</tt>:</p>
+<section id="question">
+<h2>Question</h2>
+<p>If I had a module declared as follows in file <span class="docutils literal">A.v</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">A</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Context</span> {<span class="nv">X</span> : <span class="kt">Set</span>}.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">abt</span> := Abt_leaf (x : X) | Abt_node.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">A</span>.</span></span></pre><p>And in another file, <tt class="docutils literal">B.v</tt>, I had:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">A</span>.</span></span></pre><p>And in another file, <span class="docutils literal">B.v</span>, I had:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp"><span class="c">(* Require Import A. *)</span>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">X</span> := nat.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">typ</span> := Tpe_num | Typ_str.</span><span class="alectryon-wsp">
@@ -40,12 +37,12 @@
 More precisely: 
 - <span class="nl">?X</span>: Cannot infer the implicit parameter X of abt
   whose type <span class="kr">is</span> <span class="s2">&quot;Set&quot;</span> <span class="kr">in</span> environment:
-  t : typ</blockquote></div></div></small></span></pre><p>How could I let Coq know I <strong>always</strong> want <tt class="docutils literal">abt</tt> to be <tt class="docutils literal">&#64;abt X</tt> in
-<tt class="docutils literal">B.v</tt>? The intent is to avoid explicitly specifying them using
-<tt class="docutils literal">&#64;</tt>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+  t : typ</blockquote></div></div></small></span></pre><p>How could I let Coq know I <strong>always</strong> want <span class="docutils literal">abt</span> to be <span class="docutils literal">&#64;abt X</span> in
+<span class="docutils literal">B.v</span>? The intent is to avoid explicitly specifying them using
+<span class="docutils literal">&#64;</span>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Not sure how robust that is, but you can do something quite nice using
 <a class="reference external" href="https://coq.inria.fr/refman/addendum/type-classes.html">typeclasses</a>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">A</span>.</span><span class="alectryon-wsp">
@@ -60,15 +57,15 @@ More precisely:
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">typ</span> := Tpe_num | Typ_str.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">typ_to_abt</span> (<span class="nv">t</span> : typ) : abt := Abt_node.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">B</span>.</span></span></pre><p>To elaborate on what is happening here, we are first declaring a class
-<tt class="docutils literal">leaf_type</tt>, that Coq will try to infer on its own automatically
-whenever it can, and <tt class="docutils literal">abt</tt> makes use of that typeclass. In section
-B, we put this to work: we declare <tt class="docutils literal">nat</tt> as a <tt class="docutils literal">#[local]</tt> instance,
-so that whenever an implicit argument of type <tt class="docutils literal">leaf_type</tt> is
-encountered in that section, Coq will find the local instance <tt class="docutils literal">nat</tt>
+<span class="docutils literal">leaf_type</span>, that Coq will try to infer on its own automatically
+whenever it can, and <span class="docutils literal">abt</span> makes use of that typeclass. In section
+B, we put this to work: we declare <span class="docutils literal">nat</span> as a <span class="docutils literal">#[local]</span> instance,
+so that whenever an implicit argument of type <span class="docutils literal">leaf_type</span> is
+encountered in that section, Coq will find the local instance <span class="docutils literal">nat</span>
 and be happy with it. Once you close the section, the instance is gone
 and you can declare another one later on.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

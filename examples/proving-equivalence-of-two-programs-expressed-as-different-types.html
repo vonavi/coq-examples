@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proving equivalence of two programs expressed as different types</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proving-equivalence-of-two-programs-expressed-as-different-types">
+<div class="alectryon-root alectryon-centered"><main id="proving-equivalence-of-two-programs-expressed-as-different-types">
 <h1 class="title">Proving equivalence of two programs expressed as different types</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/68870467">https://stackoverflow.com/q/68870467</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/68870467">https://stackoverflow.com/q/68870467</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I understand how to prove equivalence of two programs when they're
 represented in the same datatype, from the <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/plf-current/Equiv.html">first chapter of PL
 Foundations</a>.
@@ -36,19 +33,19 @@ with separate step relations, e.g. when a compiler translates an AST
 into an SSA IR which conceptually behaves the same but executes
 differently? Another example is a program and transition system, where
 there is a correspondence between program reductions and transitions.</p>
-<p>Here's what I've tried. There are two languages, <tt class="docutils literal">imp1</tt> and
-<tt class="docutils literal">imp2</tt>, with e.g. just a single <tt class="docutils literal">Skip</tt> command. I figured a good
+<p>Here's what I've tried. There are two languages, <span class="docutils literal">imp1</span> and
+<span class="docutils literal">imp2</span>, with e.g. just a single <span class="docutils literal">Skip</span> command. I figured a good
 &quot;evaluation result&quot; would be a (finite, for now) trace of actions, to
 allow for concurrency. There are (multi-)step relations defined for
 both which allow a finite number of skips.</p>
 <p>The problem is that in the final equivalence theorem, the behaviour of
-<tt class="docutils literal">imp1</tt> tells me nothing about the behaviour of <tt class="docutils literal">imp2</tt>: given that
-the <tt class="docutils literal">imp1</tt> program takes a <tt class="docutils literal">Skip</tt> step, I don't know anything
-about the next step of <tt class="docutils literal">imp2</tt>.</p>
+<span class="docutils literal">imp1</span> tells me nothing about the behaviour of <span class="docutils literal">imp2</span>: given that
+the <span class="docutils literal">imp1</span> program takes a <span class="docutils literal">Skip</span> step, I don't know anything
+about the next step of <span class="docutils literal">imp2</span>.</p>
 <p>This feels really silly but what am I missing? Does there need to be
-some additional relation mapping single steps of <tt class="docutils literal">imp1</tt> to those of
-<tt class="docutils literal">imp2</tt>? This feels too restrictive: what if one step of <tt class="docutils literal">imp1</tt>
-corresponds to many steps of <tt class="docutils literal">imp2</tt> or vice versa? Any other
+some additional relation mapping single steps of <span class="docutils literal">imp1</span> to those of
+<span class="docutils literal">imp2</span>? This feels too restrictive: what if one step of <span class="docutils literal">imp1</span>
+corresponds to many steps of <span class="docutils literal">imp2</span> or vice versa? Any other
 resources would be welcome!</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Strings.String.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> Lists.List.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -95,9 +92,9 @@ multi_step1 i1 i2 t -&gt;
 compile i1 = j1 -&gt; multi_step2 j1 j2 t</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk2"><span class="nb">intros</span> t i1 i2 j1 j2 Hstep1 Hcomp.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>t</var><span class="hyp-type"><b>: </b><span>trace</span></span></span><br><span><var>i1, i2</var><span class="hyp-type"><b>: </b><span>imp1</span></span></span><br><span><var>j1, j2</var><span class="hyp-type"><b>: </b><span>imp2</span></span></span><br><span><var>Hstep1</var><span class="hyp-type"><b>: </b><span>multi_step1 i1 i2 t</span></span></span><br><span><var>Hcomp</var><span class="hyp-type"><b>: </b><span>compile i1 = j1</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">multi_step2 j1 j2 t</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk3"><span class="nb">inversion</span> Hstep1; <span class="nb">subst</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i2</var><span class="hyp-type"><b>: </b><span>imp1</span></span></span><br><span><var>j2</var><span class="hyp-type"><b>: </b><span>imp2</span></span></span><br><span><var>Hstep1</var><span class="hyp-type"><b>: </b><span>multi_step1 i2 i2 []</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">multi_step2 (compile i2) j2 []</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk4" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i1, i2</var><span class="hyp-type"><b>: </b><span>imp1</span></span></span><br><span><var>j2</var><span class="hyp-type"><b>: </b><span>imp2</span></span></span><br><span><var>a1</var><span class="hyp-type"><b>: </b><span>action</span></span></span><br><span><var>a2</var><span class="hyp-type"><b>: </b><span>trace</span></span></span><br><span><var>Hstep1</var><span class="hyp-type"><b>: </b><span>multi_step1 i1 i2 (a1 :: a2)</span></span></span><br><span><var>i3</var><span class="hyp-type"><b>: </b><span>imp1</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>step1 i1 i3 a1</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>multi_step1 i3 i2 a2</span></span></span><br></div><label class="goal-separator" for="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk4"><hr></label><div class="goal-conclusion">multi_step2 (compile i1) j2 (a1 :: a2)</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk5">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>i2</var><span class="hyp-type"><b>: </b><span>imp1</span></span></span><br><span><var>j2</var><span class="hyp-type"><b>: </b><span>imp2</span></span></span><br><span><var>Hstep1</var><span class="hyp-type"><b>: </b><span>multi_step1 i2 i2 []</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">multi_step2 (compile i2) j2 []</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk6"><span class="nb">destruct</span> i2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>j2</var><span class="hyp-type"><b>: </b><span>imp2</span></span></span><br><span><var>Hstep1</var><span class="hyp-type"><b>: </b><span>multi_step1 Skip1 Skip1 []</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">multi_step2 (compile Skip1) j2 []</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="proving-equivalence-of-two-programs-expressed-as-different-types-v-chk7"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>j2</var><span class="hyp-type"><b>: </b><span>imp2</span></span></span><br><span><var>Hstep1</var><span class="hyp-type"><b>: </b><span>multi_step1 Skip1 Skip1 []</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">multi_step2 Skip2 j2 []</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The result you are trying to prove is a typical example of a
 <em>simulation</em> between two transition systems. This case is simple
 enough that you can prove it directly; the missing piece in your
@@ -163,12 +160,12 @@ step1 x1 x2 t -&gt;
 </span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span>
 </span></pre><p>This differs from your example in two main ways. First, notice that
 the result of the target execution is <em>existentially</em> quantified in
-the conclusion -- it does not usually make sense to require <tt class="docutils literal">y1</tt> to
-step to <em>any</em> <tt class="docutils literal">y2</tt> whatsoever.</p>
+the conclusion -- it does not usually make sense to require <span class="docutils literal">y1</span> to
+step to <em>any</em> <span class="docutils literal">y2</span> whatsoever.</p>
 <p>Second, I have added a hypothesis saying that the starting states of
 the two transition systems are related by some simulation relation
-<tt class="docutils literal">R</tt>. This relation should intuitively express when a state <tt class="docutils literal">y</tt> of
-the target system correctly represents a state <tt class="docutils literal">x</tt> of the source
+<span class="docutils literal">R</span>. This relation should intuitively express when a state <span class="docutils literal">y</span> of
+the target system correctly represents a state <span class="docutils literal">x</span> of the source
 system, in the sense that it can simulate its behavior.</p>
 <p>Finding such a relation requires creativity. Sometimes, it is as
 simple as saying that the target is the result of compiling the
@@ -176,8 +173,8 @@ source, as you did in your example. More often than not, however, you
 need to generalize the relationship between the source and the target
 to be able to relate arbitrary executions: the state that you get in
 the target during execution might not be the result of compiling a
-source state. Once you prove <tt class="docutils literal">forward_simulation</tt> and
-<tt class="docutils literal">compilation_is_related</tt>, it should be easy to prove an analogue of
+source state. Once you prove <span class="docutils literal">forward_simulation</span> and
+<span class="docutils literal">compilation_is_related</span>, it should be easy to prove an analogue of
 your correctness statement by induction on the multi-step execution
 relation.</p>
 <p>There are many variations on this basic pattern. For instance,
@@ -191,14 +188,12 @@ mentioned; namely, that every behavior that you observe in the
 compiled program can be explained by a matching source execution --
 you certainly would not want the compiled program to exhibit some
 behavior that is not allowed by the source language!</p>
-<pre class="code coq literal-block">
-<span class="kn">Theorem</span> <span class="nf">compile_is_correct</span> <span class="o">:</span>
+<pre class="code coq literal-block"><code><span class="kn">Theorem</span> <span class="nf">compile_is_correct</span> <span class="o">:</span>
   <span class="kr">forall</span> <span class="nv">x1</span> <span class="nv">y1</span> <span class="nv">y2</span> <span class="nv">t</span><span class="o">,</span>
     <span class="n">compile</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">-&gt;</span> <span class="n">multi_step2</span> <span class="n">y1</span> <span class="n">y2</span> <span class="n">t</span> <span class="o">-&gt;</span>
-    <span class="kr">exists</span> <span class="nv">x2</span><span class="o">,</span> <span class="n">multi_step1</span> <span class="n">x1</span> <span class="n">x2</span> <span class="n">t</span><span class="o">.</span>
-</pre>
+    <span class="kr">exists</span> <span class="nv">x2</span><span class="o">,</span> <span class="n">multi_step1</span> <span class="n">x1</span> <span class="n">x2</span> <span class="n">t</span><span class="o">.</span></code></pre>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

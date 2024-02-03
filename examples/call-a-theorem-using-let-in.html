@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Call a theorem using let-in</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="call-a-theorem-using-let-in">
+<div class="alectryon-root alectryon-centered"><main id="call-a-theorem-using-let-in">
 <h1 class="title">Call a theorem using let-in</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48279204">https://stackoverflow.com/q/48279204</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48279204">https://stackoverflow.com/q/48279204</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have a function <tt class="docutils literal">f</tt> returning a pair. Then I prove some results
+<section id="question">
+<h2>Question</h2>
+<p>I have a function <span class="docutils literal">f</span> returning a pair. Then I prove some results
 about it. In my lemmas, my first attempt to get each component was
-using <tt class="docutils literal">let (x, y) := f z in</tt>. But then, trying to use these lemmas
-seems cumbersome. <tt class="docutils literal">apply</tt> does not work directly, I have to add the
-lemma in the hypothesis using <tt class="docutils literal">pose proof</tt> or a variant of it and
-destruct <tt class="docutils literal">f z</tt> to be able to use it. Is there a way to use let-in
+using <span class="docutils literal">let (x, y) := f z in</span>. But then, trying to use these lemmas
+seems cumbersome. <span class="docutils literal">apply</span> does not work directly, I have to add the
+lemma in the hypothesis using <span class="docutils literal">pose proof</span> or a variant of it and
+destruct <span class="docutils literal">f z</span> to be able to use it. Is there a way to use let-in
 smoothly in lemmas? Or is it discouraged because it is painful to use?</p>
 <p>To complete my question, here are the other attempts I made to write
-lemmas about <tt class="docutils literal">f</tt>. I tried using <tt class="docutils literal">fst (f z)</tt> and <tt class="docutils literal">snd (f z)</tt>
+lemmas about <span class="docutils literal">f</span>. I tried using <span class="docutils literal">fst (f z)</span> and <span class="docutils literal">snd (f z)</span>
 directly, but I also found it cumbersome. Finally, I started my lemmas
-with <tt class="docutils literal">forall x y, (x, y) = f z <span class="pre">-&gt;</span></tt>.</p>
+with <span class="docutils literal">forall x y, (x, y) = f z <span class="pre">-&gt;</span></span>.</p>
 <p>Here is a concrete example.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -62,17 +59,16 @@ In x l</div></blockquote></div></div></small><span class="alectryon-wsp">
     (l1, l2) = <span class="nb">split</span> l -&gt; In x l1 \/ In x l2 &lt;-&gt; In x l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list A) (<span class="nv">x</span> : A)
   (<span class="nv">l1</span> <span class="nv">l2</span> : list A),
 (l1, l2) = <span class="nb">split</span> l -&gt; In x l1 \/ In x l2 &lt;-&gt; In x l</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You have found what I believe is the correct solution. <tt class="docutils literal">let (l1, l2)
-:= ... in ...</tt> will block reduction and break everything. Whether you
-use <tt class="docutils literal">split_in2</tt> or <tt class="docutils literal">split_in3</tt> depends on what your starting point
+</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You have found what I believe is the correct solution. <span class="docutils literal">let (l1, l2) := ... in ...</span> will block reduction and break everything. Whether you
+use <span class="docutils literal">split_in2</span> or <span class="docutils literal">split_in3</span> depends on what your starting point
 is.</p>
-<p>Note, however, that turning on <tt class="docutils literal">Primitive Projections</tt> and
-redefining <tt class="docutils literal">prod</tt> as a primitive record will make it so that
-<tt class="docutils literal">split_in</tt> and <tt class="docutils literal">split_in2</tt> are actually the same theorem, because
-<tt class="docutils literal">split l</tt> and <tt class="docutils literal">(fst (split l), snd (split l))</tt> are judgmentally
+<p>Note, however, that turning on <span class="docutils literal">Primitive Projections</span> and
+redefining <span class="docutils literal">prod</span> as a primitive record will make it so that
+<span class="docutils literal">split_in</span> and <span class="docutils literal">split_in2</span> are actually the same theorem, because
+<span class="docutils literal">split l</span> and <span class="docutils literal">(fst (split l), snd (split l))</span> are judgmentally
 equal. You can do this with</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Primitive Projections</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">prod</span> {<span class="nv">A</span> <span class="nv">B</span>} := pair { fst : A ; snd : B }.</span><span class="alectryon-wsp">
@@ -91,7 +87,7 @@ specifying an explicit locality <span class="kr">is</span> therefore
 deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
 possible.
 [deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><hr class="docutils" />
-<p><strong>A:</strong> Indeed, if you copy-paste the code redefining <tt class="docutils literal">prod</tt> as a
+<p><strong>A:</strong> Indeed, if you copy-paste the code redefining <span class="docutils literal">prod</span> as a
 primitive record above your code, then you can prove:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="call-a-theorem-using-let-in-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="call-a-theorem-using-let-in-v-chk6"><span class="kn">Lemma</span> <span class="nf">split_in2</span> : <span class="kr">forall</span> {<span class="nv">A</span>} (<span class="nv">l</span> : list A) <span class="nv">x</span>,
     In x (fst (<span class="nb">split</span> l)) \/ In x (snd (<span class="nb">split</span> l)) &lt;-&gt; In x l.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Type</span>) (<span class="nv">l</span> : list A) (<span class="nv">x</span> : A),
@@ -102,8 +98,8 @@ In x (fst (<span class="nb">split</span> l)) \/ In x (snd (<span class="nb">spli
 In x l</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="call-a-theorem-using-let-in-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="call-a-theorem-using-let-in-v-chk8"><span class="nb">intros</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list A</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>A</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">In x (fst (<span class="nb">split</span> l)) \/ In x (snd (<span class="nb">split</span> l)) &lt;-&gt;
 In x l</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> split_in.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Efficient Way of Defining Multiple Functions of the Same Type</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="efficient-way-of-defining-multiple-functions-of-the-same-type">
+<div class="alectryon-root alectryon-centered"><main id="efficient-way-of-defining-multiple-functions-of-the-same-type">
 <h1 class="title">Efficient Way of Defining Multiple Functions of the Same Type</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/49600938">https://stackoverflow.com/q/49600938</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/49600938">https://stackoverflow.com/q/49600938</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I would like to avoid copying and pasting the parameters and return
 type of functions of the same type that I am trying to define. Since,
 in my opinion, that would be bad programming practice.</p>
@@ -37,19 +34,17 @@ in my opinion, that would be bad programming practice.</p>
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">metric_identical_arguments</span> {<span class="nv">X</span> : <span class="kt">Type</span>} (<span class="nv">d</span> : X -&gt; X -&gt; R) :=
   <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : X, (d x y) = <span class="mi">0</span> &lt;-&gt; x = y.</span></span></pre><p>I would like to be able to define both functions without repeatedly
 typing the redundancy:</p>
-<pre class="code coq literal-block">
-<span class="o">{</span><span class="n">X</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">d</span> <span class="o">:</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">R</span><span class="o">)</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="o">{</span><span class="n">X</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">d</span> <span class="o">:</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">X</span> <span class="o">-&gt;</span> <span class="n">R</span><span class="o">)</span></code></pre>
 <p>I would also like to potentially define a third function, in which
 case the solution should generalize to the case where more than two
 functions of the same type are being defined. Is this possible, and
 how so?</p>
 <hr class="docutils" />
-<p><strong>A (Anton Trunov):</strong> Does <tt class="docutils literal">Section</tt> mechanism not solve your
+<p><strong>A (Anton Trunov):</strong> Does <span class="docutils literal">Section</span> mechanism not solve your
 problem?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>As Anton Trunov mentioned in his comment, it sounds exactly like you
 want to use a section:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Metric</span>.</span><span class="alectryon-wsp">
@@ -63,11 +58,11 @@ want to use a section:</p>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">metric_identical_arguments</span> :=
     <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : X, (d x y) = <span class="mi">0</span> &lt;-&gt; x = y.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Metric</span>.</span></span></pre><p>Note that I've used <tt class="docutils literal">Context</tt> to make <tt class="docutils literal">X</tt> an implicit argument;
-you can also use <tt class="docutils literal">Set Implicit Arguments.</tt> and make it a
-<tt class="docutils literal">Variable</tt> to let Coq set its implicitness automatically.</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">Metric</span>.</span></span></pre><p>Note that I've used <span class="docutils literal">Context</span> to make <span class="docutils literal">X</span> an implicit argument;
+you can also use <span class="docutils literal">Set Implicit Arguments.</span> and make it a
+<span class="docutils literal">Variable</span> to let Coq set its implicitness automatically.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

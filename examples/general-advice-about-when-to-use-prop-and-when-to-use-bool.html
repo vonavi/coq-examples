@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>General advice about when to use Prop and when to use bool</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,65 +14,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="general-advice-about-when-to-use-prop-and-when-to-use-bool">
-<h1 class="title">General advice about when to use <tt class="docutils literal">Prop</tt> and when to use <tt class="docutils literal">bool</tt></h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/44638724">https://stackoverflow.com/q/44638724</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="general-advice-about-when-to-use-prop-and-when-to-use-bool">
+<h1 class="title">General advice about when to use <span class="docutils literal">Prop</span> and when to use <span class="docutils literal">bool</span></h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/44638724">https://stackoverflow.com/q/44638724</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am formalizing a grammar which is essentially one over boolean
-expressions. In Coq, you can get boolean-like things in <tt class="docutils literal">Prop</tt> or
-more explicitly in <tt class="docutils literal">bool</tt>.</p>
+expressions. In Coq, you can get boolean-like things in <span class="docutils literal">Prop</span> or
+more explicitly in <span class="docutils literal">bool</span>.</p>
 <p>So for example, I could write:</p>
-<pre class="code coq literal-block">
-<span class="n">true</span> <span class="o">&amp;&amp;</span> <span class="n">true</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="n">true</span> <span class="o">&amp;&amp;</span> <span class="n">true</span></code></pre>
 <p>Or</p>
-<pre class="code coq literal-block">
-<span class="kt">True</span> <span class="o">/\</span> <span class="kt">True</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kt">True</span> <span class="o">/\</span> <span class="kt">True</span></code></pre>
 <p>The problem is that in proofs (which is what I really care about) I
-can do a case analysis in domain <tt class="docutils literal">bool</tt>, but in <tt class="docutils literal">Prop</tt> this is not
+can do a case analysis in domain <span class="docutils literal">bool</span>, but in <span class="docutils literal">Prop</span> this is not
 possible (since all members are not enumerable, I suppose). Giving up
 this tactic and similar rewriting tactics seems like a huge drawback
 even for very simple proofs.</p>
-<p>In general, what situations would one choose <tt class="docutils literal">Prop</tt> over <tt class="docutils literal">bool</tt>
+<p>In general, what situations would one choose <span class="docutils literal">Prop</span> over <span class="docutils literal">bool</span>
 for formalizing? I realize this is a broad question, but I feel like
 this is not addressed in the Coq manual sufficiently. I am interested
 in real world experience people have had going down both routes.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>There are lots of different opinions on this. My personal take is that
 you are often better off not making this choice: it makes sense to
-have two versions of a property, one in <tt class="docutils literal">Prop</tt>, the other one in
-<tt class="docutils literal">bool</tt>.</p>
+have two versions of a property, one in <span class="docutils literal">Prop</span>, the other one in
+<span class="docutils literal">bool</span>.</p>
 <p>Why would you want this? As you pointed out, booleans support case
 analysis in proofs and functions, which general propositions do not.
-However, <tt class="docutils literal">Prop</tt> is more convenient to use in certain cases. Suppose
-you have a type <tt class="docutils literal">T</tt> with finitely many values. We can write a
+However, <span class="docutils literal">Prop</span> is more convenient to use in certain cases. Suppose
+you have a type <span class="docutils literal">T</span> with finitely many values. We can write a
 procedure</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="general-advice-about-when-to-use-prop-and-when-to-use-bool-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="general-advice-about-when-to-use-prop-and-when-to-use-bool-v-chk0"><span class="kn">Variable</span> <span class="nv">all</span> : (T -&gt; bool) -&gt; bool.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Interpreting this declaration <span class="kr">as</span> <span class="kr">if</span> a <span class="kn">global</span>
 declaration prefixed <span class="bp">by</span> <span class="s2">&quot;Local&quot;</span>, i.e. <span class="kr">as</span> a <span class="kn">global</span>
 declaration which shall not be available without
-qualification when imported. [local-declaration,scope]</blockquote></div></div></small></span></pre><p>that decides whether a boolean property <tt class="docutils literal">P : T <span class="pre">-&gt;</span> bool</tt> holds of all
-elements of <tt class="docutils literal">T</tt>. Imagine that we know that <tt class="docutils literal">all P = true</tt>, for
-some property <tt class="docutils literal">P</tt>. We might want to use this fact to conclude that
-<tt class="docutils literal">P x = true</tt> for some value <tt class="docutils literal">x</tt>. To do this, we need to prove a
-lemma about <tt class="docutils literal">all</tt>:</p>
+qualification when imported. [local-declaration,scope]</blockquote></div></div></small></span></pre><p>that decides whether a boolean property <span class="docutils literal">P : T <span class="pre">-&gt;</span> bool</span> holds of all
+elements of <span class="docutils literal">T</span>. Imagine that we know that <span class="docutils literal">all P = true</span>, for
+some property <span class="docutils literal">P</span>. We might want to use this fact to conclude that
+<span class="docutils literal">P x = true</span> for some value <span class="docutils literal">x</span>. To do this, we need to prove a
+lemma about <span class="docutils literal">all</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="general-advice-about-when-to-use-prop-and-when-to-use-bool-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="general-advice-about-when-to-use-prop-and-when-to-use-bool-v-chk1"><span class="kn">Lemma</span> <span class="nf">allP</span> : <span class="kr">forall</span> <span class="nv">P</span> : T -&gt; bool,
     <span class="kp">all</span> P = true &lt;-&gt; (<span class="kr">forall</span> <span class="nv">x</span> : T, P x = true).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> : T -&gt; bool,
 <span class="kp">all</span> P = true &lt;-&gt; (<span class="kr">forall</span> <span class="nv">x</span> : T, P x = true)</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span></pre><p>This lemma connects two different formulations of the same property: a
-boolean one and a propositional one. When reasoning about <tt class="docutils literal">all</tt> in a
-proof, we can invoke <tt class="docutils literal">allP</tt> to convert freely between the two. We
+boolean one and a propositional one. When reasoning about <span class="docutils literal">all</span> in a
+proof, we can invoke <span class="docutils literal">allP</span> to convert freely between the two. We
 can also have different conversion lemmas:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="general-advice-about-when-to-use-prop-and-when-to-use-bool-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="general-advice-about-when-to-use-prop-and-when-to-use-bool-v-chk2"><span class="kn">Lemma</span> <span class="nf">allPn</span> : <span class="kr">forall</span> <span class="nv">P</span>,
     <span class="kp">all</span> P = false &lt;-&gt; (<span class="kr">exists</span> <span class="nv">x</span>, P x = false).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">P</span> : T -&gt; bool,
@@ -87,16 +80,16 @@ defined proposition.</p>
 library is a good example of development that follows this style.
 Indeed, because it is so pervasive there, the library provides a
 special view mechanism for writing conversion lemmas like the one
-above and applying them. In plain Coq, we can also use the <tt class="docutils literal">rewrite</tt>
+above and applying them. In plain Coq, we can also use the <span class="docutils literal">rewrite</span>
 tactic to apply logical equivalences more conveniently.</p>
 <p>Of course, there are many situations where it does not make sense to
 have two formulations of the same property. Sometimes, you are forced
-to use <tt class="docutils literal">Prop</tt>, because the property you care about is undecidable.
+to use <span class="docutils literal">Prop</span>, because the property you care about is undecidable.
 Sometimes, you might feel that you wouldn't gain anything by writing
-your property in <tt class="docutils literal">Prop</tt>, and may keep it only as a boolean.</p>
+your property in <span class="docutils literal">Prop</span>, and may keep it only as a boolean.</p>
 <p>In addition to the <a class="reference external" href="https://softwarefoundations.cis.upenn.edu/current/Logic.html#lab186">Software Foundations</a>
 chapter linked above, <a class="reference external" href="https://stackoverflow.com/questions/31554453/why-are-logical-connectives-and-booleans-separate-in-coq/31568076#31568076">this answer</a>
-discusses the difference between <tt class="docutils literal">bool</tt> and <tt class="docutils literal">Prop</tt> in more depth.</p>
+discusses the difference between <span class="docutils literal">bool</span> and <span class="docutils literal">Prop</span> in more depth.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> Indeed some people is wary of what they call &quot;Boolean
 blindness&quot;, I am a fan of being boolean-blind and recovering my sight
@@ -105,19 +98,18 @@ verification. It should be noted that the core Math-Comp parts
 pertaining boolean reflection will be part of the upcoming Coq 8.7
 release, so there is really little reason not to use them if your
 proof adapts well to this style.</p>
-<p><strong>A:</strong> Personally, I tend to work with <tt class="docutils literal">Prop</tt> until a decision of
-one of the propositions is necessary, and then use <tt class="docutils literal">sumbool P (~P)</tt>
-(which has notation <tt class="docutils literal">{P} + {~P}</tt>). Then if you have some calculation
-of <tt class="docutils literal">{P} + {~P}</tt>, eliminating that object gives the true/false
-dichotomy, and you also get a direct proof of either <tt class="docutils literal">P</tt> or <tt class="docutils literal">~P</tt>
+<p><strong>A:</strong> Personally, I tend to work with <span class="docutils literal">Prop</span> until a decision of
+one of the propositions is necessary, and then use <span class="docutils literal">sumbool P (~P)</span>
+(which has notation <span class="docutils literal">{P} + {~P}</span>). Then if you have some calculation
+of <span class="docutils literal">{P} + {~P}</span>, eliminating that object gives the true/false
+dichotomy, and you also get a direct proof of either <span class="docutils literal">P</span> or <span class="docutils literal">~P</span>
 (instead of having to apply a reflection lemma).</p>
-<p><strong>A:</strong> That is true, although the <tt class="docutils literal">reflect</tt> predicate used in
+<p><strong>A:</strong> That is true, although the <span class="docutils literal">reflect</span> predicate used in
 MathComp makes it much simpler to perform case analysis on a boolean
-reflecting a proposition <tt class="docutils literal">P</tt> while obtaining proofs of <tt class="docutils literal">P</tt> or
-<tt class="docutils literal">~P</tt> on each branch: it suffices to destruct the proof of <tt class="docutils literal">reflect
-P b</tt>.</p>
+reflecting a proposition <span class="docutils literal">P</span> while obtaining proofs of <span class="docutils literal">P</span> or
+<span class="docutils literal">~P</span> on each branch: it suffices to destruct the proof of <span class="docutils literal">reflect P b</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

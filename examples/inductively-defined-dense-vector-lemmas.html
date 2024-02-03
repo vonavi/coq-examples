@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Inductively defined dense vector lemmas</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,22 +14,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="inductively-defined-dense-vector-lemmas">
+<div class="alectryon-root alectryon-centered"><main id="inductively-defined-dense-vector-lemmas">
 <h1 class="title">Inductively defined dense vector lemmas</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/31111114">https://stackoverflow.com/q/31111114</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/31111114">https://stackoverflow.com/q/31111114</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Inspired by another question on StackOverflow, I defined a <em>dense
-vector</em> to be a vector with <tt class="docutils literal">option A</tt> type elements that only
-contains <tt class="docutils literal">Some _</tt> elements, and no <tt class="docutils literal">None</tt> elements.</p>
+vector</em> to be a vector with <span class="docutils literal">option A</span> type elements that only
+contains <span class="docutils literal">Some _</span> elements, and no <span class="docutils literal">None</span> elements.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Vector.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Section</span> <span class="nf">Dense</span>.</span><span class="alectryon-wsp">
@@ -45,17 +42,17 @@ Is_dense (S n) s -&gt; Is_dense n (tl s)</div></blockquote></div></div></small><
 </span></span></pre><p>and</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk1"><span class="kn">Lemma</span> <span class="nf">dense_hd</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">s</span> : t (option A) (S n)), Is_dense (S n) s -&gt; A.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>A</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">s</span> : t (option A) (S n)),
 Is_dense (S n) s -&gt; A</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>And also, in the first lemma, when I do <tt class="docutils literal">inversion s.</tt> I get the
-elements <tt class="docutils literal">h n' X</tt> that were used by <tt class="docutils literal">s</tt>'s constructor, but how can
-I get an equality stating <tt class="docutils literal">s = cons (option A) h n' X</tt>?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Because of type dependency, <tt class="docutils literal">inversion</tt> can't directly generate what
+</span></span></pre><p>And also, in the first lemma, when I do <span class="docutils literal">inversion s.</span> I get the
+elements <span class="docutils literal">h n' X</span> that were used by <span class="docutils literal">s</span>'s constructor, but how can
+I get an equality stating <span class="docutils literal">s = cons (option A) h n' X</span>?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Because of type dependency, <span class="docutils literal">inversion</span> can't directly generate what
 you expect, because it is not true in general. However, it is true for
 a large family of types, whose equality is <em>decidable</em>. In your case,
-you can apply <tt class="docutils literal">Eqdep_dec.inj_pair2_eq_dec</tt> to get the equality you
-want, if you provide the fact that equality upon <tt class="docutils literal">nat</tt> is decidable
+you can apply <span class="docutils literal">Eqdep_dec.inj_pair2_eq_dec</span> to get the equality you
+want, if you provide the fact that equality upon <span class="docutils literal">nat</span> is decidable
 (and it is).</p>
 <p>Here is the proof for the first lemma:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="inductively-defined-dense-vector-lemmas-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="inductively-defined-dense-vector-lemmas-v-chk2"><span class="kn">Lemma</span> <span class="nf">Is_dense_tl</span> : <span class="kr">forall</span> <span class="nv">n</span> (<span class="nv">s</span> : t (option A) (S n)),
@@ -80,42 +77,39 @@ existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (opt
 existT (<span class="kr">fun</span> <span class="nv">x</span> : nat =&gt; t (option A) x) (S n) s</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : nat, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">admit</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre><p>EDIT: About your comment about the second lemma.</p>
 <p>The main difference between your two lemmas is that the first one
-tries to prove the property <tt class="docutils literal">Is_dense n (tl s)</tt> which lives in
-<tt class="docutils literal">Prop</tt>, whereas the second one tries to exhibit a term of type
-<tt class="docutils literal">A</tt>. In short, the former creates a term of sort <tt class="docutils literal">Prop</tt>, the
-latter a term of sort <tt class="docutils literal">Type</tt>.</p>
+tries to prove the property <span class="docutils literal">Is_dense n (tl s)</span> which lives in
+<span class="docutils literal">Prop</span>, whereas the second one tries to exhibit a term of type
+<span class="docutils literal">A</span>. In short, the former creates a term of sort <span class="docutils literal">Prop</span>, the
+latter a term of sort <span class="docutils literal">Type</span>.</p>
 <p>To avoid inconsistency in Coq's logic, there is a <em>hierarchy</em> to
 organize the sorts, which is (not exactly, but to give you the rough
-idea) <tt class="docutils literal">Prop : Set</tt> <tt class="docutils literal">Set : Type_0</tt> and <tt class="docutils literal">Type_n : Type_n+1</tt>. On
+idea) <span class="docutils literal">Prop : Set</span> <span class="docutils literal">Set : Type_0</span> and <span class="docutils literal">Type_n : Type_n+1</span>. On
 top of this hierarchy is built a type system where the dependent pair
-(e.g. the type <tt class="docutils literal">{n : nat | even n}</tt> is the type of even natural
-numbers) is restricted. You can build a <tt class="docutils literal">Prop</tt> from other <tt class="docutils literal">Prop</tt>
-(e.g. <tt class="docutils literal">forall p : Prop, p <span class="pre">-&gt;</span> p</tt> lives in <tt class="docutils literal">Prop</tt>). However you need
-to be careful when <tt class="docutils literal">Type</tt> is involved. For example, (again, please
-refer to Coq's documentation for the exact statement) <tt class="docutils literal">forall n :
-Type_i, Type_j</tt> is of type <tt class="docutils literal">Type_max(i, j)</tt>.</p>
+(e.g. the type <span class="docutils literal">{n : nat | even n}</span> is the type of even natural
+numbers) is restricted. You can build a <span class="docutils literal">Prop</span> from other <span class="docutils literal">Prop</span>
+(e.g. <span class="docutils literal">forall p : Prop, p <span class="pre">-&gt;</span> p</span> lives in <span class="docutils literal">Prop</span>). However you need
+to be careful when <span class="docutils literal">Type</span> is involved. For example, (again, please
+refer to Coq's documentation for the exact statement) <span class="docutils literal">forall n : Type_i, Type_j</span> is of type <span class="docutils literal">Type_max(i, j)</span>.</p>
 <p>This restriction is here to avoid inconsistency (like Russel's
 paradox) in Coq's type system.</p>
-<p>In your case, you are trying to inspect (using <tt class="docutils literal">inversion</tt>) a term
-of sort <tt class="docutils literal">Prop</tt> (<tt class="docutils literal">Is_dense (S n) s</tt>) to build a term of type <tt class="docutils literal">A</tt>,
-of sort <tt class="docutils literal">Type</tt>. This is forbidden by the type system. To build a
-term of sort <tt class="docutils literal">Type</tt>, you need to inspect terms of at least the sort
-<tt class="docutils literal">Set</tt>. In your example, all you have to do is change the definition
-of <tt class="docutils literal">Is_dense</tt> to land in <tt class="docutils literal">Type</tt> instead of <tt class="docutils literal">Prop</tt>, and you're
+<p>In your case, you are trying to inspect (using <span class="docutils literal">inversion</span>) a term
+of sort <span class="docutils literal">Prop</span> (<span class="docutils literal">Is_dense (S n) s</span>) to build a term of type <span class="docutils literal">A</span>,
+of sort <span class="docutils literal">Type</span>. This is forbidden by the type system. To build a
+term of sort <span class="docutils literal">Type</span>, you need to inspect terms of at least the sort
+<span class="docutils literal">Set</span>. In your example, all you have to do is change the definition
+of <span class="docutils literal">Is_dense</span> to land in <span class="docutils literal">Type</span> instead of <span class="docutils literal">Prop</span>, and you're
 good to go.</p>
 <hr class="docutils" />
-<p><strong>Q:</strong> It needed a decidability proof for <tt class="docutils literal">nat</tt>, rather than for
-<tt class="docutils literal">A</tt>, so that was easy, using <tt class="docutils literal">Arith.Peano_dec.eq_nat_dec</tt>.
-However, when I try to use <tt class="docutils literal">inversion hs.</tt> for the second lemma, I
-get the error <tt class="docutils literal">Error: Inversion would require case analysis on sort
-Type which is not allowed for inductive definition Is_dense.</tt> Why is
+<p><strong>Q:</strong> It needed a decidability proof for <span class="docutils literal">nat</span>, rather than for
+<span class="docutils literal">A</span>, so that was easy, using <span class="docutils literal">Arith.Peano_dec.eq_nat_dec</span>.
+However, when I try to use <span class="docutils literal">inversion hs.</span> for the second lemma, I
+get the error <span class="docutils literal">Error: Inversion would require case analysis on sort Type which is not allowed for inductive definition Is_dense.</span> Why is
 it possible to use inversion in the first lemma but not in the second?</p>
-<p><strong>Q:</strong> After changing <tt class="docutils literal">A</tt> from <tt class="docutils literal">Type</tt> to <tt class="docutils literal">Set</tt>, and chaning
-<tt class="docutils literal">Is_dense ...</tt> from <tt class="docutils literal">Prop</tt> to <tt class="docutils literal">Set</tt> I was able to do <tt class="docutils literal">inversion
-hs.</tt> in the second lemma. What happened? Is there a less drastic
+<p><strong>Q:</strong> After changing <span class="docutils literal">A</span> from <span class="docutils literal">Type</span> to <span class="docutils literal">Set</span>, and chaning
+<span class="docutils literal">Is_dense ...</span> from <span class="docutils literal">Prop</span> to <span class="docutils literal">Set</span> I was able to do <span class="docutils literal">inversion hs.</span> in the second lemma. What happened? Is there a less drastic
 solution (than changing the definitions)?</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

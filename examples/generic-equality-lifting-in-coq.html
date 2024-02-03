@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Generic equality lifting in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,37 +14,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="generic-equality-lifting-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="generic-equality-lifting-in-coq">
 <h1 class="title">Generic equality lifting in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/60616818">https://stackoverflow.com/q/60616818</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/60616818">https://stackoverflow.com/q/60616818</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Is there any tactic or fact or something else to lift equality into a
 constructor of inductive and reverse, unlift equality of inductive
 constructors to equality of constructor arguments, i.e.:</p>
-<pre class="code coq literal-block">
-<span class="kr">forall</span> <span class="nv">T</span><span class="o">:</span> <span class="kt">Type</span><span class="o">,</span> <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">:</span> <span class="n">T</span><span class="o">,</span> <span class="n">Some</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span>
-<span class="kr">forall</span> <span class="nv">T</span><span class="o">:</span> <span class="kt">Type</span><span class="o">,</span> <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">:</span> <span class="n">T</span><span class="o">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">Some</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">t2</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+<pre class="code coq literal-block"><code><span class="kr">forall</span> <span class="nv">T</span><span class="o">:</span> <span class="kt">Type</span><span class="o">,</span> <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">:</span> <span class="n">T</span><span class="o">,</span> <span class="n">Some</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span>
+<span class="kr">forall</span> <span class="nv">T</span><span class="o">:</span> <span class="kt">Type</span><span class="o">,</span> <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span><span class="o">:</span> <span class="n">T</span><span class="o">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">t2</span> <span class="o">-&gt;</span> <span class="n">Some</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">Some</span> <span class="n">t2</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The first principle is usually known as the injectivity of
 constructors, and there are multiple tactic that can use it. One
-option is the <tt class="docutils literal">injection</tt> tactic:</p>
+option is the <span class="docutils literal">injection</span> tactic:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk0"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">T</span>: <span class="kt">Type</span>, <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span>: T, Some t1 = Some t2 -&gt; t1 = t2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">t1</span> <span class="nv">t2</span> : T),
 Some t1 = Some t2 -&gt; t1 = t2</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk1"><span class="nb">intros</span> T t1 t2 H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>Some t1 = Some t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t1 = t2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk2"><span class="nb">injection</span> H <span class="kr">as</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>t1 = t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t1 = t2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> H.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>The other principle is valid for any function, not just constructors.
-You can use the <tt class="docutils literal">f_equal</tt> tactic:</p>
+You can use the <span class="docutils literal">f_equal</span> tactic:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk3"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">T</span>: <span class="kt">Type</span>, <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span>: T, t1 = t2 -&gt; Some t1 = Some t2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">t1</span> <span class="nv">t2</span> : T),
 t1 = t2 -&gt; Some t1 = Some t2</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk4"><span class="nb">intros</span> T t1 t2 H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>t1 = t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Some t1 = Some t2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk5"><span class="nb">f_equal</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>t1 = t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">t1 = t2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">exact</span> H.</span><span class="alectryon-wsp">
@@ -54,8 +49,8 @@ a multiple-argument function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk6"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">T</span>: <span class="kt">Type</span>, <span class="kr">forall</span> <span class="nv">t1</span> <span class="nv">t2</span>: T, t1 = t2 -&gt; Some t1 = Some t2.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">t1</span> <span class="nv">t2</span> : T),
 t1 = t2 -&gt; Some t1 = Some t2</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk7"><span class="nb">intros</span> T t1 t2 H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>t1 = t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Some t1 = Some t2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="generic-equality-lifting-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="generic-equality-lifting-in-coq-v-chk8"><span class="nb">rewrite</span> H.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>T</var><span class="hyp-type"><b>: </b><span><span class="kt">Type</span></span></span></span><br><span><var>t1, t2</var><span class="hyp-type"><b>: </b><span>T</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>t1 = t2</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">Some t2 = Some t2</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">trivial</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Eval compute is incomplete when own decidability is used in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq">
-<h1 class="title"><tt class="docutils literal">Eval compute</tt> is incomplete when own decidability is used in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/28478445">https://stackoverflow.com/q/28478445</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq">
+<h1 class="title"><span class="docutils literal">Eval compute</span> is incomplete when own decidability is used in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/28478445">https://stackoverflow.com/q/28478445</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>The <tt class="docutils literal">Eval compute</tt> command does not always evaluate to a simple
+<section id="question">
+<h2>Question</h2>
+<p>The <span class="docutils literal">Eval compute</span> command does not always evaluate to a simple
 expression. Consider the code:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Peano_dec.</span><span class="alectryon-wsp">
@@ -40,7 +37,7 @@ expression. Consider the code:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kp">repeat</span> <span class="bp">decide equality</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>And, if I execute the following command:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk2"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (<span class="kr">if</span> In_dec eq_nat_dec <span class="mi">10</span> [<span class="mi">3</span>;<span class="mi">4</span>;<span class="mi">5</span>] <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">2</span>
-: nat</blockquote></div></div></small></span></pre><p>Coq tells me that the result is <tt class="docutils literal">2</tt>. However, when I execute the
+: nat</blockquote></div></div></small></span></pre><p>Coq tells me that the result is <span class="docutils literal">2</span>. However, when I execute the
 following expression:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk3"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (<span class="kr">if</span> In_dec I_eq_dec (a <span class="mi">2</span>) [(a <span class="mi">1</span>); (a <span class="mi">2</span>)] <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="kr">if</span>
    <span class="kr">match</span> I_eq_dec (a <span class="mi">1</span>) (a <span class="mi">2</span>) <span class="kr">with</span>
@@ -74,17 +71,15 @@ following expression:</p>
   <span class="kr">else</span> <span class="mi">2</span>
 : nat</blockquote></div></div></small></span></pre><p>I get a long expression where the In-predicate seems to be unfolded,
 but no result is given.</p>
-<p>What do I have to change to obtain the answer <tt class="docutils literal">1</tt> in the last <tt class="docutils literal">Eval
-compute</tt> line?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>In Coq there are two terminator commands for proof scripts: <tt class="docutils literal">Qed</tt>
-and <tt class="docutils literal">Defined</tt>. The difference between them is that the former
-creates <em>opaque</em> terms, which cannot be unfolded, even by <tt class="docutils literal">Eval
-compute</tt>. The latter creates transparent terms, which can then be
-unfolded as usual. Thus, you just have to put <tt class="docutils literal">Defined</tt> in the place
-of <tt class="docutils literal">Qed.</tt>:</p>
+<p>What do I have to change to obtain the answer <span class="docutils literal">1</span> in the last <span class="docutils literal">Eval compute</span> line?</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>In Coq there are two terminator commands for proof scripts: <span class="docutils literal">Qed</span>
+and <span class="docutils literal">Defined</span>. The difference between them is that the former
+creates <em>opaque</em> terms, which cannot be unfolded, even by <span class="docutils literal">Eval compute</span>. The latter creates transparent terms, which can then be
+unfolded as usual. Thus, you just have to put <span class="docutils literal">Defined</span> in the place
+of <span class="docutils literal">Qed.</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Lists.List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Arith.Peano_dec.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -97,7 +92,7 @@ of <tt class="docutils literal">Qed.</tt>:</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="eval-compute-is-incomplete-when-own-decidability-is-used-in-coq-v-chk6"><span class="kn">Eval</span> <span class="nb">compute</span> <span class="kr">in</span> (<span class="kr">if</span> In_dec I_eq_dec (a <span class="mi">2</span>) [(a <span class="mi">1</span>); (a <span class="mi">2</span>)] <span class="kr">then</span> <span class="mi">1</span> <span class="kr">else</span> <span class="mi">2</span>).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">1</span>
-: nat</blockquote></div></div></small></span></pre><p>I personally find the sumbool type <tt class="docutils literal">{A} + {B}</tt> not very nice for
+: nat</blockquote></div></div></small></span></pre><p>I personally find the sumbool type <span class="docutils literal">{A} + {B}</span> not very nice for
 expressing decidable propositions, precisely because proofs and
 computation are too tangled together; in particular, proofs affect how
 terms reduce. I find it better to follow the <a class="reference external" href="http://ssr.msr-inria.inria.fr/">Ssreflect</a> style, separate proofs and
@@ -108,8 +103,8 @@ computation and relate them via a special predicate:</p>
 returns true iff some property is true. Ssreflect provides support for
 conveniently switching between the computational boolean view and the
 logical view.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

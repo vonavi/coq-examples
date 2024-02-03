@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq: Implementation of split_string and proof that nothing gets deleted</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-implementation-of-split-string-and-proof-that-nothing-gets-deleted">
-<h1 class="title">Coq: Implementation of <tt class="docutils literal">split_string</tt> and proof that nothing gets deleted</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/73026651">https://stackoverflow.com/q/73026651</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="coq-implementation-of-split-string-and-proof-that-nothing-gets-deleted">
+<h1 class="title">Coq: Implementation of <span class="docutils literal">split_string</span> and proof that nothing gets deleted</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/73026651">https://stackoverflow.com/q/73026651</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>After working for a whole day on this with no success, I might get
 some help here. I implemented a splitString function in Coq: It takes
-a String (In my case a <tt class="docutils literal">list ascii</tt>) and a function <tt class="docutils literal">f : ascii <span class="pre">-&gt;</span>
-bool</tt>. I want to return a list of strings (In my case a <tt class="docutils literal">list (list
-ascii)</tt>) containing all the substrings. This means that the input
-string has been split at all <tt class="docutils literal">ascii</tt>s where f is true. Note that
-my output also includes the delimiter as a string (<tt class="docutils literal">list ascii</tt>) of
+a String (In my case a <span class="docutils literal">list ascii</span>) and a function <span class="docutils literal">f : ascii <span class="pre">-&gt;</span> bool</span>. I want to return a list of strings (In my case a <span class="docutils literal">list (list ascii)</span>) containing all the substrings. This means that the input
+string has been split at all <span class="docutils literal">ascii</span>s where f is true. Note that
+my output also includes the delimiter as a string (<span class="docutils literal">list ascii</span>) of
 length 1.</p>
 <p>My first question: exists this function in a library somewhere? Many
 other, non-functional, programming languages I know includes this
@@ -46,21 +41,20 @@ function in the default library.</p>
               | true =&gt; ([rev z] ++ [[h]]) ++ split_string f [] t
               | false =&gt; split_string f (h :: z) t
               <span class="kr">end</span>
-  <span class="kr">end</span>.</span></span></pre><p>The function needs to be called with an empty <tt class="docutils literal">z</tt>, like <tt class="docutils literal">Compute
-split_string isWhite [] some_string.</tt></p>
-<p>The clue of that List <tt class="docutils literal">z</tt> is that the current string gets saved in
-it until a delimiter is found, then the whole string <tt class="docutils literal">z</tt> gets
+  <span class="kr">end</span>.</span></span></pre><p>The function needs to be called with an empty <span class="docutils literal">z</span>, like <span class="docutils literal">Compute split_string isWhite [] some_string.</span></p>
+<p>The clue of that List <span class="docutils literal">z</span> is that the current string gets saved in
+it until a delimiter is found, then the whole string <span class="docutils literal">z</span> gets
 returned. I don't see another way of solving this.</p>
-<p>The problem with the List <tt class="docutils literal">z</tt> is that, when it comes to proofing, it
+<p>The problem with the List <span class="docutils literal">z</span> is that, when it comes to proofing, it
 makes trouble.</p>
 <p>I want to proove that, when the output of the splitString function
-gets flattened (in Coq with <tt class="docutils literal">concat</tt>) it is equal to the input,
+gets flattened (in Coq with <span class="docutils literal">concat</span>) it is equal to the input,
 because the splitString method does not remove information. I
 formulated a theorem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk0"><span class="kn">Theorem</span> <span class="nf">not_more_not_less_splitWhite</span> : <span class="kr">forall</span> <span class="nv">s</span> : list ascii,
     s = concat (split_string isWhite [] s).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : list ascii,
 s = concat (split_string isWhite [] s)</div></blockquote></div></div></small></span></pre><p>But every time when I try to solve this with induction, I get stuck
-because the List <tt class="docutils literal">z</tt> is not empty anymore (since one char which is
+because the List <span class="docutils literal">z</span> is not empty anymore (since one char which is
 not white has been processed). Then I can never apply the induction
 hypothesis. This is how far I've made it:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk1" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk1"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">s</span> : list ascii,
@@ -76,13 +70,13 @@ concat ([] :: [a] :: split_string isWhite [] s)</div></blockquote><div class="al
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkb" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkb">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHs</var><span class="hyp-type"><b>: </b><span>s = concat (split_string isWhite [] s)</span></span></span><br><span><var>W</var><span class="hyp-type"><b>: </b><span>isWhite a = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a :: s =
 concat ([] :: [a] :: split_string isWhite [] s)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkc"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHs</var><span class="hyp-type"><b>: </b><span>s = concat (split_string isWhite [] s)</span></span></span><br><span><var>W</var><span class="hyp-type"><b>: </b><span>isWhite a = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a :: s = a :: concat (split_string isWhite [] s)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkd"><span class="nb">rewrite</span> &lt;- IHs.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHs</var><span class="hyp-type"><b>: </b><span>s = concat (split_string isWhite [] s)</span></span></span><br><span><var>W</var><span class="hyp-type"><b>: </b><span>isWhite a = true</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a :: s = a :: s</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chke">*</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>s</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHs</var><span class="hyp-type"><b>: </b><span>s = concat (split_string isWhite [] s)</span></span></span><br><span><var>W</var><span class="hyp-type"><b>: </b><span>isWhite a = false</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">a :: s = concat (split_string isWhite [a] s)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>I found myself in willing to induce in <tt class="docutils literal">s</tt> a second time, but I
+</span></span></pre><p>I found myself in willing to induce in <span class="docutils literal">s</span> a second time, but I
 think this is bullshit and does not use the power of induction. So, if
 the answer to my first question is no, my second question is how do I
-solve this, or is there a better implementation for <tt class="docutils literal">split_string</tt>.</p>
-</div>
-<div class="section" id="answer-ana-borges">
-<h1>Answer (Ana Borges)</h1>
+solve this, or is there a better implementation for <span class="docutils literal">split_string</span>.</p>
+</section>
+<section id="answer-ana-borges">
+<h2>Answer (Ana Borges)</h2>
 <p>This problem is common whenever proving things by induction about a
 fixpoint with an accumulator, such as yours. The standard advice is to
 find a stronger statement that has your desired result as a corollary.
@@ -94,9 +88,9 @@ could be something like:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkf" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chkf"><span class="kn">Theorem</span> <span class="nf">not_more_not_less_splitWhite_stronger</span> : <span class="kr">forall</span> (<span class="nv">z</span> <span class="nv">s</span> : list ascii),
     rev z ++ s = concat (split_string isWhite z s).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">z</span> <span class="nv">s</span> : list ascii,
 rev z ++ s = concat (split_string isWhite z s)</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre></div>
-<div class="section" id="answer-pierre-casteran">
-<h1>Answer (Pierre Castéran)</h1>
+</span></span></pre></section>
+<section id="answer-pierre-casteran">
+<h2>Answer (Pierre Castéran)</h2>
 <p>Here is a proof of your theorem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk10" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk10"><span class="kn">Goal</span> <span class="kr">forall</span> <span class="nv">p</span> <span class="nv">l</span> <span class="nv">buf</span>, rev buf ++ l = concat (split_string p buf l).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> (<span class="nv">p</span> : ascii -&gt; bool) (<span class="nv">l</span> <span class="nv">buf</span> : list ascii),
 rev buf ++ l = concat (split_string p buf l)</div></blockquote></div></div></small><span class="alectryon-wsp">
@@ -130,7 +124,7 @@ rev buf ++ a :: l =
 concat (split_string p (a :: buf) l)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk1e" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk1e"><span class="nb">intro</span> buf.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>ascii -&gt; bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">buf</span> : list ascii, rev buf ++ l = concat (split_string p buf l)</span></span></span><br><span><var>Ha</var><span class="hyp-type"><b>: </b><span>p a = false</span></span></span><br><span><var>buf</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev buf ++ a :: l =
 concat (split_string p (a :: buf) l)</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk1f" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk1f"><span class="nb">rewrite</span> &lt;- IHl.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>ascii -&gt; bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">buf</span> : list ascii, rev buf ++ l = concat (split_string p buf l)</span></span></span><br><span><var>Ha</var><span class="hyp-type"><b>: </b><span>p a = false</span></span></span><br><span><var>buf</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev buf ++ a :: l = rev (a :: buf) ++ l</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk20" style="display: none" type="checkbox"><label class="alectryon-input" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk20"><span class="nb">cbn</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>ascii -&gt; bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">buf</span> : list ascii, rev buf ++ l = concat (split_string p buf l)</span></span></span><br><span><var>Ha</var><span class="hyp-type"><b>: </b><span>p a = false</span></span></span><br><span><var>buf</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">rev buf ++ a :: l = (rev buf ++ [a]) ++ l</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">rewrite</span> &lt;- app_assoc.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>Please note that it worked thanks to the universal quantification on
-<tt class="docutils literal">buf</tt> in the induction hypothesis. It was made easier thanks to the
+<span class="docutils literal">buf</span> in the induction hypothesis. It was made easier thanks to the
 order of quantifications in the goal statement.</p>
 <p>Ana's statement can be proved the same way, with a small bookkeeping
 sequence before the induction:</p>
@@ -144,8 +138,8 @@ rev buf ++ l = concat (split_string p buf l)</div></blockquote></div></div></sma
 rev buf ++ [] = concat (split_string p buf [])</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk25" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>p</var><span class="hyp-type"><b>: </b><span>ascii -&gt; bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>ascii</span></span></span><br><span><var>l</var><span class="hyp-type"><b>: </b><span>list ascii</span></span></span><br><span><var>IHl</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">buf</span> : list ascii, rev buf ++ l = concat (split_string p buf l)</span></span></span><br></div><label class="goal-separator" for="coq-implementation-of-splitstring-and-proof-that-nothing-gets-deleted-v-chk25"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">buf</span> : list ascii,
 rev buf ++ a :: l =
 concat (split_string p buf (a :: l))</div></blockquote></div></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span></span></pre></div>
+</span></span><span class="alectryon-wsp">  <span class="c">(* ... *)</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

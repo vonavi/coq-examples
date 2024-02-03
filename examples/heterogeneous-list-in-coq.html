@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Heterogeneous list in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="heterogeneous-list-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="heterogeneous-list-in-coq">
 <h1 class="title">Heterogeneous list in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/29404082">https://stackoverflow.com/q/29404082</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/29404082">https://stackoverflow.com/q/29404082</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm considering writing a Coq program to verify certain properties of
 <a class="reference external" href="http://en.wikipedia.org/wiki/Relational_algebra">relational algebra</a>. I've got some of
 the basic data types working, but concatenating tuples is giving me
@@ -79,50 +76,50 @@ b : tuple s
 The term <span class="s2">&quot;b&quot;</span> has type <span class="s2">&quot;tuple s&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
  <span class="s2">&quot;tuple (concatSchema ?s@{r1:=nil} s)&quot;</span>.</blockquote></div></div></small></span></pre><p>I think I understand what's happening there; the type checker can't
-figure out that <tt class="docutils literal">s</tt> and <tt class="docutils literal">concatSchema nil s</tt> are equal. But what I
+figure out that <span class="docutils literal">s</span> and <span class="docutils literal">concatSchema nil s</span> are equal. But what I
 find weirder is that when I add the following line:</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">stupid</span> {<span class="nv">s</span> : schema} (<span class="nv">b</span> : tuple s) : tuple (concatSchema nil s) := b.</span></span></pre><p>and change the case to <tt class="docutils literal">nil =&gt; stupid b</tt>, it works. (Well, it still
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">stupid</span> {<span class="nv">s</span> : schema} (<span class="nv">b</span> : tuple s) : tuple (concatSchema nil s) := b.</span></span></pre><p>and change the case to <span class="docutils literal">nil =&gt; stupid b</span>, it works. (Well, it still
 complains at the cons case, but I think that means it's accepting the
-<tt class="docutils literal">nil</tt> case.)</p>
+<span class="docutils literal">nil</span> case.)</p>
 <p>I have three questions about this:</p>
 <ol class="arabic simple">
-<li>Is there a way to eliminate <tt class="docutils literal">stupid</tt>? It seems like Coq knows the
-types are equal, it just needs some kind of hint.</li>
-<li>How on earth can I do the cons case? I'm having lots of trouble
-writing a <tt class="docutils literal">stupid</tt>-like function.</li>
-<li>Is this even the right approach to heterogeneous lists? It seems
+<li><p>Is there a way to eliminate <span class="docutils literal">stupid</span>? It seems like Coq knows the
+types are equal, it just needs some kind of hint.</p></li>
+<li><p>How on earth can I do the cons case? I'm having lots of trouble
+writing a <span class="docutils literal">stupid</span>-like function.</p></li>
+<li><p>Is this even the right approach to heterogeneous lists? It seems
 like the most straightforward one to me, but I have a very loose
-grasp of Curry-Howard, and what Coq code actually means.</li>
+grasp of Curry-Howard, and what Coq code actually means.</p></li>
 </ol>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>This is one of the most recurrent problems for newcomers in Coq: not
 being able to show Coq how to use the additional information one gains
-in the branches of a <tt class="docutils literal">match</tt> statement.</p>
+in the branches of a <span class="docutils literal">match</span> statement.</p>
 <p>The solution is to use the so-called <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">convoy pattern</a>, re-abstracting
-the arguments that depend on your scrutinee and making your <tt class="docutils literal">match</tt>
+the arguments that depend on your scrutinee and making your <span class="docutils literal">match</span>
 return a function:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">concatTuples</span> {<span class="nv">r</span> : schema} {<span class="nv">s</span> : schema} :
   tuple r -&gt; tuple s -&gt; tuple (concatSchema r s) :=
   <span class="kr">match</span> r <span class="kr">return</span> tuple r -&gt; tuple s -&gt; tuple (concatSchema r s) <span class="kr">with</span>
   | nil =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; b
   | cons (Col _ t) _ =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; (fst a, concatTuples (snd a) b)
-  <span class="kr">end</span>.</span></span></pre><p>In this particular case, the <tt class="docutils literal">return</tt> annotation is not actually
+  <span class="kr">end</span>.</span></span></pre><p>In this particular case, the <span class="docutils literal">return</span> annotation is not actually
 needed, as Coq can infer it. However, omitting it can often lead to
 incomprehensible error messages when things go a bit wrong, so it's a
 nice idea to leave them in. Notice that we had to also include a
-nested match on the first element of our list (the <tt class="docutils literal">Col _ t</tt>
+nested match on the first element of our list (the <span class="docutils literal">Col _ t</span>
 pattern), in order to mimic the pattern in the definition of
-<tt class="docutils literal">tuple</tt>. Once again, <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">CPDT</a> explains in great
+<span class="docutils literal">tuple</span>. Once again, <a class="reference external" href="http://adam.chlipala.net/cpdt/html/MoreDep.html">CPDT</a> explains in great
 detail what is going on here and how to write this sort of function in
 Coq.</p>
 <p>To answer your last question, many developments to heterogeneous lists
 more or less in the same way you're doing here (I for instance have
 <a class="reference external" href="https://github.com/arthuraa/coq-utils/blob/master/theories/hseq.v">one development</a>
 that is pretty similar to this one). If I had to change anything, I
-would remove the nested pattern in the definition of <tt class="docutils literal">tuple</tt>, which
-allows you do write this sort of code while using less <tt class="docutils literal">match</tt>es
+would remove the nested pattern in the definition of <span class="docutils literal">tuple</span>, which
+allows you do write this sort of code while using less <span class="docutils literal">match</span>es
 and annotations. Compare:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">typeOfCol</span> <span class="nv">c</span> :=
   <span class="kr">match</span> c <span class="kr">with</span>
@@ -143,8 +140,8 @@ and annotations. Compare:</p>
   | cons _ _ =&gt; <span class="kr">fun</span> <span class="nv">a</span> <span class="nv">b</span> =&gt; (fst a, concatTuples (snd a) b)
   <span class="kr">end</span>.</span></span></pre><p>You can find other examples of this issue <a class="reference external" href="https://stackoverflow.com/questions/16952524/structural-recursion-on-a-dependent-parameter">here</a>
 and <a class="reference external" href="https://stackoverflow.com/questions/28487158/implementing-vector-addition-in-coq">here</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

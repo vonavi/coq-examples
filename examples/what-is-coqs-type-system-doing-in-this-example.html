@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>What is Coq's type system doing in this example?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,50 +14,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="what-is-coq-s-type-system-doing-in-this-example">
+<div class="alectryon-root alectryon-centered"><main id="what-is-coq-s-type-system-doing-in-this-example">
 <h1 class="title">What is Coq's type system doing in this example?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45362643">https://stackoverflow.com/q/45362643</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/45362643">https://stackoverflow.com/q/45362643</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm confused about the behavior of Coq's type system on the match
-portion of the proof term in the definition of <tt class="docutils literal">h</tt> below:</p>
+portion of the proof term in the definition of <span class="docutils literal">h</span> below:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Set Implicit Arguments</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">h</span> := <span class="kr">fun</span> (<span class="nv">a</span> <span class="nv">b</span> : nat) (<span class="nv">e</span> : a = b) =&gt;
                   (<span class="kr">fun</span> (<span class="nv">x</span> <span class="nv">y</span> : nat) (<span class="nv">HC</span> : b = y) (<span class="nv">H</span> : x = y) =&gt;
                      (<span class="kr">match</span> H <span class="kr">in</span> (_ = y0) <span class="kr">return</span> (b = y0 -&gt; b = x) <span class="kr">with</span>
                       | @eq_refl _ _ =&gt; <span class="kr">fun</span> <span class="nv">HC0</span> : b = x =&gt; HC0
-                      <span class="kr">end</span> HC)) a b (eq_refl b) e.</span></span></pre><p><tt class="docutils literal">Check h</tt> tells us the overall type is</p>
+                      <span class="kr">end</span> HC)) a b (eq_refl b) e.</span></span></pre><p><span class="docutils literal">Check h</span> tells us the overall type is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="what-is-coqs-type-system-doing-in-this-example-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">h
-     : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, a = b -&gt; b = a</blockquote></div></div></small></span></pre><p>Since the type of <tt class="docutils literal">H</tt> is <tt class="docutils literal">x = y</tt>, it looks like the match will
-return a term of type <tt class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</tt> due to the return clause.
+     : <span class="kr">forall</span> <span class="nv">a</span> <span class="nv">b</span> : nat, a = b -&gt; b = a</blockquote></div></div></small></span></pre><p>Since the type of <span class="docutils literal">H</span> is <span class="docutils literal">x = y</span>, it looks like the match will
+return a term of type <span class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</span> due to the return clause.
 After applying the various terms that follow, we get the expected type
-for <tt class="docutils literal">h</tt>.</p>
-<p>However, fun <tt class="docutils literal">HC0 : b = x =&gt; HC0</tt> is the identity function of type
-<tt class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</tt>. I don't believe there is any coercion that would
-force <tt class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</tt> to be recognized as type <tt class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</tt>.</p>
-<p>My best guess is that the constructor for <tt class="docutils literal">H</tt>, being <tt class="docutils literal">&#64;eq_refl nat
-x</tt> of type <tt class="docutils literal">x = x</tt>, is unique. Since <tt class="docutils literal">H</tt> is also of type <tt class="docutils literal">x =
-y</tt>, the names <tt class="docutils literal">x</tt> and <tt class="docutils literal">y</tt> bind to the same term. Thus, the type
-system decides <tt class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</tt> is of type <tt class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</tt>. Is
+for <span class="docutils literal">h</span>.</p>
+<p>However, fun <span class="docutils literal">HC0 : b = x =&gt; HC0</span> is the identity function of type
+<span class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</span>. I don't believe there is any coercion that would
+force <span class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</span> to be recognized as type <span class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</span>.</p>
+<p>My best guess is that the constructor for <span class="docutils literal">H</span>, being <span class="docutils literal">&#64;eq_refl nat x</span> of type <span class="docutils literal">x = x</span>, is unique. Since <span class="docutils literal">H</span> is also of type <span class="docutils literal">x = y</span>, the names <span class="docutils literal">x</span> and <span class="docutils literal">y</span> bind to the same term. Thus, the type
+system decides <span class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</span> is of type <span class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</span>. Is
 this close? Is this kind of behavior explained or documented
 somewhere? I looked at iota reduction, but I don't think that is
 correct.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>That is pretty much it. This behavior is documented (look for &quot;the
-<tt class="docutils literal">match ... with ... end</tt> construction&quot; in <a class="reference external" href="https://coq.inria.fr/refman/language/cic.html#the-match-with-end-construction">the manual</a>),
+<span class="docutils literal">match ... with ... end</span> construction&quot; in <a class="reference external" href="https://coq.inria.fr/refman/language/cic.html#the-match-with-end-construction">the manual</a>),
 although understanding what is going on there can be a bit daunting.</p>
-<p>First, recall how a typical <tt class="docutils literal">match</tt> is checked in Coq:</p>
+<p>First, recall how a typical <span class="docutils literal">match</span> is checked in Coq:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">list</span> (<span class="nv">T</span> : <span class="kt">Type</span>) :=
 | nil : list T
 | cons : T -&gt; list T -&gt; list T.</span><span class="alectryon-wsp">
@@ -66,23 +61,23 @@ although understanding what is going on there can be a bit daunting.</p>
   <span class="kr">match</span> l <span class="kr">with</span>
   | nil _     =&gt; @nil T
   | cons x l&#39; =&gt; l&#39;
-  <span class="kr">end</span>.</span></span></pre><p>Coq checks (1) that every constructor of the <tt class="docutils literal">list</tt> type has a
-corresponding branch in the <tt class="docutils literal">match</tt>, and (2) that each branch has
-the same type (in this case, <tt class="docutils literal">list T</tt>) assuming that the constructor
+  <span class="kr">end</span>.</span></span></pre><p>Coq checks (1) that every constructor of the <span class="docutils literal">list</span> type has a
+corresponding branch in the <span class="docutils literal">match</span>, and (2) that each branch has
+the same type (in this case, <span class="docutils literal">list T</span>) assuming that the constructor
 arguments introduced in each branch have the appropriate types (here,
-assuming that <tt class="docutils literal">x</tt> has type <tt class="docutils literal">T</tt> and <tt class="docutils literal">l'</tt> has type <tt class="docutils literal">list T</tt> in
+assuming that <span class="docutils literal">x</span> has type <span class="docutils literal">T</span> and <span class="docutils literal">l'</span> has type <span class="docutils literal">list T</span> in
 the second branch).</p>
 <p>In such simple cases, the type used to check each branch is exactly
 the same as the type of the whole match expression. However, this is
 <em>not</em> always true: sometimes, Coq uses a more specialized type based
 on information that it extracts from the branch that it is checking.
 This happens often when doing case analysis on <em>indexed</em> inductive
-types, like <tt class="docutils literal">eq</tt>:</p>
+types, like <span class="docutils literal">eq</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">eq</span> (<span class="nv">T</span> : <span class="kt">Type</span>) (<span class="nv">x</span> : T) : T -&gt; <span class="kt">Prop</span> :=
-| eq_refl : @eq T x x.</span></span></pre><p>(The <tt class="docutils literal">=</tt> notation is just infix syntax sugar for <tt class="docutils literal">eq</tt>.)</p>
+| eq_refl : @eq T x x.</span></span></pre><p>(The <span class="docutils literal">=</span> notation is just infix syntax sugar for <span class="docutils literal">eq</span>.)</p>
 <p>The arguments of an inductive type given to the right of the colon are
 special in Coq: they are known as <em>indices</em>. Those appearing to the
-left (in this case, <tt class="docutils literal">T</tt> and <tt class="docutils literal">x</tt>) are known as <em>parameters</em>.
+left (in this case, <span class="docutils literal">T</span> and <span class="docutils literal">x</span>) are known as <em>parameters</em>.
 Parameters must all be different in the declaration of an inductive
 type, and must match exactly the ones used in the result of all
 constructors. For instance, consider the following illegal snippet:</p>
@@ -92,8 +87,8 @@ eq&#39; : <span class="kr">forall</span> <span class="nv">T</span> : <span class
 T : <span class="kt">Type</span>
 x : T
 Unable to <span class="nb">unify</span> <span class="s2">&quot;eq&#39; nat 4 3&quot;</span> <span class="kr">with</span> <span class="s2">&quot;eq&#39; T x ?t&quot;</span>
-(cannot <span class="nb">unify</span> <span class="s2">&quot;nat&quot;</span> <span class="kn">and</span> <span class="s2">&quot;T&quot;</span>).</blockquote></div></div></small></span></pre><p>Coq rejects this example because it finds <tt class="docutils literal">nat</tt> instead of <tt class="docutils literal">T</tt> in
-the result of the <tt class="docutils literal">eq_refl'</tt> constructor.</p>
+(cannot <span class="nb">unify</span> <span class="s2">&quot;nat&quot;</span> <span class="kn">and</span> <span class="s2">&quot;T&quot;</span>).</blockquote></div></div></small></span></pre><p>Coq rejects this example because it finds <span class="docutils literal">nat</span> instead of <span class="docutils literal">T</span> in
+the result of the <span class="docutils literal">eq_refl'</span> constructor.</p>
 <p>Indices, on the other hand, do not have this restriction: the indices
 appearing on the return type of constructors can be any expression of
 the appropriate type. Furthermore, that expression may differ
@@ -104,46 +99,45 @@ version of your original example.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">h</span> (<span class="nv">a</span> <span class="nv">b</span> : nat) (<span class="nv">e</span> : a = b) : b = a :=
   <span class="kr">match</span> e <span class="kr">in</span> _ = x <span class="kr">return</span> x = a <span class="kr">with</span>
   | eq_refl =&gt; eq_refl : a = a
-  <span class="kr">end</span>.</span></span></pre><p>Since the second argument to <tt class="docutils literal">eq</tt> is an index, it could in principle
+  <span class="kr">end</span>.</span></span></pre><p>Since the second argument to <span class="docutils literal">eq</span> is an index, it could in principle
 vary depending on the constructor used. Since we only find out what
 that index actually is when we look into the constructor that was
 used, Coq allows the return type of the match to depend on that index:
-the <tt class="docutils literal">in</tt> clause of the match gives names to all the indices of an
+the <span class="docutils literal">in</span> clause of the match gives names to all the indices of an
 inductive type, and these names become bound variables that can be
-used in the <tt class="docutils literal">return</tt> clause.</p>
+used in the <span class="docutils literal">return</span> clause.</p>
 <p>When typing a branch, Coq finds out what the values of the indices
 were, and substitutes those values for the variables declared in the
-<tt class="docutils literal">in</tt> clause. This match has only one branch, and that branch forces
-the index to be equal to the second argument in the type of <tt class="docutils literal">e</tt> (in
-this case, <tt class="docutils literal">a</tt>). Thus, Coq tries to make sure that the type of that
-branch is <tt class="docutils literal">a = a</tt> (that is, <tt class="docutils literal">x = a</tt> with <tt class="docutils literal">a</tt> substituted for
-<tt class="docutils literal">x</tt>). We can thus simply provide <tt class="docutils literal">eq_refl : a = a</tt> and we are
+<span class="docutils literal">in</span> clause. This match has only one branch, and that branch forces
+the index to be equal to the second argument in the type of <span class="docutils literal">e</span> (in
+this case, <span class="docutils literal">a</span>). Thus, Coq tries to make sure that the type of that
+branch is <span class="docutils literal">a = a</span> (that is, <span class="docutils literal">x = a</span> with <span class="docutils literal">a</span> substituted for
+<span class="docutils literal">x</span>). We can thus simply provide <span class="docutils literal">eq_refl : a = a</span> and we are
 done.</p>
 <p>Now that Coq checked that all branches are correct, it assigns to the
-entire match expression the type of the <tt class="docutils literal">return</tt> clause with the
-index of the type of <tt class="docutils literal">e</tt> substituted for <tt class="docutils literal">x</tt>. This variable <tt class="docutils literal">e</tt>
-has type <tt class="docutils literal">a = b</tt>, the index is <tt class="docutils literal">b</tt>, and thus the resulting type is
-<tt class="docutils literal">b = a</tt> (that is, <tt class="docutils literal">x = a</tt> with <tt class="docutils literal">b</tt> substituted for <tt class="docutils literal">x</tt>).</p>
+entire match expression the type of the <span class="docutils literal">return</span> clause with the
+index of the type of <span class="docutils literal">e</span> substituted for <span class="docutils literal">x</span>. This variable <span class="docutils literal">e</span>
+has type <span class="docutils literal">a = b</span>, the index is <span class="docutils literal">b</span>, and thus the resulting type is
+<span class="docutils literal">b = a</span> (that is, <span class="docutils literal">x = a</span> with <span class="docutils literal">b</span> substituted for <span class="docutils literal">x</span>).</p>
 <p><a class="reference external" href="https://stackoverflow.com/a/24601292/1633770">This answer</a>
 provides more explanations on the difference between parameters and
 indices, if that helps.</p>
 <hr class="docutils" />
 <p><strong>A:</strong> I find it helpful to think of &quot;internal&quot; and &quot;external&quot;
-interpretations of the <tt class="docutils literal">return</tt> type annotation: the internal
+interpretations of the <span class="docutils literal">return</span> type annotation: the internal
 interpretation is used to typecheck the expression returned from each
-branch of the <tt class="docutils literal">match</tt> using the constructor arguments; the external
+branch of the <span class="docutils literal">match</span> using the constructor arguments; the external
 interpretation is used to determine the overall result type of the
-<tt class="docutils literal">match</tt> expression using the actual arguments to the <tt class="docutils literal">match</tt>.</p>
+<span class="docutils literal">match</span> expression using the actual arguments to the <span class="docutils literal">match</span>.</p>
 <p><strong>A:</strong> So in the original example: for the internal interpretation,
-<tt class="docutils literal">eq_refl</tt> is of type <tt class="docutils literal">x = x</tt> so the interpretation is <tt class="docutils literal">b = x <span class="pre">-&gt;</span> b
-= x</tt> which <tt class="docutils literal">fun HC0 : b = x =&gt; HC0</tt> satisfies; for the external
-interpretation, <tt class="docutils literal">H</tt> is of type <tt class="docutils literal">x = y</tt> so the overall result type
-of the match expression is <tt class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</tt>.</p>
+<span class="docutils literal">eq_refl</span> is of type <span class="docutils literal">x = x</span> so the interpretation is <span class="docutils literal">b = x <span class="pre">-&gt;</span> b = x</span> which <span class="docutils literal">fun HC0 : b = x =&gt; HC0</span> satisfies; for the external
+interpretation, <span class="docutils literal">H</span> is of type <span class="docutils literal">x = y</span> so the overall result type
+of the match expression is <span class="docutils literal">b = y <span class="pre">-&gt;</span> b = x</span>.</p>
 <p><strong>A:</strong> <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/addendum/extended-pattern-matching.html">This chapter</a>
-of the manual explores the subtleties of the <tt class="docutils literal">match</tt> construct in
+of the manual explores the subtleties of the <span class="docutils literal">match</span> construct in
 Coq.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

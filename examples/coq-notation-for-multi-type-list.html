@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq notation for multi type list</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="coq-notation-for-multi-type-list">
+<div class="alectryon-root alectryon-centered"><main id="coq-notation-for-multi-type-list">
 <h1 class="title">Coq notation for multi type list</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/26755507">https://stackoverflow.com/q/26755507</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/26755507">https://stackoverflow.com/q/26755507</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Here is a contrived multi type list:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Apple</span> : <span class="kt">Set</span> :=.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Pear</span> : <span class="kt">Set</span> :=.</span><span class="alectryon-wsp">
@@ -46,10 +43,10 @@ declaration which shall not be available without
 qualification when imported. [local-declaration,scope]</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">a_fruitList</span> := Cons_apple a (Cons_pear p Empty).</span></span></pre><p>Is there a way to define a list notation for this so that, for
-example, <tt class="docutils literal">a_fruitList</tt> could have been defined by <tt class="docutils literal">[p,a]</tt> instead?</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+example, <span class="docutils literal">a_fruitList</span> could have been defined by <span class="docutils literal">[p,a]</span> instead?</p>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>The problem is that your list has two cons constructors, whereas the
 usual notation mechanism for recursive notations requires you to use
 always the same constructors. Coercions can help you overcome part of
@@ -84,31 +81,30 @@ this problem:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">a_fruitList</span> := [ a ; p ].</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ApplesAndPears</span>.</span></span></pre><p>(By the way, I'm assuming that you really meant to write <tt class="docutils literal">[ a ; p
-]</tt>, and not <tt class="docutils literal">[ p ; a ]</tt>. If you did mean to write <tt class="docutils literal">[ p ; a ]</tt>,
-then you just have to use a <tt class="docutils literal">SnocFruit</tt> function instead, that adds
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">End</span> <span class="nf">ApplesAndPears</span>.</span></span></pre><p>(By the way, I'm assuming that you really meant to write <span class="docutils literal">[ a ; p ]</span>, and not <span class="docutils literal">[ p ; a ]</span>. If you did mean to write <span class="docutils literal">[ p ; a ]</span>,
+then you just have to use a <span class="docutils literal">SnocFruit</span> function instead, that adds
 the element to the end of the list. However, this would make the
 problems explained later even worse.)</p>
 <p>Now, we've defined a new function to replace the constructors, and can
-use that function instead, by declaring the constructors of <tt class="docutils literal">Fruit</tt>
+use that function instead, by declaring the constructors of <span class="docutils literal">Fruit</span>
 to be coercions.</p>
 <p>This solution is not entirely satisfactory, of course, because the
-term your notation produces makes reference to <tt class="docutils literal">ConsFruit</tt>, while
-ideally it would be nice to have something that picks <tt class="docutils literal">ConsApple</tt> or
-<tt class="docutils literal">ConsFruit</tt> depending on the argument you give. I suspect there
+term your notation produces makes reference to <span class="docutils literal">ConsFruit</span>, while
+ideally it would be nice to have something that picks <span class="docutils literal">ConsApple</span> or
+<span class="docutils literal">ConsFruit</span> depending on the argument you give. I suspect there
 isn't a way of doing this with the notation mechanism, but I could be
 wrong.</p>
 <p>This is one of the reasons why I would recommend you to use just the
-<tt class="docutils literal">list</tt> type and declare another type such as <tt class="docutils literal">Fruit</tt> to hold
-<tt class="docutils literal">Apple</tt> and <tt class="docutils literal">Pear</tt> instead of using two cons constructors, unless
+<span class="docutils literal">list</span> type and declare another type such as <span class="docutils literal">Fruit</span> to hold
+<span class="docutils literal">Apple</span> and <span class="docutils literal">Pear</span> instead of using two cons constructors, unless
 you have a very good reason not to.</p>
-</div>
-<div class="section" id="answer-virgile">
-<h1>Answer (Virgile)</h1>
+</section>
+<section id="answer-virgile">
+<h2>Answer (Virgile)</h2>
 <p>As mentioned by <a class="reference external" href="https://stackoverflow.com/a/26759446/1633665">Arthur Azevedo De Amorim</a>, the issue is that
-the <tt class="docutils literal">Notation</tt> mechanism of Coq does not take the types of the
-sub-expressions into account to discriminate between <tt class="docutils literal">Cons_apple</tt>
-and <tt class="docutils literal">Cons_pear</tt>. However, you can use <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual022.html">Type Classes</a>
+the <span class="docutils literal">Notation</span> mechanism of Coq does not take the types of the
+sub-expressions into account to discriminate between <span class="docutils literal">Cons_apple</span>
+and <span class="docutils literal">Cons_pear</span>. However, you can use <a class="reference external" href="https://coq.inria.fr/distrib/current/refman/Reference-Manual022.html">Type Classes</a>
 to do that:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Class</span> <span class="nf">Cons_fruit</span> (<span class="nv">A</span> : <span class="kt">Set</span>) := {
     CONS : A -&gt; FruitList -&gt; FruitList }.</span><span class="alectryon-wsp">
@@ -118,9 +114,9 @@ to do that:</p>
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot; [ x ; .. ; y ] &quot;</span> := (CONS x .. (CONS y Empty) .. ).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> := [a; p; p; a].</span></span></pre><p>We define here a type class <tt class="docutils literal">Cons_fruit</tt> containing a single
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> := [a; p; p; a].</span></span></pre><p>We define here a type class <span class="docutils literal">Cons_fruit</span> containing a single
 function, and two instances, one for consing apples and one for
-consing pears. We can then use the templated <tt class="docutils literal">CONS</tt> function in the
+consing pears. We can then use the templated <span class="docutils literal">CONS</span> function in the
 notation, and Coq will select the appropriate instance when needed.</p>
 <p>Note that this may result in less understandable error messages. For
 instance, with</p>
@@ -136,8 +132,8 @@ The following term contains unresolved implicit arguments:
 More precisely: 
 - <span class="nl">?Cons_fruit</span>: Cannot infer the implicit parameter
   Cons_fruit of CONS whose type <span class="kr">is</span> <span class="s2">&quot;Cons_fruit nat&quot;</span>
-  (no type class instance found).</blockquote></div></div></small></span></pre></div>
+  (no type class instance found).</blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

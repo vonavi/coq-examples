@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pose proof in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="pose-proof-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="pose-proof-in-coq">
 <h1 class="title">Pose proof in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71768615">https://stackoverflow.com/q/71768615</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71768615">https://stackoverflow.com/q/71768615</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I'm trying to prove a theorem in Coq. My current context is:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pose-proof-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message"><span class="mi">1</span> subgoal
 
@@ -38,21 +35,18 @@
   Pstx : Ps t x
   Fxt : F x t
   ============================
-  C s s s</blockquote></div></div></small></span></pre><p><tt class="docutils literal">F</tt>, <tt class="docutils literal">Ps</tt> and <tt class="docutils literal">C</tt> are relations of the theory. I've also Axiom
+  C s s s</blockquote></div></div></small></span></pre><p><span class="docutils literal">F</span>, <span class="docutils literal">Ps</span> and <span class="docutils literal">C</span> are relations of the theory. I've also Axiom
 4:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">A4</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">s</span> <span class="nv">t</span>,
-      Ps s x /\ F x s /\ Ps t x /\ F x t -&gt; s = t.</span></span></pre><p>What I want to do, is to use <tt class="docutils literal">A4</tt> in the proof, as it will help me
-to say that <tt class="docutils literal">s</tt> and <tt class="docutils literal">t</tt> are equals. So I've tested: <tt class="docutils literal">pose proof
-(A4 x s t).</tt> A new hypothesis is added: <tt class="docutils literal">H : Ps s x /\ F x s /\ Ps t
-x /\ F x t <span class="pre">-&gt;</span> s = t</tt>. I know I can destruct the hypothesis <tt class="docutils literal">H</tt>,
+      Ps s x /\ F x s /\ Ps t x /\ F x t -&gt; s = t.</span></span></pre><p>What I want to do, is to use <span class="docutils literal">A4</span> in the proof, as it will help me
+to say that <span class="docutils literal">s</span> and <span class="docutils literal">t</span> are equals. So I've tested: <span class="docutils literal">pose proof (A4 x s t).</span> A new hypothesis is added: <span class="docutils literal">H : Ps s x /\ F x s /\ Ps t x /\ F x t <span class="pre">-&gt;</span> s = t</span>. I know I can destruct the hypothesis <span class="docutils literal">H</span>,
 prove the premisses and use the conclusion. But I also know that I can
-give the premisses directly in the <tt class="docutils literal">pose proof</tt> command. I want to
-do something like <tt class="docutils literal">pose proof (A4 x s t Premisses).</tt> But I don't
-know what to put instead of <tt class="docutils literal">Premisses</tt>.</p>
+give the premisses directly in the <span class="docutils literal">pose proof</span> command. I want to
+do something like <span class="docutils literal">pose proof (A4 x s t Premisses).</span> But I don't
+know what to put instead of <span class="docutils literal">Premisses</span>.</p>
 <p>I tried several solutions:</p>
 <ul>
-<li><p class="first">composing the hypothesis with <tt class="docutils literal">/\</tt>, such as <tt class="docutils literal">pose proof (A4 x s t
-(Pssx /\ Fxs /\ Pstx /\ <span class="pre">Fxt)).</span></tt> but I got the error</p>
+<li><p>composing the hypothesis with <span class="docutils literal">/\</span>, such as <span class="docutils literal">pose proof (A4 x s t (Pssx /\ Fxs /\ Pstx /\ <span class="pre">Fxt)).</span></span> but I got the error</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pose-proof-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
 s, t, x : Entity
@@ -64,9 +58,9 @@ Pstx : Ps t x
 Fxt : F x t
 The term <span class="s2">&quot;Pssx&quot;</span> has type <span class="s2">&quot;Ps s x&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;Prop&quot;</span>.</blockquote></div></div></small></span></pre></li>
-<li><p class="first">using the <tt class="docutils literal">assert</tt> command and <tt class="docutils literal">pose proof (A4 x s t H1).</tt>:</p>
+<li><p>using the <span class="docutils literal">assert</span> command and <span class="docutils literal">pose proof (A4 x s t H1).</span>:</p>
 <ul>
-<li><p class="first"><tt class="docutils literal">assert (H1 := (Ps s x) /\ (F x s) /\ (Ps t x) /\ (F x <span class="pre">t)).</span></tt> but
+<li><p><span class="docutils literal">assert (H1 := (Ps s x) /\ (F x s) /\ (Ps t x) /\ (F x <span class="pre">t)).</span></span> but
 I got</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pose-proof-in-coq-v-chk2" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
@@ -81,7 +75,7 @@ H1 : <span class="kt">Prop</span>
 The term <span class="s2">&quot;H1&quot;</span> has type <span class="s2">&quot;Prop&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type
  <span class="s2">&quot;Ps s x /\ F x s /\ Ps t x /\ F x t&quot;</span>.</blockquote></div></div></small></span></pre></li>
-<li><p class="first"><tt class="docutils literal">assert (H1 := (Pssx) /\ (Fxs) /\ (Pstx) /\ <span class="pre">(Fxt)).</span></tt> but I got
+<li><p><span class="docutils literal">assert (H1 := (Pssx) /\ (Fxs) /\ (Pstx) /\ <span class="pre">(Fxt)).</span></span> but I got
 </p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="pose-proof-in-coq-v-chk3" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
@@ -99,23 +93,23 @@ while it <span class="kr">is</span> expected to <span class="nb">have</span> typ
 </li>
 </ul>
 <p>So my question is the following: what should I put instead of
-<tt class="docutils literal">Premisses</tt> for my code to work? Is there a command to create new
+<span class="docutils literal">Premisses</span> for my code to work? Is there a command to create new
 hypothesis based on other ones? I know how to destruct an hypothesis
 into two smaller hypothesis, but I don't know how to compose
 hypothesis to create bigger ones.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The standard in Coq would be to <a class="reference external" href="https://en.wikipedia.org/wiki/Currying">curry</a> your <tt class="docutils literal">A4</tt> so that
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The standard in Coq would be to <a class="reference external" href="https://en.wikipedia.org/wiki/Currying">curry</a> your <span class="docutils literal">A4</span> so that
 instead of receiving one large conjunction as a premise, it receives
 several different premises:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">A4&#39;</span> : <span class="kr">forall</span> <span class="nv">x</span> <span class="nv">s</span> <span class="nv">t</span>,
       Ps s x -&gt; F x s -&gt; Ps t x -&gt; F x t -&gt; s = t.</span></span></pre><p>Then you can do:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pose-proof-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="pose-proof-in-coq-v-chk4"><span class="nb">pose proof</span> (A4&#39; x s t Pssx Fxs Pstx Fxt).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s, t, x</var><span class="hyp-type"><b>: </b><span>Entity</span></span></span><br><span><var>Pssx</var><span class="hyp-type"><b>: </b><span>Ps s x</span></span></span><br><span><var>Fxs</var><span class="hyp-type"><b>: </b><span>F x s</span></span></span><br><span><var>IPssx</var><span class="hyp-type"><b>: </b><span>F x s /\ Ps s x</span></span></span><br><span><var>Ctss</var><span class="hyp-type"><b>: </b><span>C t s s</span></span></span><br><span><var>Pstx</var><span class="hyp-type"><b>: </b><span>Ps t x</span></span></span><br><span><var>Fxt</var><span class="hyp-type"><b>: </b><span>F x t</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s = t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">C s s s</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span></pre><p>If you absolutely need <tt class="docutils literal">A4</tt> with the conjunctions, you can use
-<tt class="docutils literal">conj</tt> (which you can find with <tt class="docutils literal">Print &quot;_ /\ _&quot;</tt>):</p>
-<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pose-proof-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="pose-proof-in-coq-v-chk5"><span class="nb">pose proof</span> (A4 x s t (conj Pssx (conj Fxs (conj Pstx Fxt)))).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s, t, x</var><span class="hyp-type"><b>: </b><span>Entity</span></span></span><br><span><var>Pssx</var><span class="hyp-type"><b>: </b><span>Ps s x</span></span></span><br><span><var>Fxs</var><span class="hyp-type"><b>: </b><span>F x s</span></span></span><br><span><var>IPssx</var><span class="hyp-type"><b>: </b><span>F x s /\ Ps s x</span></span></span><br><span><var>Ctss</var><span class="hyp-type"><b>: </b><span>C t s s</span></span></span><br><span><var>Pstx</var><span class="hyp-type"><b>: </b><span>Ps t x</span></span></span><br><span><var>Fxt</var><span class="hyp-type"><b>: </b><span>F x t</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s = t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">C s s s</div></blockquote></div></div></small></span></pre></div>
+</span></span></pre><p>If you absolutely need <span class="docutils literal">A4</span> with the conjunctions, you can use
+<span class="docutils literal">conj</span> (which you can find with <span class="docutils literal">Print &quot;_ /\ _&quot;</span>):</p>
+<pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="pose-proof-in-coq-v-chk5" style="display: none" type="checkbox"><label class="alectryon-input" for="pose-proof-in-coq-v-chk5"><span class="nb">pose proof</span> (A4 x s t (conj Pssx (conj Fxs (conj Pstx Fxt)))).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>s, t, x</var><span class="hyp-type"><b>: </b><span>Entity</span></span></span><br><span><var>Pssx</var><span class="hyp-type"><b>: </b><span>Ps s x</span></span></span><br><span><var>Fxs</var><span class="hyp-type"><b>: </b><span>F x s</span></span></span><br><span><var>IPssx</var><span class="hyp-type"><b>: </b><span>F x s /\ Ps s x</span></span></span><br><span><var>Ctss</var><span class="hyp-type"><b>: </b><span>C t s s</span></span></span><br><span><var>Pstx</var><span class="hyp-type"><b>: </b><span>Ps t x</span></span></span><br><span><var>Fxt</var><span class="hyp-type"><b>: </b><span>F x t</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>s = t</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">C s s s</div></blockquote></div></div></small></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

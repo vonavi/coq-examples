@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to do induction differently?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-do-induction-differently">
+<div class="alectryon-root alectryon-centered"><main id="how-to-do-induction-differently">
 <h1 class="title">How to do induction differently?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/43011411">https://stackoverflow.com/q/43011411</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/43011411">https://stackoverflow.com/q/43011411</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am doing an exercise in Coq and trying to prove if a list equals to
 its reverse, it's a palindrome. Here is how I define palindromes:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">pal</span> {<span class="nv">X</span> : <span class="kt">Type</span>} : list X -&gt; <span class="kt">Prop</span> :=
@@ -57,27 +54,25 @@ definitely doesn't make any sense:</p>
   ============================
   pal (a :: l)</blockquote></div></div></small></span></pre><p>apparently the inductive context is terribly wrong. is there any way I
 can fix the induction?</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</section>
+<section id="answer">
+<h2>Answer</h2>
 <p>The solution I propose here is probably not the shortest one, but I
 think it is rather natural.</p>
-<p>My solution consists in defining an induction principle on <tt class="docutils literal">list</tt>
+<p>My solution consists in defining an induction principle on <span class="docutils literal">list</span>
 specialized to your problem.</p>
 <p>Consider natural numbers. There is not only the standard induction
-<tt class="docutils literal">nat_ind</tt> where you prove <tt class="docutils literal">P 0</tt> and <tt class="docutils literal">forall n, P n <span class="pre">-&gt;</span> P (S n)</tt>.
+<span class="docutils literal">nat_ind</span> where you prove <span class="docutils literal">P 0</span> and <span class="docutils literal">forall n, P n <span class="pre">-&gt;</span> P (S n)</span>.
 But there are other induction schemes, e.g., the strong induction
 <a class="reference external" href="https://coq.inria.fr/library/Coq.Arith.Wf_nat.html#lt_wf_ind">lt_wf_ind</a>, or
-the two-step induction where you prove <tt class="docutils literal">P 0</tt>, <tt class="docutils literal">P 1</tt> and <tt class="docutils literal">forall
-n, P n <span class="pre">-&gt;</span> P (S (S n))</tt>. If the standard induction scheme is not
+the two-step induction where you prove <span class="docutils literal">P 0</span>, <span class="docutils literal">P 1</span> and <span class="docutils literal">forall n, P n <span class="pre">-&gt;</span> P (S (S n))</span>. If the standard induction scheme is not
 strong enough to prove the property you want, you can try another one.</p>
 <p>We can do the same for lists. If the standard induction scheme
-<tt class="docutils literal">list_ind</tt> is not enough, we can write another one that works. In
+<span class="docutils literal">list_ind</span> is not enough, we can write another one that works. In
 this idea, we define for lists an induction principle similar to the
-two-step induction on <tt class="docutils literal">nat</tt> (and we will prove the validity of this
-induction scheme using the two-step induction on <tt class="docutils literal">nat</tt>), where we
-need to prove three cases: <tt class="docutils literal">P []</tt>, <tt class="docutils literal">forall x, P [x]</tt> and <tt class="docutils literal">forall
-x l x', P l <span class="pre">-&gt;</span> P (x :: l ++ <span class="pre">[x'])</span></tt>. The proof of this scheme is the
+two-step induction on <span class="docutils literal">nat</span> (and we will prove the validity of this
+induction scheme using the two-step induction on <span class="docutils literal">nat</span>), where we
+need to prove three cases: <span class="docutils literal">P []</span>, <span class="docutils literal">forall x, P [x]</span> and <span class="docutils literal">forall x l x', P l <span class="pre">-&gt;</span> P (x :: l ++ <span class="pre">[x'])</span></span>. The proof of this scheme is the
 difficult part. Applying it to deduce your theorem is quite
 straightforward.</p>
 <p>I don't know if the two-step induction scheme is part of the standard
@@ -149,8 +144,8 @@ principle.</p>
 </span></span></pre><hr class="docutils" />
 <p><strong>A:</strong> Yes, there is that induction principle in the standard library,
 see <a class="reference external" href="https://coq.inria.fr/library/Coq.Numbers.Natural.Abstract.NBase.html#NBaseProp.pair_induction">pair_induction</a>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

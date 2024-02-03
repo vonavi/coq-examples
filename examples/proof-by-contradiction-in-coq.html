@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proof by contradiction in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,67 +14,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="proof-by-contradiction-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="proof-by-contradiction-in-coq">
 <h1 class="title">Proof by contradiction in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/71945260">https://stackoverflow.com/q/71945260</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/71945260">https://stackoverflow.com/q/71945260</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to understand the apparent paradox of the logical
 framework of theorem provers like Coq not including LEM yet also being
 able to construct proofs by contradiction. Specifically the
 intuitionistic type theory that these theorem provers are based on
-does not allow for any logical construction of the form <tt class="docutils literal"><span class="pre">￢(￢P)⇒P</span></tt>,
+does not allow for any logical construction of the form <span class="docutils literal"><span class="pre">￢(￢P)⇒P</span></span>,
 and so what is required in order to artificially construct this in a
 language like Coq? And how is the constructive character of the system
 preserved if this is allowed?</p>
-</div>
-<div class="section" id="answer-arthur-azevedo-de-amorim">
-<h1>Answer (Arthur Azevedo De Amorim)</h1>
+</section>
+<section id="answer-arthur-azevedo-de-amorim">
+<h2>Answer (Arthur Azevedo De Amorim)</h2>
 <p>I think you are mixing up two related uses of contradiction in logic.
 One is the technique of <em>proof by contradiction</em>, which says that you
-can prove <tt class="docutils literal">P</tt> by proving <tt class="docutils literal">~ (~ P)</tt> -- that is, by showing that <tt class="docutils literal">~
-P</tt> entails a contradiction. This technique is actually <em>not</em>
+can prove <span class="docutils literal">P</span> by proving <span class="docutils literal">~ (~ P)</span> -- that is, by showing that <span class="docutils literal">~ P</span> entails a contradiction. This technique is actually <em>not</em>
 available in general in constructive logics like Coq, unless one of
 the following applies.</p>
 <ol class="arabic simple">
-<li>You add the excluded middle <tt class="docutils literal">forall P, P \/ ~ P</tt> as an axiom. Coq
+<li><p>You add the excluded middle <span class="docutils literal">forall P, P \/ ~ P</span> as an axiom. Coq
 supports this, but this addition means that you are not working in
-a constructive logic anymore.</li>
-<li>The proposition <tt class="docutils literal">P</tt> is known to be decidable (i.e., <tt class="docutils literal">P \/ ~ P</tt>
+a constructive logic anymore.</p></li>
+<li><p>The proposition <span class="docutils literal">P</span> is known to be decidable (i.e., <span class="docutils literal">P \/ ~ P</span>
 holds). This is the case, for example, for the equality of two
-natural numbers <tt class="docutils literal">n</tt> and <tt class="docutils literal">m</tt>, which we can prove by induction.</li>
-<li>The proposition <tt class="docutils literal">P</tt> is of the form <tt class="docutils literal">~ Q</tt>. Since <tt class="docutils literal">Q <span class="pre">-&gt;</span> ~ (~
-Q)</tt> holds constructively, by the law of contrapositives (which is
-also valid constructively), we obtain <tt class="docutils literal">~ (~ (~ Q)) <span class="pre">-&gt;</span> (~ Q)</tt>.</li>
+natural numbers <span class="docutils literal">n</span> and <span class="docutils literal">m</span>, which we can prove by induction.</p></li>
+<li><p>The proposition <span class="docutils literal">P</span> is of the form <span class="docutils literal">~ Q</span>. Since <span class="docutils literal">Q <span class="pre">-&gt;</span> ~ (~ Q)</span> holds constructively, by the law of contrapositives (which is
+also valid constructively), we obtain <span class="docutils literal">~ (~ (~ Q)) <span class="pre">-&gt;</span> (~ Q)</span>.</p></li>
 </ol>
 <p>The other use of contradiction is the <a class="reference external" href="https://en.wikipedia.org/wiki/Principle_of_explosion">principle of explosion</a>, which says
-that anything follows once you assume a contradiction (i.e., <tt class="docutils literal">False</tt>
+that anything follows once you assume a contradiction (i.e., <span class="docutils literal">False</span>
 in Coq). Unlike proof by contradiction, the principle of explosion is
 <em>always</em> valid in constructive logic, so there is no paradox here.</p>
-</div>
-<div class="section" id="answer-l-garde">
-<h1>Answer (L. Garde)</h1>
+</section>
+<section id="answer-l-garde">
+<h2>Answer (L. Garde)</h2>
 <p>In constructive logic, by definition, a contradiction is an inhabitant
-of the empty type <tt class="docutils literal">0</tt>, and, also by definition, the negation <tt class="docutils literal">￢P</tt>
-of a proposition <tt class="docutils literal">P</tt> is a function of type: <tt class="docutils literal">P <span class="pre">-&gt;</span> 0</tt> that gives an
-inhabitant of the empty type <tt class="docutils literal">0</tt> from an inhabitant (a proof) of
-<tt class="docutils literal">P</tt>.</p>
-<p>If you assume an inhabitant (proof) of <tt class="docutils literal">P</tt>, and derive
-constructively an inhabitant of <tt class="docutils literal">0</tt>, you have defined a function
-inhabiting the type <tt class="docutils literal">P <span class="pre">-&gt;</span> 0</tt>, i.e. a proof of <tt class="docutils literal">￢P</tt>. This is a
-constructive sort of proof by contradiction: assume <tt class="docutils literal">P</tt>, derive a
-contradiction, conclude <tt class="docutils literal">￢P</tt>.</p>
-<p>Now if you assume <tt class="docutils literal">￢P</tt> and derive a contradiction, you have a
-constructive proof of <tt class="docutils literal">￢￢P</tt>, but cannot conclude constructively
-that you have a proof of <tt class="docutils literal">P</tt>: for this you need the LEM axiom.</p>
-</div>
-</div>
+of the empty type <span class="docutils literal">0</span>, and, also by definition, the negation <span class="docutils literal">￢P</span>
+of a proposition <span class="docutils literal">P</span> is a function of type: <span class="docutils literal">P <span class="pre">-&gt;</span> 0</span> that gives an
+inhabitant of the empty type <span class="docutils literal">0</span> from an inhabitant (a proof) of
+<span class="docutils literal">P</span>.</p>
+<p>If you assume an inhabitant (proof) of <span class="docutils literal">P</span>, and derive
+constructively an inhabitant of <span class="docutils literal">0</span>, you have defined a function
+inhabiting the type <span class="docutils literal">P <span class="pre">-&gt;</span> 0</span>, i.e. a proof of <span class="docutils literal">￢P</span>. This is a
+constructive sort of proof by contradiction: assume <span class="docutils literal">P</span>, derive a
+contradiction, conclude <span class="docutils literal">￢P</span>.</p>
+<p>Now if you assume <span class="docutils literal">￢P</span> and derive a contradiction, you have a
+constructive proof of <span class="docutils literal">￢￢P</span>, but cannot conclude constructively
+that you have a proof of <span class="docutils literal">P</span>: for this you need the LEM axiom.</p>
+</section>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Confused about pattern matching in Record constructions in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,21 +14,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="confused-about-pattern-matching-in-record-constructions-in-coq">
-<h1 class="title">Confused about pattern matching in <tt class="docutils literal">Record</tt> constructions in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/36265021">https://stackoverflow.com/q/36265021</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="confused-about-pattern-matching-in-record-constructions-in-coq">
+<h1 class="title">Confused about pattern matching in <span class="docutils literal">Record</span> constructions in Coq</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/36265021">https://stackoverflow.com/q/36265021</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I've been using Coq for a very short time and I still bump into walls
-with some things. I've defined a set with a <tt class="docutils literal">Record</tt> construction.
+with some things. I've defined a set with a <span class="docutils literal">Record</span> construction.
 Now I need to do some pattern matching to use it, but I'm having
 issues properly using it. First, these are my elements.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">element</span> : <span class="kt">Set</span> :=
@@ -40,7 +37,7 @@ them the next way:</p>
 | esp1 : esp_char empty
 | esp2 : <span class="kr">forall</span> (<span class="nv">n</span> : nat) (<span class="nv">E</span> : element), esp_char E -&gt; esp_char (n_fun n E).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">especial</span> : <span class="kt">Set</span> := mk_esp {E : element; C : (esp_char E)}.</span></span></pre><p>Now, I need to use definition and fix point on the <tt class="docutils literal">especial</tt>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Record</span> <span class="nf">especial</span> : <span class="kt">Set</span> := mk_esp {E : element; C : (esp_char E)}.</span></span></pre><p>Now, I need to use definition and fix point on the <span class="docutils literal">especial</span>
 elements, just the two that I picked. I have read the documentation on
 Record and what I get is that I'd need to do something like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk0"><span class="kn">Fixpoint</span> <span class="nf">Size</span> (<span class="nv">E</span> : especial) : nat :=
@@ -57,7 +54,7 @@ n : nat
 E0 : element
 The term <span class="s2">&quot;E0&quot;</span> has type <span class="s2">&quot;element&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;especial&quot;</span>.</blockquote></div></div></small></span></pre><p>Of course this tells me that I'm missing everything on the inductive
-part of elements so I add <tt class="docutils literal">{| E := _ |} =&gt; 0</tt>, or anything, just to
+part of elements so I add <span class="docutils literal">{| E := _ |} =&gt; 0</span>, or anything, just to
 make the induction full. Even doing this, I then find this problem:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The command has indeed failed <span class="kr">with</span> message:
 In environment
@@ -69,14 +66,14 @@ n : nat
 E0 : element
 The term <span class="s2">&quot;E0&quot;</span> has type <span class="s2">&quot;element&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;especial&quot;</span>.</blockquote></div></div></small></span></pre><p>What I have been unable to do is fix that last thing, I have a lemma
-proving that if <tt class="docutils literal">n_fun n E0</tt> is <tt class="docutils literal">especial</tt> then <tt class="docutils literal">E0</tt> is
-<tt class="docutils literal">especial</tt>, but I can't build it as so inside the <tt class="docutils literal">Fixpoint</tt>. I
+proving that if <span class="docutils literal">n_fun n E0</span> is <span class="docutils literal">especial</span> then <span class="docutils literal">E0</span> is
+<span class="docutils literal">especial</span>, but I can't build it as so inside the <span class="docutils literal">Fixpoint</span>. I
 also defined the size for &quot;all elements&quot; and then just picked the
-<tt class="docutils literal">especial</tt> ones in a definition, but I want to be able to do direct
-pattern matching directly on the set <tt class="docutils literal">especial</tt>. Thank you for your
+<span class="docutils literal">especial</span> ones in a definition, but I want to be able to do direct
+pattern matching directly on the set <span class="docutils literal">especial</span>. Thank you for your
 input.</p>
 <p>EDIT: Forgot to mention that I also have a coercion to always send
-<tt class="docutils literal">especial</tt> to <tt class="docutils literal">elements</tt>.</p>
+<span class="docutils literal">especial</span> to <span class="docutils literal">elements</span>.</p>
 <p>EDIT: This is the approach I had before posting:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Fixpoint</span> <span class="nf">ElementSize</span> (<span class="nv">E</span> : element) : nat :=
   <span class="kr">match</span> E <span class="kr">with</span>
@@ -87,9 +84,9 @@ input.</p>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk2"><span class="kn">Definition</span> <span class="nf">Size</span> (<span class="nv">E</span> : especial) := ElementSize E.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
 E : especial
 The term <span class="s2">&quot;E&quot;</span> has type <span class="s2">&quot;especial&quot;</span>
-while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;element&quot;</span>.</blockquote></div></div></small></span></pre></div>
-<div class="section" id="answer-ejgallego">
-<h1>Answer (ejgallego)</h1>
+while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;element&quot;</span>.</blockquote></div></div></small></span></pre></section>
+<section id="answer-ejgallego">
+<h2>Answer (ejgallego)</h2>
 <p>I'd have tried to do:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk3"><span class="kn">Lemma</span> <span class="nf">mk_especial_proof</span> <span class="nv">n</span> <span class="nv">E</span> : esp_char (n_fun n E) -&gt; esp_char E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>element</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">esp_char (n_fun n E) -&gt; esp_char E</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="confused-about-pattern-matching-in-record-constructions-in-coq-v-chk4"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>element</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">esp_char (n_fun n E) -&gt; esp_char E</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">intros</span> U; <span class="nb">inversion</span> U.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span><span class="alectryon-wsp">
@@ -132,13 +129,12 @@ datatype).</p>
   | n_fun _   e =&gt; <span class="mi">1</span> + size_e e
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">size_esp</span> <span class="nv">e</span> := size_e (E e).</span></span></pre></div>
-<div class="section" id="answer-larsr">
-<h1>Answer (larsr)</h1>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">size_esp</span> <span class="nv">e</span> := size_e (E e).</span></span></pre></section>
+<section id="answer-larsr">
+<h2>Answer (larsr)</h2>
 <p>I reduced your example to this, but you can easily go back to your
 definition. We have a set, and a subset defined by an inductive
-predicate. Often one uses sigma types for this, with the notation <tt class="docutils literal">{b
-| Small b}</tt>, but it is actually the same as the <tt class="docutils literal">Record</tt> definition
+predicate. Often one uses sigma types for this, with the notation <span class="docutils literal">{b | Small b}</span>, but it is actually the same as the <span class="docutils literal">Record</span> definition
 used in your example, so never mind :-).</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Big</span> : <span class="kt">Set</span> :=          <span class="c">(* a big set *)</span>
 | A
@@ -161,12 +157,12 @@ used in your example, so never mind :-).</p>
   <span class="kr">end</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">Size</span> (<span class="nv">s</span> : small) : nat :=
-  <span class="kr">let</span> (<span class="nv">b</span>, H) := s <span class="kr">in</span> size b H.</span></span></pre><p>To be able to use the hypothesis <tt class="docutils literal">H</tt> in the <tt class="docutils literal">match</tt>-branches, it
+  <span class="kr">let</span> (<span class="nv">b</span>, H) := s <span class="kr">in</span> size b H.</span></span></pre><p>To be able to use the hypothesis <span class="docutils literal">H</span> in the <span class="docutils literal">match</span>-branches, it
 is sent into the branch as a function argument. Otherwise the
-destruction of <tt class="docutils literal">b</tt> is not performed on the <tt class="docutils literal">H</tt> term, and Coq can't
-prove that we do a structural recursion on <tt class="docutils literal">H</tt>.</p>
+destruction of <span class="docutils literal">b</span> is not performed on the <span class="docutils literal">H</span> term, and Coq can't
+prove that we do a structural recursion on <span class="docutils literal">H</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

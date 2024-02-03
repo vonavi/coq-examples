@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>decide equality for Mutually Recursive Types in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="decide-equality-for-mutually-recursive-types-in-coq">
-<h1 class="title"><tt class="docutils literal">decide equality</tt> for Mutually Recursive Types in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48268929">https://stackoverflow.com/q/48268929</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="decide-equality-for-mutually-recursive-types-in-coq">
+<h1 class="title"><span class="docutils literal">decide equality</span> for Mutually Recursive Types in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48268929">https://stackoverflow.com/q/48268929</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>Is there any way to use the <tt class="docutils literal">decide equality</tt> tactic with mutually
+<section id="question">
+<h2>Question</h2>
+<p>Is there any way to use the <span class="docutils literal">decide equality</span> tactic with mutually
 recursive types in Coq?</p>
 <p>For example, if I've got something like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">LTree</span> : <span class="kt">Set</span> :=
@@ -49,25 +46,24 @@ recursive types in Coq?</p>
   y1 : RTree
   a : x0 = x1
   ============================
-  {y0 = y1} + {y0 &lt;&gt; y1}</blockquote></div></div></small></span></pre><p>But I can't solve that until I've derived equality for <tt class="docutils literal">RTree</tt>,
+  {y0 = y1} + {y0 &lt;&gt; y1}</blockquote></div></div></small></span></pre><p>But I can't solve that until I've derived equality for <span class="docutils literal">RTree</span>,
 which will have the same problem.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>You can use <tt class="docutils literal">decide equality</tt> in this case if you prove the two
-lemmas for <tt class="docutils literal">LTrees</tt> and <tt class="docutils literal">RTrees</tt> simultaneously:</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>You can use <span class="docutils literal">decide equality</span> in this case if you prove the two
+lemmas for <span class="docutils literal">LTrees</span> and <span class="docutils literal">RTrees</span> simultaneously:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="decide-equality-for-mutually-recursive-types-in-coq-v-chk4" style="display: none" type="checkbox"><label class="alectryon-input" for="decide-equality-for-mutually-recursive-types-in-coq-v-chk4"><span class="kn">Lemma</span> <span class="nf">eq_LTree</span> : <span class="kr">forall</span> (<span class="nv">x</span> <span class="nv">y</span> : LTree), {x = y} + {x &lt;&gt; y}
 <span class="kr">with</span>  eq_RTree : <span class="kr">forall</span> (<span class="nv">x</span> <span class="nv">y</span> : RTree), {x = y} + {x &lt;&gt; y}.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>eq_LTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>eq_RTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="decide-equality-for-mutually-recursive-types-in-coq-v-chk5" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>eq_LTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>eq_RTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><label class="goal-separator" for="decide-equality-for-mutually-recursive-types-in-coq-v-chk5"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="decide-equality-for-mutually-recursive-types-in-coq-v-chk6" style="display: none" type="checkbox"><label class="alectryon-input" for="decide-equality-for-mutually-recursive-types-in-coq-v-chk6"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>eq_LTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>eq_RTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</div></blockquote><div class="alectryon-extra-goals"><input class="alectryon-extra-goal-toggle" id="decide-equality-for-mutually-recursive-types-in-coq-v-chk7" style="display: none" type="checkbox"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>eq_LTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>eq_RTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><label class="goal-separator" for="decide-equality-for-mutually-recursive-types-in-coq-v-chk7"><hr></label><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="decide-equality-for-mutually-recursive-types-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="decide-equality-for-mutually-recursive-types-in-coq-v-chk8">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>eq_LTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>eq_RTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">decide equality</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="decide-equality-for-mutually-recursive-types-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="decide-equality-for-mutually-recursive-types-in-coq-v-chk9">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>eq_LTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : LTree, {x = y} + {x &lt;&gt; y}</span></span></span><br><span><var>eq_RTree</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kr">forall</span> <span class="nv">x</span> <span class="nv">y</span> : RTree, {x = y} + {x &lt;&gt; y}</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">decide equality</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><hr class="docutils" />
-<p><strong>Q:</strong> This is strange, <tt class="docutils literal">Guarded</tt> complains after the first <tt class="docutils literal">decide
-equality</tt>, but then <tt class="docutils literal">Qed</tt> is not rejected.</p>
+<p><strong>Q:</strong> This is strange, <span class="docutils literal">Guarded</span> complains after the first <span class="docutils literal">decide equality</span>, but then <span class="docutils literal">Qed</span> is not rejected.</p>
 <p><strong>A:</strong> Never mind, I found a <a class="reference external" href="https://sympa.inria.fr/sympa/arc/coq-club/2011-11/msg00297.html">thread</a>
 on coq-club discussing this particular problem.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

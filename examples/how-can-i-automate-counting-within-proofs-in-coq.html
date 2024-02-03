@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How can I automate counting within proofs in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,20 +14,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-can-i-automate-counting-within-proofs-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-can-i-automate-counting-within-proofs-in-coq">
 <h1 class="title">How can I automate counting within proofs in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/42662141">https://stackoverflow.com/q/42662141</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/42662141">https://stackoverflow.com/q/42662141</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
-<p>I have a function <tt class="docutils literal">count</tt> that counts how many times a given
+<section id="question">
+<h2>Question</h2>
+<p>I have a function <span class="docutils literal">count</span> that counts how many times a given
 predicate is provable when applied to elements of a list. It is
 defined as follows:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Parameter</span> <span class="nv">T</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
@@ -94,10 +91,10 @@ defined as follows:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chk7"><span class="nb">destruct</span> (dec q b); [<span class="nb">auto</span> | <span class="bp">contradiction</span>].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>H</var><span class="hyp-type"><b>: </b><span>q a</span></span></span><br><span><var>H0</var><span class="hyp-type"><b>: </b><span>q b</span></span></span><br><span><var>H1</var><span class="hyp-type"><b>: </b><span>~ q c</span></span></span><br><span><var>q0</var><span class="hyp-type"><b>: </b><span>q a</span></span></span><br><span><var>q1</var><span class="hyp-type"><b>: </b><span>q b</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="mi">1</span> + (<span class="mi">1</span> + (<span class="kr">if</span> dec q c <span class="kr">then</span> <span class="mi">1</span> + <span class="mi">0</span> <span class="kr">else</span> <span class="mi">0</span>)) = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">destruct</span> (dec q c); [<span class="bp">contradiction</span> | <span class="nb">auto</span>].</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>What can I do to automate such tedious proofs that involve computation
-with my <tt class="docutils literal">count</tt> function?</p>
-</div>
-<div class="section" id="answer-zimm-i48">
-<h1>Answer (Zimm i48)</h1>
+with my <span class="docutils literal">count</span> function?</p>
+</section>
+<section id="answer-zimm-i48">
+<h2>Answer (Zimm i48)</h2>
 <p>This is typically the kind of cases where you are better off proving
 things by reflection. See how things go smoothly (of course I modified
 a bit your example to avoid all these axioms):</p>
@@ -122,9 +119,9 @@ a bit your example to avoid all these axioms):</p>
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chk8"><span class="kn">Lemma</span> <span class="nf">example</span> : count q [a; b; c] = <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count q [a; b; c] = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chk9"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count q [a; b; c] = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I realize that your definition of <tt class="docutils literal">count</tt> was taking a propositional
-predicate on type <tt class="docutils literal">T</tt> (but with the assumption that all predicates
-on type <tt class="docutils literal">T</tt> are decidable) and instead I propose to define <tt class="docutils literal">count</tt>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre><p>I realize that your definition of <span class="docutils literal">count</span> was taking a propositional
+predicate on type <span class="docutils literal">T</span> (but with the assumption that all predicates
+on type <span class="docutils literal">T</span> are decidable) and instead I propose to define <span class="docutils literal">count</span>
 to take a boolean predicate. But you may realize that having a
 decidable propositional predicate or having a boolean predicate is
 actually equivalent.</p>
@@ -139,20 +136,20 @@ propositional predicate into a boolean one:</p>
 actually be possible to compute with the boolean predicate. But I'm
 assuming that you put all these axioms for the purpose of the example
 and that your actual application doesn't have them.</p>
-<div class="section" id="answer-to-your-comment">
-<h2>Answer to your comment</h2>
+<section id="answer-to-your-comment">
+<h3>Answer to your comment</h3>
 <p>As I told you, as soon as you have defined some function in terms of
 an axiom (or of a <a class="reference external" href="https://coq.inria.fr/refman/language/gallina-specification-language.html#coq:cmdv.parameter">Parameter</a>
 since this is the same thing), there is no way you can compute with it
 anymore.</p>
 <p>However, here is a solution where the decidability of propositional
-predicate <tt class="docutils literal">p</tt> is a lemma instead. I ended the proof of the lemma
+predicate <span class="docutils literal">p</span> is a lemma instead. I ended the proof of the lemma
 with <a class="reference external" href="https://coq.inria.fr/refman/language/gallina-specification-language.html#coq:cmdv.defined">Defined</a>
 instead of <a class="reference external" href="https://coq.inria.fr/refman/language/gallina-specification-language.html#coq:cmd.qed">Qed</a>
 to allow computing with it (otherwise, it wouldn't be any better than
-an axiom). As you can see I also redefined the <tt class="docutils literal">count</tt> function to
+an axiom). As you can see I also redefined the <span class="docutils literal">count</span> function to
 take a predicate and a proof of its decidability. The proof by
-reflection still works in that case. There is no <tt class="docutils literal">bool</tt> but it is
+reflection still works in that case. There is no <span class="docutils literal">bool</span> but it is
 strictly equivalent.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> List.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Import</span> ListNotations.</span><span class="alectryon-wsp">
@@ -174,10 +171,10 @@ strictly equivalent.</p>
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chkc" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chkc"><span class="kn">Lemma</span> <span class="nf">example2</span>: count p dec_p [a; b; c] = <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count p dec_p [a; b; c] = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chkd"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count p dec_p [a; b; c] = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-</div>
-<div class="section" id="answer-anton-trunov">
-<h1>Answer (Anton Trunov)</h1>
+</span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chkd" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chkd"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count p dec_p [a; b; c] = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">reflexivity</span>.</span><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+</section>
+<section id="answer-anton-trunov">
+<h2>Answer (Anton Trunov)</h2>
 <p>Let's create our custom hint database and add your axioms there:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chke" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chke"><span class="kn">Hint Resolve</span> Aa : axiom_db.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">The default value <span class="kr">for</span> hint locality <span class="kr">is</span> currently
 <span class="s2">&quot;local&quot;</span> <span class="kr">in</span> a section <span class="kn">and</span> <span class="s2">&quot;global&quot;</span> otherwise, but <span class="kr">is</span>
@@ -202,7 +199,7 @@ being, adding hints <span class="kn">outside</span> of sections without
 specifying an explicit locality <span class="kr">is</span> therefore
 deprecated. It <span class="kr">is</span> recommended to use <span class="s2">&quot;export&quot;</span> whenever
 possible.
-[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><p>Now, the <tt class="docutils literal">firstorder</tt> tactic can make use of the hint database:</p>
+[deprecated-hint-without-locality,deprecated]</blockquote></div></div></small></span></pre><p>Now, the <span class="docutils literal">firstorder</span> tactic can make use of the hint database:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chk11" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chk11"><span class="kn">Lemma</span> <span class="nf">example</span> : count q (cons a (cons b (cons c nil))) = <span class="mi">2</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count q (a :: b :: c :: nil) = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chk12" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chk12"><span class="kn">Proof</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">count q (a :: b :: c :: nil) = <span class="mi">2</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="how-can-i-automate-counting-within-proofs-in-coq-v-chk13" style="display: none" type="checkbox"><label class="alectryon-input" for="how-can-i-automate-counting-within-proofs-in-coq-v-chk13"><span class="nb">unfold</span> count.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><span class="goal-separator"><hr></span><div class="goal-conclusion">(<span class="kr">if</span> dec q a
@@ -224,10 +221,10 @@ possible.
       <span class="nb">destruct</span> (dec q x);
       <span class="nb">firstorder with</span> axioms_db;
       solve_the_probem
-  <span class="kr">end</span>.</span></span></pre><p>Then, <tt class="docutils literal">unfold count; solve_the_probem.</tt> will be able to prove the
+  <span class="kr">end</span>.</span></span></pre><p>Then, <span class="docutils literal">unfold count; solve_the_probem.</span> will be able to prove the
 lemma.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

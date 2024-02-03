@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Under what conditions does Eval cbv delta in expand a definition in Coq?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,61 +14,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="under-what-conditions-does-eval-cbv-delta-in-expand-a-definition-in-coq">
-<h1 class="title">Under what conditions does <tt class="docutils literal">Eval cbv delta in</tt> expand a definition in Coq?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/45248213">https://stackoverflow.com/q/45248213</a></td>
-</tr>
-</tbody>
-</table>
+<div class="alectryon-root alectryon-centered"><main id="under-what-conditions-does-eval-cbv-delta-in-expand-a-definition-in-coq">
+<h1 class="title">Under what conditions does <span class="docutils literal">Eval cbv delta in</span> expand a definition in Coq?</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/45248213">https://stackoverflow.com/q/45248213</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>In Proof General (with Coq 8.5), I executed the following:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Arith.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="under-what-conditions-does-eval-cbv-delta-in-expand-a-definition-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input" for="under-what-conditions-does-eval-cbv-delta-in-expand-a-definition-in-coq-v-chk0"><span class="kn">Eval</span> <span class="nb">cbv</span> delta <span class="kr">in</span> Nat.add_comm <span class="mi">3</span> <span class="mi">7</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= Nat.add_comm <span class="mi">3</span> <span class="mi">7</span>
 : <span class="mi">3</span> + <span class="mi">7</span> = <span class="mi">7</span> + <span class="mi">3</span></blockquote></div></div></small></span></pre><p>The output is</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="under-what-conditions-does-eval-cbv-delta-in-expand-a-definition-in-coq-v-chk1" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= Nat.add_comm <span class="mi">3</span> <span class="mi">7</span>
-: <span class="mi">3</span> + <span class="mi">7</span> = <span class="mi">7</span> + <span class="mi">3</span></blockquote></div></div></small></span></pre><p>However, <tt class="docutils literal">Print Nat.add_comm.</tt> gives a long and complicated function
+: <span class="mi">3</span> + <span class="mi">7</span> = <span class="mi">7</span> + <span class="mi">3</span></blockquote></div></div></small></span></pre><p>However, <span class="docutils literal">Print Nat.add_comm.</span> gives a long and complicated function
 taking two nats as input. I expected my code to expand the definition
-of <tt class="docutils literal">Nat.add_comm</tt>, which is what <tt class="docutils literal">Eval cbv delta in _.</tt> does in
+of <span class="docutils literal">Nat.add_comm</span>, which is what <span class="docutils literal">Eval cbv delta in _.</span> does in
 similar situations. As a beginner, I know there is a naive
 misconception lurking. What am I missing?</p>
 <hr class="docutils" />
-<p><strong>A (Daniel Schepler):</strong> Probably it's just that <tt class="docutils literal">Nat.add_comm</tt> is
+<p><strong>A (Daniel Schepler):</strong> Probably it's just that <span class="docutils literal">Nat.add_comm</span> is
 opaque - if you went through its proof (and the proofs of dependent
-lemmas) and replaced <tt class="docutils literal">Qed.</tt> with <tt class="docutils literal">Defined.</tt> everywhere, it would
-presumably evaluate to <tt class="docutils literal">eq_refl</tt>.</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Expanding a bit on Daniel's comment, <tt class="docutils literal">cbv delta</tt> will unfold an
+lemmas) and replaced <span class="docutils literal">Qed.</span> with <span class="docutils literal">Defined.</span> everywhere, it would
+presumably evaluate to <span class="docutils literal">eq_refl</span>.</p>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Expanding a bit on Daniel's comment, <span class="docutils literal">cbv delta</span> will unfold an
 identifier if</p>
 <ol class="arabic simple">
-<li>it has a body (i.e., is not a context variable, axiom, field in a
+<li><p>it has a body (i.e., is not a context variable, axiom, field in a
 module argument to the current module functor, bound variable,
-etc.), and</li>
-<li>it's body was given transparently, i.e., either the proof script
-was closed with <tt class="docutils literal">Defined</tt> rather than <tt class="docutils literal">Qed</tt> or the body was
-given via <tt class="docutils literal">:=</tt> or the automatic obligation tactic (for <tt class="docutils literal">Program
-Definition</tt>) or typeclass resolution (for <tt class="docutils literal">Instance</tt>s without
-a body), and</li>
-<li>it has not been marked opaque via <tt class="docutils literal">Opaque id</tt> or <tt class="docutils literal">Strategy
-opaque [id]</tt>, and</li>
-<li>it was not created by &quot;module-locking&quot; another constant, i.e.,
+etc.), and</p></li>
+<li><p>it's body was given transparently, i.e., either the proof script
+was closed with <span class="docutils literal">Defined</span> rather than <span class="docutils literal">Qed</span> or the body was
+given via <span class="docutils literal">:=</span> or the automatic obligation tactic (for <span class="docutils literal">Program Definition</span>) or typeclass resolution (for <span class="docutils literal">Instance</span>s without
+a body), and</p></li>
+<li><p>it has not been marked opaque via <span class="docutils literal">Opaque id</span> or <span class="docutils literal">Strategy opaque [id]</span>, and</p></li>
+<li><p>it was not created by &quot;module-locking&quot; another constant, i.e.,
 defined within a module (or module functor) with a module-type
-ascription via <tt class="docutils literal">:</tt> rather than <tt class="docutils literal">&lt;:</tt> (exception: if the module
-type itself provides the body for the constant)</li>
+ascription via <span class="docutils literal">:</span> rather than <span class="docutils literal">&lt;:</span> (exception: if the module
+type itself provides the body for the constant)</p></li>
 </ol>
-<p>Note that, at present, <tt class="docutils literal">vm_compute</tt> can get around 3 (and the
-unification engine can too, but <tt class="docutils literal">compute</tt>, <tt class="docutils literal">lazy</tt>, <tt class="docutils literal">cbv</tt>,
-<tt class="docutils literal">hnf</tt>, <tt class="docutils literal">cbn</tt> (usually), <tt class="docutils literal">simpl</tt> (usually), and <tt class="docutils literal">red</tt> cannot),
+<p>Note that, at present, <span class="docutils literal">vm_compute</span> can get around 3 (and the
+unification engine can too, but <span class="docutils literal">compute</span>, <span class="docutils literal">lazy</span>, <span class="docutils literal">cbv</span>,
+<span class="docutils literal">hnf</span>, <span class="docutils literal">cbn</span> (usually), <span class="docutils literal">simpl</span> (usually), and <span class="docutils literal">red</span> cannot),
 but nothing will get around the others.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

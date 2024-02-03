@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Closing a lemma on list of nats</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,24 +14,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="closing-a-lemma-on-list-of-nats">
+<div class="alectryon-root alectryon-centered"><main id="closing-a-lemma-on-list-of-nats">
 <h1 class="title">Closing a lemma on list of nats</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/59747670">https://stackoverflow.com/q/59747670</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/59747670">https://stackoverflow.com/q/59747670</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am stuck to prove the following admitted lemma. Kindly help me how
 to proceed.</p>
-<p>The function <tt class="docutils literal">sumoneseq</tt> adds to and returns list of repetitions of
-<tt class="docutils literal">true</tt>, in reverse order. Given [<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;<strong>true</strong>], it returns [3;2;1].
-The function <tt class="docutils literal">sumones</tt> adds values in the <tt class="docutils literal">nat</tt> list. Given
+<p>The function <span class="docutils literal">sumoneseq</span> adds to and returns list of repetitions of
+<span class="docutils literal">true</span>, in reverse order. Given [<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;false;<strong>true</strong>;<strong>true</strong>;<strong>true</strong>], it returns [3;2;1].
+The function <span class="docutils literal">sumones</span> adds values in the <span class="docutils literal">nat</span> list. Given
 [3;2;1], it returns 6.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;x :: l&quot;</span> := (cons x l) (<span class="kn">at level</span> <span class="mi">60</span>, <span class="kn">right associativity</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Notation</span> <span class="s2">&quot;[ ]&quot;</span> := nil.</span><span class="alectryon-wsp">
@@ -72,48 +69,46 @@ sumones ln + sumones (sumoneseq lb [ ])</span></span></span><br></div><span clas
 sumones (a :: ln) + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="closing-a-lemma-on-list-of-nats-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="closing-a-lemma-on-list-of-nats-v-chk7"><span class="nb">simpl</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>lb</var><span class="hyp-type"><b>: </b><span>list bool</span></span></span><br><span><var>a</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>ln</var><span class="hyp-type"><b>: </b><span>list nat</span></span></span><br><span><var>IHln</var><span class="hyp-type"><b>: </b><span>sumones (sumoneseq lb ln) =
 sumones ln + sumones (sumoneseq lb [ ])</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">sumones (sumoneseq lb (a :: ln)) =
 a + sumones ln + sumones (sumoneseq lb [ ])</div></blockquote></div></div></small><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></div>
-<div class="section" id="answer">
-<h1>Answer</h1>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Admitted</span>.</span></span></pre></section>
+<section id="answer">
+<h2>Answer</h2>
 <p>Two things:</p>
 <ol class="arabic simple">
-<li>When proving a property of some function <tt class="docutils literal">f</tt> using a direct
-induction, choose the parameter on which <tt class="docutils literal">f</tt> is structurally
-recursive on. So in your example involving <tt class="docutils literal">sumoneseq</tt>, induct on
-<tt class="docutils literal">lb</tt> instead of <tt class="docutils literal">ln</tt> since <tt class="docutils literal">sumoneseq</tt> is structurally
-recursive on <tt class="docutils literal">lb</tt>.</li>
-<li>Proving a property of some function <tt class="docutils literal">f</tt> where one or more of its
-arguments are fixed to specific values (e.g. <tt class="docutils literal">sumoneseq</tt> with its
-second argument being <tt class="docutils literal">[]</tt>) by direct induction is almost
+<li><p>When proving a property of some function <span class="docutils literal">f</span> using a direct
+induction, choose the parameter on which <span class="docutils literal">f</span> is structurally
+recursive on. So in your example involving <span class="docutils literal">sumoneseq</span>, induct on
+<span class="docutils literal">lb</span> instead of <span class="docutils literal">ln</span> since <span class="docutils literal">sumoneseq</span> is structurally
+recursive on <span class="docutils literal">lb</span>.</p></li>
+<li><p>Proving a property of some function <span class="docutils literal">f</span> where one or more of its
+arguments are fixed to specific values (e.g. <span class="docutils literal">sumoneseq</span> with its
+second argument being <span class="docutils literal">[]</span>) by direct induction is almost
 guaranteed to fail, since the value of that argument varies between
-recursive calls of <tt class="docutils literal">f</tt>, meaning that you would not be able to
+recursive calls of <span class="docutils literal">f</span>, meaning that you would not be able to
 apply the induction hypothesis in your inductive case. In that
 case, you need to manually generalize the induction hypothesis by
-finding a more general property on which <tt class="docutils literal">f</tt> holds, with each of
+finding a more general property on which <span class="docutils literal">f</span> holds, with each of
 its arguments being sufficiently general. For example, instead of
-proving <tt class="docutils literal">forall lb ln, sumones (sumoneseq lb ln) = sumones ln +
-sumones (sumoneseq lb [])</tt> directly by induction, try generalizing
-it to something like <tt class="docutils literal">forall lb ln ln', sumones (sumoneseq lb (ln
-++ <span class="pre">ln'))</span> = sumones ln + sumones (sumoneseq lb ln')</tt> instead and
+proving <span class="docutils literal">forall lb ln, sumones (sumoneseq lb ln) = sumones ln + sumones (sumoneseq lb [])</span> directly by induction, try generalizing
+it to something like <span class="docutils literal">forall lb ln ln', sumones (sumoneseq lb (ln ++ <span class="pre">ln'))</span> = sumones ln + sumones (sumoneseq lb ln')</span> instead and
 prove <em>that</em> by direct induction. Your desired result then follows
-as a corollary of that more general result.</li>
+as a corollary of that more general result.</p></li>
 </ol>
 <p>You can learn more about generalizing the induction hypothesis in
 <a class="reference external" href="https://jamesrwilcox.com/InductionExercises.html">James Wilcox's blog post</a> which generously
 includes 8 exercises of increasing difficulty on doing just that.</p>
 <p>Now try to prove your lemma with these two points in mind. <em>Hint: when
-proving your more general statement about</em> <tt class="docutils literal">sumoneseq</tt> <em>by direct
+proving your more general statement about</em> <span class="docutils literal">sumoneseq</span> <em>by direct
 induction, you may also find it helpful to extract out a suitable
-lemma on a certain property of</em> <tt class="docutils literal">sumones</tt>.</p>
+lemma on a certain property of</em> <span class="docutils literal">sumones</span>.</p>
 <p>If you've tried again to no avail then the full solution is provided
 below the horizontal rule (<strong>spoiler alert!</strong>).</p>
 <hr class="docutils" />
 <p>Here goes the full solution. As you can probably see, a lot of case
 analysis is required on top of the main induction (likely due to your
-optimization in <tt class="docutils literal">sumoneseq</tt> of discarding <tt class="docutils literal">0</tt>s from <tt class="docutils literal">ln</tt>) and
+optimization in <span class="docutils literal">sumoneseq</span> of discarding <span class="docutils literal">0</span>s from <span class="docutils literal">ln</span>) and
 the reasoning for many of these cases are actually very similar and
 repetitive. I could've probably further shortened the proof script
-with a bit of <tt class="docutils literal">Ltac</tt> programming looking for similar patterns in the
+with a bit of <span class="docutils literal">Ltac</span> programming looking for similar patterns in the
 various cases but I haven't bothered doing so since I just hacked it
 up straight away.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">From</span> Coq <span class="kn">Require Import</span> List Lia.</span><span class="alectryon-wsp">
@@ -502,8 +497,8 @@ sumones ln + sumones (sumoneseq lb [])</div></blockquote></div></div></small><sp
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">intros</span>; <span class="nb">replace</span> (sumoneseq lb ln)
             <span class="kr">with</span> (sumoneseq lb (ln ++ []))
     <span class="bp">by</span> (<span class="bp">now</span> <span class="nb">rewrite</span> app_nil_r); <span class="nb">apply</span> sumones_l&#39;.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,30 +14,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq">
 <h1 class="title">Retrieving constraints from GADT to ensure exhaustion of pattern matching in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/56525092">https://stackoverflow.com/q/56525092</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/56525092">https://stackoverflow.com/q/56525092</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Let's define two helper types:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">AB</span> : <span class="kt">Set</span> := A | B.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">XY</span> : <span class="kt">Set</span> := X | Y.</span></span></pre><p>Then two other types that depend on <tt class="docutils literal">XY</tt> and <tt class="docutils literal">AB</tt></p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">XY</span> : <span class="kt">Set</span> := X | Y.</span></span></pre><p>Then two other types that depend on <span class="docutils literal">XY</span> and <span class="docutils literal">AB</span></p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapped</span> : AB -&gt; XY -&gt; <span class="kt">Set</span> :=
 | W : <span class="kr">forall</span> (<span class="nv">ab</span> : AB) (<span class="nv">xy</span> : XY), Wrapped ab xy
 | WW : <span class="kr">forall</span> (<span class="nv">ab</span> : AB), Wrapped ab (<span class="kr">match</span> ab <span class="kr">with</span> A =&gt; X | B =&gt; Y <span class="kr">end</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapper</span> : XY -&gt; <span class="kt">Set</span> :=
-  WrapW : <span class="kr">forall</span> (<span class="nv">xy</span> : XY), Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>Note the <tt class="docutils literal">WW</tt> constructor – it can only be value of types <tt class="docutils literal">Wrapped
-A X</tt> and <tt class="docutils literal">Wrapped B Y</tt>.</p>
-<p>Now I would like to pattern match on <tt class="docutils literal">Wrapper Y</tt>:</p>
+  WrapW : <span class="kr">forall</span> (<span class="nv">xy</span> : XY), Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>Note the <span class="docutils literal">WW</span> constructor – it can only be value of types <span class="docutils literal">Wrapped A X</span> and <span class="docutils literal">Wrapped B Y</span>.</p>
+<p>Now I would like to pattern match on <span class="docutils literal">Wrapper Y</span>:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk0"><span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y) : nat :=
   <span class="kr">match</span> wr <span class="kr">with</span>
   | WrapW Y w =&gt;
@@ -45,15 +41,15 @@ A X</tt> and <tt class="docutils literal">Wrapped B Y</tt>.</p>
     | W A Y =&gt; <span class="mi">27</span>
     <span class="kr">end</span>
   <span class="kr">end</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">Non exhaustive <span class="nb">pattern</span>-matching: no clause found <span class="kr">for</span> <span class="nb">pattern</span>
-WW _</blockquote></div></div></small></span></pre><p>Why does it happen? <tt class="docutils literal">Wrapper</tt> forces contained <tt class="docutils literal">Wrapped</tt> to be
-<tt class="docutils literal">A</tt> version, the type signature forces <tt class="docutils literal">Y</tt> and <tt class="docutils literal">WW</tt> constructor
-forbids being <tt class="docutils literal">A</tt> and <tt class="docutils literal">Y</tt> simultaneously. I don't understand why
+WW _</blockquote></div></div></small></span></pre><p>Why does it happen? <span class="docutils literal">Wrapper</span> forces contained <span class="docutils literal">Wrapped</span> to be
+<span class="docutils literal">A</span> version, the type signature forces <span class="docutils literal">Y</span> and <span class="docutils literal">WW</span> constructor
+forbids being <span class="docutils literal">A</span> and <span class="docutils literal">Y</span> simultaneously. I don't understand why
 this case is being even considered, while I am forced to check it
 which seems to be impossible.</p>
 <p>How to workaround this situation?</p>
-</div>
-<div class="section" id="answer-htnw">
-<h1>Answer (HTNW)</h1>
+</section>
+<section id="answer-htnw">
+<h2>Answer (HTNW)</h2>
 <p>Let's simplify:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">MyTy</span> : <span class="kt">Set</span> -&gt; <span class="kt">Type</span> :=
   MkMyTy : <span class="kr">forall</span> (<span class="nv">A</span> : <span class="kt">Set</span>), A -&gt; MyTy A.</span><span class="alectryon-wsp">
@@ -65,39 +61,36 @@ S : <span class="kt">Set</span>
 x : S
 The term <span class="s2">&quot;x&quot;</span> has type <span class="s2">&quot;S&quot;</span>
 while it <span class="kr">is</span> expected to <span class="nb">have</span> type <span class="s2">&quot;nat&quot;</span>.</blockquote></div></div></small></span></pre><p>This is because I said</p>
-<pre class="code coq literal-block">
-<span class="kn">Inductive</span> <span class="nf">MyTy</span> <span class="o">:</span> <span class="kt">Set</span> <span class="o">-&gt;</span> <span class="kt">Type</span>
-</pre>
-<p>This made the first argument to <tt class="docutils literal">MyTy</tt> an index of <tt class="docutils literal">MyTy</tt>, as
+<pre class="code coq literal-block"><code><span class="kn">Inductive</span> <span class="nf">MyTy</span> <span class="o">:</span> <span class="kt">Set</span> <span class="o">-&gt;</span> <span class="kt">Type</span></code></pre>
+<p>This made the first argument to <span class="docutils literal">MyTy</span> an index of <span class="docutils literal">MyTy</span>, as
 opposed to a parameter. An inductive type with a parameter may look
 like this:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">list</span> (<span class="nv">A</span> : <span class="kt">Type</span>) : <span class="kt">Type</span> :=
 | nil : list A
-| cons : A -&gt; list A -&gt; list A.</span></span></pre><p>Parameters are named on the left of the <tt class="docutils literal">:</tt>, and are not
-<tt class="docutils literal">forall</tt>-d in the definition of each constructor. (They are still
-present in the constructors' types outside of the definition: <tt class="docutils literal">cons :
-forall (A : Type), A <span class="pre">-&gt;</span> list A <span class="pre">-&gt;</span> list A</tt>.) If I make the <tt class="docutils literal">Set</tt> a
-parameter of <tt class="docutils literal">MyTy</tt>, then <tt class="docutils literal">extract</tt> can be defined:</p>
+| cons : A -&gt; list A -&gt; list A.</span></span></pre><p>Parameters are named on the left of the <span class="docutils literal">:</span>, and are not
+<span class="docutils literal">forall</span>-d in the definition of each constructor. (They are still
+present in the constructors' types outside of the definition: <span class="docutils literal">cons : forall (A : Type), A <span class="pre">-&gt;</span> list A <span class="pre">-&gt;</span> list A</span>.) If I make the <span class="docutils literal">Set</span> a
+parameter of <span class="docutils literal">MyTy</span>, then <span class="docutils literal">extract</span> can be defined:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">MyTy</span> (<span class="nv">A</span> : <span class="kt">Set</span>) : <span class="kt">Type</span> :=
   MkMyTy : A -&gt; MyTy A.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
 </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">extract</span> (<span class="nv">m</span> : MyTy nat) : nat :=
-  <span class="kr">match</span> m <span class="kr">with</span> MkMyTy _ x =&gt; S x <span class="kr">end</span>.</span></span></pre><p>The reason for this is that, on the inside, a <tt class="docutils literal">match</tt> <em>ignores</em>
+  <span class="kr">match</span> m <span class="kr">with</span> MkMyTy _ x =&gt; S x <span class="kr">end</span>.</span></span></pre><p>The reason for this is that, on the inside, a <span class="docutils literal">match</span> <em>ignores</em>
 anything you know about the indices of the scrutinee from the outside.
-(Or, rather, the underlying <tt class="docutils literal">match</tt> expression in Gallina ignores
-the indices. When you write a <tt class="docutils literal">match</tt> in the source code, Coq tries
+(Or, rather, the underlying <span class="docutils literal">match</span> expression in Gallina ignores
+the indices. When you write a <span class="docutils literal">match</span> in the source code, Coq tries
 to convert it into the primitive form while incorporating information
-from the indices, but it often fails.) The fact that <tt class="docutils literal">m : MyTy nat</tt>
-in the first version of <tt class="docutils literal">extract</tt> simply did not matter. Instead,
-the match gave me <tt class="docutils literal">S : Set</tt> (the name was automatically chosen by
-Coq) and <tt class="docutils literal">x : S</tt>, as per the constructor <tt class="docutils literal">MkMyTy</tt>, with no mention
-of <tt class="docutils literal">nat</tt>. Meanwhile, because <tt class="docutils literal">MyTy</tt> has a parameter in the second
-version, I actually get <tt class="docutils literal">x : nat</tt>. The <tt class="docutils literal">_</tt> is really a placeholder
-this time; it is mandatory to write it as <tt class="docutils literal">_</tt>, because there's
-nothing to match, and you can <tt class="docutils literal">Set Asymmetric Patterns</tt> to make it
+from the indices, but it often fails.) The fact that <span class="docutils literal">m : MyTy nat</span>
+in the first version of <span class="docutils literal">extract</span> simply did not matter. Instead,
+the match gave me <span class="docutils literal">S : Set</span> (the name was automatically chosen by
+Coq) and <span class="docutils literal">x : S</span>, as per the constructor <span class="docutils literal">MkMyTy</span>, with no mention
+of <span class="docutils literal">nat</span>. Meanwhile, because <span class="docutils literal">MyTy</span> has a parameter in the second
+version, I actually get <span class="docutils literal">x : nat</span>. The <span class="docutils literal">_</span> is really a placeholder
+this time; it is mandatory to write it as <span class="docutils literal">_</span>, because there's
+nothing to match, and you can <span class="docutils literal">Set Asymmetric Patterns</span> to make it
 disappear.</p>
 <p>The reason we distinguish between parameters and indices is because
-parameters have a lot of restrictions—most notably, if <tt class="docutils literal">I</tt> is an
+parameters have a lot of restrictions—most notably, if <span class="docutils literal">I</span> is an
 inductive type with parameters, then the parameters must appear as
 variables in the return type of each constructor:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2" style="display: none" type="checkbox"><label class="alectryon-input alectryon-failed" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk2"><span class="kn">Inductive</span> <span class="nf">F</span> (<span class="nv">A</span> : <span class="kt">Set</span>) : <span class="kt">Set</span> := MkF : list A -&gt; F (list A).</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">In environment
@@ -107,15 +100,14 @@ l : list A
 Unable to <span class="nb">unify</span> <span class="s2">&quot;F (list A)&quot;</span> <span class="kr">with</span> <span class="s2">&quot;F A&quot;</span>.</blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">                                                 <span class="c">(* ^--------^</span>
 <span class="c">                                                    BAD: must appear as F A *)</span></span></pre><p>In your problem, we should make parameters where we can. E.g. the
-<tt class="docutils literal">match wr with Wrap Y w =&gt; _ end</tt> bit is wrong, because the <tt class="docutils literal">XY</tt>
-argument to <tt class="docutils literal">Wrapper</tt> is an index, so the fact that <tt class="docutils literal">wr : Wrapper
-Y</tt> is ignored; you would need to handle the <tt class="docutils literal">Wrap X w</tt> case too.
+<span class="docutils literal">match wr with Wrap Y w =&gt; _ end</span> bit is wrong, because the <span class="docutils literal">XY</span>
+argument to <span class="docutils literal">Wrapper</span> is an index, so the fact that <span class="docutils literal">wr : Wrapper Y</span> is ignored; you would need to handle the <span class="docutils literal">Wrap X w</span> case too.
 Coq hasn't gotten around to telling you that.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapped</span> (<span class="nv">ab</span> : AB) : XY -&gt; <span class="kt">Set</span> :=
 | W : <span class="kr">forall</span> (<span class="nv">xy</span> : XY), Wrapped ab xy
 | WW : Wrapped ab (<span class="kr">match</span> ab <span class="kr">with</span> A =&gt; X | B =&gt; Y <span class="kr">end</span>).</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
-</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapper</span> (<span class="nv">xy</span> : XY) : <span class="kt">Set</span> := WrapW : Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>And now your <tt class="docutils literal">test</tt> compiles (almost):</p>
+</span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Inductive</span> <span class="nf">Wrapper</span> (<span class="nv">xy</span> : XY) : <span class="kt">Set</span> := WrapW : Wrapped A xy -&gt; Wrapper xy.</span></span></pre><p>And now your <span class="docutils literal">test</span> compiles (almost):</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y) : nat :=
   <span class="kr">match</span> wr <span class="kr">with</span>
   | WrapW _ w =&gt; <span class="c">(* mandatory _ *)</span>
@@ -123,14 +115,14 @@ Coq hasn't gotten around to telling you that.</p>
     | W _ Y =&gt; <span class="mi">27</span> <span class="c">(* mandatory _ *)</span>
     <span class="kr">end</span>
   <span class="kr">end</span>.</span></span></pre><p>because having the parameters gives Coq enough information for its
-<tt class="docutils literal">match</tt>-elaboration to use information from <tt class="docutils literal">Wrapped</tt>'s index. If
-you issue <tt class="docutils literal">Print test.</tt>, you can see that there's a bit of
-hoop-jumping to pass information about the index <tt class="docutils literal">Y</tt> through the
-primitive <tt class="docutils literal">match</tt>s which would otherwise ignore it. <a class="reference external" href="https://coq.inria.fr/refman/addendum/extended-pattern-matching.html">See the
+<span class="docutils literal">match</span>-elaboration to use information from <span class="docutils literal">Wrapped</span>'s index. If
+you issue <span class="docutils literal">Print test.</span>, you can see that there's a bit of
+hoop-jumping to pass information about the index <span class="docutils literal">Y</span> through the
+primitive <span class="docutils literal">match</span>s which would otherwise ignore it. <a class="reference external" href="https://coq.inria.fr/refman/addendum/extended-pattern-matching.html">See the
 reference manual for more information.</a></p>
-</div>
-<div class="section" id="answer-radrow">
-<h1>Answer (radrow)</h1>
+</section>
+<section id="answer-radrow">
+<h2>Answer (radrow)</h2>
 <p>The solution turned out to be simple but tricky:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk3" style="display: none" type="checkbox"><label class="alectryon-input" for="retrieving-constraints-from-gadt-to-ensure-exhaustion-of-pattern-matching-in-coq-v-chk3"><span class="kn">Definition</span> <span class="nf">test</span> (<span class="nv">wr</span> : Wrapper Y): nat.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>wr</var><span class="hyp-type"><b>: </b><span>Wrapper Y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">refine</span> (<span class="kr">match</span> wr <span class="kr">with</span>
@@ -142,20 +134,20 @@ reference manual for more information.</a></p>
           <span class="kr">end</span>);
     [ | | <span class="nb">destruct</span> a]; <span class="bp">congruence</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>The issue was that Coq didn't infer some necessary invariants to
-realize that <tt class="docutils literal">WW</tt> case is ridiculous. I had to explicitly give it a
+realize that <span class="docutils literal">WW</span> case is ridiculous. I had to explicitly give it a
 proof for it.</p>
-<p>In this solution I changed <tt class="docutils literal">match</tt> to return a function that takes
+<p>In this solution I changed <span class="docutils literal">match</span> to return a function that takes
 two proofs and brings them to the context of our actual result:</p>
 <ul class="simple">
-<li><tt class="docutils literal">ab</tt> is apparently <tt class="docutils literal">A</tt></li>
-<li><tt class="docutils literal">xy</tt> is apparently <tt class="docutils literal">Y</tt></li>
+<li><p><span class="docutils literal">ab</span> is apparently <span class="docutils literal">A</span></p></li>
+<li><p><span class="docutils literal">xy</span> is apparently <span class="docutils literal">Y</span></p></li>
 </ul>
 <p>I have covered real cases ignoring these assumptions, and I deferred
 &quot;bad&quot; cases to be proven false later which turned to be trivial. I was
-forced to pass the <tt class="docutils literal">eq_refl</tt>s manually, but it worked and does not
+forced to pass the <span class="docutils literal">eq_refl</span>s manually, but it worked and does not
 look that bad.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

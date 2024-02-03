@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Stronger completeness axiom for real numbers in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="stronger-completeness-axiom-for-real-numbers-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="stronger-completeness-axiom-for-real-numbers-in-coq">
 <h1 class="title">Stronger completeness axiom for real numbers in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/41326216">https://stackoverflow.com/q/41326216</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/41326216">https://stackoverflow.com/q/41326216</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Here is the completeness axiom defined in the Coq standard library.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk0" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">is_upper_bound = 
 <span class="kr">fun</span> (<span class="nv">E</span> : R -&gt; <span class="kt">Prop</span>) (<span class="nv">m</span> : R) =&gt;
@@ -56,21 +53,21 @@ is_upper_bound E m /\
                (<span class="kr">forall</span> <span class="nv">x</span> : R, x &lt; m -&gt; <span class="kr">exists</span> <span class="nv">y</span> : R, (E y /\ y &gt; x))}.</span></span></pre><p>Is this required? (i.e does it follow from the others) Would there be
 any issues with consistency? Also, why is this not the definition in
 the standard library (I guess this part is subjective).</p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Your <tt class="docutils literal">supremum</tt> axiom is <em>equivalent</em> to the law of excluded middle,
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Your <span class="docutils literal">supremum</span> axiom is <em>equivalent</em> to the law of excluded middle,
 in other words by introducing this axiom you are bringing classical
 logic to the table.</p>
-<p>The <tt class="docutils literal">completeness</tt> axiom already implies a <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.ClassicalFacts.html#weak_excluded_middle">weak form</a>
+<p>The <span class="docutils literal">completeness</span> axiom already implies a <a class="reference external" href="https://coq.inria.fr/library/Coq.Logic.ClassicalFacts.html#weak_excluded_middle">weak form</a>
 of the law of excluded middle, as shown by the means of the
-<tt class="docutils literal">sig_not_dec</tt> lemma (<a class="reference external" href="https://coq.inria.fr/library/Coq.Reals.Rlogic.html">Rlogic</a> module), which
+<span class="docutils literal">sig_not_dec</span> lemma (<a class="reference external" href="https://coq.inria.fr/library/Coq.Reals.Rlogic.html">Rlogic</a> module), which
 states the decidability of negated formulas:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input checked="checked" class="alectryon-toggle" id="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk4" style="display: none" type="checkbox"><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">sig_not_dec
-     : <span class="kr">forall</span> <span class="nv">P</span> : <span class="kt">Prop</span>, {~ ~ P} + {~ P}</blockquote></div></div></small></span></pre><div class="section" id="supremum-axiom-implies-lem">
-<h2><tt class="docutils literal">supremum</tt> axiom implies LEM</h2>
-<p>Let's use the standard proof of the <tt class="docutils literal">sig_not_dec</tt> lemma to show that
-with the stronger completeness axiom (<tt class="docutils literal">supremum</tt>) we can derive the
+     : <span class="kr">forall</span> <span class="nv">P</span> : <span class="kt">Prop</span>, {~ ~ P} + {~ P}</blockquote></div></div></small></span></pre><section id="supremum-axiom-implies-lem">
+<h3><span class="docutils literal">supremum</span> axiom implies LEM</h3>
+<p>Let's use the standard proof of the <span class="docutils literal">sig_not_dec</span> lemma to show that
+with the stronger completeness axiom (<span class="docutils literal">supremum</span>) we can derive the
 strong form of the law of excluded middle.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Coq.Reals.RIneq.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -107,14 +104,13 @@ x0 &lt; x -&gt; <span class="kr">exists</span> <span class="nv">y</span> : R, E 
 x0 &lt; x -&gt; <span class="kr">exists</span> <span class="nv">y</span> : R, E y /\ y &gt; x0</span></span></span><br><span><var>H'</var><span class="hyp-type"><b>: </b><span>x &lt; <span class="mi">1</span></span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">~ P</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk24" style="display: none" type="checkbox"><label class="alectryon-input" for="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk24"><span class="nb">intros</span> HP.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>P</var><span class="hyp-type"><b>: </b><span><span class="kt">Prop</span></span></span></span><br><span><var>E</var><span><span class="hyp-body"><b>:= </b><span><span class="kr">fun</span> <span class="nv">x</span> : R =&gt; x = <span class="mi">0</span> \/ x = <span class="mi">1</span> /\ P</span></span><span class="hyp-type"><b>: </b><span>R -&gt; <span class="kt">Prop</span></span></span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>H</var><span class="hyp-type"><b>: </b><span>is_lub E x</span></span></span><br><span><var>Hclas</var><span class="hyp-type"><b>: </b><span><span class="kr">forall</span> <span class="nv">x0</span> : R,
 x0 &lt; x -&gt; <span class="kr">exists</span> <span class="nv">y</span> : R, E y /\ y &gt; x0</span></span></span><br><span><var>H'</var><span class="hyp-type"><b>: </b><span>x &lt; <span class="mi">1</span></span></span></span><br><span><var>HP</var><span class="hyp-type"><b>: </b><span>P</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion"><span class="kt">False</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> (Rlt_not_le _ _ H&#39;), H; <span class="bp">now</span> <span class="nb">right</span>.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
-<div class="section" id="lem-implies-supremum-axiom">
-<h2>LEM implies <tt class="docutils literal">supremum</tt> axiom</h2>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+<section id="lem-implies-supremum-axiom">
+<h3>LEM implies <span class="docutils literal">supremum</span> axiom</h3>
 <p>Now, let us show that the strong version of LEM implies the
-<tt class="docutils literal">supremum</tt> axiom. We do this by showing that in <em>constructive</em>
-setting we can derive a <em>negated</em> form of <tt class="docutils literal">supremum</tt> where the
-<tt class="docutils literal">exists y:R, E y /\ y &gt; x</tt> part gets replaced with <tt class="docutils literal">~ (forall y, y
-&gt; x <span class="pre">-&gt;</span> ~ E y)</tt>, and then using the usual classical facts we show that
+<span class="docutils literal">supremum</span> axiom. We do this by showing that in <em>constructive</em>
+setting we can derive a <em>negated</em> form of <span class="docutils literal">supremum</span> where the
+<span class="docutils literal">exists y:R, E y /\ y &gt; x</span> part gets replaced with <span class="docutils literal">~ (forall y, y &gt; x <span class="pre">-&gt;</span> ~ E y)</span>, and then using the usual classical facts we show that
 the original statement holds as well.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Classical.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">
@@ -163,9 +159,9 @@ the original statement holds as well.</p>
 </span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk3d" style="display: none" type="checkbox"><label class="alectryon-input" for="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk3d"><span class="nb">apply</span> not_all_ex_not <span class="kr">in</span> Hclass <span class="kr">as</span> [y Hclass]; <span class="kr">exists</span> <span class="nv">y</span>.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>E</var><span class="hyp-type"><b>: </b><span>R -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>Hlub</var><span class="hyp-type"><b>: </b><span>is_lub E m</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>Hlt</var><span class="hyp-type"><b>: </b><span>x &lt; m</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>Hclass</var><span class="hyp-type"><b>: </b><span>~ (y &gt; x -&gt; ~ E y)</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">E y /\ y &gt; x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk3e" style="display: none" type="checkbox"><label class="alectryon-input" for="stronger-completeness-axiom-for-real-numbers-in-coq-v-chk3e"><span class="nb">apply</span> imply_to_and <span class="kr">in</span> Hclass <span class="kr">as</span> [Hyx HnotnotEy].</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>E</var><span class="hyp-type"><b>: </b><span>R -&gt; <span class="kt">Prop</span></span></span></span><br><span><var>m</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>Hlub</var><span class="hyp-type"><b>: </b><span>is_lub E m</span></span></span><br><span><var>x</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>Hlt</var><span class="hyp-type"><b>: </b><span>x &lt; m</span></span></span><br><span><var>y</var><span class="hyp-type"><b>: </b><span>R</span></span></span><br><span><var>Hyx</var><span class="hyp-type"><b>: </b><span>y &gt; x</span></span></span><br><span><var>HnotnotEy</var><span class="hyp-type"><b>: </b><span>~ ~ E y</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">E y /\ y &gt; x</div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="bp">now</span> <span class="nb">apply</span> NNPP <span class="kr">in</span> HnotnotEy.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></div>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Qed</span>.</span></span></pre></section>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

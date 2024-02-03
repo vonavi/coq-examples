@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Why do Calculus of Construction based languages use Setoids so much?</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,26 +14,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="why-do-calculus-of-construction-based-languages-use-setoids-so-much">
+<div class="alectryon-root alectryon-centered"><main id="why-do-calculus-of-construction-based-languages-use-setoids-so-much">
 <h1 class="title">Why do Calculus of Construction based languages use Setoids so much?</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/65493694">https://stackoverflow.com/q/65493694</a></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="question">
-<h1>Question</h1>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/65493694">https://stackoverflow.com/q/65493694</a></p>
+</dd>
+</dl>
+<section id="question">
+<h2>Question</h2>
 <p>One finds that Setoids are widely used in languages such as Agda, Coq,
 ... Indeed languages such as Lean have argued that they could help
 avoid &quot;Setoid Hell&quot;. What is the reason for using Setoids in the first
 place? Does the move to extensional type theories based on HoTT (such
 as cubical Agda) reduce the need for Setoids?</p>
-</div>
-<div class="section" id="answer-floris-van-doorn">
-<h1>Answer (Floris van Doorn)</h1>
+</section>
+<section id="answer-floris-van-doorn">
+<h2>Answer (Floris van Doorn)</h2>
 <p>As Li-yao Xia's answer describes, setoids are used when we don't have
 or don't want to use quotients.</p>
 <p>In the HoTT book and in Lean quotients are (basically) axiomatized.
@@ -42,20 +39,19 @@ many more higher inductive types, and Lean only has quotients and
 (regular) inductive types. If we just restrict our attention to
 quotients (set quotients in the HoTT book), it works the same in Lean
 and in Book HoTT. In this case you just postulate that given a type
-<tt class="docutils literal">A</tt> and an equivalence <tt class="docutils literal">R</tt> on <tt class="docutils literal">A</tt> you have a quotient <tt class="docutils literal">Q</tt>, and
-a function <tt class="docutils literal"><span class="pre">[-]</span> : A <span class="pre">-&gt;</span> Q</tt> with the property <tt class="docutils literal">forall x y : A, R x y
-<span class="pre">-&gt;</span> [x] = [y]</tt>. It comes with the following elimination principle: to
-construct a function <tt class="docutils literal">g : Q <span class="pre">-&gt;</span> X</tt> for some type <tt class="docutils literal">X</tt> (or hSet <tt class="docutils literal">X</tt>
-in HoTT) we need a function <tt class="docutils literal">f : A <span class="pre">-&gt;</span> X</tt> such that we can prove
-<tt class="docutils literal">forall x y : A, R x y <span class="pre">-&gt;</span> f x = f y</tt>. This comes with the
-computation rule, that states <tt class="docutils literal">forall x : A, g [x] === f x</tt> (this is
+<span class="docutils literal">A</span> and an equivalence <span class="docutils literal">R</span> on <span class="docutils literal">A</span> you have a quotient <span class="docutils literal">Q</span>, and
+a function <span class="docutils literal"><span class="pre">[-]</span> : A <span class="pre">-&gt;</span> Q</span> with the property <span class="docutils literal">forall x y : A, R x y <span class="pre">-&gt;</span> [x] = [y]</span>. It comes with the following elimination principle: to
+construct a function <span class="docutils literal">g : Q <span class="pre">-&gt;</span> X</span> for some type <span class="docutils literal">X</span> (or hSet <span class="docutils literal">X</span>
+in HoTT) we need a function <span class="docutils literal">f : A <span class="pre">-&gt;</span> X</span> such that we can prove
+<span class="docutils literal">forall x y : A, R x y <span class="pre">-&gt;</span> f x = f y</span>. This comes with the
+computation rule, that states <span class="docutils literal">forall x : A, g [x] === f x</span> (this is
 a definitional equality in both Lean and Book HoTT).</p>
 <p>The main disadvantage of this quotient is that it breaks canonicity.
 Canonicity states that every closed term (that is, a term without free
 variables) in (say) the natural numbers normalizes to either zero or
 the successor of some natural number. The reason that this quotient
 breaks canonicity is that we can apply the elimination principle for
-<tt class="docutils literal">=</tt> to the new equalities in a quotient, and a term like that will
+<span class="docutils literal">=</span> to the new equalities in a quotient, and a term like that will
 not reduce. In Lean the opinion is that this doesn't matter, since in
 all cases we care about we can still prove an equality, even though it
 might not be a definitional equality.</p>
@@ -65,9 +61,9 @@ means that higher inductive types can be introduced while keeping
 canonicity. Potential disadvantages of CTT are that the type theory is
 a lot more complicated, and that you have to embrace HoTT (and in
 particular give up on proof irrelevance).</p>
-</div>
-<div class="section" id="answer-jacques-carette">
-<h1>Answer (Jacques Carette)</h1>
+</section>
+<section id="answer-jacques-carette">
+<h2>Answer (Jacques Carette)</h2>
 <p>[The answers by Lia-yao Xia and Floris van Doorn are both excellent,
 so I will try to augment them with additional information.]</p>
 <p>Another view is that quotients, while used a lot in classical
@@ -96,25 +92,25 @@ quotients are well-behaved, then there should be some automation that
 lets you work with that smoothly. Currently, in type theory, working
 out exactly what that could look like, is ongoing research. Floris'
 answer outlines well what one pitfall is: at some point, you give up
-that <tt class="docutils literal">computations</tt> will be well-behaved, and from then on, are
+that <span class="docutils literal">computations</span> will be well-behaved, and from then on, are
 forced to do everything via proofs.</p>
-</div>
-<div class="section" id="answer-li-yao-xia">
-<h1>Answer (Li-yao Xia)</h1>
+</section>
+<section id="answer-li-yao-xia">
+<h2>Answer (Li-yao Xia)</h2>
 <p>Ideally one would certainly like to be able to treat arbitrary
-equivalence relations as Leibniz equality (<tt class="docutils literal">eq</tt>), enabling rewriting
+equivalence relations as Leibniz equality (<span class="docutils literal">eq</span>), enabling rewriting
 in arbitrary contexts. That means to define the <strong>quotient</strong> of a type
 by an equivalence relation.</p>
 <p>I'm not an expert on the topic, but I've been wondering the same for a
 while, and I think the reliance on setoids stems from the fact that
 quotients are still a poorly understood concept in type theory.</p>
 <ol class="arabic simple">
-<li>Setoid Hell is where we're stuck when we don't have/want quotient
-types.</li>
-<li>We can axiomatize quotient types, I believe (I could be mistaken)
-that's what Lean does.</li>
-<li>We can develop a type theory which can naturally express quotients,
-that's what HoTT/Cubical TT do with higher inductive types.</li>
+<li><p>Setoid Hell is where we're stuck when we don't have/want quotient
+types.</p></li>
+<li><p>We can axiomatize quotient types, I believe (I could be mistaken)
+that's what Lean does.</p></li>
+<li><p>We can develop a type theory which can naturally express quotients,
+that's what HoTT/Cubical TT do with higher inductive types.</p></li>
 </ol>
 <p>Furthermore, quotient types (or my naive imagination of them) force us
 to package programs and proofs together in a perhaps less-than-ideal
@@ -128,7 +124,7 @@ keeping types separate from their equivalence relations), or to change
 some representations so the program and the proof are one and the same
 entity (so we might not even need to explicitly reason about
 equivalences in the first place).</p>
-</div>
-</div>
+</section>
+</main>
 </div></body>
 </html>

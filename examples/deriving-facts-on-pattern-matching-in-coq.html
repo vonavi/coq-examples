@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Deriving facts on pattern matching in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="deriving-facts-on-pattern-matching-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="deriving-facts-on-pattern-matching-in-coq">
 <h1 class="title">Deriving facts on pattern matching in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/48276348">https://stackoverflow.com/q/48276348</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/48276348">https://stackoverflow.com/q/48276348</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>Consider the following program</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">useGt0</span> (<span class="nv">n</span>: nat) (<span class="nv">witness</span>: n &gt; <span class="mi">0</span>) : nat :=
   <span class="mi">10</span>.</span><span class="alectryon-wsp">
@@ -44,15 +41,15 @@
 More precisely: 
 - <span class="nl">?witness</span>: Cannot infer this placeholder of type
   <span class="s2">&quot;n &gt; 0&quot;</span> <span class="kr">in</span> environment:
-  n, n&#39; : nat</blockquote></div></div></small></span></pre><p>Clearly, <tt class="docutils literal">n &gt; 0</tt> is inhabited, because <tt class="docutils literal">n = S n'</tt>. However, how do
-I get access to the proof that <tt class="docutils literal">n = S n'</tt>? From <tt class="docutils literal">n = S n'</tt>, we can
-derive that <tt class="docutils literal">n &gt; 0</tt>.</p>
+  n, n&#39; : nat</blockquote></div></div></small></span></pre><p>Clearly, <span class="docutils literal">n &gt; 0</span> is inhabited, because <span class="docutils literal">n = S n'</span>. However, how do
+I get access to the proof that <span class="docutils literal">n = S n'</span>? From <span class="docutils literal">n = S n'</span>, we can
+derive that <span class="docutils literal">n &gt; 0</span>.</p>
 <p>In general, I wish to understand: <em>How do I extract information from a
 pattern match?</em></p>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>The standard way to define <tt class="docutils literal">createGt0</tt> function is to use the convoy
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>The standard way to define <span class="docutils literal">createGt0</span> function is to use the convoy
 pattern (you can find several explanations using <a class="reference external" href="https://stackoverflow.com/questions/tagged/coq+convoy-pattern">[coq]
 [convoy-pattern]</a>
 search query on Stackoverflow). The standard link is A. Chlipala's
@@ -65,7 +62,7 @@ CPDT book.</p>
   | O =&gt; <span class="kr">fun</span> <span class="nv">_</span> =&gt; <span class="mi">42</span>
   | S n&#39; =&gt; <span class="kr">fun</span> <span class="nv">E</span> =&gt;
               useGt0 n (eq_ind_r (<span class="kr">fun</span> <span class="nv">n</span> =&gt; n &gt; <span class="mi">0</span>) (Nat.lt_0_succ n&#39;) E)
-  <span class="kr">end</span> eq_refl.</span></span></pre><p>Another option is to use <tt class="docutils literal">Program</tt> mechanism, which lets you program
+  <span class="kr">end</span> eq_refl.</span></span></pre><p>Another option is to use <span class="docutils literal">Program</span> mechanism, which lets you program
 in non-dependently-typed style, deferring proof obligations until a
 later time:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Require Import</span> Program.</span><span class="alectryon-wsp">
@@ -83,20 +80,19 @@ later time:</p>
 </span></span><span class="alectryon-wsp">  </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk7" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk7">-</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">nat</div></blockquote></div></div></small><span class="alectryon-wsp"> </span></span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk8" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk8"><span class="nb">refine</span> (useGt0 n _).</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">n &gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chk9" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chk9"><span class="nb">rewrite</span> E.</label><small class="alectryon-output"><div><div class="alectryon-goals"><blockquote class="alectryon-goal"><div class="goal-hyps"><span><var>n, n0</var><span class="hyp-type"><b>: </b><span>nat</span></span></span><br><span><var>E</var><span class="hyp-type"><b>: </b><span>n = S n0</span></span></span><br></div><span class="goal-separator"><hr></span><div class="goal-conclusion">S n0 &gt; <span class="mi">0</span></div></blockquote></div></div></small><span class="alectryon-wsp">
 </span></span><span class="alectryon-wsp">    </span><span class="alectryon-sentence"><span class="alectryon-input"><span class="nb">apply</span> Nat.lt_0_succ.</span><span class="alectryon-wsp">
-</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>If you end your function with <tt class="docutils literal">Qed</tt>, Coq will consider it opaque and
-won't reduce. Try ending the function with both <tt class="docutils literal">Qed</tt> and
-<tt class="docutils literal">Defined</tt> and execute the following command:</p>
+</span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Defined</span>.</span></span></pre><p>If you end your function with <span class="docutils literal">Qed</span>, Coq will consider it opaque and
+won't reduce. Try ending the function with both <span class="docutils literal">Qed</span> and
+<span class="docutils literal">Defined</span> and execute the following command:</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><input class="alectryon-toggle" id="deriving-facts-on-pattern-matching-in-coq-v-chka" style="display: none" type="checkbox"><label class="alectryon-input" for="deriving-facts-on-pattern-matching-in-coq-v-chka"><span class="kn">Compute</span> createGt0 <span class="mi">0</span>.</label><small class="alectryon-output"><div><div class="alectryon-messages"><blockquote class="alectryon-message">= <span class="mi">42</span>
 : nat</blockquote></div></div></small></span></pre><hr class="docutils" />
-<p><strong>Q:</strong> I am clearly out of my depth here. <tt class="docutils literal">eq_ind_r</tt> states that if
-a property <tt class="docutils literal">P</tt> holds for <tt class="docutils literal">x</tt>, then <tt class="docutils literal">x = y</tt> implies <tt class="docutils literal">P y</tt>,
+<p><strong>Q:</strong> I am clearly out of my depth here. <span class="docutils literal">eq_ind_r</span> states that if
+a property <span class="docutils literal">P</span> holds for <span class="docutils literal">x</span>, then <span class="docutils literal">x = y</span> implies <span class="docutils literal">P y</span>,
 correct?</p>
-<p><strong>A:</strong> Yes, it is correct. <tt class="docutils literal">E</tt> has type <tt class="docutils literal">n = S n'</tt>, and
-<tt class="docutils literal">Nat.lt_0_succ n'</tt> gives us a proof of <tt class="docutils literal">S n' &gt; 0</tt>, but we want a
-proof of <tt class="docutils literal">n &gt; 0</tt>, so we use <tt class="docutils literal">eq_ind_r</tt> to substitute <tt class="docutils literal">n</tt> for <tt class="docutils literal">S
-n'</tt> in that proof of <tt class="docutils literal">S n' &gt; 0</tt>.</p>
+<p><strong>A:</strong> Yes, it is correct. <span class="docutils literal">E</span> has type <span class="docutils literal">n = S n'</span>, and
+<span class="docutils literal">Nat.lt_0_succ n'</span> gives us a proof of <span class="docutils literal">S n' &gt; 0</span>, but we want a
+proof of <span class="docutils literal">n &gt; 0</span>, so we use <span class="docutils literal">eq_ind_r</span> to substitute <span class="docutils literal">n</span> for <span class="docutils literal">S n'</span> in that proof of <span class="docutils literal">S n' &gt; 0</span>.</p>
+</section>
 </div>
-</div>
-</div>
+</main>
 </div></body>
 </html>

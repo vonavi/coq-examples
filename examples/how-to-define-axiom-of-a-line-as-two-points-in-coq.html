@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How to define axiom of a line as two points in Coq</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
 <link rel="stylesheet" href="docutils_basic.css" type="text/css" />
@@ -14,19 +14,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="alectryon-root alectryon-centered"><div class="document" id="how-to-define-axiom-of-a-line-as-two-points-in-coq">
+<div class="alectryon-root alectryon-centered"><main id="how-to-define-axiom-of-a-line-as-two-points-in-coq">
 <h1 class="title">How to define axiom of a line as two points in Coq</h1>
-<table class="docinfo" frame="void" rules="none">
-<col class="docinfo-name" />
-<col class="docinfo-content" />
-<tbody valign="top">
-<tr class="link field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="https://stackoverflow.com/q/54937970">https://stackoverflow.com/q/54937970</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="docinfo simple">
+<dt class="link">Link<span class="colon">:</span></dt>
+<dd class="link"><p><a class="reference external" href="https://stackoverflow.com/q/54937970">https://stackoverflow.com/q/54937970</a></p>
+</dd>
+</dl>
 <input type="checkbox" class="alectryon-toggle" id="alectryon-toggle-0" /><label for="alectryon-toggle-0" class="alectryon-toggle-label">Display all goals and responses</label><div class="alectryon-container docutils container">
-<div class="section" id="question">
-<h1>Question</h1>
+<section id="question">
+<h2>Question</h2>
 <p>I am trying to find an example <em>axiom</em> in <a class="reference external" href="https://github.com/GeoCoq/GeoCoq/blob/master/Axioms/euclidean_axioms.v">Coq</a>
 of something like the line axiom in geometry: If given two points,
 there exist a line between those two points. I would like to see how
@@ -35,35 +32,29 @@ axiom to see how something very primitive is defined, because I'm
 having a hard time defining it outside natural language.</p>
 <p>Specifically, I have seen these two axioms and would like to know how
 in Coq to define both:</p>
-<pre class="literal-block">
-1. Any two distinct points always determine a line
-2. Any two distinct points of a line determine this line uniquely
-</pre>
+<pre class="literal-block">1. Any two distinct points always determine a line
+2. Any two distinct points of a line determine this line uniquely</pre>
 <p>It almost seems like you can merge them into one definition, so I
 would like to see syntactically and semantically how to write this in
 Coq.</p>
 <p>I don't know how to write Coq really, just looking to see how they do
 it. But if I were to try it seems like this:</p>
-<pre class="code coq literal-block">
-<span class="kn">Axiom</span> <span class="nv">line</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">ptA</span> <span class="nv">ptB</span> <span class="o">:</span> <span class="n">Point</span><span class="o">,</span> <span class="n">line</span> <span class="n">ptA</span> <span class="n">ptB</span><span class="o">.</span>
-</pre>
+<pre class="code coq literal-block"><code><span class="kn">Axiom</span> <span class="nv">line</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">ptA</span> <span class="nv">ptB</span> <span class="o">:</span> <span class="n">Point</span><span class="o">,</span> <span class="n">line</span> <span class="n">ptA</span> <span class="n">ptB</span><span class="o">.</span></code></pre>
 <p>But that needs a Line and a Point object.</p>
-<pre class="code coq literal-block">
-<span class="kn">Axiom</span> <span class="nv">line</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">ptA</span> <span class="nv">ptB</span><span class="o">,</span> <span class="n">line</span> <span class="n">ptA</span> <span class="n">ptB</span><span class="o">.</span>
+<pre class="code coq literal-block"><code><span class="kn">Axiom</span> <span class="nv">line</span> <span class="o">:</span> <span class="kr">forall</span> <span class="nv">ptA</span> <span class="nv">ptB</span><span class="o">,</span> <span class="n">line</span> <span class="n">ptA</span> <span class="n">ptB</span><span class="o">.</span>
 <span class="kn">Definition</span> <span class="nf">Line</span> <span class="nv">ptA</span> <span class="nv">ptB</span> <span class="o">-&gt;</span> <span class="c">(* (...) No idea. *)</span>
-<span class="kn">Definition</span> <span class="nf">Point</span> <span class="o">...</span>
-</pre>
-</div>
-<div class="section" id="answer">
-<h1>Answer</h1>
-<p>Here is a possibility. The <tt class="docutils literal">exists!</tt> connective means unique
+<span class="kn">Definition</span> <span class="nf">Point</span> <span class="o">...</span></code></pre>
+</section>
+<section id="answer">
+<h2>Answer</h2>
+<p>Here is a possibility. The <span class="docutils literal">exists!</span> connective means unique
 existence.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">point</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">line</span> : <span class="kt">Type</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">lies_in</span> : point -&gt; line -&gt; <span class="kt">Prop</span>.</span><span class="alectryon-wsp">
 </span></span><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Axiom</span> <span class="nv">ax</span> : <span class="kr">forall</span> (<span class="nv">p1</span> <span class="nv">p2</span> : point),
-    p1 &lt;&gt; p2 -&gt; <span class="kr">exists</span>! l : line, lies_in p1 l /\ lies_in p2 l.</span></span></pre></div>
+    p1 &lt;&gt; p2 -&gt; <span class="kr">exists</span>! l : line, lies_in p1 l /\ lies_in p2 l.</span></span></pre></section>
 </div>
-</div>
+</main>
 </div></body>
 </html>
