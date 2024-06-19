@@ -35,7 +35,7 @@ Variables``, but suppose that ``eauto`` doesn't succeed until I
 instantiate the unification variable; (2) I could just pass the proof
 term explicitly with ``instantiate (1 := H0 H)`` (or even
 ``instantiate (1:= ltac:(eauto))``), but assume that the proof of the
-xistential was tedious and we wished to do it interactively.
+existential was tedious and we wished to do it interactively.
 
 What else can we do? We can try to use ``cut`` or ``assert``, like so:
 |*)

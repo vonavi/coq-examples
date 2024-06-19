@@ -13,7 +13,7 @@ Question
 Is there a way in Coq in to prove a statement for integer numbers and
 the transfer statement in a semi-automatic way to naturals?
 
-For a concret example, take the following lemma:
+For a concrete example, take the following lemma:
 |*)
 
 Lemma cancellation:
