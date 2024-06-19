@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils 0.21.2: https://docutils.sourceforge.io/" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nested recursion and Program Fixpoint or Function</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
@@ -60,36 +60,36 @@ same in Isabelle, using the <span class="docutils literal">function</span> comma
 related to Coq's <span class="docutils literal">Function</span> command:</p>
 <pre class="code isabelle literal-block"><code><span class="k">theory</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="kp">imports</span><span class="w"> </span><span class="n">Main</span><span class="w"> </span><span class="k">begin</span><span class="w">
 
-</span><span class="k">datatype</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><s>&quot;Tree list&quot;</s><span class="w">
+</span><span class="k">datatype</span><span class="w"> </span><span class="n">Tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="s">&quot;Tree list&quot;</span><span class="w">
 
 </span><span class="k">fun</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="kp">where</span><span class="w">
-  </span><s>&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</s><span class="w">
+  </span><span class="s">&quot;height (Node _ ts) = Suc (foldr max (map height ts) 0)&quot;</span><span class="w">
 
 </span><span class="kn">function</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
-  </span><s>&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</s><span class="w">
+  </span><span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span><span class="w">
 </span><span class="k">by</span><span class="w"> </span><span class="n">pat_completeness</span><span class="w"> </span><span class="n">auto</span><span class="w">
 
 </span><span class="kn">termination</span><span class="w">
-</span><span class="k">proof</span><span class="w"> </span><span class="o">(</span><span class="n">relation</span><span class="w"> </span><s>&quot;measure (λ(f, t). height t)&quot;</s><span class="o">)</span><span class="w">
-  </span><span class="k">show</span><span class="w"> </span><s>&quot;wf (measure (λ(f, t). height t))&quot;</s><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">auto</span><span class="w">
+</span><span class="k">proof</span><span class="w"> </span><span class="o">(</span><span class="n">relation</span><span class="w"> </span><span class="s">&quot;measure (λ(f, t). height t)&quot;</span><span class="o">)</span><span class="w">
+  </span><span class="k">show</span><span class="w"> </span><span class="s">&quot;wf (measure (λ(f, t). height t))&quot;</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">auto</span><span class="w">
 </span><span class="k">next</span><span class="w">
-  </span><span class="k">fix</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><s>&quot;nat ⇒ nat&quot;</s><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><s>&quot;Tree list&quot;</s><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">t</span><span class="w">
-  </span><span class="k">assume</span><span class="w"> </span><s>&quot;t ∈ set ts&quot;</s><span class="w">
-  </span><span class="k">thus</span><span class="w"> </span><s>&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</s><span class="w">
+  </span><span class="k">fix</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="s">&quot;nat ⇒ nat&quot;</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="n">nat</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="s">&quot;Tree list&quot;</span><span class="w"> </span><span class="kp">and</span><span class="w"> </span><span class="n">t</span><span class="w">
+  </span><span class="k">assume</span><span class="w"> </span><span class="s">&quot;t ∈ set ts&quot;</span><span class="w">
+  </span><span class="k">thus</span><span class="w"> </span><span class="s">&quot;((f, t), (f, Node x ts))  ∈ measure (λ(f, t). height t)&quot;</span><span class="w">
     </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="n">induction</span><span class="w"> </span><span class="n">ts</span><span class="o">)</span><span class="w"> </span><span class="n">auto</span><span class="w">
 </span><span class="k">qed</span></code></pre>
 <p>In the termination proof, I get the assumption <span class="docutils literal">t ∈ set ts</span>.</p>
 <p>Note that Isabelle does not require a manual termination proof here,
 and the following definition works just fine:</p>
 <pre class="code isabelle literal-block"><code><span class="k">fun</span><span class="w"> </span><span class="n">mapTree</span><span class="w"> </span><span class="kp">where</span><span class="w">
-  </span><s>&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</s></code></pre>
+  </span><span class="s">&quot;mapTree f (Node x ts) = Node (f x) (map (λ t. mapTree f t) ts)&quot;</span></code></pre>
 <p>This works because the <span class="docutils literal">map</span> function has a &quot;congruence lemma&quot; of
 the form</p>
-<pre class="code isabelle literal-block"><code><s>&quot;xs = ys ⟹ (⋀x. x ∈ set ys ⟹ f x = g x) ⟹ map f xs = map g ys&quot;</s></code></pre>
+<pre class="code isabelle literal-block"><code><span class="s">&quot;xs = ys ⟹ (⋀x. x ∈ set ys ⟹ f x = g x) ⟹ map f xs = map g ys&quot;</span></code></pre>
 <p>that the <span class="docutils literal">function</span> command uses to find out that the termination
 proof only needs to consider <span class="docutils literal">t ∈ set ts</span>.</p>
 <p>If such a lemma is not available, e.g. because I define</p>
-<pre class="code isabelle literal-block"><code><span class="k">definition</span><span class="w"> </span><s>&quot;map' = map&quot;</s></code></pre>
+<pre class="code isabelle literal-block"><code><span class="k">definition</span><span class="w"> </span><span class="s">&quot;map' = map&quot;</span></code></pre>
 <p>and use that in <span class="docutils literal">mapTree</span>, I get the same unprovable proof
 obligation as in Coq. I can make it work again by declaring a
 congruence lemma for <span class="docutils literal">map'</span>, e.g. using</p>

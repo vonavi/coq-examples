@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="alectryon-standalone" xml:lang="en" lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils 0.21.2: https://docutils.sourceforge.io/" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Coq - return value of type which is equal to function return type</title>
 <link rel="stylesheet" href="alectryon.css" type="text/css" />
@@ -78,7 +78,7 @@ called definitional, judgemental, or computational equality). Unlike
 propositional equality (what <span class="docutils literal">=</span> binds to by default), definitional
 equality is decidable. Coq can take any two terms and decide if one is
 convertible into the other. If propositional equality were allowed in
-type-checking, type-checking would no longer be decidable <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+type-checking, type-checking would no longer be decidable <a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p>To fix your problem (and it is a pretty big problem) you have a few
 options.</p>
 <section id="make-struct-a-record">
@@ -118,14 +118,14 @@ just need to prove that both sides have length <span class="docutils literal">(i
 <p>This approach can get pretty messy if you aren't careful, so it's not
 often the preferred approach.</p>
 <p>Let me define a sort of coercion that maps elements of type <span class="docutils literal">P x</span> to
-elements of type <span class="docutils literal">P y</span> if <span class="docutils literal">x = y</span><a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+elements of type <span class="docutils literal">P y</span> if <span class="docutils literal">x = y</span><a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
 <pre class="alectryon-io highlight"><!-- Generator: Alectryon --><span class="alectryon-sentence"><span class="alectryon-input"><span class="kn">Definition</span> <span class="nf">coercion</span> {<span class="nv">A</span>: <span class="kt">Type</span>} (<span class="nv">P</span>: A -&gt; <span class="kt">Type</span>) {<span class="nv">x</span> <span class="nv">y</span>: A} (<span class="nv">p</span>: x = y): P x -&gt; P y :=
   <span class="kr">match</span> p <span class="kr">with</span>
   | eq_refl =&gt; <span class="kr">fun</span> <span class="nv">t</span> =&gt; t
   <span class="kr">end</span>.</span></span></pre><p>Here we use induction on the term <span class="docutils literal">p: x = y</span>. The induction
 principle says, essentially, that if we can prove something when <span class="docutils literal">x</span>
 and <span class="docutils literal">y</span> are definitionally equal, then we can prove it when they're
-propositionaly equal <a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>. When <span class="docutils literal">P x</span> and <span class="docutils literal">P y</span> are the same, we
+propositionaly equal <a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>. When <span class="docutils literal">P x</span> and <span class="docutils literal">P y</span> are the same, we
 can just use the identity function.</p>
 <p>Now, for example, the statement of associativity of concatenation for
 sized lists is <span class="docutils literal">concat (concat u v) w = coercion (SizedList A) (add_assoc) (concat u (concat v w))</span>. So we coerce something of type
