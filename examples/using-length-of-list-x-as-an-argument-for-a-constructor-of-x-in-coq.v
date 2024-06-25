@@ -16,10 +16,10 @@ I'm trying to formalize what it means to be a term in first-order
 logic. Here is the textbook definition of terms of an arbitrary
 language ``L``:
 
-    1. Each variable or constant is a term.
-    2. If ``n >= 1``, ``f`` is an ``n``-ary function of ``L``, and
-       ``t1 ... tn`` are terms of ``L``, then ``f t1 ... tn`` is a
-       term of ``L``.
+1. Each variable or constant is a term.
+2. If ``n >= 1``, ``f`` is an ``n``-ary function of ``L``, and ``t1
+   ... tn`` are terms of ``L``, then ``f t1 ... tn`` is a term of
+   ``L``.
 
 I have already defined variables, constants, functions, and languages
 as ``var``, ``const``, ``func``, and ``lang``. I also have functions

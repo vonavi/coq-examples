@@ -36,7 +36,7 @@ So my definition of ``beq_rule`` actually return exactly type of
 ``beq_term`` which is not what I want here. I want it return for me a
 type: ``rule -> rule -> bool``.
 
-So I changed a definition of rule by Record:
+So I changed a definition of rule by ``Record``:
 |*)
 
 Reset rule. (* .none *)

@@ -29,8 +29,8 @@ Answer (Yves)
 
 There are many general patterns of induction like this one that can be
 covered by the existing library on well founded induction. In this
-case, you can prove any property P by induction on length of lists by
-using ``well_founded_induction``, ``wf_inverse_image``, and
+case, you can prove any property ``P`` by induction on length of lists
+by using ``well_founded_induction``, ``wf_inverse_image``, and
 ``PeanoNat.Nat.lt_wf_0``, as in the following command:
 
 .. coq:: none
