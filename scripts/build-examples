@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+ROOT_DIR=$(realpath $(dirname "$0")/../)
+CACHE_DIR=content
+SITE_DIR=public
+SRC_DIRS="examples notes"
+
+if ! command -v alectryon &>/dev/null; then
+    echo 'alectryon is not available.'
+    exit 1
+fi
+
+cd ${ROOT_DIR}
+for dir in ${SRC_DIRS}; do
+    find "${dir}" -name '*.v' -execdir basename {} '.v' \; | \
+        xargs -I{} alectryon \
+              --frontend coq+rst --backend webpage \
+              --no-header --html-dialect=html5 --long-line-threshold 80 \
+              --cache-directory "${SITE_DIR}/${CACHE_DIR}" \
+              --cache-compression gzip \
+              --output "${SITE_DIR}/${dir}/{}.html" "${dir}/{}.v"
+done
+
+exit 0
