@@ -62,7 +62,7 @@ Program Fixpoint make_diff (A : Type)
         (trans : transitive A R)
         (lt_neq : (forall x y, R x y -> x <> y))
         (l1 l2 : list A)
-        {measure(length l1 + length l2)} : list (diff A) :=
+        {measure (length l1 + length l2)} : list (diff A) :=
   match l1, l2 with
   | nil, nil => nil
   | nil, new_h :: new_t =>

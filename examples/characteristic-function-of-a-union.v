@@ -62,5 +62,5 @@ this by defining union as pointwise disjunction:
 |*)
 
 Definition subset (X : Type) : Type := X -> Prop.
-Definition union {X : Type}(A B : subset X) : subset X :=
+Definition union {X : Type} (A B : subset X) : subset X :=
   fun x => A x \/ B x.

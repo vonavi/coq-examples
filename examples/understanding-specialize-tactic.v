@@ -1,7 +1,7 @@
 (*|
-###############################
-Understanding specialize tactic
-###############################
+###################################
+Understanding ``specialize`` tactic
+###################################
 
 :Link: https://stackoverflow.com/q/56828692
 |*)
